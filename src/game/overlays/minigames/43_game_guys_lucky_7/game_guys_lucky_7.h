@@ -3,10 +3,10 @@
 
 #include "common.h"
 
-void func_8010B830_game_guys_lucky_7(s16 x, s16 y);
-void func_8010BAFC_game_guys_lucky_7(void);
-s16 func_8010BB88_game_guys_lucky_7(void);
-s32 func_8010C670_game_guys_lucky_7(s32 x);
-void func_8010C824_game_guys_lucky_7(void);
+void m267_SpotIntroInit(s16 x, s16 y);
+void m267_SpotBeamInit(void);
+s16 m267_SpotIntroUpdate(void);
+s32 m267_SpotBeamUpdate(s32 x);
+void m267_SpotDispOff(void);
 
 #endif

@@ -54,26 +54,26 @@ typedef struct RiverRaidersCamera {
 } RiverRaidersCamera; // sizeof 0x2C
 
 // Group of misaligned variables (see undefined_syms.txt for aliases).
-typedef struct RiverRaidersBssDB8 {
-    /* 0x00 */ s16 unk00; // D_80110DB8_river_raiders
-    /* 0x02 */ u8 unk02[3]; // D_80110DBA_river_raiders
-    /* 0x05 */ u8 unk05; // D_80110DBD_river_raiders
-    /* 0x06 */ s16 unk06; // D_80110DBE_river_raiders
-} RiverRaidersBssDB8; // sizeof 0x08
+typedef struct RiverRaidersSkierState {
+    /* 0x00 */ s16 unk00; // m209_skierSeNo
+    /* 0x02 */ u8 unk02[3]; // m209_skierLaneTbl
+    /* 0x05 */ u8 unk05; // m209_skierCoin
+    /* 0x06 */ s16 unk06; // m209_skierSwayDir
+} RiverRaidersSkierState; // sizeof 0x08
 
 extern s32 omCharModelNoTbl[][6];
 extern u8 omAllPauseF;
-extern const s16 D_8010D9BC_river_raiders[];
+extern const s16 m209_fontMesTbl[];
 
-s16 D_8010D3B0_river_raiders = 9;
-s16 D_8010D3B2_river_raiders = 21;
-s16 D_8010D3B4_river_raiders = 833;
-s16 D_8010D3B6_river_raiders = 832;
-s32 D_8010D3B8_river_raiders[3] = { 0x2A0001, 0x2A0002, 0x2A0003 };
-f32 D_8010D3C4_river_raiders[3] = { 0.0f, -1875.0f, -3750.0f };
-s32 D_8010D3D0_river_raiders[8] = { 0x210008, 0x210009, 0x21000A, 0x21000B, 0x21000C, 0x21000D, 0x21000E, 0x21000F };
+s16 m209_coinSe = 9;
+s16 m209_coinBagSe = 21;
+s16 m209_obstacleHitSe = 833;
+s16 m209_engineSe = 832;
+s32 m209_riverMdlTbl[3] = { 0x2A0001, 0x2A0002, 0x2A0003 };
+f32 m209_riverZTbl[3] = { 0.0f, -1875.0f, -3750.0f };
+s32 m209_chrIconTbl[8] = { 0x210008, 0x210009, 0x21000A, 0x21000B, 0x21000C, 0x21000D, 0x21000E, 0x21000F };
 /* Unreferenced. */
-s32 D_8010D3F0_river_raiders[8][6][2] = {
+s32 m209_chrMotTbl[8][6][2] = {
     { { 0, 39 }, { 0, 40 }, { 0, 79 }, { 0, 80 }, { 0, 81 }, { 0, 82 } },
     { { 0, 39 }, { 0, 40 }, { 0, 79 }, { 0, 80 }, { 0, 81 }, { 0, 82 } },
     { { 0, 39 }, { 0, 40 }, { 0, 79 }, { 0, 80 }, { 0, 81 }, { 0, 82 } },
@@ -83,7 +83,7 @@ s32 D_8010D3F0_river_raiders[8][6][2] = {
     { { 0, 39 }, { 0, 40 }, { 0, 79 }, { 0, 80 }, { 0, 81 }, { 0, 82 } },
     { { 0, 39 }, { 0, 40 }, { 0, 79 }, { 0, 80 }, { 0, 81 }, { 0, 82 } },
 };
-f32 D_8010D570_river_raiders[4][3][16] = {
+f32 m209_ropeOfsTbl[4][3][16] = {
     {
         { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
           0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f },
@@ -117,12 +117,12 @@ f32 D_8010D570_river_raiders[4][3][16] = {
           -1.44279f, -0.398738f, 0.74f, 1.91003f, 2.99774f, 3.91425f, 4.52865f, 4.768f },
     },
 };
-Vec2f D_8010D870_river_raiders[3] = {
+Vec2f m209_skierIconPosTbl[3] = {
     { 200.0f, 210.0f },
     { 215.0f, 200.0f },
     { 230.0f, 210.0f },
 };
-Vec2f D_8010D888_river_raiders[8] = {
+Vec2f m209_scorePosTbl[8] = {
     { 50.0f, 210.0f },
     { 70.0f, 210.0f },
     { 80.0f, 210.0f },
@@ -132,79 +132,79 @@ Vec2f D_8010D888_river_raiders[8] = {
     { 280.0f, 210.0f },
     { 290.0f, 210.0f },
 };
-RiverRaidersCamera D_8010D8C8_river_raiders[1] = {
+RiverRaidersCamera m209_cameraViewTbl[1] = {
     { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 36.0f },
 };
 
-f32 D_8010D9D0_river_raiders[5] BSS;
-s16 D_8010D9E4_river_raiders BSS;
-u8 D_8010D9E6_river_raiders BSS;
-u8 D_8010D9E8_river_raiders[8] BSS; /* Unreferenced. */
-RiverRaidersEntry D_8010D9F0_river_raiders[100] BSS;
-u8 D_80110D80_river_raiders BSS;
-u8 D_80110D81_river_raiders BSS;
-s16 D_80110D82_river_raiders BSS;
-u8 D_80110D84_river_raiders BSS;
-s16 D_80110D86_river_raiders BSS;
-u16 D_80110D88_river_raiders[2] BSS;
-u8 D_80110D8C_river_raiders[4] BSS; /* Unreferenced. */
-u8 D_80110D90_river_raiders BSS;
-u8 D_80110D91_river_raiders BSS;
-u8 D_80110D94_river_raiders[4] BSS; /* Unreferenced. */
-s16 D_80110D98_river_raiders[3][5] BSS;
-s16 D_80110DB6_river_raiders BSS;
-RiverRaidersBssDB8 riverRaidersBssDB8 BSS;
-u8 D_80110DC0_river_raiders BSS;
-u8 D_80110DC4_river_raiders[4] BSS; /* Unreferenced. */
-f32 D_80110DC8_river_raiders[3][2] BSS;
-s16 D_80110DE0_river_raiders BSS;
-s16 D_80110DE2_river_raiders BSS;
-s16 D_80110DE4_river_raiders BSS;
+f32 m209_wakeRotTbl[5] BSS;
+s16 m209_skierHopTimer BSS;
+u8 m209_finishStep BSS;
+u8 m209_finishStepPad[8] BSS; /* Unreferenced. */
+RiverRaidersEntry m209_objWorkTbl[100] BSS;
+u8 m209_obstacleCnt BSS;
+u8 m209_coinCnt BSS;
+s16 m209_coinBagSide BSS;
+u8 m209_boatCoin BSS;
+s16 m209_starEffGrp BSS;
+u16 m209_waterTexSize[2] BSS;
+u8 m209_waterTexSizePad[4] BSS; /* Unreferenced. */
+u8 m209_phase BSS;
+u8 m209_skierLaneCnt BSS;
+u8 m209_skierLaneCntPad[4] BSS; /* Unreferenced. */
+s16 m209_skierHitTbl[3][5] BSS;
+s16 m209_obstacleMotLen BSS;
+RiverRaidersSkierState m209_skierState BSS;
+u8 m209_coinBagCnt BSS;
+u8 m209_coinBagCntPad[4] BSS; /* Unreferenced. */
+f32 m209_skierRangeTbl[3][2] BSS;
+s16 m209_engineSeNo BSS;
+s16 m209_timer BSS;
+s16 m209_enginePitch BSS;
 
-// D_8010D9D0_river_raiders[3] onward (see undefined_syms.txt).
-extern f32 D_8010D9DC_river_raiders[2];
-// Entries and entry fields of D_8010D9F0_river_raiders, accessed through
+// m209_wakeRotTbl[3] onward (see undefined_syms.txt).
+extern f32 m209_boatWakeRotTbl[2];
+// Entries and entry fields of m209_objWorkTbl, accessed through
 // separate symbols (see undefined_syms.txt).
-extern RiverRaidersEntry D_8010DD08_river_raiders[]; // &[6]
-extern s16 D_8010DE98_river_raiders; // [9].unk_04
-extern s16 D_8010DE9A_river_raiders; // [9].unk_06
-extern s16 D_8010DED4_river_raiders; // [9].sprite
-extern s16 D_8010DED6_river_raiders; // [9].esp
-extern RiverRaidersEntry D_8010DF18_river_raiders[]; // &[10]
-extern f32 D_8010EEA8_river_raiders; // [40].unk_18
-// Aliases into riverRaidersBssDB8 (see undefined_syms.txt).
-extern s16 D_80110DB8_river_raiders;
-extern u8 D_80110DBA_river_raiders[];
-extern u8 D_80110DBD_river_raiders;
-extern s16 D_80110DBE_river_raiders;
+extern RiverRaidersEntry m209_skierWorkTbl[]; // &[6]
+extern s16 m209_boatSteerDir; // [9].unk_04
+extern s16 m209_boatStunTimer; // [9].unk_06
+extern s16 m209_boatIconSpr; // [9].sprite
+extern s16 m209_boatIconEsp; // [9].esp
+extern RiverRaidersEntry m209_itemWorkTbl[]; // &[10]
+extern f32 m209_waterScroll; // [40].unk_18
+// Aliases into m209_skierState (see undefined_syms.txt).
+extern s16 m209_skierSeNo;
+extern u8 m209_skierLaneTbl[];
+extern u8 m209_skierCoin;
+extern s16 m209_skierSwayDir;
 
-void func_80105BA4_river_raiders(omObjData *obj);
-void func_80105D1C_river_raiders(omObjData *obj);
-void func_80105FA0_river_raiders(omObjData *obj);
-void func_801060BC_river_raiders(omObjData *obj);
-void func_80106244_river_raiders(omObjData *obj);
-void func_80106448_river_raiders(omObjData *obj);
-void func_801069A4_river_raiders(omObjData *obj);
-void func_80106AF8_river_raiders(omObjData *obj);
-void func_8010716C_river_raiders(omObjData *obj);
-void func_80107188_river_raiders(omObjData *obj);
-void func_801072FC_river_raiders(omObjData *obj);
-void func_80107B14_river_raiders(omObjData *obj);
-void func_80106300_river_raiders(omObjData *);
-void func_80108188_river_raiders(omObjData *);
-void func_8010ACD8_river_raiders(omObjData *obj);
-void func_8010BE88_river_raiders(omObjData *obj);
-void func_8010C494_river_raiders(omObjData *obj);
-void func_8010ABA0_river_raiders(void);
-void func_8010CADC_river_raiders(omObjData *obj);
-void func_8010CF00_river_raiders(omObjData *obj);
-void func_8010D268_river_raiders(void);
+void m209_ScoreObjMain(omObjData *obj);
+void m209_ScoreObjInit(omObjData *obj);
+void m209_RiverObjMain(omObjData *obj);
+void m209_RiverObjInit(omObjData *obj);
+void m209_WaterObjMain(omObjData *obj);
+void m209_RopeObjMain(omObjData *obj);
+void m209_RopeObjInit(omObjData *obj);
+void m209_BoatComInputCalc(omObjData *obj);
+void m209_BoatComInput(omObjData *obj);
+void m209_BoatPadInput(omObjData *obj);
+void m209_BoatSteer(omObjData *obj);
+void m209_BoatObjMain(omObjData *obj);
+void m209_WaterObjInit(omObjData *);
+void m209_BoatObjInit(omObjData *);
+void m209_ItemHitUpdate(omObjData *obj);
+void m209_ItemObjMain(omObjData *obj);
+void m209_ItemObjInit(omObjData *obj);
+void m209_SkierObjCreateAll(void);
+void m209_MainObjMain(omObjData *obj);
+void m209_MainObjInit(omObjData *obj);
+void m209_ObjectSetup(void);
 
-void func_801059A0_river_raiders(void) {
-    func_8010D268_river_raiders();
+void m209_Executor(void) {
+    m209_ObjectSetup();
 }
 
-f32 func_801059BC_river_raiders(f32 arg0, f32 arg1) {
+f32 m209_AngleAdd(f32 arg0, f32 arg1) {
     f32 angle = arg0 + arg1;
 
     while (angle >= 360.0f) {
@@ -218,11 +218,11 @@ f32 func_801059BC_river_raiders(f32 arg0, f32 arg1) {
     return angle;
 }
 
-void func_80105A3C_river_raiders(void) {
+void m209_ObjWorkInit(void) {
     u32 i;
     RiverRaidersEntry *entry;
 
-    for (i = 0, entry = D_8010D9F0_river_raiders; i < 100; i++, entry++) {
+    for (i = 0, entry = m209_objWorkTbl; i < 100; i++, entry++) {
         entry->obj = NULL;
         entry->unk_04 = 0;
         entry->unk_06 = 0;
@@ -257,57 +257,57 @@ void func_80105A3C_river_raiders(void) {
     }
 }
 
-void func_80105B04_river_raiders(s32 playerIndex) {
+void m209_PadClear(s32 playerIndex) {
     HuPadBtn[GwPlayer[playerIndex].pad] = 0;
     HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
     HuPadStkX[GwPlayer[playerIndex].pad] = 0;
     HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
-void func_80105B7C_river_raiders(u8 arg0) {
-    D_80110D90_river_raiders = arg0;
+void m209_PhaseSet(u8 arg0) {
+    m209_phase = arg0;
 }
 
-f32 func_80105B88_river_raiders(f32 arg0, f32 *arg1, f32 arg2) {
+f32 m209_GravityCalc(f32 arg0, f32 *arg1, f32 arg2) {
     f32 prev = *arg1;
 
     *arg1 = prev - arg2;
     return arg0 + prev;
 }
 
-void func_80105BA4_river_raiders(omObjData *obj) {
+void m209_ScoreObjMain(omObjData *obj) {
     u32 row = obj->work[0] * 4;
     u32 col = obj->work[1] + 43;
-    RiverRaidersEntry *entry = &D_8010D9F0_river_raiders[row + col];
+    RiverRaidersEntry *entry = &m209_objWorkTbl[row + col];
 
     switch (obj->work[0]) {
         case 0:
             if (obj->work[1] == 2) {
-                if (D_80110D84_river_raiders / 10 != 0) {
+                if (m209_boatCoin / 10 != 0) {
                     espDispOn(entry->esp);
-                    espPatNoSet(entry->esp, (u8)(D_80110D84_river_raiders / 10));
+                    espPatNoSet(entry->esp, (u8)(m209_boatCoin / 10));
                 }
             } else if (obj->work[1] == 3) {
-                espPatNoSet(entry->esp, (u8)(D_80110D84_river_raiders % 10));
+                espPatNoSet(entry->esp, (u8)(m209_boatCoin % 10));
             }
             break;
         case 1:
             if (obj->work[1] == 2) {
-                if (D_80110DBD_river_raiders / 10 != 0) {
+                if (m209_skierCoin / 10 != 0) {
                     espDispOn(entry->esp);
-                    espPatNoSet(entry->esp, (u8)(D_80110DBD_river_raiders / 10));
+                    espPatNoSet(entry->esp, (u8)(m209_skierCoin / 10));
                 }
             } else if (obj->work[1] == 3) {
-                espPatNoSet(entry->esp, (u8)(D_80110DBD_river_raiders % 10));
+                espPatNoSet(entry->esp, (u8)(m209_skierCoin % 10));
             }
             break;
     }
 }
 
-void func_80105D1C_river_raiders(omObjData *obj) {
+void m209_ScoreObjInit(omObjData *obj) {
     u32 row = obj->work[0] * 4;
     u32 col = obj->work[1] + 43;
-    RiverRaidersEntry *entry = &D_8010D9F0_river_raiders[row + col];
+    RiverRaidersEntry *entry = &m209_objWorkTbl[row + col];
 
     switch (obj->work[1]) {
         case 0:
@@ -330,13 +330,13 @@ void func_80105D1C_river_raiders(omObjData *obj) {
             }
             break;
     }
-    entry->pos.x = D_8010D888_river_raiders[obj->work[0] * 4 + obj->work[1]].x;
-    entry->pos.y = D_8010D888_river_raiders[obj->work[0] * 4 + obj->work[1]].y;
+    entry->pos.x = m209_scorePosTbl[obj->work[0] * 4 + obj->work[1]].x;
+    entry->pos.y = m209_scorePosTbl[obj->work[0] * 4 + obj->work[1]].y;
     espPosSet(entry->esp, entry->pos.x, entry->pos.y);
-    obj->func = func_80105BA4_river_raiders;
+    obj->func = m209_ScoreObjMain;
 }
 
-void func_80105EAC_river_raiders(void) {
+void m209_ScoreObjCreateAll(void) {
     RiverRaidersEntry *entry;
     s32 row;
     s32 col;
@@ -348,8 +348,8 @@ void func_80105EAC_river_raiders(void) {
         for (j = 0; j < 4; j++) {
             row = i * 4;
             col = j + 43;
-            entry = &D_8010D9F0_river_raiders[row + col];
-            obj = omAddObj(0x3DE, 1, 10, -1, func_80105D1C_river_raiders);
+            entry = &m209_objWorkTbl[row + col];
+            obj = omAddObj(0x3DE, 1, 10, -1, m209_ScoreObjInit);
             obj->work[0] = i;
             obj->work[1] = j;
             entry->obj = obj;
@@ -357,26 +357,26 @@ void func_80105EAC_river_raiders(void) {
     }
 }
 
-void func_80105FA0_river_raiders(omObjData *obj) {
-    RiverRaidersEntry *entry = &D_8010D9F0_river_raiders[obj->work[0]];
+void m209_RiverObjMain(omObjData *obj) {
+    RiverRaidersEntry *entry = &m209_objWorkTbl[obj->work[0]];
     RiverRaidersEntry *cur;
     s16 i;
 
     obj->trans.z += 17.0f;
     if (obj->work[0] == 2) {
         for (i = 0; i < 3; i++) {
-            cur = &D_8010D9F0_river_raiders[i];
+            cur = &m209_objWorkTbl[i];
             obj = cur->obj;
             if (obj->trans.z >= 1875.0f) {
                 switch (i) {
                     case 0:
-                        entry = &D_8010D9F0_river_raiders[2];
+                        entry = &m209_objWorkTbl[2];
                         break;
                     case 1:
-                        entry = &D_8010D9F0_river_raiders[0];
+                        entry = &m209_objWorkTbl[0];
                         break;
                     case 2:
-                        entry = &D_8010D9F0_river_raiders[1];
+                        entry = &m209_objWorkTbl[1];
                         break;
                 }
                 obj->trans.z = entry->obj->trans.z - 1875.0f;
@@ -385,70 +385,70 @@ void func_80105FA0_river_raiders(omObjData *obj) {
     }
 }
 
-void func_801060BC_river_raiders(omObjData *obj) {
-    obj->model[0] = Hu3DModelRead(D_8010D3B8_river_raiders[obj->work[0]], 0x288);
+void m209_RiverObjInit(omObjData *obj) {
+    obj->model[0] = Hu3DModelRead(m209_riverMdlTbl[obj->work[0]], 0x288);
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
-    obj->trans.z = D_8010D3C4_river_raiders[obj->work[0]];
+    obj->trans.z = m209_riverZTbl[obj->work[0]];
     Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
     obj->rot.x = obj->rot.y = obj->rot.z = 0.0f;
     Hu3DModelRotSet(obj->model[0], obj->rot.x, obj->rot.y, obj->rot.z);
     Hu3DModelAttrSet(obj->model[0], 4, 0);
     Hu3DModelRemakeStatic(obj->model[0]);
     Hu3DModelDynamicFree(obj->model[0]);
-    obj->func = func_80105FA0_river_raiders;
+    obj->func = m209_RiverObjMain;
 }
 
-void func_801061A0_river_raiders(void) {
+void m209_RiverObjCreateAll(void) {
     RiverRaidersEntry *entry;
     omObjData *obj;
     s16 i;
 
     for (i = 0; i < 3; i++) {
-        entry = &D_8010D9F0_river_raiders[i];
-        obj = omAddObj(0x1F4, 1, 10, -1, func_801060BC_river_raiders);
+        entry = &m209_objWorkTbl[i];
+        obj = omAddObj(0x1F4, 1, 10, -1, m209_RiverObjInit);
         obj->work[0] = i;
         entry->obj = obj;
     }
 }
 
-void func_80106244_river_raiders(omObjData *obj) {
-    RiverRaidersEntry *water = &D_8010D9F0_river_raiders[40];
+void m209_WaterObjMain(omObjData *obj) {
+    RiverRaidersEntry *water = &m209_objWorkTbl[40];
 
     if (omPauseChk() + omAllPauseF == 0) {
-        D_8010EEA8_river_raiders += 1.5f;
+        m209_waterScroll += 1.5f;
     }
-    Hu3DModelObjTexScroll(obj->model[0], 0.0f, water->unk_18, D_80110D88_river_raiders[0],
-                       D_80110D88_river_raiders[1], "suki-m209_04_1_3", 0);
+    Hu3DModelObjTexScroll(obj->model[0], 0.0f, water->unk_18, m209_waterTexSize[0],
+                       m209_waterTexSize[1], "suki-m209_04_1_3", 0);
     Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
 }
 
-void func_80106300_river_raiders(omObjData *obj) {
+void m209_WaterObjInit(omObjData *obj) {
     obj->model[0] = Hu3DModelRead(0x2A0004, 0x2A8);
     Hu3DModelTPLvlInit(obj->model[0]);
     Hu3DModelTPLvlSet(obj->model[0], 0x80);
     Hu3DModelAttrSet(obj->model[0], 4, 0);
     Hu3DModelVtxBufMake(obj->model[0]);
-    Hu3DTexSizeGet("209_water_00_DEF", D_80110D88_river_raiders);
-    D_8010EEA8_river_raiders = 0.0f;
+    Hu3DTexSizeGet("209_water_00_DEF", m209_waterTexSize);
+    m209_waterScroll = 0.0f;
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = -100.0f;
     Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
     obj->rot.x = obj->rot.y = obj->rot.z = 0.0f;
     Hu3DModelRotSet(obj->model[0], obj->rot.x, obj->rot.y, obj->rot.z);
-    obj->func = func_80106244_river_raiders;
+    obj->func = m209_WaterObjMain;
 }
 
-void func_801063FC_river_raiders(void) {
-    omObjData *obj = omAddObj(0x3B6, 1, 0xA, -1, func_80106300_river_raiders);
+void m209_WaterObjCreate(void) {
+    omObjData *obj = omAddObj(0x3B6, 1, 0xA, -1, m209_WaterObjInit);
     obj->work[0] = 0;
-    D_8010D9F0_river_raiders[40].obj = obj;
+    m209_objWorkTbl[40].obj = obj;
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
-void func_80106448_river_raiders(omObjData *obj) {
-    omObjData *player = D_8010D9F0_river_raiders[9].obj;
+void m209_RopeObjMain(omObjData *obj) {
+    omObjData *player = m209_objWorkTbl[9].obj;
     RiverRaidersEntry *entry;
     omObjData *boat;
     f32 x, y, z;
@@ -460,7 +460,7 @@ void func_80106448_river_raiders(omObjData *obj) {
 
     x = y = z = 0.0f;
     for (i = 0; i < 3; i++) {
-        entry = &D_8010D9F0_river_raiders[i + 6];
+        entry = &m209_objWorkTbl[i + 6];
         boat = entry->obj;
         if (boat->work[2] != obj->work[0]) {
             continue;
@@ -468,27 +468,27 @@ void func_80106448_river_raiders(omObjData *obj) {
         switch (entry->unk_08) {
             case 0:
                 frame = (s16)Hu3DData[boat->model[0]].motTime / 2;
-                x = -D_8010D570_river_raiders[0][0][frame] * 5.0f + boat->trans.x;
-                y = D_8010D570_river_raiders[0][1][frame] * 5.0f + boat->trans.y;
-                z = -D_8010D570_river_raiders[0][2][frame] * 5.0f + boat->trans.z + 20.0f;
+                x = -m209_ropeOfsTbl[0][0][frame] * 5.0f + boat->trans.x;
+                y = m209_ropeOfsTbl[0][1][frame] * 5.0f + boat->trans.y;
+                z = -m209_ropeOfsTbl[0][2][frame] * 5.0f + boat->trans.z + 20.0f;
                 break;
             case 1:
                 frame = (s16)Hu3DData[boat->model[0]].motTime / 2;
-                x = -D_8010D570_river_raiders[1][0][frame] * 5.0f + boat->trans.x;
-                y = D_8010D570_river_raiders[1][1][frame] * 5.0f + boat->trans.y;
-                z = -D_8010D570_river_raiders[1][2][frame] * 5.0f + boat->trans.z;
+                x = -m209_ropeOfsTbl[1][0][frame] * 5.0f + boat->trans.x;
+                y = m209_ropeOfsTbl[1][1][frame] * 5.0f + boat->trans.y;
+                z = -m209_ropeOfsTbl[1][2][frame] * 5.0f + boat->trans.z;
                 break;
             case 2:
                 frame = (s16)Hu3DData[boat->model[0]].motTime / 2;
-                x = -D_8010D570_river_raiders[2][0][frame] * 5.0f + boat->trans.x;
-                y = D_8010D570_river_raiders[2][1][frame] * 5.0f + boat->trans.y;
-                z = -D_8010D570_river_raiders[2][2][frame] * 5.0f + boat->trans.z;
+                x = -m209_ropeOfsTbl[2][0][frame] * 5.0f + boat->trans.x;
+                y = m209_ropeOfsTbl[2][1][frame] * 5.0f + boat->trans.y;
+                z = -m209_ropeOfsTbl[2][2][frame] * 5.0f + boat->trans.z;
                 break;
             case 3:
                 frame = (s16)Hu3DData[boat->model[0]].motTime / 2;
-                x = -D_8010D570_river_raiders[3][0][frame] * 5.0f + boat->trans.x;
-                y = D_8010D570_river_raiders[3][1][frame] * 5.0f + boat->trans.y;
-                z = -D_8010D570_river_raiders[3][2][frame] * 5.0f + boat->trans.z + 20.0f;
+                x = -m209_ropeOfsTbl[3][0][frame] * 5.0f + boat->trans.x;
+                y = m209_ropeOfsTbl[3][1][frame] * 5.0f + boat->trans.y;
+                z = -m209_ropeOfsTbl[3][2][frame] * 5.0f + boat->trans.z + 20.0f;
                 break;
         }
         dx = x - player->trans.x;
@@ -510,7 +510,7 @@ void func_80106448_river_raiders(omObjData *obj) {
     Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
 }
 
-void func_801069A4_river_raiders(omObjData *obj) {
+void m209_RopeObjInit(omObjData *obj) {
     obj->model[0] = Hu3DModelRead(0x2A0000, 0x99);
     obj->trans.x = 0.0f;
     obj->trans.y = 15.0f;
@@ -519,24 +519,24 @@ void func_801069A4_river_raiders(omObjData *obj) {
     obj->rot.x = obj->rot.y = obj->rot.z = 0.0f;
     Hu3DModelRotSet(obj->model[0], obj->rot.x, obj->rot.y, obj->rot.z);
     Hu3DModelAttrSet(obj->model[0], 4, 0);
-    obj->func = func_80106448_river_raiders;
+    obj->func = m209_RopeObjMain;
 }
 
-void func_80106A54_river_raiders(void) {
+void m209_RopeObjCreateAll(void) {
     RiverRaidersEntry *entry;
     omObjData *obj;
     s16 i;
 
     for (i = 0; i < 3; i++) {
-        entry = &D_8010D9F0_river_raiders[i + 3];
-        obj = omAddObj(0x320, 1, 10, -1, func_801069A4_river_raiders);
+        entry = &m209_objWorkTbl[i + 3];
+        obj = omAddObj(0x320, 1, 10, -1, m209_RopeObjInit);
         obj->work[0] = i;
         entry->obj = obj;
     }
 }
 
-void func_80106AF8_river_raiders(omObjData *obj) {
-    RiverRaidersEntry *entry = &D_8010D9F0_river_raiders[9];
+void m209_BoatComInputCalc(omObjData *obj) {
+    RiverRaidersEntry *entry = &m209_objWorkTbl[9];
     u16 player = obj->work[0];
     RiverRaidersEntry *cur;
     omObjData *target;
@@ -583,7 +583,7 @@ void func_80106AF8_river_raiders(omObjData *obj) {
                     break;
             }
             for (i = 19; i >= 0; i--) {
-                cur = &D_8010DF18_river_raiders[i];
+                cur = &m209_itemWorkTbl[i];
                 target = cur->obj;
                 dx = target->trans.x - obj->trans.x;
                 dz = target->trans.z - obj->trans.z;
@@ -595,7 +595,7 @@ void func_80106AF8_river_raiders(omObjData *obj) {
                     }
                 }
             }
-            target = D_8010DF18_river_raiders[best].obj;
+            target = m209_itemWorkTbl[best].obj;
             if (target->trans.x + 50.0f + 30.0f < obj->trans.x) {
                 dir = 1;
             }
@@ -607,7 +607,7 @@ void func_80106AF8_river_raiders(omObjData *obj) {
             }
             minDist = 5000.0f;
             for (i = 23; i >= 20; i--) {
-                cur = &D_8010DF18_river_raiders[i];
+                cur = &m209_itemWorkTbl[i];
                 target = cur->obj;
                 dx = target->trans.x - obj->trans.x;
                 dz = target->trans.z - obj->trans.z;
@@ -619,7 +619,7 @@ void func_80106AF8_river_raiders(omObjData *obj) {
                     }
                 }
             }
-            target = D_8010DF18_river_raiders[best].obj;
+            target = m209_itemWorkTbl[best].obj;
             if (target->trans.x + 50.0f + 30.0f < obj->trans.x) {
                 dir = 1;
             }
@@ -647,17 +647,17 @@ void func_80106AF8_river_raiders(omObjData *obj) {
     }
 }
 
-void func_8010716C_river_raiders(omObjData *obj) {
-    func_80106AF8_river_raiders(obj);
+void m209_BoatComInput(omObjData *obj) {
+    m209_BoatComInputCalc(obj);
 }
 
-void func_80107188_river_raiders(omObjData *obj) {
-    RiverRaidersEntry *entry = &D_8010D9F0_river_raiders[9];
+void m209_BoatPadInput(omObjData *obj) {
+    RiverRaidersEntry *entry = &m209_objWorkTbl[9];
     u16 player = obj->work[0];
 
-    D_8010DE98_river_raiders = 0;
-    if (--D_8010DE9A_river_raiders <= 0) {
-        D_8010DE9A_river_raiders = 0;
+    m209_boatSteerDir = 0;
+    if (--m209_boatStunTimer <= 0) {
+        m209_boatStunTimer = 0;
     }
     if ((u16)(entry->unk_06 % 3) < 2) {
         Hu3DModelAttrSet(obj->model[5], 4, 0);
@@ -676,16 +676,16 @@ void func_80107188_river_raiders(omObjData *obj) {
     }
 }
 
-void func_801072FC_river_raiders(omObjData *obj) {
-    RiverRaidersEntry *entry = &D_8010D9F0_river_raiders[9];
+void m209_BoatSteer(omObjData *obj) {
+    RiverRaidersEntry *entry = &m209_objWorkTbl[9];
 
-    switch (D_8010DE98_river_raiders) {
+    switch (m209_boatSteerDir) {
         case 0:
             if (obj->rot.z < 20.0f && obj->rot.z > 0.0f) {
-                obj->rot.z = func_801059BC_river_raiders(obj->rot.z, -1.0f);
+                obj->rot.z = m209_AngleAdd(obj->rot.z, -1.0f);
             }
             if (obj->rot.z < 360.0f && obj->rot.z > 340.0f) {
-                obj->rot.z = func_801059BC_river_raiders(obj->rot.z, 1.0f);
+                obj->rot.z = m209_AngleAdd(obj->rot.z, 1.0f);
             }
             if ((s16)obj->rot.z == 0.0f) {
                 obj->rot.z = 0.0f;
@@ -697,7 +697,7 @@ void func_801072FC_river_raiders(omObjData *obj) {
                     entry->unk_08 = 0;
                 }
             } else {
-                D_80110DE4_river_raiders = -500;
+                m209_enginePitch = -500;
                 if (entry->unk_08 == 0) {
                     Hu3DMotionShiftSet(obj->model[5], Hu3DData[obj->motion[1]].motId, 0, 1, 0);
                     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[3]].motId, 0, 1, 0);
@@ -714,18 +714,18 @@ void func_801072FC_river_raiders(omObjData *obj) {
                 entry->unk_18 = 0.0f;
                 obj->trans.x = (s16)obj->trans.x;
             }
-            if (D_8010D9DC_river_raiders[1] < 0.0f) {
-                D_8010D9DC_river_raiders[1] += 1.0f;
+            if (m209_boatWakeRotTbl[1] < 0.0f) {
+                m209_boatWakeRotTbl[1] += 1.0f;
             }
-            if (D_8010D9DC_river_raiders[1] > 0.0f) {
-                D_8010D9DC_river_raiders[1] -= 1.0f;
+            if (m209_boatWakeRotTbl[1] > 0.0f) {
+                m209_boatWakeRotTbl[1] -= 1.0f;
             }
-            if ((s16)D_8010D9DC_river_raiders[1] == 0) {
-                D_8010D9DC_river_raiders[1] = 0.0f;
+            if ((s16)m209_boatWakeRotTbl[1] == 0) {
+                m209_boatWakeRotTbl[1] = 0.0f;
             }
-            D_80110DE4_river_raiders -= 5;
-            if (D_80110DE4_river_raiders < -300) {
-                D_80110DE4_river_raiders = -300;
+            m209_enginePitch -= 5;
+            if (m209_enginePitch < -300) {
+                m209_enginePitch = -300;
             }
             break;
         case 1:
@@ -734,7 +734,7 @@ void func_801072FC_river_raiders(omObjData *obj) {
                 Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[2]].motId, 0, 1, 2);
                 entry->unk_08 = 0;
             }
-            obj->rot.z = func_801059BC_river_raiders(obj->rot.z, 1.0f);
+            obj->rot.z = m209_AngleAdd(obj->rot.z, 1.0f);
             if ((s16)obj->rot.z == 20.0f) {
                 obj->rot.z = 19.0f;
             }
@@ -744,13 +744,13 @@ void func_801072FC_river_raiders(omObjData *obj) {
                     entry->unk_18 = -5.0f;
                 }
             }
-            D_8010D9DC_river_raiders[1] += 1.0f;
-            if (D_8010D9DC_river_raiders[1] >= 10.0f) {
-                D_8010D9DC_river_raiders[1] = 10.0f;
+            m209_boatWakeRotTbl[1] += 1.0f;
+            if (m209_boatWakeRotTbl[1] >= 10.0f) {
+                m209_boatWakeRotTbl[1] = 10.0f;
             }
-            D_80110DE4_river_raiders += 5;
-            if (D_80110DE4_river_raiders > 0) {
-                D_80110DE4_river_raiders = 0;
+            m209_enginePitch += 5;
+            if (m209_enginePitch > 0) {
+                m209_enginePitch = 0;
             }
             break;
         case 2:
@@ -759,7 +759,7 @@ void func_801072FC_river_raiders(omObjData *obj) {
                 Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[2]].motId, 0, 1, 2);
                 entry->unk_08 = 0;
             }
-            obj->rot.z = func_801059BC_river_raiders(obj->rot.z, -1.0f);
+            obj->rot.z = m209_AngleAdd(obj->rot.z, -1.0f);
             if ((s16)obj->rot.z == 340.0f) {
                 obj->rot.z = 341.0f;
             }
@@ -769,13 +769,13 @@ void func_801072FC_river_raiders(omObjData *obj) {
                     entry->unk_18 = 5.0f;
                 }
             }
-            D_8010D9DC_river_raiders[1] -= 1.0f;
-            if (D_8010D9DC_river_raiders[1] <= -10.0f) {
-                D_8010D9DC_river_raiders[1] = -10.0f;
+            m209_boatWakeRotTbl[1] -= 1.0f;
+            if (m209_boatWakeRotTbl[1] <= -10.0f) {
+                m209_boatWakeRotTbl[1] = -10.0f;
             }
-            D_80110DE4_river_raiders += 5;
-            if (D_80110DE4_river_raiders > 0) {
-                D_80110DE4_river_raiders = 0;
+            m209_enginePitch += 5;
+            if (m209_enginePitch > 0) {
+                m209_enginePitch = 0;
             }
             break;
     }
@@ -783,61 +783,61 @@ void func_801072FC_river_raiders(omObjData *obj) {
         entry->unk_18 = 0.0f;
     }
     obj->trans.x += entry->unk_18;
-    if (D_80110DE0_river_raiders != -1) {
-        HuAudFXPitchSet(D_80110DE0_river_raiders, D_80110DE4_river_raiders);
+    if (m209_engineSeNo != -1) {
+        HuAudFXPitchSet(m209_engineSeNo, m209_enginePitch);
     }
-    D_80110DC8_river_raiders[0][0] = obj->trans.x - 450.0f;
-    D_80110DC8_river_raiders[0][1] = obj->trans.x + 150.0f;
-    D_80110DC8_river_raiders[1][0] = obj->trans.x - 300.0f;
-    D_80110DC8_river_raiders[1][1] = obj->trans.x + 300.0f;
-    D_80110DC8_river_raiders[2][0] = obj->trans.x - 150.0f;
-    D_80110DC8_river_raiders[2][1] = obj->trans.x + 450.0f;
+    m209_skierRangeTbl[0][0] = obj->trans.x - 450.0f;
+    m209_skierRangeTbl[0][1] = obj->trans.x + 150.0f;
+    m209_skierRangeTbl[1][0] = obj->trans.x - 300.0f;
+    m209_skierRangeTbl[1][1] = obj->trans.x + 300.0f;
+    m209_skierRangeTbl[2][0] = obj->trans.x - 150.0f;
+    m209_skierRangeTbl[2][1] = obj->trans.x + 450.0f;
 }
 
-void func_80107B14_river_raiders(omObjData *obj) {
-    RiverRaidersEntry *entry = &D_8010D9F0_river_raiders[9];
+void m209_BoatObjMain(omObjData *obj) {
+    RiverRaidersEntry *entry = &m209_objWorkTbl[9];
     u16 player = obj->work[0];
 
-    if (D_80110D90_river_raiders == 10) {
-        if (D_80110DE0_river_raiders != -1) {
-            HuAudFXFadeOut(D_80110DE0_river_raiders, 30);
-            D_80110DE0_river_raiders = -1;
+    if (m209_phase == 10) {
+        if (m209_engineSeNo != -1) {
+            HuAudFXFadeOut(m209_engineSeNo, 30);
+            m209_engineSeNo = -1;
         }
-    } else if (D_80110DE0_river_raiders == -1) {
-        D_80110DE0_river_raiders = HuAudFXPlay(D_8010D3B6_river_raiders);
+    } else if (m209_engineSeNo == -1) {
+        m209_engineSeNo = HuAudFXPlay(m209_engineSe);
     }
-    switch (D_80110D90_river_raiders) {
+    switch (m209_phase) {
         case 0:
         case 1:
-            D_80110DE4_river_raiders = -300;
-            if (D_80110DE0_river_raiders != -1) {
-                HuAudFXPitchSet(D_80110DE0_river_raiders, -300);
+            m209_enginePitch = -300;
+            if (m209_engineSeNo != -1) {
+                HuAudFXPitchSet(m209_engineSeNo, -300);
             }
             break;
         case 2:
-            if (D_80110DE2_river_raiders > 0) {
+            if (m209_timer > 0) {
                 if (GwPlayer[player].stat & 1) {
-                    func_8010716C_river_raiders(obj);
+                    m209_BoatComInput(obj);
                 } else {
-                    func_80107188_river_raiders(obj);
+                    m209_BoatPadInput(obj);
                 }
-                func_801072FC_river_raiders(obj);
+                m209_BoatSteer(obj);
             }
             break;
         case 3:
-            D_80110DE4_river_raiders = -300;
-            if (D_80110DE0_river_raiders != -1) {
-                HuAudFXPitchSet(D_80110DE0_river_raiders, -300);
+            m209_enginePitch = -300;
+            if (m209_engineSeNo != -1) {
+                HuAudFXPitchSet(m209_engineSeNo, -300);
             }
             entry->unk_1C = 10.0f;
             if (++entry->unk_0C >= 20) {
-                D_8010D9E6_river_raiders = 3;
+                m209_finishStep = 3;
             }
             if (obj->rot.z < 20.0f && obj->rot.z > 0.0f) {
-                obj->rot.z = func_801059BC_river_raiders(obj->rot.z, -1.0f);
+                obj->rot.z = m209_AngleAdd(obj->rot.z, -1.0f);
             }
             if (obj->rot.z < 360.0f && obj->rot.z > 340.0f) {
-                obj->rot.z = func_801059BC_river_raiders(obj->rot.z, 1.0f);
+                obj->rot.z = m209_AngleAdd(obj->rot.z, 1.0f);
             }
             if ((s16)obj->rot.z == 0.0f) {
                 obj->rot.z = 0.0f;
@@ -847,25 +847,25 @@ void func_80107B14_river_raiders(omObjData *obj) {
                 Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[2]].motId, 0, 10, 2);
                 entry->unk_08 = 0;
             }
-            if (D_8010D9DC_river_raiders[1] < 0.0f) {
-                D_8010D9DC_river_raiders[1] += 1.0f;
+            if (m209_boatWakeRotTbl[1] < 0.0f) {
+                m209_boatWakeRotTbl[1] += 1.0f;
             }
-            if (D_8010D9DC_river_raiders[1] > 0.0f) {
-                D_8010D9DC_river_raiders[1] -= 1.0f;
+            if (m209_boatWakeRotTbl[1] > 0.0f) {
+                m209_boatWakeRotTbl[1] -= 1.0f;
             }
-            if ((s16)D_8010D9DC_river_raiders[1] == 0) {
-                D_8010D9DC_river_raiders[1] = 0.0f;
+            if ((s16)m209_boatWakeRotTbl[1] == 0) {
+                m209_boatWakeRotTbl[1] = 0.0f;
             }
             break;
         case 5:
         case 10:
-            if (D_80110D84_river_raiders != 0) {
+            if (m209_boatCoin != 0) {
                 if (entry->unk_16 == 0) {
                     PlayerFXPlay(0x28F, obj->work[0]);
                     entry->unk_16 = 1;
                 }
                 if (entry->unk_0E <= 0) {
-                    obj->trans.y = func_80105B88_river_raiders(obj->trans.y, &entry->unk_1C, 1.0f);
+                    obj->trans.y = m209_GravityCalc(obj->trans.y, &entry->unk_1C, 1.0f);
                     if (entry->unk_1C < -10.0f) {
                         entry->unk_1C = 10.0f;
                         entry->unk_0E = 5;
@@ -898,14 +898,14 @@ void func_80107B14_river_raiders(omObjData *obj) {
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y - 32.5f, obj->trans.z + 20.0f);
     Hu3DModelRotSet(obj->model[1], obj->rot.x, obj->rot.y, obj->rot.z);
     Hu3DModelPosSet(obj->model[2], obj->trans.x, obj->trans.y - 32.5f, obj->trans.z + 50.0f);
-    Hu3DModelRotSet(obj->model[2], obj->rot.x, D_8010D9DC_river_raiders[0], obj->rot.z);
+    Hu3DModelRotSet(obj->model[2], obj->rot.x, m209_boatWakeRotTbl[0], obj->rot.z);
     Hu3DModelPosSet(obj->model[3], obj->trans.x, obj->trans.y, obj->trans.z);
-    Hu3DModelRotSet(obj->model[3], obj->rot.x, D_8010D9DC_river_raiders[1], 0.0f);
+    Hu3DModelRotSet(obj->model[3], obj->rot.x, m209_boatWakeRotTbl[1], 0.0f);
     Hu3DModelPosSet(obj->model[4], obj->trans.x, 0.0f, obj->trans.z + 20.0f);
     Hu3DModelRotSet(obj->model[4], obj->rot.x, obj->rot.y, obj->rot.z);
 }
 
-void func_80108188_river_raiders(omObjData *obj) {
+void m209_BoatObjInit(omObjData *obj) {
     s8 chr = GwPlayer[obj->work[0]].chr;
 
     obj->model[5] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][1], 0x6A9);
@@ -944,16 +944,16 @@ void func_80108188_river_raiders(omObjData *obj) {
     Hu3DModelObjAttrSet(obj->model[4], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[4]);
     Hu3DModelDynamicFree(obj->model[4]);
-    D_8010DED4_river_raiders = HuSprAnimDataRead(D_8010D3D0_river_raiders[chr]);
-    D_8010DED6_river_raiders = espEntry(D_8010DED4_river_raiders, 0, 0);
-    espAttrSet(D_8010DED6_river_raiders, 0x1000);
-    espPosSet(D_8010DED6_river_raiders, 30, 210);
-    espScaleSet(D_8010DED6_river_raiders, 1.0f, 1.0f);
-    D_80110DE4_river_raiders = -300;
-    obj->func = func_80107B14_river_raiders;
+    m209_boatIconSpr = HuSprAnimDataRead(m209_chrIconTbl[chr]);
+    m209_boatIconEsp = espEntry(m209_boatIconSpr, 0, 0);
+    espAttrSet(m209_boatIconEsp, 0x1000);
+    espPosSet(m209_boatIconEsp, 30, 210);
+    espScaleSet(m209_boatIconEsp, 1.0f, 1.0f);
+    m209_enginePitch = -300;
+    obj->func = m209_BoatObjMain;
 }
 
-void func_80108574_river_raiders(void) {
+void m209_BoatObjCreate(void) {
     omObjData *obj;
     s16 i;
     u16 playerIndex = 0;
@@ -976,14 +976,14 @@ void func_80108574_river_raiders(void) {
                 playerIndex = 3;
                 break;
         }
-        obj = omAddObj(0x2BC, 9, 0x3C, -1, func_80108188_river_raiders);
+        obj = omAddObj(0x2BC, 9, 0x3C, -1, m209_BoatObjInit);
         obj->work[0] = playerIndex;
-        D_8010D9F0_river_raiders[9].obj = obj;
+        m209_objWorkTbl[9].obj = obj;
     }
 }
 
-void func_80108678_river_raiders(omObjData *obj) {
-    RiverRaidersEntry *entry = &D_8010DD08_river_raiders[obj->work[1]];
+void m209_SkierHitCheck(omObjData *obj) {
+    RiverRaidersEntry *entry = &m209_skierWorkTbl[obj->work[1]];
     RiverRaidersEntry *cur;
     omObjData *other;
     f32 x;
@@ -992,37 +992,37 @@ void func_80108678_river_raiders(omObjData *obj) {
     s16 j;
 
     for (i = 0; i < 5; i++) {
-        D_80110D98_river_raiders[obj->work[1]][i] = 0;
+        m209_skierHitTbl[obj->work[1]][i] = 0;
     }
     x = obj->trans.x + entry->unk_18;
     entry->unk_12 = 0;
-    if (x - 65.0f < D_80110DC8_river_raiders[obj->work[2]][0]) {
-        D_80110D98_river_raiders[obj->work[1]][3] = 1;
+    if (x - 65.0f < m209_skierRangeTbl[obj->work[2]][0]) {
+        m209_skierHitTbl[obj->work[1]][3] = 1;
     }
-    if (x + 65.0f > D_80110DC8_river_raiders[obj->work[2]][1]) {
-        D_80110D98_river_raiders[obj->work[1]][3] = 2;
+    if (x + 65.0f > m209_skierRangeTbl[obj->work[2]][1]) {
+        m209_skierHitTbl[obj->work[1]][3] = 2;
     }
     hit = 0;
     for (i = 0; i < 3; i++) {
         if (i != obj->work[1]) {
-            cur = &D_8010DD08_river_raiders[i];
+            cur = &m209_skierWorkTbl[i];
             other = cur->obj;
             switch (entry->unk_08) {
                 case 1:
                     if (x + 65.0f + entry->unk_12 * 4.5f > other->trans.x - 65.0f && x - 65.0f < other->trans.x + 65.0f) {
-                        D_80110D98_river_raiders[obj->work[1]][i] = 1;
+                        m209_skierHitTbl[obj->work[1]][i] = 1;
                         hit = 1;
                     }
                     break;
                 case 2:
                     if (x + 65.0f > other->trans.x - 65.0f && x - 65.0f - entry->unk_12 * 4.5f < other->trans.x + 65.0f) {
-                        D_80110D98_river_raiders[obj->work[1]][i] = 1;
+                        m209_skierHitTbl[obj->work[1]][i] = 1;
                         hit = 1;
                     }
                     break;
                 default:
                     if (x + 65.0f > other->trans.x - 65.0f && x - 65.0f < other->trans.x + 65.0f) {
-                        D_80110D98_river_raiders[obj->work[1]][i] = 1;
+                        m209_skierHitTbl[obj->work[1]][i] = 1;
                         hit = 1;
                     }
                     break;
@@ -1035,23 +1035,23 @@ void func_80108678_river_raiders(omObjData *obj) {
     hit = 0;
     for (j = 0; j < 3; j++) {
         if (j != obj->work[1] && j != i) {
-            other = D_8010DD08_river_raiders[j].obj;
+            other = m209_skierWorkTbl[j].obj;
             switch (entry->unk_08) {
                 case 1:
                     if (x + 65.0f + entry->unk_12 * 4.5f > other->trans.x - 65.0f && x - 65.0f < other->trans.x + 65.0f) {
-                        D_80110D98_river_raiders[obj->work[1]][i] = 1;
+                        m209_skierHitTbl[obj->work[1]][i] = 1;
                         hit = 1;
                     }
                     break;
                 case 2:
                     if (x + 65.0f > other->trans.x - 65.0f && x - 65.0f - entry->unk_12 * 4.5f < other->trans.x + 65.0f) {
-                        D_80110D98_river_raiders[obj->work[1]][i] = 1;
+                        m209_skierHitTbl[obj->work[1]][i] = 1;
                         hit = 1;
                     }
                     break;
                 default:
                     if (x + 65.0f > other->trans.x - 65.0f && x - 65.0f < other->trans.x + 65.0f) {
-                        D_80110D98_river_raiders[obj->work[1]][i] = 1;
+                        m209_skierHitTbl[obj->work[1]][i] = 1;
                         hit = 1;
                     }
                     break;
@@ -1062,14 +1062,14 @@ void func_80108678_river_raiders(omObjData *obj) {
         }
     }
     if (x + 65.0f > 580.0f) {
-        D_80110D98_river_raiders[obj->work[1]][4] = 1;
+        m209_skierHitTbl[obj->work[1]][4] = 1;
     }
     if (x - 65.0f < -580.0f) {
-        D_80110D98_river_raiders[obj->work[1]][4] = 2;
+        m209_skierHitTbl[obj->work[1]][4] = 2;
     }
 }
 
-void func_80108ACC_river_raiders(void) {
+void m209_SkierPushCalc(void) {
     RiverRaidersEntry *entry;
     RiverRaidersEntry *other;
     omObjData *obj;
@@ -1084,19 +1084,19 @@ void func_80108ACC_river_raiders(void) {
     do {
         changed = 0;
         for (i = 0; i < 3; i++) {
-            entry = &D_8010DD08_river_raiders[i];
+            entry = &m209_skierWorkTbl[i];
             obj = entry->obj;
             for (j = 0; j < 3; j++) {
                 if (j == i) {
                     continue;
                 }
-                if (D_80110D98_river_raiders[i][j] != 1) {
+                if (m209_skierHitTbl[i][j] != 1) {
                     continue;
                 }
-                other = &D_8010DD08_river_raiders[j];
+                other = &m209_skierWorkTbl[j];
                 otherObj = other->obj;
-                if (other->unk_18 < 0.5f && other->unk_18 > -0.5f && D_80110D98_river_raiders[j][3] == 0 &&
-                    D_80110D98_river_raiders[j][4] == 0) {
+                if (other->unk_18 < 0.5f && other->unk_18 > -0.5f && m209_skierHitTbl[j][3] == 0 &&
+                    m209_skierHitTbl[j][4] == 0) {
                     other->unk_18 = entry->unk_18;
                     changed = 1;
                 }
@@ -1119,45 +1119,45 @@ void func_80108ACC_river_raiders(void) {
                 }
             }
             for (j = 0, count = 0; j < 3; j++) {
-                if (j != i && D_80110D98_river_raiders[i][j] == 1) {
+                if (j != i && m209_skierHitTbl[i][j] == 1) {
                     count++;
                 }
             }
             if (count >= 2) {
                 changed = 1;
             }
-            if (D_80110D98_river_raiders[obj->work[1]][3] == 1) {
-                obj->trans.x = D_80110DC8_river_raiders[obj->work[2]][0] + 65.0f;
+            if (m209_skierHitTbl[obj->work[1]][3] == 1) {
+                obj->trans.x = m209_skierRangeTbl[obj->work[2]][0] + 65.0f;
                 entry->unk_18 = 0.0f;
                 changed = 1;
             }
-            if (D_80110D98_river_raiders[obj->work[1]][3] == 2) {
-                obj->trans.x = D_80110DC8_river_raiders[obj->work[2]][1] - 65.0f;
+            if (m209_skierHitTbl[obj->work[1]][3] == 2) {
+                obj->trans.x = m209_skierRangeTbl[obj->work[2]][1] - 65.0f;
                 entry->unk_18 = 0.0f;
                 changed = 1;
             }
-            if (D_80110D98_river_raiders[obj->work[1]][4] == 1) {
+            if (m209_skierHitTbl[obj->work[1]][4] == 1) {
                 obj->trans.x = 515.0f;
                 entry->unk_18 = 0.0f;
                 changed = 1;
             }
-            if (D_80110D98_river_raiders[obj->work[1]][4] == 2) {
+            if (m209_skierHitTbl[obj->work[1]][4] == 2) {
                 obj->trans.x = -515.0f;
                 entry->unk_18 = 0.0f;
                 changed = 1;
             }
-            func_80108678_river_raiders(obj);
+            m209_SkierHitCheck(obj);
         }
     } while (++iter < 21 && changed != 0);
     for (i = 0; i < 3; i++) {
-        entry = &D_8010DD08_river_raiders[i];
+        entry = &m209_skierWorkTbl[i];
         obj = entry->obj;
         obj->trans.x += entry->unk_18;
     }
 }
 
-void func_80108F40_river_raiders(omObjData *obj) {
-    RiverRaidersEntry *entry = &D_8010DD08_river_raiders[obj->work[1]];
+void m209_SkierComInputCalc(omObjData *obj) {
+    RiverRaidersEntry *entry = &m209_skierWorkTbl[obj->work[1]];
     u16 player = obj->work[0];
     RiverRaidersEntry *cur;
     omObjData *target;
@@ -1198,7 +1198,7 @@ void func_80108F40_river_raiders(omObjData *obj) {
                     break;
             }
             for (i = 19; i >= 0; i--) {
-                cur = &D_8010DF18_river_raiders[i];
+                cur = &m209_itemWorkTbl[i];
                 target = cur->obj;
                 if (target->trans.z < obj->trans.z && target->trans.x < range + obj->trans.x &&
                     obj->trans.x - range < target->trans.x && cur->unk_04 == 1) {
@@ -1211,7 +1211,7 @@ void func_80108F40_river_raiders(omObjData *obj) {
                 }
             }
             for (i = 23; i >= 20; i--) {
-                cur = &D_8010DF18_river_raiders[i];
+                cur = &m209_itemWorkTbl[i];
                 target = cur->obj;
                 if (target->trans.z < obj->trans.z && target->trans.x < range + obj->trans.x &&
                     obj->trans.x - range < target->trans.x && cur->unk_04 == 1 && target->trans.z > -100.0f) {
@@ -1241,12 +1241,12 @@ void func_80108F40_river_raiders(omObjData *obj) {
     }
 }
 
-void func_801093F0_river_raiders(omObjData *obj) {
-    func_80108F40_river_raiders(obj);
+void m209_SkierComInput(omObjData *obj) {
+    m209_SkierComInputCalc(obj);
 }
 
-void func_8010940C_river_raiders(omObjData *obj) {
-    RiverRaidersEntry *entry = &D_8010DD08_river_raiders[obj->work[1]];
+void m209_SkierPadInput(omObjData *obj) {
+    RiverRaidersEntry *entry = &m209_skierWorkTbl[obj->work[1]];
     u16 player = obj->work[0];
 
     entry->unk_04 = 0;
@@ -1270,9 +1270,9 @@ void func_8010940C_river_raiders(omObjData *obj) {
     }
 }
 
-void func_8010957C_river_raiders(omObjData *obj) {
-    RiverRaidersEntry *entry = &D_8010DD08_river_raiders[obj->work[1]];
-    omObjData *player = D_8010DD08_river_raiders[3].obj;
+void m209_SkierSteer(omObjData *obj) {
+    RiverRaidersEntry *entry = &m209_skierWorkTbl[obj->work[1]];
+    omObjData *player = m209_skierWorkTbl[3].obj;
 
     switch (entry->unk_04) {
         case 0:
@@ -1303,14 +1303,14 @@ void func_8010957C_river_raiders(omObjData *obj) {
                     entry->unk_18 = 0.5f;
                 }
             }
-            if (D_8010D9D0_river_raiders[obj->work[1]] < 0.0f) {
-                D_8010D9D0_river_raiders[obj->work[1]] += 1.0f;
+            if (m209_wakeRotTbl[obj->work[1]] < 0.0f) {
+                m209_wakeRotTbl[obj->work[1]] += 1.0f;
             }
-            if (D_8010D9D0_river_raiders[obj->work[1]] > 0.0f) {
-                D_8010D9D0_river_raiders[obj->work[1]] -= 1.0f;
+            if (m209_wakeRotTbl[obj->work[1]] > 0.0f) {
+                m209_wakeRotTbl[obj->work[1]] -= 1.0f;
             }
-            if ((s16)D_8010D9D0_river_raiders[obj->work[1]] == 0) {
-                D_8010D9D0_river_raiders[obj->work[1]] = 0.0f;
+            if ((s16)m209_wakeRotTbl[obj->work[1]] == 0) {
+                m209_wakeRotTbl[obj->work[1]] = 0.0f;
             }
             break;
         case 1:
@@ -1326,9 +1326,9 @@ void func_8010957C_river_raiders(omObjData *obj) {
                     entry->unk_18 = -7.0f;
                 }
             }
-            D_8010D9D0_river_raiders[obj->work[1]] += 3.0f;
-            if (D_8010D9D0_river_raiders[obj->work[1]] >= 20.0f) {
-                D_8010D9D0_river_raiders[obj->work[1]] = 20.0f;
+            m209_wakeRotTbl[obj->work[1]] += 3.0f;
+            if (m209_wakeRotTbl[obj->work[1]] >= 20.0f) {
+                m209_wakeRotTbl[obj->work[1]] = 20.0f;
             }
             break;
         case 2:
@@ -1344,31 +1344,31 @@ void func_8010957C_river_raiders(omObjData *obj) {
                     entry->unk_18 = 7.0f;
                 }
             }
-            D_8010D9D0_river_raiders[obj->work[1]] -= 3.0f;
-            if (D_8010D9D0_river_raiders[obj->work[1]] <= -20.0f) {
-                D_8010D9D0_river_raiders[obj->work[1]] = -20.0f;
+            m209_wakeRotTbl[obj->work[1]] -= 3.0f;
+            if (m209_wakeRotTbl[obj->work[1]] <= -20.0f) {
+                m209_wakeRotTbl[obj->work[1]] = -20.0f;
             }
             break;
     }
-    func_80108678_river_raiders(obj);
+    m209_SkierHitCheck(obj);
 }
 
-void func_80109C08_river_raiders(omObjData *obj) {
-    RiverRaidersEntry *entry = &D_8010DD08_river_raiders[obj->work[1]];
+void m209_SkierObjMain(omObjData *obj) {
+    RiverRaidersEntry *entry = &m209_skierWorkTbl[obj->work[1]];
     u16 player = obj->work[0];
     RiverRaidersEntry *cur;
     omObjData *boat;
     s16 i;
 
-    switch (D_80110D90_river_raiders) {
+    switch (m209_phase) {
         case 2:
-            if (D_80110DE2_river_raiders > 0) {
+            if (m209_timer > 0) {
                 if (GwPlayer[player].stat & 1) {
-                    func_801093F0_river_raiders(obj);
+                    m209_SkierComInput(obj);
                 } else {
-                    func_8010940C_river_raiders(obj);
+                    m209_SkierPadInput(obj);
                 }
-                func_8010957C_river_raiders(obj);
+                m209_SkierSteer(obj);
             }
             break;
         case 3:
@@ -1378,38 +1378,38 @@ void func_80109C08_river_raiders(omObjData *obj) {
                 Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[4]].motId, 0, 10, 2);
                 entry->unk_08 = 0;
             }
-            if (D_8010D9D0_river_raiders[obj->work[1]] < 0.0f) {
-                D_8010D9D0_river_raiders[obj->work[1]] += 1.0f;
+            if (m209_wakeRotTbl[obj->work[1]] < 0.0f) {
+                m209_wakeRotTbl[obj->work[1]] += 1.0f;
             }
-            if (D_8010D9D0_river_raiders[obj->work[1]] > 0.0f) {
-                D_8010D9D0_river_raiders[obj->work[1]] -= 1.0f;
+            if (m209_wakeRotTbl[obj->work[1]] > 0.0f) {
+                m209_wakeRotTbl[obj->work[1]] -= 1.0f;
             }
-            if ((s16)D_8010D9D0_river_raiders[obj->work[1]] == 0) {
-                D_8010D9D0_river_raiders[obj->work[1]] = 0.0f;
+            if ((s16)m209_wakeRotTbl[obj->work[1]] == 0) {
+                m209_wakeRotTbl[obj->work[1]] = 0.0f;
             }
             break;
         case 5:
         case 10:
-            if (D_80110DBD_river_raiders != 0) {
+            if (m209_skierCoin != 0) {
                 if (entry->unk_16 == 0) {
                     PlayerFXPlay(0x28F, obj->work[0]);
                     entry->unk_16 = 1;
                 }
-                switch (D_80110DBE_river_raiders) {
+                switch (m209_skierSwayDir) {
                     case -1:
                         if (entry->unk_08 != 2) {
                             Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[2]].motId, 0, 10, 2);
                             Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[6]].motId, 0, 10, 2);
                             entry->unk_08 = 2;
                         }
-                        if (D_8010D9E4_river_raiders > 0) {
+                        if (m209_skierHopTimer > 0) {
                             obj->trans.x -= 10.0f;
                         } else {
                             obj->trans.x -= 0.0f;
                         }
-                        D_8010D9D0_river_raiders[obj->work[1]] += 3.0f;
-                        if (D_8010D9D0_river_raiders[obj->work[1]] >= 20.0f) {
-                            D_8010D9D0_river_raiders[obj->work[1]] = 20.0f;
+                        m209_wakeRotTbl[obj->work[1]] += 3.0f;
+                        if (m209_wakeRotTbl[obj->work[1]] >= 20.0f) {
+                            m209_wakeRotTbl[obj->work[1]] = 20.0f;
                         }
                         break;
                     case 1:
@@ -1418,14 +1418,14 @@ void func_80109C08_river_raiders(omObjData *obj) {
                             Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[5]].motId, 0, 10, 2);
                             entry->unk_08 = 1;
                         }
-                        if (D_8010D9E4_river_raiders > 0) {
+                        if (m209_skierHopTimer > 0) {
                             obj->trans.x += 10.0f;
                         } else {
                             obj->trans.x += 0.0f;
                         }
-                        D_8010D9D0_river_raiders[obj->work[1]] -= 3.0f;
-                        if (D_8010D9D0_river_raiders[obj->work[1]] <= -20.0f) {
-                            D_8010D9D0_river_raiders[obj->work[1]] = -20.0f;
+                        m209_wakeRotTbl[obj->work[1]] -= 3.0f;
+                        if (m209_wakeRotTbl[obj->work[1]] <= -20.0f) {
+                            m209_wakeRotTbl[obj->work[1]] = -20.0f;
                         }
                         break;
                 }
@@ -1435,72 +1435,72 @@ void func_80109C08_river_raiders(omObjData *obj) {
                     Hu3DModelAttrSet(obj->model[2], 4, 4);
                 }
                 if (obj->work[1] == 2) {
-                    if (--D_8010D9E4_river_raiders <= 0) {
+                    if (--m209_skierHopTimer <= 0) {
                         for (i = 0; i < 3; i++) {
-                            cur = &D_8010DD08_river_raiders[i];
+                            cur = &m209_skierWorkTbl[i];
                             boat = cur->obj;
-                            boat->trans.y = func_80105B88_river_raiders(boat->trans.y, &cur->unk_1C, 1.0f);
+                            boat->trans.y = m209_GravityCalc(boat->trans.y, &cur->unk_1C, 1.0f);
                         }
-                        D_8010D9E4_river_raiders = 0;
+                        m209_skierHopTimer = 0;
                         if ((s16)obj->trans.y == 0.0f) {
                             for (i = 0; i < 3; i++) {
-                                cur = &D_8010DD08_river_raiders[i];
+                                cur = &m209_skierWorkTbl[i];
                                 cur->unk_1C = 10.0f;
                             }
-                            D_8010D9E4_river_raiders = 30;
+                            m209_skierHopTimer = 30;
                         }
                     }
                     for (i = 0; i < 3; i++) {
-                        cur = &D_8010DD08_river_raiders[i];
+                        cur = &m209_skierWorkTbl[i];
                         boat = cur->obj;
                         if (boat->work[2] == 0 && boat->trans.x - 65.0f <= -580.0f) {
-                            D_80110DBE_river_raiders = 1;
+                            m209_skierSwayDir = 1;
                         }
                         if (boat->work[2] == 2 && boat->trans.x + 65.0f >= 580.0f) {
-                            D_80110DBE_river_raiders = -1;
+                            m209_skierSwayDir = -1;
                         }
                     }
                 }
             }
-            if (D_80110DBD_river_raiders == 0) {
+            if (m209_skierCoin == 0) {
                 if (entry->unk_08 != 3) {
                     Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[3]].motId, 0, 10, 1);
                     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[7]].motId, 0, 10, 1);
                     entry->unk_08 = 3;
                 }
-                switch (D_80110DBE_river_raiders) {
+                switch (m209_skierSwayDir) {
                     case -1:
                         entry->unk_0C++;
                         obj->trans.x -= 3.0f;
-                        D_8010D9D0_river_raiders[obj->work[1]] += 3.0f;
-                        if (D_8010D9D0_river_raiders[obj->work[1]] >= 20.0f) {
-                            D_8010D9D0_river_raiders[obj->work[1]] = 20.0f;
+                        m209_wakeRotTbl[obj->work[1]] += 3.0f;
+                        if (m209_wakeRotTbl[obj->work[1]] >= 20.0f) {
+                            m209_wakeRotTbl[obj->work[1]] = 20.0f;
                         }
                         break;
                     case 1:
                         entry->unk_0C++;
                         obj->trans.x += 3.0f;
-                        D_8010D9D0_river_raiders[obj->work[1]] -= 3.0f;
-                        if (D_8010D9D0_river_raiders[obj->work[1]] <= -20.0f) {
-                            D_8010D9D0_river_raiders[obj->work[1]] = -20.0f;
+                        m209_wakeRotTbl[obj->work[1]] -= 3.0f;
+                        if (m209_wakeRotTbl[obj->work[1]] <= -20.0f) {
+                            m209_wakeRotTbl[obj->work[1]] = -20.0f;
                         }
                         break;
                 }
                 if (obj->work[1] == 2) {
                     for (i = 0; i < 3; i++) {
-                        cur = &D_8010DD08_river_raiders[i];
+                        cur = &m209_skierWorkTbl[i];
                         boat = cur->obj;
                         if (boat->work[2] == 0 && boat->trans.x - 65.0f <= -580.0f) {
-                            D_80110DBE_river_raiders = 1;
+                            m209_skierSwayDir = 1;
                             entry->unk_0C = 0;
                         }
                         if (boat->work[2] == 2 && boat->trans.x + 65.0f >= 580.0f) {
-                            D_80110DBE_river_raiders = -1;
+                            m209_skierSwayDir = -1;
                             entry->unk_0C = 0;
                         }
                     }
                     if (entry->unk_0C >= 30) {
-                        D_80110DBE_river_raiders *= -1;
+                        m209_skierSwayDir *= -1;
                         for (i = 0; i < 3; i++) {
                             entry->unk_0C = 0;
                         }
@@ -1514,13 +1514,13 @@ void func_80109C08_river_raiders(omObjData *obj) {
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
     Hu3DModelRotSet(obj->model[1], obj->rot.x, obj->rot.y, obj->rot.z);
     Hu3DModelPosSet(obj->model[2], obj->trans.x, obj->trans.y, obj->trans.z);
-    Hu3DModelRotSet(obj->model[2], obj->rot.x, D_8010D9D0_river_raiders[obj->work[1]], obj->rot.z);
+    Hu3DModelRotSet(obj->model[2], obj->rot.x, m209_wakeRotTbl[obj->work[1]], obj->rot.z);
     Hu3DModelPosSet(obj->model[3], obj->trans.x, 0.0f, obj->trans.z);
     Hu3DModelRotSet(obj->model[3], obj->rot.x, obj->rot.y, obj->rot.z);
 }
 
-void func_8010A6A8_river_raiders(omObjData *obj) {
-    RiverRaidersEntry *entry = &D_8010DD08_river_raiders[obj->work[1]];
+void m209_SkierObjInit(omObjData *obj) {
+    RiverRaidersEntry *entry = &m209_skierWorkTbl[obj->work[1]];
     s8 chr = GwPlayer[obj->work[0]].chr;
     u8 lane;
 
@@ -1536,10 +1536,10 @@ void func_8010A6A8_river_raiders(omObjData *obj) {
     Hu3DModelDynamicFree(obj->model[0]);
     lane = rand8() % 3;
     while (TRUE) {
-        if (lane != D_80110DBA_river_raiders[0] && lane != D_80110DBA_river_raiders[1]) {
+        if (lane != m209_skierLaneTbl[0] && lane != m209_skierLaneTbl[1]) {
             obj->work[2] = lane;
-            D_80110DBA_river_raiders[D_80110D91_river_raiders] = lane;
-            D_80110D91_river_raiders++;
+            m209_skierLaneTbl[m209_skierLaneCnt] = lane;
+            m209_skierLaneCnt++;
             switch (obj->work[2]) {
                 case 0:
                     obj->trans.x = -300.0f;
@@ -1582,15 +1582,15 @@ void func_8010A6A8_river_raiders(omObjData *obj) {
     Hu3DModelObjAttrSet(obj->model[3], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[3]);
     Hu3DModelDynamicFree(obj->model[3]);
-    entry->sprite = HuSprAnimDataRead(D_8010D3D0_river_raiders[chr]);
+    entry->sprite = HuSprAnimDataRead(m209_chrIconTbl[chr]);
     entry->esp = espEntry(entry->sprite, 0, 0);
     espAttrSet(entry->esp, 0x1000);
-    espPosSet(entry->esp, D_8010D870_river_raiders[obj->work[2]].x, D_8010D870_river_raiders[obj->work[2]].y);
+    espPosSet(entry->esp, m209_skierIconPosTbl[obj->work[2]].x, m209_skierIconPosTbl[obj->work[2]].y);
     espScaleSet(entry->esp, 1.0f, 1.0f);
-    obj->func = func_80109C08_river_raiders;
+    obj->func = m209_SkierObjMain;
 }
 
-void func_8010ABA0_river_raiders(void) {
+void m209_SkierObjCreateAll(void) {
     RiverRaidersEntry *entry;
     omObjData *obj;
     u16 playerIndex = 0;
@@ -1615,8 +1615,8 @@ void func_8010ABA0_river_raiders(void) {
                 playerIndex = 3;
                 break;
         }
-        entry = &D_8010DD08_river_raiders[count];
-        obj = omAddObj(0x2EE, 9, 0x3C, -1, func_8010A6A8_river_raiders);
+        entry = &m209_skierWorkTbl[count];
+        obj = omAddObj(0x2EE, 9, 0x3C, -1, m209_SkierObjInit);
         obj->work[0] = playerIndex;
         obj->work[1] = count++;
         entry->obj = obj;
@@ -1625,11 +1625,11 @@ void func_8010ABA0_river_raiders(void) {
 
 // The original calls EffectGroupEmit without its float prototype, passing integer zeros. Calling
 // through an unprototyped function pointer reproduces that.
-void func_8010ACD8_river_raiders(omObjData *obj) {
+void m209_ItemHitUpdate(omObjData *obj) {
     RiverRaidersEntry *entries[3];
     omObjData *boats[3];
-    RiverRaidersEntry *entry = &D_8010D9F0_river_raiders[obj->work[0] + 10];
-    RiverRaidersEntry *big = &D_8010D9F0_river_raiders[9];
+    RiverRaidersEntry *entry = &m209_objWorkTbl[obj->work[0] + 10];
+    RiverRaidersEntry *big = &m209_objWorkTbl[9];
     omObjData *bigObj = big->obj;
     RiverRaidersEntry *other;
     omObjData *otherObj;
@@ -1639,7 +1639,7 @@ void func_8010ACD8_river_raiders(omObjData *obj) {
     s16 i;
 
     for (i = 0; i < 3; i++) {
-        entries[i] = &D_8010DD08_river_raiders[i];
+        entries[i] = &m209_skierWorkTbl[i];
         boats[i] = entries[i]->obj;
     }
     switch (obj->work[1]) {
@@ -1650,7 +1650,7 @@ void func_8010ACD8_river_raiders(omObjData *obj) {
                 if (obj->work[0] == i) {
                     continue;
                 }
-                other = &D_8010DF18_river_raiders[i];
+                other = &m209_itemWorkTbl[i];
                 otherObj = other->obj;
                 entry->unk_0A = 0;
                 if (i < 20) {
@@ -1753,16 +1753,16 @@ void func_8010ACD8_river_raiders(omObjData *obj) {
                 entry->unk_06 = 0;
             }
             obj->trans.z = speed + obj->trans.z;
-            if (D_80110D90_river_raiders == 2) {
+            if (m209_phase == 2) {
                 if (big->unk_06 == 0 && bigObj->trans.x + 60.0f >= obj->trans.x - 50.0f &&
                     bigObj->trans.x - 60.0f <= obj->trans.x + 50.0f && bigObj->trans.z + 60.0f >= obj->trans.z - 50.0f &&
                     bigObj->trans.z - 60.0f <= obj->trans.z + 50.0f) {
                     if (entry->unk_04 == 1) {
                         s16 (*effectCreate)() = (void *)EffectGroupEmit;
 
-                        D_80110D84_river_raiders++;
-                        model = effectCreate(D_80110D86_river_raiders, 0, 0, 0);
-                        HuAudPlayerFXPlay(D_8010D3B0_river_raiders, bigObj->work[0]);
+                        m209_boatCoin++;
+                        model = effectCreate(m209_starEffGrp, 0, 0, 0);
+                        HuAudPlayerFXPlay(m209_coinSe, bigObj->work[0]);
                         Hu3DModelPosSet(model, obj->trans.x, obj->trans.y, obj->trans.z);
                         Hu3DModelScaleSet(model, 3.0f, 3.0f, 3.0f);
                     }
@@ -1776,9 +1776,9 @@ void func_8010ACD8_river_raiders(omObjData *obj) {
                         if (entry->unk_04 == 1) {
                             s16 (*effectCreate)() = (void *)EffectGroupEmit;
 
-                            D_80110DBD_river_raiders++;
-                            model = effectCreate(D_80110D86_river_raiders, 0, 0, 0);
-                            HuAudPlayerFXPlay(D_8010D3B0_river_raiders, boats[i]->work[0]);
+                            m209_skierCoin++;
+                            model = effectCreate(m209_starEffGrp, 0, 0, 0);
+                            HuAudPlayerFXPlay(m209_coinSe, boats[i]->work[0]);
                             Hu3DModelPosSet(model, obj->trans.x, obj->trans.y, obj->trans.z);
                             Hu3DModelScaleSet(model, 3.0f, 3.0f, 3.0f);
                         }
@@ -1795,7 +1795,7 @@ void func_8010ACD8_river_raiders(omObjData *obj) {
                 if (obj->work[0] == i) {
                     continue;
                 }
-                other = &D_8010DF18_river_raiders[i];
+                other = &m209_itemWorkTbl[i];
                 otherObj = other->obj;
                 entry->unk_0A = 0;
                 if (i >= 20 && i < 24) {
@@ -1866,16 +1866,16 @@ void func_8010ACD8_river_raiders(omObjData *obj) {
                 entry->unk_06 = 0;
             }
             obj->trans.z = speed + obj->trans.z;
-            if (D_80110D90_river_raiders == 2) {
+            if (m209_phase == 2) {
                 if (big->unk_06 == 0 && bigObj->trans.x + 60.0f >= obj->trans.x - 40.0f &&
                     bigObj->trans.x - 60.0f <= obj->trans.x + 40.0f && bigObj->trans.z + 60.0f >= obj->trans.z - 40.0f &&
                     bigObj->trans.z - 60.0f <= obj->trans.z + 40.0f) {
                     if (entry->unk_04 == 1) {
                         s16 (*effectCreate)() = (void *)EffectGroupEmit;
 
-                        D_80110D84_river_raiders += 5;
-                        model = effectCreate(D_80110D86_river_raiders, 0, 0, 0);
-                        HuAudPlayerFXPlay(D_8010D3B2_river_raiders, bigObj->work[0]);
+                        m209_boatCoin += 5;
+                        model = effectCreate(m209_starEffGrp, 0, 0, 0);
+                        HuAudPlayerFXPlay(m209_coinBagSe, bigObj->work[0]);
                         Hu3DModelPosSet(model, obj->trans.x, obj->trans.y, obj->trans.z);
                         Hu3DModelScaleSet(model, 3.0f, 3.0f, 3.0f);
                         if (!(GwPlayer[bigObj->work[0]].stat & PLAYER_IS_CPU)) {
@@ -1892,9 +1892,9 @@ void func_8010ACD8_river_raiders(omObjData *obj) {
                         if (entry->unk_04 == 1) {
                             s16 (*effectCreate)() = (void *)EffectGroupEmit;
 
-                            D_80110DBD_river_raiders += 5;
-                            model = effectCreate(D_80110D86_river_raiders, 0, 0, 0);
-                            HuAudPlayerFXPlay(D_8010D3B2_river_raiders, boats[i]->work[0]);
+                            m209_skierCoin += 5;
+                            model = effectCreate(m209_starEffGrp, 0, 0, 0);
+                            HuAudPlayerFXPlay(m209_coinBagSe, boats[i]->work[0]);
                             Hu3DModelPosSet(model, obj->trans.x, obj->trans.y, obj->trans.z);
                             Hu3DModelScaleSet(model, 3.0f, 3.0f, 3.0f);
                             if (!(GwPlayer[boats[i]->work[0]].stat & PLAYER_IS_CPU)) {
@@ -1909,12 +1909,12 @@ void func_8010ACD8_river_raiders(omObjData *obj) {
             break;
         case 2:
             obj->trans.z += 13.0f;
-            if (D_80110D90_river_raiders == 2) {
+            if (m209_phase == 2) {
                 if (big->unk_06 == 0 && entry->unk_04 == 1 && bigObj->trans.x + 60.0f >= obj->trans.x - 150.0f &&
                     bigObj->trans.x - 60.0f <= obj->trans.x + 150.0f && bigObj->trans.z + 60.0f >= obj->trans.z - 60.0f &&
                     bigObj->trans.z - 60.0f <= obj->trans.z + 60.0f) {
                     big->unk_06 = 60;
-                    HuAudPlayerFXPlay(D_8010D3B4_river_raiders, bigObj->work[0]);
+                    HuAudPlayerFXPlay(m209_obstacleHitSe, bigObj->work[0]);
                     PlayerFXPlay(0x286, bigObj->work[0]);
                     entry->unk_04 = 2;
                     if (!(GwPlayer[bigObj->work[0]].stat & PLAYER_IS_CPU)) {
@@ -1927,7 +1927,7 @@ void func_8010ACD8_river_raiders(omObjData *obj) {
                         boats[i]->trans.x - 65.0f <= obj->trans.x + 150.0f && boats[i]->trans.z + 55.0f >= obj->trans.z - 60.0f &&
                         boats[i]->trans.z - 55.0f <= obj->trans.z + 60.0f) {
                         entries[i]->unk_06 = 30;
-                        HuAudPlayerFXPlay(D_8010D3B4_river_raiders, boats[i]->work[0]);
+                        HuAudPlayerFXPlay(m209_obstacleHitSe, boats[i]->work[0]);
                         PlayerFXPlay(0x286, boats[i]->work[0]);
                         entry->unk_04 = 2;
                         if (!(GwPlayer[boats[i]->work[0]].stat & PLAYER_IS_CPU)) {
@@ -1943,58 +1943,58 @@ void func_8010ACD8_river_raiders(omObjData *obj) {
     }
 }
 
-void func_8010BE88_river_raiders(omObjData *obj) {
-    RiverRaidersEntry *entry = &D_8010DF18_river_raiders[obj->work[0]];
+void m209_ItemObjMain(omObjData *obj) {
+    RiverRaidersEntry *entry = &m209_itemWorkTbl[obj->work[0]];
     RiverRaidersEntry *cur;
     u8 active;
     s16 i;
 
-    if ((s16)D_80110D90_river_raiders < 5) {
-        if ((s16)D_80110D90_river_raiders >= 2) {
+    if ((s16)m209_phase < 5) {
+        if ((s16)m209_phase >= 2) {
             if (obj->work[0] == 0) {
-                if (D_80110DE2_river_raiders % 29 == 0 && D_80110D81_river_raiders < 20) {
-                    cur = &D_8010DF18_river_raiders[D_80110D81_river_raiders];
+                if (m209_timer % 29 == 0 && m209_coinCnt < 20) {
+                    cur = &m209_itemWorkTbl[m209_coinCnt];
                     Hu3DModelAttrSet(cur->obj->model[0], 4, 0);
-                    D_80110D81_river_raiders++;
+                    m209_coinCnt++;
                     if (cur->unk_04 == 0) {
                         cur->unk_04 = 1;
                     }
                 }
-                if (D_80110DE2_river_raiders % 181 == 0 && D_80110DC0_river_raiders < 3) {
-                    cur = &D_8010DF18_river_raiders[D_80110DC0_river_raiders + 20];
+                if (m209_timer % 181 == 0 && m209_coinBagCnt < 3) {
+                    cur = &m209_itemWorkTbl[m209_coinBagCnt + 20];
                     Hu3DModelAttrSet(cur->obj->model[0], 4, 0);
-                    D_80110DC0_river_raiders++;
+                    m209_coinBagCnt++;
                     if (cur->unk_04 == 0) {
                         cur->unk_04 = 1;
                     }
                 }
-                if (D_80110DE2_river_raiders < 221 && D_80110DC0_river_raiders == 3) {
-                    cur = &D_8010DF18_river_raiders[D_80110DC0_river_raiders + 20];
+                if (m209_timer < 221 && m209_coinBagCnt == 3) {
+                    cur = &m209_itemWorkTbl[m209_coinBagCnt + 20];
                     Hu3DModelAttrSet(cur->obj->model[0], 4, 0);
-                    D_80110DC0_river_raiders++;
+                    m209_coinBagCnt++;
                     if (cur->unk_04 == 0) {
                         cur->unk_04 = 1;
                     }
                 }
-                if (D_80110DE2_river_raiders % 125 == 0 && D_80110D80_river_raiders < 5) {
-                    cur = &D_8010DF18_river_raiders[D_80110D80_river_raiders + 24];
+                if (m209_timer % 125 == 0 && m209_obstacleCnt < 5) {
+                    cur = &m209_itemWorkTbl[m209_obstacleCnt + 24];
                     Hu3DModelAttrSet(cur->obj->model[0], 4, 0);
-                    D_80110D80_river_raiders++;
+                    m209_obstacleCnt++;
                     if (cur->unk_04 == 0) {
                         cur->unk_04 = 1;
                     }
                 }
-                if (D_80110DE2_river_raiders < 241 && D_80110D80_river_raiders == 5) {
-                    cur = &D_8010DF18_river_raiders[D_80110D80_river_raiders + 24];
+                if (m209_timer < 241 && m209_obstacleCnt == 5) {
+                    cur = &m209_itemWorkTbl[m209_obstacleCnt + 24];
                     Hu3DModelAttrSet(cur->obj->model[0], 4, 0);
-                    D_80110D80_river_raiders++;
+                    m209_obstacleCnt++;
                     if (cur->unk_04 == 0) {
                         cur->unk_04 = 1;
                     }
                 }
             }
             if (entry->unk_04 == 1) {
-                func_8010ACD8_river_raiders(obj);
+                m209_ItemHitUpdate(obj);
                 switch (entry->unk_0C) {
                     case 0:
                         obj->trans.y -= 1.0f;
@@ -2034,23 +2034,23 @@ void func_8010BE88_river_raiders(omObjData *obj) {
                             }
                             Hu3DModelTPLvlSet(obj->model[0], entry->unk_10);
                         }
-                        if (Hu3DData[obj->model[0]].motTime == D_80110DB6_river_raiders) {
+                        if (Hu3DData[obj->model[0]].motTime == m209_obstacleMotLen) {
                             entry->unk_04 = 0;
                             Hu3DModelAttrSet(obj->model[0], 4, 4);
                         }
                         break;
                 }
             }
-            if (obj->work[0] == 0 && D_80110D90_river_raiders == 4) {
+            if (obj->work[0] == 0 && m209_phase == 4) {
                 active = FALSE;
                 for (i = 0; i < 30; i++) {
-                    cur = &D_8010DF18_river_raiders[i];
+                    cur = &m209_itemWorkTbl[i];
                     if (cur->unk_04 != 0) {
                         active = TRUE;
                     }
                 }
                 if (!active) {
-                    D_8010D9E6_river_raiders = 4;
+                    m209_finishStep = 4;
                 }
             }
         }
@@ -2058,8 +2058,8 @@ void func_8010BE88_river_raiders(omObjData *obj) {
     Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
 }
 
-void func_8010C494_river_raiders(omObjData *obj) {
-    RiverRaidersEntry *entry = &D_8010DF18_river_raiders[obj->work[0]];
+void m209_ItemObjInit(omObjData *obj) {
+    RiverRaidersEntry *entry = &m209_itemWorkTbl[obj->work[0]];
     u16 offset = rand8() * 5;
     u16 sprModel;
 
@@ -2082,7 +2082,7 @@ void func_8010C494_river_raiders(omObjData *obj) {
             break;
         case 1:
             obj->model[0] = Hu3DModelRead(0x2A0005, 0x299);
-            if ((obj->work[0] & 1) == D_80110D82_river_raiders) {
+            if ((obj->work[0] & 1) == m209_coinBagSide) {
                 obj->trans.x = -(offset / 2) + 120.0f;
             } else {
                 obj->trans.x = (offset / 2) - 120.0f;
@@ -2109,21 +2109,21 @@ void func_8010C494_river_raiders(omObjData *obj) {
             Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
             obj->scale.x = obj->scale.y = obj->scale.z = 1.0f;
             Hu3DModelScaleSet(obj->model[0], obj->scale.x, obj->scale.y, obj->scale.z);
-            D_80110DB6_river_raiders = Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02;
+            m209_obstacleMotLen = Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02;
             break;
     }
     Hu3DModelAttrSet(obj->model[0], 4, 4);
-    obj->func = func_8010BE88_river_raiders;
+    obj->func = m209_ItemObjMain;
 }
 
-void func_8010C890_river_raiders(void) {
+void m209_ItemObjCreateAll(void) {
     RiverRaidersEntry *entry;
     omObjData *obj;
     s16 i;
 
     for (i = 0; i < 30; i++) {
-        entry = &D_8010DF18_river_raiders[i];
-        obj = omAddObj(0x226, 5, 5, -1, func_8010C494_river_raiders);
+        entry = &m209_itemWorkTbl[i];
+        obj = omAddObj(0x226, 5, 5, -1, m209_ItemObjInit);
         obj->work[0] = i;
         if (i < 20) {
             obj->work[1] = 0;
@@ -2138,7 +2138,7 @@ void func_8010C890_river_raiders(void) {
     }
 }
 
-void func_8010C980_river_raiders(void) {
+void m209_CameraViewInit(void) {
     u32 i;
 
     for (i = 0; i < 1; i++) {
@@ -2152,122 +2152,122 @@ void func_8010C980_river_raiders(void) {
     }
 }
 
-void func_8010CA20_river_raiders(omObjData *obj) {
+void m209_ExitObjMain(omObjData *obj) {
     osViBlack(0);
     HuAudFXStop(-1);
     omOvlReturnEx(1);
 }
 
-void func_8010CA4C_river_raiders(omObjData *obj) {
+void m209_ExitWaitObjMain(omObjData *obj) {
     if (WipeStatGet() == 0) {
-        obj->func = func_8010CA20_river_raiders;
+        obj->func = m209_ExitObjMain;
     }
 }
 
-void func_8010CA84_river_raiders(omObjData *obj) {
+void m209_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 0x14);
-        obj->func = func_8010CA4C_river_raiders;
+        obj->func = m209_ExitWaitObjMain;
         HuAudSeqFadeOut(0x1E);
         HuAudFXAllFadeOut(0x1E);
     }
 }
 
-void func_8010CADC_river_raiders(omObjData *obj) {
+void m209_MainObjMain(omObjData *obj) {
     RiverRaidersEntry *entries[3];
     omObjData *boats[3];
-    omObjData *lastBoat = D_8010DD08_river_raiders[3].obj;
+    omObjData *lastBoat = m209_skierWorkTbl[3].obj;
     s16 i;
 
     for (i = 0; i < 3; i++) {
-        entries[i] = &D_8010DD08_river_raiders[i];
+        entries[i] = &m209_skierWorkTbl[i];
         boats[i] = entries[i]->obj;
     }
-    if (D_80110D90_river_raiders == 10) {
-        if (D_80110DB8_river_raiders != -1) {
-            HuAudFXFadeOut(D_80110DB8_river_raiders, 30);
-            D_80110DB8_river_raiders = -1;
+    if (m209_phase == 10) {
+        if (m209_skierSeNo != -1) {
+            HuAudFXFadeOut(m209_skierSeNo, 30);
+            m209_skierSeNo = -1;
         }
-    } else if (D_80110DB8_river_raiders == -1) {
-        D_80110DB8_river_raiders = HuAudFXPlay(0x342);
+    } else if (m209_skierSeNo == -1) {
+        m209_skierSeNo = HuAudFXPlay(0x342);
     }
-    switch (D_80110D90_river_raiders) {
+    switch (m209_phase) {
         case 0:
-            func_80105B7C_river_raiders(1);
-            D_80110DE2_river_raiders = 0;
+            m209_PhaseSet(1);
+            m209_timer = 0;
             break;
         case 1:
-            if (D_80110DE2_river_raiders == 0) {
+            if (m209_timer == 0) {
                 GMesCreate(4);
-                D_80110DE2_river_raiders++;
-            } else if (D_80110DE2_river_raiders > 32) {
+                m209_timer++;
+            } else if (m209_timer > 32) {
                 HuAudSeqPlay(0x2E);
             } else {
-                D_80110DE2_river_raiders++;
+                m209_timer++;
             }
             if (GMesStatGet() == 0) {
-                func_80105B7C_river_raiders(2);
+                m209_PhaseSet(2);
                 GMesCreate(0x1A, 30, 160, 28);
-                D_80110DE2_river_raiders = 901;
+                m209_timer = 901;
             }
             break;
         case 2:
-            if (D_80110DE2_river_raiders > 0) {
-                D_80110DE2_river_raiders--;
-                GMesTimerValueSet((D_80110DE2_river_raiders + 29) / 30);
+            if (m209_timer > 0) {
+                m209_timer--;
+                GMesTimerValueSet((m209_timer + 29) / 30);
             } else {
                 GMesTimerEnd();
-                func_80105B7C_river_raiders(3);
+                m209_PhaseSet(3);
                 GMesCreate(0xF);
                 HuAudSeqFadeOut(120);
             }
-            func_80108ACC_river_raiders();
+            m209_SkierPushCalc();
             break;
         case 3:
-            if (D_8010D9E6_river_raiders == 3 && GMesStatGet() == 0) {
-                func_80105B7C_river_raiders(4);
-                D_80110DE2_river_raiders = -15;
+            if (m209_finishStep == 3 && GMesStatGet() == 0) {
+                m209_PhaseSet(4);
+                m209_timer = -15;
             }
             break;
         case 4:
-            if (D_80110DE2_river_raiders >= 0) {
-                if (D_8010D9E6_river_raiders == 4) {
-                    func_80105B7C_river_raiders(5);
-                    GwPlayer[lastBoat->work[0]].gameCoin = D_80110D84_river_raiders;
+            if (m209_timer >= 0) {
+                if (m209_finishStep == 4) {
+                    m209_PhaseSet(5);
+                    GwPlayer[lastBoat->work[0]].gameCoin = m209_boatCoin;
                     for (i = 0; i < 3; i++) {
-                        GwPlayer[boats[i]->work[0]].gameCoin = D_80110DBD_river_raiders;
+                        GwPlayer[boats[i]->work[0]].gameCoin = m209_skierCoin;
                     }
-                    if (D_80110D84_river_raiders + D_80110DBD_river_raiders == 0) {
-                        D_80110DE2_river_raiders = 0x90;
-                    } else if (D_80110D84_river_raiders == 0) {
-                        D_80110DE2_river_raiders = 0x62;
-                    } else if (D_80110DBD_river_raiders != 0) {
-                        D_80110DE2_river_raiders = 0x7D;
+                    if (m209_boatCoin + m209_skierCoin == 0) {
+                        m209_timer = 0x90;
+                    } else if (m209_boatCoin == 0) {
+                        m209_timer = 0x62;
+                    } else if (m209_skierCoin != 0) {
+                        m209_timer = 0x7D;
                     } else {
-                        D_80110DE2_river_raiders = 0x62;
+                        m209_timer = 0x62;
                     }
                 }
             } else {
-                D_80110DE2_river_raiders++;
+                m209_timer++;
             }
             break;
         case 5:
-            if (D_80110D84_river_raiders + D_80110DBD_river_raiders == 0) {
-                if (D_80110DE2_river_raiders == 0x90) {
+            if (m209_boatCoin + m209_skierCoin == 0) {
+                if (m209_timer == 0x90) {
                     HuAudSeqPlay(0x6C);
                 }
-            } else if (D_80110D84_river_raiders == 0 || D_80110DBD_river_raiders == 0) {
-                if (D_80110DE2_river_raiders == 0x62) {
+            } else if (m209_boatCoin == 0 || m209_skierCoin == 0) {
+                if (m209_timer == 0x62) {
                     HuAudSeqPlay(0x65);
                 }
-            } else if (D_80110DE2_river_raiders == 0x7D) {
+            } else if (m209_timer == 0x7D) {
                 HuAudSeqPlay(0x66);
             }
-            if (D_80110DE2_river_raiders > 0) {
-                D_80110DE2_river_raiders--;
+            if (m209_timer > 0) {
+                m209_timer--;
             } else {
-                func_80105B7C_river_raiders(10);
-                D_80110DE2_river_raiders = 0;
+                m209_PhaseSet(10);
+                m209_timer = 0;
             }
             break;
         case 6:
@@ -2276,69 +2276,69 @@ void func_8010CADC_river_raiders(omObjData *obj) {
         case 9:
             break;
         case 10:
-            if (D_80110DE2_river_raiders == 0) {
+            if (m209_timer == 0) {
                 WipeCreateOut(WIPE_TYPE_NORMAL, 0x14);
-                obj->func = func_8010CA4C_river_raiders;
-                D_80110DE2_river_raiders++;
+                obj->func = m209_ExitWaitObjMain;
+                m209_timer++;
             }
             break;
     }
 }
 
-void func_8010CF00_river_raiders(omObjData *obj) {
+void m209_MainObjInit(omObjData *obj) {
     u8 i;
     u8 j;
 
-    D_80110DE2_river_raiders = 0;
-    D_80110D90_river_raiders = 0;
-    D_8010D9E6_river_raiders = 50;
-    D_80110D84_river_raiders = 0;
-    D_80110DBD_river_raiders = 0;
+    m209_timer = 0;
+    m209_phase = 0;
+    m209_finishStep = 50;
+    m209_boatCoin = 0;
+    m209_skierCoin = 0;
     for (i = 0; i < 3; i++) {
         for (j = 0; j < 2; j++) {
-            D_80110DC8_river_raiders[i][j] = 0;
+            m209_skierRangeTbl[i][j] = 0;
         }
     }
     for (i = 0; i < 2; i++) {
-        D_80110DBA_river_raiders[i] = 5;
+        m209_skierLaneTbl[i] = 5;
     }
-    D_80110D91_river_raiders = 0;
-    D_80110D81_river_raiders = 0;
-    D_80110DC0_river_raiders = 0;
-    D_80110D80_river_raiders = 0;
-    D_80110DB6_river_raiders = 0;
+    m209_skierLaneCnt = 0;
+    m209_coinCnt = 0;
+    m209_coinBagCnt = 0;
+    m209_obstacleCnt = 0;
+    m209_obstacleMotLen = 0;
     for (i = 0; i < 5; i++) {
-        D_8010D9D0_river_raiders[i] = 0;
+        m209_wakeRotTbl[i] = 0;
     }
     if (!(rand8() & 1)) {
-        D_80110DBE_river_raiders = -1;
+        m209_skierSwayDir = -1;
     } else {
-        D_80110DBE_river_raiders = 1;
+        m209_skierSwayDir = 1;
     }
-    D_8010D9E4_river_raiders = 0;
+    m209_skierHopTimer = 0;
     if (!(rand8() & 1)) {
-        D_80110D82_river_raiders = 0;
+        m209_coinBagSide = 0;
     } else {
-        D_80110D82_river_raiders = 1;
+        m209_coinBagSide = 1;
     }
-    D_80110DE0_river_raiders = D_80110DB8_river_raiders = -1;
-    func_8010C980_river_raiders();
-    func_801061A0_river_raiders();
-    func_801063FC_river_raiders();
-    func_80108574_river_raiders();
-    func_8010ABA0_river_raiders();
-    func_8010C890_river_raiders();
-    func_80106A54_river_raiders();
-    func_80105EAC_river_raiders();
-    D_80110D86_river_raiders = EffectGroupStarCreate(0x2A9, 10);
+    m209_engineSeNo = m209_skierSeNo = -1;
+    m209_CameraViewInit();
+    m209_RiverObjCreateAll();
+    m209_WaterObjCreate();
+    m209_BoatObjCreate();
+    m209_SkierObjCreateAll();
+    m209_ItemObjCreateAll();
+    m209_RopeObjCreateAll();
+    m209_ScoreObjCreateAll();
+    m209_starEffGrp = EffectGroupStarCreate(0x2A9, 10);
     WipeCreateIn(0xFF, 0x10);
-    obj->func = func_8010CADC_river_raiders;
+    obj->func = m209_MainObjMain;
 }
 
-void func_8010D0F0_river_raiders(void) {
+void m209_Dummy(void) {
 }
 
-void func_8010D0F8_river_raiders(void) {
+void m209_CameraInit(void) {
     omObjData *obj;
     s32 i;
 
@@ -2348,16 +2348,16 @@ void func_8010D0F8_river_raiders(void) {
     CamSetupInit(1);
     CamSetupMapCullAddMulti(1);
     for (i = 0; i < 1; i++) {
-        ScissorSet(i, D_8010D8C8_river_raiders[i].scissorX, D_8010D8C8_river_raiders[i].scissorY,
-                   D_8010D8C8_river_raiders[i].scissorWidth, D_8010D8C8_river_raiders[i].scissorHeight);
-        ViewportSet(i, D_8010D8C8_river_raiders[i].viewportScale.x, D_8010D8C8_river_raiders[i].viewportScale.y,
-                    D_8010D8C8_river_raiders[i].viewportScale.z, D_8010D8C8_river_raiders[i].viewportTranslate.x,
-                    D_8010D8C8_river_raiders[i].viewportTranslate.y, D_8010D8C8_river_raiders[i].viewportTranslate.z);
-        Hu3DCameraPerspectiveSet(i, D_8010D8C8_river_raiders[i].fov, 80.0f, 8000.0f);
+        ScissorSet(i, m209_cameraViewTbl[i].scissorX, m209_cameraViewTbl[i].scissorY,
+                   m209_cameraViewTbl[i].scissorWidth, m209_cameraViewTbl[i].scissorHeight);
+        ViewportSet(i, m209_cameraViewTbl[i].viewportScale.x, m209_cameraViewTbl[i].viewportScale.y,
+                    m209_cameraViewTbl[i].viewportScale.z, m209_cameraViewTbl[i].viewportTranslate.x,
+                    m209_cameraViewTbl[i].viewportTranslate.y, m209_cameraViewTbl[i].viewportTranslate.z);
+        Hu3DCameraPerspectiveSet(i, m209_cameraViewTbl[i].fov, 80.0f, 8000.0f);
     }
 }
 
-void func_8010D268_river_raiders(void) {
+void m209_ObjectSetup(void) {
     MapCollInit(50);
     Hu3DSprModelInit(100);
     omInitObjMan(100, 0);
@@ -2369,15 +2369,15 @@ void func_8010D268_river_raiders(void) {
     Hu3DGLightDirSet(1, 0.0f, 0.0f, 100.0f);
     Hu3DGLightColorSet(2, 64, 64, 64);
     Hu3DGLightDirSet(2, 0.0f, 0.0f, 100.0f);
-    func_8010D0F8_river_raiders();
+    m209_CameraInit();
     mgItemObjNum = 0;
     mgPlayerObjNum = 0;
     mgMapObjNum = 0;
-    GMesFontMesCreate(D_8010D9BC_river_raiders, 0);
-    GMesFontMesCreate(D_8010D9BC_river_raiders, 1);
-    omAddObj(1000, 0, 0, -1, func_8010CF00_river_raiders);
-    omAddObj(1000, 0, 0, -1, func_8010CA84_river_raiders);
-    func_80105A3C_river_raiders();
+    GMesFontMesCreate(m209_fontMesTbl, 0);
+    GMesFontMesCreate(m209_fontMesTbl, 1);
+    omAddObj(1000, 0, 0, -1, m209_MainObjInit);
+    omAddObj(1000, 0, 0, -1, m209_ExitCheckObjMain);
+    m209_ObjWorkInit();
 }
 
-const s16 D_8010D9BC_river_raiders[] = { 0x8260, 0x8261, 0x8262, 0 };
+const s16 m209_fontMesTbl[] = { 0x8260, 0x8261, 0x8262, 0 };

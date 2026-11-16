@@ -5,8 +5,8 @@
 #include "humath.h"
 #include "cosmic_coaster.h"
 
-extern omObjData *D_8010C050_cosmic_coaster;
-// Object data of the HUD/track object (D_8010C3C0), one half per coaster car.
+extern omObjData *m216_introCameraObj;
+// Object data of the HUD/track object (m216_hudObj), one half per coaster car.
 typedef struct CosmicCoasterHudData { // 0x28 bytes
     s16 frame[2];                     // 0x00
     s16 label[2];                     // 0x04
@@ -18,7 +18,7 @@ typedef struct CosmicCoasterHudData { // 0x28 bytes
     u16 trackCount[2];                // 0x24
 } CosmicCoasterHudData;
 
-// Object data of the sprite effect object created by func_801090C0.
+// Object data of the sprite effect object created by m216_StarSkyObjInit.
 typedef struct CosmicCoasterEffectData { // 0x28 bytes
     s16 sprite[6];                       // 0x00
     s16 sprite2[6];                      // 0x0C
@@ -26,7 +26,7 @@ typedef struct CosmicCoasterEffectData { // 0x28 bytes
     u16 inUse[6];                        // 0x1C
 } CosmicCoasterEffectData;
 
-// A shooting star sprite pair spawned by func_80109290.
+// A shooting star sprite pair spawned by m216_StarSkyObjMain.
 typedef struct CosmicCoasterStarData { // 0x1C bytes
     u16 side;                          // 0x00
     u16 *inUse;                        // 0x04
@@ -46,72 +46,72 @@ typedef struct CosmicCoasterCamKey { // 0x20 bytes
     Vec center;
 } CosmicCoasterCamKey;
 
-MinigameFlow D_8010BB30_cosmic_coaster = {
+MinigameFlow m216_mgFlow = {
     MG_STATE_OPENING, MINIGAME_1V3, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_RECORD, FALSE, MG_GAUGE_TOP_2 | 5, MG_RESULT_WIN_2, 0,
     { 0.0f, 0.0f, 0.0f, 0.0f },
     { 0, 0, 0, 0 },
     -1, -1, 30000, -1, 135
 };
-s16 D_8010BB58_cosmic_coaster[2] = { 32, 96 }; // sound panning per car
-u16 D_8010BB5C_cosmic_coaster = 0;
-u16 D_8010BB5E_cosmic_coaster = 0;
-s32 D_8010BB60_cosmic_coaster = 0; /* Unreferenced. */
-s32 D_8010BB64_cosmic_coaster[8] = {
+s16 m216_carSePanTbl[2] = { 32, 96 }; // sound panning per car
+u16 m216_exitF = 0;
+u16 m216_bonusCoinF = 0;
+s32 m216_bonusCoinFPad = 0; /* Unreferenced. */
+s32 m216_faceSprTbl[8] = {
     0x00210008, 0x00210009, 0x0021000A, 0x0021000B,
     0x0021000C, 0x0021000D, 0x0021000E, 0x0021000F
 };
-f32 D_8010BB84_cosmic_coaster[2] = { -100.0f, 100.0f };
-s32 D_8010BB8C_cosmic_coaster = 20;
-CosmicCoasterCamKey D_8010BB90_cosmic_coaster[2] = {
+f32 m216_riderZTbl[2] = { -100.0f, 100.0f };
+s32 m216_winZoomTimer = 20;
+CosmicCoasterCamKey m216_introCameraKeyTbl[2] = {
     { 30, -700.0f, { 0.0f, 90.0f, 0.0f }, { 0.0f, 200.0f, -150.0f } },
     { 30, 970.0f, { -11.0f, 0.0f, 0.0f }, { 0.0f, 200.0f, -500.0f } },
 };
 
-extern s32 D_8010C054_cosmic_coaster;
-extern s16 D_8010C058_cosmic_coaster;
-extern omObjData *D_8010C3C0_cosmic_coaster;
-extern f32 D_8010C02C_cosmic_coaster; // zoom at the start of the current key
+extern s32 m216_mainPhase;
+extern s16 m216_coinEffGrp;
+extern omObjData *m216_hudObj;
+extern f32 m216_introZoomStart; // zoom at the start of the current key
 // Per-frame camera steps toward the current key.
-extern f32 D_8010C030_cosmic_coaster; // rotation x
-extern f32 D_8010C034_cosmic_coaster; // rotation y
-extern f32 D_8010C038_cosmic_coaster; // rotation z
-extern f32 D_8010C03C_cosmic_coaster; // center x
-extern f32 D_8010C040_cosmic_coaster; // center y
-extern f32 D_8010C044_cosmic_coaster; // center z
-extern s32 D_8010C048_cosmic_coaster; // frames left in the current key
-extern s32 D_8010C04C_cosmic_coaster; // current key
-extern omObjData *D_8010C3B8_cosmic_coaster;
-extern f32 D_8010C010_cosmic_coaster[2];     // victory jump x velocity per rider
-extern f32 D_8010C018_cosmic_coaster[2];     // victory jump y velocity per rider
-extern s32 D_8010C020_cosmic_coaster;        // victory sequence countdown
-extern omObjData *D_8010C024_cosmic_coaster; // victory camera helper object
-extern omObjData *D_8010C028_cosmic_coaster; // losing car object
+extern f32 m216_introRotXStep; // rotation x
+extern f32 m216_introRotYStep; // rotation y
+extern f32 m216_introRotZStep; // rotation z
+extern f32 m216_introCenterXStep; // center x
+extern f32 m216_introCenterYStep; // center y
+extern f32 m216_introCenterZStep; // center z
+extern s32 m216_introKeyTimer; // frames left in the current key
+extern s32 m216_introKeyNo; // current key
+extern omObjData *m216_comTargetObj;
+extern f32 m216_winJumpVelXTbl[2];     // victory jump x velocity per rider
+extern f32 m216_winJumpVelYTbl[2];     // victory jump y velocity per rider
+extern s32 m216_winTimer;        // victory sequence countdown
+extern omObjData *m216_winCameraObj; // victory camera helper object
+extern omObjData *m216_loseCarObj; // losing car object
 extern s32 omCharModelNoTbl[][6];
-extern u16 D_8010C05A_cosmic_coaster;
+extern u16 m216_introPhase;
 
-void func_80105D80_cosmic_coaster(omObjData *arg0);
-void func_80105DAC_cosmic_coaster(omObjData *arg0);
-void func_80105FEC_cosmic_coaster(omObjData *arg0);
-void func_801063CC_cosmic_coaster(omObjData *arg0);
-void func_80106530_cosmic_coaster(s16 car);
-void func_80106720_cosmic_coaster(omObjData *arg0);
-void func_8010869C_cosmic_coaster(omObjData *arg0);
-void func_8010673C_cosmic_coaster(omObjData *arg0);
-void func_80106758_cosmic_coaster(omObjData *object, s16 group);
-void func_80106D10_cosmic_coaster(omObjData *object);
-void func_80107888_cosmic_coaster(omObjData *object);
-void func_8010803C_cosmic_coaster(omObjData *object);
-void func_80108124_cosmic_coaster(omObjData *object);
-void func_8010812C_cosmic_coaster(omObjData *object);
-void func_801083D0_cosmic_coaster(omObjData *object, s16 slot, s8 *stickX);
-void func_80108C9C_cosmic_coaster(omObjData *object);
-void func_801080C8_cosmic_coaster(omObjData *arg0);
-void func_801090C0_cosmic_coaster(omObjData *arg0);
-void func_80109290_cosmic_coaster(omObjData *object);
-s16 func_8010923C_cosmic_coaster(CosmicCoasterEffectData *data);
-void func_801096A8_cosmic_coaster(omObjData *object);
+void m216_MainObjInit(omObjData *arg0);
+void m216_MainObjMain(omObjData *arg0);
+void m216_HudObjInit(omObjData *arg0);
+void m216_HudObjMain(omObjData *arg0);
+void m216_TrackPosUpdate(s16 car);
+void m216_Car0ObjInit(omObjData *arg0);
+void m216_IntroCameraObjMain(omObjData *arg0);
+void m216_Car1ObjInit(omObjData *arg0);
+void m216_CarInit(omObjData *object, s16 group);
+void m216_CarObjMain(omObjData *object);
+void m216_CarWinObjMain(omObjData *object);
+void m216_WinCameraObjMain(omObjData *object);
+void m216_CarLoseObjMain(omObjData *object);
+void m216_ComTargetUpdate(omObjData *object);
+void m216_RiderComInputGet(omObjData *object, s16 slot, s8 *stickX);
+void m216_CarLightUpdate(omObjData *object);
+void m216_WinZoomObjMain(omObjData *arg0);
+void m216_StarSkyObjInit(omObjData *arg0);
+void m216_StarSkyObjMain(omObjData *object);
+s16 m216_StarSlotGet(CosmicCoasterEffectData *data);
+void m216_ShootingStarObjMain(omObjData *object);
 
-void func_801059A0_cosmic_coaster(void) {
+void m216_ObjectSetup(void) {
     omObjData *object;
     s32 i;
 
@@ -119,7 +119,7 @@ void func_801059A0_cosmic_coaster(void) {
     omGameSysInit();
     HuAudCharVoiceInit();
     Hu3DFogSet(940, 1000, 0, 12, 55);
-    D_8010C058_cosmic_coaster = EffectGroupStarCreate(0x2A9, 4);
+    m216_coinEffGrp = EffectGroupStarCreate(0x2A9, 4);
     CamSetupInitMulti(2);
     CamSetupMapCullAddMulti(2);
     for (i = 0; i < 2; i++) {
@@ -146,38 +146,38 @@ void func_801059A0_cosmic_coaster(void) {
     Hu3DGLightColorSet(3, 0, 0, 0);
     Hu3DGLightDirSet(3, -115.0f, 6.0f, -33.0f);
     Hu3DGLightStatSet(2, 1, 1);
-    omAddObj(0, 0, 0, -1, func_80105D80_cosmic_coaster);
-    D_8010C3C0_cosmic_coaster = omAddObj(20, 8, 0, -1, func_80105FEC_cosmic_coaster);
-    D_8010C3C4_cosmic_coaster = omAddObj(20, 55, 0, -1, func_8010991C_cosmic_coaster);
-    D_8010C3B0_cosmic_coaster[0] = omAddObj(10, 9, 14, -1, func_80106720_cosmic_coaster);
-    D_8010C3B0_cosmic_coaster[1] = omAddObj(10, 9, 14, -1, func_8010673C_cosmic_coaster);
-    omSetStat(D_8010C3C4_cosmic_coaster, 0x100);
-    omAddObj(40, 0, 0, -1, func_801090C0_cosmic_coaster);
-    MgFlowInit(&D_8010BB30_cosmic_coaster);
+    omAddObj(0, 0, 0, -1, m216_MainObjInit);
+    m216_hudObj = omAddObj(20, 8, 0, -1, m216_HudObjInit);
+    m216_stageObj = omAddObj(20, 55, 0, -1, m216_StageObjInit);
+    m216_carObjTbl[0] = omAddObj(10, 9, 14, -1, m216_Car0ObjInit);
+    m216_carObjTbl[1] = omAddObj(10, 9, 14, -1, m216_Car1ObjInit);
+    omSetStat(m216_stageObj, 0x100);
+    omAddObj(40, 0, 0, -1, m216_StarSkyObjInit);
+    MgFlowInit(&m216_mgFlow);
     MgGaugeRangeSet(0, 0.0f, 130.0f);
     MgGaugeRangeSet(1, 0.0f, 130.0f);
     CharAnimInit();
 }
 
-void func_80105D80_cosmic_coaster(omObjData *arg0) {
-    D_8010C054_cosmic_coaster = 0;
-    D_8010C050_cosmic_coaster = NULL;
-    D_8010C3BC_cosmic_coaster = -1;
-    arg0->func = func_80105DAC_cosmic_coaster;
+void m216_MainObjInit(omObjData *arg0) {
+    m216_mainPhase = 0;
+    m216_introCameraObj = NULL;
+    m216_winner = -1;
+    arg0->func = m216_MainObjMain;
 }
 
-void func_80105DAC_cosmic_coaster(omObjData *arg0) {
+void m216_MainObjMain(omObjData *arg0) {
     CosmicCoasterCarData *car;
     CosmicCoasterCarData *car1;
     s32 finished;
     s32 i;
 
-    if (D_8010BB5C_cosmic_coaster == 0) {
+    if (m216_exitF == 0) {
         switch (MgFlowMain()) {
             case 0:
-                if (D_8010C050_cosmic_coaster == NULL) {
-                    D_8010C05A_cosmic_coaster = 0;
-                    D_8010C050_cosmic_coaster = omAddObj(4, 0, 0, -1, func_8010869C_cosmic_coaster);
+                if (m216_introCameraObj == NULL) {
+                    m216_introPhase = 0;
+                    m216_introCameraObj = omAddObj(4, 0, 0, -1, m216_IntroCameraObjMain);
                 }
                 break;
             case 1:
@@ -185,27 +185,27 @@ void func_80105DAC_cosmic_coaster(omObjData *arg0) {
             case 2:
                 finished = 0;
                 for (i = 0; i < 2; i++) {
-                    car = D_8010C3B0_cosmic_coaster[i]->data;
+                    car = m216_carObjTbl[i]->data;
                     if (car->finished == 1) {
                         finished |= 1 << i;
                     }
                 }
                 if (finished == 1 || finished == 2) {
-                    D_8010C3BC_cosmic_coaster = finished - 1;
+                    m216_winner = finished - 1;
                 } else if (finished == 3) {
                     f32 progress0;
                     f32 progress1;
 
-                    car = D_8010C3B0_cosmic_coaster[0]->data;
-                    car1 = D_8010C3B0_cosmic_coaster[1]->data;
+                    car = m216_carObjTbl[0]->data;
+                    car1 = m216_carObjTbl[1]->data;
                     progress0 = car->progress;
                     progress1 = car1->progress;
                     if (progress0 > progress1) {
-                        D_8010C3BC_cosmic_coaster = 0;
+                        m216_winner = 0;
                     } else if (progress0 < progress1) {
-                        D_8010C3BC_cosmic_coaster = 1;
+                        m216_winner = 1;
                     } else {
-                        D_8010C3BC_cosmic_coaster = rand8() & 1;
+                        m216_winner = rand8() & 1;
                     }
                 } else {
                     break;
@@ -213,30 +213,30 @@ void func_80105DAC_cosmic_coaster(omObjData *arg0) {
                 MgFlowStatSet(MG_STATE_FINISH);
                 break;
             case 3:
-                car = D_8010C3B0_cosmic_coaster[D_8010C3BC_cosmic_coaster]->data;
-                D_8010BB30_cosmic_coaster.winners[0] = car->player[0];
-                D_8010BB30_cosmic_coaster.winners[1] = car->player[1];
-                if (D_8010BB5E_cosmic_coaster == 0) {
+                car = m216_carObjTbl[m216_winner]->data;
+                m216_mgFlow.winners[0] = car->player[0];
+                m216_mgFlow.winners[1] = car->player[1];
+                if (m216_bonusCoinF == 0) {
                     GwPlayer[car->player[0]].bonusCoin = 10;
                     GwPlayer[car->player[1]].bonusCoin = 10;
-                    D_8010BB5E_cosmic_coaster = 1;
+                    m216_bonusCoinF = 1;
                 }
                 break;
             case 4:
                 break;
             case 5:
                 WipeCreateOut(WIPE_TYPE_NORMAL, 20);
-                D_8010BB5C_cosmic_coaster = 1;
+                m216_exitF = 1;
                 break;
         }
     } else if (WipeStatGet() == 0) {
-        func_80109900_cosmic_coaster();
+        m216_OvlReturn();
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
     }
 }
 
-void func_80105FEC_cosmic_coaster(omObjData *object) {
+void m216_HudObjInit(omObjData *object) {
     CosmicCoasterHudData *hud;
     s16 portraits[4];
     s16 frameSprite;
@@ -255,7 +255,7 @@ void func_80105FEC_cosmic_coaster(omObjData *object) {
     meterSprite = HuSprAnimDataRead(0x310011);
     bannerSprite = HuSprAnimDataRead(0x310010);
     for (i = 0; i < 4; i++) {
-        portraits[i] = HuSprAnimDataRead(D_8010BB64_cosmic_coaster[GwPlayer[((CosmicCoasterCarData *)D_8010C3B0_cosmic_coaster[i / 2]->data)->player[i % 2]].chr]);
+        portraits[i] = HuSprAnimDataRead(m216_faceSprTbl[GwPlayer[((CosmicCoasterCarData *)m216_carObjTbl[i / 2]->data)->player[i % 2]].chr]);
     }
     hud->banner = espEntry(bannerSprite, 0, 0);
     espPosSet(hud->banner, 160, 40);
@@ -295,22 +295,22 @@ void func_80105FEC_cosmic_coaster(omObjData *object) {
         hud->trackFrame[i] = 0;
         hud->trackCount[i] = 0;
     }
-    func_80106530_cosmic_coaster(0);
-    func_80106530_cosmic_coaster(1);
-    object->func = func_801063CC_cosmic_coaster;
+    m216_TrackPosUpdate(0);
+    m216_TrackPosUpdate(1);
+    object->func = m216_HudObjMain;
 }
 
-void func_801063CC_cosmic_coaster(omObjData *object) {
-    CosmicCoasterHudData *hud = D_8010C3C0_cosmic_coaster->data;
+void m216_HudObjMain(omObjData *object) {
+    CosmicCoasterHudData *hud = m216_hudObj->data;
     CosmicCoasterCarData *car;
     s16 x;
     s32 y;
     s32 i;
 
     for (i = 0; i < 2; i++) {
-        car = D_8010C3B0_cosmic_coaster[i]->data;
-        hud->trackOffset[i] += D_8010BB30_cosmic_coaster.gaugeValue[i] / 1.08f;
-        func_80106530_cosmic_coaster(i);
+        car = m216_carObjTbl[i]->data;
+        hud->trackOffset[i] += m216_mgFlow.gaugeValue[i] / 1.08f;
+        m216_TrackPosUpdate(i);
         x = i * 18 + 151;
         y = 204.0f - car->progress / 63000.0f * 164.0f;
         espPosSet(hud->meter[i], x, y);
@@ -321,23 +321,23 @@ void func_801063CC_cosmic_coaster(omObjData *object) {
 
 // Positions the four repeating track segment models of one car's view and
 // switches their texture animation once enough segments have scrolled past.
-void func_80106530_cosmic_coaster(s16 car) {
+void m216_TrackPosUpdate(s16 car) {
     CosmicCoasterHudData *hud;
     s32 frame;
     s32 count;
     s32 i;
     s32 carIndex = car;
 
-    hud = D_8010C3C0_cosmic_coaster->data;
+    hud = m216_hudObj->data;
     frame = hud->trackFrame[carIndex];
     count = hud->trackCount[carIndex];
     for (i = 0; i < 4; i++) {
-        Hu3DModelPosSet(D_8010C3C0_cosmic_coaster->model[car * 4 + frame], 0.0f, 0.0f,
+        Hu3DModelPosSet(m216_hudObj->model[car * 4 + frame], 0.0f, 0.0f,
                         hud->trackOffset[car] - i * 3000.0f);
         if (++count >= 23) {
-            Hu3DModelAttrSet(D_8010C3C0_cosmic_coaster->model[car * 4 + frame], 4, 4);
+            Hu3DModelAttrSet(m216_hudObj->model[car * 4 + frame], 4, 4);
         } else {
-            Hu3DModelAttrSet(D_8010C3C0_cosmic_coaster->model[car * 4 + frame], 4, 0);
+            Hu3DModelAttrSet(m216_hudObj->model[car * 4 + frame], 4, 0);
         }
         if (++frame >= 4) {
             frame -= 4;
@@ -352,15 +352,15 @@ void func_80106530_cosmic_coaster(s16 car) {
     }
 }
 
-void func_80106720_cosmic_coaster(omObjData *object) {
-    func_80106758_cosmic_coaster(object, 0);
+void m216_Car0ObjInit(omObjData *object) {
+    m216_CarInit(object, 0);
 }
 
-void func_8010673C_cosmic_coaster(omObjData *object) {
-    func_80106758_cosmic_coaster(object, 1);
+void m216_Car1ObjInit(omObjData *object) {
+    m216_CarInit(object, 1);
 }
 
-void func_80106758_cosmic_coaster(omObjData *object, s16 group) {
+void m216_CarInit(omObjData *object, s16 group) {
     CosmicCoasterCarData *car;
     s16 cam;
     s32 chr;
@@ -436,16 +436,16 @@ void func_80106758_cosmic_coaster(omObjData *object, s16 group) {
         Hu3DLLightDirSet(object->model[3 + i], 0.0f, -127.0f, 0.0f);
         object->work[0] = 0;
     }
-    Hu3DModelPosSet(object->model[1], car->x[0], 125.0f, D_8010BB84_cosmic_coaster[0]);
-    Hu3DModelPosSet(object->model[2], car->x[1], 125.0f, D_8010BB84_cosmic_coaster[1]);
-    Hu3DModelPosSet(object->model[3], car->x[0], car->y[0], D_8010BB84_cosmic_coaster[0]);
-    Hu3DModelPosSet(object->model[4], car->x[1], car->y[1], D_8010BB84_cosmic_coaster[1]);
-    object->func = func_80106D10_cosmic_coaster;
+    Hu3DModelPosSet(object->model[1], car->x[0], 125.0f, m216_riderZTbl[0]);
+    Hu3DModelPosSet(object->model[2], car->x[1], 125.0f, m216_riderZTbl[1]);
+    Hu3DModelPosSet(object->model[3], car->x[0], car->y[0], m216_riderZTbl[0]);
+    Hu3DModelPosSet(object->model[4], car->x[1], car->y[1], m216_riderZTbl[1]);
+    object->func = m216_CarObjMain;
 }
 
 // Main update of a coaster car: steers the riders, accelerates or brakes the
 // car, and handles riders colliding with track objects.
-void func_80106D10_cosmic_coaster(omObjData *object) {
+void m216_CarObjMain(omObjData *object) {
     omObjData *found[2];
     s8 stickX;
     CosmicCoasterCarData *car = object->data;
@@ -462,11 +462,11 @@ void func_80106D10_cosmic_coaster(omObjData *object) {
         cam = 2;
     }
     maxSpeed = 130.0f;
-    func_8010812C_cosmic_coaster(object);
+    m216_ComTargetUpdate(object);
     for (i = 0; i < 2; i++) {
         pad = GwPlayer[car->player[i]].pad;
         if (GwPlayer[car->player[i]].stat & 1) {
-            func_801083D0_cosmic_coaster(object, i, &stickX);
+            m216_RiderComInputGet(object, i, &stickX);
         } else {
             stickX = HuPadStkX[pad];
         }
@@ -480,31 +480,31 @@ void func_80106D10_cosmic_coaster(omObjData *object) {
         if (car->x[i] > 160.0f) {
             car->x[i] = 160.0f;
         }
-        Hu3DModelPosSet(object->model[1 + i], car->x[i], 125.0f, D_8010BB84_cosmic_coaster[i]);
-        Hu3DModelPosSet(object->model[3 + i], car->x[i], 125.0f, D_8010BB84_cosmic_coaster[i]);
+        Hu3DModelPosSet(object->model[1 + i], car->x[i], 125.0f, m216_riderZTbl[i]);
+        Hu3DModelPosSet(object->model[3 + i], car->x[i], 125.0f, m216_riderZTbl[i]);
     }
-    if (D_8010C3BC_cosmic_coaster == -1) {
+    if (m216_winner == -1) {
         if (MgFlowStatGet() == MG_STATE_PLAY) {
-            D_8010BB30_cosmic_coaster.gaugeValue[car->group] += 4.0f;
-            if (D_8010BB30_cosmic_coaster.gaugeValue[car->group] > maxSpeed) {
-                D_8010BB30_cosmic_coaster.gaugeValue[car->group] = maxSpeed;
+            m216_mgFlow.gaugeValue[car->group] += 4.0f;
+            if (m216_mgFlow.gaugeValue[car->group] > maxSpeed) {
+                m216_mgFlow.gaugeValue[car->group] = maxSpeed;
             }
         }
-    } else if (car->group == D_8010C3BC_cosmic_coaster) {
+    } else if (car->group == m216_winner) {
         if (car->progress < 63200.0f) {
-            D_8010BB30_cosmic_coaster.gaugeValue[car->group] += 4.0f;
-            if (D_8010BB30_cosmic_coaster.gaugeValue[car->group] > maxSpeed) {
-                D_8010BB30_cosmic_coaster.gaugeValue[car->group] = maxSpeed;
+            m216_mgFlow.gaugeValue[car->group] += 4.0f;
+            if (m216_mgFlow.gaugeValue[car->group] > maxSpeed) {
+                m216_mgFlow.gaugeValue[car->group] = maxSpeed;
             }
         } else {
-            D_8010BB30_cosmic_coaster.gaugeValue[car->group] -= 12.0f;
-            if (D_8010BB30_cosmic_coaster.gaugeValue[car->group] < 0.0f) {
-                D_8010BB30_cosmic_coaster.gaugeValue[car->group] = 0.0f;
+            m216_mgFlow.gaugeValue[car->group] -= 12.0f;
+            if (m216_mgFlow.gaugeValue[car->group] < 0.0f) {
+                m216_mgFlow.gaugeValue[car->group] = 0.0f;
             }
-            if (D_8010BB30_cosmic_coaster.gaugeValue[car->group] == 0.0f && car->tilt[0] >= 0.0f &&
+            if (m216_mgFlow.gaugeValue[car->group] == 0.0f && car->tilt[0] >= 0.0f &&
                 car->tilt[1] >= 0.0f) {
                 HuAudFXStop(car->rollSfx);
-                D_8010C3B0_cosmic_coaster[D_8010C3BC_cosmic_coaster]->func = func_80107888_cosmic_coaster;
+                m216_carObjTbl[m216_winner]->func = m216_CarWinObjMain;
                 car->endPhase = 0;
             }
         }
@@ -519,18 +519,18 @@ void func_80106D10_cosmic_coaster(omObjData *object) {
         Hu3DLLightColorSet(object->model[4], 255, 255, 255);
         Hu3DLLightDirSet(object->model[4], 69.0f, 69.0f, 69.0f);
     } else {
-        D_8010BB30_cosmic_coaster.gaugeValue[car->group] -= 9.6f;
-        if (D_8010BB30_cosmic_coaster.gaugeValue[car->group] < 0.0f) {
-            D_8010BB30_cosmic_coaster.gaugeValue[car->group] = 0.0f;
+        m216_mgFlow.gaugeValue[car->group] -= 9.6f;
+        if (m216_mgFlow.gaugeValue[car->group] < 0.0f) {
+            m216_mgFlow.gaugeValue[car->group] = 0.0f;
         }
-        if (D_8010BB30_cosmic_coaster.gaugeValue[car->group] == 0.0f && car->tilt[0] >= 0.0f &&
+        if (m216_mgFlow.gaugeValue[car->group] == 0.0f && car->tilt[0] >= 0.0f &&
             car->tilt[1] >= 0.0f) {
             HuAudFXStop(car->rollSfx);
-            D_8010C3B0_cosmic_coaster[(s16)(D_8010C3BC_cosmic_coaster ^ 1)]->func = func_80108124_cosmic_coaster;
+            m216_carObjTbl[(s16)(m216_winner ^ 1)]->func = m216_CarLoseObjMain;
         }
     }
     car->prevProgress = car->progress;
-    car->progress += D_8010BB30_cosmic_coaster.gaugeValue[car->group] / 1.08f;
+    car->progress += m216_mgFlow.gaugeValue[car->group] / 1.08f;
     if (car->progress >= 63000.0f) {
         car->finished = 1;
     }
@@ -554,21 +554,21 @@ void func_80106D10_cosmic_coaster(omObjData *object) {
             Hu3DModelAttrSet(object->model[3 + i], 4, 4);
         }
     }
-    hits = func_8010B644_cosmic_coaster(found, car, car->progress, car->prevProgress, 1);
+    hits = m216_StageHitCheck(found, car, car->progress, car->prevProgress, 1);
     if ((hits & 0xFFFF) != 0xFFFF) {
         if ((hits & 0xFFFF) == 4) {
-            HuAudFXPanning(HuAudFXPlay(9), D_8010BB58_cosmic_coaster[car->group]);
+            HuAudFXPanning(HuAudFXPlay(9), m216_carSePanTbl[car->group]);
             GwPlayer[car->player[0]].gameCoin += 1;
             GwPlayer[car->player[1]].gameCoin += 1;
-            effect = EffectGroupEmit(D_8010C058_cosmic_coaster, 0.0f, 0.0f, 0.0f);
+            effect = EffectGroupEmit(m216_coinEffGrp, 0.0f, 0.0f, 0.0f);
             if (effect >= 0) {
                 Hu3DModelCameraSet(effect, cam);
                 Hu3DModelPosSet(effect, car->x[0], 270.0f, -100.0f);
                 Hu3DModelScaleSet(effect, 2.0f, 2.0f, 2.0f);
             }
         } else {
-            HuAudFXPanning(HuAudPlayerFXPlay(0x373, car->player[0]), D_8010BB58_cosmic_coaster[car->group]);
-            D_8010BB30_cosmic_coaster.gaugeValue[car->group] *= 0.3f;
+            HuAudFXPanning(HuAudPlayerFXPlay(0x373, car->player[0]), m216_carSePanTbl[car->group]);
+            m216_mgFlow.gaugeValue[car->group] *= 0.3f;
             car->tilt[0] = -50.0f;
             car->stunTimer[0] = 10;
             Hu3DMotionModelSet(object->model[3], object->motion[4]);
@@ -577,18 +577,18 @@ void func_80106D10_cosmic_coaster(omObjData *object) {
     }
     if ((hits >> 16) != 0xFFFF) {
         if ((hits >> 16) == 4) {
-            HuAudFXPanning(HuAudFXPlay(9), D_8010BB58_cosmic_coaster[car->group]);
+            HuAudFXPanning(HuAudFXPlay(9), m216_carSePanTbl[car->group]);
             GwPlayer[car->player[0]].gameCoin += 1;
             GwPlayer[car->player[1]].gameCoin += 1;
-            effect = EffectGroupEmit(D_8010C058_cosmic_coaster, 0.0f, 0.0f, 0.0f);
+            effect = EffectGroupEmit(m216_coinEffGrp, 0.0f, 0.0f, 0.0f);
             if (effect >= 0) {
                 Hu3DModelCameraSet(effect, cam);
                 Hu3DModelPosSet(effect, car->x[1], 270.0f, 100.0f);
                 Hu3DModelScaleSet(effect, 2.0f, 2.0f, 2.0f);
             }
         } else {
-            HuAudFXPanning(HuAudPlayerFXPlay(0x373, car->player[1]), D_8010BB58_cosmic_coaster[car->group]);
-            D_8010BB30_cosmic_coaster.gaugeValue[car->group] *= 0.3f;
+            HuAudFXPanning(HuAudPlayerFXPlay(0x373, car->player[1]), m216_carSePanTbl[car->group]);
+            m216_mgFlow.gaugeValue[car->group] *= 0.3f;
             car->tilt[1] = -50.0f;
             car->stunTimer[1] = 10;
             Hu3DMotionModelSet(object->model[4], object->motion[5]);
@@ -599,16 +599,16 @@ void func_80106D10_cosmic_coaster(omObjData *object) {
     Hu3DModelRotSet(object->model[3], car->tilt[0], 180.0f, 0.0f);
     Hu3DModelRotSet(object->model[2], car->tilt[1], 180.0f, 0.0f);
     Hu3DModelRotSet(object->model[4], car->tilt[1], 180.0f, 0.0f);
-    if (D_8010BB30_cosmic_coaster.gaugeValue[car->group] > 0.0f && car->rollSfx == -1) {
+    if (m216_mgFlow.gaugeValue[car->group] > 0.0f && car->rollSfx == -1) {
         car->rollSfx = HuAudFXPlay(0x372);
-        HuAudFXPanning(car->rollSfx, D_8010BB58_cosmic_coaster[car->group]);
+        HuAudFXPanning(car->rollSfx, m216_carSePanTbl[car->group]);
     }
-    func_80108C9C_cosmic_coaster(object);
+    m216_CarLightUpdate(object);
 }
 
 // Victory sequence of the winning car: the riders turn to face the camera,
 // slide to the side, jump off the car, spin, and finally cheer.
-void func_80107888_cosmic_coaster(omObjData *object) {
+void m216_CarWinObjMain(omObjData *object) {
     f32 offsets[2];
     CosmicCoasterCarData *car;
     s16 tmp;
@@ -620,11 +620,11 @@ void func_80107888_cosmic_coaster(omObjData *object) {
     switch (car->endPhase) {
         case 0:
             car->endPhase = 1;
-            D_8010C020_cosmic_coaster = 30;
+            m216_winTimer = 30;
             break;
         case 1:
-            if (D_8010C020_cosmic_coaster != 0) {
-                if (--D_8010C020_cosmic_coaster == 0) {
+            if (m216_winTimer != 0) {
+                if (--m216_winTimer == 0) {
                     Hu3DMotionModelSet(object->model[3], object->motion[8]);
                     Hu3DMotionModelSet(object->model[4], object->motion[9]);
                     Hu3DMotionAttrSet(object->model[3], 3, 2);
@@ -638,7 +638,7 @@ void func_80107888_cosmic_coaster(omObjData *object) {
                             car->rotY[i] = 270.0f;
                         }
                     } else {
-                        D_8010C024_cosmic_coaster = omAddObj(40, 0, 0, -1, func_8010803C_cosmic_coaster);
+                        m216_winCameraObj = omAddObj(40, 0, 0, -1, m216_WinCameraObjMain);
                         car->endPhase = 2;
                         Hu3DModelAttrSet(object->model[3 + i], 4, 4);
                         Hu3DModelAttrSet(object->model[7 + i], 4, 0);
@@ -670,22 +670,22 @@ void func_80107888_cosmic_coaster(omObjData *object) {
                 Hu3DMotionAttrSet(object->model[3], 2, 0);
                 Hu3DMotionAttrSet(object->model[4], 2, 0);
                 for (i = 0; i < 2; i++) {
-                    D_8010C018_cosmic_coaster[i] = 70.0f;
+                    m216_winJumpVelYTbl[i] = 70.0f;
                 }
-                D_8010C010_cosmic_coaster[0] = -17.0f;
-                D_8010C010_cosmic_coaster[1] = -12.0f;
+                m216_winJumpVelXTbl[0] = -17.0f;
+                m216_winJumpVelXTbl[1] = -12.0f;
             }
             break;
         case 3:
             for (i = 0; i < 2; i++) {
-                car->x[i] += D_8010C010_cosmic_coaster[i];
-                car->y[i] += D_8010C018_cosmic_coaster[i];
-                D_8010C018_cosmic_coaster[i] -= 10.0f;
+                car->x[i] += m216_winJumpVelXTbl[i];
+                car->y[i] += m216_winJumpVelYTbl[i];
+                m216_winJumpVelYTbl[i] -= 10.0f;
                 if (car->y[i] < 125.0f) {
                     car->y[i] = 125.0f;
                     car->endPhase = 4;
-                    omDelObj(D_8010C024_cosmic_coaster);
-                    D_8010C024_cosmic_coaster = omAddObj(40, 0, 0, -1, func_801080C8_cosmic_coaster);
+                    omDelObj(m216_winCameraObj);
+                    m216_winCameraObj = omAddObj(40, 0, 0, -1, m216_WinZoomObjMain);
                     Hu3DMotionModelSet(object->model[3], object->motion[8]);
                     Hu3DMotionModelSet(object->model[4], object->motion[9]);
                 }
@@ -705,22 +705,22 @@ void func_80107888_cosmic_coaster(omObjData *object) {
             }
             break;
         case 5:
-            if (D_8010C024_cosmic_coaster->work[0] == 1) {
+            if (m216_winCameraObj->work[0] == 1) {
                 car->endPhase = 6;
-                omDelObj(D_8010C024_cosmic_coaster);
+                omDelObj(m216_winCameraObj);
             }
             break;
         case 6:
-            D_8010C028_cosmic_coaster = D_8010C3B0_cosmic_coaster[(s16)(D_8010C3BC_cosmic_coaster ^ 1)];
+            m216_loseCarObj = m216_carObjTbl[(s16)(m216_winner ^ 1)];
             for (i = 0; i < 2; i++) {
                 Hu3DMotionShiftSet(object->model[3 + i], Hu3DData[object->motion[10 + i]].motId, 0, 6, 0);
-                Hu3DMotionShiftSet(D_8010C028_cosmic_coaster->model[3 + i],
-                                   Hu3DData[D_8010C028_cosmic_coaster->motion[12 + i]].motId, 0, 6, 0);
+                Hu3DMotionShiftSet(m216_loseCarObj->model[3 + i],
+                                   Hu3DData[m216_loseCarObj->motion[12 + i]].motId, 0, 6, 0);
                 HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[car->player[0]].chr][0] | 0x2F);
                 HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[car->player[1]].chr][0] | 0x2F);
             }
-            D_8010C028_cosmic_coaster->work[0] = 1;
-            D_8010C028_cosmic_coaster->work[1] = 45;
+            m216_loseCarObj->work[0] = 1;
+            m216_loseCarObj->work[1] = 45;
             MgFlowStatSet(MG_STATE_RESULT);
             car->endPhase = 7;
             break;
@@ -728,13 +728,13 @@ void func_80107888_cosmic_coaster(omObjData *object) {
 }
 
 // Scrolls the winning car's camera toward the car's x position.
-void func_8010803C_cosmic_coaster(omObjData *object) {
-    CosmicCoasterCarData *car = D_8010C3B0_cosmic_coaster[D_8010C3BC_cosmic_coaster]->data;
+void m216_WinCameraObjMain(omObjData *object) {
+    CosmicCoasterCarData *car = m216_carObjTbl[m216_winner]->data;
 
-    if (CenterM[D_8010C3BC_cosmic_coaster].x > car->x[0]) {
-        CenterM[D_8010C3BC_cosmic_coaster].x -= 20.0f;
-        if (CenterM[D_8010C3BC_cosmic_coaster].x < car->x[0]) {
-            CenterM[D_8010C3BC_cosmic_coaster].x = car->x[0];
+    if (CenterM[m216_winner].x > car->x[0]) {
+        CenterM[m216_winner].x -= 20.0f;
+        if (CenterM[m216_winner].x < car->x[0]) {
+            CenterM[m216_winner].x = car->x[0];
         }
     }
 }
@@ -742,19 +742,19 @@ void func_8010803C_cosmic_coaster(omObjData *object) {
 // Counts down a short zoom-out animation for the active camera. Once the
 // countdown reaches zero the object flags itself with work[0] = 1 so its
 // parent knows to delete it.
-void func_801080C8_cosmic_coaster(omObjData *arg0) {
-    if (D_8010BB8C_cosmic_coaster != 0) {
-        CZoomM[D_8010C3BC_cosmic_coaster] -= 30.0f;
-        D_8010BB8C_cosmic_coaster--;
+void m216_WinZoomObjMain(omObjData *arg0) {
+    if (m216_winZoomTimer != 0) {
+        CZoomM[m216_winner] -= 30.0f;
+        m216_winZoomTimer--;
     } else {
         arg0->work[0] = 1;
     }
 }
 
-void func_80108124_cosmic_coaster(omObjData *object) {
+void m216_CarLoseObjMain(omObjData *object) {
 }
 
-void func_8010812C_cosmic_coaster(omObjData *object) {
+void m216_ComTargetUpdate(omObjData *object) {
     u8 lanes[3];
     u8 freeLanes[3];
     f32 laneX[3] = { -160.0f, 0.0f, 160.0f };
@@ -771,15 +771,15 @@ void func_8010812C_cosmic_coaster(omObjData *object) {
     offsets[0] = -100.0f;
     offsets[1] = 100.0f;
     car = object->data;
-    lookahead = D_8010BB30_cosmic_coaster.gaugeValue[car->group] / 1.08f * 15.0f;
+    lookahead = m216_mgFlow.gaugeValue[car->group] / 1.08f * 15.0f;
     found[0] = found[1] = NULL;
-    func_8010B644_cosmic_coaster(found, car, lookahead + car->progress, car->progress, 0);
+    m216_StageHitCheck(found, car, lookahead + car->progress, car->progress, 0);
     for (i = 0; i < 2; i++) {
         if (car->state[i] == 0) {
             target = found[i];
             if (target != NULL) {
                 car->carried[i] = target;
-                mask = func_8010B97C_cosmic_coaster(object, i, target);
+                mask = m216_ComLaneMaskGet(object, i, target);
                 car->state[i] = 1;
                 lanes[0] = (mask & 0x30) >> 4;
                 lanes[1] = (mask & 0xC) >> 2;
@@ -799,7 +799,7 @@ void func_8010812C_cosmic_coaster(omObjData *object) {
                 }
             }
         } else {
-            D_8010C3B8_cosmic_coaster = car->carried[i];
+            m216_comTargetObj = car->carried[i];
             if (car->progress - offsets[i] - 30.0f > car->carried[i]->trans.z) {
                 car->carried[i] = NULL;
                 car->targetX[i] = 100000.0f;
@@ -811,7 +811,7 @@ void func_8010812C_cosmic_coaster(omObjData *object) {
 
 // Computes the CPU stick input that steers a rider toward its target lane.
 // The stick strength and the dead zone depend on the CPU difficulty.
-void func_801083D0_cosmic_coaster(omObjData *object, s16 slot, s8 *stickX) {
+void m216_RiderComInputGet(omObjData *object, s16 slot, s8 *stickX) {
     CosmicCoasterCarData *car = object->data;
     s8 speed;
     f32 deadZone;
@@ -870,86 +870,86 @@ void func_801083D0_cosmic_coaster(omObjData *object, s16 slot, s8 *stickX) {
     }
 }
 
-// Intro camera sweep through the D_8010BB90 keyframes for both cameras.
-void func_8010869C_cosmic_coaster(omObjData *object) {
+// Intro camera sweep through the m216_introCameraKeyTbl keyframes for both cameras.
+void m216_IntroCameraObjMain(omObjData *object) {
     s32 i;
 
-    switch (D_8010C05A_cosmic_coaster) {
+    switch (m216_introPhase) {
         case 0:
             WipeCreateIn(0xFF, 16);
-            D_8010C05A_cosmic_coaster = 1;
+            m216_introPhase = 1;
             break;
         case 1:
             if (WipeStatGet() == 0) {
-                D_8010C05A_cosmic_coaster = 2;
-                D_8010C04C_cosmic_coaster = 0;
-                D_8010C02C_cosmic_coaster = CZoomM[0];
-                D_8010C030_cosmic_coaster = (D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].rot.x - -8.0f) / 30.0f;
-                D_8010C034_cosmic_coaster = (D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].rot.y - 180.0f) / 30.0f;
-                D_8010C038_cosmic_coaster = (D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].rot.z - 0.0f) / 30.0f;
-                D_8010C03C_cosmic_coaster = (D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].center.x - 0.0f) / 30.0f;
-                D_8010C040_cosmic_coaster = (D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].center.y - 200.0f) / 30.0f;
-                D_8010C044_cosmic_coaster = (D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].center.z - 0.0f) / 30.0f;
-                D_8010C048_cosmic_coaster = D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].frames;
+                m216_introPhase = 2;
+                m216_introKeyNo = 0;
+                m216_introZoomStart = CZoomM[0];
+                m216_introRotXStep = (m216_introCameraKeyTbl[m216_introKeyNo].rot.x - -8.0f) / 30.0f;
+                m216_introRotYStep = (m216_introCameraKeyTbl[m216_introKeyNo].rot.y - 180.0f) / 30.0f;
+                m216_introRotZStep = (m216_introCameraKeyTbl[m216_introKeyNo].rot.z - 0.0f) / 30.0f;
+                m216_introCenterXStep = (m216_introCameraKeyTbl[m216_introKeyNo].center.x - 0.0f) / 30.0f;
+                m216_introCenterYStep = (m216_introCameraKeyTbl[m216_introKeyNo].center.y - 200.0f) / 30.0f;
+                m216_introCenterZStep = (m216_introCameraKeyTbl[m216_introKeyNo].center.z - 0.0f) / 30.0f;
+                m216_introKeyTimer = m216_introCameraKeyTbl[m216_introKeyNo].frames;
             }
             break;
         case 2:
-            if (--D_8010C048_cosmic_coaster != 0) {
+            if (--m216_introKeyTimer != 0) {
                 for (i = 0; i < 2; i++) {
-                    CRotM[i].x += D_8010C030_cosmic_coaster;
-                    CRotM[i].y += D_8010C034_cosmic_coaster;
-                    CRotM[i].z += D_8010C038_cosmic_coaster;
-                    CenterM[i].x += D_8010C03C_cosmic_coaster;
-                    CenterM[i].y += D_8010C040_cosmic_coaster;
-                    CenterM[i].z += D_8010C044_cosmic_coaster;
+                    CRotM[i].x += m216_introRotXStep;
+                    CRotM[i].y += m216_introRotYStep;
+                    CRotM[i].z += m216_introRotZStep;
+                    CenterM[i].x += m216_introCenterXStep;
+                    CenterM[i].y += m216_introCenterYStep;
+                    CenterM[i].z += m216_introCenterZStep;
                     if (CRotM[i].y > 90.0f) {
-                        CZoomM[i] = D_8010C02C_cosmic_coaster +
-                                    fabs(sindf(CRotM[i].y)) * D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].zoom;
+                        CZoomM[i] = m216_introZoomStart +
+                                    fabs(sindf(CRotM[i].y)) * m216_introCameraKeyTbl[m216_introKeyNo].zoom;
                     } else {
-                        CZoomM[i] = D_8010C02C_cosmic_coaster +
-                                    fabs(cosdf(CRotM[i].y)) * D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].zoom;
+                        CZoomM[i] = m216_introZoomStart +
+                                    fabs(cosdf(CRotM[i].y)) * m216_introCameraKeyTbl[m216_introKeyNo].zoom;
                     }
                 }
             } else {
                 for (i = 0; i < 2; i++) {
-                    CRotM[i].x = D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].rot.x;
-                    CRotM[i].y = D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].rot.y;
-                    CRotM[i].z = D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].rot.z;
-                    CenterM[i].x = D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].center.x;
-                    CenterM[i].y = D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].center.y;
-                    CenterM[i].z = D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].center.z;
+                    CRotM[i].x = m216_introCameraKeyTbl[m216_introKeyNo].rot.x;
+                    CRotM[i].y = m216_introCameraKeyTbl[m216_introKeyNo].rot.y;
+                    CRotM[i].z = m216_introCameraKeyTbl[m216_introKeyNo].rot.z;
+                    CenterM[i].x = m216_introCameraKeyTbl[m216_introKeyNo].center.x;
+                    CenterM[i].y = m216_introCameraKeyTbl[m216_introKeyNo].center.y;
+                    CenterM[i].z = m216_introCameraKeyTbl[m216_introKeyNo].center.z;
                     if (CRotM[i].y >= 90.0f) {
-                        CZoomM[i] = D_8010C02C_cosmic_coaster +
-                                    fabs(sindf(CRotM[i].y)) * D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].zoom;
+                        CZoomM[i] = m216_introZoomStart +
+                                    fabs(sindf(CRotM[i].y)) * m216_introCameraKeyTbl[m216_introKeyNo].zoom;
                     } else {
-                        CZoomM[i] = D_8010C02C_cosmic_coaster +
-                                    fabs(cosdf(CRotM[i].y)) * D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].zoom;
+                        CZoomM[i] = m216_introZoomStart +
+                                    fabs(cosdf(CRotM[i].y)) * m216_introCameraKeyTbl[m216_introKeyNo].zoom;
                     }
                 }
-                if (++D_8010C04C_cosmic_coaster == 2) {
-                    D_8010C05A_cosmic_coaster = 3;
+                if (++m216_introKeyNo == 2) {
+                    m216_introPhase = 3;
                     HuAudSeqPlay(0x37);
                 } else {
-                    D_8010C030_cosmic_coaster =
-                        (D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].rot.x - CRotM[0].x) / 30.0f;
-                    D_8010C034_cosmic_coaster =
-                        (D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].rot.y - CRotM[0].y) / 30.0f;
-                    D_8010C038_cosmic_coaster =
-                        (D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].rot.z - CRotM[0].z) / 30.0f;
-                    D_8010C03C_cosmic_coaster =
-                        (D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].center.x - CenterM[0].x) / 30.0f;
-                    D_8010C040_cosmic_coaster =
-                        (D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].center.y - CenterM[0].y) / 30.0f;
-                    D_8010C044_cosmic_coaster =
-                        (D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].center.z - CenterM[0].z) / 30.0f;
-                    D_8010C02C_cosmic_coaster = CZoomM[0];
-                    D_8010C048_cosmic_coaster = D_8010BB90_cosmic_coaster[D_8010C04C_cosmic_coaster].frames;
+                    m216_introRotXStep =
+                        (m216_introCameraKeyTbl[m216_introKeyNo].rot.x - CRotM[0].x) / 30.0f;
+                    m216_introRotYStep =
+                        (m216_introCameraKeyTbl[m216_introKeyNo].rot.y - CRotM[0].y) / 30.0f;
+                    m216_introRotZStep =
+                        (m216_introCameraKeyTbl[m216_introKeyNo].rot.z - CRotM[0].z) / 30.0f;
+                    m216_introCenterXStep =
+                        (m216_introCameraKeyTbl[m216_introKeyNo].center.x - CenterM[0].x) / 30.0f;
+                    m216_introCenterYStep =
+                        (m216_introCameraKeyTbl[m216_introKeyNo].center.y - CenterM[0].y) / 30.0f;
+                    m216_introCenterZStep =
+                        (m216_introCameraKeyTbl[m216_introKeyNo].center.z - CenterM[0].z) / 30.0f;
+                    m216_introZoomStart = CZoomM[0];
+                    m216_introKeyTimer = m216_introCameraKeyTbl[m216_introKeyNo].frames;
                 }
             }
             break;
         case 3:
             omDelObj(object);
-            D_8010C050_cosmic_coaster = NULL;
+            m216_introCameraObj = NULL;
             MgFlowStatSet(MG_STATE_START);
             break;
     }
@@ -957,7 +957,7 @@ void func_8010869C_cosmic_coaster(omObjData *object) {
 
 // Lights the car and its riders from the nearest track object of type 4
 // (work[1]) within range, fading the light out with distance.
-void func_80108C9C_cosmic_coaster(omObjData *object) {
+void m216_CarLightUpdate(omObjData *object) {
     CosmicCoasterCarData *car = object->data;
     omObjData **list;
     omObjData *nearest;
@@ -1013,7 +1013,7 @@ void func_80108C9C_cosmic_coaster(omObjData *object) {
     }
 }
 
-void func_801090C0_cosmic_coaster(omObjData *object) {
+void m216_StarSkyObjInit(omObjData *object) {
     CosmicCoasterEffectData *data;
     s16 sprite;
     s16 sprite2;
@@ -1038,12 +1038,12 @@ void func_801090C0_cosmic_coaster(omObjData *object) {
     for (i = 0; i < 2; i++) {
         data->timer[i] = rand8() + 120;
     }
-    object->func = func_80109290_cosmic_coaster;
+    object->func = m216_StarSkyObjMain;
 }
 
 // Marks the first unused of the 6 star sprite slots as in use, returning its
 // index, or -1 if all are in use.
-s16 func_8010923C_cosmic_coaster(CosmicCoasterEffectData *data) {
+s16 m216_StarSlotGet(CosmicCoasterEffectData *data) {
     s16 i;
 
     for (i = 0; i < 6; i++) {
@@ -1057,7 +1057,7 @@ s16 func_8010923C_cosmic_coaster(CosmicCoasterEffectData *data) {
 }
 
 // Periodically launches a shooting star on each half of the screen.
-void func_80109290_cosmic_coaster(omObjData *object) {
+void m216_StarSkyObjMain(omObjData *object) {
     CosmicCoasterEffectData *data = object->data;
     CosmicCoasterStarData *star;
     omObjData *starObj;
@@ -1071,9 +1071,9 @@ void func_80109290_cosmic_coaster(omObjData *object) {
     for (i = 0; i < 2; i++) {
         if (--data->timer[i] == 0) {
             data->timer[i] = (u8)(rand8() % 121) + 120;
-            slot = func_8010923C_cosmic_coaster(data);
+            slot = m216_StarSlotGet(data);
             if (slot != -1) {
-                starObj = omAddObj(40, 0, 0, -1, func_801096A8_cosmic_coaster);
+                starObj = omAddObj(40, 0, 0, -1, m216_ShootingStarObjMain);
                 star = starObj->data = HuMemAllocTag(sizeof(CosmicCoasterStarData), TAG_OVERLAY);
                 star->side = i;
                 angle = (rand8() * rand8()) % 1801;
@@ -1126,7 +1126,7 @@ void func_80109290_cosmic_coaster(omObjData *object) {
 }
 
 // Moves a shooting star and frees it once it leaves its half of the screen.
-void func_801096A8_cosmic_coaster(omObjData *object) {
+void m216_ShootingStarObjMain(omObjData *object) {
     CosmicCoasterStarData *star = object->data;
 
     star->x += star->vx;

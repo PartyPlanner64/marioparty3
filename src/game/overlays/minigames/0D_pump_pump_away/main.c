@@ -1,7 +1,7 @@
 #include "common.h"
 #include "game/overlays/minigame.h"
 
-typedef struct UnkPumpPumpAwayEntry {
+typedef struct PumpPumpAwayObjWork {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s16 unk_04;
     /* 0x06 */ s16 unk_06;
@@ -33,63 +33,63 @@ typedef struct UnkPumpPumpAwayEntry {
     /* 0x70 */ f32 unk_70;
     /* 0x74 */ f32 unk_74;
     /* 0x78 */ Vec unk_78;
-} UnkPumpPumpAwayEntry; // sizeof 0x84
+} PumpPumpAwayObjWork; // sizeof 0x84
 
-typedef struct UnkPumpPumpAway {
+typedef struct PumpPumpAwayPump {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ s32 unk_0C; // 0x0A is also read as an s16 elsewhere
-} UnkPumpPumpAway;         // sizeof 0x10
+} PumpPumpAwayPump;         // sizeof 0x10
 
-typedef struct PumpPumpAwayMilestone {
+typedef struct PumpPumpAwayLakitu {
     s32 unk_00;
     s32 unk_04;
     f32 unk_08;
     s32 unk_0C;
-} PumpPumpAwayMilestone; // sizeof 0x10
+} PumpPumpAwayLakitu; // sizeof 0x10
 
-typedef struct UnkPumpPumpAwayState {
+typedef struct PumpPumpAwayLaunchEff {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04; // 0x07 is also read as a u8 elsewhere
-} UnkPumpPumpAwayState;    // sizeof 0x8
+} PumpPumpAwayLaunchEff;    // sizeof 0x8
 
-typedef struct UnkPumpPumpAwayHose {
+typedef struct PumpPumpAwayHose {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ s32 unk_0C;
-} UnkPumpPumpAwayHose; // sizeof 0x10
+} PumpPumpAwayHose; // sizeof 0x10
 
-typedef struct PumpPumpAwayMovingEffect {
+typedef struct PumpPumpAwayMidFlyer {
     /* 0x00 */ s32 state;
     /* 0x04 */ s32 hidden;
     /* 0x08 */ s32 direction;
     /* 0x0C */ f32 speed;
-} PumpPumpAwayMovingEffect; // sizeof 0x10
+} PumpPumpAwayMidFlyer; // sizeof 0x10
 
-typedef struct UnkPumpPumpAwayParticle {
+typedef struct PumpPumpAwaySmoke {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ omObjData *unk_0C;
-} UnkPumpPumpAwayParticle; // sizeof 0x10
+} PumpPumpAwaySmoke; // sizeof 0x10
 
-typedef struct UnkPumpPumpAwayNozzle {
+typedef struct PumpPumpAwayLowFlyer {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
-} UnkPumpPumpAwayNozzle; // sizeof 0x14
+} PumpPumpAwayLowFlyer; // sizeof 0x14
 
-typedef struct UnkPumpPumpAwaySpray {
+typedef struct PumpPumpAwaySway {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ f32 unk_08;
-} UnkPumpPumpAwaySpray; // sizeof 0xC
+} PumpPumpAwaySway; // sizeof 0xC
 
-typedef struct UnkPumpPumpAwayJet {
+typedef struct PumpPumpAwayPumper {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ omObjData *unk_04;
     /* 0x08 */ s32 unk_08;
@@ -104,18 +104,18 @@ typedef struct UnkPumpPumpAwayJet {
     /* 0x2C */ f32 unk_2C;
     /* 0x30 */ s32 unk_30;
     /* 0x34 */ s32 unk_34;
-} UnkPumpPumpAwayJet; // sizeof 0x38
+} PumpPumpAwayPumper; // sizeof 0x38
 
-typedef struct UnkPumpPumpAwayNode {
+typedef struct PumpPumpAwayHud {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04; // 0x06 is also read as an s16 elsewhere
     /* 0x08 */ s32 unk_08; // 0x0A is also read as an s16 elsewhere
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10[8];
     /* 0x30 */ s32 unk_30;
-} UnkPumpPumpAwayNode; // sizeof 0x34
+} PumpPumpAwayHud; // sizeof 0x34
 
-typedef struct UnkPumpPumpAwayPlayer {
+typedef struct PumpPumpAwayRocket {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08;
@@ -129,24 +129,24 @@ typedef struct UnkPumpPumpAwayPlayer {
     /* 0x28 */ omObjData *unk_28;
     /* 0x2C */ f32 unk_2C;
     /* 0x30 */ f32 unk_30;
-} UnkPumpPumpAwayPlayer; // sizeof 0x34
+} PumpPumpAwayRocket; // sizeof 0x34
 
-typedef struct PumpPumpAwayAngleState {
+typedef struct PumpPumpAwayParachute {
     s32 state;
     s32 player;
     f32 angle;
-} PumpPumpAwayAngleState; // sizeof 0xC
+} PumpPumpAwayParachute; // sizeof 0xC
 
-typedef struct PumpPumpAwayFade {
+typedef struct PumpPumpAwayCover {
     /* 0x00 */ s32 state;
     /* 0x04 */ s32 spriteId; // 0x06 is also read as an s16
     /* 0x08 */ s32 modelId;  // 0x0A is also read as an s16
     /* 0x0C */ HuSprAnimData *sprite;
     /* 0x10 */ s32 alpha;
     /* 0x14 */ s32 timer;
-} PumpPumpAwayFade; // sizeof 0x18
+} PumpPumpAwayCover; // sizeof 0x18
 
-typedef struct UnkPumpPumpAwayRecord {
+typedef struct PumpPumpAwayRecord {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s16 spriteData;
     /* 0x06 */ s16 espriteData;
@@ -157,7 +157,7 @@ typedef struct UnkPumpPumpAwayRecord {
     /* 0x1E */ s16 unk_1E;
     /* 0x20 */ s32 unk_20;
     /* 0x24 */ s32 unk_24;
-} UnkPumpPumpAwayRecord; // sizeof 0x28
+} PumpPumpAwayRecord; // sizeof 0x28
 
 typedef struct PumpPumpAwayCamera {
     f32 scissorX;
@@ -185,21 +185,21 @@ typedef struct PumpPumpAwaySkyColor {
 extern u8 Hu3DBufNo;
 extern u8 omAllPauseF;
 extern s32 omCharModelNoTbl[][6];
-extern const s16 D_801116D8_pump_pump_away[];
+extern const s16 m213_fontMesTbl[];
 
-Vec D_80110E70_pump_pump_away[] = {
+Vec m213_playerPosTbl[] = {
     { -295.0f, 10.0f, 600.0f },
     { -135.0f, 10.0f, 600.0f },
     { 135.0f, 10.0f, 600.0f },
     { 295.0f, 10.0f, 600.0f }
 };
 
-Vec D_80110EA0_pump_pump_away[] = {
+Vec m213_rocketPosTbl[] = {
     { -215.0f, 200.0f, 0.0f },
     { 215.0f, 200.0f, 0.0f }
 };
 
-PumpPumpAwaySkyColor D_80110EB8_pump_pump_away[15] = {
+PumpPumpAwaySkyColor m213_skyColorTbl[15] = {
     { 200, 230, 255 },
     { 20, 150, 255 },
     { 135, 225, 255 },
@@ -217,29 +217,29 @@ PumpPumpAwaySkyColor D_80110EB8_pump_pump_away[15] = {
     { 15, 25, 90 }
 };
 
-Vec D_80110F6C_pump_pump_away[] = {
+Vec m213_pumpPosTbl[] = {
     { -295.0f, 10.0f, 600.0f },
     { -135.0f, 10.0f, 600.0f },
     { 135.0f, 10.0f, 600.0f },
     { 295.0f, 10.0f, 600.0f }
 };
 
-f32 D_80110F9C_pump_pump_away[] = {
+f32 m213_pumpMotSpeedTbl[] = {
     0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f, 1.1f, 1.2f,
     1.3f, 1.4f
 };
 
-Vec D_80110FC4_pump_pump_away[] = {
+Vec m213_hosePosTbl[] = {
     { -215.0f, 0.0f, 0.0f },
     { 215.0f, 0.0f, 0.0f }
 };
 
-u16 D_80110FDC_pump_pump_away[][2] = {
+u16 m213_hudLabelPosTbl[][2] = {
     { 23, 208 },
     { 238, 208 }
 };
 
-u16 D_80110FE4_pump_pump_away[][2] = {
+u16 m213_hudDigitPosTbl[][2] = {
     { 29, 211 },
     { 29, 211 },
     { 38, 211 },
@@ -250,176 +250,176 @@ u16 D_80110FE4_pump_pump_away[][2] = {
     { 262, 211 }
 };
 
-Vec D_80111004_pump_pump_away[] = {
+Vec m213_launchEffPosTbl[] = {
     { -215.0f, 0.0f, 0.0f },
     { 215.0f, 0.0f, 0.0f }
 };
 
-f32 D_8011101C_pump_pump_away[] = { 1500.0f, 1750.0f, 2250.0f, 2500.0f };
+f32 m213_lowFlyerYTbl[] = { 1500.0f, 1750.0f, 2250.0f, 2500.0f };
 
-f32 D_8011102C_pump_pump_away[] = { 2750.0f, 3250.0f, 3500.0f, 3750.0f };
+f32 m213_midFlyerYTbl[] = { 2750.0f, 3250.0f, 3500.0f, 3750.0f };
 
-f32 D_8011103C_pump_pump_away[] = {
+f32 m213_highFlyerYTbl[] = {
     4200.0f, 4400.0f, 4600.0f, 4800.0f, 5200.0f, 5400.0f, 5600.0f, 5800.0f,
     6200.0f, 6400.0f, 6600.0f, 6800.0f, 7200.0f, 7400.0f, 7600.0f, 7800.0f,
     8200.0f, 8400.0f, 8600.0f, 8800.0f, 9200.0f, 9400.0f, 9600.0f, 9800.0f
 };
 
-f32 D_8011109C_pump_pump_away[] = {
+f32 m213_cloudYTbl[] = {
     1250.0f, 1500.0f, 1750.0f, 2250.0f, 2500.0f, 2750.0f, 3250.0f, 3500.0f,
     3750.0f, 4250.0f, 4500.0f, 4750.0f, 5250.0f, 5500.0f, 5750.0f, 6250.0f,
     6500.0f, 6750.0f, 7250.0f, 7500.0f, 7750.0f, 8250.0f, 8500.0f, 8750.0f,
     9250.0f, 9500.0f, 9750.0f
 };
-s16 D_80111108_pump_pump_away = 0;
-s16 D_8011110A_pump_pump_away = 0;
-s16 D_8011110C_pump_pump_away = 18;
-s16 D_8011110E_pump_pump_away = 0;
-s32 D_80111110_pump_pump_away = 0;
-u16 D_80111114_pump_pump_away = 0;
-s32 D_80111118_pump_pump_away = 0;
+s16 m213_parachuteSwingDir = 0;
+s16 m213_parachuteSeF = 0;
+s16 m213_fallDelay = 18;
+s16 m213_parachuteOpenF = 0;
+s32 m213_fallSeF = 0;
+u16 m213_cameraSetF = 0;
+s32 m213_musicTimer = 0;
 
-PumpPumpAwayCamera D_8011111C_pump_pump_away[1] = {
+PumpPumpAwayCamera m213_cameraViewTbl[1] = {
     { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 20.0f },
 };
 
-f32 D_801116E0_pump_pump_away BSS;
-f32 D_801116E4_pump_pump_away BSS;
-u8 D_801116E8_pump_pump_away BSS;
-s16 D_801116EA_pump_pump_away BSS;
-s16 D_801116EC_pump_pump_away BSS;
-s16 D_801116EE_pump_pump_away BSS;
-s16 D_801116F0_pump_pump_away BSS;
-s16 D_801116F2_pump_pump_away BSS;
-s32 D_801116F4_pump_pump_away BSS;
-s32 D_801116F8_pump_pump_away BSS;
-s32 D_801116FC_pump_pump_away BSS;
-s32 D_80111700_pump_pump_away BSS;
-s32 D_80111704_pump_pump_away BSS;
-s32 D_80111708_pump_pump_away BSS;
-u8 D_8011170C_pump_pump_away[4] BSS; /* Unreferenced. */
-UnkPumpPumpAwaySpray D_80111710_pump_pump_away[6] BSS;
-UnkPumpPumpAwayNode D_80111758_pump_pump_away[2] BSS;
-UnkPumpPumpAwayHose D_801117C0_pump_pump_away[2] BSS;
-UnkPumpPumpAwayParticle D_801117E0_pump_pump_away[20] BSS;
-UnkPumpPumpAwayNozzle D_80111920_pump_pump_away[4] BSS;
-s32 D_80111970_pump_pump_away BSS;
-u8 D_80111974_pump_pump_away[4] BSS; /* Unreferenced. */
-UnkPumpPumpAwayPlayer D_80111978_pump_pump_away[2] BSS;
-u8 D_801119E0_pump_pump_away[4] BSS; /* Unreferenced. */
-s32 D_801119E4_pump_pump_away BSS;
-UnkPumpPumpAwaySpray D_801119E8_pump_pump_away[6] BSS;
-UnkPumpPumpAwayEntry D_80111A30_pump_pump_away[50] BSS;
-s32 D_801133F8_pump_pump_away BSS;
-u8 D_801133FC_pump_pump_away[4] BSS; /* Unreferenced. */
-UnkPumpPumpAwayState D_80113400_pump_pump_away[3] BSS;
-PumpPumpAwayMilestone D_80113418_pump_pump_away[2] BSS;
-UnkPumpPumpAwayJet D_80113438_pump_pump_away[4] BSS;
-PumpPumpAwayAngleState D_80113518_pump_pump_away BSS;
-omObjData *D_80113524_pump_pump_away BSS;
-s32 D_80113528_pump_pump_away BSS;
-s32 D_8011352C_pump_pump_away BSS;
-PumpPumpAwayFade D_80113530_pump_pump_away BSS;
-u16 D_80113548_pump_pump_away[2] BSS;
-u8 D_8011354C_pump_pump_away[0x24] BSS; /* Unreferenced. */
-UnkPumpPumpAway D_80113570_pump_pump_away[2] BSS;
-u8 D_80113590_pump_pump_away[0x20] BSS; /* Unreferenced. */
-UnkPumpPumpAwayRecord D_801135B0_pump_pump_away BSS;
-PumpPumpAwayRecordMarker D_801135D8_pump_pump_away BSS;
-s32 D_801135E4_pump_pump_away BSS;
-PumpPumpAwayMovingEffect D_801135E8_pump_pump_away[4] BSS;
+f32 m213_skyScrollRate BSS;
+f32 m213_skyScroll BSS;
+u8 m213_lakituAnimNo BSS;
+s16 m213_lakituMdl BSS;
+s16 m213_lowFlyerMdl BSS;
+s16 m213_midFlyerMdl BSS;
+s16 m213_highFlyerMdl BSS;
+s16 m213_cloudMdl BSS;
+s32 m213_phase BSS;
+s32 m213_phaseStep BSS;
+s32 m213_phaseTimer BSS;
+s32 m213_team0SlotCnt BSS;
+s32 m213_team1SlotCnt BSS;
+s32 m213_turnDelay BSS;
+u8 m213_turnDelayPad[4] BSS; /* Unreferenced. */
+PumpPumpAwaySway m213_highFlyerTbl[6] BSS;
+PumpPumpAwayHud m213_hudTbl[2] BSS;
+PumpPumpAwayHose m213_hoseTbl[2] BSS;
+PumpPumpAwaySmoke m213_smokeTbl[20] BSS;
+PumpPumpAwayLowFlyer m213_lowFlyerTbl[4] BSS;
+s32 m213_highFlyerCnt BSS;
+u8 m213_highFlyerCntPad[4] BSS; /* Unreferenced. */
+PumpPumpAwayRocket m213_rocketTbl[2] BSS;
+u8 m213_rocketTblPad[4] BSS; /* Unreferenced. */
+s32 m213_launchVibF BSS;
+PumpPumpAwaySway m213_cloudTbl[6] BSS;
+PumpPumpAwayObjWork m213_objWorkTbl[50] BSS;
+s32 m213_cloudCnt BSS;
+u8 m213_cloudCntPad[4] BSS; /* Unreferenced. */
+PumpPumpAwayLaunchEff m213_launchEffTbl[3] BSS;
+PumpPumpAwayLakitu m213_lakituTbl[2] BSS;
+PumpPumpAwayPumper m213_pumperTbl[4] BSS;
+PumpPumpAwayParachute m213_parachute BSS;
+omObjData *m213_parachuteObj BSS;
+s32 m213_pumpAnimB BSS;
+s32 m213_pumpAnimA BSS;
+PumpPumpAwayCover m213_cover BSS;
+u16 m213_skyTexSize[2] BSS;
+u8 m213_skyTexSizePad[0x24] BSS; /* Unreferenced. */
+PumpPumpAwayPump m213_pumpTbl[2] BSS;
+u8 m213_pumpTblPad[0x20] BSS; /* Unreferenced. */
+PumpPumpAwayRecord m213_record BSS;
+PumpPumpAwayRecordMarker m213_recordMarker BSS;
+s32 m213_skyColorNo BSS;
+PumpPumpAwayMidFlyer m213_midFlyerTbl[4] BSS;
 
 // Fields of the structs above, accessed through separate symbols
 // (see undefined_syms.txt).
-extern s32 D_8011175C_pump_pump_away; // D_80111758_pump_pump_away[0].unk_04
-extern s16 D_8011175E_pump_pump_away; // D_80111758_pump_pump_away[0].unk_04 (low half)
-extern s32 D_80111760_pump_pump_away; // D_80111758_pump_pump_away[0].unk_08
-extern s16 D_80111762_pump_pump_away; // D_80111758_pump_pump_away[0].unk_08 (low half)
-extern HuSprAnimData *D_80111764_pump_pump_away; // D_80111758_pump_pump_away[0].unk_0C
-extern s32 D_80111788_pump_pump_away; // D_80111758_pump_pump_away[0].unk_30
-extern s32 D_80111790_pump_pump_away; // D_80111758_pump_pump_away[1].unk_04
-extern s16 D_80111792_pump_pump_away; // D_80111758_pump_pump_away[1].unk_04 (low half)
-extern s32 D_80111794_pump_pump_away; // D_80111758_pump_pump_away[1].unk_08
-extern s16 D_80111796_pump_pump_away; // D_80111758_pump_pump_away[1].unk_08 (low half)
-extern HuSprAnimData *D_80111798_pump_pump_away; // D_80111758_pump_pump_away[1].unk_0C
-extern s32 D_801117BC_pump_pump_away; // D_80111758_pump_pump_away[1].unk_30
-extern f32 D_80111990_pump_pump_away; // D_80111978_pump_pump_away[0].unk_18
-extern s32 D_8011351C_pump_pump_away; // D_80113518_pump_pump_away.player
-extern f32 D_80113520_pump_pump_away; // D_80113518_pump_pump_away.angle
-extern s32 D_80113534_pump_pump_away; // D_80113530_pump_pump_away.spriteId
-extern s16 D_80113536_pump_pump_away; // D_80113530_pump_pump_away.spriteId (low half)
-extern s32 D_80113538_pump_pump_away; // D_80113530_pump_pump_away.modelId
-extern s16 D_8011353A_pump_pump_away; // D_80113530_pump_pump_away.modelId (low half)
-extern HuSprAnimData *D_8011353C_pump_pump_away; // D_80113530_pump_pump_away.sprite
-extern s32 D_80113540_pump_pump_away; // D_80113530_pump_pump_away.alpha
-extern s32 D_80113544_pump_pump_away; // D_80113530_pump_pump_away.timer
-extern s16 D_801135B4_pump_pump_away; // D_801135B0_pump_pump_away.spriteData
-extern s16 D_801135B8_pump_pump_away; // D_801135B0_pump_pump_away.group
-extern s16 D_801135BE_pump_pump_away; // D_801135B0_pump_pump_away.digits[0] (low half)
-extern u16 D_801135CC_pump_pump_away; // D_801135B0_pump_pump_away.record
-extern u16 D_801135DC_pump_pump_away; // D_801135D8_pump_pump_away.record
-extern s32 D_801135E0_pump_pump_away; // D_801135D8_pump_pump_away.hidden
+extern s32 m213_hudLabelAnimNo; // m213_hudTbl[0].unk_04
+extern s16 m213_hudLabelAnimNoLo; // m213_hudTbl[0].unk_04 (low half)
+extern s32 m213_hudLabelMdl; // m213_hudTbl[0].unk_08
+extern s16 m213_hudLabelMdlLo; // m213_hudTbl[0].unk_08 (low half)
+extern HuSprAnimData *m213_hudLabelAnim; // m213_hudTbl[0].unk_0C
+extern s32 m213_hudLabelAlpha; // m213_hudTbl[0].unk_30
+extern s32 m213_hudDigitAnimNo; // m213_hudTbl[1].unk_04
+extern s16 m213_hudDigitAnimNoLo; // m213_hudTbl[1].unk_04 (low half)
+extern s32 m213_hudDigitMdl; // m213_hudTbl[1].unk_08
+extern s16 m213_hudDigitMdlLo; // m213_hudTbl[1].unk_08 (low half)
+extern HuSprAnimData *m213_hudDigitAnim; // m213_hudTbl[1].unk_0C
+extern s32 m213_hudDigitAlpha; // m213_hudTbl[1].unk_30
+extern f32 m213_rocket0Height; // m213_rocketTbl[0].unk_18
+extern s32 m213_parachuteRocketNo; // m213_parachute.player
+extern f32 m213_parachuteAngle; // m213_parachute.angle
+extern s32 m213_coverAnimNo; // m213_cover.spriteId
+extern s16 m213_coverAnimNoLo; // m213_cover.spriteId (low half)
+extern s32 m213_coverMdl; // m213_cover.modelId
+extern s16 m213_coverMdlLo; // m213_cover.modelId (low half)
+extern HuSprAnimData *m213_coverAnim; // m213_cover.sprite
+extern s32 m213_coverAlpha; // m213_cover.alpha
+extern s32 m213_coverTimer; // m213_cover.timer
+extern s16 m213_recordDigitAnim; // m213_record.spriteData
+extern s16 m213_recordSprGrp; // m213_record.group
+extern s16 m213_recordDigit0Lo; // m213_record.digits[0] (low half)
+extern u16 m213_recordValue; // m213_record.record
+extern u16 m213_recordMarkerValue; // m213_recordMarker.record
+extern s32 m213_recordMarkerHiddenF; // m213_recordMarker.hidden
 
-void func_80106A6C_pump_pump_away(omObjData *obj);
-void func_80105EE4_pump_pump_away(Vec *position, Vec *target, Vec *result);
-void func_8010628C_pump_pump_away(omObjData *obj);
-void func_8010654C_pump_pump_away(omObjData *obj);
-void func_80106724_pump_pump_away(omObjData *obj);
-void func_8010682C_pump_pump_away(omObjData *obj);
-void func_801068C8_pump_pump_away(omObjData *obj);
-void func_801069D0_pump_pump_away(omObjData *obj);
-void func_80107338_pump_pump_away(omObjData *obj);
-void func_8010749C_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2);
-void func_8010780C_pump_pump_away(omObjData *obj);
-void func_80107964_pump_pump_away(omObjData *obj);
-void func_80107B40_pump_pump_away(omObjData *obj);
-void func_80107EB8_pump_pump_away(omObjData *obj);
-void func_80108358_pump_pump_away(omObjData *obj);
-void func_80108560_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2);
-void func_80108810_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2);
-void func_80108CFC_pump_pump_away(omObjData *obj);
-void func_80108E74_pump_pump_away(omObjData *obj);
-void func_80109280_pump_pump_away(omObjData *obj);
-void func_801094CC_pump_pump_away(omObjData *obj);
-void func_801099D4_pump_pump_away(omObjData *obj);
-void func_80109A50_pump_pump_away(omObjData *obj);
-void func_80109D74_pump_pump_away(omObjData *obj);
-void func_8010A570_pump_pump_away(omObjData *obj);
-void func_8010AF70_pump_pump_away(omObjData *obj);
-void func_8010B370_pump_pump_away(omObjData *obj);
-void func_8010C6E4_pump_pump_away(omObjData *obj);
-void func_8010CEE8_pump_pump_away(omObjData *obj);
-void func_8010D1B8_pump_pump_away(omObjData *obj);
-void func_8010D48C_pump_pump_away(omObjData *obj);
-void func_8010D620_pump_pump_away(omObjData *obj);
-void func_8010D6F4_pump_pump_away(omObjData *obj);
-void func_8010D95C_pump_pump_away(omObjData *obj);
-void func_8010DD24_pump_pump_away(omObjData *obj);
-void func_8010E0F4_pump_pump_away(omObjData *obj);
-void func_8010E45C_pump_pump_away(omObjData *obj);
-void func_8010E6B8_pump_pump_away(omObjData *obj);
-void func_8010E98C_pump_pump_away(omObjData *obj);
-void func_8010F268_pump_pump_away(omObjData *obj);
-void func_8010F688_pump_pump_away(omObjData *obj);
-void func_8010F900_pump_pump_away(omObjData *obj);
-void func_8010FC64_pump_pump_away(omObjData *obj);
-void func_8010FD94_pump_pump_away(omObjData *obj);
-void func_8010FE6C_pump_pump_away(omObjData *obj);
-void func_8010FEF8_pump_pump_away(omObjData *obj);
-void func_8010EBC4_pump_pump_away(omObjData *obj);
-void func_8010F024_pump_pump_away(omObjData *obj);
-void func_80110034_pump_pump_away(omObjData *obj);
-void func_801100F0_pump_pump_away(void);
-void func_801102E4_pump_pump_away(omObjData *obj);
-void func_801103D8_pump_pump_away(omObjData *obj);
-void func_801104BC_pump_pump_away(omObjData *obj);
+void m213_SkyObjMain(omObjData *obj);
+void m213_PolarCalc(Vec *position, Vec *target, Vec *result);
+void m213_GroundObjMain(omObjData *obj);
+void m213_GroundObjInit(omObjData *obj);
+void m213_NearBackObjMain(omObjData *obj);
+void m213_NearBackObjInit(omObjData *obj);
+void m213_FarBackObjMain(omObjData *obj);
+void m213_FarBackObjInit(omObjData *obj);
+void m213_SkyObjInit(omObjData *obj);
+void m213_CoverDraw(Gfx **gfxPos, s32 arg1, s32 arg2);
+void m213_CoverObjInit(omObjData *obj);
+void m213_PumpAnimUpdate(omObjData *obj);
+void m213_PumpObjInit(omObjData *obj);
+void m213_HosePumpUpdate(omObjData *obj);
+void m213_HoseObjInit(omObjData *obj);
+void m213_HudLabelDraw(Gfx **gfxPos, s32 arg1, s32 arg2);
+void m213_HudDigitDraw(Gfx **gfxPos, s32 arg1, s32 arg2);
+void m213_HudObjMain(omObjData *obj);
+void m213_HudObjInit(omObjData *obj);
+void m213_LaunchEffObjInit(omObjData *obj);
+void m213_ParachuteUpdate(omObjData *obj);
+void m213_ParachuteObjMain(omObjData *obj);
+void m213_ParachuteObjInit(omObjData *obj);
+void m213_SmokeObjInit(omObjData *obj);
+void m213_RocketFlyUpdate(omObjData *obj);
+void m213_RocketLandUpdate(omObjData *obj);
+void m213_RocketObjInit(omObjData *obj);
+void m213_PlayerObjInit(omObjData *obj);
+void m213_RecordObjMain(omObjData *obj);
+void m213_RecordObjInit(omObjData *obj);
+void m213_RecordMarkerObjMain(omObjData *obj);
+void m213_RecordMarkerObjInit(omObjData *obj);
+void m213_Lakitu0Update(omObjData *obj);
+void m213_Lakitu1Update(omObjData *obj);
+void m213_LakituObjInit(omObjData *obj);
+void m213_LowFlyerObjMain(omObjData *obj);
+void m213_LowFlyerObjInit(omObjData *obj);
+void m213_MidFlyerObjMain(omObjData *obj);
+void m213_MidFlyerObjInit(omObjData *obj);
+void m213_CloudObjMain(omObjData *obj);
+void m213_CloudObjInit(omObjData *obj);
+void m213_CameraViewObjMain(omObjData *obj);
+void m213_SeqResultObjMain(omObjData *obj);
+void m213_SeqRecordObjMain(omObjData *obj);
+void m213_SeqFinishObjMain(omObjData *obj);
+void m213_SeqCoverWaitObjMain(omObjData *obj);
+void m213_HighFlyerObjMain(omObjData *obj);
+void m213_HighFlyerObjInit(omObjData *obj);
+void m213_SeqLaunchObjMain(omObjData *obj);
+void m213_RocketPowerCalc(void);
+void m213_SeqTimerObjMain(omObjData *obj);
+void m213_SeqStartWaitObjMain(omObjData *obj);
+void m213_ExitWaitObjMain(omObjData *obj);
 void m213_ObjectSetup(void);
 
 void m213_Executor(void) {
     m213_ObjectSetup();
 }
 
-Gfx **func_801059BC_pump_pump_away(Gfx **gfxPos) {
+Gfx **m213_GfxRectTexInit(Gfx **gfxPos) {
     u32 geometryMode = G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH;
     Gfx *gfx = *gfxPos;
 
@@ -435,7 +435,7 @@ Gfx **func_801059BC_pump_pump_away(Gfx **gfxPos) {
     return gfxPos;
 }
 
-Gfx **func_80105AA0_pump_pump_away(Gfx **gfxPos) {
+Gfx **m213_GfxRectXluInit(Gfx **gfxPos) {
     u32 geometryMode = G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH;
     Gfx *gfx = *gfxPos;
 
@@ -450,7 +450,7 @@ Gfx **func_80105AA0_pump_pump_away(Gfx **gfxPos) {
     return gfxPos;
 }
 
-Gfx **func_80105B6C_pump_pump_away(Gfx **gfxPos, s32 alpha) {
+Gfx **m213_GfxPrimAlphaSet(Gfx **gfxPos, s32 alpha) {
     Gfx *gfx = *gfxPos;
 
     gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, alpha);
@@ -458,7 +458,7 @@ Gfx **func_80105B6C_pump_pump_away(Gfx **gfxPos, s32 alpha) {
     return gfxPos;
 }
 
-f32 func_80105B9C_pump_pump_away(f32 arg0, f32 arg1) {
+f32 m213_AngleAdd(f32 arg0, f32 arg1) {
     f32 angle = arg0 + arg1;
 
     while (angle >= 360.0f) {
@@ -472,15 +472,15 @@ f32 func_80105B9C_pump_pump_away(f32 arg0, f32 arg1) {
     return angle;
 }
 
-u8 func_80105C1C_pump_pump_away(u32 arg0) {
+u8 m213_RandMulGet(u32 arg0) {
     return (rand8() * arg0) >> 8;
 }
 
-void func_80105C54_pump_pump_away(void) {
+void m213_ObjWorkInit(void) {
     u32 i;
-    UnkPumpPumpAwayEntry *entry;
+    PumpPumpAwayObjWork *entry;
 
-    for (i = 0, entry = D_80111A30_pump_pump_away; i < 50; i++, entry++) {
+    for (i = 0, entry = m213_objWorkTbl; i < 50; i++, entry++) {
         entry->unk_00 = 0;
         entry->unk_04 = 0;
         entry->unk_06 = 0;
@@ -515,14 +515,14 @@ void func_80105C54_pump_pump_away(void) {
     }
 }
 
-void func_80105D1C_pump_pump_away(s32 playerIndex) {
+void m213_PadClear(s32 playerIndex) {
     HuPadBtn[GwPlayer[playerIndex].pad] = 0;
     HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
     HuPadStkX[GwPlayer[playerIndex].pad] = 0;
     HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
-f32 func_80105D94_pump_pump_away(f32 value) {
+f32 m213_ArcTanCalc(f32 value) {
     s32 range;
     s32 i;
     f32 fraction;
@@ -554,7 +554,7 @@ f32 func_80105D94_pump_pump_away(f32 value) {
     return 0.0f;
 }
 
-void func_80105EE4_pump_pump_away(Vec *position, Vec *target, Vec *result) {
+void m213_PolarCalc(Vec *position, Vec *target, Vec *result) {
     Vec difference;
     Vec positionCopy;
     Vec targetCopy;
@@ -580,7 +580,7 @@ void func_80105EE4_pump_pump_away(Vec *position, Vec *target, Vec *result) {
         yaw = horizontalDistance;
     } else {
         if (difference.x != 0.0f && difference.z != 0.0f) {
-            yaw = func_80105D94_pump_pump_away(difference.x / difference.z) * 57.2957795130823229;
+            yaw = m213_ArcTanCalc(difference.x / difference.z) * 57.2957795130823229;
         } else if (difference.z == 0.0f) {
             yaw = difference.x >= 0.0f ? 90.0f : 270.0f;
         } else {
@@ -590,7 +590,7 @@ void func_80105EE4_pump_pump_away(Vec *position, Vec *target, Vec *result) {
             yaw -= 180.0f;
         }
         if (horizontalDistance != 0.0f && difference.y != 0.0f) {
-            pitch = func_80105D94_pump_pump_away(difference.y / horizontalDistance) * 57.2957795130823229;
+            pitch = m213_ArcTanCalc(difference.y / horizontalDistance) * 57.2957795130823229;
         } else {
             pitch = 0.0f;
         }
@@ -608,18 +608,18 @@ void func_80105EE4_pump_pump_away(Vec *position, Vec *target, Vec *result) {
     result->x = distance;
 }
 
-void func_80106260_pump_pump_away(u16 arg0, u16 arg1, char *arg2, u16 arg3) {
+void m213_TextPrint(u16 arg0, u16 arg1, char *arg2, u16 arg3) {
     fontcolor = arg3;
     print8(arg0, arg1, arg2);
 }
 
-void func_8010628C_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayPlayer *players;
-    UnkPumpPumpAwayPlayer *other;
+void m213_GroundObjMain(omObjData *obj) {
+    PumpPumpAwayRocket *players;
+    PumpPumpAwayRocket *other;
     s32 i;
     f32 scale;
 
-    switch (D_801116F4_pump_pump_away) {
+    switch (m213_phase) {
         case 0:
         case 1:
         case 2:
@@ -627,7 +627,7 @@ void func_8010628C_pump_pump_away(omObjData *obj) {
         case 5:
             break;
         case 4:
-            players = D_80111978_pump_pump_away;
+            players = m213_rocketTbl;
             other = players + 1;
             if (players->unk_18 - other->unk_18 > 0.0f) {
                 obj->trans.y -= players->unk_20;
@@ -639,7 +639,7 @@ void func_8010628C_pump_pump_away(omObjData *obj) {
             }
             break;
         case 6:
-            if (D_80113530_pump_pump_away.state < 2) {
+            if (m213_cover.state < 2) {
                 break;
             }
         case 7:
@@ -648,7 +648,7 @@ void func_8010628C_pump_pump_away(omObjData *obj) {
     }
 
     for (i = 1; i < 3; i++) {
-        players = &D_80111978_pump_pump_away[i];
+        players = &m213_rocketTbl[i];
         scale = players[-1].unk_28->trans.y - obj->trans.y - 200.0f;
         if ((scale > 1000.0f) | (scale < -100.0f)) {
             Hu3DModelAttrSet(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -659,13 +659,13 @@ void func_8010628C_pump_pump_away(omObjData *obj) {
                 scale = 3.0f;
             }
         }
-        Hu3DModelPosSet(obj->model[i], D_80110EA0_pump_pump_away[i - 1].x,
-                        obj->trans.y + 1.0, D_80110EA0_pump_pump_away[i - 1].z + 0.0f);
+        Hu3DModelPosSet(obj->model[i], m213_rocketPosTbl[i - 1].x,
+                        obj->trans.y + 1.0, m213_rocketPosTbl[i - 1].z + 0.0f);
         Hu3DModelScaleSet(obj->model[i], scale, scale, scale);
     }
 }
 
-void func_8010654C_pump_pump_away(omObjData *obj) {
+void m213_GroundObjInit(omObjData *obj) {
     s32 i;
 
     obj->model[0] = Hu3DModelRead(0x2E0000, 0x289);
@@ -677,30 +677,30 @@ void func_8010654C_pump_pump_away(omObjData *obj) {
         Hu3DModelDynamicFree(obj->model[i]);
         func_80088800_main(Hu3DData[obj->model[i]].mtx, 0.0f, 1.0f, 0.0f);
         Hu3DModelScaleSet(obj->model[i], 3.0f, 3.0f, 3.0f);
-        Hu3DModelPosSet(obj->model[i], D_80110EA0_pump_pump_away[i - 1].x,
-                        obj->trans.y + 1.0, D_80110EA0_pump_pump_away[i - 1].z + 0.0f);
+        Hu3DModelPosSet(obj->model[i], m213_rocketPosTbl[i - 1].x,
+                        obj->trans.y + 1.0, m213_rocketPosTbl[i - 1].z + 0.0f);
     }
-    obj->func = func_8010628C_pump_pump_away;
+    obj->func = m213_GroundObjMain;
 }
 
-void func_801066F0_pump_pump_away(void) {
-    omAddObj(0xC8, 3, 0, -1, func_8010654C_pump_pump_away);
+void m213_GroundObjCreate(void) {
+    omAddObj(0xC8, 3, 0, -1, m213_GroundObjInit);
 }
 
-void func_80106724_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayPlayer *first;
-    UnkPumpPumpAwayPlayer *player;
-    UnkPumpPumpAwayPlayer *other;
+void m213_NearBackObjMain(omObjData *obj) {
+    PumpPumpAwayRocket *first;
+    PumpPumpAwayRocket *player;
+    PumpPumpAwayRocket *other;
 
-    switch (D_801116F4_pump_pump_away) {
+    switch (m213_phase) {
         case 0:
         case 1:
         case 2:
         case 3:
             break;
         case 4:
-            first = &D_80111978_pump_pump_away[0];
-            player = D_80111978_pump_pump_away;
+            first = &m213_rocketTbl[0];
+            player = m213_rocketTbl;
             other = &player[1];
             if (first->unk_18 - other->unk_18 > 0.0f) {
                 obj->trans.y -= first->unk_20 * 0.9;
@@ -714,7 +714,7 @@ void func_80106724_pump_pump_away(omObjData *obj) {
         case 5:
             break;
         case 6:
-            if (D_80113530_pump_pump_away.state < 2) {
+            if (m213_cover.state < 2) {
                 break;
             }
         case 7:
@@ -724,31 +724,31 @@ void func_80106724_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010682C_pump_pump_away(omObjData *obj) {
+void m213_NearBackObjInit(omObjData *obj) {
     obj->model[0] = Hu3DModelRead(0x2E0003, 0x289);
     obj->trans.x = obj->trans.y = 0.0f;
     obj->trans.z = -1100.0f;
-    obj->func = func_80106724_pump_pump_away;
+    obj->func = m213_NearBackObjMain;
 }
 
-void func_80106894_pump_pump_away(void) {
-    omAddObj(0xFA, 1, 0, -1, func_8010682C_pump_pump_away);
+void m213_NearBackObjCreate(void) {
+    omAddObj(0xFA, 1, 0, -1, m213_NearBackObjInit);
 }
 
-void func_801068C8_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayPlayer *first;
-    UnkPumpPumpAwayPlayer *player;
-    UnkPumpPumpAwayPlayer *other;
+void m213_FarBackObjMain(omObjData *obj) {
+    PumpPumpAwayRocket *first;
+    PumpPumpAwayRocket *player;
+    PumpPumpAwayRocket *other;
 
-    switch (D_801116F4_pump_pump_away) {
+    switch (m213_phase) {
         case 0:
         case 1:
         case 2:
         case 3:
             break;
         case 4:
-            first = &D_80111978_pump_pump_away[0];
-            player = D_80111978_pump_pump_away;
+            first = &m213_rocketTbl[0];
+            player = m213_rocketTbl;
             other = &player[1];
             if (first->unk_18 - other->unk_18 > 0.0f) {
                 obj->trans.y -= first->unk_20 * 0.8;
@@ -762,7 +762,7 @@ void func_801068C8_pump_pump_away(omObjData *obj) {
         case 5:
             break;
         case 6:
-            if (D_80113530_pump_pump_away.state < 2) {
+            if (m213_cover.state < 2) {
                 break;
             }
         case 7:
@@ -772,29 +772,29 @@ void func_801068C8_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_801069D0_pump_pump_away(omObjData *obj) {
+void m213_FarBackObjInit(omObjData *obj) {
     obj->model[0] = Hu3DModelRead(0x2E0004, 0x289);
     obj->trans.x = obj->trans.y = 0.0f;
     obj->trans.z = -1290.0f;
-    obj->func = func_801068C8_pump_pump_away;
+    obj->func = m213_FarBackObjMain;
 }
 
-void func_80106A38_pump_pump_away(void) {
-    omAddObj(0x104, 1, 0, -1, func_801069D0_pump_pump_away);
+void m213_FarBackObjCreate(void) {
+    omAddObj(0x104, 1, 0, -1, m213_FarBackObjInit);
 }
 
-void func_80106A6C_pump_pump_away(omObjData *obj) {
+void m213_SkyObjMain(omObjData *obj) {
     HmfData *model = Hu3DData[obj->model[0]].hmf;
     Vtx *vertex = model->unk44[Hu3DBufNo];
-    UnkPumpPumpAwayPlayer *players;
-    UnkPumpPumpAwayPlayer *other;
+    PumpPumpAwayRocket *players;
+    PumpPumpAwayRocket *other;
     f32 distance;
     f32 difference;
     f32 fraction;
     s32 meters;
     u32 i;
 
-    switch (D_801116F4_pump_pump_away) {
+    switch (m213_phase) {
         case 0:
         case 1:
         case 2:
@@ -804,13 +804,13 @@ void func_80106A6C_pump_pump_away(omObjData *obj) {
                 // A structured loop swaps the object and model pointer registers.
             colorVertex:
                 if (i == 1 || i == 2) {
-                    vertex->v.cn[0] = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].red;
-                    vertex->v.cn[1] = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].green;
-                    vertex->v.cn[2] = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].blue;
+                    vertex->v.cn[0] = m213_skyColorTbl[m213_skyColorNo + 1].red;
+                    vertex->v.cn[1] = m213_skyColorTbl[m213_skyColorNo + 1].green;
+                    vertex->v.cn[2] = m213_skyColorTbl[m213_skyColorNo + 1].blue;
                 } else {
-                    vertex->v.cn[0] = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away].red;
-                    vertex->v.cn[1] = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away].green;
-                    vertex->v.cn[2] = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away].blue;
+                    vertex->v.cn[0] = m213_skyColorTbl[m213_skyColorNo].red;
+                    vertex->v.cn[1] = m213_skyColorTbl[m213_skyColorNo].green;
+                    vertex->v.cn[2] = m213_skyColorTbl[m213_skyColorNo].blue;
                 }
                 vertex++;
                 if (++i < model->unk18) {
@@ -821,59 +821,59 @@ void func_80106A6C_pump_pump_away(omObjData *obj) {
         case 4:
             Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            players = D_80111978_pump_pump_away;
+            players = m213_rocketTbl;
             other = &players[1];
-            if (D_80111990_pump_pump_away > other->unk_18) {
-                distance = D_80111990_pump_pump_away;
+            if (m213_rocket0Height > other->unk_18) {
+                distance = m213_rocket0Height;
             } else {
                 distance = other->unk_18;
             }
             meters = distance * 0.01;
-            D_801135E4_pump_pump_away = meters * 0.01;
+            m213_skyColorNo = meters * 0.01;
             if (omPauseChk() + omAllPauseF == 0) {
                 if (players->unk_18 - other->unk_18 > 0.0f) {
-                    D_801116E0_pump_pump_away = players->unk_18 * 0.0000125;
-                    D_801116E4_pump_pump_away -= players->unk_20 * 0.08;
+                    m213_skyScrollRate = players->unk_18 * 0.0000125;
+                    m213_skyScroll -= players->unk_20 * 0.08;
                 } else {
-                    D_801116E0_pump_pump_away = other->unk_18 * 0.0000125;
-                    D_801116E4_pump_pump_away -= other->unk_20 * 0.08;
+                    m213_skyScrollRate = other->unk_18 * 0.0000125;
+                    m213_skyScroll -= other->unk_20 * 0.08;
                 }
             }
             for (i = 0; i < model->unk18; i++, vertex++) {
                 if (i == 1 || i == 2) {
-                    difference = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].red - D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away].red;
-                    fraction = (D_801135E4_pump_pump_away + 1) * 100 - meters;
+                    difference = m213_skyColorTbl[m213_skyColorNo + 1].red - m213_skyColorTbl[m213_skyColorNo].red;
+                    fraction = (m213_skyColorNo + 1) * 100 - meters;
                     difference *= fraction * 0.01;
-                    vertex->v.cn[0] = (u32)(D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].red - difference);
-                    difference = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].green - D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away].green;
-                    fraction = (D_801135E4_pump_pump_away + 1) * 100 - meters;
+                    vertex->v.cn[0] = (u32)(m213_skyColorTbl[m213_skyColorNo + 1].red - difference);
+                    difference = m213_skyColorTbl[m213_skyColorNo + 1].green - m213_skyColorTbl[m213_skyColorNo].green;
+                    fraction = (m213_skyColorNo + 1) * 100 - meters;
                     difference *= fraction * 0.01;
-                    vertex->v.cn[1] = (u32)(D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].green - difference);
-                    difference = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].blue - D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away].blue;
-                    fraction = (D_801135E4_pump_pump_away + 1) * 100 - meters;
+                    vertex->v.cn[1] = (u32)(m213_skyColorTbl[m213_skyColorNo + 1].green - difference);
+                    difference = m213_skyColorTbl[m213_skyColorNo + 1].blue - m213_skyColorTbl[m213_skyColorNo].blue;
+                    fraction = (m213_skyColorNo + 1) * 100 - meters;
                     difference *= fraction * 0.01;
-                    vertex->v.cn[2] = (u32)(D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].blue - difference);
+                    vertex->v.cn[2] = (u32)(m213_skyColorTbl[m213_skyColorNo + 1].blue - difference);
                 } else {
-                    difference = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 2].red - D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].red;
-                    fraction = (D_801135E4_pump_pump_away + 2) * 100 - (distance + 10000.0f) * 0.01;
+                    difference = m213_skyColorTbl[m213_skyColorNo + 2].red - m213_skyColorTbl[m213_skyColorNo + 1].red;
+                    fraction = (m213_skyColorNo + 2) * 100 - (distance + 10000.0f) * 0.01;
                     difference *= fraction * 0.01;
-                    vertex->v.cn[0] = (u32)(D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 2].red - difference);
-                    difference = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 2].green - D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].green;
-                    fraction = (D_801135E4_pump_pump_away + 2) * 100 - (distance + 10000.0f) * 0.01;
+                    vertex->v.cn[0] = (u32)(m213_skyColorTbl[m213_skyColorNo + 2].red - difference);
+                    difference = m213_skyColorTbl[m213_skyColorNo + 2].green - m213_skyColorTbl[m213_skyColorNo + 1].green;
+                    fraction = (m213_skyColorNo + 2) * 100 - (distance + 10000.0f) * 0.01;
                     difference *= fraction * 0.01;
-                    vertex->v.cn[1] = (u32)(D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 2].green - difference);
-                    difference = D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 2].blue - D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 1].blue;
-                    fraction = (D_801135E4_pump_pump_away + 2) * 100 - (distance + 10000.0f) * 0.01;
+                    vertex->v.cn[1] = (u32)(m213_skyColorTbl[m213_skyColorNo + 2].green - difference);
+                    difference = m213_skyColorTbl[m213_skyColorNo + 2].blue - m213_skyColorTbl[m213_skyColorNo + 1].blue;
+                    fraction = (m213_skyColorNo + 2) * 100 - (distance + 10000.0f) * 0.01;
                     difference *= fraction * 0.01;
-                    vertex->v.cn[2] = (u32)(D_80110EB8_pump_pump_away[D_801135E4_pump_pump_away + 2].blue - difference);
+                    vertex->v.cn[2] = (u32)(m213_skyColorTbl[m213_skyColorNo + 2].blue - difference);
                 }
             }
         case 5:
-            Hu3DModelObjTexScroll(obj->model[0], D_801116E4_pump_pump_away, D_801116E4_pump_pump_away,
-                               D_80113548_pump_pump_away[0], D_80113548_pump_pump_away[1], "dammy_0-sky_b_2", 0);
+            Hu3DModelObjTexScroll(obj->model[0], m213_skyScroll, m213_skyScroll,
+                               m213_skyTexSize[0], m213_skyTexSize[1], "dammy_0-sky_b_2", 0);
             break;
         case 6:
-            if (D_80113530_pump_pump_away.state < 2) {
+            if (m213_cover.state < 2) {
                 break;
             }
         case 7:
@@ -883,7 +883,7 @@ void func_80106A6C_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_80107338_pump_pump_away(omObjData *obj) {
+void m213_SkyObjInit(omObjData *obj) {
     obj->model[0] = Hu3DModelRead(0x2E0001, 0x289);
     obj->model[1] = Hu3DModelRead(0x2E0002, 0x289);
     Hu3DModelObjAttrSet(obj->model[0], 0x20000, 0x20000);
@@ -891,23 +891,23 @@ void func_80107338_pump_pump_away(omObjData *obj) {
     Hu3DModelVtxBufMake(obj->model[0]);
     Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    Hu3DTexSizeGet("m213_back_DEF", D_80113548_pump_pump_away);
+    Hu3DTexSizeGet("m213_back_DEF", m213_skyTexSize);
     obj->trans.x = obj->trans.y = 0.0f;
     obj->trans.z = -1300.0f;
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
-    D_801116E0_pump_pump_away = 0.0f;
-    D_801116E4_pump_pump_away = 0.0f;
-    D_801135E4_pump_pump_away = 0;
-    obj->func = func_80106A6C_pump_pump_away;
+    m213_skyScrollRate = 0.0f;
+    m213_skyScroll = 0.0f;
+    m213_skyColorNo = 0;
+    obj->func = m213_SkyObjMain;
 }
 
-void func_8010745C_pump_pump_away(void) {
-    omObjData *obj = omAddObj(0x64, 2, 0, -1, func_80107338_pump_pump_away);
+void m213_SkyObjCreate(void) {
+    omObjData *obj = omAddObj(0x64, 2, 0, -1, m213_SkyObjInit);
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
-void func_8010749C_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
-    PumpPumpAwayFade *fade = &D_80113530_pump_pump_away;
+void m213_CoverDraw(Gfx **gfxPos, s32 arg1, s32 arg2) {
+    PumpPumpAwayCover *fade = &m213_cover;
     Gfx *gfx;
     Gfx *command;
     u32 word;
@@ -917,11 +917,11 @@ void func_8010749C_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
     if (fade->state == -1) {
         return;
     }
-    if (D_80113540_pump_pump_away < 255) {
-        gfxPos = func_80105AA0_pump_pump_away(gfxPos);
-        gfxPos = func_80105B6C_pump_pump_away(gfxPos, (u8)D_80113540_pump_pump_away);
+    if (m213_coverAlpha < 255) {
+        gfxPos = m213_GfxRectXluInit(gfxPos);
+        gfxPos = m213_GfxPrimAlphaSet(gfxPos, (u8)m213_coverAlpha);
     } else {
-        gfxPos = func_801059BC_pump_pump_away(gfxPos);
+        gfxPos = m213_GfxRectTexInit(gfxPos);
     }
     gfx = *gfxPos;
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
@@ -950,8 +950,8 @@ void func_8010749C_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
     *gfxPos = gfx;
 }
 
-void func_8010775C_pump_pump_away(omObjData *obj) {
-    PumpPumpAwayFade *fade = &D_80113530_pump_pump_away;
+void m213_CoverObjMain(omObjData *obj) {
+    PumpPumpAwayCover *fade = &m213_cover;
 
     if (fade->state == -1) {
         return;
@@ -988,28 +988,28 @@ void func_8010775C_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010780C_pump_pump_away(omObjData *obj) {
-    D_80113534_pump_pump_away = HuSprAnimDataRead(0x2E001E);
-    D_8011353C_pump_pump_away = HuSprAnimDataGet(D_80113536_pump_pump_away);
-    D_80113538_pump_pump_away = Hu3DHookFuncCreate(0, func_8010749C_pump_pump_away, 6);
-    Hu3DModelCameraSet(D_8011353A_pump_pump_away, HU3D_CAM0);
-    D_80113540_pump_pump_away = 0;
-    D_80113530_pump_pump_away.state = -1;
-    D_80113544_pump_pump_away = 30;
-    obj->func = func_8010775C_pump_pump_away;
+void m213_CoverObjInit(omObjData *obj) {
+    m213_coverAnimNo = HuSprAnimDataRead(0x2E001E);
+    m213_coverAnim = HuSprAnimDataGet(m213_coverAnimNoLo);
+    m213_coverMdl = Hu3DHookFuncCreate(0, m213_CoverDraw, 6);
+    Hu3DModelCameraSet(m213_coverMdlLo, HU3D_CAM0);
+    m213_coverAlpha = 0;
+    m213_cover.state = -1;
+    m213_coverTimer = 30;
+    obj->func = m213_CoverObjMain;
 }
 
-void func_801078B4_pump_pump_away(void) {
-    omObjData *obj = omAddObj(0x3B6, 1, 0, -1, func_8010780C_pump_pump_away);
+void m213_CoverObjCreate(void) {
+    omObjData *obj = omAddObj(0x3B6, 1, 0, -1, m213_CoverObjInit);
     obj->work[0] = 0;
 }
 
-void func_801078EC_pump_pump_away(omObjData *obj) {
+void m213_PumpSmokeEmit(omObjData *obj) {
     s32 i;
-    UnkPumpPumpAwayParticle *entry;
+    PumpPumpAwaySmoke *entry;
 
     for (i = 0; i < 20; i++) {
-        entry = &D_801117E0_pump_pump_away[i];
+        entry = &m213_smokeTbl[i];
         if (entry->unk_00 == 0) {
             entry->unk_00 = 1;
             entry->unk_0C->trans.x = obj->trans.x;
@@ -1021,9 +1021,9 @@ void func_801078EC_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_80107964_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAway *entry = &D_80113570_pump_pump_away[obj->work[0]];
-    UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[entry->unk_0C];
+void m213_PumpAnimUpdate(omObjData *obj) {
+    PumpPumpAwayPump *entry = &m213_pumpTbl[obj->work[0]];
+    PumpPumpAwayPumper *jet = &m213_pumperTbl[entry->unk_0C];
 
     Hu3DMotionTimeSet(obj->model[0], Hu3DData[jet->unk_04->model[0]].motTime);
     if (jet->unk_18 != 0 && Hu3DData[obj->model[0]].motTime <= 6.0f) {
@@ -1040,22 +1040,22 @@ void func_80107964_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_80107A8C_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAway *entry = &D_80113570_pump_pump_away[obj->work[0]];
+void m213_PumpObjMain(omObjData *obj) {
+    PumpPumpAwayPump *entry = &m213_pumpTbl[obj->work[0]];
 
     if (entry->unk_00 == -1) {
         return;
     }
-    switch (D_801116F4_pump_pump_away) {
+    switch (m213_phase) {
         case 0:
         case 1:
             break;
         case 2:
-            func_80107964_pump_pump_away(obj);
+            m213_PumpAnimUpdate(obj);
             break;
         case 3:
             if (entry->unk_00 == 0) {
-                func_801078EC_pump_pump_away(obj);
+                m213_PumpSmokeEmit(obj);
                 entry->unk_00 = 1;
             }
             Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -1065,11 +1065,11 @@ void func_80107A8C_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_80107B40_pump_pump_away(omObjData *obj) {
+void m213_PumpObjInit(omObjData *obj) {
     void *data;
-    UnkPumpPumpAway *entry;
+    PumpPumpAwayPump *entry;
     s32 i;
-    UnkPumpPumpAwayJet *jets;
+    PumpPumpAwayPumper *jets;
 
     obj->model[0] = Hu3DModelRead(0x2E0005, 0x2A9);
     omObjMotionRead(obj, 0, 0x2E0006);
@@ -1078,21 +1078,21 @@ void func_80107B40_pump_pump_away(omObjData *obj) {
         case 1:
             if (obj->work[0] == 0) {
                 data = DataRead(0x2E0007);
-                D_8011352C_pump_pump_away = (s16)Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, data, 0, "m213_p1_DEF");
-                obj->work[1] = D_8011352C_pump_pump_away;
+                m213_pumpAnimA = (s16)Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, data, 0, "m213_p1_DEF");
+                obj->work[1] = m213_pumpAnimA;
                 HuMemMemoryFreePerm(data);
             } else {
-                obj->work[1] = Hu3DAnimLink(Hu3DData[obj->model[0]].hmf, (u16)D_8011352C_pump_pump_away, 0, "m213_p1_DEF");
+                obj->work[1] = Hu3DAnimLink(Hu3DData[obj->model[0]].hmf, (u16)m213_pumpAnimA, 0, "m213_p1_DEF");
             }
         case 2:
         case 3:
             if (obj->work[0] == 2) {
                 data = DataRead(0x2E0008);
-                D_80113528_pump_pump_away = (s16)Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, data, 0, "m213_p1_DEF");
-                obj->work[1] = D_80113528_pump_pump_away;
+                m213_pumpAnimB = (s16)Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, data, 0, "m213_p1_DEF");
+                obj->work[1] = m213_pumpAnimB;
                 HuMemMemoryFreePerm(data);
             } else {
-                obj->work[1] = Hu3DAnimLink(Hu3DData[obj->model[0]].hmf, (u16)D_80113528_pump_pump_away, 0, "m213_p1_DEF");
+                obj->work[1] = Hu3DAnimLink(Hu3DData[obj->model[0]].hmf, (u16)m213_pumpAnimB, 0, "m213_p1_DEF");
             }
             break;
     }
@@ -1102,15 +1102,15 @@ void func_80107B40_pump_pump_away(omObjData *obj) {
     Hu3DModelDynamicFree(obj->model[0]);
     Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
     Hu3DMotionAttrSet(obj->model[0], 1, 1);
-    obj->trans.x = D_80110F6C_pump_pump_away[obj->work[0]].x;
-    obj->trans.y = D_80110F6C_pump_pump_away[obj->work[0]].y;
-    obj->trans.z = D_80110F6C_pump_pump_away[obj->work[0]].z;
-    obj->func = func_80107A8C_pump_pump_away;
-    entry = &D_80113570_pump_pump_away[obj->work[0]];
+    obj->trans.x = m213_pumpPosTbl[obj->work[0]].x;
+    obj->trans.y = m213_pumpPosTbl[obj->work[0]].y;
+    obj->trans.z = m213_pumpPosTbl[obj->work[0]].z;
+    obj->func = m213_PumpObjMain;
+    entry = &m213_pumpTbl[obj->work[0]];
     entry->unk_00 = 0;
     entry->unk_04 = 0;
     entry->unk_08 = 0;
-    for (i = 0, jets = D_80113438_pump_pump_away; i < 4; i++) {
+    for (i = 0, jets = m213_pumperTbl; i < 4; i++) {
         if (jets[i].unk_04->work[3] == obj->work[0]) {
             break;
         }
@@ -1118,24 +1118,24 @@ void func_80107B40_pump_pump_away(omObjData *obj) {
     entry->unk_0C = i;
 }
 
-void func_80107E5C_pump_pump_away(void) {
+void m213_PumpObjCreateAll(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        omAddObj(0x1F4, 1, 1, -1, func_80107B40_pump_pump_away)->work[0] = i;
+        omAddObj(0x1F4, 1, 1, -1, m213_PumpObjInit)->work[0] = i;
     }
 }
 
-void func_80107EB8_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayHose *hose = &D_801117C0_pump_pump_away[obj->work[0]];
-    UnkPumpPumpAwayJet *jets[2];
+void m213_HosePumpUpdate(omObjData *obj) {
+    PumpPumpAwayHose *hose = &m213_hoseTbl[obj->work[0]];
+    PumpPumpAwayPumper *jets[2];
     s32 i;
     s32 count;
     s32 speed;
-    UnkPumpPumpAwayPlayer *player;
+    PumpPumpAwayRocket *player;
 
     for (i = 0, count = 0; (i < 4) & (count < 2); i++) {
-        jets[count] = &D_80113438_pump_pump_away[i];
+        jets[count] = &m213_pumperTbl[i];
         count += GwPlayer[jets[count]->unk_04->work[0]].group == obj->work[0];
     }
 
@@ -1146,7 +1146,7 @@ void func_80107EB8_pump_pump_away(omObjData *obj) {
                 speed = (jets[0]->unk_10 + jets[1]->unk_10 - hose->unk_0C) / 3;
                 hose->unk_0C = jets[0]->unk_10 + jets[1]->unk_10;
                 hose->unk_08 = speed < 10 ? speed : 9;
-                Hu3DMotionSpeedSet(obj->model[0], D_80110F9C_pump_pump_away[hose->unk_08]);
+                Hu3DMotionSpeedSet(obj->model[0], m213_pumpMotSpeedTbl[hose->unk_08]);
                 Hu3DMotionAttrSet(obj->model[0], 1, 0);
                 hose->unk_04 = 1;
             } else {
@@ -1158,7 +1158,7 @@ void func_80107EB8_pump_pump_away(omObjData *obj) {
                 Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
                 Hu3DMotionTimeSet(obj->model[0], 0);
                 hose->unk_04 = 0;
-                player = &D_80111978_pump_pump_away[obj->work[0]];
+                player = &m213_rocketTbl[obj->work[0]];
                 player->unk_0C = 1;
                 player->unk_10 = hose->unk_08;
             }
@@ -1166,8 +1166,8 @@ void func_80107EB8_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010811C_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayHose *hose = &D_801117C0_pump_pump_away[obj->work[0]];
+void m213_HoseLaunchUpdate(omObjData *obj) {
+    PumpPumpAwayHose *hose = &m213_hoseTbl[obj->work[0]];
     f32 frame;
 
     if (hose->unk_04 == 2) {
@@ -1191,31 +1191,31 @@ void func_8010811C_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_801082AC_pump_pump_away(omObjData *obj) {
-    if (D_801117C0_pump_pump_away[obj->work[0]].unk_00 == -1) {
+void m213_HoseObjMain(omObjData *obj) {
+    if (m213_hoseTbl[obj->work[0]].unk_00 == -1) {
         return;
     }
 
-    switch (D_801116F4_pump_pump_away) {
+    switch (m213_phase) {
         case 0:
         case 1:
             Hu3DMotionTimeSet(obj->model[0], 0);
             Hu3DMotionAttrSet(obj->model[0], 1, 1);
             break;
         case 2:
-            func_80107EB8_pump_pump_away(obj);
+            m213_HosePumpUpdate(obj);
             break;
         case 3:
-            func_8010811C_pump_pump_away(obj);
+            m213_HoseLaunchUpdate(obj);
             break;
         case 4:
             break;
     }
 }
 
-void func_80108358_pump_pump_away(omObjData *obj) {
+void m213_HoseObjInit(omObjData *obj) {
     void *data;
-    UnkPumpPumpAwayHose *hose;
+    PumpPumpAwayHose *hose;
 
     obj->model[0] = Hu3DModelRead(0x2E0009, 0x289);
     omObjMotionRead(obj, 0, 0x2E000A);
@@ -1230,27 +1230,27 @@ void func_80108358_pump_pump_away(omObjData *obj) {
     }
     Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
     Hu3DMotionAttrSet(obj->model[0], 2, 2);
-    obj->trans.x = D_80110FC4_pump_pump_away[obj->work[0]].x;
-    obj->trans.y = D_80110FC4_pump_pump_away[obj->work[0]].y;
-    obj->trans.z = D_80110FC4_pump_pump_away[obj->work[0]].z;
-    obj->func = func_801082AC_pump_pump_away;
-    hose = &D_801117C0_pump_pump_away[obj->work[0]];
+    obj->trans.x = m213_hosePosTbl[obj->work[0]].x;
+    obj->trans.y = m213_hosePosTbl[obj->work[0]].y;
+    obj->trans.z = m213_hosePosTbl[obj->work[0]].z;
+    obj->func = m213_HoseObjMain;
+    hose = &m213_hoseTbl[obj->work[0]];
     hose->unk_00 = 0;
     hose->unk_04 = 0;
     hose->unk_08 = 0;
     hose->unk_0C = 0;
 }
 
-void func_80108504_pump_pump_away(void) {
+void m213_HoseObjCreateAll(void) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
-        omAddObj(0x258, 1, 2, -1, func_80108358_pump_pump_away)->work[0] = i;
+        omAddObj(0x258, 1, 2, -1, m213_HoseObjInit)->work[0] = i;
     }
 }
 
-void func_80108560_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
-    UnkPumpPumpAwayNode *node = &D_80111758_pump_pump_away[0];
+void m213_HudLabelDraw(Gfx **gfxPos, s32 arg1, s32 arg2) {
+    PumpPumpAwayHud *node = &m213_hudTbl[0];
     Gfx *gfx;
     Gfx *command;
     u32 word;
@@ -1263,11 +1263,11 @@ void func_80108560_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
     if (node->unk_00 == -1) {
         return;
     }
-    if (D_80111788_pump_pump_away < 255) {
-        gfxPos = func_80105AA0_pump_pump_away(gfxPos);
-        gfxPos = func_80105B6C_pump_pump_away(gfxPos, (u8)D_80111788_pump_pump_away);
+    if (m213_hudLabelAlpha < 255) {
+        gfxPos = m213_GfxRectXluInit(gfxPos);
+        gfxPos = m213_GfxPrimAlphaSet(gfxPos, (u8)m213_hudLabelAlpha);
     } else {
-        gfxPos = func_801059BC_pump_pump_away(gfxPos);
+        gfxPos = m213_GfxRectTexInit(gfxPos);
     }
     gfx = *gfxPos;
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
@@ -1276,8 +1276,8 @@ void func_80108560_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
         gDPLoadTextureTile_4b(gfx++, ((HuSprAnimData *)node->unk_0C)->data, G_IM_FMT_CI, 64, 16,
                               0, 0, 64, 16, 0, G_TX_WRAP, G_TX_WRAP, 0, 0, G_TX_NOLOD, G_TX_NOLOD);
         gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 64 << 2, 16 << 2);
-        x = D_80110FDC_pump_pump_away[i][0];
-        y = D_80110FDC_pump_pump_away[i][1];
+        x = m213_hudLabelPosTbl[i][0];
+        y = m213_hudLabelPosTbl[i][1];
         right = x + 64;
         bottom = y + 16;
         {
@@ -1298,8 +1298,8 @@ void func_80108560_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
     *gfxPos = gfx;
 }
 
-void func_80108810_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
-    UnkPumpPumpAwayNode *node = &D_80111758_pump_pump_away[1];
+void m213_HudDigitDraw(Gfx **gfxPos, s32 arg1, s32 arg2) {
+    PumpPumpAwayHud *node = &m213_hudTbl[1];
     Gfx *gfx;
     Gfx *command;
     u32 word;
@@ -1312,11 +1312,11 @@ void func_80108810_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
     if (node->unk_00 == -1) {
         return;
     }
-    if (D_801117BC_pump_pump_away < 255) {
-        gfxPos = func_80105AA0_pump_pump_away(gfxPos);
-        gfxPos = func_80105B6C_pump_pump_away(gfxPos, (u8)D_801117BC_pump_pump_away);
+    if (m213_hudDigitAlpha < 255) {
+        gfxPos = m213_GfxRectXluInit(gfxPos);
+        gfxPos = m213_GfxPrimAlphaSet(gfxPos, (u8)m213_hudDigitAlpha);
     } else {
-        gfxPos = func_801059BC_pump_pump_away(gfxPos);
+        gfxPos = m213_GfxRectTexInit(gfxPos);
     }
     gfx = *gfxPos;
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
@@ -1340,8 +1340,8 @@ void func_80108810_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
             command->words.w1 = word;
             gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, node->unk_10[i] << 2, 8 << 2, (node->unk_10[i] + 10) << 2);
             gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 8 << 2, 10 << 2);
-            x = D_80110FE4_pump_pump_away[i][0];
-            y = D_80110FE4_pump_pump_away[i][1];
+            x = m213_hudDigitPosTbl[i][0];
+            y = m213_hudDigitPosTbl[i][1];
             right = x;
             right += 8;
             bottom = y;
@@ -1374,13 +1374,13 @@ void func_80108810_pump_pump_away(Gfx **gfxPos, s32 arg1, s32 arg2) {
     *gfxPos = gfx;
 }
 
-void func_80108B0C_pump_pump_away(omObjData *obj) {
+void m213_HudDigitCalc(omObjData *obj) {
     s32 digits[4];
     s32 i = 0;
     s32 j;
     s32 distance;
-    UnkPumpPumpAwayNode *node = &D_80111758_pump_pump_away[1];
-    UnkPumpPumpAwayPlayer *players = D_80111978_pump_pump_away;
+    PumpPumpAwayHud *node = &m213_hudTbl[1];
+    PumpPumpAwayRocket *players = m213_rocketTbl;
 
     for (; i < 2; i++) {
         distance = players[i].unk_18 / 10.0f;
@@ -1406,22 +1406,22 @@ void func_80108B0C_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_80108CFC_pump_pump_away(omObjData *obj) {
+void m213_HudObjMain(omObjData *obj) {
     s32 i;
-    UnkPumpPumpAwayNode *node;
+    PumpPumpAwayHud *node;
 
     for (i = 0; i < 2; i++) {
-        node = &D_80111758_pump_pump_away[i];
+        node = &m213_hudTbl[i];
         if (node->unk_00 == -1) {
             return;
         }
     }
-    func_80108B0C_pump_pump_away(obj);
+    m213_HudDigitCalc(obj);
     switch (obj->work[0]) {
         case 0:
-            if (D_801116F4_pump_pump_away < 4) {
+            if (m213_phase < 4) {
                 for (i = 0; i < 2; i++) {
-                    node = &D_80111758_pump_pump_away[i];
+                    node = &m213_hudTbl[i];
                     node->unk_30 = 0;
                 }
             } else {
@@ -1430,7 +1430,7 @@ void func_80108CFC_pump_pump_away(omObjData *obj) {
             break;
         case 1:
             for (i = 0; i < 2; i++) {
-                node = &D_80111758_pump_pump_away[i];
+                node = &m213_hudTbl[i];
                 node->unk_30 += 25;
                 if (node->unk_30 >= 255) {
                     node->unk_30 = 255;
@@ -1440,46 +1440,46 @@ void func_80108CFC_pump_pump_away(omObjData *obj) {
             break;
         case 2:
             for (i = 0; i < 2; i++) {
-                node = &D_80111758_pump_pump_away[i];
+                node = &m213_hudTbl[i];
                 node->unk_30 = 255;
             }
             break;
     }
 }
 
-void func_80108E74_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayNode *entry = D_80111758_pump_pump_away;
+void m213_HudObjInit(omObjData *obj) {
+    PumpPumpAwayHud *entry = m213_hudTbl;
     s32 i;
 
-    D_8011175C_pump_pump_away = HuSprAnimDataRead(0x2E0015);
-    D_80111764_pump_pump_away = HuSprAnimDataGet(D_8011175E_pump_pump_away);
-    D_80111760_pump_pump_away = Hu3DHookFuncCreate(0, func_80108560_pump_pump_away, 2);
-    Hu3DModelCameraSet(D_80111762_pump_pump_away, HU3D_CAM0);
-    D_80111788_pump_pump_away = 0;
+    m213_hudLabelAnimNo = HuSprAnimDataRead(0x2E0015);
+    m213_hudLabelAnim = HuSprAnimDataGet(m213_hudLabelAnimNoLo);
+    m213_hudLabelMdl = Hu3DHookFuncCreate(0, m213_HudLabelDraw, 2);
+    Hu3DModelCameraSet(m213_hudLabelMdlLo, HU3D_CAM0);
+    m213_hudLabelAlpha = 0;
     entry->unk_00 = 0;
     entry++;
-    D_80111790_pump_pump_away = HuSprAnimDataRead(0x2E0016);
-    D_80111798_pump_pump_away = HuSprAnimDataGet(D_80111792_pump_pump_away);
-    D_80111794_pump_pump_away = Hu3DHookFuncCreate(0, func_80108810_pump_pump_away, 2);
-    Hu3DModelCameraSet(D_80111796_pump_pump_away, HU3D_CAM0);
-    D_801117BC_pump_pump_away = 0;
+    m213_hudDigitAnimNo = HuSprAnimDataRead(0x2E0016);
+    m213_hudDigitAnim = HuSprAnimDataGet(m213_hudDigitAnimNoLo);
+    m213_hudDigitMdl = Hu3DHookFuncCreate(0, m213_HudDigitDraw, 2);
+    Hu3DModelCameraSet(m213_hudDigitMdlLo, HU3D_CAM0);
+    m213_hudDigitAlpha = 0;
     entry->unk_00 = 0;
-    obj->func = func_80108CFC_pump_pump_away;
+    obj->func = m213_HudObjMain;
     for (i = 0; i < 8; i++) {
         entry->unk_10[i] = 100;
     }
 }
 
-void func_80108FA8_pump_pump_away(void) {
-    omObjData *obj = omAddObj(0x384, 2, 0, -1, func_80108E74_pump_pump_away);
+void m213_HudObjCreate(void) {
+    omObjData *obj = omAddObj(0x384, 2, 0, -1, m213_HudObjInit);
     obj->work[0] = 0;
 }
 
-void func_80108FE0_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayState *state = &D_80113400_pump_pump_away[obj->work[0]];
+void m213_LaunchEffUpdate(omObjData *obj) {
+    PumpPumpAwayLaunchEff *state = &m213_launchEffTbl[obj->work[0]];
 
-    UnkPumpPumpAwayPlayer *players;
-    UnkPumpPumpAwayPlayer *secondPlayer;
+    PumpPumpAwayRocket *players;
+    PumpPumpAwayRocket *secondPlayer;
 
     switch (state->unk_00) {
         case 0:
@@ -1500,7 +1500,7 @@ void func_80108FE0_pump_pump_away(omObjData *obj) {
             state->unk_00 = 4;
             break;
         case 3:
-            players = D_80111978_pump_pump_away;
+            players = m213_rocketTbl;
             secondPlayer = players + 1;
             if (players->unk_18 - secondPlayer->unk_18 > 0.0f) {
                 obj->trans.y -= players->unk_20;
@@ -1534,9 +1534,9 @@ void func_80108FE0_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010921C_pump_pump_away(omObjData *obj) {
-    if (D_80113400_pump_pump_away[obj->work[0]].unk_00 != -1) {
-        switch (D_801116F4_pump_pump_away) {
+void m213_LaunchEffObjMain(omObjData *obj) {
+    if (m213_launchEffTbl[obj->work[0]].unk_00 != -1) {
+        switch (m213_phase) {
             case 0:
             case 1:
             case 2:
@@ -1544,7 +1544,7 @@ void func_8010921C_pump_pump_away(omObjData *obj) {
                 break;
             case 4:
             case 7:
-                func_80108FE0_pump_pump_away(obj);
+                m213_LaunchEffUpdate(obj);
                 break;
             case 5:
             case 6:
@@ -1553,8 +1553,8 @@ void func_8010921C_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_80109280_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayState *state;
+void m213_LaunchEffObjInit(omObjData *obj) {
+    PumpPumpAwayLaunchEff *state;
 
     obj->model[0] = Hu3DModelRead(0x2E0017, 0x289);
     obj->model[1] = Hu3DModelRead(0x2E0019, 0x289);
@@ -1572,27 +1572,27 @@ void func_80109280_pump_pump_away(omObjData *obj) {
     Hu3DMotionTimeSet(obj->model[1], 0);
     Hu3DMotionAttrSet(obj->model[1], 1, 1);
     Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    obj->trans.x = D_80111004_pump_pump_away[obj->work[0]].x;
-    obj->trans.y = D_80111004_pump_pump_away[obj->work[0]].y;
-    obj->trans.z = D_80111004_pump_pump_away[obj->work[0]].z;
+    obj->trans.x = m213_launchEffPosTbl[obj->work[0]].x;
+    obj->trans.y = m213_launchEffPosTbl[obj->work[0]].y;
+    obj->trans.z = m213_launchEffPosTbl[obj->work[0]].z;
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
-    obj->func = func_8010921C_pump_pump_away;
-    state = &D_80113400_pump_pump_away[obj->work[0]];
+    obj->func = m213_LaunchEffObjMain;
+    state = &m213_launchEffTbl[obj->work[0]];
     state->unk_00 = 0;
     state->unk_04 = 255;
 }
 
-void func_80109470_pump_pump_away(void) {
+void m213_LaunchEffObjCreateAll(void) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
-        omAddObj(0x2EE, 1, 2, -1, func_80109280_pump_pump_away)->work[0] = i;
+        omAddObj(0x2EE, 1, 2, -1, m213_LaunchEffObjInit)->work[0] = i;
     }
 }
 
-void func_801094CC_pump_pump_away(omObjData *obj) {
-    PumpPumpAwayAngleState *state = &D_80113518_pump_pump_away;
-    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[D_8011351C_pump_pump_away];
+void m213_ParachuteUpdate(omObjData *obj) {
+    PumpPumpAwayParachute *state = &m213_parachute;
+    PumpPumpAwayRocket *player = &m213_rocketTbl[m213_parachuteRocketNo];
     s16 sound;
 
     switch (state->state) {
@@ -1619,24 +1619,24 @@ void func_801094CC_pump_pump_away(omObjData *obj) {
             state->state = 3;
             break;
         case 3:
-            if (Hu3DData[obj->model[0]].motTime >= 16.0f && D_8011110A_pump_pump_away == 0) {
+            if (Hu3DData[obj->model[0]].motTime >= 16.0f && m213_parachuteSeF == 0) {
                 sound = HuAudFXPlay(0x363);
                 if (player->unk_28->work[0] != 0) {
                     HuAudFXPanning(sound, 0x60);
                 } else {
                     HuAudFXPanning(sound, 0x20);
                 }
-                D_8011110A_pump_pump_away = 1;
+                m213_parachuteSeF = 1;
             }
             obj->trans.y = player->unk_28->trans.y + 200.0f;
             if (player->unk_24 == 2) {
                 state->state = 4;
                 break;
             }
-            if (D_80111108_pump_pump_away != 0) {
+            if (m213_parachuteSwingDir != 0) {
                 if (state->angle <= 175.0f) {
                     state->angle = 175.0f;
-                    D_80111108_pump_pump_away ^= 1;
+                    m213_parachuteSwingDir ^= 1;
                 } else {
                     state->angle = state->angle - 0.5 >= 360.0 ? state->angle - 0.5 - 360.0
                                    : state->angle - 0.5 < 0.0  ? state->angle - 0.5 + 360.0
@@ -1645,7 +1645,7 @@ void func_801094CC_pump_pump_away(omObjData *obj) {
             } else {
                 if (state->angle >= 185.0f) {
                     state->angle = 185.0f;
-                    D_80111108_pump_pump_away ^= 1;
+                    m213_parachuteSwingDir ^= 1;
                 } else {
                     state->angle = state->angle + 0.5 >= 360.0 ? state->angle + 0.5 - 360.0
                                    : state->angle + 0.5 < 0.0  ? state->angle + 0.5 + 360.0
@@ -1661,9 +1661,9 @@ void func_801094CC_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_801098E0_pump_pump_away(omObjData *obj) {
-    s32 *state = &D_80113518_pump_pump_away.state;
-    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[D_8011351C_pump_pump_away];
+void m213_ParachuteLandUpdate(omObjData *obj) {
+    s32 *state = &m213_parachute.state;
+    PumpPumpAwayRocket *player = &m213_rocketTbl[m213_parachuteRocketNo];
 
     if (*state == 4) {
         Hu3DMotionModelSet(obj->model[0], obj->motion[1]);
@@ -1677,13 +1677,13 @@ void func_801098E0_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_801099D4_pump_pump_away(omObjData *obj) {
-    s32 *state = &D_80113518_pump_pump_away.state;
+void m213_ParachuteObjMain(omObjData *obj) {
+    s32 *state = &m213_parachute.state;
 
     if (*state == -1) {
         return;
     }
-    switch (D_801116F4_pump_pump_away) {
+    switch (m213_phase) {
         case 0:
         case 1:
         case 2:
@@ -1694,16 +1694,16 @@ void func_801099D4_pump_pump_away(omObjData *obj) {
         case 6:
         case 7:
             if (*state < 4) {
-                func_801094CC_pump_pump_away(obj);
+                m213_ParachuteUpdate(obj);
                 break;
             }
         case 8:
-            func_801098E0_pump_pump_away(obj);
+            m213_ParachuteLandUpdate(obj);
             break;
     }
 }
 
-void func_80109A50_pump_pump_away(omObjData *obj) {
+void m213_ParachuteObjInit(omObjData *obj) {
     obj->model[0] = Hu3DModelRead(0x2E001B, 0x1689);
     omObjMotionRead(obj, 0, 0x2E001C);
     omObjMotionRead(obj, 1, 0x2E001D);
@@ -1712,27 +1712,27 @@ void func_80109A50_pump_pump_away(omObjData *obj) {
     Hu3DMotionAttrSet(obj->model[0], 1, 1);
     Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->trans.x = obj->trans.y = obj->trans.z = 0.0f;
-    obj->func = func_801099D4_pump_pump_away;
-    D_80113518_pump_pump_away.state = 0;
-    D_8011351C_pump_pump_away = -1;
-    D_80113520_pump_pump_away = 180.0f;
-    D_80113524_pump_pump_away = obj;
+    obj->func = m213_ParachuteObjMain;
+    m213_parachute.state = 0;
+    m213_parachuteRocketNo = -1;
+    m213_parachuteAngle = 180.0f;
+    m213_parachuteObj = obj;
 }
 
-void func_80109B48_pump_pump_away(void) {
-    omObjData *obj = omAddObj(0x2E4, 1, 2, -1, func_80109A50_pump_pump_away);
+void m213_ParachuteObjCreate(void) {
+    omObjData *obj = omAddObj(0x2E4, 1, 2, -1, m213_ParachuteObjInit);
     obj->work[0] = 0;
 }
 
-void func_80109B80_pump_pump_away(omObjData *obj) {
+void m213_RocketSmokeEmit(omObjData *obj) {
     s32 i;
-    UnkPumpPumpAwayParticle *entry;
-    UnkPumpPumpAwayPlayer *player;
+    PumpPumpAwaySmoke *entry;
+    PumpPumpAwayRocket *player;
 
     for (i = 0; i < 20; i++) {
-        entry = &D_801117E0_pump_pump_away[i];
+        entry = &m213_smokeTbl[i];
         if (entry->unk_00 == 0) {
-            player = &D_80111978_pump_pump_away[obj->work[0]];
+            player = &m213_rocketTbl[obj->work[0]];
             entry->unk_00 = 1;
             entry->unk_0C->trans.x = obj->trans.x;
             entry->unk_0C->trans.y = obj->trans.y - 200.0f;
@@ -1743,8 +1743,8 @@ void func_80109B80_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_80109C30_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayParticle *entry = &D_801117E0_pump_pump_away[obj->work[0]];
+void m213_SmokeObjMain(omObjData *obj) {
+    PumpPumpAwaySmoke *entry = &m213_smokeTbl[obj->work[0]];
 
     if (entry->unk_00 == -1) {
         return;
@@ -1775,8 +1775,8 @@ void func_80109C30_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_80109D74_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayParticle *entry;
+void m213_SmokeObjInit(omObjData *obj) {
+    PumpPumpAwaySmoke *entry;
 
     obj->model[0] = Hu3DModelRead(0x2E0013, 0x289);
     Hu3DModelTPLvlInit(obj->model[0]);
@@ -1784,24 +1784,24 @@ void func_80109D74_pump_pump_away(omObjData *obj) {
     Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->trans.x = obj->trans.y = obj->trans.z = 0.0f;
     obj->scale.x = obj->scale.y = obj->scale.z = 1.0f;
-    obj->func = func_80109C30_pump_pump_away;
-    entry = &D_801117E0_pump_pump_away[obj->work[0]];
+    obj->func = m213_SmokeObjMain;
+    entry = &m213_smokeTbl[obj->work[0]];
     entry->unk_00 = 0;
     entry->unk_04 = 255;
     entry->unk_08 = 0;
     entry->unk_0C = obj;
 }
 
-void func_80109E3C_pump_pump_away(void) {
+void m213_SmokeObjCreateAll(void) {
     s32 i;
 
     for (i = 0; i < 14; i++) {
-        omAddObj(0x2F8, 1, 0, -1, func_80109D74_pump_pump_away)->work[0] = i;
+        omAddObj(0x2F8, 1, 0, -1, m213_SmokeObjInit)->work[0] = i;
     }
 }
 
-void func_80109E98_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];
+void m213_RocketPumpUpdate(omObjData *obj) {
+    PumpPumpAwayRocket *player = &m213_rocketTbl[obj->work[0]];
     s16 sound;
 
     switch (player->unk_0C) {
@@ -1810,7 +1810,7 @@ void func_80109E98_pump_pump_away(omObjData *obj) {
             break;
         case 1:
             Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
-            Hu3DMotionSpeedSet(obj->model[0], D_80110F9C_pump_pump_away[player->unk_10]);
+            Hu3DMotionSpeedSet(obj->model[0], m213_pumpMotSpeedTbl[player->unk_10]);
             Hu3DMotionAttrSet(obj->model[0], 1, 0);
             Hu3DMotionAttrSet(obj->model[0], 4, 0);
             player->unk_0C = 2;
@@ -1825,7 +1825,7 @@ void func_80109E98_pump_pump_away(omObjData *obj) {
             if (Hu3DData[obj->model[0]].motTime >= Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 - 2) {
                 Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
                 Hu3DMotionTimeSet(obj->model[0], Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 - 2);
-                Hu3DMotionSpeedSet(obj->model[0], D_80110F9C_pump_pump_away[player->unk_10]);
+                Hu3DMotionSpeedSet(obj->model[0], m213_pumpMotSpeedTbl[player->unk_10]);
                 Hu3DMotionAttrSet(obj->model[0], 4, 4);
                 player->unk_0C = 3;
             }
@@ -1840,15 +1840,15 @@ void func_80109E98_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010A150_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];
+void m213_RocketPumpEndUpdate(omObjData *obj) {
+    PumpPumpAwayRocket *player = &m213_rocketTbl[obj->work[0]];
 
     switch (player->unk_0C) {
         case 2:
             if (Hu3DData[obj->model[0]].motTime >= Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 - 2) {
                 Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
                 Hu3DMotionTimeSet(obj->model[0], Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 - 2);
-                Hu3DMotionSpeedSet(obj->model[0], D_80110F9C_pump_pump_away[player->unk_10]);
+                Hu3DMotionSpeedSet(obj->model[0], m213_pumpMotSpeedTbl[player->unk_10]);
                 Hu3DMotionAttrSet(obj->model[0], 4, 4);
                 player->unk_0C = 3;
             }
@@ -1871,10 +1871,10 @@ void func_8010A150_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010A390_pump_pump_away(omObjData *obj) {
+void m213_RocketLaunchStart(omObjData *obj) {
     s32 i = obj->work[0];
-    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[i];
-    UnkPumpPumpAwayState *state = &D_80113400_pump_pump_away[i];
+    PumpPumpAwayRocket *player = &m213_rocketTbl[i];
+    PumpPumpAwayLaunchEff *state = &m213_launchEffTbl[i];
 
     player->unk_00 = 1;
     state->unk_00 = 1;
@@ -1883,45 +1883,45 @@ void func_8010A390_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010A3F0_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];
+void m213_RocketSmokeUpdate(omObjData *obj) {
+    PumpPumpAwayRocket *player = &m213_rocketTbl[obj->work[0]];
 
     if (player->unk_18 - player->unk_1C > 300.0f) {
-        func_80109B80_pump_pump_away(obj);
+        m213_RocketSmokeEmit(obj);
         player->unk_1C = player->unk_18;
     }
 }
 
-void func_8010A468_pump_pump_away(void) {
+void m213_SkyDecoHideAll(void) {
     s32 i;
-    PumpPumpAwayMilestone *entry;
-    UnkPumpPumpAwayNozzle *nozzle;
-    PumpPumpAwayMovingEffect *hose;
-    UnkPumpPumpAwaySpray *spray;
-    UnkPumpPumpAwaySpray *otherSpray;
+    PumpPumpAwayLakitu *entry;
+    PumpPumpAwayLowFlyer *nozzle;
+    PumpPumpAwayMidFlyer *hose;
+    PumpPumpAwaySway *spray;
+    PumpPumpAwaySway *otherSpray;
 
-    for (i = 0, entry = D_80113418_pump_pump_away; i < 2; i++) {
+    for (i = 0, entry = m213_lakituTbl; i < 2; i++) {
         entry[i].unk_0C = 1;
     }
-    D_801135E0_pump_pump_away = 1;
-    for (i = 0, nozzle = D_80111920_pump_pump_away; i < 4; i++) {
+    m213_recordMarkerHiddenF = 1;
+    for (i = 0, nozzle = m213_lowFlyerTbl; i < 4; i++) {
         nozzle[i].unk_04 = 1;
     }
-    for (i = 0, hose = D_801135E8_pump_pump_away; i < 4; i++) {
+    for (i = 0, hose = m213_midFlyerTbl; i < 4; i++) {
         hose[i].hidden = 1;
     }
-    for (i = 0, spray = D_80111710_pump_pump_away; i < 6; i++) {
+    for (i = 0, spray = m213_highFlyerTbl; i < 6; i++) {
         spray[i].unk_04 = 1;
     }
-    for (i = 0, otherSpray = D_801119E8_pump_pump_away; i < 6; i++) {
+    for (i = 0, otherSpray = m213_cloudTbl; i < 6; i++) {
         otherSpray[i].unk_04 = 1;
     }
 }
 
-void func_8010A570_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];
+void m213_RocketFlyUpdate(omObjData *obj) {
+    PumpPumpAwayRocket *player = &m213_rocketTbl[obj->work[0]];
     s16 sound;
-    PumpPumpAwayAngleState *state;
+    PumpPumpAwayParachute *state;
 
     switch (player->unk_04) {
         case 0:
@@ -1933,14 +1933,14 @@ void func_8010A570_pump_pump_away(omObjData *obj) {
                 player->unk_04 = 1;
                 player->unk_2C = (u8)(rand8() % 7) * 15;
             }
-            func_8010A3F0_pump_pump_away(obj);
+            m213_RocketSmokeUpdate(obj);
             break;
         case 1:
             player->unk_20 = 10.6f;
             player->unk_18 += player->unk_20 * player->unk_20;
             if (--player->unk_14 <= 0) {
                 player->unk_14 = 0;
-                if (D_80111978_pump_pump_away[obj->work[0] ^ 1].unk_14 == 0) {
+                if (m213_rocketTbl[obj->work[0] ^ 1].unk_14 == 0) {
                     player->unk_04 = 3;
                 } else {
                     player->unk_04 = 2;
@@ -1954,7 +1954,7 @@ void func_8010A570_pump_pump_away(omObjData *obj) {
                 obj->trans.y += sindf(player->unk_2C) * 3.0;
                 player->unk_30 = (obj->trans.y - 200.0f) * 0.05;
             }
-            func_8010A3F0_pump_pump_away(obj);
+            m213_RocketSmokeUpdate(obj);
             break;
         case 2:
             if (player->unk_20 > 0.0f) {
@@ -1963,16 +1963,16 @@ void func_8010A570_pump_pump_away(omObjData *obj) {
                 if (player->unk_20 <= 0.0f) {
                     player->unk_18 += 101 - (s32)player->unk_18 % 100;
                 }
-                func_8010A3F0_pump_pump_away(obj);
+                m213_RocketSmokeUpdate(obj);
             } else {
-                if (D_80111110_pump_pump_away == 0 && player->unk_20 < -1.2) {
+                if (m213_fallSeF == 0 && player->unk_20 < -1.2) {
                     sound = HuAudFXPlay(0x360);
                     if (obj->work[0] != 0) {
                         HuAudFXPanning(sound, 0x60);
                     } else {
                         HuAudFXPanning(sound, 0x20);
                     }
-                    D_80111110_pump_pump_away = 1;
+                    m213_fallSeF = 1;
                 }
                 if (obj->trans.y < -200.0f) {
                     player->unk_24 = 1;
@@ -1991,9 +1991,9 @@ void func_8010A570_pump_pump_away(omObjData *obj) {
                 player->unk_18 += player->unk_20 * player->unk_20;
                 if (player->unk_20 <= 0.0f) {
                     player->unk_18 += 101 - (s32)player->unk_18 % 100;
-                    func_8010A468_pump_pump_away();
+                    m213_SkyDecoHideAll();
                 }
-                func_8010A3F0_pump_pump_away(obj);
+                m213_RocketSmokeUpdate(obj);
             } else {
                 player->unk_04 = 10;
             }
@@ -2002,76 +2002,76 @@ void func_8010A570_pump_pump_away(omObjData *obj) {
             if (obj->trans.y < 0.0f) {
                 player->unk_24 = 1;
             }
-            if (D_8011110C_pump_pump_away <= 0) {
-                if (D_8011110E_pump_pump_away == 0) {
-                    D_80113518_pump_pump_away.state = 1;
-                    D_8011351C_pump_pump_away = obj->work[0];
+            if (m213_fallDelay <= 0) {
+                if (m213_parachuteOpenF == 0) {
+                    m213_parachute.state = 1;
+                    m213_parachuteRocketNo = obj->work[0];
                     obj->trans.y -= player->unk_20 * player->unk_20;
                     player->unk_20 = -2.0f;
-                    D_8011110E_pump_pump_away = 1;
+                    m213_parachuteOpenF = 1;
                 } else {
                     obj->trans.y -= player->unk_20 * player->unk_20;
-                    state = &D_80113518_pump_pump_away;
-                    obj->rot.z = D_80113520_pump_pump_away + 180.0f >= 360.0f ? D_80113520_pump_pump_away + 180.0f - 360.0f
+                    state = &m213_parachute;
+                    obj->rot.z = m213_parachuteAngle + 180.0f >= 360.0f ? m213_parachuteAngle + 180.0f - 360.0f
                                  : state->angle + 180.0f < 0.0f               ? state->angle + 180.0f + 360.0f
                                                                               : state->angle + 180.0f;
                 }
             } else {
-                D_8011110C_pump_pump_away--;
+                m213_fallDelay--;
                 obj->trans.y -= player->unk_20 * player->unk_20;
                 player->unk_20 -= 0.2;
             }
             break;
     }
-    if (D_80113530_pump_pump_away.state >= 2) {
+    if (m213_cover.state >= 2) {
         obj->trans.y = 2000.0f;
     }
 }
 
-void func_8010AD24_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];
+void m213_RocketFlyCheck(omObjData *obj) {
+    PumpPumpAwayRocket *player = &m213_rocketTbl[obj->work[0]];
 
     if (player->unk_14 == 0 && player->unk_18 == 0.0f) {
         player->unk_00 = 99;
         player->unk_24 = 2;
     } else {
-        func_8010A570_pump_pump_away(obj);
+        m213_RocketFlyUpdate(obj);
     }
 }
 
-void func_8010ADA0_pump_pump_away(omObjData *obj) {
+void m213_RocketStayUpdate(omObjData *obj) {
     u32 playerIndex = obj->work[0];
-    UnkPumpPumpAwayPlayer *players = D_80111978_pump_pump_away;
-    UnkPumpPumpAwayPlayer *player = &players[playerIndex ^ 1];
+    PumpPumpAwayRocket *players = m213_rocketTbl;
+    PumpPumpAwayRocket *player = &players[playerIndex ^ 1];
 
-    if (D_801116F4_pump_pump_away < 6) {
+    if (m213_phase < 6) {
         obj->trans.y -= player->unk_20;
         if (obj->trans.y < -2800.0f) {
             obj->trans.y = -2800.0f;
         }
-    } else if (D_80113530_pump_pump_away.state >= 2) {
+    } else if (m213_cover.state >= 2) {
         obj->trans.y = 200.0f;
     }
 }
 
-void func_8010AE40_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];
+void m213_RocketFlyExec(omObjData *obj) {
+    PumpPumpAwayRocket *player = &m213_rocketTbl[obj->work[0]];
 
     switch (player->unk_00) {
         case 0:
-            func_8010A390_pump_pump_away(obj);
+            m213_RocketLaunchStart(obj);
             break;
         case 1:
-            func_8010AD24_pump_pump_away(obj);
+            m213_RocketFlyCheck(obj);
             break;
         case 99:
-            func_8010ADA0_pump_pump_away(obj);
+            m213_RocketStayUpdate(obj);
             break;
     }
 }
 
-void func_8010AED4_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];
+void m213_RocketLandStart(omObjData *obj) {
+    PumpPumpAwayRocket *player = &m213_rocketTbl[obj->work[0]];
 
     if (player->unk_00 == 99) {
         obj->trans.y = 200.0f;
@@ -2085,13 +2085,13 @@ void func_8010AED4_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010AF70_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];
-    PumpPumpAwayAngleState *angleState;
+void m213_RocketLandUpdate(omObjData *obj) {
+    PumpPumpAwayRocket *player = &m213_rocketTbl[obj->work[0]];
+    PumpPumpAwayParachute *angleState;
     f32 angle;
     s16 sound;
     s32 i;
-    UnkPumpPumpAwayJet *jet;
+    PumpPumpAwayPumper *jet;
 
     switch (player->unk_08) {
         case 10:
@@ -2099,9 +2099,9 @@ void func_8010AF70_pump_pump_away(omObjData *obj) {
             player->unk_08 = 11;
             break;
         case 11:
-            angleState = &D_80113518_pump_pump_away;
-            if (D_80113520_pump_pump_away + 180.0f >= 360.0f) {
-                angle = D_80113520_pump_pump_away + 180.0f - 360.0f;
+            angleState = &m213_parachute;
+            if (m213_parachuteAngle + 180.0f >= 360.0f) {
+                angle = m213_parachuteAngle + 180.0f - 360.0f;
             } else {
                 angle = angleState->angle + 180.0f;
                 if (angle < 0.0f) {
@@ -2124,7 +2124,7 @@ void func_8010AF70_pump_pump_away(omObjData *obj) {
         case 21:
             obj->trans.y -= 50.0f;
             if (obj->trans.y <= 250.0f) {
-                D_80113400_pump_pump_away[obj->work[0]].unk_00 = 2;
+                m213_launchEffTbl[obj->work[0]].unk_00 = 2;
                 player->unk_08 = 22;
                 sound = HuAudFXPlay(0x361);
                 if (obj->work[0] != 0) {
@@ -2133,7 +2133,7 @@ void func_8010AF70_pump_pump_away(omObjData *obj) {
                     HuAudFXPanning(sound, 32);
                 }
                 for (i = 0; i < 4; i++) {
-                    jet = &D_80113438_pump_pump_away[i];
+                    jet = &m213_pumperTbl[i];
                     if (jet->unk_00 != -1) {
                         if (jet->unk_04->work[1] == obj->work[0]) {
                             if (jet->unk_20 == 0) {
@@ -2157,42 +2157,42 @@ void func_8010AF70_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010B274_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[obj->work[0]];
+void m213_RocketObjMain(omObjData *obj) {
+    PumpPumpAwayRocket *player = &m213_rocketTbl[obj->work[0]];
 
     if (player->unk_00 == -1) {
         return;
     }
-    switch (D_801116F4_pump_pump_away) {
+    switch (m213_phase) {
         case 0:
         case 1:
             Hu3DMotionTimeSet(obj->model[0], 0);
             Hu3DMotionAttrSet(obj->model[0], 1, 1);
             break;
         case 2:
-            func_80109E98_pump_pump_away(obj);
+            m213_RocketPumpUpdate(obj);
             break;
         case 3:
-            func_8010A150_pump_pump_away(obj);
+            m213_RocketPumpEndUpdate(obj);
             break;
         case 4:
         case 5:
         case 6:
-            func_8010AE40_pump_pump_away(obj);
+            m213_RocketFlyExec(obj);
             break;
         case 7:
             if (player->unk_08 == 0) {
-                func_8010AED4_pump_pump_away(obj);
+                m213_RocketLandStart(obj);
             } else {
-                func_8010AF70_pump_pump_away(obj);
+                m213_RocketLandUpdate(obj);
             }
             break;
     }
 }
 
-void func_8010B370_pump_pump_away(omObjData *obj) {
+void m213_RocketObjInit(omObjData *obj) {
     void *data;
-    UnkPumpPumpAwayPlayer *player;
+    PumpPumpAwayRocket *player;
 
     obj->model[0] = Hu3DModelRead(0x2E000D, 0x4022A9);
     obj->motion[0] = Hu3DModelReadNum(0x2E000E);
@@ -2213,11 +2213,11 @@ void func_8010B370_pump_pump_away(omObjData *obj) {
     }
     Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
     Hu3DMotionAttrSet(obj->model[0], 2, 0);
-    obj->trans.x = D_80110EA0_pump_pump_away[obj->work[0]].x;
-    obj->trans.y = D_80110EA0_pump_pump_away[obj->work[0]].y;
-    obj->trans.z = D_80110EA0_pump_pump_away[obj->work[0]].z;
-    obj->func = func_8010B274_pump_pump_away;
-    player = &D_80111978_pump_pump_away[obj->work[0]];
+    obj->trans.x = m213_rocketPosTbl[obj->work[0]].x;
+    obj->trans.y = m213_rocketPosTbl[obj->work[0]].y;
+    obj->trans.z = m213_rocketPosTbl[obj->work[0]].z;
+    obj->func = m213_RocketObjMain;
+    player = &m213_rocketTbl[obj->work[0]];
     player->unk_00 = 0;
     player->unk_04 = 0;
     player->unk_08 = 0;
@@ -2232,16 +2232,16 @@ void func_8010B370_pump_pump_away(omObjData *obj) {
     player->unk_28 = obj;
 }
 
-void func_8010B5D4_pump_pump_away(void) {
+void m213_RocketObjCreateAll(void) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
-        omAddObj(0x2BC, 1, 1, -1, func_8010B370_pump_pump_away)->work[0] = i;
+        omAddObj(0x2BC, 1, 1, -1, m213_RocketObjInit)->work[0] = i;
     }
 }
 
-void func_8010B630_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];
+void m213_PlayerComInput(omObjData *obj) {
+    PumpPumpAwayPumper *jet = &m213_pumperTbl[obj->work[0]];
     s32 press = 0;
     s32 interval;
 
@@ -2270,8 +2270,8 @@ void func_8010B630_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010B898_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];
+void m213_PlayerPumpUpdate(omObjData *obj) {
+    PumpPumpAwayPumper *jet = &m213_pumperTbl[obj->work[0]];
     f32 frame = Hu3DData[obj->model[0]].motTime;
     s16 sound;
 
@@ -2327,8 +2327,8 @@ void func_8010B898_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010BC14_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];
+void m213_PlayerPumpMotUpdate(omObjData *obj) {
+    PumpPumpAwayPumper *jet = &m213_pumperTbl[obj->work[0]];
 
     if (jet->unk_28 != 0) {
         if (jet->unk_18 != 0) {
@@ -2347,18 +2347,18 @@ void func_8010BC14_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010BD80_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];
+void m213_PlayerTurnUpdate(omObjData *obj) {
+    PumpPumpAwayPumper *jet = &m213_pumperTbl[obj->work[0]];
 
     switch (jet->unk_08) {
         case 0:
             if (obj->rot.y >= 180.0f) {
                 break;
             }
-            if (obj->work[0] == 0 && D_80111708_pump_pump_away != 0) {
-                D_80111708_pump_pump_away--;
+            if (obj->work[0] == 0 && m213_turnDelay != 0) {
+                m213_turnDelay--;
             }
-            if (D_80111708_pump_pump_away == 0) {
+            if (m213_turnDelay == 0) {
                 Hu3DMotionModelSet(obj->model[0], obj->motion[3]);
                 Hu3DMotionTimeSet(obj->model[0], 0.0f);
                 Hu3DMotionAttrSet(obj->model[0], 2, 2);
@@ -2379,17 +2379,17 @@ void func_8010BD80_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010BF14_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];
-    UnkPumpPumpAwayPlayer *player;
-    UnkPumpPumpAwayPlayer *other;
+void m213_PlayerWatchUpdate(omObjData *obj) {
+    PumpPumpAwayPumper *jet = &m213_pumperTbl[obj->work[0]];
+    PumpPumpAwayRocket *player;
+    PumpPumpAwayRocket *other;
 
-    if (D_80111978_pump_pump_away[obj->work[1]].unk_00 == 99 && jet->unk_0C == 0) {
+    if (m213_rocketTbl[obj->work[1]].unk_00 == 99 && jet->unk_0C == 0) {
         Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[4]].motId, 0, 30, 2);
         jet->unk_08 = 4;
         jet->unk_0C = 1;
     }
-    player = D_80111978_pump_pump_away;
+    player = m213_rocketTbl;
     other = &player[1];
     if (player->unk_18 - other->unk_18 > 0.0f) {
         obj->trans.y -= player->unk_20;
@@ -2401,14 +2401,14 @@ void func_8010BF14_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010C060_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];
+void m213_PlayerResultUpdate(omObjData *obj) {
+    PumpPumpAwayPumper *jet = &m213_pumperTbl[obj->work[0]];
     s16 sound;
 
     switch (jet->unk_08) {
         case 0:
-            obj->trans.y = D_80110E70_pump_pump_away[0].y;
-            if (D_80111978_pump_pump_away[obj->work[1]].unk_24 == 2) {
+            obj->trans.y = m213_playerPosTbl[0].y;
+            if (m213_rocketTbl[obj->work[1]].unk_24 == 2) {
                 Hu3DMotionModelSet(obj->model[0], obj->motion[6]);
                 Hu3DMotionTimeSet(obj->model[0], 0.0f);
                 Hu3DMotionAttrSet(obj->model[0], 2, 0);
@@ -2424,19 +2424,19 @@ void func_8010C060_pump_pump_away(omObjData *obj) {
             break;
         case 4:
             if (obj->work[1] == 0) {
-                obj->trans.y = D_80110E70_pump_pump_away[0].y;
+                obj->trans.y = m213_playerPosTbl[0].y;
             } else {
-                obj->trans.y = D_80110E70_pump_pump_away[obj->work[1]].y;
+                obj->trans.y = m213_playerPosTbl[obj->work[1]].y;
             }
             break;
     }
 }
 
-void func_8010C1C8_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];
+void m213_PlayerFrontTurn(omObjData *obj) {
+    PumpPumpAwayPumper *jet = &m213_pumperTbl[obj->work[0]];
     f32 angle;
 
-    obj->trans.y = D_80110E70_pump_pump_away[0].y;
+    obj->trans.y = m213_playerPosTbl[0].y;
     switch (jet->unk_08) {
         case 0:
             if (jet->unk_0C == 9) {
@@ -2462,8 +2462,8 @@ void func_8010C1C8_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010C3E0_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];
+void m213_PlayerWinStart(omObjData *obj) {
+    PumpPumpAwayPumper *jet = &m213_pumperTbl[obj->work[0]];
     s32 modelFile = omCharModelNoTbl[GwPlayer[obj->work[0]].chr][0];
 
     if (jet->unk_08 == 0) {
@@ -2480,16 +2480,16 @@ void func_8010C3E0_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010C4D0_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayJet *jet = &D_80113438_pump_pump_away[obj->work[0]];
+void m213_PlayerObjMain(omObjData *obj) {
+    PumpPumpAwayPumper *jet = &m213_pumperTbl[obj->work[0]];
 
     if (jet->unk_00 == -1) {
         return;
     }
-    switch (D_801116F4_pump_pump_away) {
+    switch (m213_phase) {
         case 0:
         case 1:
-            func_80105D1C_pump_pump_away(obj->work[0]);
+            m213_PadClear(obj->work[0]);
             if (jet->unk_0C == 0) {
                 Hu3DMotionModelSet(obj->model[0], obj->motion[1]);
                 Hu3DMotionTimeSet(obj->model[0], 0.0f);
@@ -2500,37 +2500,37 @@ void func_8010C4D0_pump_pump_away(omObjData *obj) {
             break;
         case 2:
             if (jet->unk_20 != 0) {
-                func_80105D1C_pump_pump_away(obj->work[0]);
-                func_8010B630_pump_pump_away(obj);
+                m213_PadClear(obj->work[0]);
+                m213_PlayerComInput(obj);
             }
-            func_8010B898_pump_pump_away(obj);
-            func_8010BC14_pump_pump_away(obj);
+            m213_PlayerPumpUpdate(obj);
+            m213_PlayerPumpMotUpdate(obj);
             break;
         case 3:
-            func_80105D1C_pump_pump_away(obj->work[0]);
-            func_8010BD80_pump_pump_away(obj);
+            m213_PadClear(obj->work[0]);
+            m213_PlayerTurnUpdate(obj);
             if (GwPlayer[obj->work[0]].chr == 4) {
                 obj->rot.x = 0;
             }
             break;
         case 4:
         case 5:
-            func_80105D1C_pump_pump_away(obj->work[0]);
-            func_8010BF14_pump_pump_away(obj);
+            m213_PadClear(obj->work[0]);
+            m213_PlayerWatchUpdate(obj);
             break;
         case 6:
-            if (D_80113530_pump_pump_away.state < 2) {
+            if (m213_cover.state < 2) {
                 break;
             }
         case 7:
-            func_8010C060_pump_pump_away(obj);
+            m213_PlayerResultUpdate(obj);
             break;
         case 8:
         case 9:
-            func_8010C1C8_pump_pump_away(obj);
+            m213_PlayerFrontTurn(obj);
             break;
         case 10:
-            func_8010C3E0_pump_pump_away(obj);
+            m213_PlayerWinStart(obj);
             break;
     }
     if (obj->work[2] != 0) {
@@ -2540,9 +2540,9 @@ void func_8010C4D0_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010C6E4_pump_pump_away(omObjData *obj) {
+void m213_PlayerObjInit(omObjData *obj) {
     u16 character = GwPlayer[obj->work[0]].chr;
-    UnkPumpPumpAwayJet *jet;
+    PumpPumpAwayPumper *jet;
 
     obj->model[0] = Hu3DModelRead(omCharModelNoTbl[character][0] | omCharModelNoTbl[character][1], 0x2B9);
     omObjMotionRead(obj, 0, CharMotionDataNumGet(character, 0));
@@ -2559,17 +2559,17 @@ void func_8010C6E4_pump_pump_away(omObjData *obj) {
     Hu3DModelDynamicFree(obj->model[1]);
     func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 5.0f, 0.0f);
     if (obj->work[1] == 0) {
-        obj->trans.x = D_80110E70_pump_pump_away[obj->work[1] + D_80111700_pump_pump_away].x;
-        obj->trans.y = D_80110E70_pump_pump_away[obj->work[1] + D_80111700_pump_pump_away].y;
-        obj->trans.z = D_80110E70_pump_pump_away[obj->work[1] + D_80111700_pump_pump_away].z;
-        obj->work[3] = obj->work[1] + D_80111700_pump_pump_away;
-        D_80111700_pump_pump_away++;
+        obj->trans.x = m213_playerPosTbl[obj->work[1] + m213_team0SlotCnt].x;
+        obj->trans.y = m213_playerPosTbl[obj->work[1] + m213_team0SlotCnt].y;
+        obj->trans.z = m213_playerPosTbl[obj->work[1] + m213_team0SlotCnt].z;
+        obj->work[3] = obj->work[1] + m213_team0SlotCnt;
+        m213_team0SlotCnt++;
     } else {
-        obj->trans.x = D_80110E70_pump_pump_away[obj->work[1] + D_80111704_pump_pump_away + 1].x;
-        obj->trans.y = D_80110E70_pump_pump_away[obj->work[1] + D_80111704_pump_pump_away + 1].y;
-        obj->trans.z = D_80110E70_pump_pump_away[obj->work[1] + D_80111704_pump_pump_away + 1].z;
-        obj->work[3] = obj->work[1] + D_80111704_pump_pump_away + 1;
-        D_80111704_pump_pump_away++;
+        obj->trans.x = m213_playerPosTbl[obj->work[1] + m213_team1SlotCnt + 1].x;
+        obj->trans.y = m213_playerPosTbl[obj->work[1] + m213_team1SlotCnt + 1].y;
+        obj->trans.z = m213_playerPosTbl[obj->work[1] + m213_team1SlotCnt + 1].z;
+        obj->work[3] = obj->work[1] + m213_team1SlotCnt + 1;
+        m213_team1SlotCnt++;
     }
     obj->rot.x = obj->rot.y = obj->rot.z = 0.0f;
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y + 2.0, obj->trans.z + 30.0f);
@@ -2591,8 +2591,8 @@ void func_8010C6E4_pump_pump_away(omObjData *obj) {
             obj->trans.z -= 45.0f;
             break;
     }
-    obj->func = func_8010C4D0_pump_pump_away;
-    jet = &D_80113438_pump_pump_away[obj->work[0]];
+    obj->func = m213_PlayerObjMain;
+    jet = &m213_pumperTbl[obj->work[0]];
     jet->unk_00 = 0;
     jet->unk_04 = obj;
     jet->unk_08 = 1;
@@ -2622,13 +2622,13 @@ void func_8010C6E4_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010CBF0_pump_pump_away(void) {
+void m213_PlayerObjCreateAll(void) {
     s32 i;
     s32 playerIndex;
     omObjData *obj;
 
     for (i = 0; i < 4; i++) {
-        obj = omAddObj(0x12C, 9, 60, -1, func_8010C6E4_pump_pump_away);
+        obj = omAddObj(0x12C, 9, 60, -1, m213_PlayerObjInit);
         switch (i) {
             case 0:
                 playerIndex = 0;
@@ -2651,10 +2651,10 @@ void func_8010CBF0_pump_pump_away(void) {
     }
 }
 
-s32 func_8010CCBC_pump_pump_away(void) {
-    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
-    UnkPumpPumpAwayRecord *record = &D_801135B0_pump_pump_away;
-    UnkPumpPumpAwayPlayer *other = &player[1];
+s32 m213_RecordSave(void) {
+    PumpPumpAwayRocket *player = m213_rocketTbl;
+    PumpPumpAwayRecord *record = &m213_record;
+    PumpPumpAwayRocket *other = &player[1];
     u32 distance;
 
     if (player->unk_18 > other->unk_18) {
@@ -2675,13 +2675,13 @@ s32 func_8010CCBC_pump_pump_away(void) {
     return 1;
 }
 
-void func_8010CDF4_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayRecord *record = &D_801135B0_pump_pump_away;
+void m213_RecordDigitCalc(omObjData *obj) {
+    PumpPumpAwayRecord *record = &m213_record;
     s32 value;
 
-    if (D_801116F4_pump_pump_away < 9) {
+    if (m213_phase < 9) {
         value = GWMgRecordGet(0);
-        D_801135CC_pump_pump_away = value;
+        m213_recordValue = value;
     } else {
         value = GWMgRecordGet(0);
     }
@@ -2699,12 +2699,12 @@ void func_8010CDF4_pump_pump_away(omObjData *obj) {
     record->digits[3] = 12;
 }
 
-void func_8010CEE8_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayRecord *record = &D_801135B0_pump_pump_away;
+void m213_RecordObjMain(omObjData *obj) {
+    PumpPumpAwayRecord *record = &m213_record;
     s32 i;
 
-    if (D_801116F4_pump_pump_away == 9 && func_8010CCBC_pump_pump_away()) {
-        func_8010CDF4_pump_pump_away(obj);
+    if (m213_phase == 9 && m213_RecordSave()) {
+        m213_RecordDigitCalc(obj);
         if (record->unk_24 == 0) {
             if (record->unk_20 >= 13) {
                 record->unk_24 = 1;
@@ -2735,20 +2735,20 @@ void func_8010CEE8_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010D1B8_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayRecord *record;
+void m213_RecordObjInit(omObjData *obj) {
+    PumpPumpAwayRecord *record;
     s32 i;
 
-    func_8010CDF4_pump_pump_away(obj);
-    record = &D_801135B0_pump_pump_away;
-    D_801135B4_pump_pump_away = HuSprAnimDataRead(0x32);
-    D_801135B8_pump_pump_away = HuSprGrpCreate(4, 5);
-    HuSprPosSet(D_801135B8_pump_pump_away, 0, 32, 22);
-    HuSprGrpMemberSet(D_801135B8_pump_pump_away, 0, D_801135B4_pump_pump_away, 0);
-    HuSprAnimModeSet(D_801135B8_pump_pump_away, 0, HUSPR_ANIM_MODE_STOP);
-    HuSprPatNoSet(D_801135B8_pump_pump_away, 0, D_801135BE_pump_pump_away);
-    HuSprAttrSet(D_801135B8_pump_pump_away, 0, 0x1000);
-    HuSprAttrSet(D_801135B8_pump_pump_away, 0, 0);
+    m213_RecordDigitCalc(obj);
+    record = &m213_record;
+    m213_recordDigitAnim = HuSprAnimDataRead(0x32);
+    m213_recordSprGrp = HuSprGrpCreate(4, 5);
+    HuSprPosSet(m213_recordSprGrp, 0, 32, 22);
+    HuSprGrpMemberSet(m213_recordSprGrp, 0, m213_recordDigitAnim, 0);
+    HuSprAnimModeSet(m213_recordSprGrp, 0, HUSPR_ANIM_MODE_STOP);
+    HuSprPatNoSet(m213_recordSprGrp, 0, m213_recordDigit0Lo);
+    HuSprAttrSet(m213_recordSprGrp, 0, 0x1000);
+    HuSprAttrSet(m213_recordSprGrp, 0, 0);
     for (i = 1; i < 3; i++) {
         HuSprParentSet(record->group, i, 0);
         HuSprGrpMemberSet(record->group, i, record->spriteData, 0);
@@ -2775,24 +2775,24 @@ void func_8010D1B8_pump_pump_away(omObjData *obj) {
     espDispOn(record->esprite);
     record->unk_20 = 0;
     record->unk_24 = 0;
-    obj->func = func_8010CEE8_pump_pump_away;
+    obj->func = m213_RecordObjMain;
 }
 
-void func_8010D458_pump_pump_away(void) {
-    omAddObj(0x2FD, 1, 0, -1, func_8010D1B8_pump_pump_away);
+void m213_RecordObjCreate(void) {
+    omAddObj(0x2FD, 1, 0, -1, m213_RecordObjInit);
 }
 
-void func_8010D48C_pump_pump_away(omObjData *obj) {
-    PumpPumpAwayRecordMarker *marker = &D_801135D8_pump_pump_away;
-    UnkPumpPumpAwayPlayer *first = &D_80111978_pump_pump_away[0];
-    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
-    UnkPumpPumpAwayPlayer *other = &player[1];
+void m213_RecordMarkerObjMain(omObjData *obj) {
+    PumpPumpAwayRecordMarker *marker = &m213_recordMarker;
+    PumpPumpAwayRocket *first = &m213_rocketTbl[0];
+    PumpPumpAwayRocket *player = m213_rocketTbl;
+    PumpPumpAwayRocket *other = &player[1];
     f64 height;
 
     if (marker->state == -1) {
         return;
     }
-    if (D_801135E0_pump_pump_away == 0) {
+    if (m213_recordMarkerHiddenF == 0) {
         height = (first->unk_18 > other->unk_18) ? first->unk_18 : other->unk_18;
         if (marker->record * 10 - height * 0.1 + 400.0 < 2000.0) {
             Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -2803,33 +2803,33 @@ void func_8010D48C_pump_pump_away(omObjData *obj) {
             }
         }
     }
-    if (D_80113530_pump_pump_away.state >= 2 && marker->state < 10) {
+    if (m213_cover.state >= 2 && marker->state < 10) {
         Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         marker->state = 10;
     }
 }
 
-void func_8010D620_pump_pump_away(omObjData *obj) {
+void m213_RecordMarkerObjInit(omObjData *obj) {
     obj->model[0] = Hu3DModelRead(0x2E001F, 0x1689);
     Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->trans.x = 0.0f;
     obj->trans.y = 1000.0f;
     obj->trans.z = 550.0f;
-    obj->func = func_8010D48C_pump_pump_away;
-    D_801135D8_pump_pump_away.state = 0;
-    D_801135DC_pump_pump_away = D_801135CC_pump_pump_away;
-    D_801135E0_pump_pump_away = 0;
+    obj->func = m213_RecordMarkerObjMain;
+    m213_recordMarker.state = 0;
+    m213_recordMarkerValue = m213_recordValue;
+    m213_recordMarkerHiddenF = 0;
 }
 
-void func_8010D6C0_pump_pump_away(void) {
-    omAddObj(0x302, 1, 0, -1, func_8010D620_pump_pump_away);
+void m213_RecordMarkerObjCreate(void) {
+    omAddObj(0x302, 1, 0, -1, m213_RecordMarkerObjInit);
 }
 
-void func_8010D6F4_pump_pump_away(omObjData *obj) {
-    PumpPumpAwayMilestone *entry = &D_80113418_pump_pump_away[obj->work[0]];
-    UnkPumpPumpAwayPlayer *first = &D_80111978_pump_pump_away[0];
-    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
-    UnkPumpPumpAwayPlayer *other = &player[1];
+void m213_Lakitu0Update(omObjData *obj) {
+    PumpPumpAwayLakitu *entry = &m213_lakituTbl[obj->work[0]];
+    PumpPumpAwayRocket *first = &m213_rocketTbl[0];
+    PumpPumpAwayRocket *player = m213_rocketTbl;
+    PumpPumpAwayRocket *other = &player[1];
     f32 height;
     f32 angle;
     s32 hundreds;
@@ -2867,11 +2867,11 @@ void func_8010D6F4_pump_pump_away(omObjData *obj) {
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
 }
 
-void func_8010D95C_pump_pump_away(omObjData *obj) {
-    PumpPumpAwayMilestone *entry = &D_80113418_pump_pump_away[obj->work[0]];
-    UnkPumpPumpAwayPlayer *first = &D_80111978_pump_pump_away[0];
-    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
-    UnkPumpPumpAwayPlayer *other = &player[1];
+void m213_Lakitu1Update(omObjData *obj) {
+    PumpPumpAwayLakitu *entry = &m213_lakituTbl[obj->work[0]];
+    PumpPumpAwayRocket *first = &m213_rocketTbl[0];
+    PumpPumpAwayRocket *player = m213_rocketTbl;
+    PumpPumpAwayRocket *other = &player[1];
     f32 height;
     f32 angle;
     s32 hundreds;
@@ -2914,43 +2914,43 @@ void func_8010D95C_pump_pump_away(omObjData *obj) {
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
 }
 
-void func_8010DC68_pump_pump_away(omObjData *obj) {
-    PumpPumpAwayMilestone *entry = &D_80113418_pump_pump_away[obj->work[0]];
+void m213_LakituObjMain(omObjData *obj) {
+    PumpPumpAwayLakitu *entry = &m213_lakituTbl[obj->work[0]];
 
     if (entry->unk_00 == -1) {
         return;
     }
     if (obj->work[0] == 0) {
-        func_8010D6F4_pump_pump_away(obj);
+        m213_Lakitu0Update(obj);
     } else {
-        func_8010D95C_pump_pump_away(obj);
+        m213_Lakitu1Update(obj);
     }
-    if (D_80113530_pump_pump_away.state >= 2 && entry->unk_00 < 10) {
+    if (m213_cover.state >= 2 && entry->unk_00 < 10) {
         Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         entry->unk_00 = 10;
     }
 }
 
-void func_8010DD24_pump_pump_away(omObjData *obj) {
+void m213_LakituObjInit(omObjData *obj) {
     void *data;
     s32 i;
-    PumpPumpAwayMilestone *entry;
+    PumpPumpAwayLakitu *entry;
 
     if (obj->work[0] == 0) {
-        D_801116EA_pump_pump_away = obj->model[0] = Hu3DModelRead(0xA0089, 0x289);
+        m213_lakituMdl = obj->model[0] = Hu3DModelRead(0xA0089, 0x289);
         obj->model[1] = Hu3DModelRead(0x2E0020, 0x289);
         data = DataRead(0x2E0021);
-        obj->work[1] = D_801116E8_pump_pump_away = Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, data, 0, "m213_plart2_DEF");
-        obj->work[2] = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart1_DEF");
-        obj->work[3] = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart0_DEF");
+        obj->work[1] = m213_lakituAnimNo = Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, data, 0, "m213_plart2_DEF");
+        obj->work[2] = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, m213_lakituAnimNo, 0, "m213_plart1_DEF");
+        obj->work[3] = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, m213_lakituAnimNo, 0, "m213_plart0_DEF");
         HuMemMemoryFreePerm(data);
     } else {
-        obj->model[0] = Hu3DModelLink(D_801116EA_pump_pump_away);
+        obj->model[0] = Hu3DModelLink(m213_lakituMdl);
         obj->model[1] = Hu3DModelRead(0x2E0020, 0x289);
-        obj->work[1] = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart2_DEF");
-        obj->work[2] = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart1_DEF");
-        obj->work[3] = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, D_801116E8_pump_pump_away, 0, "m213_plart0_DEF");
+        obj->work[1] = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, m213_lakituAnimNo, 0, "m213_plart2_DEF");
+        obj->work[2] = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, m213_lakituAnimNo, 0, "m213_plart1_DEF");
+        obj->work[3] = Hu3DAnimLink(Hu3DData[obj->model[1]].hmf, m213_lakituAnimNo, 0, "m213_plart0_DEF");
     }
     Hu3DModelRemakeStatic(obj->model[1]);
     Hu3DModelDynamicFree(obj->model[1]);
@@ -2965,34 +2965,34 @@ void func_8010DD24_pump_pump_away(omObjData *obj) {
     obj->rot.y = 345.0f;
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
     Hu3DModelRotSet(obj->model[1], 0.0f, obj->rot.y, 0.0f);
-    obj->func = func_8010DC68_pump_pump_away;
-    entry = &D_80113418_pump_pump_away[obj->work[0]];
+    obj->func = m213_LakituObjMain;
+    entry = &m213_lakituTbl[obj->work[0]];
     entry->unk_00 = 0;
     entry->unk_04 = 0;
     entry->unk_08 = 0;
     entry->unk_0C = 0;
 }
 
-void func_8010E098_pump_pump_away(void) {
+void m213_LakituObjCreateAll(void) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
-        omAddObj(0x30C, 2, 1, -1, func_8010DD24_pump_pump_away)->work[0] = i;
+        omAddObj(0x30C, 2, 1, -1, m213_LakituObjInit)->work[0] = i;
     }
 }
 
-void func_8010E0F4_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayNozzle *nozzle = &D_80111920_pump_pump_away[obj->work[0]];
-    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
-    UnkPumpPumpAwayPlayer *other = &player[1];
+void m213_LowFlyerObjMain(omObjData *obj) {
+    PumpPumpAwayLowFlyer *nozzle = &m213_lowFlyerTbl[obj->work[0]];
+    PumpPumpAwayRocket *player = m213_rocketTbl;
+    PumpPumpAwayRocket *other = &player[1];
     f64 distance;
     f32 *positions;
     f32 angle;
 
     if (nozzle->unk_04 == 0) {
         distance = player->unk_18 > other->unk_18 ? player->unk_18 : other->unk_18;
-        positions = D_8011101C_pump_pump_away;
-        if (D_8011101C_pump_pump_away[obj->work[0]] - distance * 0.1 + 400.0 < 1000.0) {
+        positions = m213_lowFlyerYTbl;
+        if (m213_lowFlyerYTbl[obj->work[0]] - distance * 0.1 + 400.0 < 1000.0) {
             Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             obj->trans.y = positions[obj->work[0]] - distance * 0.1 + 400.0;
             if (obj->trans.y < -1000.0f) {
@@ -3026,19 +3026,19 @@ void func_8010E0F4_pump_pump_away(omObjData *obj) {
     }
     nozzle->unk_10 = angle;
     obj->trans.y += sindf(angle) * 2.0;
-    if (D_80113530_pump_pump_away.state >= 2 && nozzle->unk_00 < 10) {
+    if (m213_cover.state >= 2 && nozzle->unk_00 < 10) {
         Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         nozzle->unk_00 = 10;
     }
 }
 
-void func_8010E45C_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayNozzle *nozzle;
+void m213_LowFlyerObjInit(omObjData *obj) {
+    PumpPumpAwayLowFlyer *nozzle;
 
-    if (D_801116EC_pump_pump_away == 0) {
-        D_801116EC_pump_pump_away = obj->model[0] = Hu3DModelRead(0x2E0011, 0x299);
+    if (m213_lowFlyerMdl == 0) {
+        m213_lowFlyerMdl = obj->model[0] = Hu3DModelRead(0x2E0011, 0x299);
     } else {
-        obj->model[0] = Hu3DModelLink(D_801116EC_pump_pump_away);
+        obj->model[0] = Hu3DModelLink(m213_lowFlyerMdl);
     }
     Hu3DMotionAttrSet(obj->model[0], 2, 2);
     Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -3049,8 +3049,8 @@ void func_8010E45C_pump_pump_away(omObjData *obj) {
     }
     obj->trans.y = 1000.0f;
     obj->trans.z = -150.0f;
-    obj->func = func_8010E0F4_pump_pump_away;
-    nozzle = &D_80111920_pump_pump_away[obj->work[0]];
+    obj->func = m213_LowFlyerObjMain;
+    nozzle = &m213_lowFlyerTbl[obj->work[0]];
     nozzle->unk_00 = 0;
     nozzle->unk_04 = 0;
     nozzle->unk_08 = rand8() & 1;
@@ -3058,26 +3058,26 @@ void func_8010E45C_pump_pump_away(omObjData *obj) {
     nozzle->unk_10 = rand8();
 }
 
-void func_8010E65C_pump_pump_away(void) {
+void m213_LowFlyerObjCreateAll(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        omAddObj(0x2F9, 1, 1, -1, func_8010E45C_pump_pump_away)->work[0] = i;
+        omAddObj(0x2F9, 1, 1, -1, m213_LowFlyerObjInit)->work[0] = i;
     }
 }
 
-void func_8010E6B8_pump_pump_away(omObjData *obj) {
-    PumpPumpAwayMovingEffect *effect = &D_801135E8_pump_pump_away[obj->work[0]];
-    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
-    UnkPumpPumpAwayPlayer *other = &player[1];
+void m213_MidFlyerObjMain(omObjData *obj) {
+    PumpPumpAwayMidFlyer *effect = &m213_midFlyerTbl[obj->work[0]];
+    PumpPumpAwayRocket *player = m213_rocketTbl;
+    PumpPumpAwayRocket *other = &player[1];
     f64 distance;
     f32 *positions;
 
     if (effect->state != -1) {
         if (effect->hidden == 0) {
             distance = (player->unk_18 > other->unk_18) ? player->unk_18 : other->unk_18;
-            positions = D_8011102C_pump_pump_away;
-            if (D_8011102C_pump_pump_away[obj->work[0]] - distance * 0.1 + 400.0 < 1000.0) {
+            positions = m213_midFlyerYTbl;
+            if (m213_midFlyerYTbl[obj->work[0]] - distance * 0.1 + 400.0 < 1000.0) {
                 Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 obj->trans.y = positions[obj->work[0]] - distance * 0.1 + 400.0;
                 if (obj->trans.y < -1000.0f) {
@@ -3101,20 +3101,20 @@ void func_8010E6B8_pump_pump_away(omObjData *obj) {
             effect->speed = (u8)(rand8() % 10) + 10;
             effect->direction ^= 1;
         }
-        if (D_80113530_pump_pump_away.state >= 2 && effect->state < 10) {
+        if (m213_cover.state >= 2 && effect->state < 10) {
             Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             effect->state = 10;
         }
     }
 }
 
-void func_8010E98C_pump_pump_away(omObjData *obj) {
-    PumpPumpAwayMovingEffect *effect;
+void m213_MidFlyerObjInit(omObjData *obj) {
+    PumpPumpAwayMidFlyer *effect;
 
-    if (D_801116EE_pump_pump_away == 0) {
-        D_801116EE_pump_pump_away = obj->model[0] = Hu3DModelRead(0xA0062, 0x299);
+    if (m213_midFlyerMdl == 0) {
+        m213_midFlyerMdl = obj->model[0] = Hu3DModelRead(0xA0062, 0x299);
     } else {
-        obj->model[0] = Hu3DModelLink(D_801116EE_pump_pump_away);
+        obj->model[0] = Hu3DModelLink(m213_midFlyerMdl);
     }
     Hu3DMotionAttrSet(obj->model[0], 1, 1);
     Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -3125,26 +3125,26 @@ void func_8010E98C_pump_pump_away(omObjData *obj) {
     }
     obj->trans.y = 1000.0f;
     obj->trans.z = -150.0f;
-    obj->func = func_8010E6B8_pump_pump_away;
-    effect = &D_801135E8_pump_pump_away[obj->work[0]];
+    obj->func = m213_MidFlyerObjMain;
+    effect = &m213_midFlyerTbl[obj->work[0]];
     effect->state = 0;
     effect->hidden = 0;
     effect->direction = rand8() & 1;
     effect->speed = (u8)(rand8() % 5) + 10;
 }
 
-void func_8010EB68_pump_pump_away(void) {
+void m213_MidFlyerObjCreateAll(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        omAddObj(0x2FA, 1, 0, -1, func_8010E98C_pump_pump_away)->work[0] = i;
+        omAddObj(0x2FA, 1, 0, -1, m213_MidFlyerObjInit)->work[0] = i;
     }
 }
 
-void func_8010EBC4_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwaySpray *spray = &D_80111710_pump_pump_away[obj->work[0]];
-    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
-    UnkPumpPumpAwayPlayer *other = &player[1];
+void m213_HighFlyerObjMain(omObjData *obj) {
+    PumpPumpAwaySway *spray = &m213_highFlyerTbl[obj->work[0]];
+    PumpPumpAwayRocket *player = m213_rocketTbl;
+    PumpPumpAwayRocket *other = &player[1];
     f32 distance;
     f32 *positions;
     f32 angle;
@@ -3155,17 +3155,17 @@ void func_8010EBC4_pump_pump_away(omObjData *obj) {
             distance = (player->unk_18 > other->unk_18) ? player->unk_18 : other->unk_18;
             switch (spray->unk_00) {
                 case 0:
-                    positions = D_8011103C_pump_pump_away;
-                    if (D_8011103C_pump_pump_away[D_80111970_pump_pump_away] - distance * 0.1 + 400.0 < 1000.0) {
+                    positions = m213_highFlyerYTbl;
+                    if (m213_highFlyerYTbl[m213_highFlyerCnt] - distance * 0.1 + 400.0 < 1000.0) {
                         Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         obj->trans.y = positions[obj->work[0]] + distance * 0.1 + 400.0;
                         spray->unk_00 = 1;
-                        obj->work[1] = D_80111970_pump_pump_away;
-                        D_80111970_pump_pump_away++;
+                        obj->work[1] = m213_highFlyerCnt;
+                        m213_highFlyerCnt++;
                     }
                     break;
                 case 1:
-                    obj->trans.y = D_8011103C_pump_pump_away[obj->work[1]] - distance * 0.1 + 400.0;
+                    obj->trans.y = m213_highFlyerYTbl[obj->work[1]] - distance * 0.1 + 400.0;
                     if (obj->trans.y < -500.0f) {
                         Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         if (obj->work[0] & 1) {
@@ -3195,20 +3195,20 @@ void func_8010EBC4_pump_pump_away(omObjData *obj) {
             rotation = sindf(spray->unk_08) * 15.0f + 0.0f;
         }
         obj->rot.z = rotation;
-        if (D_80113530_pump_pump_away.state >= 2 && spray->unk_00 < 10) {
+        if (m213_cover.state >= 2 && spray->unk_00 < 10) {
             Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             spray->unk_00 = 10;
         }
     }
 }
 
-void func_8010F024_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwaySpray *spray;
+void m213_HighFlyerObjInit(omObjData *obj) {
+    PumpPumpAwaySway *spray;
 
-    if (D_801116F0_pump_pump_away == 0) {
-        D_801116F0_pump_pump_away = obj->model[0] = Hu3DModelRead(0x2E0022, 0x289);
+    if (m213_highFlyerMdl == 0) {
+        m213_highFlyerMdl = obj->model[0] = Hu3DModelRead(0x2E0022, 0x289);
     } else {
-        obj->model[0] = Hu3DModelLink(D_801116F0_pump_pump_away);
+        obj->model[0] = Hu3DModelLink(m213_highFlyerMdl);
     }
     Hu3DMotionAttrSet(obj->model[0], 1, 1);
     Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -3219,25 +3219,25 @@ void func_8010F024_pump_pump_away(omObjData *obj) {
     }
     obj->trans.y = 1000.0f;
     obj->trans.z = -150.0f;
-    obj->func = func_8010EBC4_pump_pump_away;
-    spray = &D_80111710_pump_pump_away[obj->work[0]];
+    obj->func = m213_HighFlyerObjMain;
+    spray = &m213_highFlyerTbl[obj->work[0]];
     spray->unk_00 = 0;
     spray->unk_04 = 0;
     spray->unk_08 = rand8();
 }
 
-void func_8010F20C_pump_pump_away(void) {
+void m213_HighFlyerObjCreateAll(void) {
     s32 i;
 
     for (i = 0; i < 6; i++) {
-        omAddObj(0x2FA, 1, 0, -1, func_8010F024_pump_pump_away)->work[0] = i;
+        omAddObj(0x2FA, 1, 0, -1, m213_HighFlyerObjInit)->work[0] = i;
     }
 }
 
-void func_8010F268_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwaySpray *spray = &D_801119E8_pump_pump_away[obj->work[0]];
-    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
-    UnkPumpPumpAwayPlayer *other = &player[1];
+void m213_CloudObjMain(omObjData *obj) {
+    PumpPumpAwaySway *spray = &m213_cloudTbl[obj->work[0]];
+    PumpPumpAwayRocket *player = m213_rocketTbl;
+    PumpPumpAwayRocket *other = &player[1];
     f32 distance;
     s32 progress;
     f32 *positions;
@@ -3249,17 +3249,17 @@ void func_8010F268_pump_pump_away(omObjData *obj) {
         if (spray->unk_04 == 0) {
             switch (spray->unk_00) {
                 case 0:
-                    positions = D_8011109C_pump_pump_away;
-                    if (D_8011109C_pump_pump_away[D_801133F8_pump_pump_away] - distance * 0.1 + 400.0 < 1000.0) {
+                    positions = m213_cloudYTbl;
+                    if (m213_cloudYTbl[m213_cloudCnt] - distance * 0.1 + 400.0 < 1000.0) {
                         Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         obj->trans.y = positions[obj->work[0]] + distance * 0.1 + 400.0;
                         spray->unk_00 = 1;
-                        obj->work[1] = D_801133F8_pump_pump_away;
-                        D_801133F8_pump_pump_away++;
+                        obj->work[1] = m213_cloudCnt;
+                        m213_cloudCnt++;
                     }
                     break;
                 case 1:
-                    obj->trans.y = D_8011109C_pump_pump_away[obj->work[1]] - distance * 0.1 + 400.0;
+                    obj->trans.y = m213_cloudYTbl[obj->work[1]] - distance * 0.1 + 400.0;
                     if (obj->trans.y < -1000.0f) {
                         Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         if (obj->work[0] & 1) {
@@ -3283,7 +3283,7 @@ void func_8010F268_pump_pump_away(omObjData *obj) {
         }
         spray->unk_08 = angle;
         obj->scale.y = obj->scale.z = obj->scale.x = sindf(angle) * 0.03 + 0.5;
-        if ((D_80113530_pump_pump_away.state >= 2 && spray->unk_00 < 10) || (progress >= 351 && spray->unk_00 == 0)) {
+        if ((m213_cover.state >= 2 && spray->unk_00 < 10) || (progress >= 351 && spray->unk_00 == 0)) {
             Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             spray->unk_00 = 10;
             spray->unk_04 = 1;
@@ -3291,13 +3291,13 @@ void func_8010F268_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010F688_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwaySpray *spray;
+void m213_CloudObjInit(omObjData *obj) {
+    PumpPumpAwaySway *spray;
 
-    if (D_801116F2_pump_pump_away == 0) {
-        D_801116F2_pump_pump_away = obj->model[0] = Hu3DModelRead(0x230005, 0x299);
+    if (m213_cloudMdl == 0) {
+        m213_cloudMdl = obj->model[0] = Hu3DModelRead(0x230005, 0x299);
     } else {
-        obj->model[0] = Hu3DModelLink(D_801116F2_pump_pump_away);
+        obj->model[0] = Hu3DModelLink(m213_cloudMdl);
     }
     Hu3DMotionAttrSet(obj->model[0], 1, 1);
     Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -3309,36 +3309,36 @@ void func_8010F688_pump_pump_away(omObjData *obj) {
     obj->trans.y = 1000.0f;
     obj->trans.z = (rand8() & 1) ? -500.0f : 500.0f;
     obj->scale.x = obj->scale.y = obj->scale.z = 0.5f;
-    obj->func = func_8010F268_pump_pump_away;
-    spray = &D_801119E8_pump_pump_away[obj->work[0]];
+    obj->func = m213_CloudObjMain;
+    spray = &m213_cloudTbl[obj->work[0]];
     spray->unk_00 = 0;
     spray->unk_04 = 0;
     spray->unk_08 = rand8();
 }
 
-void func_8010F8A4_pump_pump_away(void) {
+void m213_CloudObjCreateAll(void) {
     s32 i;
 
     for (i = 0; i < 6; i++) {
-        omAddObj(0x2FB, 1, 0, -1, func_8010F688_pump_pump_away)->work[0] = i;
+        omAddObj(0x2FB, 1, 0, -1, m213_CloudObjInit)->work[0] = i;
     }
 }
 
-void func_8010F900_pump_pump_away(omObjData *obj) {
+void m213_CameraViewObjMain(omObjData *obj) {
     Vec position;
     Vec target;
     Vec result;
     u32 i;
 
-    if (D_80111114_pump_pump_away == 0) {
-        D_80111114_pump_pump_away = 1;
+    if (m213_cameraSetF == 0) {
+        m213_cameraSetF = 1;
         target.x = 650.0f;
         target.y = 0.0f;
         target.z = 2600.0f;
         position.x = 65.0f;
         position.y = 0.0f;
         position.z = -500.0f;
-        func_80105EE4_pump_pump_away(&position, &target, &result);
+        m213_PolarCalc(&position, &target, &result);
         for (i = 0; i < 1; i++) {
             CZoomM[i] = result.x;
             CRotM[i].x = 360.0f - result.z;
@@ -3351,29 +3351,29 @@ void func_8010F900_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_8010FA20_pump_pump_away(omObjData *obj) {
+void m213_SeqDoneObjMain(omObjData *obj) {
 }
 
-void func_8010FA28_pump_pump_away(omObjData *obj) {
-    if (D_801116FC_pump_pump_away > 0) {
-        D_801116FC_pump_pump_away--;
+void m213_SeqEndObjMain(omObjData *obj) {
+    if (m213_phaseTimer > 0) {
+        m213_phaseTimer--;
     } else {
-        D_801116F8_pump_pump_away = 1;
-        obj->func = func_8010FA20_pump_pump_away;
+        m213_phaseStep = 1;
+        obj->func = m213_SeqDoneObjMain;
     }
 }
 
-void func_8010FA64_pump_pump_away(omObjData *obj) {
+void m213_SeqResultWaitObjMain(omObjData *obj) {
     if (GMesStatGet() & GMES_STAT_TIMEEND) {
-        D_801116FC_pump_pump_away = 0x14;
-        obj->func = func_8010FA28_pump_pump_away;
+        m213_phaseTimer = 0x14;
+        obj->func = m213_SeqEndObjMain;
     }
 }
 
-s32 func_8010FAA8_pump_pump_away(void) {
-    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
-    UnkPumpPumpAwayPlayer *other = &D_80111978_pump_pump_away[1];
-    UnkPumpPumpAwayRecord *record = &D_801135B0_pump_pump_away;
+s32 m213_RecordNewCheck(void) {
+    PumpPumpAwayRocket *player = m213_rocketTbl;
+    PumpPumpAwayRocket *other = &m213_rocketTbl[1];
+    PumpPumpAwayRecord *record = &m213_record;
     u32 distance;
 
     if (player->unk_18 > other->unk_18) {
@@ -3384,13 +3384,13 @@ s32 func_8010FAA8_pump_pump_away(void) {
     return distance > record->record;
 }
 
-void func_8010FB70_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[0];
-    UnkPumpPumpAwayPlayer *other = &D_80111978_pump_pump_away[1];
+void m213_ResultMesCreate(omObjData *obj) {
+    PumpPumpAwayRocket *player = &m213_rocketTbl[0];
+    PumpPumpAwayRocket *other = &m213_rocketTbl[1];
     s32 winningTeam;
     s32 i;
     s32 count;
-    UnkPumpPumpAwayJet *jet;
+    PumpPumpAwayPumper *jet;
     u8 winners[2];
 
     if (player->unk_18 > other->unk_18) {
@@ -3399,7 +3399,7 @@ void func_8010FB70_pump_pump_away(omObjData *obj) {
         winningTeam = 1;
     }
     for (i = 0, count = 0; i < 4; i++) {
-        jet = &D_80113438_pump_pump_away[i];
+        jet = &m213_pumperTbl[i];
         if (jet->unk_04->work[1] == winningTeam) {
             winners[count] = GwPlayer[jet->unk_04->work[0]].chr;
             count++;
@@ -3407,133 +3407,133 @@ void func_8010FB70_pump_pump_away(omObjData *obj) {
         }
     }
     GMesCreate(GMES_MES_MG_WINNERS_2, winners[0], winners[1]);
-    if (!func_8010FAA8_pump_pump_away()) {
+    if (!m213_RecordNewCheck()) {
         HuAudSeqPlay(0x66);
     } else {
         HuAudSeqPlay(0x6A);
     }
 }
 
-void func_8010FC64_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
-    UnkPumpPumpAwayPlayer *other = &player[1];
+void m213_SeqResultObjMain(omObjData *obj) {
+    PumpPumpAwayRocket *player = m213_rocketTbl;
+    PumpPumpAwayRocket *other = &player[1];
 
-    if (D_801116FC_pump_pump_away > 0) {
-        D_801116FC_pump_pump_away--;
+    if (m213_phaseTimer > 0) {
+        m213_phaseTimer--;
     } else {
         if (player->unk_18 == other->unk_18) {
             GMesCreate(GMES_MES_MG_DRAW);
             HuAudSeqPlay(0x6C);
-            D_801116FC_pump_pump_away = 144;
+            m213_phaseTimer = 144;
         } else {
-            func_8010FB70_pump_pump_away(obj);
+            m213_ResultMesCreate(obj);
         }
-        obj->func = func_8010FA64_pump_pump_away;
+        obj->func = m213_SeqResultWaitObjMain;
     }
 }
 
-void func_8010FCF8_pump_pump_away(omObjData *obj) {
-    if (D_801116FC_pump_pump_away > 0) {
-        D_801116FC_pump_pump_away--;
+void m213_SeqResultDelayObjMain(omObjData *obj) {
+    if (m213_phaseTimer > 0) {
+        m213_phaseTimer--;
     } else {
-        D_801116F8_pump_pump_away = 1;
-        obj->func = func_8010FC64_pump_pump_away;
+        m213_phaseStep = 1;
+        obj->func = m213_SeqResultObjMain;
     }
 }
 
-void func_8010FD34_pump_pump_away(omObjData *obj) {
+void m213_SeqRecordWaitObjMain(omObjData *obj) {
     if (GMesStatGet() == 0) {
-        if (D_801116FC_pump_pump_away > 0) {
-            D_801116FC_pump_pump_away--;
+        if (m213_phaseTimer > 0) {
+            m213_phaseTimer--;
         } else {
-            D_801116F8_pump_pump_away = 1;
-            obj->func = func_8010FC64_pump_pump_away;
+            m213_phaseStep = 1;
+            obj->func = m213_SeqResultObjMain;
         }
     }
 }
 
-void func_8010FD94_pump_pump_away(omObjData *obj) {
-    if (D_801116FC_pump_pump_away > 0) {
-        D_801116FC_pump_pump_away--;
-    } else if (func_8010FAA8_pump_pump_away()) {
+void m213_SeqRecordObjMain(omObjData *obj) {
+    if (m213_phaseTimer > 0) {
+        m213_phaseTimer--;
+    } else if (m213_RecordNewCheck()) {
         GMesCreate(GMES_MES_MG_RECORD);
-        D_801116F8_pump_pump_away = 1;
-        D_801116FC_pump_pump_away = 15;
-        obj->func = func_8010FD34_pump_pump_away;
+        m213_phaseStep = 1;
+        m213_phaseTimer = 15;
+        obj->func = m213_SeqRecordWaitObjMain;
     } else {
-        D_801116FC_pump_pump_away = 0;
-        D_801116F8_pump_pump_away = 2;
-        obj->func = func_8010FC64_pump_pump_away;
+        m213_phaseTimer = 0;
+        m213_phaseStep = 2;
+        obj->func = m213_SeqResultObjMain;
     }
 }
 
-void func_8010FE2C_pump_pump_away(omObjData *obj) {
+void m213_SeqFinishWaitObjMain(omObjData *obj) {
     if (GMesStatGet() == 0) {
-        D_801116FC_pump_pump_away = 0xF;
-        obj->func = func_8010FD94_pump_pump_away;
+        m213_phaseTimer = 0xF;
+        obj->func = m213_SeqRecordObjMain;
     }
 }
 
-void func_8010FE6C_pump_pump_away(omObjData *obj) {
+void m213_SeqFinishObjMain(omObjData *obj) {
     GMesCreate(GMES_MES_16);
-    D_801116FC_pump_pump_away = 0x4B;
+    m213_phaseTimer = 0x4B;
     HuAudSeqFadeOut(0x78);
-    obj->func = func_8010FE2C_pump_pump_away;
+    obj->func = m213_SeqFinishWaitObjMain;
 }
 
-void func_8010FEB4_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
+void m213_SeqLandWaitObjMain(omObjData *obj) {
+    PumpPumpAwayRocket *player = m213_rocketTbl;
 
-    if (player->unk_24 == 2 && D_80111978_pump_pump_away[1].unk_24 == 2) {
-        D_801116F8_pump_pump_away = 1;
-        obj->func = func_8010FE6C_pump_pump_away;
+    if (player->unk_24 == 2 && m213_rocketTbl[1].unk_24 == 2) {
+        m213_phaseStep = 1;
+        obj->func = m213_SeqFinishObjMain;
     }
 }
 
-void func_8010FEF8_pump_pump_away(omObjData *obj) {
-    if (D_80113530_pump_pump_away.state == -1) {
-        D_801116F8_pump_pump_away = 1;
-        obj->func = func_8010FEB4_pump_pump_away;
+void m213_SeqCoverWaitObjMain(omObjData *obj) {
+    if (m213_cover.state == -1) {
+        m213_phaseStep = 1;
+        obj->func = m213_SeqLandWaitObjMain;
     }
 }
 
-void func_8010FF28_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayPlayer *player = D_80111978_pump_pump_away;
+void m213_SeqFallWaitObjMain(omObjData *obj) {
+    PumpPumpAwayRocket *player = m213_rocketTbl;
 
-    if (player->unk_24 != 0 && D_80111978_pump_pump_away[1].unk_24 != 0) {
-        D_80113530_pump_pump_away.state = 1;
-        D_801116F8_pump_pump_away = 1;
-        obj->func = func_8010FEF8_pump_pump_away;
+    if (player->unk_24 != 0 && m213_rocketTbl[1].unk_24 != 0) {
+        m213_cover.state = 1;
+        m213_phaseStep = 1;
+        obj->func = m213_SeqCoverWaitObjMain;
     }
 }
 
-void func_8010FF70_pump_pump_away(omObjData *obj) {
-    UnkPumpPumpAwayPlayer *player = &D_80111978_pump_pump_away[0];
-    UnkPumpPumpAwayPlayer *other = &D_80111978_pump_pump_away[1];
+void m213_SeqFlightObjMain(omObjData *obj) {
+    PumpPumpAwayRocket *player = &m213_rocketTbl[0];
+    PumpPumpAwayRocket *other = &m213_rocketTbl[1];
 
-    if (D_801116FC_pump_pump_away != 0) {
-        D_801116FC_pump_pump_away--;
+    if (m213_phaseTimer != 0) {
+        m213_phaseTimer--;
     } else if (player->unk_14 == 0 && other->unk_14 == 0) {
         if (player->unk_18 == 0.0f && other->unk_18 == 0.0f) {
-            D_801116F8_pump_pump_away = 4;
-            obj->func = func_8010FE6C_pump_pump_away;
+            m213_phaseStep = 4;
+            obj->func = m213_SeqFinishObjMain;
         } else if (player->unk_04 == 10 || other->unk_04 == 10) {
-            D_801116F8_pump_pump_away = 1;
-            obj->func = func_8010FF28_pump_pump_away;
+            m213_phaseStep = 1;
+            obj->func = m213_SeqFallWaitObjMain;
         }
     }
 }
 
-void func_80110034_pump_pump_away(omObjData *obj) {
+void m213_SeqLaunchObjMain(omObjData *obj) {
     s32 i;
-    UnkPumpPumpAwayJet *jet;
+    PumpPumpAwayPumper *jet;
 
-    D_801116FC_pump_pump_away = 45;
-    D_801116F8_pump_pump_away = 1;
-    obj->func = func_8010FF70_pump_pump_away;
-    if (D_801119E4_pump_pump_away != 0) {
+    m213_phaseTimer = 45;
+    m213_phaseStep = 1;
+    obj->func = m213_SeqFlightObjMain;
+    if (m213_launchVibF != 0) {
         for (i = 0; i < 4; i++) {
-            jet = &D_80113438_pump_pump_away[i];
+            jet = &m213_pumperTbl[i];
             if (jet->unk_00 != -1 && jet->unk_20 == 0) {
                 omVibrate((s16)jet->unk_04->work[0], 2, 2, 20);
             }
@@ -3541,22 +3541,22 @@ void func_80110034_pump_pump_away(omObjData *obj) {
     }
 }
 
-void func_801100F0_pump_pump_away(void) {
+void m213_RocketPowerCalc(void) {
     s32 i;
-    UnkPumpPumpAwayJet *jet;
-    UnkPumpPumpAwayPlayer *player;
-    UnkPumpPumpAwayPlayer *other;
-    UnkPumpPumpAwayPlayer *first;
-    UnkPumpPumpAwayPlayer *team;
+    PumpPumpAwayPumper *jet;
+    PumpPumpAwayRocket *player;
+    PumpPumpAwayRocket *other;
+    PumpPumpAwayRocket *first;
+    PumpPumpAwayRocket *team;
 
     for (i = 0; i < 4; i++) {
-        jet = &D_80113438_pump_pump_away[i];
-        team = &D_80111978_pump_pump_away[jet->unk_04->work[1]];
+        jet = &m213_pumperTbl[i];
+        team = &m213_rocketTbl[jet->unk_04->work[1]];
         team->unk_14 += jet->unk_10;
     }
 
-    first = &D_80111978_pump_pump_away[0];
-    player = D_80111978_pump_pump_away;
+    first = &m213_rocketTbl[0];
+    player = m213_rocketTbl;
     other = &player[1];
     if (first->unk_14 == other->unk_14) {
         if (first->unk_14 != 0) {
@@ -3579,91 +3579,91 @@ void func_801100F0_pump_pump_away(void) {
         }
     }
     if (player->unk_14 != 0 && other->unk_14 != 0) {
-        D_801119E4_pump_pump_away = 1;
+        m213_launchVibF = 1;
     }
 }
 
-void func_80110260_pump_pump_away(omObjData *obj) {
-    if (D_801116FC_pump_pump_away != 0) {
-        D_801116FC_pump_pump_away--;
+void m213_SeqLaunchWaitObjMain(omObjData *obj) {
+    if (m213_phaseTimer != 0) {
+        m213_phaseTimer--;
     } else {
-        obj->func = func_80110034_pump_pump_away;
+        obj->func = m213_SeqLaunchObjMain;
     }
 }
 
-void func_80110290_pump_pump_away(omObjData *obj) {
-    if (D_801116FC_pump_pump_away != 0) {
-        D_801116FC_pump_pump_away--;
+void m213_SeqTimeUpWaitObjMain(omObjData *obj) {
+    if (m213_phaseTimer != 0) {
+        m213_phaseTimer--;
     } else {
-        D_801116FC_pump_pump_away = 0;
-        func_801100F0_pump_pump_away();
-        obj->func = func_80110260_pump_pump_away;
+        m213_phaseTimer = 0;
+        m213_RocketPowerCalc();
+        obj->func = m213_SeqLaunchWaitObjMain;
     }
 }
 
-void func_801102E4_pump_pump_away(omObjData *obj) {
-    if (D_801116FC_pump_pump_away != 0) {
-        D_801116FC_pump_pump_away--;
-        GMesTimerValueSet((D_801116FC_pump_pump_away + 29) / 30);
+void m213_SeqTimerObjMain(omObjData *obj) {
+    if (m213_phaseTimer != 0) {
+        m213_phaseTimer--;
+        GMesTimerValueSet((m213_phaseTimer + 29) / 30);
     } else {
         GMesTimerEnd();
-        D_801116FC_pump_pump_away = 90;
-        obj->func = func_80110290_pump_pump_away;
-        D_801116F8_pump_pump_away = 1;
+        m213_phaseTimer = 90;
+        obj->func = m213_SeqTimeUpWaitObjMain;
+        m213_phaseStep = 1;
         omSysPauseDisableF = 1;
     }
 }
 
-void func_8011038C_pump_pump_away(omObjData *obj) {
+void m213_SeqTimerStartObjMain(omObjData *obj) {
     GMesCreate(GMES_MES_TIMER, 0xA, 0xA0, 0x1C);
-    D_801116FC_pump_pump_away = 0x12D;
-    obj->func = func_801102E4_pump_pump_away;
+    m213_phaseTimer = 0x12D;
+    obj->func = m213_SeqTimerObjMain;
 }
 
-void func_801103D8_pump_pump_away(omObjData *obj) {
-    if (++D_80111118_pump_pump_away == 0x21) {
+void m213_SeqStartWaitObjMain(omObjData *obj) {
+    if (++m213_musicTimer == 0x21) {
         HuAudSeqPlay(0x2E);
     }
     if (GMesStatGet() == 0 || (GMesStatGet() & GMES_STAT_TIMEEND)) {
-        obj->func = func_8011038C_pump_pump_away;
-        D_801116F8_pump_pump_away = 1;
+        obj->func = m213_SeqTimerStartObjMain;
+        m213_phaseStep = 1;
     }
 }
 
-void func_80110458_pump_pump_away(omObjData *obj) {
+void m213_SeqStartObjMain(omObjData *obj) {
     GMesCreate(5);
-    obj->func = func_801103D8_pump_pump_away;
-    D_801116F8_pump_pump_away = 1;
+    obj->func = m213_SeqStartWaitObjMain;
+    m213_phaseStep = 1;
 }
 
-void func_80110498_pump_pump_away(omObjData *obj) {
+void m213_ExitObjMain(omObjData *obj) {
     osViBlack(0);
     omOvlReturnEx(1);
 }
 
-void func_801104BC_pump_pump_away(omObjData *obj) {
+void m213_ExitWaitObjMain(omObjData *obj) {
     if (WipeStatGet() == 0) {
-        obj->func = func_80110498_pump_pump_away;
+        obj->func = m213_ExitObjMain;
     }
 }
 
-void func_801104F4_pump_pump_away(omObjData *obj) {
+void m213_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 0x14);
-        obj->func = func_801104BC_pump_pump_away;
+        obj->func = m213_ExitWaitObjMain;
         HuAudSeqFadeOut(0x1E);
         HuAudFXAllFadeOut(0x1E);
     }
 }
 
-void func_8011054C_pump_pump_away(void) {
-    D_801116F4_pump_pump_away += D_801116F8_pump_pump_away;
-    D_801116F8_pump_pump_away = 0;
+void m213_PhaseUpdate(void) {
+    m213_phase += m213_phaseStep;
+    m213_phaseStep = 0;
 }
 
-void func_80110574_pump_pump_away(omObjData *obj) {
-    func_8011054C_pump_pump_away();
-    switch (D_801116F4_pump_pump_away) {
+void m213_MainObjMain(omObjData *obj) {
+    m213_PhaseUpdate();
+    switch (m213_phase) {
         case 0:
             break;
         case 1:
@@ -3688,16 +3688,16 @@ void func_80110574_pump_pump_away(omObjData *obj) {
             break;
         case 11:
             WipeCreateOut(WIPE_TYPE_NORMAL, 0x14);
-            obj->func = func_801104BC_pump_pump_away;
+            obj->func = m213_ExitWaitObjMain;
             break;
     }
 }
 
-void func_801105D8_pump_pump_away(void) {
+void m213_PumperWorkInit(void) {
     s32 i;
-    UnkPumpPumpAwayJet *jet;
+    PumpPumpAwayPumper *jet;
 
-    for (i = 0, jet = D_80113438_pump_pump_away; i < 4; i++) {
+    for (i = 0, jet = m213_pumperTbl; i < 4; i++) {
         jet[i].unk_00 = -1;
         jet[i].unk_04 = 0;
         jet[i].unk_08 = 0;
@@ -3711,20 +3711,20 @@ void func_801105D8_pump_pump_away(void) {
     }
 }
 
-void func_80110638_pump_pump_away(void) {
+void m213_PumpWorkInit(void) {
     s32 i;
-    UnkPumpPumpAway *entry;
+    PumpPumpAwayPump *entry;
 
-    for (i = 0, entry = D_80113570_pump_pump_away; i < 2; i++) {
+    for (i = 0, entry = m213_pumpTbl; i < 2; i++) {
         entry[i].unk_00 = -1;
     }
 }
 
-void func_8011066C_pump_pump_away(void) {
+void m213_HoseWorkInit(void) {
     s32 i;
-    UnkPumpPumpAwayHose *entry;
+    PumpPumpAwayHose *entry;
 
-    for (i = 0, entry = D_801117C0_pump_pump_away; i < 2; i++) {
+    for (i = 0, entry = m213_hoseTbl; i < 2; i++) {
         entry[i].unk_00 = -1;
         entry[i].unk_04 = 0;
         entry[i].unk_08 = 0;
@@ -3732,12 +3732,12 @@ void func_8011066C_pump_pump_away(void) {
     }
 }
 
-void func_801106AC_pump_pump_away(void) {
+void m213_RocketWorkInit(void) {
     s32 i;
-    UnkPumpPumpAwayPlayer *entry;
+    PumpPumpAwayRocket *entry;
 
     for (i = 0; i < 2; i++) {
-        entry = &D_80111978_pump_pump_away[i];
+        entry = &m213_rocketTbl[i];
         entry->unk_00 = -1;
         entry->unk_04 = 0;
         entry->unk_08 = 0;
@@ -3752,13 +3752,13 @@ void func_801106AC_pump_pump_away(void) {
     }
 }
 
-void func_80110718_pump_pump_away(void) {
+void m213_HudWorkInit(void) {
     s32 i;
     s32 j;
-    UnkPumpPumpAwayNode *entry;
+    PumpPumpAwayHud *entry;
 
     for (i = 0; i < 2; i++) {
-        entry = &D_80111758_pump_pump_away[i];
+        entry = &m213_hudTbl[i];
         entry->unk_00 = -1;
         entry->unk_04 = 0;
         entry->unk_0C = 0;
@@ -3770,164 +3770,164 @@ void func_80110718_pump_pump_away(void) {
     }
 }
 
-void func_8011078C_pump_pump_away(void) {
+void m213_LaunchEffWorkInit(void) {
     s32 i;
-    UnkPumpPumpAwayState *entry;
+    PumpPumpAwayLaunchEff *entry;
 
-    for (i = 0, entry = D_80113400_pump_pump_away; i < 2; i++) {
+    for (i = 0, entry = m213_launchEffTbl; i < 2; i++) {
         entry[i].unk_00 = -1;
         entry[i].unk_04 = 0;
     }
 }
 
-void func_801107C4_pump_pump_away(void) {
-    D_80113518_pump_pump_away.state = -1;
-    D_8011351C_pump_pump_away = -1;
-    D_80113520_pump_pump_away = 0.0f;
+void m213_ParachuteWorkInit(void) {
+    m213_parachute.state = -1;
+    m213_parachuteRocketNo = -1;
+    m213_parachuteAngle = 0.0f;
 }
 
-void func_801107E4_pump_pump_away(void) {
+void m213_SmokeWorkInit(void) {
     s32 i;
-    UnkPumpPumpAwayParticle *entry;
+    PumpPumpAwaySmoke *entry;
 
-    for (i = 0, entry = D_801117E0_pump_pump_away; i < 20; i++) {
-        entry[i].unk_00 = -1;
-        entry[i].unk_04 = 0;
-        entry[i].unk_08 = 0;
-        entry[i].unk_0C = 0;
-    }
-}
-
-void func_80110824_pump_pump_away(void) {
-    s32 i;
-    PumpPumpAwayMilestone *entry;
-
-    for (i = 0, entry = D_80113418_pump_pump_away; i < 2; i++) {
+    for (i = 0, entry = m213_smokeTbl; i < 20; i++) {
         entry[i].unk_00 = -1;
         entry[i].unk_04 = 0;
         entry[i].unk_08 = 0;
         entry[i].unk_0C = 0;
     }
-    D_801116EA_pump_pump_away = 0;
 }
 
-void func_80110868_pump_pump_away(void) {
-    D_801135D8_pump_pump_away.state = -1;
-    D_801135DC_pump_pump_away = 0;
-    D_801135E0_pump_pump_away = 0;
-}
-
-void func_80110888_pump_pump_away(void) {
+void m213_LakituWorkInit(void) {
     s32 i;
-    UnkPumpPumpAwayNozzle *entry;
+    PumpPumpAwayLakitu *entry;
 
-    for (i = 0, entry = D_80111920_pump_pump_away; i < 4; i++) {
+    for (i = 0, entry = m213_lakituTbl; i < 2; i++) {
+        entry[i].unk_00 = -1;
+        entry[i].unk_04 = 0;
+        entry[i].unk_08 = 0;
+        entry[i].unk_0C = 0;
+    }
+    m213_lakituMdl = 0;
+}
+
+void m213_RecordMarkerWorkInit(void) {
+    m213_recordMarker.state = -1;
+    m213_recordMarkerValue = 0;
+    m213_recordMarkerHiddenF = 0;
+}
+
+void m213_LowFlyerWorkInit(void) {
+    s32 i;
+    PumpPumpAwayLowFlyer *entry;
+
+    for (i = 0, entry = m213_lowFlyerTbl; i < 4; i++) {
         entry[i].unk_00 = -1;
         entry[i].unk_04 = 0;
         entry[i].unk_08 = 0;
         entry[i].unk_0C = 0.0f;
         entry[i].unk_10 = 0.0f;
     }
-    D_801116EC_pump_pump_away = 0;
+    m213_lowFlyerMdl = 0;
 }
 
-void func_801108D8_pump_pump_away(void) {
+void m213_MidFlyerWorkInit(void) {
     s32 i;
-    PumpPumpAwayMovingEffect *entry;
+    PumpPumpAwayMidFlyer *entry;
 
-    for (i = 0, entry = D_801135E8_pump_pump_away; i < 4; i++) {
+    for (i = 0, entry = m213_midFlyerTbl; i < 4; i++) {
         entry[i].state = -1;
         entry[i].hidden = 0;
         entry[i].direction = 0;
         entry[i].speed = 0.0f;
     }
-    D_801116EE_pump_pump_away = 0;
+    m213_midFlyerMdl = 0;
 }
 
-void func_8011091C_pump_pump_away(void) {
+void m213_HighFlyerWorkInit(void) {
     s32 i;
-    UnkPumpPumpAwaySpray *entry;
+    PumpPumpAwaySway *entry;
 
-    for (i = 0, entry = D_80111710_pump_pump_away; i < 6; i++) {
+    for (i = 0, entry = m213_highFlyerTbl; i < 6; i++) {
         entry[i].unk_00 = -1;
         entry[i].unk_04 = 0;
         entry[i].unk_08 = 1.0f;
     }
-    D_801116F0_pump_pump_away = 0;
+    m213_highFlyerMdl = 0;
 }
 
-void func_8011096C_pump_pump_away(void) {
+void m213_CloudWorkInit(void) {
     s32 i;
-    UnkPumpPumpAwaySpray *entry;
+    PumpPumpAwaySway *entry;
 
-    for (i = 0, entry = D_801119E8_pump_pump_away; i < 6; i++) {
+    for (i = 0, entry = m213_cloudTbl; i < 6; i++) {
         entry[i].unk_00 = -1;
         entry[i].unk_04 = 0;
         entry[i].unk_08 = 1.0f;
     }
-    D_801116F2_pump_pump_away = 0;
+    m213_cloudMdl = 0;
 }
 
-void func_801109BC_pump_pump_away(void) {
-    D_801116F4_pump_pump_away = 0;
-    D_801116F8_pump_pump_away = 0;
-    D_801116FC_pump_pump_away = 0;
-    D_80111700_pump_pump_away = 0;
-    D_80111704_pump_pump_away = 0;
-    D_80111708_pump_pump_away = 30;
-    D_801119E4_pump_pump_away = 0;
-    func_801105D8_pump_pump_away();
-    func_80110638_pump_pump_away();
-    func_8011066C_pump_pump_away();
-    func_801106AC_pump_pump_away();
-    func_80110718_pump_pump_away();
-    func_8011078C_pump_pump_away();
-    func_801107C4_pump_pump_away();
-    func_801107E4_pump_pump_away();
-    func_80110824_pump_pump_away();
-    func_80110868_pump_pump_away();
-    func_80110888_pump_pump_away();
-    func_801108D8_pump_pump_away();
-    func_8011091C_pump_pump_away();
-    func_8011096C_pump_pump_away();
+void m213_WorkInitAll(void) {
+    m213_phase = 0;
+    m213_phaseStep = 0;
+    m213_phaseTimer = 0;
+    m213_team0SlotCnt = 0;
+    m213_team1SlotCnt = 0;
+    m213_turnDelay = 30;
+    m213_launchVibF = 0;
+    m213_PumperWorkInit();
+    m213_PumpWorkInit();
+    m213_HoseWorkInit();
+    m213_RocketWorkInit();
+    m213_HudWorkInit();
+    m213_LaunchEffWorkInit();
+    m213_ParachuteWorkInit();
+    m213_SmokeWorkInit();
+    m213_LakituWorkInit();
+    m213_RecordMarkerWorkInit();
+    m213_LowFlyerWorkInit();
+    m213_MidFlyerWorkInit();
+    m213_HighFlyerWorkInit();
+    m213_CloudWorkInit();
 }
 
-void func_80110A78_pump_pump_away(void) {
-    func_801109BC_pump_pump_away();
-    func_8010745C_pump_pump_away();
-    func_801066F0_pump_pump_away();
-    func_80106894_pump_pump_away();
-    func_80106A38_pump_pump_away();
-    func_8010CBF0_pump_pump_away();
-    func_80107E5C_pump_pump_away();
-    func_80108504_pump_pump_away();
-    func_8010B5D4_pump_pump_away();
-    func_80109B48_pump_pump_away();
-    func_80109470_pump_pump_away();
-    func_80109E3C_pump_pump_away();
-    func_80108FA8_pump_pump_away();
-    func_8010D458_pump_pump_away();
-    func_8010D6C0_pump_pump_away();
-    func_8010E098_pump_pump_away();
-    func_8010E65C_pump_pump_away();
-    func_8010EB68_pump_pump_away();
-    func_8010F20C_pump_pump_away();
-    func_8010F8A4_pump_pump_away();
-    func_801078B4_pump_pump_away();
+void m213_ObjCreateAll(void) {
+    m213_WorkInitAll();
+    m213_SkyObjCreate();
+    m213_GroundObjCreate();
+    m213_NearBackObjCreate();
+    m213_FarBackObjCreate();
+    m213_PlayerObjCreateAll();
+    m213_PumpObjCreateAll();
+    m213_HoseObjCreateAll();
+    m213_RocketObjCreateAll();
+    m213_ParachuteObjCreate();
+    m213_LaunchEffObjCreateAll();
+    m213_SmokeObjCreateAll();
+    m213_HudObjCreate();
+    m213_RecordObjCreate();
+    m213_RecordMarkerObjCreate();
+    m213_LakituObjCreateAll();
+    m213_LowFlyerObjCreateAll();
+    m213_MidFlyerObjCreateAll();
+    m213_HighFlyerObjCreateAll();
+    m213_CloudObjCreateAll();
+    m213_CoverObjCreate();
 }
 
-void func_80110B34_pump_pump_away(omObjData *obj) {
-    func_80110A78_pump_pump_away();
+void m213_MainObjInit(omObjData *obj) {
+    m213_ObjCreateAll();
     WipeCreateIn(WIPE_TYPE_PREV, 0x10);
-    obj->func = func_80110574_pump_pump_away;
-    omAddObj(0x32, 0, 0, -1, func_8010F900_pump_pump_away);
-    omAddObj(0x320, 0, 0, -1, func_80110458_pump_pump_away);
+    obj->func = m213_MainObjMain;
+    omAddObj(0x32, 0, 0, -1, m213_CameraViewObjMain);
+    omAddObj(0x320, 0, 0, -1, m213_SeqStartObjMain);
 }
 
-void func_80110BB0_pump_pump_away(void) {
+void m213_Dummy(void) {
 }
 
-void func_80110BB8_pump_pump_away(void) {
+void m213_CameraInit(void) {
     omObjData *obj;
     s32 i;
 
@@ -3937,12 +3937,12 @@ void func_80110BB8_pump_pump_away(void) {
     CamSetupInit(1);
     CamSetupMapCullAddMulti(1);
     for (i = 0; i < 1; i++) {
-        ScissorSet(i, D_8011111C_pump_pump_away[i].scissorX, D_8011111C_pump_pump_away[i].scissorY,
-                   D_8011111C_pump_pump_away[i].scissorWidth, D_8011111C_pump_pump_away[i].scissorHeight);
-        ViewportSet(i, D_8011111C_pump_pump_away[i].viewportScale.x, D_8011111C_pump_pump_away[i].viewportScale.y,
-                    D_8011111C_pump_pump_away[i].viewportScale.z, D_8011111C_pump_pump_away[i].viewportTranslate.x,
-                    D_8011111C_pump_pump_away[i].viewportTranslate.y, D_8011111C_pump_pump_away[i].viewportTranslate.z);
-        Hu3DCameraPerspectiveSet(i, D_8011111C_pump_pump_away[i].fov, 80.0f, 8000.0f);
+        ScissorSet(i, m213_cameraViewTbl[i].scissorX, m213_cameraViewTbl[i].scissorY,
+                   m213_cameraViewTbl[i].scissorWidth, m213_cameraViewTbl[i].scissorHeight);
+        ViewportSet(i, m213_cameraViewTbl[i].viewportScale.x, m213_cameraViewTbl[i].viewportScale.y,
+                    m213_cameraViewTbl[i].viewportScale.z, m213_cameraViewTbl[i].viewportTranslate.x,
+                    m213_cameraViewTbl[i].viewportTranslate.y, m213_cameraViewTbl[i].viewportTranslate.z);
+        Hu3DCameraPerspectiveSet(i, m213_cameraViewTbl[i].fov, 80.0f, 8000.0f);
     }
 }
 
@@ -3951,7 +3951,7 @@ void m213_ObjectSetup(void) {
     Hu3DSprModelInit(100);
     omInitObjMan(100, 0);
     omGameSysInit();
-    func_80110BB8_pump_pump_away();
+    m213_CameraInit();
     Hu3DGLightMaxSet(1);
     Hu3DGLightMaxSet(2);
     Hu3DGLightColorSet(0, 144, 144, 144);
@@ -3963,11 +3963,11 @@ void m213_ObjectSetup(void) {
     mgItemObjNum = 0;
     mgPlayerObjNum = 0;
     mgMapObjNum = 0;
-    GMesFontMesCreate(D_801116D8_pump_pump_away, 0);
-    GMesFontMesCreate(D_801116D8_pump_pump_away, 1);
-    omAddObj(1000, 0, 0, -1, func_80110B34_pump_pump_away);
-    omAddObj(1000, 0, 0, -1, func_801104F4_pump_pump_away);
-    func_80105C54_pump_pump_away();
+    GMesFontMesCreate(m213_fontMesTbl, 0);
+    GMesFontMesCreate(m213_fontMesTbl, 1);
+    omAddObj(1000, 0, 0, -1, m213_MainObjInit);
+    omAddObj(1000, 0, 0, -1, m213_ExitCheckObjMain);
+    m213_ObjWorkInit();
 }
 
-const s16 D_801116D8_pump_pump_away[] = { 0x8260, 0x8261, 0x8262, 0 };
+const s16 m213_fontMesTbl[] = { 0x8260, 0x8261, 0x8262, 0 };

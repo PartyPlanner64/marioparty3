@@ -1,5 +1,5 @@
 #include "common.h"
 
-void func_8010DB20_aces_high(void) {
+void m223_OvlReturn(void) {
     omOvlReturnEx(1);
 }

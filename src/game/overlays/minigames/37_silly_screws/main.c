@@ -133,75 +133,75 @@ typedef struct {
     /* 0x28 */ Work work;
 } PlayerData; // Size 0x58
 
-void m255_InitEnvironment(void);
-void m255_CreateMinigame(void);
-void m255_CheckExitRequest(omObjData *object);
-void m255_WaitExitWipeOut(omObjData *object);
-void m255_ExitOverlay(omObjData *object);
-void m255_InitMinigame(omObjData *object);
-void m255_UpdateSystem(omObjData *object);
-void m255_CreateWall(omObjData *object);
-void m255_UpdateWall(omObjData *object);
-void m255_CreateSigns(omObjData *object);
-void m255_UpdateSigns(omObjData *object);
-void m255_CreateScrews(omObjData *object);
-void m255_UpdateScrews(omObjData *object);
-void m255_CreateNuts(omObjData *object);
-void m255_UpdateNuts(omObjData *object);
-void m255_InitPlayer(omObjData *object);
-void m255_UpdatePlayer(omObjData *object);
-void m255_InitCamera(FuncContext *ctx);
-void m255_FollowPlayerWithCamera(FuncContext *ctx);
-void m255_ExecMinigameIntro(FuncContext *ctx);
-void m255_ExecPlayersDraw(FuncContext *ctx);
-void m255_CheckMinigameEnd(FuncContext *ctx);
-void m255_ChooseNutsPositions(void);
-void m255_SetWall(s16 modelId, s16 worldId);
-void m255_SetScrew(s16 modelId, s16 worldId);
-void m255_UpdateNutSpinning(FuncContext *ctx);
-void m255_UpdatePlayerCue(FuncContext *ctx);
-void m255_ExecPlayerWins(FuncContext *ctx);
-void m255_UpdatePlayerSpeed(FuncContext *ctx);
-void m255_UpdatePlayerAnimation(FuncContext *ctx);
-void m255_LerpPlayerRotation(FuncContext *ctx);
-void m255_ExecPlayerJump(FuncContext *ctx);
-void m255_UpdateComInput(FuncContext *ctx);
-f32 func_8010B18C_silly_screws(PlayerData *player);
+void m255_ObjectSetup(void);
+void m255_WorkCreate(void);
+void m255_ExitCheckObjMain(omObjData *object);
+void m255_ExitWaitObjMain(omObjData *object);
+void m255_ExitObjMain(omObjData *object);
+void m255_MainObjInit(omObjData *object);
+void m255_MainObjMain(omObjData *object);
+void m255_WallObjInit(omObjData *object);
+void m255_WallObjMain(omObjData *object);
+void m255_SignObjInit(omObjData *object);
+void m255_SignObjMain(omObjData *object);
+void m255_ScrewObjInit(omObjData *object);
+void m255_ScrewObjMain(omObjData *object);
+void m255_NutObjInit(omObjData *object);
+void m255_NutObjMain(omObjData *object);
+void m255_PlayerObjInit(omObjData *object);
+void m255_PlayerObjMain(omObjData *object);
+void m255_CameraViewInit(FuncContext *ctx);
+void m255_CameraFollowUpdate(FuncContext *ctx);
+void m255_StartExec(FuncContext *ctx);
+void m255_DrawExec(FuncContext *ctx);
+void m255_GoalCheckUpdate(FuncContext *ctx);
+void m255_NutPosInit(void);
+void m255_WallPosSet(s16 modelId, s16 worldId);
+void m255_ScrewPosSet(s16 modelId, s16 worldId);
+void m255_NutSpinUpdate(FuncContext *ctx);
+void m255_PlayerCueUpdate(FuncContext *ctx);
+void m255_PlayerWinExec(FuncContext *ctx);
+void m255_PlayerSpeedUpdate(FuncContext *ctx);
+void m255_PlayerMotUpdate(FuncContext *ctx);
+void m255_PlayerRotLerpUpdate(FuncContext *ctx);
+void m255_PlayerJumpExec(FuncContext *ctx);
+void m255_PlayerComInput(FuncContext *ctx);
+f32 m255_StopDistCalc(PlayerData *player);
 
-const s16 D_8010BE50_silly_screws[] = {
+const s16 m255_startMesTbl[] = {
     0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0x0000
 };
 
-const s16 D_8010BE5C_silly_screws[] = {
+const s16 m255_finishMesTbl[] = {
     0x8265, 0x8268, 0x826D, 0x8268, 0x8272, 0x8267, 0x0000, 0x0000
 };
 
-const s16 D_8010BE6C_silly_screws[] = {
+const s16 m255_drawMesTbl[] = {
     0x8263, 0x8271, 0x8260, 0x8276, 0x0000, 0x0000
 };
 
-static MinigameData *m255_minigame;
-static PlayerData *m255_players;
-static s16 m255_playerId[PLAYERS_TOTAL];
+static MinigameData *m255_gameWork;
+static PlayerData *m255_playerTbl;
+static s16 m255_playerNoTbl[PLAYERS_TOTAL];
 
-s16 D_8010BE20_silly_screws = -1;
-s16 D_8010BE22_silly_screws = 0;
-s16 D_8010BE24_silly_screws = 0;
-s16 D_8010BE26_silly_screws = 0;
-s16 D_8010BE28_silly_screws = 0;
+s16 m255_finishPhase = -1;
+s16 m255_timeUpF = 0;
+s16 m255_endF = 0;
+s16 m255_startF = 0;
+s16 m255_musicTimer = 0;
 
-s32 D_8010BE2C_silly_screws[] = {
+s32 m255_winAnimTbl[] = {
     0x000200A5, 0x000300A5, 0x000700A5, 0x000400A5, 0x000500A5, 0x000600A5, 0x000800A5, 0x0009001C
 };
 
-s16 D_8010BE4C_silly_screws = 0;
-s16 D_8010BE4E_silly_screws = 0;
+s16 m255_winReadyF = 0;
+s16 m255_winVoiceF = 0;
 
-void m255_OverlayMain(void) {
-    m255_InitEnvironment();
+void m255_Executor(void) {
+    m255_ObjectSetup();
 }
 
-void m255_InitEnvironment(void) {
+void m255_ObjectSetup(void) {
     omObjData *temp_v0;
 
     MapCollInit(50);
@@ -225,51 +225,51 @@ void m255_InitEnvironment(void) {
     mgItemObjNum = 0;
     mgPlayerObjNum = 0;
     mgMapObjNum = 0;
-    m255_CreateSystem();
-    m255_CreateMinigame();
-    m255_SetFunc(FGRP_CAMERA, 0, -1, 0, m255_InitCamera, FALSE, FALSE);
-    omAddObj(100, 0, 0, -1, m255_InitMinigame);
-    omAddObj(1000, 0, 0, -1, m255_CheckExitRequest);
-    GMesFontMesCreate(D_8010BE50_silly_screws, 1);
-    GMesFontMesCreate(D_8010BE5C_silly_screws, 1);
-    GMesFontMesCreate(D_8010BE6C_silly_screws, 1);
+    m255_SystemCreate();
+    m255_WorkCreate();
+    m255_FuncSet(FGRP_CAMERA, 0, -1, 0, m255_CameraViewInit, FALSE, FALSE);
+    omAddObj(100, 0, 0, -1, m255_MainObjInit);
+    omAddObj(1000, 0, 0, -1, m255_ExitCheckObjMain);
+    GMesFontMesCreate(m255_startMesTbl, 1);
+    GMesFontMesCreate(m255_finishMesTbl, 1);
+    GMesFontMesCreate(m255_drawMesTbl, 1);
 }
 
-void m255_CreateMinigame(void) {
+void m255_WorkCreate(void) {
     s16 i;
 
-    m255_minigame = HuMemAllocTag(sizeof(MinigameData), TAG_OVERLAY);
-    memset(m255_minigame, 0, sizeof(MinigameData));
-    m255_minigame->worlds = HuMemAllocTag(PLAYERS_TOTAL * sizeof(PlayerWorld), TAG_OVERLAY);
-    memset(m255_minigame->worlds, 0, PLAYERS_TOTAL * sizeof(PlayerWorld));
+    m255_gameWork = HuMemAllocTag(sizeof(MinigameData), TAG_OVERLAY);
+    memset(m255_gameWork, 0, sizeof(MinigameData));
+    m255_gameWork->worlds = HuMemAllocTag(PLAYERS_TOTAL * sizeof(PlayerWorld), TAG_OVERLAY);
+    memset(m255_gameWork->worlds, 0, PLAYERS_TOTAL * sizeof(PlayerWorld));
     for (i = 0; i < PLAYERS_TOTAL; i++) {
-        m255_minigame->worlds[i].nuts = HuMemAllocTag(NUTS_TOTAL * sizeof(NutData), TAG_OVERLAY);
-        memset(m255_minigame->worlds[i].nuts, 0, NUTS_TOTAL * sizeof(NutData));
+        m255_gameWork->worlds[i].nuts = HuMemAllocTag(NUTS_TOTAL * sizeof(NutData), TAG_OVERLAY);
+        memset(m255_gameWork->worlds[i].nuts, 0, NUTS_TOTAL * sizeof(NutData));
     }
-    m255_players = HuMemAllocTag(PLAYERS_TOTAL * sizeof(PlayerData), TAG_OVERLAY);
-    memset(m255_players, 0, PLAYERS_TOTAL * sizeof(PlayerData));
-    m255_ChooseNutsPositions();
+    m255_playerTbl = HuMemAllocTag(PLAYERS_TOTAL * sizeof(PlayerData), TAG_OVERLAY);
+    memset(m255_playerTbl, 0, PLAYERS_TOTAL * sizeof(PlayerData));
+    m255_NutPosInit();
 }
 
-void m255_CheckExitRequest(omObjData *object) {
+void m255_ExitCheckObjMain(omObjData *object) {
     if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
-        object->func = m255_WaitExitWipeOut;
+        object->func = m255_ExitWaitObjMain;
     }
 }
 
-void m255_WaitExitWipeOut(omObjData *object) {
+void m255_ExitWaitObjMain(omObjData *object) {
     if (WipeStatGet() == 0) {
-        object->func = m255_ExitOverlay;
+        object->func = m255_ExitObjMain;
     }
 }
 
-void m255_ExitOverlay(omObjData *object) {
+void m255_ExitObjMain(omObjData *object) {
     osViBlack(0);
     omOvlReturnEx(1);
 }
 
-void m255_UpdateCameras(void) {
+void m255_CameraUpdate(void) {
     s16 i;
 
     for (i = 0; i < PLAYERS_TOTAL; i++) {
@@ -284,10 +284,10 @@ void m255_UpdateCameras(void) {
             CRotM[i].y += 360.0f;
         }
     }
-    m255_UpdateFuncGroup(FGRP_CAMERA);
+    m255_FuncGroupUpdate(FGRP_CAMERA);
 }
 
-void m255_InitMinigame(omObjData *object) {
+void m255_MainObjInit(omObjData *object) {
     s16 player1Set = FALSE;
     s16 player2Set = FALSE;
     s16 i;
@@ -295,12 +295,12 @@ void m255_InitMinigame(omObjData *object) {
     for (i = 0; i < 4; i++) {
         if (GwPlayer[i].group == 0) {
             if (!player1Set) {
-                m255_playerId[0] = i;
+                m255_playerNoTbl[0] = i;
                 player1Set = TRUE;
             }
         } else if (GwPlayer[i].group == 1) {
             if (!player2Set) {
-                m255_playerId[1] = i;
+                m255_playerNoTbl[1] = i;
                 player2Set = TRUE;
             }
         }
@@ -308,29 +308,29 @@ void m255_InitMinigame(omObjData *object) {
     MgPlayerParamReset();
     MgShadowAltSet(1);
     for (i = 0; i < PLAYERS_TOTAL; i++) {
-        omAddObj(10, 8, 0, -1, m255_CreateWall);
-        omAddObj(10, 2, 0, -1, m255_CreateSigns);
-        omAddObj(10, 7, 0, -1, m255_CreateScrews);
-        omAddObj(10, 6, 0, -1, m255_CreateNuts);
-        mgPlayerObjTbl[i] = omAddObj(300, 12, 38, -1, m255_InitPlayer);
+        omAddObj(10, 8, 0, -1, m255_WallObjInit);
+        omAddObj(10, 2, 0, -1, m255_SignObjInit);
+        omAddObj(10, 7, 0, -1, m255_ScrewObjInit);
+        omAddObj(10, 6, 0, -1, m255_NutObjInit);
+        mgPlayerObjTbl[i] = omAddObj(300, 12, 38, -1, m255_PlayerObjInit);
     }
-    m255_SetSpriteDispOn(m255_SetSprite(0x58, 0xF, 0, 0), 160, 120);
-    m255_SetFunc(FGRP_MINIGAME, 1, -1, 0, m255_ExecMinigameIntro, TRUE, FALSE);
+    m255_SprDispOn(m255_SprCreate(0x58, 0xF, 0, 0), 160, 120);
+    m255_FuncSet(FGRP_MINIGAME, 1, -1, 0, m255_StartExec, TRUE, FALSE);
     WipeCreateIn(WIPE_TYPE_PREV, 0x10);
-    object->func = m255_UpdateSystem;
+    object->func = m255_MainObjMain;
 }
 
-void m255_UpdateSystem(omObjData *object) {
-    m255_UpdateFuncGroup(FGRP_MINIGAME);
-    m255_UpdateCameras();
-    m255_UpdateSprites();
+void m255_MainObjMain(omObjData *object) {
+    m255_FuncGroupUpdate(FGRP_MINIGAME);
+    m255_CameraUpdate();
+    m255_SprUpdate();
 }
 
-void m255_CreateWall(omObjData *object) {
+void m255_WallObjInit(omObjData *object) {
     s16 var_a1;
     s16 i;
 
-    object->work[0] = m255_minigame->work.s8[0];
+    object->work[0] = m255_gameWork->work.s8[0];
     object->model[0] = Hu3DModelRead(0x580000, 0x9D); // checkered flat wall segment
     for (i = 1; i < 5; i++) {
         if (i == 4) {
@@ -348,22 +348,22 @@ void m255_CreateWall(omObjData *object) {
         Hu3DModelPosSet(object->model[i], 0.0f, 0.0f, -(200.0f + (i - 5) * 900.0f));
     }
     for (i = 0; i < 4; i++) {
-        m255_SetWall(object->model[i], object->work[0]);
+        m255_WallPosSet(object->model[i], object->work[0]);
     }
     Hu3DModelPosSet(object->model[4], 0.0f, 0.0f, -2050.0f);
-    m255_SyncWithModel(object);
+    m255_MdlSync(object);
     var_a1 = (object->work[0] == 0) ? 1 : 2;
     for (i = 0; i < 8; i++) {
         Hu3DModelCameraSet(object->model[i], var_a1);
     }
-    m255_minigame->work.s8[0]++;
-    object->func = m255_UpdateWall;
+    m255_gameWork->work.s8[0]++;
+    object->func = m255_WallObjMain;
 }
 
-void m255_UpdateWall(omObjData *object) {
+void m255_WallObjMain(omObjData *object) {
     s16 i;
 
-    if (m255_minigame->unk04 != 0) {
+    if (m255_gameWork->unk04 != 0) {
         for (i = 0; i < 8; i++) {
             Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
@@ -378,7 +378,7 @@ void m255_UpdateWall(omObjData *object) {
             if (CenterM[object->work[0]].z + 1600.0f < model->pos.z) {
                 Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 if (i != 4) {
-                    m255_SetWall(object->model[i], object->work[0]);
+                    m255_WallPosSet(object->model[i], object->work[0]);
                 }
             }
         } else {
@@ -390,14 +390,14 @@ void m255_UpdateWall(omObjData *object) {
             }
         }
     }
-    m255_SyncWithModel(object);
+    m255_MdlSync(object);
 }
 
-void m255_CreateSigns(omObjData *object) {
+void m255_SignObjInit(omObjData *object) {
     s16 var_a1;
     s16 i;
 
-    object->work[0] = m255_minigame->work.s8[3];
+    object->work[0] = m255_gameWork->work.s8[3];
     object->model[0] = Hu3DModelRead(0x58000C, 0x9D);
     for (i = 1; i < SIGNS_TOTAL; i++) {
         object->model[i] = Hu3DModelLink(object->model[0]);
@@ -405,16 +405,16 @@ void m255_CreateSigns(omObjData *object) {
     for (i = 0; i < SIGNS_TOTAL; i++) {
         Hu3DModelPosSet(object->model[i], 0.0f, 1300.0f, -(675.0f + i * 900.0f));
     }
-    m255_SyncWithModel(object);
+    m255_MdlSync(object);
     var_a1 = (object->work[0] == 0) ? 1 : 2;
     for (i = 0; i < SIGNS_TOTAL; i++) {
         Hu3DModelCameraSet(object->model[i], var_a1);
     }
-    m255_minigame->work.s8[3]++;
-    object->func = m255_UpdateSigns;
+    m255_gameWork->work.s8[3]++;
+    object->func = m255_SignObjMain;
 }
 
-void m255_UpdateSigns(omObjData *object) {
+void m255_SignObjMain(omObjData *object) {
     s16 i;
 
     for (i = 0; i < SIGNS_TOTAL; i++) {
@@ -426,18 +426,18 @@ void m255_UpdateSigns(omObjData *object) {
         if (CenterM[object->work[0]].z + 1600.0f < model->pos.z) {
             Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             if (i != 4) {
-                m255_SetWall(object->model[i], object->work[0]);
+                m255_WallPosSet(object->model[i], object->work[0]);
             }
         }
     }
-    m255_SyncWithModel(object);
+    m255_MdlSync(object);
 }
 
-void m255_CreateScrews(omObjData *object) {
+void m255_ScrewObjInit(omObjData *object) {
     s16 var_a1;
     s16 i;
 
-    object->work[0] = m255_minigame->work.s8[2];
+    object->work[0] = m255_gameWork->work.s8[2];
     object->model[0] = Hu3DModelRead(0x580002, 0x9D);
     for (i = 1; i < SCREWS_TOTAL + 1; i++) {
         if (i == 6) {
@@ -447,19 +447,19 @@ void m255_CreateScrews(omObjData *object) {
         }
     }
     for (i = 0; i < SCREWS_TOTAL; i++) {
-        m255_SetScrew(object->model[i], object->work[0]);
+        m255_ScrewPosSet(object->model[i], object->work[0]);
     }
     Hu3DModelPosSet(object->model[6], 0.0f, 1800.0f, -2650.0f);
-    m255_SyncWithModel(object);
+    m255_MdlSync(object);
     var_a1 = (object->work[0] == 0) ? 1 : 2;
     for (i = 0; i < SCREWS_TOTAL + 1; i++) {
         Hu3DModelCameraSet(object->model[i], var_a1);
     }
-    m255_minigame->work.s8[2]++;
-    object->func = m255_UpdateScrews;
+    m255_gameWork->work.s8[2]++;
+    object->func = m255_ScrewObjMain;
 }
 
-void m255_UpdateScrews(omObjData *object) {
+void m255_ScrewObjMain(omObjData *object) {
     s16 i;
 
     for (i = 0; i < SCREWS_TOTAL; i++) {
@@ -471,45 +471,45 @@ void m255_UpdateScrews(omObjData *object) {
         if (CenterM[object->work[0]].z + 800.0f < model->pos.z) {
             Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             if (i != 6) {
-                m255_SetScrew(object->model[i], object->work[0]);
+                m255_ScrewPosSet(object->model[i], object->work[0]);
             }
         }
     }
-    m255_SyncWithModel(object);
+    m255_MdlSync(object);
 }
 
-void m255_CreateNuts(omObjData *object) {
-    PlayerWorld *world = &m255_minigame->worlds[m255_minigame->work.s8[1]];
+void m255_NutObjInit(omObjData *object) {
+    PlayerWorld *world = &m255_gameWork->worlds[m255_gameWork->work.s8[1]];
     s32 file[] = { 3, 4, 5, 6, 7, 8 };
     s16 var_s4;
     s16 i;
 
-    object->work[0] = m255_minigame->work.s8[1];
+    object->work[0] = m255_gameWork->work.s8[1];
     var_s4 = (object->work[0] == 0) ? 1 : 2;
     for (i = 0; i < NUTS_TOTAL; i++) {
         object->model[i] = world->nuts[i].modelId = Hu3DModelRead(0x580000 | file[i], 0x9D);
-        Hu3DModelPosSet(object->model[i], m255_minigame->worlds[object->work[0]].nuts[i].startPosX, 1800.0f, 0.0f - i * 450.0f);
+        Hu3DModelPosSet(object->model[i], m255_gameWork->worlds[object->work[0]].nuts[i].startPosX, 1800.0f, 0.0f - i * 450.0f);
         Hu3DModelCameraSet(object->model[i], var_s4);
     }
-    m255_SyncWithModel(object);
-    m255_minigame->work.s8[1]++;
-    m255_SetFunc(FGRP_NUTS_1 + object->work[0], 0, object->work[0], &m255_minigame->worlds[object->work[0]], m255_UpdateNutSpinning, FALSE, FALSE);
-    object->func = m255_UpdateNuts;
+    m255_MdlSync(object);
+    m255_gameWork->work.s8[1]++;
+    m255_FuncSet(FGRP_NUTS_1 + object->work[0], 0, object->work[0], &m255_gameWork->worlds[object->work[0]], m255_NutSpinUpdate, FALSE, FALSE);
+    object->func = m255_NutObjMain;
 }
 
-void m255_UpdateNuts(omObjData *object) {
+void m255_NutObjMain(omObjData *object) {
     s16 i;
 
-    if (m255_minigame->unk04 != 0) {
+    if (m255_gameWork->unk04 != 0) {
         for (i = 0; i < NUTS_TOTAL; i++) {
             Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
-    m255_UpdateFuncGroup(FGRP_NUTS_1 + object->work[0]);
-    m255_SyncWithModel(object);
+    m255_FuncGroupUpdate(FGRP_NUTS_1 + object->work[0]);
+    m255_MdlSync(object);
 }
 
-void m255_InitPlayer(omObjData *object) {
+void m255_PlayerObjInit(omObjData *object) {
     s8 *unkData;
     s32 temp_v0_2;
     s32 temp_a1;
@@ -518,7 +518,7 @@ void m255_InitPlayer(omObjData *object) {
     s16 i;
 
     object->work[0] = mgPlayerObjNum;
-    object->work[1] = m255_playerId[object->work[0]];
+    object->work[1] = m255_playerNoTbl[object->work[0]];
     chr = GwPlayer[object->work[1]].chr;
     temp_a1 = omCharModelNoTbl[GwPlayer[object->work[1]].chr][0];
     temp_v0_2 = omCharModelNoTbl[GwPlayer[object->work[1]].chr][2];
@@ -539,7 +539,7 @@ void m255_InitPlayer(omObjData *object) {
     MgPlayerMotLoad(object, PLAYER_ANIM_32, CharMotionDataNumGet(chr, 0x22), 0, 0);
     MgPlayerMotLoad(object, PLAYER_ANIM_LOST, CharMotionDataNumGet(chr, 0x36), 1, 999);
     MgPlayerMotLoad(object, PLAYER_ANIM_WON, CharMotionDataNumGet(chr, 0x2F), 1, 999);
-    object->trans.x = m255_players[object->work[0]].startPosX;
+    object->trans.x = m255_playerTbl[object->work[0]].startPosX;
     object->trans.y = 2000.0f;
     object->trans.z = 0.0f;
     object->rot.y = 180.0f;
@@ -548,27 +548,27 @@ void m255_InitPlayer(omObjData *object) {
     Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     mgPlayerObjNum++;
     unkData = object->data;
-    m255_players[object->work[0]].padId = unkData[0x57]; // TODO: figure out type.
-    m255_players[object->work[0]].object = object;
-    m255_players[object->work[0]].direction = PLAYER_DIR_RIGHT;
-    m255_players[object->work[0]].currNutId = 0;
-    m255_players[object->work[0]].inputEnabled = TRUE;
-    m255_players[object->work[0]].cuesEnabled = TRUE;
-    m255_players[object->work[0]].nutSeActive = FALSE;
+    m255_playerTbl[object->work[0]].padId = unkData[0x57]; // TODO: figure out type.
+    m255_playerTbl[object->work[0]].object = object;
+    m255_playerTbl[object->work[0]].direction = PLAYER_DIR_RIGHT;
+    m255_playerTbl[object->work[0]].currNutId = 0;
+    m255_playerTbl[object->work[0]].inputEnabled = TRUE;
+    m255_playerTbl[object->work[0]].cuesEnabled = TRUE;
+    m255_playerTbl[object->work[0]].nutSeActive = FALSE;
     var_a1 = (object->work[0] == 0) ? 1 : 2;
     for (i = 0; i < 12; i++) {
         Hu3DModelCameraSet(object->model[i], var_a1);
     }
-    m255_SetFunc(FGRP_PLAYER_1 + object->work[0], 9, -1, &m255_players[object->work[0]], m255_UpdatePlayerAnimation, FALSE, FALSE);
-    object->func = m255_UpdatePlayer;
+    m255_FuncSet(FGRP_PLAYER_1 + object->work[0], 9, -1, &m255_playerTbl[object->work[0]], m255_PlayerMotUpdate, FALSE, FALSE);
+    object->func = m255_PlayerObjMain;
 }
 
-void m255_UpdatePlayer(omObjData *object) {
-    m255_UpdateFuncGroup(FGRP_PLAYER_1 + object->work[0]);
+void m255_PlayerObjMain(omObjData *object) {
+    m255_FuncGroupUpdate(FGRP_PLAYER_1 + object->work[0]);
     MgPlayerMotUpdate(object);
 }
 
-void m255_InitCamera(FuncContext *ctx) {
+void m255_CameraViewInit(FuncContext *ctx) {
     s16 i;
 
     switch (ctx->state) {
@@ -586,12 +586,12 @@ void m255_InitCamera(FuncContext *ctx) {
                 CRotM[i].z = 0.0f;
                 CZoomM[i] = 1240.0f;
             }
-            m255_ResetFunc(FGRP_CAMERA, ctx);
+            m255_FuncReset(FGRP_CAMERA, ctx);
             break;
     }
 }
 
-void m255_ExecCameraIntro(FuncContext *ctx) {
+void m255_CameraStartMove(FuncContext *ctx) {
     s16 camId = ctx->param;
     f32 temp_f22;
 
@@ -625,15 +625,15 @@ void m255_ExecCameraIntro(FuncContext *ctx) {
                 }
                 CRotM[camId].x = 323.0f;
                 CRotM[camId].y = 77.0f;
-                m255_ResetFunc(FGRP_CAMERA, ctx);
-                m255_minigame->unk04 = 1;
-                m255_SetFunc(FGRP_CAMERA, 0, camId, &m255_minigame->worlds[camId], m255_FollowPlayerWithCamera, FALSE, FALSE);
+                m255_FuncReset(FGRP_CAMERA, ctx);
+                m255_gameWork->unk04 = 1;
+                m255_FuncSet(FGRP_CAMERA, 0, camId, &m255_gameWork->worlds[camId], m255_CameraFollowUpdate, FALSE, FALSE);
             }
             break;
     }
 }
 
-void m255_CenterCameraOnWinner(FuncContext *ctx) {
+void m255_CameraWinMove(FuncContext *ctx) {
     PlayerData *player = ctx->data;
     s16 camId = player->object->work[0];
     f32 temp_f0;
@@ -672,14 +672,14 @@ void m255_CenterCameraOnWinner(FuncContext *ctx) {
                 }
                 CRotM[camId].x = 349.0f;
                 CRotM[camId].y = 127.0f;
-                m255_SetFunc(FGRP_PLAYER_1 + player->object->work[0], 3, -1, player, m255_ExecPlayerWins, FALSE, FALSE);
-                m255_ResetFunc(FGRP_CAMERA, ctx);
+                m255_FuncSet(FGRP_PLAYER_1 + player->object->work[0], 3, -1, player, m255_PlayerWinExec, FALSE, FALSE);
+                m255_FuncReset(FGRP_CAMERA, ctx);
             }
             break;
     }
 }
 
-void m255_FollowPlayerWithCamera(FuncContext *ctx) {
+void m255_CameraFollowUpdate(FuncContext *ctx) {
     PlayerData *player;
 
     switch (ctx->state) {
@@ -688,10 +688,10 @@ void m255_FollowPlayerWithCamera(FuncContext *ctx) {
             ctx->state = 1;
             break;
         case 1:
-            m255_minigame->unk04 = 0;
-            player = &m255_players[ctx->work.s8[0]];
+            m255_gameWork->unk04 = 0;
+            player = &m255_playerTbl[ctx->work.s8[0]];
             if (player->state == PLAYER_STATE_FINISHED || player->state == PLAYER_STATE_7 || player->state == PLAYER_STATE_WAIT_CAM) {
-                m255_ResetFunc(FGRP_CAMERA, ctx);
+                m255_FuncReset(FGRP_CAMERA, ctx);
                 break;
             }
             if (player->object->trans.z < CenterM[ctx->work.s8[0]].z + 197.0f) {
@@ -701,7 +701,7 @@ void m255_FollowPlayerWithCamera(FuncContext *ctx) {
     }
 }
 
-void m255_UpdateDebugCamera(FuncContext *ctx) {
+void m255_CameraDebugPad(FuncContext *ctx) {
     s16 camId = ctx->work.s8[3];
     u16 temp_a0;
 
@@ -798,10 +798,10 @@ void m255_UpdateDebugCamera(FuncContext *ctx) {
     }
 }
 
-void m255_UpdateTimer(FuncContext *ctx) {
+void m255_TimerUpdate(FuncContext *ctx) {
     s16 i;
 
-    if (D_8010BE24_silly_screws != 0) {
+    if (m255_endF != 0) {
         return;
     }
     switch (ctx->state) {
@@ -809,35 +809,35 @@ void m255_UpdateTimer(FuncContext *ctx) {
             ctx->state = 1;
             break;
         case 1:
-            m255_minigame->timer -= 1.0f;
-            if (m255_minigame->timer < 30.0f * FPS) {
+            m255_gameWork->timer -= 1.0f;
+            if (m255_gameWork->timer < 30.0f * FPS) {
                 ctx->state = 3;
             }
             break;
         case 3:
-            m255_minigame->timer -= 1.0f;
-            GMesCreate(GMES_MES_TIMER, m255_minigame->timer / FPS, 160, 28);
-            GMesTimerValueSet((m255_minigame->timer + (FPS - 1.0f)) / FPS);
+            m255_gameWork->timer -= 1.0f;
+            GMesCreate(GMES_MES_TIMER, m255_gameWork->timer / FPS, 160, 28);
+            GMesTimerValueSet((m255_gameWork->timer + (FPS - 1.0f)) / FPS);
             ctx->state = 4;
             break;
         case 4:
-            m255_minigame->timer -= 1.0f;
-            GMesTimerValueSet((m255_minigame->timer + (FPS - 1.0f)) / FPS);
-            if (m255_minigame->timer < 0.0f) {
-                D_8010BE22_silly_screws = 1;
+            m255_gameWork->timer -= 1.0f;
+            GMesTimerValueSet((m255_gameWork->timer + (FPS - 1.0f)) / FPS);
+            if (m255_gameWork->timer < 0.0f) {
+                m255_timeUpF = 1;
                 GMesTimerEnd();
-                m255_ResetFunc(FGRP_MINIGAME, ctx);
-                m255_SetFunc(FGRP_MINIGAME, 0, -1, NULL, m255_ExecPlayersDraw, FALSE, FALSE);
+                m255_FuncReset(FGRP_MINIGAME, ctx);
+                m255_FuncSet(FGRP_MINIGAME, 0, -1, NULL, m255_DrawExec, FALSE, FALSE);
                 for (i = 0; i < PLAYERS_TOTAL; i++) {
-                    m255_players[i].lost = TRUE;
+                    m255_playerTbl[i].lost = TRUE;
                 }
             }
             break;
     }
 }
 
-void m255_ExecMinigameIntro(FuncContext *ctx) {
-    PlayerData *player = m255_players;
+void m255_StartExec(FuncContext *ctx) {
+    PlayerData *player = m255_playerTbl;
     s16 i;
 
     switch (ctx->state) {
@@ -848,45 +848,45 @@ void m255_ExecMinigameIntro(FuncContext *ctx) {
             switch (ctx->work.s16[0]++) {
                 case 5:
                     for (i = 0; i < PLAYERS_TOTAL; i++) {
-                        m255_SetFunc(FGRP_CAMERA, 0, i, NULL, m255_ExecCameraIntro, FALSE, FALSE);
+                        m255_FuncSet(FGRP_CAMERA, 0, i, NULL, m255_CameraStartMove, FALSE, FALSE);
                     }
                     break;
                 case 125:
                     GMesCreate(GMES_MES_MG_START);
                     HuAudFXPlay(0xE);
-                    D_8010BE28_silly_screws = 1;
+                    m255_musicTimer = 1;
                     break;
                 case 140:
-                    D_8010BE26_silly_screws = 1;
+                    m255_startF = 1;
                     break;
                 default:
-                    if (D_8010BE26_silly_screws != 0 && GMesStatGet() == GMES_STAT_TIMEEND) {
+                    if (m255_startF != 0 && GMesStatGet() == GMES_STAT_TIMEEND) {
                         for (i = 0; i < PLAYERS_TOTAL; i++, player++) {
-                            if (GwPlayer[m255_playerId[i]].stat & PLAYER_IS_CPU) {
-                                m255_SetFunc(FGRP_PLAYER_1 + player->object->work[0], 1, -1, player, m255_UpdateComInput, FALSE, FALSE);
-                                m255_SetFunc(FGRP_PLAYER_1 + player->object->work[0], 2, -1, player, m255_UpdatePlayerSpeed, FALSE, FALSE);
+                            if (GwPlayer[m255_playerNoTbl[i]].stat & PLAYER_IS_CPU) {
+                                m255_FuncSet(FGRP_PLAYER_1 + player->object->work[0], 1, -1, player, m255_PlayerComInput, FALSE, FALSE);
+                                m255_FuncSet(FGRP_PLAYER_1 + player->object->work[0], 2, -1, player, m255_PlayerSpeedUpdate, FALSE, FALSE);
                             } else {
-                                m255_SetFunc(FGRP_PLAYER_1 + player->object->work[0], 2, -1, player, m255_UpdatePlayerSpeed, FALSE, FALSE);
+                                m255_FuncSet(FGRP_PLAYER_1 + player->object->work[0], 2, -1, player, m255_PlayerSpeedUpdate, FALSE, FALSE);
                             }
-                            m255_SetFunc(FGRP_PLAYER_1 + player->object->work[0], 0, -1, player, m255_UpdatePlayerCue, FALSE, FALSE);
+                            m255_FuncSet(FGRP_PLAYER_1 + player->object->work[0], 0, -1, player, m255_PlayerCueUpdate, FALSE, FALSE);
                         }
-                        m255_SetFunc(FGRP_MINIGAME, 0, -1, NULL, m255_UpdateTimer, FALSE, FALSE);
-                        m255_SetFunc(FGRP_MINIGAME, 1, -1, NULL, m255_CheckMinigameEnd, FALSE, FALSE);
-                        m255_ResetFunc(FGRP_MINIGAME, ctx);
+                        m255_FuncSet(FGRP_MINIGAME, 0, -1, NULL, m255_TimerUpdate, FALSE, FALSE);
+                        m255_FuncSet(FGRP_MINIGAME, 1, -1, NULL, m255_GoalCheckUpdate, FALSE, FALSE);
+                        m255_FuncReset(FGRP_MINIGAME, ctx);
                     }
                     break;
             }
     }
-    if (D_8010BE28_silly_screws != 0 && GMesStatGet() != GMES_STAT_NONE) {
-        D_8010BE28_silly_screws++;
-        if (D_8010BE28_silly_screws >= 45) {
+    if (m255_musicTimer != 0 && GMesStatGet() != GMES_STAT_NONE) {
+        m255_musicTimer++;
+        if (m255_musicTimer >= 45) {
             HuAudSeqPlay(0x38);
-            D_8010BE28_silly_screws = 0;
+            m255_musicTimer = 0;
         }
     }
 }
 
-void m255_ExecMinigameFinish(FuncContext *ctx) {
+void m255_FinishExec(FuncContext *ctx) {
     s16 temp_v1;
 
     switch (ctx->state) {
@@ -908,12 +908,12 @@ void m255_ExecMinigameFinish(FuncContext *ctx) {
             }
             break;
         case 10:
-            if (D_8010BE20_silly_screws == 0) {
+            if (m255_finishPhase == 0) {
                 if (GMesStatGet() == GMES_STAT_NONE) {
                     ctx->work.s16[0] = 0;
-                    D_8010BE20_silly_screws = 1;
+                    m255_finishPhase = 1;
                 }
-            } else if (D_8010BE20_silly_screws == 1) {
+            } else if (m255_finishPhase == 1) {
                 ctx->work.s16[0]++;
                 if (ctx->work.s16[0] >= 15) {
                     WipeCreateOut(WIPE_TYPE_NORMAL, 20);
@@ -924,16 +924,16 @@ void m255_ExecMinigameFinish(FuncContext *ctx) {
     }
 }
 
-void m255_ExecPlayersDraw(FuncContext *ctx) {
+void m255_DrawExec(FuncContext *ctx) {
     s16 i;
 
     switch (ctx->state) {
         case 0:
             for (i = 0; i < PLAYERS_TOTAL; i++) {
-                m255_players[i].cuesEnabled = FALSE;
-                Hu3DModelAttrSet(m255_players[i].object->model[MDL_ARROW], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                Hu3DModelAttrSet(m255_players[i].object->model[MDL_BALLOON_B], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                Hu3DModelAttrSet(m255_players[i].object->model[MDL_BALLOON_A], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                m255_playerTbl[i].cuesEnabled = FALSE;
+                Hu3DModelAttrSet(m255_playerTbl[i].object->model[MDL_ARROW], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(m255_playerTbl[i].object->model[MDL_BALLOON_B], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(m255_playerTbl[i].object->model[MDL_BALLOON_A], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             ctx->work.s16[0] = 0;
             ctx->state = 1;
@@ -969,14 +969,14 @@ void m255_ExecPlayersDraw(FuncContext *ctx) {
     }
 }
 
-void m255_CheckMinigameEnd(FuncContext *ctx) {
-    PlayerData *player = m255_players;
+void m255_GoalCheckUpdate(FuncContext *ctx) {
+    PlayerData *player = m255_playerTbl;
     s16 winnerCount = 0;
     s16 winners[] = { -1, -1 };
     u8 unused_stack[8];
     s16 i;
 
-    if (D_8010BE22_silly_screws != 0) {
+    if (m255_timeUpF != 0) {
         return;
     }
     switch (ctx->state) {
@@ -993,31 +993,31 @@ void m255_CheckMinigameEnd(FuncContext *ctx) {
             if (winnerCount == 0) {
                 break;
             }
-            D_8010BE24_silly_screws = 1;
+            m255_endF = 1;
             i = (winnerCount == PLAYERS_TOTAL) ? (rand16() & 1) : winners[0];
             if (i == 0) {
-                m255_players[1].lost = TRUE;
-                m255_players[1].cuesEnabled = FALSE;
-                Hu3DModelAttrSet(m255_players[1].object->model[MDL_ARROW], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                Hu3DModelAttrSet(m255_players[1].object->model[MDL_BALLOON_B], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                Hu3DModelAttrSet(m255_players[1].object->model[MDL_BALLOON_A], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                m255_playerTbl[1].lost = TRUE;
+                m255_playerTbl[1].cuesEnabled = FALSE;
+                Hu3DModelAttrSet(m255_playerTbl[1].object->model[MDL_ARROW], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(m255_playerTbl[1].object->model[MDL_BALLOON_B], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(m255_playerTbl[1].object->model[MDL_BALLOON_A], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             } else {
-                m255_players[0].lost = TRUE;
-                m255_players[0].cuesEnabled = FALSE;
-                Hu3DModelAttrSet(m255_players[0].object->model[MDL_ARROW], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                Hu3DModelAttrSet(m255_players[0].object->model[MDL_BALLOON_B], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                Hu3DModelAttrSet(m255_players[0].object->model[MDL_BALLOON_A], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                m255_playerTbl[0].lost = TRUE;
+                m255_playerTbl[0].cuesEnabled = FALSE;
+                Hu3DModelAttrSet(m255_playerTbl[0].object->model[MDL_ARROW], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(m255_playerTbl[0].object->model[MDL_BALLOON_B], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(m255_playerTbl[0].object->model[MDL_BALLOON_A], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             GMesTimerEnd();
-            m255_SetFunc(FGRP_MINIGAME, 1, i, &m255_players[i], m255_ExecMinigameFinish, FALSE, FALSE);
-            m255_ResetFunc(FGRP_MINIGAME, ctx);
+            m255_FuncSet(FGRP_MINIGAME, 1, i, &m255_playerTbl[i], m255_FinishExec, FALSE, FALSE);
+            m255_FuncReset(FGRP_MINIGAME, ctx);
             break;
     }
 }
 
 // TODO: doesn't work with -Wa,--vr4300mul-off.
-void m255_ChooseNutsPositions(void) {
-    PlayerWorld *world = m255_minigame->worlds;
+void m255_NutPosInit(void) {
+    PlayerWorld *world = m255_gameWork->worlds;
     f32 nutBasePosX[][6] = {
         {
             4.5f,
@@ -1037,25 +1037,25 @@ void m255_ChooseNutsPositions(void) {
             world->nuts[j].startPosX = nutBasePosX[rand][j] * 20.0f * 5.0f;
         }
     }
-    m255_players[0].startPosX = m255_players[1].startPosX = m255_minigame->worlds->nuts[0].startPosX;
-    m255_minigame->timer = 180.0f * FPS;
+    m255_playerTbl[0].startPosX = m255_playerTbl[1].startPosX = m255_gameWork->worlds->nuts[0].startPosX;
+    m255_gameWork->timer = 180.0f * FPS;
 }
 
-void m255_SetWall(s16 modelId, s16 worldId) {
-    if (m255_minigame->worlds[worldId].wallCount < 4) {
-        Hu3DModelPosSet(modelId, 0.0f, 0.0f, 1150.0f - m255_minigame->worlds[worldId].wallCount * 800.0f);
-        m255_minigame->worlds[worldId].wallCount++;
+void m255_WallPosSet(s16 modelId, s16 worldId) {
+    if (m255_gameWork->worlds[worldId].wallCount < 4) {
+        Hu3DModelPosSet(modelId, 0.0f, 0.0f, 1150.0f - m255_gameWork->worlds[worldId].wallCount * 800.0f);
+        m255_gameWork->worlds[worldId].wallCount++;
     }
 }
 
-void m255_SetScrew(s16 modelId, s16 worldId) {
-    if (m255_minigame->worlds[worldId].screwCount < SCREWS_TOTAL) {
-        Hu3DModelPosSet(modelId, 50.0f, 1800.0f, 0.0f - m255_minigame->worlds[worldId].screwCount * 450.0f);
-        m255_minigame->worlds[worldId].screwCount++;
+void m255_ScrewPosSet(s16 modelId, s16 worldId) {
+    if (m255_gameWork->worlds[worldId].screwCount < SCREWS_TOTAL) {
+        Hu3DModelPosSet(modelId, 50.0f, 1800.0f, 0.0f - m255_gameWork->worlds[worldId].screwCount * 450.0f);
+        m255_gameWork->worlds[worldId].screwCount++;
     }
 }
 
-static inline void m255_SpinNutModel(HmfModel *model, PlayerData *player) {
+static inline void m255_NutMdlRotUpdate(HmfModel *model, PlayerData *player) {
     model->rot.x -= player->speed;
     if (model->rot.x > 360.0f) {
         model->rot.x -= 360.0f;
@@ -1070,7 +1070,7 @@ static inline void m255_SpinNutModel(HmfModel *model, PlayerData *player) {
     }
 }
 
-void m255_UpdateNutSpinning(FuncContext *ctx) {
+void m255_NutSpinUpdate(FuncContext *ctx) {
     PlayerWorld *world = ctx->data;
     NutData *nut = world->nuts;
     s16 i;
@@ -1083,7 +1083,7 @@ void m255_UpdateNutSpinning(FuncContext *ctx) {
         case 1:
             for (i = 0; i < NUTS_TOTAL; i++, nut++) {
                 HmfModel *nutModel = &Hu3DData[nut->modelId];
-                PlayerData *player = &m255_players[ctx->work.s16[0]];
+                PlayerData *player = &m255_playerTbl[ctx->work.s16[0]];
 
                 if (CenterM[ctx->work.s16[0]].z - 800.0f < nutModel->pos.z) {
                     Hu3DModelAttrSet(nut->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -1092,7 +1092,7 @@ void m255_UpdateNutSpinning(FuncContext *ctx) {
                     Hu3DModelAttrSet(nut->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
                 if (player->inputEnabled && player->currNutId == i) {
-                    m255_SpinNutModel(nutModel, player);
+                    m255_NutMdlRotUpdate(nutModel, player);
                     player->object->trans.x = nutModel->pos.x;
                     Hu3DData[player->object->model[1]].pos.x = nutModel->pos.x;
                     Hu3DData[player->object->model[1]].pos.y = player->object->trans.y;
@@ -1107,7 +1107,7 @@ void m255_UpdateNutSpinning(FuncContext *ctx) {
                             player->currNutId++;
                             HuAudFXStop(player->nutSeNo);
                             player->nutSeActive = FALSE;
-                            m255_SetFunc(FGRP_PLAYER_1 + player->object->work[0], 3, -1, player, m255_ExecPlayerJump, FALSE, FALSE);
+                            m255_FuncSet(FGRP_PLAYER_1 + player->object->work[0], 3, -1, player, m255_PlayerJumpExec, FALSE, FALSE);
                         }
                     } else {
                         s32 jumpGapX = nutModel->pos.x - nut[1].startPosX;
@@ -1117,7 +1117,7 @@ void m255_UpdateNutSpinning(FuncContext *ctx) {
                             player->currNutId++;
                             HuAudFXStop(player->nutSeNo);
                             player->nutSeActive = FALSE;
-                            m255_SetFunc(FGRP_PLAYER_1 + player->object->work[0], 3, -1, player, m255_ExecPlayerJump, FALSE, FALSE);
+                            m255_FuncSet(FGRP_PLAYER_1 + player->object->work[0], 3, -1, player, m255_PlayerJumpExec, FALSE, FALSE);
                         }
                     }
                 }
@@ -1126,10 +1126,10 @@ void m255_UpdateNutSpinning(FuncContext *ctx) {
     }
 }
 
-void m255_UpdatePlayerCue(FuncContext *ctx) {
+void m255_PlayerCueUpdate(FuncContext *ctx) {
     PlayerData *player = ctx->data;
     HmfModel *cueModel = NULL;
-    PlayerWorld *world = &m255_minigame->worlds[player->object->work[0]];
+    PlayerWorld *world = &m255_gameWork->worlds[player->object->work[0]];
     f32 cuePosY = 0.0f;
     f32 cuePosZ = 0.0f;
 
@@ -1218,13 +1218,13 @@ void m255_UpdatePlayerCue(FuncContext *ctx) {
     }
 }
 
-void m255_ExecPlayerWins(FuncContext *ctx) {
+void m255_PlayerWinExec(FuncContext *ctx) {
     PlayerData *player = ctx->data;
 
     if (GMesStatGet() == GMES_STAT_NONE) {
-        D_8010BE4C_silly_screws = 1;
+        m255_winReadyF = 1;
     }
-    if (D_8010BE4C_silly_screws != 0) {
+    if (m255_winReadyF != 0) {
         s16 temp_15;
 
         switch (ctx->state) {
@@ -1234,22 +1234,22 @@ void m255_ExecPlayerWins(FuncContext *ctx) {
             case 1:
                 temp_15 = 15;
                 if (ctx->work.s16[0]++ == temp_15) {
-                    s16 chr = GwPlayer[m255_playerId[player->object->work[0]]].chr;
-                    s32 temp_a2 = D_8010BE2C_silly_screws[GwPlayer[m255_playerId[player->object->work[0]]].chr];
+                    s16 chr = GwPlayer[m255_playerNoTbl[player->object->work[0]]].chr;
+                    s32 temp_a2 = m255_winAnimTbl[GwPlayer[m255_playerNoTbl[player->object->work[0]]].chr];
 
                     CharAnimCreate(player->object->model[0], 2, chr, temp_a2);
                     player->state = PLAYER_STATE_WON;
                     HuAudSeqPlay(0x67);
-                    GMesCreate(GMES_MES_MG_WINNER, GwPlayer[m255_playerId[player->object->work[0]]].chr);
-                    GwPlayer[m255_playerId[player->object->work[0]]].bonusCoin += 10;
-                    D_8010BE20_silly_screws = 0;
+                    GMesCreate(GMES_MES_MG_WINNER, GwPlayer[m255_playerNoTbl[player->object->work[0]]].chr);
+                    GwPlayer[m255_playerNoTbl[player->object->work[0]]].bonusCoin += 10;
+                    m255_finishPhase = 0;
                 }
                 break;
         }
     }
 }
 
-void m255_UpdatePlayerSpeed(FuncContext *ctx) {
+void m255_PlayerSpeedUpdate(FuncContext *ctx) {
     PlayerData *player = ctx->data;
     f32 newSpeed;
     s16 absSpeed;
@@ -1269,7 +1269,7 @@ void m255_UpdatePlayerSpeed(FuncContext *ctx) {
             }
             if (player->lost) {
                 player->state = PLAYER_STATE_ON_PLATFORM;
-                m255_ResetFunc(FGRP_PLAYER_1 + player->object->work[0], ctx);
+                m255_FuncReset(FGRP_PLAYER_1 + player->object->work[0], ctx);
                 break;
             }
             if (player->state != PLAYER_STATE_ROTATE) {
@@ -1281,7 +1281,7 @@ void m255_UpdatePlayerSpeed(FuncContext *ctx) {
                     if (player->direction == PLAYER_DIR_RIGHT) {
                         player->work.f32[0] = 180.0f;
                         player->work.f32[1] = 0.0f;
-                        m255_SetFunc(FGRP_PLAYER_1 + player->object->work[0], 5, -1, player, m255_LerpPlayerRotation, FALSE, TRUE);
+                        m255_FuncSet(FGRP_PLAYER_1 + player->object->work[0], 5, -1, player, m255_PlayerRotLerpUpdate, FALSE, TRUE);
                     }
                     player->state = PLAYER_STATE_TRANSITION;
                     player->direction = PLAYER_DIR_LEFT;
@@ -1293,7 +1293,7 @@ void m255_UpdatePlayerSpeed(FuncContext *ctx) {
                     }
                     player->speed = newSpeed;
                     if (!player->nutSeActive) {
-                        player->nutSeNo = _HuAudPlayerFXPlay(0x4B3, m255_playerId[player->object->work[0]]);
+                        player->nutSeNo = _HuAudPlayerFXPlay(0x4B3, m255_playerNoTbl[player->object->work[0]]);
                         player->nutSeActive = TRUE;
                     }
                     if (ABS(player->speed) < 5.0f) {
@@ -1313,7 +1313,7 @@ void m255_UpdatePlayerSpeed(FuncContext *ctx) {
                     if (player->direction == PLAYER_DIR_LEFT) {
                         player->work.f32[0] = 0.0f;
                         player->work.f32[1] = 180.0f;
-                        m255_SetFunc(FGRP_PLAYER_1 + player->object->work[0], 5, -1, player, m255_LerpPlayerRotation, FALSE, TRUE);
+                        m255_FuncSet(FGRP_PLAYER_1 + player->object->work[0], 5, -1, player, m255_PlayerRotLerpUpdate, FALSE, TRUE);
                     }
                     player->state = PLAYER_STATE_TRANSITION;
                     player->direction = PLAYER_DIR_RIGHT;
@@ -1325,7 +1325,7 @@ void m255_UpdatePlayerSpeed(FuncContext *ctx) {
                     }
                     player->speed = newSpeed;
                     if (!player->nutSeActive) {
-                        player->nutSeNo = _HuAudPlayerFXPlay(0x4B3, m255_playerId[player->object->work[0]]);
+                        player->nutSeNo = _HuAudPlayerFXPlay(0x4B3, m255_playerNoTbl[player->object->work[0]]);
                         player->nutSeActive = TRUE;
                     }
                     if (ABS(player->speed) < 5.0f) {
@@ -1350,7 +1350,7 @@ void m255_UpdatePlayerSpeed(FuncContext *ctx) {
     }
 }
 
-void m255_UpdatePlayerAnimation(FuncContext *ctx) {
+void m255_PlayerMotUpdate(FuncContext *ctx) {
     PlayerData *player = ctx->data;
 
     switch (ctx->state) {
@@ -1382,7 +1382,7 @@ void m255_UpdatePlayerAnimation(FuncContext *ctx) {
                         }
                         MgPlayerMotSet(player->object, PLAYER_ANIM_RUN);
                         if (Hu3DData[player->object->model[0]].motTime == 0.0f) {
-                            CharFXPlay(0x28, GwPlayer[m255_playerId[player->object->work[0]]].chr);
+                            CharFXPlay(0x28, GwPlayer[m255_playerNoTbl[player->object->work[0]]].chr);
                         }
                     } else {
                         player->inputIdleTimer++;
@@ -1391,7 +1391,7 @@ void m255_UpdatePlayerAnimation(FuncContext *ctx) {
                         }
                         MgPlayerMotSet(player->object, PLAYER_ANIM_RUN);
                         if (Hu3DData[player->object->model[0]].motTime == 0.0f) {
-                            CharFXPlay(0x28, GwPlayer[m255_playerId[player->object->work[0]]].chr);
+                            CharFXPlay(0x28, GwPlayer[m255_playerNoTbl[player->object->work[0]]].chr);
                         }
                     }
                     break;
@@ -1400,13 +1400,13 @@ void m255_UpdatePlayerAnimation(FuncContext *ctx) {
                     break;
                 case PLAYER_STATE_1:
                     if (Hu3DData[player->object->model[0]].motTime == 0.0f) {
-                        CharFXPlay(0x1F, GwPlayer[m255_playerId[player->object->work[0]]].chr);
+                        CharFXPlay(0x1F, GwPlayer[m255_playerNoTbl[player->object->work[0]]].chr);
                     }
                     MgPlayerMotSet(player->object, PLAYER_ANIM_WALK);
                     break;
                 case PLAYER_STATE_FINISHED:
                     if (Hu3DData[player->object->model[0]].motTime == 0.0f) {
-                        CharFXPlay(0x28, GwPlayer[m255_playerId[player->object->work[0]]].chr);
+                        CharFXPlay(0x28, GwPlayer[m255_playerNoTbl[player->object->work[0]]].chr);
                     }
                     MgPlayerMotSet(player->object, PLAYER_ANIM_WALK);
                     break;
@@ -1414,19 +1414,19 @@ void m255_UpdatePlayerAnimation(FuncContext *ctx) {
                     MgPlayerMotSet(player->object, PLAYER_ANIM_JUMP);
                     if (ctx->work.s8[0] == 0) {
                         ctx->work.s8[0] = 1;
-                        CharFXPlay(0x3A, GwPlayer[m255_playerId[player->object->work[0]]].chr);
+                        CharFXPlay(0x3A, GwPlayer[m255_playerNoTbl[player->object->work[0]]].chr);
                     }
                     break;
                 case PLAYER_STATE_WON:
-                    if (D_8010BE4E_silly_screws == 0) {
+                    if (m255_winVoiceF == 0) {
                         MgPlayerMotSet(player->object, PLAYER_ANIM_WON);
-                        HuAudCharVoicePlayPlayer(omCharModelNoTbl[GwPlayer[m255_playerId[player->object->work[0]]].chr][0] | 0x2F, -1, m255_playerId[player->object->work[0]]);
-                        D_8010BE4E_silly_screws = 1;
+                        HuAudCharVoicePlayPlayer(omCharModelNoTbl[GwPlayer[m255_playerNoTbl[player->object->work[0]]].chr][0] | 0x2F, -1, m255_playerNoTbl[player->object->work[0]]);
+                        m255_winVoiceF = 1;
                     }
                     break;
                 default:
                     if (Hu3DData[player->object->model[0]].motTime == 0.0f) {
-                        CharFXPlay(0x28, GwPlayer[m255_playerId[player->object->work[0]]].chr);
+                        CharFXPlay(0x28, GwPlayer[m255_playerNoTbl[player->object->work[0]]].chr);
                     }
                     MgPlayerMotSet(player->object, PLAYER_ANIM_RUN);
                     break;
@@ -1435,7 +1435,7 @@ void m255_UpdatePlayerAnimation(FuncContext *ctx) {
     }
 }
 
-void m255_LerpPlayerRotation(FuncContext *ctx) {
+void m255_PlayerRotLerpUpdate(FuncContext *ctx) {
     PlayerData *player = ctx->data;
 
     switch (ctx->state) {
@@ -1445,8 +1445,8 @@ void m255_LerpPlayerRotation(FuncContext *ctx) {
             ctx->state = 1;
             break;
         case 1:
-            if (m255_CalcLerp(&player->object->rot.y, (u8 *)&ctx->work.s8[0], player->work.f32[0], player->work.f32[1], 5.0f)) {
-                m255_ResetFunc(FGRP_PLAYER_1 + player->object->work[0], ctx);
+            if (m255_LerpCalc(&player->object->rot.y, (u8 *)&ctx->work.s8[0], player->work.f32[0], player->work.f32[1], 5.0f)) {
+                m255_FuncReset(FGRP_PLAYER_1 + player->object->work[0], ctx);
                 player->state = PLAYER_STATE_ON_PLATFORM;
             }
             break;
@@ -1454,7 +1454,7 @@ void m255_LerpPlayerRotation(FuncContext *ctx) {
 }
 
 // TODO: doesn't work with -Wa,--vr4300mul-off.
-void m255_ExecPlayerJump(FuncContext *ctx) {
+void m255_PlayerJumpExec(FuncContext *ctx) {
     PlayerData *player = ctx->data;
     Work *ctxWork = &ctx->work;
     f32 accelY;
@@ -1465,7 +1465,7 @@ void m255_ExecPlayerJump(FuncContext *ctx) {
             if (player->direction != PLAYER_DIR_RIGHT) {
                 player->work.f32[0] = 0.0f;
                 player->work.f32[1] = 180.0f;
-                m255_SetFunc(FGRP_PLAYER_1 + player->object->work[0], 5, -1, player, m255_LerpPlayerRotation, FALSE, TRUE);
+                m255_FuncSet(FGRP_PLAYER_1 + player->object->work[0], 5, -1, player, m255_PlayerRotLerpUpdate, FALSE, TRUE);
                 player->direction = PLAYER_DIR_RIGHT;
             }
             ctxWork->s8[0] = 0;
@@ -1481,7 +1481,7 @@ void m255_ExecPlayerJump(FuncContext *ctx) {
             switch (ctxWork->s8[1]) {
                 case 0:
                     player->state = PLAYER_STATE_TRANSITION; // moving forward before jumping
-                    if (m255_CalcLerp(&player->object->trans.z, (u8 *)&ctxWork->s8[0], ctxWork->f32[0], ctxWork->f32[0] - 80.0f, 10.0f)) {
+                    if (m255_LerpCalc(&player->object->trans.z, (u8 *)&ctxWork->s8[0], ctxWork->f32[0], ctxWork->f32[0] - 80.0f, 10.0f)) {
                         ctxWork->s8[1] = 1;
                         ctxWork->f32[0] = player->object->trans.z;
                         if (player->currNutId < NUTS_TOTAL) {
@@ -1524,7 +1524,7 @@ void m255_ExecPlayerJump(FuncContext *ctx) {
                     if (player->object->trans.y < ctxWork->f32[1]) {
                         if (ctxWork->s8[2] == 0) {
                             ctxWork->s8[2] = 1;
-                            CharFXPlay(0x31, GwPlayer[m255_playerId[player->object->work[0]]].chr);
+                            CharFXPlay(0x31, GwPlayer[m255_playerNoTbl[player->object->work[0]]].chr);
                         }
                         if (player->work.s8[0] == 1) {
                             player->object->trans.y = ctxWork->f32[1];
@@ -1543,8 +1543,8 @@ void m255_ExecPlayerJump(FuncContext *ctx) {
                     }
                     Hu3DModelScaleSet(player->object->model[1], scale, 1.0f, scale);
                     Hu3DModelPosSet(player->object->model[1], player->object->trans.x, ctxWork->f32[1] + 1.0f, player->object->trans.z);
-                    if (m255_CalcLerp(&player->object->trans.z, (u8 *)&ctxWork->s8[0], ctxWork->f32[0], ctxWork->f32[2], ctxWork->f32[3])) {
-                        m255_ResetFunc(FGRP_PLAYER_1 + player->object->work[0], ctx);
+                    if (m255_LerpCalc(&player->object->trans.z, (u8 *)&ctxWork->s8[0], ctxWork->f32[0], ctxWork->f32[2], ctxWork->f32[3])) {
+                        m255_FuncReset(FGRP_PLAYER_1 + player->object->work[0], ctx);
                         Hu3DModelScaleSet(player->object->model[1], 1.0f, 1.0f, 1.0f);
                         if (player->lost) {
                             player->state = PLAYER_STATE_ON_PLATFORM;
@@ -1553,7 +1553,7 @@ void m255_ExecPlayerJump(FuncContext *ctx) {
                             player->state = PLAYER_STATE_ON_PLATFORM;
                         } else {
                             player->state = PLAYER_STATE_FINISHED;
-                            m255_SetFunc(FGRP_CAMERA, 0, 0, player, m255_CenterCameraOnWinner, FALSE, FALSE);
+                            m255_FuncSet(FGRP_CAMERA, 0, 0, player, m255_CameraWinMove, FALSE, FALSE);
                         }
                     }
                     break;
@@ -1562,13 +1562,13 @@ void m255_ExecPlayerJump(FuncContext *ctx) {
     }
 }
 
-void m255_UpdateComInput(FuncContext *ctx) {
+void m255_PlayerComInput(FuncContext *ctx) {
     PlayerData *player = ctx->data;
     u8 unused_stack[0x18];
 
     switch (ctx->state) {
         case 0:
-            switch (GwPlayer[m255_playerId[player->object->work[0]]].cpu_difficulty) {
+            switch (GwPlayer[m255_playerNoTbl[player->object->work[0]]].cpu_difficulty) {
                 case 0:
                     ctx->work.s8[2] = 9;  // controls the delay between button presses
                     ctx->work.s8[3] = 12; // controls precision when deciding when to stop running
@@ -1598,8 +1598,8 @@ void m255_UpdateComInput(FuncContext *ctx) {
                 break;
             }
             if (player->currNutId != NUTS_TOTAL) {
-                f32 temp_f6 = func_8010B18C_silly_screws(player);
-                NutData *nut = &m255_minigame->worlds[player->object->work[0]].nuts[player->currNutId];
+                f32 temp_f6 = m255_StopDistCalc(player);
+                NutData *nut = &m255_gameWork->worlds[player->object->work[0]].nuts[player->currNutId];
                 HmfModel *nutModel = &Hu3DData[nut->modelId];
                 f32 nextNutPosX;
                 s8 temp_v1_3;
@@ -1641,7 +1641,7 @@ void m255_UpdateComInput(FuncContext *ctx) {
 }
 
 // TODO: doesn't work with -Wa,--vr4300mul-off.
-f32 func_8010B18C_silly_screws(PlayerData *player) {
+f32 m255_StopDistCalc(PlayerData *player) {
     f32 var_f4 = 0.0f;
     f32 absSpeed;
     f32 var_f2;

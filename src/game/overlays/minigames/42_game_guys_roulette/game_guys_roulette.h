@@ -3,10 +3,10 @@
 
 #include "common.h"
 
-void func_80108D20_game_guys_roulette(s16 x, s16 y);
-void func_80108FEC_game_guys_roulette(void);
-s16 func_80109078_game_guys_roulette(void);
-s32 func_80109B60_game_guys_roulette(s32 x);
-void func_80109D14_game_guys_roulette(void);
+void m266_SpotIntroInit(s16 x, s16 y);
+void m266_SpotBeamInit(void);
+s16 m266_SpotIntroUpdate(void);
+s32 m266_SpotBeamUpdate(s32 x);
+void m266_SpotDispOff(void);
 
 #endif

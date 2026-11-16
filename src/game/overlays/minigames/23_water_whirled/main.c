@@ -17,108 +17,108 @@ extern u8 Hu3DBufNo;
 extern f32 CFanLen;
 extern u8 omAllPauseF;
 
-Vec D_8010A160_water_whirled[4] = {
+Vec m235_startPosTbl[4] = {
     { -300.0f, 0.0f, 325.0f },
     { -250.0f, 0.0f, 575.0f },
     { -200.0f, 0.0f, 825.0f },
     { -150.0f, 0.0f, 1075.0f }
 };
-f32 D_8010A190_water_whirled[4] = { 40.0f, 40.0f, 40.0f, 40.0f };
-Vec D_8010A1A0_water_whirled[4] = { 0 };
-Vec D_8010A1D0_water_whirled[4] = { 0 };
-Vec D_8010A200_water_whirled[4] = { 0 };
-f32 D_8010A230_water_whirled[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-s32 D_8010A240_water_whirled[4] = { -1, -1, -1, -1 };
-f32 D_8010A250_water_whirled = 0.0f;
-f32 D_8010A254_water_whirled = 0.15f;
-f32 D_8010A258_water_whirled = 30.0f;
-f32 D_8010A25C_water_whirled = 80.0f;
-f32 D_8010A260_water_whirled = 0.0f;
-f32 D_8010A264_water_whirled = 0.13f;
-f32 D_8010A268_water_whirled = 40.0f;
-f32 D_8010A26C_water_whirled = 40.0f;
-s32 D_8010A270_water_whirled[4] = { 0, 0, 0, 0 };
-s32 D_8010A280_water_whirled = -1;
-s32 D_8010A284_water_whirled = 0;
-s32 D_8010A288_water_whirled = 0;
-s32 D_8010A28C_water_whirled[4] = { -1, -1, -1, -1 };
-s32 D_8010A29C_water_whirled[4] = { 0, 0, 0, 0 };
-MinigameFlow D_8010A2AC_water_whirled = {
+f32 m235_speedMaxTbl[4] = { 40.0f, 40.0f, 40.0f, 40.0f };
+Vec m235_playerMoveTbl[4] = { 0 };
+Vec m235_playerPosTbl[4] = { 0 };
+Vec m235_bumpDirTbl[4] = { 0 };
+f32 m235_bumpPowerTbl[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+s32 m235_sectionCntTbl[4] = { -1, -1, -1, -1 };
+f32 m235_waveTimeA = 0.0f;
+f32 m235_wavePeriodA = 0.15f;
+f32 m235_waveLenA = 30.0f;
+f32 m235_waveAmpA = 80.0f;
+f32 m235_waveTimeB = 0.0f;
+f32 m235_wavePeriodB = 0.13f;
+f32 m235_waveLenB = 40.0f;
+f32 m235_waveAmpB = 40.0f;
+s32 m235_lapTbl[4] = { 0, 0, 0, 0 };
+s32 m235_winner = -1;
+s32 m235_finalLapSeNo = 0;
+s32 m235_finalLapSeVol = 0;
+s32 m235_engineSeTbl[4] = { -1, -1, -1, -1 };
+s32 m235_vibTimerTbl[4] = { 0, 0, 0, 0 };
+MinigameFlow m235_mgFlow = {
     MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_RECORD, FALSE, MG_GAUGE_CORNERS_4 | 4, MG_RESULT_WIN_1, 0,
     { 0.0f, 0.0f, 0.0f, 0.0f },
     { 0, 0, 0, 0 },
     120, -1, 5400, 75, 135
 };
-Vec D_8010A2D4_water_whirled = { 101.0f, -51.0f, 38.0f };
-f32 D_8010A2E0_water_whirled[4] = { 45.0f, 42.5f, 41.0f, 40.0f };
-s8 D_8010A2F0_water_whirled[4] = { -1, -1, -1, -1 };
-s16 D_8010A2F4_water_whirled = -1;
-s16 D_8010A2F6_water_whirled = -1;
-s16 D_8010A2F8_water_whirled = -1;
-s32 D_8010A2FC_water_whirled[4] = { 0, 0, 0, 0 };
-s16 D_8010A30C_water_whirled[4][20] = { 0 };
-s32 D_8010A3AC_water_whirled[4] = { 0, 0, 0, 0 };
-s32 D_8010A3BC_water_whirled[4] = { 0, 0, 0, 0 };
-f32 D_8010A3CC_water_whirled[4] = { 0.1f, 0.1f, 0.1f, 0.1f };
-s32 D_8010A3DC_water_whirled[4] = { 0, 0, 0, 0 };
-s32 D_8010A3EC_water_whirled[4] = { 0, 0, 0, 0 };
-f32 D_8010A3FC_water_whirled[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-f32 D_8010A40C_water_whirled[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-f32 D_8010A41C_water_whirled[4] = { 2.5f, 0.9f, 0.5f, 0.2f };
-s32 D_8010A42C_water_whirled[4] = { 0, 0, 0, 0 };
-s32 D_8010A43C_water_whirled[4] = { 0, 0, 0, 0 };
-Vec D_8010A44C_water_whirled[4][3] = {
+Vec m235_lightDir = { 101.0f, -51.0f, 38.0f };
+f32 m235_rankSpeedMaxTbl[4] = { 45.0f, 42.5f, 41.0f, 40.0f };
+s8 m235_startSlotTbl[4] = { -1, -1, -1, -1 };
+s16 m235_wakeMdl0 = -1;
+s16 m235_wakeMdl1 = -1;
+s16 m235_wakeMdl2 = -1;
+s32 m235_wakeNoTbl[4] = { 0, 0, 0, 0 };
+s16 m235_stickHistTbl[4][20] = { 0 };
+s32 m235_moveHistNoTbl[4] = { 0, 0, 0, 0 };
+s32 m235_stickHistNoTbl[4] = { 0, 0, 0, 0 };
+f32 m235_throttleTbl[4] = { 0.1f, 0.1f, 0.1f, 0.1f };
+s32 m235_engineFrameTbl[4] = { 0, 0, 0, 0 };
+s32 m235_reverseBlinkTbl[4] = { 0, 0, 0, 0 };
+f32 m235_comLaneOfsTbl[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+f32 m235_comRadiusOfsTbl[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+f32 m235_comRandScaleTbl[4] = { 2.5f, 0.9f, 0.5f, 0.2f };
+s32 m235_sectionTbl[4] = { 0, 0, 0, 0 };
+s32 m235_sectionSideTbl[4] = { 0, 0, 0, 0 };
+Vec m235_gatePlaneTbl[4][3] = {
     { { 0.0f, 100.0f, 0.0f }, { 0.0f, 100.0f, 800.0f }, { 0.0f, -500.0f, 800.0f } },
     { { 1000.0f, 100.0f, 0.0f }, { 1800.0f, 100.0f, 0.0f }, { 1800.0f, -500.0f, 0.0f } },
     { { 0.0f, 100.0f, 0.0f }, { 0.0f, 100.0f, -800.0f }, { 0.0f, -500.0f, -800.0f } },
     { { -1000.0f, 100.0f, 0.0f }, { -1800.0f, 100.0f, 0.0f }, { -1800.0f, -500.0f, 0.0f } }
 };
 
-Vec D_8010A560_water_whirled[4][6] BSS;
-f32 D_8010A680_water_whirled[4][6] BSS;
-Vec D_8010A6E0_water_whirled[4][6] BSS;
-f32 D_8010A800_water_whirled[4][6] BSS;
-Vec2f D_8010A860_water_whirled BSS;
-u8 D_8010A868_water_whirled[0x18] BSS; /* Unreferenced. */
-Vec D_8010A880_water_whirled[4][20] BSS;
-s32 D_8010AC40_water_whirled BSS;
-s32 D_8010AC44_water_whirled BSS;
-s32 D_8010AC48_water_whirled[4] BSS;
-s32 D_8010AC58_water_whirled[4] BSS;
-s32 D_8010AC68_water_whirled[4] BSS;
-s32 D_8010AC78_water_whirled[4] BSS;
+Vec m235_wakePosTbl[4][6] BSS;
+f32 m235_wakeSpeedTbl[4][6] BSS;
+Vec m235_wakeDirTbl[4][6] BSS;
+f32 m235_wakeScaleTbl[4][6] BSS;
+Vec2f m235_comTarget BSS;
+u8 m235_comTargetPad[0x18] BSS; /* Unreferenced. */
+Vec m235_moveHistTbl[4][20] BSS;
+s32 m235_btnSave BSS;
+s32 m235_stkXSave BSS;
+s32 m235_lapGrpTbl[4] BSS;
+s32 m235_reverseSprTbl[4] BSS;
+s32 m235_lapSprTbl[4] BSS;
+s32 m235_goalSprTbl[4] BSS;
 
-void func_80105EA0_water_whirled(omObjData *object);
-void func_8010616C_water_whirled(omObjData *object);
-void func_80106308_water_whirled(omObjData *object);
-void func_80106680_water_whirled(void);
-void func_8010698C_water_whirled(void);
-void func_80106A58_water_whirled(void);
-void func_80106DB8_water_whirled(omObjData *object);
-void func_80105D64_water_whirled(void);
-f32 func_801061E4_water_whirled(f32 x, f32 z);
-void func_801071BC_water_whirled(omObjData *object);
-void func_8010750C_water_whirled(omObjData *object, u16 player);
-void func_80107880_water_whirled(omObjData *object);
-void func_8010789C_water_whirled(omObjData *object);
-void func_801078B8_water_whirled(omObjData *object);
-void func_801078D4_water_whirled(omObjData *object);
-void func_80107F08_water_whirled(omObjData *object);
-void func_8010860C_water_whirled(Vec *origin, Vec *p, Vec *q, Vec *out);
-void func_80108898_water_whirled(omObjData *object, Vec *pos);
-void func_801089C0_water_whirled(omObjData *object, f32 x, f32 z);
-void func_80109340_water_whirled(s16 player, s16 bank);
-void func_80109458_water_whirled(s16 player);
-void func_8010956C_water_whirled(s16 player);
-s32 func_8010960C_water_whirled(omObjData *object);
-void func_80108DF8_water_whirled(omObjData *object);
-void func_801086A0_water_whirled(omObjData *object, f32 x, f32 z);
-f32 func_80108B98_water_whirled(omObjData *object, f32 x, f32 y, f32 z);
-void func_801096BC_water_whirled(omObjData *object);
-void func_801098AC_water_whirled(omObjData *object);
-void func_80109E2C_water_whirled(omObjData *object);
+void m235_CameraObjMain(omObjData *object);
+void m235_ExitObjMain(omObjData *object);
+void m235_WaterWaveUpdate(omObjData *object);
+void m235_CameraIntroUpdate(void);
+void m235_CameraWinUpdate(void);
+void m235_RankSpeedUpdate(void);
+void m235_MainObjMain(omObjData *object);
+void m235_CameraPosUpdate(void);
+f32 m235_WaveHeightGet(f32 x, f32 z);
+void m235_MainObjInit(omObjData *object);
+void m235_PlayerInit(omObjData *object, u16 player);
+void m235_Player0ObjInit(omObjData *object);
+void m235_Player1ObjInit(omObjData *object);
+void m235_Player2ObjInit(omObjData *object);
+void m235_Player3ObjInit(omObjData *object);
+void m235_PlayerObjMain(omObjData *object);
+void m235_NormalCalc(Vec *origin, Vec *p, Vec *q, Vec *out);
+void m235_PlayerPushCalc(omObjData *object, Vec *pos);
+void m235_PushClamp(omObjData *object, f32 x, f32 z);
+void m235_LapDispSet(s16 player, s16 bank);
+void m235_ReverseDispSet(s16 player);
+void m235_GoalDispSet(s16 player);
+s32 m235_SectionGet(omObjData *object);
+void m235_HudObjInit(omObjData *object);
+void m235_PlayerTiltUpdate(omObjData *object, f32 x, f32 z);
+f32 m235_PlayerCollide(omObjData *object, f32 x, f32 y, f32 z);
+void m235_PlayerDirCalc(omObjData *object);
+void m235_PlayerComInput(omObjData *object);
+void m235_LapUpdate(omObjData *object);
 
-void func_801059A0_water_whirled(void) {
+void m235_ObjectSetup(void) {
     u8 camIndex;
 
     MapCollInit(50);
@@ -140,27 +140,27 @@ void func_801059A0_water_whirled(void) {
     MgPlayerParamReset();
     mgPlayerFallInit = 0.0f;
     MgMapBaseSet(mgMapObjNum);
-    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 10, 0, -1, func_801071BC_water_whirled);
-    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 7, 0, -1, func_80107880_water_whirled);
-    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 7, 0, -1, func_8010789C_water_whirled);
-    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 7, 0, -1, func_801078B8_water_whirled);
-    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 7, 0, -1, func_801078D4_water_whirled);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 10, 0, -1, m235_MainObjInit);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 7, 0, -1, m235_Player0ObjInit);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 7, 0, -1, m235_Player1ObjInit);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 7, 0, -1, m235_Player2ObjInit);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 7, 0, -1, m235_Player3ObjInit);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    omSetStatBit(omAddObj(4, 0, 0, -1, func_80105EA0_water_whirled), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    omSetStatBit(omAddObj(100, 0, 0, -1, func_80108DF8_water_whirled), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    omSetStatBit(omAddObj(4, 0, 0, -1, m235_CameraObjMain), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    omSetStatBit(omAddObj(100, 0, 0, -1, m235_HudObjInit), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     mgPlayerAccel = 10.0f;
     WipeCreateIn(WIPE_TYPE_PREV, 16);
-    MgFlowInit(&D_8010A2AC_water_whirled);
+    MgFlowInit(&m235_mgFlow);
     mgFlowSeqNo = 50;
     mgFlowSeqTime = 60;
-    MgGaugeRangeSet(0, 0.0f, D_8010A190_water_whirled[0]);
-    MgGaugeRangeSet(1, 0.0f, D_8010A190_water_whirled[1]);
-    MgGaugeRangeSet(2, 0.0f, D_8010A190_water_whirled[2]);
-    MgGaugeRangeSet(3, 0.0f, D_8010A190_water_whirled[3]);
-    Hu3DGLightDirSet(1, D_8010A2D4_water_whirled.x, D_8010A2D4_water_whirled.y, D_8010A2D4_water_whirled.z);
+    MgGaugeRangeSet(0, 0.0f, m235_speedMaxTbl[0]);
+    MgGaugeRangeSet(1, 0.0f, m235_speedMaxTbl[1]);
+    MgGaugeRangeSet(2, 0.0f, m235_speedMaxTbl[2]);
+    MgGaugeRangeSet(3, 0.0f, m235_speedMaxTbl[3]);
+    Hu3DGLightDirSet(1, m235_lightDir.x, m235_lightDir.y, m235_lightDir.z);
 }
 
-void func_80105D64_water_whirled(void) {
+void m235_CameraPosUpdate(void) {
     Vec pos;
     Vec at;
     Vec up;
@@ -179,7 +179,7 @@ void func_80105D64_water_whirled(void) {
     Hu3DCameraPosSetV(0, &pos, &at, &up);
 }
 
-void func_80105EA0_water_whirled(omObjData *object) {
+void m235_CameraObjMain(omObjData *object) {
     Vec worldPos;
     Vec2f screenPos;
     f32 min;
@@ -190,32 +190,32 @@ void func_80105EA0_water_whirled(omObjData *object) {
         min = 50000.0f;
         max = -50000.0f;
         for (i = 0; i < 4; i++) {
-            if (D_8010A1D0_water_whirled[i].x < min) {
-                min = D_8010A1D0_water_whirled[i].x;
+            if (m235_playerPosTbl[i].x < min) {
+                min = m235_playerPosTbl[i].x;
             }
-            if (max < D_8010A1D0_water_whirled[i].x) {
-                max = D_8010A1D0_water_whirled[i].x;
+            if (max < m235_playerPosTbl[i].x) {
+                max = m235_playerPosTbl[i].x;
             }
         }
         Center.x = (min + max) * 0.5f;
         min = 50000.0f;
         max = -50000.0f;
         for (i = 0; i < 4; i++) {
-            if (D_8010A1D0_water_whirled[i].z < min) {
-                min = D_8010A1D0_water_whirled[i].z;
+            if (m235_playerPosTbl[i].z < min) {
+                min = m235_playerPosTbl[i].z;
             }
-            if (max < D_8010A1D0_water_whirled[i].z) {
-                max = D_8010A1D0_water_whirled[i].z;
+            if (max < m235_playerPosTbl[i].z) {
+                max = m235_playerPosTbl[i].z;
             }
         }
         Center.z = (min + max) * 0.5f;
         CZoom = 12000.0f;
-        func_80105D64_water_whirled();
+        m235_CameraPosUpdate();
         max = 0.0f;
         for (i = 0; i < 4; i++) {
-            worldPos.x = D_8010A1D0_water_whirled[i].x;
+            worldPos.x = m235_playerPosTbl[i].x;
             worldPos.y = 0.0f;
-            worldPos.z = D_8010A1D0_water_whirled[i].z;
+            worldPos.z = m235_playerPosTbl[i].z;
             Hu3DCam3Dto2D(0, &worldPos, &screenPos);
             screenPos.x = fabsf(screenPos.x - 160.0f);
             screenPos.y = fabsf(screenPos.y - 120.0f);
@@ -235,33 +235,33 @@ void func_80105EA0_water_whirled(omObjData *object) {
     }
 }
 
-void func_8010616C_water_whirled(omObjData *object) {
-    if (D_8010A288_water_whirled != 0) {
-        D_8010A288_water_whirled = D_8010A288_water_whirled * 0.75f;
-        HuAudFXVolSet(D_8010A284_water_whirled, D_8010A288_water_whirled);
+void m235_ExitObjMain(omObjData *object) {
+    if (m235_finalLapSeVol != 0) {
+        m235_finalLapSeVol = m235_finalLapSeVol * 0.75f;
+        HuAudFXVolSet(m235_finalLapSeNo, m235_finalLapSeVol);
     }
     if (WipeStatGet() == 0) {
         omOvlReturnEx(1);
     }
 }
 
-f32 func_801061E4_water_whirled(f32 x, f32 z) {
+f32 m235_WaveHeightGet(f32 x, f32 z) {
     f32 wave;
 
-    wave = sindf((D_8010A250_water_whirled / D_8010A254_water_whirled -
-                  HuSqrtf(x * x + z * z) / D_8010A258_water_whirled) *
+    wave = sindf((m235_waveTimeA / m235_wavePeriodA -
+                  HuSqrtf(x * x + z * z) / m235_waveLenA) *
                  (M_PI * 2)) *
-           D_8010A25C_water_whirled;
+           m235_waveAmpA;
     x += 8000.0f;
     z += 5000.0f;
-    wave += sindf((D_8010A260_water_whirled / D_8010A264_water_whirled -
-                   HuSqrtf(x * x + z * z) / D_8010A268_water_whirled) *
+    wave += sindf((m235_waveTimeB / m235_wavePeriodB -
+                   HuSqrtf(x * x + z * z) / m235_waveLenB) *
                   (M_PI * 2)) *
-            D_8010A26C_water_whirled;
+            m235_waveAmpB;
     return wave / 2.0f;
 }
 
-void func_80106308_water_whirled(omObjData *object) {
+void m235_WaterWaveUpdate(omObjData *object) {
     HmfData *hmf;
     Vtx *vtx;
     Vtx *src;
@@ -275,16 +275,16 @@ void func_80106308_water_whirled(omObjData *object) {
     for (i = 0; i < hmf->unk18; vtx++, i++, src++) {
         x = src->v.ob[0];
         z = src->v.ob[2];
-        height = sindf((D_8010A250_water_whirled / D_8010A254_water_whirled -
-                        HuSqrtf(x * x + z * z) / D_8010A258_water_whirled) *
+        height = sindf((m235_waveTimeA / m235_wavePeriodA -
+                        HuSqrtf(x * x + z * z) / m235_waveLenA) *
                        (2 * M_PI)) *
-                 D_8010A25C_water_whirled;
+                 m235_waveAmpA;
         x += 8000.0f;
         z += 5000.0;
-        height = (height + sindf((D_8010A260_water_whirled / D_8010A264_water_whirled -
-                                  HuSqrtf(x * x + z * z) / D_8010A268_water_whirled) *
+        height = (height + sindf((m235_waveTimeB / m235_wavePeriodB -
+                                  HuSqrtf(x * x + z * z) / m235_waveLenB) *
                                  (2 * M_PI)) *
-                               D_8010A26C_water_whirled) /
+                               m235_waveAmpB) /
                  2.0f;
         vtx->v.ob[1] = height;
         if (height > 0.0) {
@@ -302,12 +302,12 @@ void func_80106308_water_whirled(omObjData *object) {
         }
     }
     if (omPauseChk() + omAllPauseF == 0) {
-        D_8010A250_water_whirled += 0.11f;
-        D_8010A260_water_whirled += 0.09f;
+        m235_waveTimeA += 0.11f;
+        m235_waveTimeB += 0.09f;
     }
 }
 
-void func_80106680_water_whirled(void) {
+void m235_CameraIntroUpdate(void) {
     s32 time = MgFlowStatTimeGet();
 
     if (MgFlowStatGet() == MG_STATE_OPENING) {
@@ -333,15 +333,15 @@ void func_80106680_water_whirled(void) {
             return;
         }
     }
-    D_8010A2D4_water_whirled.x -= 8.0f;
-    D_8010A2D4_water_whirled.z += 3.0f;
-    if (D_8010A2D4_water_whirled.x < -85.0f) {
-        D_8010A2D4_water_whirled.x = -85.0f;
+    m235_lightDir.x -= 8.0f;
+    m235_lightDir.z += 3.0f;
+    if (m235_lightDir.x < -85.0f) {
+        m235_lightDir.x = -85.0f;
     }
-    if (D_8010A2D4_water_whirled.z > 64.0f) {
-        D_8010A2D4_water_whirled.z = 64.0f;
+    if (m235_lightDir.z > 64.0f) {
+        m235_lightDir.z = 64.0f;
     }
-    Hu3DGLightDirSet(1, D_8010A2D4_water_whirled.x, D_8010A2D4_water_whirled.y, D_8010A2D4_water_whirled.z);
+    Hu3DGLightDirSet(1, m235_lightDir.x, m235_lightDir.y, m235_lightDir.z);
     CRot.x *= 0.995f;
     CRot.y -= 2.0f;
     CZoom *= 1.025f;
@@ -361,11 +361,11 @@ void func_80106680_water_whirled(void) {
     }
 }
 
-void func_8010698C_water_whirled(void) {
+void m235_CameraWinUpdate(void) {
     omObjData *target;
 
-    if (D_8010A280_water_whirled != -1) {
-        target = mgPlayerObjTbl[D_8010A280_water_whirled];
+    if (m235_winner != -1) {
+        target = mgPlayerObjTbl[m235_winner];
         Center.x -= (Center.x - target->trans.x) * 0.25f;
         Center.z -= (Center.z - target->trans.z) * 0.25f;
         Center.y -= (Center.y - target->trans.y) * 0.25f;
@@ -376,7 +376,7 @@ void func_8010698C_water_whirled(void) {
     }
 }
 
-void func_80106A58_water_whirled(void) {
+void m235_RankSpeedUpdate(void) {
     s32 order[4];
     f32 progress[4];
     f32 x;
@@ -389,7 +389,7 @@ void func_80106A58_water_whirled(void) {
     s32 j;
 
     for (i = 0; i < 4; i++) {
-        progress[i] = D_8010A240_water_whirled[i] * 1500.0f;
+        progress[i] = m235_sectionCntTbl[i] * 1500.0f;
         x = mgPlayerObjTbl[i]->trans.x;
         z = mgPlayerObjTbl[i]->trans.z;
         if (x > 0.0f) {
@@ -445,16 +445,16 @@ void func_80106A58_water_whirled(void) {
         }
     } while (swapped);
     for (i = 0; i < 4; i++) {
-        D_8010A190_water_whirled[order[i]] = D_8010A2E0_water_whirled[i];
+        m235_speedMaxTbl[order[i]] = m235_rankSpeedMaxTbl[i];
     }
 }
 
-void func_80106DB8_water_whirled(omObjData *object) {
+void m235_MainObjMain(omObjData *object) {
     MgPlayerWork *work;
     s32 time;
     s32 i;
 
-    func_80106308_water_whirled(object);
+    m235_WaterWaveUpdate(object);
     if (omPauseChk() + omAllPauseF != 0) {
         return;
     }
@@ -462,71 +462,71 @@ void func_80106DB8_water_whirled(omObjData *object) {
     switch (MgFlowMain()) {
         case 0:
             if (time == 1) {
-                D_8010A28C_water_whirled[0] = PlayerFXPlay(0x41A, 0);
-                D_8010A28C_water_whirled[1] = PlayerFXPlay(0x41A, 1);
-                D_8010A28C_water_whirled[2] = PlayerFXPlay(0x41A, 2);
-                D_8010A28C_water_whirled[3] = PlayerFXPlay(0x41A, 3);
+                m235_engineSeTbl[0] = PlayerFXPlay(0x41A, 0);
+                m235_engineSeTbl[1] = PlayerFXPlay(0x41A, 1);
+                m235_engineSeTbl[2] = PlayerFXPlay(0x41A, 2);
+                m235_engineSeTbl[3] = PlayerFXPlay(0x41A, 3);
                 HuAudFXPlay(0x424);
             }
         case 1:
-            func_80106680_water_whirled();
+            m235_CameraIntroUpdate();
             break;
         case 2:
             for (i = 0; i < 4; i++) {
-                if (D_8010A270_water_whirled[i] == 5) {
-                    D_8010A280_water_whirled = i;
+                if (m235_lapTbl[i] == 5) {
+                    m235_winner = i;
                     MgFlowStatSet(MG_STATE_FINISH);
-                    D_8010A2AC_water_whirled.winners[0] = D_8010A280_water_whirled;
-                    D_8010A2AC_water_whirled.resultType = MG_RESULT_WIN_1;
-                    work = mgPlayerObjTbl[D_8010A280_water_whirled]->data;
+                    m235_mgFlow.winners[0] = m235_winner;
+                    m235_mgFlow.resultType = MG_RESULT_WIN_1;
+                    work = mgPlayerObjTbl[m235_winner]->data;
                     GwPlayer[work->unk59].bonusCoin += 10;
                     break;
                 }
             }
-            if (D_8010A284_water_whirled != 0) {
-                D_8010A288_water_whirled += 7;
-                if (D_8010A288_water_whirled > 110) {
-                    D_8010A288_water_whirled = 110;
+            if (m235_finalLapSeNo != 0) {
+                m235_finalLapSeVol += 7;
+                if (m235_finalLapSeVol > 110) {
+                    m235_finalLapSeVol = 110;
                 }
             }
-            func_80106A58_water_whirled();
+            m235_RankSpeedUpdate();
             break;
         case 3:
             if (time == 15.0) {
-                HuAudFXFadeOut(D_8010A28C_water_whirled[0], 30);
-                HuAudFXFadeOut(D_8010A28C_water_whirled[1], 30);
-                HuAudFXFadeOut(D_8010A28C_water_whirled[2], 30);
-                HuAudFXFadeOut(D_8010A28C_water_whirled[3], 30);
-                D_8010A28C_water_whirled[0] = -1;
-                D_8010A28C_water_whirled[1] = -1;
-                D_8010A28C_water_whirled[2] = -1;
-                D_8010A28C_water_whirled[3] = -1;
+                HuAudFXFadeOut(m235_engineSeTbl[0], 30);
+                HuAudFXFadeOut(m235_engineSeTbl[1], 30);
+                HuAudFXFadeOut(m235_engineSeTbl[2], 30);
+                HuAudFXFadeOut(m235_engineSeTbl[3], 30);
+                m235_engineSeTbl[0] = -1;
+                m235_engineSeTbl[1] = -1;
+                m235_engineSeTbl[2] = -1;
+                m235_engineSeTbl[3] = -1;
             }
-            if (D_8010A280_water_whirled == -1) {
-                D_8010A2AC_water_whirled.resultType = MG_RESULT_DRAW;
+            if (m235_winner == -1) {
+                m235_mgFlow.resultType = MG_RESULT_DRAW;
             } else {
-                D_8010A288_water_whirled += 3;
-                if (D_8010A288_water_whirled > 127) {
-                    D_8010A288_water_whirled = 127;
+                m235_finalLapSeVol += 3;
+                if (m235_finalLapSeVol > 127) {
+                    m235_finalLapSeVol = 127;
                 }
             }
-            func_8010698C_water_whirled();
+            m235_CameraWinUpdate();
             break;
         case 4:
-            if (D_8010A280_water_whirled != -1 && mgFlowResultF == 1) {
-                HuAudPlayerFXPlay(GwPlayer[D_8010A280_water_whirled].chr + 0x290, D_8010A280_water_whirled);
+            if (m235_winner != -1 && mgFlowResultF == 1) {
+                HuAudPlayerFXPlay(GwPlayer[m235_winner].chr + 0x290, m235_winner);
             }
             if (time >= 150) {
-                D_8010A288_water_whirled -= 4;
-                if (D_8010A288_water_whirled < 0) {
-                    D_8010A288_water_whirled = 0;
+                m235_finalLapSeVol -= 4;
+                if (m235_finalLapSeVol < 0) {
+                    m235_finalLapSeVol = 0;
                 }
             }
-            func_8010698C_water_whirled();
+            m235_CameraWinUpdate();
             break;
         case 5:
             WipeCreateOut(WIPE_TYPE_NORMAL, 20);
-            object->func = func_8010616C_water_whirled;
+            object->func = m235_ExitObjMain;
             break;
     }
     for (i = 0; i < mgPlayerObjNum; i++) {
@@ -537,14 +537,14 @@ void func_80106DB8_water_whirled(omObjData *object) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
-        object->func = func_8010616C_water_whirled;
+        object->func = m235_ExitObjMain;
     }
-    if (D_8010A284_water_whirled != 0) {
-        HuAudFXVolSet(D_8010A284_water_whirled, D_8010A288_water_whirled);
+    if (m235_finalLapSeNo != 0) {
+        HuAudFXVolSet(m235_finalLapSeNo, m235_finalLapSeVol);
     }
 }
 
-void func_801071BC_water_whirled(omObjData *object) {
+void m235_MainObjInit(omObjData *object) {
     MgMapWork *work;
 
     object->model[0] = Hu3DModelRead2(0x440000, 0x4C9);
@@ -562,7 +562,7 @@ void func_801071BC_water_whirled(omObjData *object) {
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
     work = object->data = HuMemAllocTag(0xB4, TAG_OVERLAY);
     memset(work, 0, 0xB4);
-    object->func = func_80106DB8_water_whirled;
+    object->func = m235_MainObjMain;
     work->unk03 = 1;
     CZoom = 12000.0f;
     CRot.x = 319.0f;
@@ -594,7 +594,7 @@ void func_801071BC_water_whirled(omObjData *object) {
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
-void func_8010750C_water_whirled(omObjData *object, u16 player) {
+void m235_PlayerInit(omObjData *object, u16 player) {
     MgPlayerWork *work;
     s32 i;
 
@@ -606,7 +606,7 @@ void func_8010750C_water_whirled(omObjData *object, u16 player) {
     work = object->data;
     object->model[0] = Hu3DModelRead((GwPlayer[player].chr + 9) | 0x440000, 0x6D9);
     work->unk57 = GwPlayer[player].pad;
-    object->func = func_80107F08_water_whirled;
+    object->func = m235_PlayerObjMain;
     work->unk52 = 0;
     work->unkB4 = 1.0f;
     work->unk8C = 65536.0f;
@@ -627,22 +627,22 @@ void func_8010750C_water_whirled(omObjData *object, u16 player) {
     object->scale.x = object->scale.y = object->scale.z = 1.1f;
     for (i = 0; i < 6; i++) {
         if (i == 3 || i == 0) {
-            if (D_8010A2F4_water_whirled < 0) {
-                object->model[i + 1] = D_8010A2F4_water_whirled = Hu3DModelRead(0x440006, 0x889);
+            if (m235_wakeMdl0 < 0) {
+                object->model[i + 1] = m235_wakeMdl0 = Hu3DModelRead(0x440006, 0x889);
             } else {
-                object->model[i + 1] = Hu3DModelLink(D_8010A2F4_water_whirled);
+                object->model[i + 1] = Hu3DModelLink(m235_wakeMdl0);
             }
         } else if (i == 4 || i == 1) {
-            if (D_8010A2F6_water_whirled < 0) {
-                object->model[i + 1] = D_8010A2F6_water_whirled = Hu3DModelRead(0x440007, 0x889);
+            if (m235_wakeMdl1 < 0) {
+                object->model[i + 1] = m235_wakeMdl1 = Hu3DModelRead(0x440007, 0x889);
             } else {
-                object->model[i + 1] = Hu3DModelLink(D_8010A2F6_water_whirled);
+                object->model[i + 1] = Hu3DModelLink(m235_wakeMdl1);
             }
         } else {
-            if (D_8010A2F8_water_whirled < 0) {
-                object->model[i + 1] = D_8010A2F8_water_whirled = Hu3DModelRead(0x440008, 0x889);
+            if (m235_wakeMdl2 < 0) {
+                object->model[i + 1] = m235_wakeMdl2 = Hu3DModelRead(0x440008, 0x889);
             } else {
-                object->model[i + 1] = Hu3DModelLink(D_8010A2F8_water_whirled);
+                object->model[i + 1] = Hu3DModelLink(m235_wakeMdl2);
             }
         }
         Hu3DModelObjAttrSet(object->model[i + 1], 0x70000000, 0x70000000);
@@ -652,30 +652,30 @@ void func_8010750C_water_whirled(omObjData *object, u16 player) {
     MgPlayerMapAttrSet(object, 0, 2);
     do {
         i = rand8() & 3;
-    } while (D_8010A2F0_water_whirled[i] != -1);
-    D_8010A2F0_water_whirled[i] = player;
-    object->trans.x = D_8010A160_water_whirled[i].x;
-    object->trans.y = D_8010A160_water_whirled[i].y;
-    object->trans.z = D_8010A160_water_whirled[i].z;
+    } while (m235_startSlotTbl[i] != -1);
+    m235_startSlotTbl[i] = player;
+    object->trans.x = m235_startPosTbl[i].x;
+    object->trans.y = m235_startPosTbl[i].y;
+    object->trans.z = m235_startPosTbl[i].z;
 }
 
-void func_80107880_water_whirled(omObjData *object) {
-    func_8010750C_water_whirled(object, 0);
+void m235_Player0ObjInit(omObjData *object) {
+    m235_PlayerInit(object, 0);
 }
 
-void func_8010789C_water_whirled(omObjData *object) {
-    func_8010750C_water_whirled(object, 1);
+void m235_Player1ObjInit(omObjData *object) {
+    m235_PlayerInit(object, 1);
 }
 
-void func_801078B8_water_whirled(omObjData *object) {
-    func_8010750C_water_whirled(object, 2);
+void m235_Player2ObjInit(omObjData *object) {
+    m235_PlayerInit(object, 2);
 }
 
-void func_801078D4_water_whirled(omObjData *object) {
-    func_8010750C_water_whirled(object, 3);
+void m235_Player3ObjInit(omObjData *object) {
+    m235_PlayerInit(object, 3);
 }
 
-void func_801078F0_water_whirled(omObjData *object, f32 speed) {
+void m235_WakeUpdate(omObjData *object, f32 speed) {
     MgPlayerWork *work = object->data;
     s32 player = work->unk59;
     f32 angle = work->unk3C;
@@ -685,32 +685,32 @@ void func_801078F0_water_whirled(omObjData *object, f32 speed) {
     s32 idx;
     s32 i;
 
-    idx = D_8010A2FC_water_whirled[player] + 1;
+    idx = m235_wakeNoTbl[player] + 1;
     idx = (idx != 6) ? idx : 0;
-    D_8010A2FC_water_whirled[player] = idx;
-    D_8010A800_water_whirled[player][idx] = 1.0f;
-    D_8010A680_water_whirled[player][idx] = speed * 10.0f;
+    m235_wakeNoTbl[player] = idx;
+    m235_wakeScaleTbl[player][idx] = 1.0f;
+    m235_wakeSpeedTbl[player][idx] = speed * 10.0f;
     offset = (rand8() - 128) / 4;
-    D_8010A560_water_whirled[player][idx].x =
+    m235_wakePosTbl[player][idx].x =
         sindf(angle + 180.0f) * 75.0f + object->trans.x + sindf(angle + 90.0f) + offset;
-    D_8010A560_water_whirled[player][idx].y = object->trans.y;
-    D_8010A560_water_whirled[player][idx].z =
+    m235_wakePosTbl[player][idx].y = object->trans.y;
+    m235_wakePosTbl[player][idx].z =
         cosdf(angle + 180.0f) * 75.0f + object->trans.z + sindf(angle + 90.0f) + offset;
     offset = (rand8() - 128) / 4;
     backAngle = angle + 180.0f + offset;
-    D_8010A6E0_water_whirled[player][idx].x = sindf(backAngle);
-    D_8010A6E0_water_whirled[player][idx].z = cosdf(backAngle);
+    m235_wakeDirTbl[player][idx].x = sindf(backAngle);
+    m235_wakeDirTbl[player][idx].z = cosdf(backAngle);
     for (i = 0; i < 6; i++) {
-        if (D_8010A680_water_whirled[player][i] > 0.0f) {
-            D_8010A560_water_whirled[player][i].x +=
-                D_8010A6E0_water_whirled[player][i].x * D_8010A680_water_whirled[player][i] * speed;
-            D_8010A560_water_whirled[player][i].y -= 20.0f;
-            D_8010A560_water_whirled[player][i].z +=
-                D_8010A6E0_water_whirled[player][i].z * D_8010A680_water_whirled[player][i] * speed;
-            Hu3DModelPosSet(object->model[i + 1], D_8010A560_water_whirled[player][i].x,
-                            D_8010A560_water_whirled[player][i].y, D_8010A560_water_whirled[player][i].z);
-            D_8010A800_water_whirled[player][i] *= 1.3f;
-            scale = speed * D_8010A800_water_whirled[player][i];
+        if (m235_wakeSpeedTbl[player][i] > 0.0f) {
+            m235_wakePosTbl[player][i].x +=
+                m235_wakeDirTbl[player][i].x * m235_wakeSpeedTbl[player][i] * speed;
+            m235_wakePosTbl[player][i].y -= 20.0f;
+            m235_wakePosTbl[player][i].z +=
+                m235_wakeDirTbl[player][i].z * m235_wakeSpeedTbl[player][i] * speed;
+            Hu3DModelPosSet(object->model[i + 1], m235_wakePosTbl[player][i].x,
+                            m235_wakePosTbl[player][i].y, m235_wakePosTbl[player][i].z);
+            m235_wakeScaleTbl[player][i] *= 1.3f;
+            scale = speed * m235_wakeScaleTbl[player][i];
             Hu3DModelScaleSet(object->model[i + 1], scale, scale, scale);
             Hu3DModelAttrSet(object->model[i + 1], 4, 0);
         } else {
@@ -719,39 +719,39 @@ void func_801078F0_water_whirled(omObjData *object, f32 speed) {
     }
 }
 
-s32 func_80107D18_water_whirled(s32 index, s16 value) {
+s32 m235_StickAvgCalc(s32 index, s16 value) {
     s32 sum;
     u8 i;
 
-    D_8010A30C_water_whirled[index][D_8010A3BC_water_whirled[index]] = value;
-    if (++D_8010A3BC_water_whirled[index] >= 20) {
-        D_8010A3BC_water_whirled[index] = 0;
+    m235_stickHistTbl[index][m235_stickHistNoTbl[index]] = value;
+    if (++m235_stickHistNoTbl[index] >= 20) {
+        m235_stickHistNoTbl[index] = 0;
     }
     sum = 0;
     for (i = 0; i < 20; i++) {
-        sum += D_8010A30C_water_whirled[index][i];
+        sum += m235_stickHistTbl[index][i];
     }
     return sum / 20;
 }
 
-void func_80107DD4_water_whirled(s32 index, f32 unused, Vec *out) {
+void m235_MoveAvgCalc(s32 index, f32 unused, Vec *out) {
     s32 i;
 
     out->x = out->y = out->z = 0.0f;
-    D_8010A880_water_whirled[index][D_8010A3AC_water_whirled[index]].x = D_8010A1A0_water_whirled[index].x;
-    D_8010A880_water_whirled[index][D_8010A3AC_water_whirled[index]].z = D_8010A1A0_water_whirled[index].z;
-    if (++D_8010A3AC_water_whirled[index] >= 20) {
-        D_8010A3AC_water_whirled[index] = 0;
+    m235_moveHistTbl[index][m235_moveHistNoTbl[index]].x = m235_playerMoveTbl[index].x;
+    m235_moveHistTbl[index][m235_moveHistNoTbl[index]].z = m235_playerMoveTbl[index].z;
+    if (++m235_moveHistNoTbl[index] >= 20) {
+        m235_moveHistNoTbl[index] = 0;
     }
     for (i = 0; i < 20; i++) {
-        out->x += D_8010A880_water_whirled[index][i].x;
-        out->z += D_8010A880_water_whirled[index][i].z;
+        out->x += m235_moveHistTbl[index][i].x;
+        out->z += m235_moveHistTbl[index][i].z;
     }
     out->x /= 20.0f;
     out->z /= 20.0f;
 }
 
-void func_80107F08_water_whirled(omObjData *object) {
+void m235_PlayerObjMain(omObjData *object) {
     MgPlayerWork *work = object->data;
     s32 player;
     s32 pad;
@@ -773,17 +773,17 @@ void func_80107F08_water_whirled(omObjData *object) {
     player = work->unk59;
     pad = work->unk57;
     speed = work->unk40;
-    D_8010A1D0_water_whirled[player].x = x = object->trans.x;
-    D_8010A1D0_water_whirled[player].y = y = object->trans.y;
-    D_8010A1D0_water_whirled[player].z = z = object->trans.z;
-    D_8010AC40_water_whirled = (u16)HuPadBtn[pad];
-    D_8010AC44_water_whirled = HuPadStkX[pad];
+    m235_playerPosTbl[player].x = x = object->trans.x;
+    m235_playerPosTbl[player].y = y = object->trans.y;
+    m235_playerPosTbl[player].z = z = object->trans.z;
+    m235_btnSave = (u16)HuPadBtn[pad];
+    m235_stkXSave = HuPadStkX[pad];
     HuPadStkX[pad] = 0;
     HuPadBtn[pad] = 0;
     mode = MgFlowStatGet();
     if (mode >= MG_STATE_PLAY) {
-        func_801098AC_water_whirled(object);
-        stickX = D_8010AC44_water_whirled;
+        m235_PlayerComInput(object);
+        stickX = m235_stkXSave;
         stickY = 0;
         if (stickX > 60) {
             stickX = 60;
@@ -801,44 +801,44 @@ void func_80107F08_water_whirled(omObjData *object) {
     } else {
         stickY = 0;
         stickX = 0;
-        D_8010AC40_water_whirled = 0;
+        m235_btnSave = 0;
     }
-    if (D_8010AC40_water_whirled & 0x8000) {
+    if (m235_btnSave & 0x8000) {
         if (speed == 0.0f) {
             speed = 1.0f;
         }
         speed *= 1.08f;
-        D_8010A3CC_water_whirled[player] *= 1.1f;
+        m235_throttleTbl[player] *= 1.1f;
     } else {
         speed *= 0.98f;
-        D_8010A3CC_water_whirled[player] *= 0.9f;
+        m235_throttleTbl[player] *= 0.9f;
     }
-    stickAvg = func_80107D18_water_whirled(player, stickX);
+    stickAvg = m235_StickAvgCalc(player, stickX);
     turn = stickAvg / 15.0f;
     if (speed < 1.0f) {
         speed = 0.0f;
     }
-    if (D_8010A190_water_whirled[player] < speed) {
-        speed = D_8010A190_water_whirled[player];
+    if (m235_speedMaxTbl[player] < speed) {
+        speed = m235_speedMaxTbl[player];
     }
-    if (D_8010A3CC_water_whirled[player] < 0.05f) {
-        D_8010A3CC_water_whirled[player] = 0.05f;
+    if (m235_throttleTbl[player] < 0.05f) {
+        m235_throttleTbl[player] = 0.05f;
     }
-    if (1.0f < D_8010A3CC_water_whirled[player]) {
-        D_8010A3CC_water_whirled[player] = 1.0f;
+    if (1.0f < m235_throttleTbl[player]) {
+        m235_throttleTbl[player] = 1.0f;
     }
-    if (D_8010A28C_water_whirled[player] != -1 && (D_8010A3DC_water_whirled[player] & 1)) {
-        HuAudFXPitchSet((s16)D_8010A28C_water_whirled[player],
-                        (s16)(D_8010A3CC_water_whirled[player] * 400.0f + -400.0f));
-        HuAudFXVolSet(D_8010A28C_water_whirled[player], D_8010A3CC_water_whirled[player] * 43.0f + 84.0f);
+    if (m235_engineSeTbl[player] != -1 && (m235_engineFrameTbl[player] & 1)) {
+        HuAudFXPitchSet((s16)m235_engineSeTbl[player],
+                        (s16)(m235_throttleTbl[player] * 400.0f + -400.0f));
+        HuAudFXVolSet(m235_engineSeTbl[player], m235_throttleTbl[player] * 43.0f + 84.0f);
     }
-    D_8010A3DC_water_whirled[player]++;
+    m235_engineFrameTbl[player]++;
     work->unk40 = speed;
-    vel.x = sindf(work->unk3C) * (speed * D_8010A3CC_water_whirled[player]);
+    vel.x = sindf(work->unk3C) * (speed * m235_throttleTbl[player]);
     vel.y = 0.0f;
-    vel.z = cosdf(work->unk3C) * (speed * D_8010A3CC_water_whirled[player]);
+    vel.z = cosdf(work->unk3C) * (speed * m235_throttleTbl[player]);
     work->unk3C = HuAngleWrap(work->unk3C - turn);
-    func_80107DD4_water_whirled(player, speed, &drift);
+    m235_MoveAvgCalc(player, speed, &drift);
     drift.x += vel.x;
     drift.z += vel.z;
     dist = HuSqrtf(drift.x * drift.x + drift.z * drift.z);
@@ -847,33 +847,33 @@ void func_80107F08_water_whirled(omObjData *object) {
         drift.x *= scale;
         drift.z *= scale;
     }
-    x += D_8010A200_water_whirled[player].x * D_8010A230_water_whirled[player] + drift.x;
-    z += D_8010A200_water_whirled[player].z * D_8010A230_water_whirled[player] + drift.z;
-    y = func_80108B98_water_whirled(object, x, 0.0f, z);
-    D_8010A1A0_water_whirled[player].x = x - D_8010A1D0_water_whirled[player].x;
-    D_8010A1A0_water_whirled[player].y = 0.0f;
-    D_8010A1A0_water_whirled[player].z = z - D_8010A1D0_water_whirled[player].z;
+    x += m235_bumpDirTbl[player].x * m235_bumpPowerTbl[player] + drift.x;
+    z += m235_bumpDirTbl[player].z * m235_bumpPowerTbl[player] + drift.z;
+    y = m235_PlayerCollide(object, x, 0.0f, z);
+    m235_playerMoveTbl[player].x = x - m235_playerPosTbl[player].x;
+    m235_playerMoveTbl[player].y = 0.0f;
+    m235_playerMoveTbl[player].z = z - m235_playerPosTbl[player].z;
     x += mgMoveOfsX;
     z += mgMoveOfsZ;
-    func_801086A0_water_whirled(object, x, z);
+    m235_PlayerTiltUpdate(object, x, z);
     speed = work->unk40;
-    object->trans.x -= D_8010A3CC_water_whirled[player] * 50.0f;
+    object->trans.x -= m235_throttleTbl[player] * 50.0f;
     func_80088910_main(Hu3DData[object->model[0]].mtx, 0.0f, work->unk3C, 0.0f);
     MgObjPosSet(object, x, y - 40.0f, z);
-    func_801078F0_water_whirled(object, D_8010A3CC_water_whirled[player]);
-    if (D_8010A230_water_whirled[player] != 0.0f) {
-        if ((D_8010A230_water_whirled[player] *= 0.9f) < 1.0f) {
-            D_8010A230_water_whirled[player] = 0.0f;
+    m235_WakeUpdate(object, m235_throttleTbl[player]);
+    if (m235_bumpPowerTbl[player] != 0.0f) {
+        if ((m235_bumpPowerTbl[player] *= 0.9f) < 1.0f) {
+            m235_bumpPowerTbl[player] = 0.0f;
         }
     }
-    D_8010A2AC_water_whirled.gaugeValue[player] = speed;
-    func_801096BC_water_whirled(object);
-    func_80109E2C_water_whirled(object);
-    HuPadBtn[pad] = D_8010AC40_water_whirled;
-    HuPadStkX[pad] = D_8010AC44_water_whirled;
+    m235_mgFlow.gaugeValue[player] = speed;
+    m235_PlayerDirCalc(object);
+    m235_LapUpdate(object);
+    HuPadBtn[pad] = m235_btnSave;
+    HuPadStkX[pad] = m235_stkXSave;
 }
 
-void func_8010860C_water_whirled(Vec *origin, Vec *p, Vec *q, Vec *out) {
+void m235_NormalCalc(Vec *origin, Vec *p, Vec *q, Vec *out) {
     f32 ax = p->x - origin->x;
     f32 ay = p->y - origin->y;
     f32 az = p->z - origin->z;
@@ -887,7 +887,7 @@ void func_8010860C_water_whirled(Vec *origin, Vec *p, Vec *q, Vec *out) {
     MapVecNormalize(out);
 }
 
-void func_801086A0_water_whirled(omObjData *object, f32 x, f32 z) {
+void m235_PlayerTiltUpdate(omObjData *object, f32 x, f32 z) {
     MgPlayerWork *work;
     Vec a;
     Vec b;
@@ -895,15 +895,15 @@ void func_801086A0_water_whirled(omObjData *object, f32 x, f32 z) {
     Vec normal;
 
     a.x = x;
-    a.y = func_801061E4_water_whirled(x, z);
+    a.y = m235_WaveHeightGet(x, z);
     a.z = z;
     b.x = x + sindf(0.0f) * 10.0f;
     b.z = z + cosdf(0.0f) * 10.0f;
-    b.y = func_801061E4_water_whirled(b.x, b.z);
+    b.y = m235_WaveHeightGet(b.x, b.z);
     c.x = x + sindf(90.0f) * 10.0f;
     c.z = z + cosdf(90.0f) * 10.0f;
-    c.y = func_801061E4_water_whirled(c.x, c.z);
-    func_8010860C_water_whirled(&a, &b, &c, &normal);
+    c.y = m235_WaveHeightGet(c.x, c.z);
+    m235_NormalCalc(&a, &b, &c, &normal);
     normal.y = 0.0f;
     MapVecNormalize(&normal);
     work = object->data;
@@ -923,7 +923,7 @@ void func_801086A0_water_whirled(omObjData *object, f32 x, f32 z) {
     object->rot.z = work->unk98;
 }
 
-void func_80108898_water_whirled(omObjData *object, Vec *pos) {
+void m235_PlayerPushCalc(omObjData *object, Vec *pos) {
     MgPlayerWork *work = object->data;
     MgPlayerWork *otherWork;
     omObjData *other;
@@ -950,32 +950,32 @@ void func_80108898_water_whirled(omObjData *object, Vec *pos) {
     }
 }
 
-void func_801089C0_water_whirled(omObjData *object, f32 x, f32 z) {
+void m235_PushClamp(omObjData *object, f32 x, f32 z) {
     MgPlayerWork *work = object->data;
     f32 radius = work->unk48;
     f32 dist = HuSqrtf(mgMoveOfsX * mgMoveOfsX + mgMoveOfsZ * mgMoveOfsZ);
 
     if (dist > radius || fabs(mgMoveOfsX) > radius || fabs(mgMoveOfsZ) > radius) {
-        mgMoveOfsX = D_8010A1D0_water_whirled[work->unk59].x - x;
-        mgMoveOfsZ = D_8010A1D0_water_whirled[work->unk59].z - z;
+        mgMoveOfsX = m235_playerPosTbl[work->unk59].x - x;
+        mgMoveOfsZ = m235_playerPosTbl[work->unk59].z - z;
     }
     if (MgFlowStatGet() == MG_STATE_PLAY) {
-        if (D_8010A29C_water_whirled[work->unk59] == 0) {
+        if (m235_vibTimerTbl[work->unk59] == 0) {
             if (dist > 0.0f) {
                 if (dist < radius / 3.0f) {
                     omVibrate(work->unk59, 2, 3, 10);
                 } else {
                     omVibrate(work->unk59, 10, 0, 10);
                 }
-                D_8010A29C_water_whirled[work->unk59] = 10;
+                m235_vibTimerTbl[work->unk59] = 10;
             }
         } else {
-            D_8010A29C_water_whirled[work->unk59]--;
+            m235_vibTimerTbl[work->unk59]--;
         }
     }
 }
 
-f32 func_80108B98_water_whirled(omObjData *object, f32 x, f32 y, f32 z) {
+f32 m235_PlayerCollide(omObjData *object, f32 x, f32 y, f32 z) {
     MgPlayerWork *work = object->data;
     f32 speed = work->unk40;
     s32 player = work->unk59;
@@ -987,31 +987,31 @@ f32 func_80108B98_water_whirled(omObjData *object, f32 x, f32 y, f32 z) {
     sphere.pos.z = z + cosdf(work->unk3C) * speed + mgMoveOfsZ;
     sphere.radius = work->unk48;
     work->unk53[0] = work->unk53[1] = -1;
-    func_80108898_water_whirled(object, &sphere.pos);
-    func_801089C0_water_whirled(object, x, z);
+    m235_PlayerPushCalc(object, &sphere.pos);
+    m235_PushClamp(object, x, z);
     sphere.pos.x += mgMoveOfsX;
     sphere.pos.z += mgMoveOfsZ;
     MgPlayerWallCheck(object, &sphere, 0.0f);
     dist = HuSqrtf(mgMoveOfsX * mgMoveOfsX + mgMoveOfsZ * mgMoveOfsZ);
     if (dist != 0.0f) {
-        if (dist > D_8010A190_water_whirled[player] * 0.5f) {
+        if (dist > m235_speedMaxTbl[player] * 0.5f) {
             work->unk40 *= 0.8f;
         } else {
             work->unk40 *= 0.98f;
         }
-        if (dist > D_8010A230_water_whirled[player]) {
-            D_8010A200_water_whirled[player].x = mgMoveOfsX;
-            D_8010A200_water_whirled[player].y = 0.0f;
-            D_8010A200_water_whirled[player].z = mgMoveOfsZ;
-            MapVecNormalize(&D_8010A200_water_whirled[player]);
-            D_8010A230_water_whirled[player] = 16.0f;
+        if (dist > m235_bumpPowerTbl[player]) {
+            m235_bumpDirTbl[player].x = mgMoveOfsX;
+            m235_bumpDirTbl[player].y = 0.0f;
+            m235_bumpDirTbl[player].z = mgMoveOfsZ;
+            MapVecNormalize(&m235_bumpDirTbl[player]);
+            m235_bumpPowerTbl[player] = 16.0f;
         }
     }
-    func_801089C0_water_whirled(object, x, z);
-    return func_801061E4_water_whirled(sphere.pos.x, sphere.pos.z);
+    m235_PushClamp(object, x, z);
+    return m235_WaveHeightGet(sphere.pos.x, sphere.pos.z);
 }
 
-void func_80108DF8_water_whirled(omObjData *object) {
+void m235_HudObjInit(omObjData *object) {
     s32 framePos[4][2] = { { 56, 31 }, { 265, 31 }, { 56, 209 }, { 265, 209 } };
     s32 iconPos[4][2] = { { 43, 32 }, { 253, 32 }, { 43, 210 }, { 253, 210 } };
     s16 frameSprite;
@@ -1052,21 +1052,21 @@ void func_80108DF8_water_whirled(omObjData *object) {
         espDispOn(sprite);
         espPosSet(sprite, iconPos[i][0] - 10, iconPos[i][1] + 4);
         espPriSet(sprite, 100);
-        D_8010AC68_water_whirled[i] = espEntry(lapSprite, 0, 1);
-        espDispOn(D_8010AC68_water_whirled[i]);
-        espPosSet(D_8010AC68_water_whirled[i], iconPos[i][0] + 28, iconPos[i][1] - 9);
-        espPriSet(D_8010AC68_water_whirled[i], 100);
-        D_8010AC58_water_whirled[i] = espEntry(finalLapSprite, 0, 1);
-        espDispOff(D_8010AC58_water_whirled[i]);
-        espPosSet(D_8010AC58_water_whirled[i], iconPos[i][0] + 13, iconPos[i][1] - 9);
-        espPriSet(D_8010AC58_water_whirled[i], 100);
-        D_8010AC78_water_whirled[i] = espEntry(goalSprite, 0, 1);
-        espDispOff(D_8010AC78_water_whirled[i]);
-        espPosSet(D_8010AC78_water_whirled[i], iconPos[i][0] + 13, iconPos[i][1] - 9);
-        espPriSet(D_8010AC78_water_whirled[i], 100);
+        m235_lapSprTbl[i] = espEntry(lapSprite, 0, 1);
+        espDispOn(m235_lapSprTbl[i]);
+        espPosSet(m235_lapSprTbl[i], iconPos[i][0] + 28, iconPos[i][1] - 9);
+        espPriSet(m235_lapSprTbl[i], 100);
+        m235_reverseSprTbl[i] = espEntry(finalLapSprite, 0, 1);
+        espDispOff(m235_reverseSprTbl[i]);
+        espPosSet(m235_reverseSprTbl[i], iconPos[i][0] + 13, iconPos[i][1] - 9);
+        espPriSet(m235_reverseSprTbl[i], 100);
+        m235_goalSprTbl[i] = espEntry(goalSprite, 0, 1);
+        espDispOff(m235_goalSprTbl[i]);
+        espPosSet(m235_goalSprTbl[i], iconPos[i][0] + 13, iconPos[i][1] - 9);
+        espPriSet(m235_goalSprTbl[i], 100);
         x = iconPos[i][0] - 8;
         y = iconPos[i][1] - 9;
-        grp = D_8010AC48_water_whirled[i] = HuSprGrpCreate(3, 5);
+        grp = m235_lapGrpTbl[i] = HuSprGrpCreate(3, 5);
         HuSprGrpMemberSet(grp, 0, digitAnim, 0);
         HuSprAttrReset(grp, 0, 0xFFFF);
         HuSprAttrSet(grp, 0, HUSPR_ATTR_DISPOFF);
@@ -1088,10 +1088,10 @@ void func_80108DF8_water_whirled(omObjData *object) {
     object->func = NULL;
 }
 
-void func_80109340_water_whirled(s16 player, s16 bank) {
-    s16 grp = D_8010AC48_water_whirled[player];
+void m235_LapDispSet(s16 player, s16 bank) {
+    s16 grp = m235_lapGrpTbl[player];
 
-    espDispOn(D_8010AC68_water_whirled[player]);
+    espDispOn(m235_lapSprTbl[player]);
     HuSprDispOn(grp, 0);
     HuSprBankSet(grp, 0, bank, 0);
     HuSprAnimModeSet(grp, 0, HUSPR_ANIM_MODE_BANK);
@@ -1101,41 +1101,41 @@ void func_80109340_water_whirled(s16 player, s16 bank) {
     HuSprDispOn(grp, 2);
     HuSprBankSet(grp, 2, 5, 0);
     HuSprAnimModeSet(grp, 2, HUSPR_ANIM_MODE_BANK);
-    espDispOff(D_8010AC58_water_whirled[player]);
-    espDispOff(D_8010AC78_water_whirled[player]);
+    espDispOff(m235_reverseSprTbl[player]);
+    espDispOff(m235_goalSprTbl[player]);
 }
 
-void func_80109458_water_whirled(s16 player) {
-    s16 grp = D_8010AC48_water_whirled[player];
+void m235_ReverseDispSet(s16 player) {
+    s16 grp = m235_lapGrpTbl[player];
 
-    espDispOff(D_8010AC68_water_whirled[player]);
+    espDispOff(m235_lapSprTbl[player]);
     HuSprDispOff(grp, 0);
     HuSprDispOff(grp, 1);
     HuSprDispOff(grp, 2);
-    if (D_8010A3EC_water_whirled[player] >= 0) {
-        espDispOn(D_8010AC58_water_whirled[player]);
-        if (D_8010A3EC_water_whirled[player] >= 4) {
-            D_8010A3EC_water_whirled[player] = -4;
+    if (m235_reverseBlinkTbl[player] >= 0) {
+        espDispOn(m235_reverseSprTbl[player]);
+        if (m235_reverseBlinkTbl[player] >= 4) {
+            m235_reverseBlinkTbl[player] = -4;
         }
     } else {
-        espDispOff(D_8010AC58_water_whirled[player]);
+        espDispOff(m235_reverseSprTbl[player]);
     }
-    D_8010A3EC_water_whirled[player]++;
-    espDispOff(D_8010AC78_water_whirled[player]);
+    m235_reverseBlinkTbl[player]++;
+    espDispOff(m235_goalSprTbl[player]);
 }
 
-void func_8010956C_water_whirled(s16 player) {
-    s16 grp = D_8010AC48_water_whirled[player];
+void m235_GoalDispSet(s16 player) {
+    s16 grp = m235_lapGrpTbl[player];
 
-    espDispOff(D_8010AC68_water_whirled[player]);
+    espDispOff(m235_lapSprTbl[player]);
     HuSprDispOff(grp, 0);
     HuSprDispOff(grp, 1);
     HuSprDispOff(grp, 2);
-    espDispOff(D_8010AC58_water_whirled[player]);
-    espDispOn(D_8010AC78_water_whirled[player]);
+    espDispOff(m235_reverseSprTbl[player]);
+    espDispOn(m235_goalSprTbl[player]);
 }
 
-s32 func_8010960C_water_whirled(omObjData *object) {
+s32 m235_SectionGet(omObjData *object) {
     f32 x = object->trans.x;
     f32 z = object->trans.z;
 
@@ -1151,7 +1151,7 @@ s32 func_8010960C_water_whirled(omObjData *object) {
     return 3;
 }
 
-void func_801096BC_water_whirled(omObjData *object) {
+void m235_PlayerDirCalc(omObjData *object) {
     MgPlayerWork *work = object->data;
     f32 x = object->trans.x;
     f32 z = object->trans.z;
@@ -1185,7 +1185,7 @@ void func_801096BC_water_whirled(omObjData *object) {
     work->unk60 = MgDirDot(dir.x, dir.z, sindf(angle), cosdf(angle));
 }
 
-void func_801098AC_water_whirled(omObjData *object) {
+void m235_PlayerComInput(omObjData *object) {
     MgPlayerWork *work = object->data;
     s32 player = work->unk59;
     s32 accelerate;
@@ -1199,132 +1199,132 @@ void func_801098AC_water_whirled(omObjData *object) {
     if (MgFlowStatGet() == MG_STATE_PLAY && !(GwPlayer[player].stat & 1)) {
         return;
     }
-    D_8010AC40_water_whirled = 0;
-    D_8010AC44_water_whirled = 0;
-    section = func_8010960C_water_whirled(object);
+    m235_btnSave = 0;
+    m235_stkXSave = 0;
+    section = m235_SectionGet(object);
     accelerate = TRUE;
     switch (section) {
         case 0:
-            D_8010A860_water_whirled.x = object->trans.x + 100.0f;
-            D_8010A860_water_whirled.y = object->trans.z - 50.0f;
-            if (D_8010A860_water_whirled.y < D_8010A3FC_water_whirled[player] + 400.0f) {
-                D_8010A860_water_whirled.y = D_8010A3FC_water_whirled[player] + 400.0f;
+            m235_comTarget.x = object->trans.x + 100.0f;
+            m235_comTarget.y = object->trans.z - 50.0f;
+            if (m235_comTarget.y < m235_comLaneOfsTbl[player] + 400.0f) {
+                m235_comTarget.y = m235_comLaneOfsTbl[player] + 400.0f;
             }
-            D_8010A40C_water_whirled[player] = rand8() * D_8010A41C_water_whirled[GwPlayer[player].cpu_difficulty];
+            m235_comRadiusOfsTbl[player] = rand8() * m235_comRandScaleTbl[GwPlayer[player].cpu_difficulty];
             break;
         case 1:
             dx = object->trans.x - 700.0f;
             dz = object->trans.z;
             angle = atan2df(dx, dz);
-            radius = HuSqrtf(dx * dx + dz * dz) - 150.0f + D_8010A40C_water_whirled[player];
-            D_8010A860_water_whirled.x = sindf(angle + 15.0f) * radius + 700.0f;
-            D_8010A860_water_whirled.y = cosdf(angle + 15.0f) * radius;
+            radius = HuSqrtf(dx * dx + dz * dz) - 150.0f + m235_comRadiusOfsTbl[player];
+            m235_comTarget.x = sindf(angle + 15.0f) * radius + 700.0f;
+            m235_comTarget.y = cosdf(angle + 15.0f) * radius;
             if (object->trans.x < 800.0f && object->trans.z > 0.0f && work->unk40 > 20.0f) {
                 accelerate = FALSE;
             }
-            D_8010A3FC_water_whirled[player] = rand8() * D_8010A41C_water_whirled[GwPlayer[player].cpu_difficulty];
+            m235_comLaneOfsTbl[player] = rand8() * m235_comRandScaleTbl[GwPlayer[player].cpu_difficulty];
             break;
         case 2:
-            D_8010A860_water_whirled.x = object->trans.x - 100.0f;
-            D_8010A860_water_whirled.y = object->trans.z + 50.0f;
-            if (D_8010A860_water_whirled.y > D_8010A3FC_water_whirled[player] + -400.0f) {
-                D_8010A860_water_whirled.y = D_8010A3FC_water_whirled[player] + -400.0f;
+            m235_comTarget.x = object->trans.x - 100.0f;
+            m235_comTarget.y = object->trans.z + 50.0f;
+            if (m235_comTarget.y > m235_comLaneOfsTbl[player] + -400.0f) {
+                m235_comTarget.y = m235_comLaneOfsTbl[player] + -400.0f;
             }
-            D_8010A40C_water_whirled[player] = rand8() * D_8010A41C_water_whirled[GwPlayer[player].cpu_difficulty];
+            m235_comRadiusOfsTbl[player] = rand8() * m235_comRandScaleTbl[GwPlayer[player].cpu_difficulty];
             break;
         case 3:
             dx = object->trans.x + 700.0f;
             dz = object->trans.z;
             angle = atan2df(dx, dz);
-            radius = HuSqrtf(dx * dx + dz * dz) - 150.0f + D_8010A40C_water_whirled[player];
-            D_8010A860_water_whirled.x = sindf(angle + 15.0f) * radius + -700.0f;
-            D_8010A860_water_whirled.y = cosdf(angle + 15.0f) * radius;
+            radius = HuSqrtf(dx * dx + dz * dz) - 150.0f + m235_comRadiusOfsTbl[player];
+            m235_comTarget.x = sindf(angle + 15.0f) * radius + -700.0f;
+            m235_comTarget.y = cosdf(angle + 15.0f) * radius;
             if (object->trans.x > -800.0f && object->trans.z < 0.0f && work->unk40 > 20.0f) {
                 accelerate = FALSE;
             }
-            D_8010A3FC_water_whirled[player] = rand8() * D_8010A41C_water_whirled[GwPlayer[player].cpu_difficulty];
+            m235_comLaneOfsTbl[player] = rand8() * m235_comRandScaleTbl[GwPlayer[player].cpu_difficulty];
             break;
     }
     angle = work->unk3C - 90.0f;
-    dx = D_8010A860_water_whirled.x - object->trans.x;
-    dz = D_8010A860_water_whirled.y - object->trans.z;
-    D_8010AC44_water_whirled = (s8)(MgDirDot(dx, dz, sindf(angle), cosdf(angle)) * 120.0f);
+    dx = m235_comTarget.x - object->trans.x;
+    dz = m235_comTarget.y - object->trans.z;
+    m235_stkXSave = (s8)(MgDirDot(dx, dz, sindf(angle), cosdf(angle)) * 120.0f);
     // do-while(0) needed for float register allocation of dir.
     do {
         dir = work->unk3C;
-        dx = D_8010A860_water_whirled.x;
-        dz = D_8010A860_water_whirled.y;
+        dx = m235_comTarget.x;
+        dz = m235_comTarget.y;
         dx -= object->trans.x;
         dz -= object->trans.z;
     } while (0);
     if (MgDirDot(dx, dz, sindf(dir), cosdf(dir)) < 0.0f) {
-        D_8010AC44_water_whirled = 60;
+        m235_stkXSave = 60;
     } else if (accelerate == TRUE) {
-        D_8010AC40_water_whirled |= 0x8000;
-    } else if (D_8010AC44_water_whirled > 0) {
-        D_8010AC44_water_whirled = 60;
+        m235_btnSave |= 0x8000;
+    } else if (m235_stkXSave > 0) {
+        m235_stkXSave = 60;
     } else {
-        D_8010AC44_water_whirled = -60;
+        m235_stkXSave = -60;
     }
 }
 
-void func_80109E2C_water_whirled(omObjData *object) {
+void m235_LapUpdate(omObjData *object) {
     MgPlayerWork *work = object->data;
     s32 player = work->unk59;
-    s32 section = func_8010960C_water_whirled(object);
+    s32 section = m235_SectionGet(object);
     Vec normal;
     f32 dx;
     f32 dy;
     f32 dz;
     s32 side;
 
-    func_8010860C_water_whirled(&D_8010A44C_water_whirled[section][0], &D_8010A44C_water_whirled[section][1],
-                                &D_8010A44C_water_whirled[section][2], &normal);
-    dx = object->trans.x - D_8010A44C_water_whirled[section][0].x;
-    dy = object->trans.y - D_8010A44C_water_whirled[section][0].y;
-    dz = object->trans.z - D_8010A44C_water_whirled[section][0].z;
+    m235_NormalCalc(&m235_gatePlaneTbl[section][0], &m235_gatePlaneTbl[section][1],
+                                &m235_gatePlaneTbl[section][2], &normal);
+    dx = object->trans.x - m235_gatePlaneTbl[section][0].x;
+    dy = object->trans.y - m235_gatePlaneTbl[section][0].y;
+    dz = object->trans.z - m235_gatePlaneTbl[section][0].z;
     side = dx * normal.x + dy * normal.y + dz * normal.z >= 0.0f;
-    if (section == D_8010A42C_water_whirled[player]) {
-        if (D_8010A43C_water_whirled[player] == 0) {
+    if (section == m235_sectionTbl[player]) {
+        if (m235_sectionSideTbl[player] == 0) {
             if (side == 1) {
-                D_8010A240_water_whirled[player]++;
+                m235_sectionCntTbl[player]++;
             }
         } else if (side == 0) {
-            D_8010A240_water_whirled[player]--;
+            m235_sectionCntTbl[player]--;
         }
-        if (D_8010A240_water_whirled[player] < 0) {
+        if (m235_sectionCntTbl[player] < 0) {
             switch (section) {
                 case 0:
-                    D_8010A240_water_whirled[player] = -1;
+                    m235_sectionCntTbl[player] = -1;
                     break;
                 case 1:
-                    D_8010A240_water_whirled[player] = -4;
+                    m235_sectionCntTbl[player] = -4;
                     break;
                 case 2:
-                    D_8010A240_water_whirled[player] = -3;
+                    m235_sectionCntTbl[player] = -3;
                     break;
                 case 3:
-                    D_8010A240_water_whirled[player] = -2;
+                    m235_sectionCntTbl[player] = -2;
                     break;
             }
         }
-        D_8010A43C_water_whirled[player] = side;
+        m235_sectionSideTbl[player] = side;
     } else {
-        D_8010A43C_water_whirled[player] = side;
+        m235_sectionSideTbl[player] = side;
     }
-    D_8010A42C_water_whirled[player] = section;
-    D_8010A270_water_whirled[player] = D_8010A240_water_whirled[player] / 4;
-    if (D_8010A270_water_whirled[player] < 0) {
-        D_8010A270_water_whirled[player] = 0;
+    m235_sectionTbl[player] = section;
+    m235_lapTbl[player] = m235_sectionCntTbl[player] / 4;
+    if (m235_lapTbl[player] < 0) {
+        m235_lapTbl[player] = 0;
     }
-    if (D_8010A284_water_whirled == 0 && D_8010A270_water_whirled[player] == 4) {
-        D_8010A284_water_whirled = HuAudFXPlay(0x425);
+    if (m235_finalLapSeNo == 0 && m235_lapTbl[player] == 4) {
+        m235_finalLapSeNo = HuAudFXPlay(0x425);
     }
-    if (D_8010A270_water_whirled[player] >= 5) {
-        func_8010956C_water_whirled(player);
+    if (m235_lapTbl[player] >= 5) {
+        m235_GoalDispSet(player);
     } else if (work->unk60 >= 0.0f) {
-        func_80109340_water_whirled(player, D_8010A270_water_whirled[player] < 5 ? D_8010A270_water_whirled[player] + 1 : 5);
+        m235_LapDispSet(player, m235_lapTbl[player] < 5 ? m235_lapTbl[player] + 1 : 5);
     } else {
-        func_80109458_water_whirled(player);
+        m235_ReverseDispSet(player);
     }
 }

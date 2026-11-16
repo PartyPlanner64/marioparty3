@@ -42,74 +42,74 @@ extern f32 mgPlayerSpeedMax;
 extern omObjData *mgItemObjTbl[];
 extern Vec mgWallNorTbl[];
 
-Vec D_80108550_ice_rink_risk = { -150.0f, 100.0f, -150.0f };
-Vec D_8010855C_ice_rink_risk = { -150.0f, 100.0f, 150.0f };
-Vec D_80108568_ice_rink_risk = { 150.0f, 100.0f, -150.0f };
-Vec D_80108574_ice_rink_risk = { 150.0f, 100.0f, 150.0f };
-f32 D_80108580_ice_rink_risk[4][3] = {
+Vec m225_player0StartPos = { -150.0f, 100.0f, -150.0f };
+Vec m225_player1StartPos = { -150.0f, 100.0f, 150.0f };
+Vec m225_player2StartPos = { 150.0f, 100.0f, -150.0f };
+Vec m225_player3StartPos = { 150.0f, 100.0f, 150.0f };
+f32 m225_puckStartTbl[4][3] = {
     { 40.0f, 900.0f, 10.0f },
     { 30.0f, 900.0f, 20.0f },
     { 20.0f, 900.0f, 30.0f },
     { 10.0f, 900.0f, 40.0f },
 };
-IceRinkRiskPuckHit D_801085B0_ice_rink_risk[3] = {
+IceRinkRiskPuckHit m225_puckHitTbl[3] = {
     { -1, 20, { 0.0f, 0.0f, 0.0f } },
     { -1, 20, { 0.0f, 0.0f, 0.0f } },
     { -1, 20, { 0.0f, 0.0f, 0.0f } },
 };
-s32 D_801085EC_ice_rink_risk[3] = { 0, 0, 0 };
-s32 D_801085F8_ice_rink_risk = 0;
-s32 D_801085FC_ice_rink_risk[4] = { 1, 1, 1, 1 };
-MinigameFlow D_8010860C_ice_rink_risk = {
+s32 m225_puckActiveTbl[3] = { 0, 0, 0 };
+s32 m225_puckNum = 0;
+s32 m225_playerAliveTbl[4] = { 1, 1, 1, 1 };
+MinigameFlow m225_mgFlow = {
     MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
     { 0.0f, 0.0f, 0.0f, 0.0f },
     { 0, 0, 0, 0 },
     60, 900, -1, 75, 135
 };
-s32 D_80108634_ice_rink_risk = 1;
-s32 D_80108638_ice_rink_risk = 0;
-s32 D_8010863C_ice_rink_risk[4] = { 0, 0, 0, 0 };
-s32 D_8010864C_ice_rink_risk[4] = { 0, 0, 0, 0 };
-s8 D_8010865C_ice_rink_risk[4][2] = { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } };
-f32 D_80108664_ice_rink_risk[4] = { 0.75f, 0.8f, 0.9f, 1.0f };
-f32 D_80108674_ice_rink_risk[4] = { 30.0f, 20.0f, 10.0f, 0.0f };
-s32 D_80108684_ice_rink_risk = 0;
-f32 D_80108688_ice_rink_risk[10] = { 0 };
+s32 m225_puckDispF = 1;
+s32 m225_timer = 0;
+s32 m225_playerFlyTimeTbl[4] = { 0, 0, 0, 0 };
+s32 m225_playerOutTbl[4] = { 0, 0, 0, 0 };
+s8 m225_comStickTbl[4][2] = { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } };
+f32 m225_comStickScaleTbl[4] = { 0.75f, 0.8f, 0.9f, 1.0f };
+f32 m225_comDodgeDistTbl[4] = { 30.0f, 20.0f, 10.0f, 0.0f };
+s32 m225_puckCreateCnt = 0;
+f32 m225_puckRotTbl[10] = { 0 };
 
-Vec D_801086D0_ice_rink_risk BSS;
-Vec D_801086DC_ice_rink_risk BSS;
-s32 D_801086E8_ice_rink_risk BSS;
-s32 D_801086EC_ice_rink_risk BSS;
-s32 D_801086F0_ice_rink_risk BSS;
-s32 D_801086F4_ice_rink_risk BSS;
+Vec m225_cameraViewPos BSS;
+Vec m225_cameraViewTarget BSS;
+s32 m225_comBtnSave BSS;
+s32 m225_comBtnDownSave BSS;
+s32 m225_comStickXSave BSS;
+s32 m225_comStickYSave BSS;
 
-void func_80105E34_ice_rink_risk(omObjData *object);
-void func_80105E60_ice_rink_risk(void);
-void func_80105EA4_ice_rink_risk(void);
-void func_80105FAC_ice_rink_risk(omObjData *object);
-void func_80106198_ice_rink_risk(omObjData *object);
-void func_80106554_ice_rink_risk(omObjData *object);
-void func_80106710_ice_rink_risk(omObjData *object, s32 model, s32 motion, s32 player);
-s32 func_80106A60_ice_rink_risk(omObjData *object, omObjData *other);
-void func_80106C54_ice_rink_risk(omObjData *object);
-s32 func_80106E20_ice_rink_risk(omObjData *object);
-s32 func_80106FC0_ice_rink_risk(omObjData *object);
-void func_80107590_ice_rink_risk(omObjData *object);
-void func_80107604_ice_rink_risk(omObjData *object);
-void func_80107678_ice_rink_risk(omObjData *object);
-void func_801076EC_ice_rink_risk(omObjData *object);
-void func_80107760_ice_rink_risk(omObjData *object);
-void func_8010796C_ice_rink_risk(omObjData *object);
-f32 func_80107CB4_ice_rink_risk(omObjData *object, f32 x, f32 y, f32 z);
-f32 func_80107D14_ice_rink_risk(omObjData *object, Hu3DSphere *sphere);
-void func_80107DEC_ice_rink_risk(omObjData *object, f32 x, f32 y, f32 z, f32 floorY, Vec *normal);
-f32 func_80107F24_ice_rink_risk(omObjData *object, Hu3DSphere *sphere, Vec *normal);
-void func_80107F58_ice_rink_risk(omObjData *object, f32 x, f32 y, f32 z);
-void func_80108134_ice_rink_risk(omObjData *object, Hu3DSphere *sphere);
-void func_8010826C_ice_rink_risk(omObjData *object);
-void func_80108384_ice_rink_risk(omObjData *object, f32 dx, f32 dz);
+void m225_ExitObjMain(omObjData *object);
+void m225_PuckStart(void);
+void m225_PuckEndAll(void);
+void m225_HitEffUpdate(omObjData *object);
+void m225_MainObjMain(omObjData *object);
+void m225_MapObjInit(omObjData *object);
+void m225_PlayerInit(omObjData *object, s32 model, s32 motion, s32 player);
+s32 m225_PlayerHitHook(omObjData *object, omObjData *other);
+void m225_PlayerFlyObjMain(omObjData *object);
+s32 m225_PlayerPadRestore(omObjData *object);
+s32 m225_PlayerComInput(omObjData *object);
+void m225_Player0ObjInit(omObjData *object);
+void m225_Player1ObjInit(omObjData *object);
+void m225_Player2ObjInit(omObjData *object);
+void m225_Player3ObjInit(omObjData *object);
+void m225_PuckObjInit(omObjData *object);
+void m225_PuckObjMain(omObjData *object);
+f32 m225_PuckCollide(omObjData *object, f32 x, f32 y, f32 z);
+f32 m225_PuckFloorCheck(omObjData *object, Hu3DSphere *sphere);
+void m225_PuckShadowSet(omObjData *object, f32 x, f32 y, f32 z, f32 floorY, Vec *normal);
+f32 m225_PuckFloorGet(omObjData *object, Hu3DSphere *sphere, Vec *normal);
+void m225_PuckHitCheck(omObjData *object, f32 x, f32 y, f32 z);
+void m225_PuckWallCheck(omObjData *object, Hu3DSphere *sphere);
+void m225_PuckWallReflect(omObjData *object);
+void m225_PuckHitReflect(omObjData *object, f32 dx, f32 dz);
 
-void func_801059A0_ice_rink_risk(void) {
+void m225_ObjectSetup(void) {
     u8 camIndex;
     s16 sprite;
 
@@ -132,49 +132,49 @@ void func_801059A0_ice_rink_risk(void) {
     MgShadowAltSet(1);
     mgPlayerFallInit = 0.0f;
     MgMapBaseSet(mgMapObjNum);
-    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 10, 0, -1, func_80106554_ice_rink_risk);
-    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 10, 60, -1, func_80107590_ice_rink_risk);
-    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 10, 60, -1, func_80107604_ice_rink_risk);
-    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 10, 60, -1, func_80107678_ice_rink_risk);
-    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 10, 60, -1, func_801076EC_ice_rink_risk);
-    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 4, 0, -1, func_80107760_ice_rink_risk);
-    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 4, 0, -1, func_80107760_ice_rink_risk);
-    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 4, 0, -1, func_80107760_ice_rink_risk);
-    D_801086DC_ice_rink_risk.x = 0.0f;
-    D_801086DC_ice_rink_risk.y = 18.995f;
-    D_801086DC_ice_rink_risk.z = -31.245f;
-    D_801086D0_ice_rink_risk.x = 0.0f;
-    D_801086D0_ice_rink_risk.y = 1100.0f;
-    D_801086D0_ice_rink_risk.z = 710.785f;
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 10, 0, -1, m225_MapObjInit);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 10, 60, -1, m225_Player0ObjInit);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 10, 60, -1, m225_Player1ObjInit);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 10, 60, -1, m225_Player2ObjInit);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 10, 60, -1, m225_Player3ObjInit);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 4, 0, -1, m225_PuckObjInit);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 4, 0, -1, m225_PuckObjInit);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 4, 0, -1, m225_PuckObjInit);
+    m225_cameraViewTarget.x = 0.0f;
+    m225_cameraViewTarget.y = 18.995f;
+    m225_cameraViewTarget.z = -31.245f;
+    m225_cameraViewPos.x = 0.0f;
+    m225_cameraViewPos.y = 1100.0f;
+    m225_cameraViewPos.z = 710.785f;
     sprite = espEntry(HuSprAnimDataRead(0x3A0003), 0, 1);
     espDispOn(sprite);
     espPosSet(sprite, 160, 120);
     espAttrSet(sprite, 0x4000);
-    omCameraViewCreate(100, sprite, NULL, 41.539f, &D_801086D0_ice_rink_risk, &D_801086DC_ice_rink_risk);
+    omCameraViewCreate(100, sprite, NULL, 41.539f, &m225_cameraViewPos, &m225_cameraViewTarget);
     CZoom *= 1.25f;
     WipeCreateIn(WIPE_TYPE_PREV, 0x10);
-    MgFlowInit(&D_8010860C_ice_rink_risk);
+    MgFlowInit(&m225_mgFlow);
     mgFlowSeqNo = 53;
     mgFlowSeqTime = 20;
 }
 
-void func_80105E34_ice_rink_risk(omObjData *object) {
+void m225_ExitObjMain(omObjData *object) {
     if (WipeStatGet() == 0) {
         omOvlReturnEx(1);
     }
 }
 
-void func_80105E60_ice_rink_risk(void) {
-    D_801085EC_ice_rink_risk[D_801085F8_ice_rink_risk] = 1;
-    D_801085F8_ice_rink_risk++;
+void m225_PuckStart(void) {
+    m225_puckActiveTbl[m225_puckNum] = 1;
+    m225_puckNum++;
     HuAudFXPlay(0x3D3);
 }
 
-void func_80105EA4_ice_rink_risk(void) {
+void m225_PuckEndAll(void) {
     omObjData *puck;
     s32 i;
 
-    for (i = 0; i < D_801085F8_ice_rink_risk; i++) {
+    for (i = 0; i < m225_puckNum; i++) {
         puck = mgItemObjTbl[i];
         Hu3DModelAttrSet(puck->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DMotionTimeSet(puck->model[2], 0);
@@ -184,22 +184,22 @@ void func_80105EA4_ice_rink_risk(void) {
         Hu3DModelAttrSet(puck->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         puck->func = NULL;
     }
-    D_80108634_ice_rink_risk = 0;
+    m225_puckDispF = 0;
 }
 
-void func_80105FAC_ice_rink_risk(omObjData *object) {
+void m225_HitEffUpdate(omObjData *object) {
     s32 hidden;
     s32 i;
     s32 j;
 
     for (i = 0; i < 3; i++) {
-        if (D_801085B0_ice_rink_risk[i].unk04 == 0) {
+        if (m225_puckHitTbl[i].unk04 == 0) {
             hidden = FALSE;
             for (j = 0; j < 3; j++) {
-                if (j != i && D_801085B0_ice_rink_risk[j].unk00 == i) {
-                    if (D_801085B0_ice_rink_risk[i].unk04 == D_801085B0_ice_rink_risk[j].unk04) {
-                        D_801085B0_ice_rink_risk[j].unk04 = 5;
-                        D_801085B0_ice_rink_risk[j].unk00 = -1;
+                if (j != i && m225_puckHitTbl[j].unk00 == i) {
+                    if (m225_puckHitTbl[i].unk04 == m225_puckHitTbl[j].unk04) {
+                        m225_puckHitTbl[j].unk04 = 5;
+                        m225_puckHitTbl[j].unk00 = -1;
                     } else {
                         hidden = TRUE;
                     }
@@ -207,21 +207,21 @@ void func_80105FAC_ice_rink_risk(omObjData *object) {
             }
             if (!hidden) {
                 Hu3DModelAttrSet(object->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-                Hu3DModelPosSet(object->model[i + 1], D_801085B0_ice_rink_risk[i].pos.x,
-                                D_801085B0_ice_rink_risk[i].pos.y, D_801085B0_ice_rink_risk[i].pos.z);
+                Hu3DModelPosSet(object->model[i + 1], m225_puckHitTbl[i].pos.x,
+                                m225_puckHitTbl[i].pos.y, m225_puckHitTbl[i].pos.z);
                 Hu3DMotionTimeSet(object->model[i + 1], 0);
             }
-            D_801085B0_ice_rink_risk[i].unk04++;
+            m225_puckHitTbl[i].unk04++;
         } else {
-            D_801085B0_ice_rink_risk[i].unk04++;
-            if (D_801085B0_ice_rink_risk[i].unk04 >= 16) {
-                D_801085B0_ice_rink_risk[i].unk00 = -1;
+            m225_puckHitTbl[i].unk04++;
+            if (m225_puckHitTbl[i].unk04 >= 16) {
+                m225_puckHitTbl[i].unk00 = -1;
             }
         }
     }
 }
 
-void func_80106198_ice_rink_risk(omObjData *object) {
+void m225_MainObjMain(omObjData *object) {
     MgPlayerWork *data;
     omObjData *obj;
     s32 count = 0;
@@ -233,8 +233,8 @@ void func_80106198_ice_rink_risk(omObjData *object) {
         return;
     }
     for (i = 0; i < 4; i++) {
-        if (D_801085FC_ice_rink_risk[i] == 1) {
-            count += D_801085FC_ice_rink_risk[i];
+        if (m225_playerAliveTbl[i] == 1) {
+            count += m225_playerAliveTbl[i];
         }
     }
     time = MgFlowStatTimeGet();
@@ -247,35 +247,35 @@ void func_80106198_ice_rink_risk(omObjData *object) {
         case 1:
             break;
         case 2:
-            func_80105FAC_ice_rink_risk(object);
-            switch (D_80108638_ice_rink_risk) {
+            m225_HitEffUpdate(object);
+            switch (m225_timer) {
                 case 0:
                 case 300:
                 case 600:
-                    func_80105E60_ice_rink_risk();
+                    m225_PuckStart();
                     break;
             }
             if (count < 2) {
                 MgFlowStatSet(MG_STATE_FINISH);
             }
-            D_80108638_ice_rink_risk++;
+            m225_timer++;
             break;
         case 3:
-            if (D_80108634_ice_rink_risk == 1) {
-                func_80105EA4_ice_rink_risk();
+            if (m225_puckDispF == 1) {
+                m225_PuckEndAll();
             }
             if (count == 0) {
-                D_8010860C_ice_rink_risk.resultType = MG_RESULT_DRAW;
+                m225_mgFlow.resultType = MG_RESULT_DRAW;
             } else {
-                D_8010860C_ice_rink_risk.resultType = count - 1;
+                m225_mgFlow.resultType = count - 1;
                 for (j = 0, i = 0; i < 4; i++) {
-                    if (D_801085FC_ice_rink_risk[i] == 1) {
-                        D_8010860C_ice_rink_risk.winners[j++] = i;
+                    if (m225_playerAliveTbl[i] == 1) {
+                        m225_mgFlow.winners[j++] = i;
                     }
                 }
             }
             for (i = 0; i < 4; i++) {
-                if (D_801085FC_ice_rink_risk[i] == 1) {
+                if (m225_playerAliveTbl[i] == 1) {
                     obj = mgPlayerObjTbl[i];
                     OM_GET_DATA_PTR(obj, MgPlayerWork)->unk3C *= 0.8f;
                 }
@@ -284,7 +284,7 @@ void func_80106198_ice_rink_risk(omObjData *object) {
         case 4:
             if (mgFlowResultF == 1) {
                 for (i = 0; i < 4; i++) {
-                    if (D_801085FC_ice_rink_risk[i] == 1) {
+                    if (m225_playerAliveTbl[i] == 1) {
                         obj = mgPlayerObjTbl[i];
                         data = obj->data;
                         MgPlayerMotForceSet(obj, 0xD);
@@ -296,7 +296,7 @@ void func_80106198_ice_rink_risk(omObjData *object) {
             break;
         case 5:
             WipeCreateOut(WIPE_TYPE_NORMAL, 20);
-            object->func = func_80105E34_ice_rink_risk;
+            object->func = m225_ExitObjMain;
             break;
     }
     for (i = 0; i < mgPlayerObjNum; i++) {
@@ -306,11 +306,11 @@ void func_80106198_ice_rink_risk(omObjData *object) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
-        object->func = func_80105E34_ice_rink_risk;
+        object->func = m225_ExitObjMain;
     }
 }
 
-void func_80106554_ice_rink_risk(omObjData *object) {
+void m225_MapObjInit(omObjData *object) {
     MgMapWork *work;
 
     mgPlayerAccel = 20.0f;
@@ -326,7 +326,7 @@ void func_80106554_ice_rink_risk(omObjData *object) {
     work = HuMemAllocTag(0xB4, TAG_OVERLAY);
     object->data = work;
     memset(work, 0, 0xB4);
-    object->func = func_80106198_ice_rink_risk;
+    object->func = m225_MainObjMain;
     work->unk03 = 1;
     MgMapTiltOn(object);
     MgMapCircleSet(object, 100.0f, 500.0f);
@@ -342,7 +342,7 @@ void func_80106554_ice_rink_risk(omObjData *object) {
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
-void func_80106710_ice_rink_risk(omObjData *object, s32 model, s32 motion, s32 player) {
+void m225_PlayerInit(omObjData *object, s32 model, s32 motion, s32 player) {
     MgPlayerWork *data;
     s32 chr;
 
@@ -369,13 +369,13 @@ void func_80106710_ice_rink_risk(omObjData *object, s32 model, s32 motion, s32 p
     MgPlayerMotLoad(object, 0x26, CharMotionDataNumGet(chr, 0x1A), 1, 0);
     MgPlayerMotRead(object, 0xD, CharMotionDataNumGet(chr, 0x2F), 1, 0x78);
     MgPlayerMotRead(object, 0xE, CharMotionDataNumGet(chr, 0x36), 1, 0x78);
-    data->unkEC = func_80106A60_ice_rink_risk;
+    data->unkEC = m225_PlayerHitHook;
     MgPlayerMapAttrSet(object, 0, 2);
-    MgPlayerHookSet(data, 0, func_80106FC0_ice_rink_risk);
-    MgPlayerHookSet(data, 1, func_80106E20_ice_rink_risk);
+    MgPlayerHookSet(data, 0, m225_PlayerComInput);
+    MgPlayerHookSet(data, 1, m225_PlayerPadRestore);
 }
 
-s32 func_80106A60_ice_rink_risk(omObjData *object, omObjData *other) {
+s32 m225_PlayerHitHook(omObjData *object, omObjData *other) {
     MgPlayerWork *data = object->data;
     Vec dir;
     f32 x, y, z;
@@ -403,15 +403,15 @@ s32 func_80106A60_ice_rink_risk(omObjData *object, omObjData *other) {
     data->unk40 = mgPlayerSpeedMax * 0.8f;
     Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     MgPlayerEffSet(object, 7, x, y, z, 0.0f, 0.0f);
-    D_801085FC_ice_rink_risk[data->unk59] = 0;
-    object->func = func_80106C54_ice_rink_risk;
+    m225_playerAliveTbl[data->unk59] = 0;
+    object->func = m225_PlayerFlyObjMain;
     data->unk50 |= 0x400;
-    D_8010864C_ice_rink_risk[data->unk59] = 1;
+    m225_playerOutTbl[data->unk59] = 1;
     omVibrate(data->unk59, 2, 2, 20);
     return 1;
 }
 
-void func_80106C54_ice_rink_risk(omObjData *object) {
+void m225_PlayerFlyObjMain(omObjData *object) {
     MgPlayerWork *data = object->data;
     f32 x = object->trans.x;
     f32 y = object->trans.y;
@@ -419,7 +419,7 @@ void func_80106C54_ice_rink_risk(omObjData *object) {
     f32 velocity;
     f32 speedSq;
 
-    if (D_8010863C_ice_rink_risk[data->unk59] == 0 && data->unk38 != -mgPlayerJumpPower) {
+    if (m225_playerFlyTimeTbl[data->unk59] == 0 && data->unk38 != -mgPlayerJumpPower) {
         data->unk38 = -mgPlayerJumpPower;
     }
     velocity = data->unk38;
@@ -440,39 +440,39 @@ void func_80106C54_ice_rink_risk(omObjData *object) {
         Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    D_8010863C_ice_rink_risk[data->unk59]++;
+    m225_playerFlyTimeTbl[data->unk59]++;
     object->trans.x = x;
     object->trans.y = y;
     object->trans.z = z;
 }
 
-s32 func_80106E20_ice_rink_risk(omObjData *object) {
+s32 m225_PlayerPadRestore(omObjData *object) {
     MgPlayerWork *data = object->data;
 
     if (GwPlayer[data->unk59].stat & 1) {
-        HuPadBtnDown[data->unk57] = D_801086EC_ice_rink_risk;
-        HuPadBtn[data->unk57] = D_801086E8_ice_rink_risk;
-        HuPadStkX[data->unk57] = D_801086F0_ice_rink_risk;
-        HuPadStkY[data->unk57] = D_801086F4_ice_rink_risk;
+        HuPadBtnDown[data->unk57] = m225_comBtnDownSave;
+        HuPadBtn[data->unk57] = m225_comBtnSave;
+        HuPadStkX[data->unk57] = m225_comStickXSave;
+        HuPadStkY[data->unk57] = m225_comStickYSave;
     }
     if (object->trans.y < -2000.0f) {
         object->func = NULL;
         Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
-    if (D_8010864C_ice_rink_risk[data->unk59] == 1) {
+    if (m225_playerOutTbl[data->unk59] == 1) {
         MgPlayerMotForceSet(object, 0x26);
         data->unk38 = -mgPlayerJumpPower;
         data->unk3C = atan2df(object->trans.x, object->trans.z);
         data->unk40 = mgPlayerSpeedMax * 0.8f;
         Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        D_801085FC_ice_rink_risk[data->unk59] = 0;
-        object->func = func_80106C54_ice_rink_risk;
+        m225_playerAliveTbl[data->unk59] = 0;
+        object->func = m225_PlayerFlyObjMain;
         data->unk50 |= 0x400;
     }
     return 1;
 }
 
-s32 func_80106FC0_ice_rink_risk(omObjData *object) {
+s32 m225_PlayerComInput(omObjData *object) {
     MgPlayerWork *data = object->data;
     omObjData *puck;
     Vec dir;
@@ -490,23 +490,23 @@ s32 func_80106FC0_ice_rink_risk(omObjData *object) {
     if (MgFlowStatGet() == MG_STATE_PLAY && !(GwPlayer[player].stat & 1)) {
         return 1;
     }
-    D_801086EC_ice_rink_risk = HuPadBtnDown[pad];
-    D_801086E8_ice_rink_risk = (u16)HuPadBtn[pad];
-    D_801086F0_ice_rink_risk = HuPadStkX[pad];
-    D_801086F4_ice_rink_risk = HuPadStkY[pad];
+    m225_comBtnDownSave = HuPadBtnDown[pad];
+    m225_comBtnSave = (u16)HuPadBtn[pad];
+    m225_comStickXSave = HuPadStkX[pad];
+    m225_comStickYSave = HuPadStkY[pad];
     HuPadStkY[pad] = 0;
     HuPadStkX[pad] = 0;
     HuPadBtnDown[pad] = 0;
     HuPadBtn[pad] = 0;
     difficulty = GwPlayer[data->unk59].cpu_difficulty;
     if (data->unk38 != 1000.0f) {
-        HuPadStkX[pad] = D_8010865C_ice_rink_risk[player][0];
-        HuPadStkY[pad] = D_8010865C_ice_rink_risk[player][1];
+        HuPadStkX[pad] = m225_comStickTbl[player][0];
+        HuPadStkY[pad] = m225_comStickTbl[player][1];
         HuPadBtn[pad] |= 0x8000;
     } else {
         bestDist = 20000.0f;
         best = -1;
-        for (i = 0; i < D_801085F8_ice_rink_risk; i++) {
+        for (i = 0; i < m225_puckNum; i++) {
             puck = mgItemObjTbl[i];
             dx = object->trans.x - puck->trans.x;
             dy = object->trans.y - puck->trans.y;
@@ -517,14 +517,14 @@ s32 func_80106FC0_ice_rink_risk(omObjData *object) {
                 best = i;
             }
         }
-        if (bestDist < D_80108674_ice_rink_risk[difficulty] + 150.0f) {
+        if (bestDist < m225_comDodgeDistTbl[difficulty] + 150.0f) {
             puck = mgItemObjTbl[best];
             dir.x = object->trans.x - puck->trans.x;
             dir.y = 0.0f;
             dir.z = object->trans.z - puck->trans.z;
             MapVecNormalize(&dir);
-            HuPadStkX[pad] = dir.x * 60.0f * D_80108664_ice_rink_risk[difficulty];
-            HuPadStkY[pad] = dir.z * -60.0f * D_80108664_ice_rink_risk[difficulty];
+            HuPadStkX[pad] = dir.x * 60.0f * m225_comStickScaleTbl[difficulty];
+            HuPadStkY[pad] = dir.z * -60.0f * m225_comStickScaleTbl[difficulty];
             HuPadBtnDown[pad] |= 0x8000;
         } else if (bestDist < 400.0f) {
             puck = mgItemObjTbl[best];
@@ -548,8 +548,8 @@ s32 func_80106FC0_ice_rink_risk(omObjData *object) {
             dir.y = 0.0f;
             dir.z = dz - object->trans.z;
             MapVecNormalize(&dir);
-            HuPadStkX[pad] = dir.x * 60.0f * D_80108664_ice_rink_risk[difficulty];
-            HuPadStkY[pad] = dir.z * -60.0f * D_80108664_ice_rink_risk[difficulty];
+            HuPadStkX[pad] = dir.x * 60.0f * m225_comStickScaleTbl[difficulty];
+            HuPadStkY[pad] = dir.z * -60.0f * m225_comStickScaleTbl[difficulty];
         } else {
             dx = object->trans.x;
             dz = object->trans.z;
@@ -558,45 +558,45 @@ s32 func_80106FC0_ice_rink_risk(omObjData *object) {
                 dir.y = 0.0f;
                 dir.z = -object->trans.z;
                 MapVecNormalize(&dir);
-                HuPadStkX[pad] = dir.x * 60.0f * D_80108664_ice_rink_risk[difficulty];
-                HuPadStkY[pad] = dir.z * -60.0f * D_80108664_ice_rink_risk[difficulty];
+                HuPadStkX[pad] = dir.x * 60.0f * m225_comStickScaleTbl[difficulty];
+                HuPadStkY[pad] = dir.z * -60.0f * m225_comStickScaleTbl[difficulty];
             }
         }
     }
-    D_8010865C_ice_rink_risk[player][0] = HuPadStkX[pad];
-    D_8010865C_ice_rink_risk[player][1] = HuPadStkY[pad];
+    m225_comStickTbl[player][0] = HuPadStkX[pad];
+    m225_comStickTbl[player][1] = HuPadStkY[pad];
     return 1;
 }
 
-void func_80107590_ice_rink_risk(omObjData *object) {
-    func_80106710_ice_rink_risk(object, omCharModelNoTbl[GwPlayer[0].chr][0], omCharModelNoTbl[GwPlayer[0].chr][2], 0);
-    object->trans.x = D_80108550_ice_rink_risk.x;
-    object->trans.y = D_80108550_ice_rink_risk.y;
-    object->trans.z = D_80108550_ice_rink_risk.z;
+void m225_Player0ObjInit(omObjData *object) {
+    m225_PlayerInit(object, omCharModelNoTbl[GwPlayer[0].chr][0], omCharModelNoTbl[GwPlayer[0].chr][2], 0);
+    object->trans.x = m225_player0StartPos.x;
+    object->trans.y = m225_player0StartPos.y;
+    object->trans.z = m225_player0StartPos.z;
 }
 
-void func_80107604_ice_rink_risk(omObjData *object) {
-    func_80106710_ice_rink_risk(object, omCharModelNoTbl[GwPlayer[1].chr][0], omCharModelNoTbl[GwPlayer[1].chr][2], 1);
-    object->trans.x = D_8010855C_ice_rink_risk.x;
-    object->trans.y = D_8010855C_ice_rink_risk.y;
-    object->trans.z = D_8010855C_ice_rink_risk.z;
+void m225_Player1ObjInit(omObjData *object) {
+    m225_PlayerInit(object, omCharModelNoTbl[GwPlayer[1].chr][0], omCharModelNoTbl[GwPlayer[1].chr][2], 1);
+    object->trans.x = m225_player1StartPos.x;
+    object->trans.y = m225_player1StartPos.y;
+    object->trans.z = m225_player1StartPos.z;
 }
 
-void func_80107678_ice_rink_risk(omObjData *object) {
-    func_80106710_ice_rink_risk(object, omCharModelNoTbl[GwPlayer[2].chr][0], omCharModelNoTbl[GwPlayer[2].chr][2], 2);
-    object->trans.x = D_80108568_ice_rink_risk.x;
-    object->trans.y = D_80108568_ice_rink_risk.y;
-    object->trans.z = D_80108568_ice_rink_risk.z;
+void m225_Player2ObjInit(omObjData *object) {
+    m225_PlayerInit(object, omCharModelNoTbl[GwPlayer[2].chr][0], omCharModelNoTbl[GwPlayer[2].chr][2], 2);
+    object->trans.x = m225_player2StartPos.x;
+    object->trans.y = m225_player2StartPos.y;
+    object->trans.z = m225_player2StartPos.z;
 }
 
-void func_801076EC_ice_rink_risk(omObjData *object) {
-    func_80106710_ice_rink_risk(object, omCharModelNoTbl[GwPlayer[3].chr][0], omCharModelNoTbl[GwPlayer[3].chr][2], 3);
-    object->trans.x = D_80108574_ice_rink_risk.x;
-    object->trans.y = D_80108574_ice_rink_risk.y;
-    object->trans.z = D_80108574_ice_rink_risk.z;
+void m225_Player3ObjInit(omObjData *object) {
+    m225_PlayerInit(object, omCharModelNoTbl[GwPlayer[3].chr][0], omCharModelNoTbl[GwPlayer[3].chr][2], 3);
+    object->trans.x = m225_player3StartPos.x;
+    object->trans.y = m225_player3StartPos.y;
+    object->trans.z = m225_player3StartPos.z;
 }
 
-void func_80107760_ice_rink_risk(omObjData *object) {
+void m225_PuckObjInit(omObjData *object) {
     IceRinkRiskPuckWork *work;
     s32 i;
 
@@ -607,7 +607,7 @@ void func_80107760_ice_rink_risk(omObjData *object) {
     object->model[1] = Hu3DModelRead3(9, 0xADD);
     object->model[2] = Hu3DModelRead(0x3A0002, 0xADD);
     MgShadowMdlInit(object->model[1]);
-    object->func = func_8010796C_ice_rink_risk;
+    object->func = m225_PuckObjMain;
     work->unk44 = 0.3f;
     work->unk48 = 60.0f;
     work->unk34 = 50.0f;
@@ -618,20 +618,20 @@ void func_80107760_ice_rink_risk(omObjData *object) {
     work->unk50 = 0;
     work->unk40 = 11.0f;
     work->unk74 = 0.5f;
-    work->unk56 = D_80108684_ice_rink_risk;
+    work->unk56 = m225_puckCreateCnt;
     work->unk54 = 1;
     for (i = 0; i < 9; i++) {
         work->unk84[i] = 0;
     }
     MgPlayerMapAttrSet(object, 0, 2);
     object->trans.x = rand8() / 4;
-    object->trans.y = D_80108580_ice_rink_risk[D_80108684_ice_rink_risk][1];
+    object->trans.y = m225_puckStartTbl[m225_puckCreateCnt][1];
     object->trans.z = rand8() / 4;
     object->scale.x = object->scale.y = object->scale.z = 1.2f;
-    D_80108684_ice_rink_risk++;
+    m225_puckCreateCnt++;
 }
 
-void func_8010796C_ice_rink_risk(omObjData *object) {
+void m225_PuckObjMain(omObjData *object) {
     IceRinkRiskPuckWork *work = OM_GET_DATA_PTR(object, IceRinkRiskPuckWork);
     f32 x, y, z;
     f32 angle;
@@ -639,7 +639,7 @@ void func_8010796C_ice_rink_risk(omObjData *object) {
     u8 bounce = TRUE;
     s32 i;
 
-    if (D_801085EC_ice_rink_risk[work->unk56] != 0) {
+    if (m225_puckActiveTbl[work->unk56] != 0) {
         mgMoveOfsX = mgMoveOfsZ = 0.0f;
         x = object->trans.x;
         y = object->trans.y;
@@ -656,7 +656,7 @@ void func_8010796C_ice_rink_risk(omObjData *object) {
             if (work->unk38 > mgItemFallMax) {
                 work->unk38 = mgItemFallMax;
             }
-            floorY = func_80107CB4_ice_rink_risk(object, x, y, z);
+            floorY = m225_PuckCollide(object, x, y, z);
             if (y < floorY) {
                 y = floorY;
                 if (bounce) {
@@ -666,23 +666,23 @@ void func_8010796C_ice_rink_risk(omObjData *object) {
                     }
                     for (i = 0; i < 4; i++) {
                         // The original reads the player index without going through ->data.
-                        if (D_801085FC_ice_rink_risk[((MgPlayerWork *)mgPlayerObjTbl[i])->unk59] == 1) {
+                        if (m225_playerAliveTbl[((MgPlayerWork *)mgPlayerObjTbl[i])->unk59] == 1) {
                             omVibrate(((MgPlayerWork *)mgPlayerObjTbl[i])->unk59, 2, 3, 10);
                         }
                     }
                 }
             }
         } else {
-            y = func_80107CB4_ice_rink_risk(object, x, y, z);
+            y = m225_PuckCollide(object, x, y, z);
         }
         MgObjPosSet(object, x + mgMoveOfsX, y, z + mgMoveOfsZ);
-        D_80108688_ice_rink_risk[work->unk56] += work->unk40 / 5.0f;
-        D_80108688_ice_rink_risk[work->unk56] = HuAngleWrap(D_80108688_ice_rink_risk[work->unk56]);
-        func_80088910_main(Hu3DData[object->model[0]].mtx, 0.0f, D_80108688_ice_rink_risk[work->unk56], 0.0f);
+        m225_puckRotTbl[work->unk56] += work->unk40 / 5.0f;
+        m225_puckRotTbl[work->unk56] = HuAngleWrap(m225_puckRotTbl[work->unk56]);
+        func_80088910_main(Hu3DData[object->model[0]].mtx, 0.0f, m225_puckRotTbl[work->unk56], 0.0f);
     }
 }
 
-f32 func_80107CB4_ice_rink_risk(omObjData *object, f32 x, f32 y, f32 z) {
+f32 m225_PuckCollide(omObjData *object, f32 x, f32 y, f32 z) {
     IceRinkRiskPuckWork *work = OM_GET_DATA_PTR(object, IceRinkRiskPuckWork);
     Hu3DSphere sphere;
 
@@ -690,16 +690,16 @@ f32 func_80107CB4_ice_rink_risk(omObjData *object, f32 x, f32 y, f32 z) {
     sphere.pos.y = y;
     sphere.pos.z = z;
     sphere.radius = work->unk48;
-    func_80107F58_ice_rink_risk(object, x, y, z);
-    func_80108134_ice_rink_risk(object, &sphere);
-    return func_80107D14_ice_rink_risk(object, &sphere);
+    m225_PuckHitCheck(object, x, y, z);
+    m225_PuckWallCheck(object, &sphere);
+    return m225_PuckFloorCheck(object, &sphere);
 }
 
-f32 func_80107D14_ice_rink_risk(omObjData *object, Hu3DSphere *sphere) {
+f32 m225_PuckFloorCheck(omObjData *object, Hu3DSphere *sphere) {
     IceRinkRiskPuckWork *work = OM_GET_DATA_PTR(object, IceRinkRiskPuckWork);
     Vec normal;
     f32 y = sphere->pos.y;
-    f32 floorY = func_80107F24_ice_rink_risk(object, sphere, &normal);
+    f32 floorY = m225_PuckFloorGet(object, sphere, &normal);
     f32 resultY = floorY;
 
     if (floorY < y - work->unk34 || y + work->unk34 <= floorY) {
@@ -708,11 +708,11 @@ f32 func_80107D14_ice_rink_risk(omObjData *object, Hu3DSphere *sphere) {
         }
         resultY = y;
     }
-    func_80107DEC_ice_rink_risk(object, sphere->pos.x, resultY, sphere->pos.z, floorY, &normal);
+    m225_PuckShadowSet(object, sphere->pos.x, resultY, sphere->pos.z, floorY, &normal);
     return resultY;
 }
 
-void func_80107DEC_ice_rink_risk(omObjData *object, f32 x, f32 y, f32 z, f32 floorY, Vec *normal) {
+void m225_PuckShadowSet(omObjData *object, f32 x, f32 y, f32 z, f32 floorY, Vec *normal) {
     IceRinkRiskPuckWork *work = OM_GET_DATA_PTR(object, IceRinkRiskPuckWork);
     f32 scale = 1.0f;
     f32 height;
@@ -734,7 +734,7 @@ void func_80107DEC_ice_rink_risk(omObjData *object, f32 x, f32 y, f32 z, f32 flo
     }
 }
 
-f32 func_80107F24_ice_rink_risk(omObjData *object, Hu3DSphere *sphere, Vec *normal) {
+f32 m225_PuckFloorGet(omObjData *object, Hu3DSphere *sphere, Vec *normal) {
     IceRinkRiskPuckWork *work = OM_GET_DATA_PTR(object, IceRinkRiskPuckWork);
     f32 floorY;
 
@@ -762,7 +762,7 @@ f32 func_80107F24_ice_rink_risk(omObjData *object, Hu3DSphere *sphere, Vec *norm
 // local, `unk48 * 2`/`2.0f * unk48`, splitting the dist computation,
 // `dist < 0.0f && unk38 == 1000.0f` plus a second `dist < 0.0f` block.
 #ifdef NON_MATCHING
-void func_80107F58_ice_rink_risk(omObjData *object, f32 x, f32 y, f32 z) {
+void m225_PuckHitCheck(omObjData *object, f32 x, f32 y, f32 z) {
     IceRinkRiskPuckWork *work = OM_GET_DATA_PTR(object, IceRinkRiskPuckWork);
     IceRinkRiskPuckWork *otherWork;
     omObjData *other;
@@ -771,7 +771,7 @@ void func_80107F58_ice_rink_risk(omObjData *object, f32 x, f32 y, f32 z) {
     s32 i;
     omObjData **objs = mgItemObjTbl;
 
-    for (i = 0; i < D_801085F8_ice_rink_risk; i++) {
+    for (i = 0; i < m225_puckNum; i++) {
         if (i == work->unk56) {
             continue;
         }
@@ -787,21 +787,21 @@ void func_80107F58_ice_rink_risk(omObjData *object, f32 x, f32 y, f32 z) {
                     MgMoveOfsAdd(dx, dz, dist);
                 }
             } while (0);
-            func_80108384_ice_rink_risk(object, dx, dz);
-            if (D_801085B0_ice_rink_risk[work->unk56].unk04 >= 16) {
-                D_801085B0_ice_rink_risk[work->unk56].unk00 = otherWork->unk56;
+            m225_PuckHitReflect(object, dx, dz);
+            if (m225_puckHitTbl[work->unk56].unk04 >= 16) {
+                m225_puckHitTbl[work->unk56].unk00 = otherWork->unk56;
                 do {
-                    D_801085B0_ice_rink_risk[work->unk56].unk04 = 0;
+                    m225_puckHitTbl[work->unk56].unk04 = 0;
                 } while (0);
             }
         }
     }
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/game/overlays/minigames/19_ice_rink_risk/main", func_80107F58_ice_rink_risk);
+INCLUDE_ASM("asm/nonmatchings/game/overlays/minigames/19_ice_rink_risk/main", m225_PuckHitCheck);
 #endif
 
-void func_80108134_ice_rink_risk(omObjData *object, Hu3DSphere *arg1) {
+void m225_PuckWallCheck(omObjData *object, Hu3DSphere *arg1) {
     IceRinkRiskPuckWork *work = OM_GET_DATA_PTR(object, IceRinkRiskPuckWork);
     Hu3DSphere sphere;
     MgHitSphere local;
@@ -824,10 +824,10 @@ void func_80108134_ice_rink_risk(omObjData *object, Hu3DSphere *arg1) {
     if (mgWallNum != 0) {
         MgMtxDirMult(mgMapMtx, mgWallNorTbl);
     }
-    func_8010826C_ice_rink_risk(object);
+    m225_PuckWallReflect(object);
 }
 
-void func_8010826C_ice_rink_risk(omObjData *object) {
+void m225_PuckWallReflect(omObjData *object) {
     IceRinkRiskPuckWork *work;
     Vec normal;
     Vec dir;
@@ -852,7 +852,7 @@ void func_8010826C_ice_rink_risk(omObjData *object) {
     }
 }
 
-void func_80108384_ice_rink_risk(omObjData *object, f32 dx, f32 dz) {
+void m225_PuckHitReflect(omObjData *object, f32 dx, f32 dz) {
     IceRinkRiskPuckWork *work = OM_GET_DATA_PTR(object, IceRinkRiskPuckWork);
     Vec normal;
     Vec dir;
@@ -875,7 +875,7 @@ void func_80108384_ice_rink_risk(omObjData *object, f32 dx, f32 dz) {
     angle = atan2df(reflect.x, reflect.z);
     work->unk3C = angle + (rand8() - 128.0f) / 64.0f;
     work->unk40 += 1.0f;
-    D_801085B0_ice_rink_risk[work->unk56].pos.x = dx + object->trans.x;
-    D_801085B0_ice_rink_risk[work->unk56].pos.y = object->trans.y;
-    D_801085B0_ice_rink_risk[work->unk56].pos.z = dz + object->trans.z;
+    m225_puckHitTbl[work->unk56].pos.x = dx + object->trans.x;
+    m225_puckHitTbl[work->unk56].pos.y = object->trans.y;
+    m225_puckHitTbl[work->unk56].pos.z = dz + object->trans.z;
 }

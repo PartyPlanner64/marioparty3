@@ -41,41 +41,41 @@ msetup_winIdTbl = msetupMessageWindows + 0x2; /* windows */
 msetup_padNoLo = msetup_padNo + 0x1; /* controller low byte */
 msetup_playerConfigTurnNum = msetup_playerConfig + 0x12;   /* totalTurns */
 
-/* hyper_hydrants field aliases: HyperHydrantsBssBF40, HyperHydrantsBssBF88, HyperHydrantsBssBFAC, HyperHydrantsBssC010. */
-D_8010BF40_hyper_hydrants = hyperHydrantsBssBF40;
-D_8010BF42_hyper_hydrants = hyperHydrantsBssBF40 + 0x2;
-D_8010BF46_hyper_hydrants = hyperHydrantsBssBF40 + 0x6;
-D_8010BF88_hyper_hydrants = hyperHydrantsBssBF88;
-D_8010BF8A_hyper_hydrants = hyperHydrantsBssBF88 + 0x2;
-D_8010BFAC_hyper_hydrants = hyperHydrantsBssBFAC;
-D_8010BFAE_hyper_hydrants = hyperHydrantsBssBFAC + 0x2;
-D_8010C010_hyper_hydrants = hyperHydrantsBssC010;
-D_8010C012_hyper_hydrants = hyperHydrantsBssC010 + 0x2;
-D_8010C016_hyper_hydrants = hyperHydrantsBssC010 + 0x6;
-D_8010C01A_hyper_hydrants = hyperHydrantsBssC010 + 0xA;
-D_8010C022_hyper_hydrants = hyperHydrantsBssC010 + 0x12;
+/* hyper_hydrants field aliases: HyperHydrantsPumpState, HyperHydrantsBackSpr, HyperHydrantsSprayPower, HyperHydrantsHud. */
+m214_introRandNo = m214_pumpState;
+m214_pumpIdleTbl = m214_pumpState + 0x2;
+m214_sprayCnt = m214_pumpState + 0x6;
+m214_backSprGrp = m214_backSpr;
+m214_irisSprGrpTbl = m214_backSpr + 0x2;
+m214_pumpPowerTbl = m214_sprayPower;
+m214_sprayWidthTbl = m214_sprayPower + 0x2;
+m214_firePatternNo = m214_hud;
+m214_scoreIconEspTbl = m214_hud + 0x2;
+m214_scoreXEspTbl = m214_hud + 0x6;
+m214_scoreDigitEspTbl = m214_hud + 0xA;
+m214_pumpSeNoTbl = m214_hud + 0x12;
 
-/* coconut_conk field aliases: CoconutConkBssB1C8, CoconutConkBssB1E0. */
-D_8010B1C8_coconut_conk = coconutConkBssB1C8;
-D_8010B1C9_coconut_conk = coconutConkBssB1C8 + 0x1;
-D_8010B1E0_coconut_conk = coconutConkBssB1E0;
-D_8010B1E2_coconut_conk = coconutConkBssB1E0 + 0x2;
-/* coconut_conk CoconutConkData fields within D_8010B1F0_coconut_conk[50]. */
-D_8010B274_coconut_conk = D_8010B1F0_coconut_conk + 0x84; /* [1].unk00 */
-D_8010B2B4_coconut_conk = D_8010B1F0_coconut_conk + 0xC4; /* [1].unk40 */
-D_8010B2B6_coconut_conk = D_8010B1F0_coconut_conk + 0xC6; /* [1].unk42 */
-D_8010B2B8_coconut_conk = D_8010B1F0_coconut_conk + 0xC8; /* [1].unk44.x */
-D_8010B2BC_coconut_conk = D_8010B1F0_coconut_conk + 0xCC; /* [1].unk44.y */
-D_8010B37C_coconut_conk = D_8010B1F0_coconut_conk + 0x18C; /* [3].unk00 */
-D_8010B3BC_coconut_conk = D_8010B1F0_coconut_conk + 0x1CC; /* [3].unk40 */
-D_8010B3BE_coconut_conk = D_8010B1F0_coconut_conk + 0x1CE; /* [3].unk42 */
-D_8010B3C0_coconut_conk = D_8010B1F0_coconut_conk + 0x1D0; /* [3].unk44.x */
-D_8010B3C4_coconut_conk = D_8010B1F0_coconut_conk + 0x1D4; /* [3].unk44.y */
-D_8010B400_coconut_conk = D_8010B1F0_coconut_conk + 0x210; /* [4].unk00 */
-D_8010B418_coconut_conk = D_8010B1F0_coconut_conk + 0x228; /* [4].unk18 */
-D_8010B484_coconut_conk = D_8010B1F0_coconut_conk + 0x294; /* [5].unk00 */
-D_8010B4A0_coconut_conk = D_8010B1F0_coconut_conk + 0x2B0; /* [5].unk1C */
-D_8010B4A4_coconut_conk = D_8010B1F0_coconut_conk + 0x2B4; /* [5].unk20 */
+/* coconut_conk field aliases: CoconutConkPhaseBss, CoconutConkTimerBss. */
+m202_phase = m202_phaseBss;
+m202_teamSlotTbl = m202_phaseBss + 0x1;
+m202_timer = m202_timerBss;
+m202_seaTexSize = m202_timerBss + 0x2;
+/* coconut_conk CoconutConkData fields within m202_objWorkTbl[50]. */
+m202_backObj = m202_objWorkTbl + 0x84; /* [1].unk00 */
+m202_backSprAnim = m202_objWorkTbl + 0xC4; /* [1].unk40 */
+m202_backSpr = m202_objWorkTbl + 0xC6; /* [1].unk42 */
+m202_backSprX = m202_objWorkTbl + 0xC8; /* [1].unk44.x */
+m202_backSprY = m202_objWorkTbl + 0xCC; /* [1].unk44.y */
+m202_foreObj = m202_objWorkTbl + 0x18C; /* [3].unk00 */
+m202_foreSprAnim = m202_objWorkTbl + 0x1CC; /* [3].unk40 */
+m202_foreSpr = m202_objWorkTbl + 0x1CE; /* [3].unk42 */
+m202_foreSprX = m202_objWorkTbl + 0x1D0; /* [3].unk44.x */
+m202_foreSprY = m202_objWorkTbl + 0x1D4; /* [3].unk44.y */
+m202_seaObj = m202_objWorkTbl + 0x210; /* [4].unk00 */
+m202_seaScroll = m202_objWorkTbl + 0x228; /* [4].unk18 */
+m202_cloudObj = m202_objWorkTbl + 0x294; /* [5].unk00 */
+m202_cloudScaleA = m202_objWorkTbl + 0x2B0; /* [5].unk1C */
+m202_cloudScaleB = m202_objWorkTbl + 0x2B4; /* [5].unk20 */
 
 /* inst array elements, low halfwords of word state, and object callbacks. */
 inst_playerOrderTbl1 = inst_playerOrderTbl + 0x1;
@@ -138,149 +138,149 @@ CRotMY = CRotM + 0x4;
 /* main bss.c: base of a matrix table indexed from 1. */
 Hu3DSubMtxStackPrev = Hu3DSubMtxStack - 0x40;
 
-/* swing_n_swipe field aliases: SwingNSwipeBssC148. */
-D_8010C148_swing_n_swipe = swingNSwipeBssC148;
-D_8010C14A_swing_n_swipe = swingNSwipeBssC148 + 0x2;
+/* swing_n_swipe field aliases: SwingNSwipeCarrierWork. */
+m264_carrierPhase = m264_carrierWork;
+m264_carrierMotNoTbl = m264_carrierWork + 0x2;
 
 /* stardust_battle: low halfword of the s32 D_80113DE4. */
-D_80113DE6_stardust_battle = D_80113DE4_stardust_battle + 0x2;
+m265_exitTimerLo = m265_exitTimer + 0x2;
 
-/* end_of_the_line field aliases: EndOfTheLineBssC75C, EndOfTheLineBssC780. */
-D_8010C75C_end_of_the_line = endOfTheLineBssC75C;
-D_8010C75E_end_of_the_line = endOfTheLineBssC75C + 0x2;
-D_8010C780_end_of_the_line = endOfTheLineBssC780;
-D_8010C782_end_of_the_line = endOfTheLineBssC780 + 0x2;
-/* game_guys_magic_boxes field aliases: GameGuysMagicBoxesPlayerInfo, GameGuysMagicBoxesBssC9D8. */
-D_8010C750_game_guys_magic_boxes = gameGuysMagicBoxesBssC750;
-D_8010C751_game_guys_magic_boxes = gameGuysMagicBoxesBssC750 + 0x1;
-D_8010C753_game_guys_magic_boxes = gameGuysMagicBoxesBssC750 + 0x3;
-D_8010C756_game_guys_magic_boxes = gameGuysMagicBoxesBssC750 + 0x6;
-D_8010C9D8_game_guys_magic_boxes = gameGuysMagicBoxesBssC9D8;
-D_8010C9D9_game_guys_magic_boxes = gameGuysMagicBoxesBssC9D8 + 0x1;
-D_8010C9DA_game_guys_magic_boxes = gameGuysMagicBoxesBssC9D8 + 0x2;
-D_8010C9DB_game_guys_magic_boxes = gameGuysMagicBoxesBssC9D8 + 0x3;
-D_8010C9E1_game_guys_magic_boxes = gameGuysMagicBoxesBssC9D8 + 0x9;
-D_8010C9E2_game_guys_magic_boxes = gameGuysMagicBoxesBssC9D8 + 0xA;
-D_8010C9E3_game_guys_magic_boxes = gameGuysMagicBoxesBssC9D8 + 0xB;
-D_8010C9E6_game_guys_magic_boxes = gameGuysMagicBoxesBssC9D8 + 0xE;
-D_8010C9E7_game_guys_magic_boxes = gameGuysMagicBoxesBssC9D8 + 0xF;
-/* game_guys_lucky_7 field aliases: GameGuysLucky7BssD6DC. */
-D_8010D6DC_game_guys_lucky_7 = gameGuysLucky7BssD6DC;
-D_8010D6EA_game_guys_lucky_7 = gameGuysLucky7BssD6DC + 0xE;
+/* end_of_the_line field aliases: EndOfTheLineResultWork, EndOfTheLineSceneWork. */
+m251_noWinnerF = m251_resultWork;
+m251_goalTbl = m251_resultWork + 0x2;
+m251_dividerSprAnim = m251_sceneWork;
+m251_sceneReqTbl = m251_sceneWork + 0x2;
+/* game_guys_magic_boxes field aliases: GameGuysMagicBoxesPlayerInfo, GameGuysMagicBoxesStateWork. */
+m268_playerInfoNo = m268_playerInfo;
+m268_playerInfoPad = m268_playerInfo + 0x1;
+m268_playerInfoCom = m268_playerInfo + 0x3;
+m268_playerInfoCoin = m268_playerInfo + 0x6;
+m268_curtainState = m268_stateWork;
+m268_bannerStopF = m268_stateWork + 0x1;
+m268_continueCursor = m268_stateWork + 0x2;
+m268_kinopioSideTbl = m268_stateWork + 0x3;
+m268_selectNo = m268_stateWork + 0x9;
+m268_winF = m268_stateWork + 0xA;
+m268_comSelectTbl = m268_stateWork + 0xB;
+m268_comWinF = m268_stateWork + 0xE;
+m268_roundNo = m268_stateWork + 0xF;
+/* game_guys_lucky_7 field aliases: GameGuysLucky7HudWork. */
+m267_playerInfo = m267_hudWork;
+m267_backSprTbl = m267_hudWork + 0xE;
 
-/* game_guys_roulette field aliases: GameGuysRouletteBssAAD0. */
-D_8010AAD0_game_guys_roulette = gameGuysRouletteBssAAD0;
-D_8010AAD6_game_guys_roulette = gameGuysRouletteBssAAD0 + 0x6;
+/* game_guys_roulette field aliases: GameGuysRouletteHudWork. */
+m266_coinDigitTbl = m266_hudWork;
+m266_playerInfo = m266_hudWork + 0x6;
 
-/* game_guys_sweet_surprise field aliases: GameGuysSweetSurpriseBssCF6C. */
-D_8010CF6C_game_guys_sweet_surprise = gameGuysSweetSurpriseBssCF6C;
-D_8010CF6E_game_guys_sweet_surprise = gameGuysSweetSurpriseBssCF6C + 0x2;
-D_8010CF72_game_guys_sweet_surprise = gameGuysSweetSurpriseBssCF6C + 0x6;
+/* game_guys_sweet_surprise field aliases: GameGuysSweetSurpriseResultWork. */
+m269_winSide = m269_resultWork;
+m269_sidePayoutTbl = m269_resultWork + 0x2;
+m269_sideMesTbl = m269_resultWork + 0x6;
 
 /* cosmic_coaster: halfwords packed after the preceding data symbol. */
-D_8010BB5E_cosmic_coaster = D_8010BB5C_cosmic_coaster + 0x2;
+m216_bonusCoinF = m216_exitF + 0x2;
 /* cosmic_coaster: s32 priority table whose low halfwords splat labeled. */
-D_8010BF80_cosmic_coaster = D_8010BF82_cosmic_coaster - 0x2;
+m216_stageObjPrioTbl = D_8010BF82_cosmic_coaster - 0x2;
 
 
 
 /* slot_synch: priority array inside the D_8010DF64 struct. */
-D_8010DF66_slot_synch = D_8010DF64_slot_synch + 0x2;
+m220_stageSprPriTbl = m220_winTeamNo + 0x2;
 
-/* crazy_cogs field aliases: CrazyCogsBssB990, CrazyCogsBssB9B0, CrazyCogsBssDE68. */
-D_8010B990_crazy_cogs = crazyCogsBssB990;
-D_8010B991_crazy_cogs = crazyCogsBssB990 + 0x1;
-D_8010B9B0_crazy_cogs = crazyCogsBssB9B0;
-D_8010B9E2_crazy_cogs = crazyCogsBssB9B0 + 0x32;
-D_8010B9E3_crazy_cogs = crazyCogsBssB9B0 + 0x33;
-D_8010DE68_crazy_cogs = crazyCogsBssDE68;
-D_8010DE69_crazy_cogs = crazyCogsBssDE68 + 0x1;
-D_8010DE6A_crazy_cogs = crazyCogsBssDE68 + 0x2;
-/* crazy_cogs UnkCrazyCogsCog fields within D_8010B9F0_crazy_cogs[70]. */
-D_8010BA30_crazy_cogs = D_8010B9F0_crazy_cogs + 0x40; /* [0].unk_40 */
-D_8010BA32_crazy_cogs = D_8010B9F0_crazy_cogs + 0x42; /* [0].unk_42 */
-D_8010BA34_crazy_cogs = D_8010B9F0_crazy_cogs + 0x44; /* [0].unk_44.x */
-D_8010BA38_crazy_cogs = D_8010B9F0_crazy_cogs + 0x48; /* [0].unk_44.y */
-/* parasol_plummet field aliases: ParasolPlummetBssAC74, ParasolPlummetBssACC0. */
-D_8010AC74_parasol_plummet = parasolPlummetBssAC74;
-D_8010AC75_parasol_plummet = parasolPlummetBssAC74 + 0x1;
-D_8010ACC0_parasol_plummet = parasolPlummetBssACC0;
-D_8010ACC2_parasol_plummet = parasolPlummetBssACC0 + 0x2;
-D_8010ACCA_parasol_plummet = parasolPlummetBssACC0 + 0xA;
-D_8010ACD2_parasol_plummet = parasolPlummetBssACC0 + 0x12;
-D_8010ACD4_parasol_plummet = parasolPlummetBssACC0 + 0x14;
-D_8010ACDC_parasol_plummet = parasolPlummetBssACC0 + 0x1C;
-D_8010ACDE_parasol_plummet = parasolPlummetBssACC0 + 0x1E;
-/* picture_imperfect field aliases: PictureImperfectBssA110, D_8010A128_picture_imperfect, PictureImperfectBssA230. */
-D_8010A110_picture_imperfect = pictureImperfectBssA110;
-D_8010A111_picture_imperfect = pictureImperfectBssA110 + 0x1;
-D_8010A112_picture_imperfect = pictureImperfectBssA110 + 0x2;
-D_8010A116_picture_imperfect = pictureImperfectBssA110 + 0x6;
-D_8010A11A_picture_imperfect = pictureImperfectBssA110 + 0xA;
-D_8010A122_picture_imperfect = pictureImperfectBssA110 + 0x12;
-D_8010A124_picture_imperfect = pictureImperfectBssA110 + 0x14;
-D_8010A140_picture_imperfect = D_8010A128_picture_imperfect + 0x18; /* .unk18 */
-D_8010A230_picture_imperfect = pictureImperfectBssA230;
-D_8010A232_picture_imperfect = pictureImperfectBssA230 + 0x2;
-D_8010A23C_picture_imperfect = pictureImperfectBssA230 + 0xC;
-D_8010A246_picture_imperfect = pictureImperfectBssA230 + 0x16;
-D_8010A250_picture_imperfect = pictureImperfectBssA230 + 0x20;
-D_8010A25A_picture_imperfect = pictureImperfectBssA230 + 0x2A;
-D_8010A264_picture_imperfect = pictureImperfectBssA230 + 0x34;
-D_8010A266_picture_imperfect = pictureImperfectBssA230 + 0x36;
-D_8010A268_picture_imperfect = pictureImperfectBssA230 + 0x38;
-D_8010A26A_picture_imperfect = pictureImperfectBssA230 + 0x3A;
-D_8010A26C_picture_imperfect = pictureImperfectBssA230 + 0x3C;
-D_8010A26E_picture_imperfect = pictureImperfectBssA230 + 0x3E;
-D_8010A276_picture_imperfect = pictureImperfectBssA230 + 0x46;
-D_8010A27E_picture_imperfect = pictureImperfectBssA230 + 0x4E;
-D_8010A286_picture_imperfect = pictureImperfectBssA230 + 0x56;
-D_8010A28E_picture_imperfect = pictureImperfectBssA230 + 0x5E;
-D_8010A296_picture_imperfect = pictureImperfectBssA230 + 0x66;
-D_8010A29E_picture_imperfect = pictureImperfectBssA230 + 0x6E;
-D_8010A2A6_picture_imperfect = pictureImperfectBssA230 + 0x76;
-D_8010A2A8_picture_imperfect = pictureImperfectBssA230 + 0x78;
-D_8010A2AA_picture_imperfect = pictureImperfectBssA230 + 0x7A;
+/* crazy_cogs field aliases: CrazyCogsTeamChrBss, CrazyCogsComQueueBss, CrazyCogsCrankBss. */
+m205_comQueueNo = m205_teamChrBss;
+m205_teamChrTbl = m205_teamChrBss + 0x1;
+m205_comQueueTbl = m205_comQueueBss;
+m205_comQueueNum = m205_comQueueBss + 0x32;
+m205_rumbleReqTbl = m205_comQueueBss + 0x33;
+m205_crankComState = m205_crankBss;
+m205_crankChr = m205_crankBss + 0x1;
+m205_panelShakeTbl = m205_crankBss + 0x2;
+/* crazy_cogs UnkCrazyCogsCog fields within m205_objWorkTbl[70]. */
+m205_backSprAnim = m205_objWorkTbl + 0x40; /* [0].unk_40 */
+m205_backSpr = m205_objWorkTbl + 0x42; /* [0].unk_42 */
+m205_backSprX = m205_objWorkTbl + 0x44; /* [0].unk_44.x */
+m205_backSprY = m205_objWorkTbl + 0x48; /* [0].unk_44.y */
+/* parasol_plummet field aliases: ParasolPlummetFlyerStat, ParasolPlummetHud. */
+m228_flyerStatFlag = m228_flyerStat;
+m228_flyerActiveTbl = m228_flyerStat + 0x1;
+m228_hudDigitAnim = m228_hud;
+m228_hudChrIconAnimTbl = m228_hud + 0x2;
+m228_hudChrIconTbl = m228_hud + 0xA;
+m228_hudCoinAnim = m228_hud + 0x12;
+m228_hudCoinTbl = m228_hud + 0x14;
+m228_hudCrossAnim = m228_hud + 0x1C;
+m228_hudCrossTbl = m228_hud + 0x1E;
+/* picture_imperfect field aliases: PictureImperfectStat, m230_mgFlow, PictureImperfectSpr. */
+m230_winnerNum = m230_stat;
+m230_partDoneCnt = m230_stat + 0x1;
+m230_popTimerTbl = m230_stat + 0x2;
+m230_popBlinkTbl = m230_stat + 0x6;
+m230_scoreTimerTbl = m230_stat + 0xA;
+m230_sprAnim = m230_stat + 0x12;
+m230_shrinkSe = m230_stat + 0x14;
+m230_mgFlowWinnerTbl = m230_mgFlow + 0x18; /* .unk18 */
+m230_pictureAnim = m230_spr;
+m230_part0AnimTbl = m230_spr + 0x2;
+m230_part1AnimTbl = m230_spr + 0xC;
+m230_part2AnimTbl = m230_spr + 0x16;
+m230_part3AnimTbl = m230_spr + 0x20;
+m230_part4AnimTbl = m230_spr + 0x2A;
+m230_popPlusAnim = m230_spr + 0x34;
+m230_popDigitAnim = m230_spr + 0x36;
+m230_popPtAnim = m230_spr + 0x38;
+m230_digitAnim = m230_spr + 0x3A;
+m230_ptAnim = m230_spr + 0x3C;
+m230_popPlusTbl = m230_spr + 0x3E;
+m230_popTensTbl = m230_spr + 0x46;
+m230_popOnesTbl = m230_spr + 0x4E;
+m230_popPtTbl = m230_spr + 0x56;
+m230_scoreTensTbl = m230_spr + 0x5E;
+m230_scoreOnesTbl = m230_spr + 0x66;
+m230_scorePtTbl = m230_spr + 0x6E;
+m230_maxScoreTensSpr = m230_spr + 0x76;
+m230_maxScoreOnesSpr = m230_spr + 0x78;
+m230_maxScorePtSpr = m230_spr + 0x7A;
 /* marios_puzzle_party: low halves of s32 sprite animation ids. */
-D_8011608E_marios_puzzle_party = D_8011608C_marios_puzzle_party + 0x2;
-D_80116096_marios_puzzle_party = D_80116094_marios_puzzle_party + 0x2;
-D_801160A2_marios_puzzle_party = D_801160A0_marios_puzzle_party + 0x2;
-D_801160A6_marios_puzzle_party = D_801160A4_marios_puzzle_party + 0x2;
-D_801160AA_marios_puzzle_party = D_801160A8_marios_puzzle_party + 0x2;
-D_801160AE_marios_puzzle_party = D_801160AC_marios_puzzle_party + 0x2;
-D_801160B2_marios_puzzle_party = D_801160B0_marios_puzzle_party + 0x2;
-D_801160D2_marios_puzzle_party = D_801160D0_marios_puzzle_party + 0x2;
-D_801160D6_marios_puzzle_party = D_801160D4_marios_puzzle_party + 0x2;
-D_801160DA_marios_puzzle_party = D_801160D8_marios_puzzle_party + 0x2;
-D_801160DE_marios_puzzle_party = D_801160DC_marios_puzzle_party + 0x2;
-D_801160E2_marios_puzzle_party = D_801160E0_marios_puzzle_party + 0x2;
-/* mpiq aliases: s16 halves of s32 vars, MpiqBssCAEC fields. */
-D_8010C9BE_mpiq = D_8010C9BC_mpiq + 0x2;
-D_8010CAEC_mpiq = mpiqBssCAEC;
-D_8010CAF2_mpiq = mpiqBssCAEC + 0x6;
-D_8010CAFA_mpiq = D_8010CAF8_mpiq + 0x2;
+m231_sparkleAnimLo = m231_sparkleAnim + 0x2;
+m231_loseSignAnimLo = m231_loseSignAnim + 0x2;
+m231_recordDigitAnimLo = m231_recordDigitAnim + 0x2;
+m231_recordLabelAnimLo = m231_recordLabelAnim + 0x2;
+m231_timerDigitAnimLo = m231_timerDigitAnim + 0x2;
+m231_bigBlockAnimLo = m231_bigBlockAnim + 0x2;
+m231_scoreFlyAnimLo = m231_scoreFlyAnim + 0x2;
+m231_scoreDigitAnimLo = m231_scoreDigitAnim + 0x2;
+m231_scoreUnitAnimLo = m231_scoreUnitAnim + 0x2;
+m231_chainDigitAnimLo = m231_chainDigitAnim + 0x2;
+m231_chainLabelAnimLo = m231_chainLabelAnim + 0x2;
+m231_chainUnitAnimLo = m231_chainUnitAnim + 0x2;
+/* mpiq aliases: s16 halves of s32 vars, MpiqChoiceSpr fields. */
+m233_answerPlayerS16 = m233_answerPlayer + 0x2;
+m233_choiceSprTbl = m233_choiceSpr;
+m233_choiceSprAnimTbl = m233_choiceSpr + 0x6;
+m233_countdownS16 = m233_countdown + 0x2;
 
-/* all_fired_up field aliases: AllFiredUpBssAF0. */
-D_80109AF0_all_fired_up = allFiredUpBssAF0;
-D_80109AF2_all_fired_up = allFiredUpBssAF0 + 0x2;
+/* all_fired_up field aliases: AllFiredUpSetupWork. */
+m241_startPermNo = m241_setupWork;
+m241_smokeMdlTbl = m241_setupWork + 0x2;
 
-/* rockin_raceway field aliases: RockinRacewayBssB74. */
-D_80111B74_rockin_raceway = rockinRacewayBssB74;
-D_80111B76_rockin_raceway = rockinRacewayBssB74 + 0x2;
-D_80111B7A_rockin_raceway = rockinRacewayBssB74 + 0x6;
+/* rockin_raceway field aliases: RockinRacewayHudGrp. */
+m244_replayGrp = m244_hudGrp;
+m244_timeGrpTbl = m244_hudGrp + 0x2;
+m244_recordPulse = m244_hudGrp + 0x6;
 
-/* popgun_pickoff field aliases: PopgunPickoffBssCC20. */
-D_8010CC20_popgun_pickoff = popgunPickoffBssCC20;
-D_8010CC22_popgun_pickoff = popgunPickoffBssCC20 + 0x2;
+/* popgun_pickoff field aliases: PopgunPickoffPhaseWork. */
+m250_phase = m250_phaseWork;
+m250_scoreTbl = m250_phaseWork + 0x2;
 
-/* hey_batter_batter: misaligned s16 arrays grouped in heyBatterBatterBssEE4. */
-D_80109EE4_hey_batter_batter = heyBatterBatterBssEE4;
-D_80109EE6_hey_batter_batter = heyBatterBatterBssEE4 + 0x2;
-D_80109EEA_hey_batter_batter = heyBatterBatterBssEE4 + 0x6;
-D_80109EEE_hey_batter_batter = heyBatterBatterBssEE4 + 0xA;
+/* hey_batter_batter field aliases: HeyBatterBatterStateWork. */
+m260_unusedState = m260_stateWork;
+m260_effMotTbl = m260_stateWork + 0x2;
+m260_effReqTbl = m260_stateWork + 0x6;
+m260_prizeState = m260_stateWork + 0xA;
 
-/* dorrie_dip: low halfword of the s32 player index at D_8010A1FC. */
-D_8010A1FE_dorrie_dip = D_8010A1FC_dorrie_dip + 0x2;
+/* dorrie_dip: low halfword of the s32 player index m262_playerNo. */
+m262_playerNoS16 = m262_playerNo + 0x2;
 /* koopa: under-aligned u8 array after the s16 window table. */
 koopa_rouletteWinTbl = koopa_rouletteWork;
 koopa_rouletteEventTbl = koopa_rouletteWork + 0x32;
@@ -300,99 +300,99 @@ op_demoObjBodyNode = op_demoObjTbl + 0x34;
 op_demoObjShadowNode = op_demoObjTbl + 0x38;
 
 /* aces_high: labels inside data tables, referenced by the INCLUDE_ASM function
-   func_8010D1D8_aces_high. Remove once that function is decompiled. */
-D_8010DB74_aces_high = D_8010DB70_aces_high + 0x4;
-D_8010DB78_aces_high = D_8010DB70_aces_high + 0x8;
-D_8010DB7C_aces_high = D_8010DB70_aces_high + 0xC;
-D_8010DB84_aces_high = D_8010DB70_aces_high + 0x14;
-D_8010DB88_aces_high = D_8010DB70_aces_high + 0x18;
-D_8010DB8C_aces_high = D_8010DB70_aces_high + 0x1C;
-D_8010DB94_aces_high = D_8010DB70_aces_high + 0x24;
-D_8010DB98_aces_high = D_8010DB70_aces_high + 0x28;
-D_8010DB9C_aces_high = D_8010DB70_aces_high + 0x2C;
-D_8010DBA4_aces_high = D_8010DB70_aces_high + 0x34;
-D_8010DBA8_aces_high = D_8010DB70_aces_high + 0x38;
-D_8010DBAC_aces_high = D_8010DB70_aces_high + 0x3C;
-D_8010DCB8_aces_high = D_8010DCB4_aces_high + 0x4;
-D_8010DCC0_aces_high = D_8010DCBC_aces_high + 0x4;
+   m223_WinViewExpand. Remove once that function is decompiled. */
+D_8010DB74_aces_high = m223_scissorTbl + 0x4;
+D_8010DB78_aces_high = m223_scissorTbl + 0x8;
+D_8010DB7C_aces_high = m223_scissorTbl + 0xC;
+D_8010DB84_aces_high = m223_scissorTbl + 0x14;
+D_8010DB88_aces_high = m223_scissorTbl + 0x18;
+D_8010DB8C_aces_high = m223_scissorTbl + 0x1C;
+D_8010DB94_aces_high = m223_scissorTbl + 0x24;
+D_8010DB98_aces_high = m223_scissorTbl + 0x28;
+D_8010DB9C_aces_high = m223_scissorTbl + 0x2C;
+D_8010DBA4_aces_high = m223_scissorTbl + 0x34;
+D_8010DBA8_aces_high = m223_scissorTbl + 0x38;
+D_8010DBAC_aces_high = m223_scissorTbl + 0x3C;
+D_8010DCB8_aces_high = m223_viewCenter + 0x4;
+D_8010DCC0_aces_high = m223_viewCornerTbl + 0x4;
 
 /* eatsa_pizza: s16 half of the s32 D_80109138 (wipe duration). */
-D_8010913A_eatsa_pizza = D_80109138_eatsa_pizza + 0x2;
+m211_phaseTimerLo = m211_phaseTimer + 0x2;
 /* eatsa_pizza: entries of the sprite data id / group id tables. The first three
-   are also referenced by the INCLUDE_ASM function func_80107E6C_eatsa_pizza. */
-D_8010927A_eatsa_pizza = D_80109278_eatsa_pizza + 0x2;
-D_8010927E_eatsa_pizza = D_80109278_eatsa_pizza + 0x6;
-D_80109282_eatsa_pizza = D_80109278_eatsa_pizza + 0xA;
-D_80109284_eatsa_pizza = D_80109278_eatsa_pizza + 0xC;
-D_8010928A_eatsa_pizza = D_80109288_eatsa_pizza + 0x2;
-D_8010928E_eatsa_pizza = D_80109288_eatsa_pizza + 0x6;
+   are also referenced by the INCLUDE_ASM function m211_PizzaEat. */
+m211_pizzaAnimTbl = m211_animTbl + 0x2;
+m211_pizzaHardAnimTbl = m211_animTbl + 0x6;
+m211_biteAnimTbl = m211_animTbl + 0xA;
+m211_crumbAnim = m211_animTbl + 0xC;
+m211_pizzaSprGrpTbl = m211_sprGrpTbl + 0x2;
+m211_crumbSprGrp = m211_sprGrpTbl + 0x6;
 
-/* ice_rink_risk: unk04 of the first puck hit entry, referenced by the INCLUDE_ASM function func_80107F58_ice_rink_risk. */
-D_801085B4_ice_rink_risk = D_801085B0_ice_rink_risk + 0x4;
+/* ice_rink_risk: unk04 of the first puck hit entry, referenced by the INCLUDE_ASM function m225_PuckHitCheck. */
+D_801085B4_ice_rink_risk = m225_puckHitTbl + 0x4;
 
-/* river_raiders: D_8010D9D0_river_raiders/D_8010D9F0_river_raiders entries and fields, riverRaidersBssDB8 fields. */
-D_8010D9DC_river_raiders = D_8010D9D0_river_raiders + 0xC;
-D_8010DD08_river_raiders = D_8010D9F0_river_raiders + 0x318;
-D_8010DE98_river_raiders = D_8010D9F0_river_raiders + 0x4A8;
-D_8010DE9A_river_raiders = D_8010D9F0_river_raiders + 0x4AA;
-D_8010DED4_river_raiders = D_8010D9F0_river_raiders + 0x4E4;
-D_8010DED6_river_raiders = D_8010D9F0_river_raiders + 0x4E6;
-D_8010DF18_river_raiders = D_8010D9F0_river_raiders + 0x528;
-D_8010EEA8_river_raiders = D_8010D9F0_river_raiders + 0x14B8;
-D_80110DB8_river_raiders = riverRaidersBssDB8;
-D_80110DBA_river_raiders = riverRaidersBssDB8 + 0x2;
-D_80110DBD_river_raiders = riverRaidersBssDB8 + 0x5;
-D_80110DBE_river_raiders = riverRaidersBssDB8 + 0x6;
+/* river_raiders: m209_wakeRotTbl/m209_objWorkTbl entries and fields, m209_skierState fields. */
+m209_boatWakeRotTbl = m209_wakeRotTbl + 0xC;
+m209_skierWorkTbl = m209_objWorkTbl + 0x318;
+m209_boatSteerDir = m209_objWorkTbl + 0x4A8;
+m209_boatStunTimer = m209_objWorkTbl + 0x4AA;
+m209_boatIconSpr = m209_objWorkTbl + 0x4E4;
+m209_boatIconEsp = m209_objWorkTbl + 0x4E6;
+m209_itemWorkTbl = m209_objWorkTbl + 0x528;
+m209_waterScroll = m209_objWorkTbl + 0x14B8;
+m209_skierSeNo = m209_skierState;
+m209_skierLaneTbl = m209_skierState + 0x2;
+m209_skierCoin = m209_skierState + 0x5;
+m209_skierSwayDir = m209_skierState + 0x6;
 
 /* pump_pump_away: fields of BSS structs accessed through separate symbols. */
-D_8011175C_pump_pump_away = D_80111758_pump_pump_away + 0x4;
-D_8011175E_pump_pump_away = D_80111758_pump_pump_away + 0x6;
-D_80111760_pump_pump_away = D_80111758_pump_pump_away + 0x8;
-D_80111762_pump_pump_away = D_80111758_pump_pump_away + 0xA;
-D_80111764_pump_pump_away = D_80111758_pump_pump_away + 0xC;
-D_80111788_pump_pump_away = D_80111758_pump_pump_away + 0x30;
-D_80111790_pump_pump_away = D_80111758_pump_pump_away + 0x38;
-D_80111792_pump_pump_away = D_80111758_pump_pump_away + 0x3A;
-D_80111794_pump_pump_away = D_80111758_pump_pump_away + 0x3C;
-D_80111796_pump_pump_away = D_80111758_pump_pump_away + 0x3E;
-D_80111798_pump_pump_away = D_80111758_pump_pump_away + 0x40;
-D_801117BC_pump_pump_away = D_80111758_pump_pump_away + 0x64;
-D_80111990_pump_pump_away = D_80111978_pump_pump_away + 0x18;
-D_8011351C_pump_pump_away = D_80113518_pump_pump_away + 0x4;
-D_80113520_pump_pump_away = D_80113518_pump_pump_away + 0x8;
-D_80113534_pump_pump_away = D_80113530_pump_pump_away + 0x4;
-D_80113536_pump_pump_away = D_80113530_pump_pump_away + 0x6;
-D_80113538_pump_pump_away = D_80113530_pump_pump_away + 0x8;
-D_8011353A_pump_pump_away = D_80113530_pump_pump_away + 0xA;
-D_8011353C_pump_pump_away = D_80113530_pump_pump_away + 0xC;
-D_80113540_pump_pump_away = D_80113530_pump_pump_away + 0x10;
-D_80113544_pump_pump_away = D_80113530_pump_pump_away + 0x14;
-D_801135B4_pump_pump_away = D_801135B0_pump_pump_away + 0x4;
-D_801135B8_pump_pump_away = D_801135B0_pump_pump_away + 0x8;
-D_801135BE_pump_pump_away = D_801135B0_pump_pump_away + 0xE;
-D_801135CC_pump_pump_away = D_801135B0_pump_pump_away + 0x1C;
-D_801135DC_pump_pump_away = D_801135D8_pump_pump_away + 0x4;
-D_801135E0_pump_pump_away = D_801135D8_pump_pump_away + 0x8;
+m213_hudLabelAnimNo = m213_hudTbl + 0x4;
+m213_hudLabelAnimNoLo = m213_hudTbl + 0x6;
+m213_hudLabelMdl = m213_hudTbl + 0x8;
+m213_hudLabelMdlLo = m213_hudTbl + 0xA;
+m213_hudLabelAnim = m213_hudTbl + 0xC;
+m213_hudLabelAlpha = m213_hudTbl + 0x30;
+m213_hudDigitAnimNo = m213_hudTbl + 0x38;
+m213_hudDigitAnimNoLo = m213_hudTbl + 0x3A;
+m213_hudDigitMdl = m213_hudTbl + 0x3C;
+m213_hudDigitMdlLo = m213_hudTbl + 0x3E;
+m213_hudDigitAnim = m213_hudTbl + 0x40;
+m213_hudDigitAlpha = m213_hudTbl + 0x64;
+m213_rocket0Height = m213_rocketTbl + 0x18;
+m213_parachuteRocketNo = m213_parachute + 0x4;
+m213_parachuteAngle = m213_parachute + 0x8;
+m213_coverAnimNo = m213_cover + 0x4;
+m213_coverAnimNoLo = m213_cover + 0x6;
+m213_coverMdl = m213_cover + 0x8;
+m213_coverMdlLo = m213_cover + 0xA;
+m213_coverAnim = m213_cover + 0xC;
+m213_coverAlpha = m213_cover + 0x10;
+m213_coverTimer = m213_cover + 0x14;
+m213_recordDigitAnim = m213_record + 0x4;
+m213_recordSprGrp = m213_record + 0x8;
+m213_recordDigit0Lo = m213_record + 0xE;
+m213_recordValue = m213_record + 0x1C;
+m213_recordMarkerValue = m213_recordMarker + 0x4;
+m213_recordMarkerHiddenF = m213_recordMarker + 0x8;
 
-/* picking_panic: pickingPanicBssEF14 fields. */
-D_8010EF14_picking_panic = pickingPanicBssEF14;
-D_8010EF15_picking_panic = pickingPanicBssEF14 + 0x1;
+/* picking_panic: m215_result fields. */
+m215_winner = m215_result;
+m215_scoreTbl = m215_result + 0x1;
 
-/* merry_go_chomp: merryGoChompBssC4BC fields and D_8010C500_merry_go_chomp entries/fields. */
-D_8010C4BC_merry_go_chomp = merryGoChompBssC4BC;
-D_8010C4BD_merry_go_chomp = merryGoChompBssC4BC + 0x1;
-D_8010C4BE_merry_go_chomp = merryGoChompBssC4BC + 0x2;
-D_8010C540_merry_go_chomp = D_8010C500_merry_go_chomp + 0x40;
-D_8010C542_merry_go_chomp = D_8010C500_merry_go_chomp + 0x42;
-D_8010C544_merry_go_chomp = D_8010C500_merry_go_chomp + 0x44;
-D_8010C548_merry_go_chomp = D_8010C500_merry_go_chomp + 0x48;
-D_8010C794_merry_go_chomp = D_8010C500_merry_go_chomp + 0x294;
-D_8010CA28_merry_go_chomp = D_8010C500_merry_go_chomp + 0x528;
-D_8010CCBC_merry_go_chomp = D_8010C500_merry_go_chomp + 0x7BC;
-D_8010CD04_merry_go_chomp = D_8010C500_merry_go_chomp + 0x804;
-D_8010CD08_merry_go_chomp = D_8010C500_merry_go_chomp + 0x808;
-D_8010D1E4_merry_go_chomp = D_8010C500_merry_go_chomp + 0xCE4;
-D_8010D478_merry_go_chomp = D_8010C500_merry_go_chomp + 0xF78;
+/* merry_go_chomp: m245_seqWork fields and m245_objWorkTbl entries/fields. */
+m245_seqNo = m245_seqWork;
+m245_queueNo = m245_seqWork + 0x1;
+m245_seatFreeTbl = m245_seqWork + 0x2;
+m245_backSprAnim = m245_objWorkTbl + 0x40;
+m245_backSprNo = m245_objWorkTbl + 0x42;
+m245_backSprX = m245_objWorkTbl + 0x44;
+m245_backSprY = m245_objWorkTbl + 0x48;
+m245_playerObjWorkTbl = m245_objWorkTbl + 0x294;
+m245_wanwanObj = m245_objWorkTbl + 0x528;
+m245_stageObj = m245_objWorkTbl + 0x7BC;
+m245_gateY = m245_objWorkTbl + 0x804;
+m245_gateZ = m245_objWorkTbl + 0x808;
+m245_carouselObj = m245_objWorkTbl + 0xCE4;
+m245_biteEffObj = m245_objWorkTbl + 0xF78;
 
 /* mgresultdealer: mgresultdealer_mainBss fields. */
 mgresultdealer_bet = mgresultdealer_mainBss;
@@ -406,56 +406,56 @@ mgresultboard_seIdTbl = mgresultboard_mainBss + 0x2;
 mgresultduel_prizeCoinHalf = mgresultduel_prizeCoin + 0x2;
 mgresultduel_hostFunc = mgresultduel_hostWork + 0x4;
 
-/* slapdown: slapdownBssAA10 fields and D_8010AAB0_slapdown[0] fields. */
-D_8010AA10_slapdown = slapdownBssAA10;
-D_8010AA12_slapdown = slapdownBssAA10 + 0x2;
-D_8010AA14_slapdown = slapdownBssAA10 + 0x4;
-D_8010AA16_slapdown = slapdownBssAA10 + 0x6;
-D_8010AAF0_slapdown = D_8010AAB0_slapdown + 0x40;
-D_8010AAF2_slapdown = D_8010AAB0_slapdown + 0x42;
-D_8010AAF4_slapdown = D_8010AAB0_slapdown + 0x44;
-D_8010AAF8_slapdown = D_8010AAB0_slapdown + 0x48;
+/* slapdown: m246_stateWork fields and m246_objWorkTbl[0] fields. */
+m246_slapPendingF = m246_stateWork;
+m246_targetAnim = m246_stateWork + 0x2;
+m246_spinSeNo = m246_stateWork + 0x4;
+m246_knockSeTbl = m246_stateWork + 0x6;
+m246_backSprAnim = m246_objWorkTbl + 0x40;
+m246_backSprNo = m246_objWorkTbl + 0x42;
+m246_backSprX = m246_objWorkTbl + 0x44;
+m246_backSprY = m246_objWorkTbl + 0x48;
 
-/* snowball_summit: snowballSummitBackdrop fields. */
-D_8010F8C0_snowball_summit = snowballSummitBackdrop;
-D_8010F8C8_snowball_summit = snowballSummitBackdrop + 0x8;
-D_8010F8CA_snowball_summit = snowballSummitBackdrop + 0xA;
-D_8010F8CC_snowball_summit = snowballSummitBackdrop + 0xC;
-D_8010F8D4_snowball_summit = snowballSummitBackdrop + 0x14;
+/* snowball_summit: m240_backdrop fields. */
+m240_backdropState = m240_backdrop;
+m240_backdropHookId = m240_backdrop + 0x8;
+m240_backdropHookMdl = m240_backdrop + 0xA;
+m240_backdropLeftSpr = m240_backdrop + 0xC;
+m240_backdropRightSpr = m240_backdrop + 0x14;
 
-/* stacked_deck: stackedDeckBss* fields and the D_8010F730_stacked_deck player entries. */
-D_8010F6F4_stacked_deck = stackedDeckBssF6F4;
-D_8010F6F5_stacked_deck = stackedDeckBssF6F4 + 0x1;
-D_8010F6FA_stacked_deck = stackedDeckBssF6F4 + 0x6;
-D_8010F838_stacked_deck = D_8010F730_stacked_deck + 0x108;
-D_80111100_stacked_deck = stackedDeckBss11100;
-D_80111102_stacked_deck = stackedDeckBss11100 + 0x2;
-D_80111140_stacked_deck = stackedDeckBss11140;
-D_80111142_stacked_deck = stackedDeckBss11140 + 0x2;
+/* stacked_deck: stackedDeckBss* fields and the m242_objWorkTbl player entries. */
+m242_phase = m242_phaseWork;
+m242_rankCntTbl = m242_phaseWork + 0x1;
+m242_coinRankTbl = m242_phaseWork + 0x6;
+m242_playerWorkTbl = m242_objWorkTbl + 0x108;
+m242_teresaCardNum = m242_teresaCardGrp;
+m242_starRankTbl = m242_teresaCardGrp + 0x2;
+m242_flipSeCnt = m242_flipSeGrp;
+m242_queueSlotFTbl = m242_flipSeGrp + 0x2;
 
 /* storm_chasers */
-D_8010CF24_storm_chasers = D_8010CF20_storm_chasers + 0x4;
-D_8010CF6E_storm_chasers = D_8010CF6C_storm_chasers + 0x2;
-D_8010CF72_storm_chasers = D_8010CF70_storm_chasers + 0x2;
+m247_rainScroll = m247_rainWork + 0x4;
+m247_backdropSprDataNo = m247_backdropSprData + 0x2;
+m247_backdropHookMdl = m247_backdropHookId + 0x2;
 
 /* three_door_monty */
-D_8010D680_three_door_monty = D_8010D260_three_door_monty + 0x420;
-D_8010D698_three_door_monty = D_8010D260_three_door_monty + 0x438;
-D_8010D890_three_door_monty = D_8010D260_three_door_monty + 0x630;
-D_8010D8A8_three_door_monty = D_8010D260_three_door_monty + 0x648;
-D_8010EC47_three_door_monty = D_8010EC46_three_door_monty + 0x1;
-D_8010EC48_three_door_monty = threeDoorMontyBssEC48;
-D_8010EC4A_three_door_monty = threeDoorMontyBssEC48 + 0x2;
+m243_signObj = m243_objWorkTbl + 0x420;
+m243_signScale = m243_objWorkTbl + 0x438;
+m243_waterObj = m243_objWorkTbl + 0x630;
+m243_waterScroll = m243_objWorkTbl + 0x648;
+m243_teresaAlphaLo = m243_teresaAlpha + 0x1;
+m243_hopF = m243_doorWork;
+m243_doorChrTbl = m243_doorWork + 0x2;
 
 /* w03: MB3Ev_Quicksand (INCLUDE_ASM) */
 D_8011D43C_w03 = mb3ev_quicksandExitOfsTbl + 0x4;
 
-/* toadstool_titan field aliases: ToadstoolTitanBssF614, ToadstoolTitanBssF650. */
-D_8010F614_toadstool_titan = toadstoolTitanBssF614;
-D_8010F616_toadstool_titan = toadstoolTitanBssF614 + 0x2;
-D_8010F650_toadstool_titan = toadstoolTitanBssF650;
-D_8010F659_toadstool_titan = toadstoolTitanBssF650 + 0x9;
-D_8010F65D_toadstool_titan = toadstoolTitanBssF650 + 0xD;
+/* toadstool_titan field aliases: ToadstoolTitanFlagWork, ToadstoolTitanStoolWork. */
+m222_musicFTbl = m222_flagWork;
+m222_squashTimerTbl = m222_flagWork + 0x2;
+m222_stoolStateTbl = m222_stoolWork;
+m222_squashDirTbl = m222_stoolWork + 0x9;
+m222_playerGroupTbl = m222_stoolWork + 0xD;
 
 /* modesel aliases: s16 low halves, parallel-array views; modesel_HostFallObjMain (INCLUDE_ASM) uses D_80110CE4. */
 modesel_winPosYHalf = modesel_winPosY + 0x2;
@@ -467,56 +467,56 @@ modesel_spotEffMaxTime = modesel_spotEffTime + 0x4;
 modesel_spotEffObj = modesel_spotEffTime + 0x8;
 D_80110CE4_modesel = modesel_hostJumpPosTbl + 0xC;
 
-/* hide_and_sneak field aliases: HideAndSneakBssE174, HideAndSneakBssE1A8. */
-D_8010E174_hide_and_sneak = hideAndSneakBssE174;
-D_8010E175_hide_and_sneak = hideAndSneakBssE174 + 0x1;
-D_8010E17A_hide_and_sneak = hideAndSneakBssE174 + 0x6;
-D_8010E17C_hide_and_sneak = hideAndSneakBssE174 + 0x8;
-D_8010E17D_hide_and_sneak = hideAndSneakBssE174 + 0x9;
-D_8010E180_hide_and_sneak = hideAndSneakBssE174 + 0xC;
-D_8010E181_hide_and_sneak = hideAndSneakBssE174 + 0xD;
-D_8010E182_hide_and_sneak = hideAndSneakBssE174 + 0xE;
-D_8010E186_hide_and_sneak = hideAndSneakBssE174 + 0x12;
-D_8010E1A8_hide_and_sneak = hideAndSneakBssE1A8;
-D_8010E1A9_hide_and_sneak = hideAndSneakBssE1A8 + 0x1;
-D_8010E1AC_hide_and_sneak = hideAndSneakBssE1A8 + 0x4;
-D_8010E1AD_hide_and_sneak = hideAndSneakBssE1A8 + 0x5;
-D_8010E1AE_hide_and_sneak = hideAndSneakBssE1A8 + 0x6;
-D_8010E1B1_hide_and_sneak = hideAndSneakBssE1A8 + 0x9;
-D_8010E1B2_hide_and_sneak = hideAndSneakBssE1A8 + 0xA;
-D_8010E1B3_hide_and_sneak = hideAndSneakBssE1A8 + 0xB;
+/* hide_and_sneak field aliases: HideAndSneakRoundBss, HideAndSneakResultBss. */
+m206_roundNo = m206_roundBss;
+m206_signSpotTbl = m206_roundBss + 0x1;
+m206_timer = m206_roundBss + 0x6;
+m206_seekerSpotNo = m206_roundBss + 0x8;
+m206_teamPlayerNoTbl = m206_roundBss + 0x9;
+m206_phase = m206_roundBss + 0xC;
+m206_hiderLineupNum = m206_roundBss + 0xD;
+m206_spotOpenTbl = m206_roundBss + 0xE;
+m206_seekerChr = m206_roundBss + 0x12;
+m206_seekerPlayerNo = m206_resultBss;
+m206_hiderFoundTbl = m206_resultBss + 0x1;
+m206_spotSeF = m206_resultBss + 0x4;
+m206_hiderFoundNum = m206_resultBss + 0x5;
+m206_teamChrTbl = m206_resultBss + 0x6;
+m206_hiderLineupNo = m206_resultBss + 0x9;
+m206_timeUpF = m206_resultBss + 0xA;
+m206_spotFadeMode = m206_resultBss + 0xB;
 
-/* messy_memory: MessyMemoryBss5D70 fields and D_80111700_messy_memory work pool sub-ranges. */
-D_80115D70_messy_memory = messyMemoryBss5D70;
-D_80115D72_messy_memory = messyMemoryBss5D70 + 0x2;
-D_80115D76_messy_memory = messyMemoryBss5D70 + 0x6;
-D_80111910_messy_memory = D_80111700_messy_memory + 0x210; /* [4] */
-D_80111A9C_messy_memory = D_80111700_messy_memory + 0x39C; /* [7] */
-D_801134E8_messy_memory = D_80111700_messy_memory + 0x1DE8; /* [58] */
-D_80113884_messy_memory = D_80111700_messy_memory + 0x2184; /* [65] */
-D_80113A94_messy_memory = D_80111700_messy_memory + 0x2394; /* [69] */
-D_80113B18_messy_memory = D_80111700_messy_memory + 0x2418; /* [70] */
+/* messy_memory: MessyMemoryPlayerStat fields and m229_objWorkTbl work pool sub-ranges. */
+m229_dustSeF = m229_playerStat;
+m229_handAlphaTbl = m229_playerStat + 0x2;
+m229_scoreTbl = m229_playerStat + 0x6;
+m229_coverWorkTbl = m229_objWorkTbl + 0x210; /* [4] */
+m229_dividerWork = m229_objWorkTbl + 0x39C; /* [7] */
+m229_moverWorkTbl = m229_objWorkTbl + 0x1DE8; /* [58] */
+m229_shutterWorkTbl = m229_objWorkTbl + 0x2184; /* [65] */
+m229_dustWork = m229_objWorkTbl + 0x2394; /* [69] */
+m229_playerWorkTbl = m229_objWorkTbl + 0x2418; /* [70] */
 
-/* curtain_call: D_8010B4B0_curtain_call entry fields, CurtainCallBssCE88 fields, D_8010CEC8_curtain_call columns. */
-D_8010B4F0_curtain_call = D_8010B4B0_curtain_call + 0x40;  /* [0].unk_40[0] */
-D_8010B4F2_curtain_call = D_8010B4B0_curtain_call + 0x42;  /* [0].unk_40[1] */
-D_8010B4F4_curtain_call = D_8010B4B0_curtain_call + 0x44;  /* [0].unk_44.x */
-D_8010B4F8_curtain_call = D_8010B4B0_curtain_call + 0x48;  /* [0].unk_44.y */
-D_8010B4FC_curtain_call = D_8010B4B0_curtain_call + 0x4C;  /* [0].unk_44.z */
-D_8010BA5C_curtain_call = D_8010B4B0_curtain_call + 0x5AC; /* [11].obj */
-D_8010BB64_curtain_call = D_8010B4B0_curtain_call + 0x6B4; /* [13].obj */
-D_8010CE88_curtain_call = curtainCallBssCE88;
-D_8010CE8A_curtain_call = curtainCallBssCE88 + 0x2;
-D_8010CEC9_curtain_call = D_8010CEC8_curtain_call + 0x1;
-D_8010CECC_curtain_call = D_8010CEC8_curtain_call + 0x4;
+/* curtain_call: m234_objWorkTbl entry fields, CurtainCallTimerWork fields, m234_actorTbl columns. */
+m234_backSprAnim = m234_objWorkTbl + 0x40;  /* [0].unk_40[0] */
+m234_backSpr = m234_objWorkTbl + 0x42;  /* [0].unk_40[1] */
+m234_backSprX = m234_objWorkTbl + 0x44;  /* [0].unk_44.x */
+m234_backSprY = m234_objWorkTbl + 0x48;  /* [0].unk_44.y */
+m234_backSprZ = m234_objWorkTbl + 0x4C;  /* [0].unk_44.z */
+m234_hostObj = m234_objWorkTbl + 0x5AC; /* [11].obj */
+m234_spotlightObj = m234_objWorkTbl + 0x6B4; /* [13].obj */
+m234_timer = m234_timerWork;
+m234_questionTbl = m234_timerWork + 0x2;
+m234_actorSlotTbl = m234_actorTbl + 0x1;
+m234_actorObjTbl = m234_actorTbl + 0x4;
 
-/* eye_sore field aliases: EyeSoreBssAF20, D_8010AF70_eye_sore[0]. */
-D_8010AF20_eye_sore = eyeSoreBssAF20;
-D_8010AF22_eye_sore = eyeSoreBssAF20 + 0x2;
-D_8010AFB0_eye_sore = D_8010AF70_eye_sore + 0x40; /* [0].unk_40[0] */
-D_8010AFB2_eye_sore = D_8010AF70_eye_sore + 0x42; /* [0].unk_40[1] */
-D_8010AFB4_eye_sore = D_8010AF70_eye_sore + 0x44; /* [0].unk_44.x */
-D_8010AFB8_eye_sore = D_8010AF70_eye_sore + 0x48; /* [0].unk_44.y */
+/* eye_sore field aliases: EyeSorePhaseWork, m248_objWorkTbl[0]. */
+m248_phase = m248_phaseWork;
+m248_faceAnimTbl = m248_phaseWork + 0x2;
+m248_backSprAnim = m248_objWorkTbl + 0x40; /* [0].unk_40[0] */
+m248_backSprNo = m248_objWorkTbl + 0x42; /* [0].unk_40[1] */
+m248_backSprX = m248_objWorkTbl + 0x44; /* [0].unk_44.x */
+m248_backSprY = m248_objWorkTbl + 0x48; /* [0].unk_44.y */
 
 /* name_81: halfword-aligned sprite id arrays grouped into NameBss2CA8 / NameBss2CB8. */
 mbdTelopPlayerAnim = mbdTelopPlayerGrp + 0x2;

@@ -86,80 +86,80 @@ extern u8 omAllPauseF;
 extern s32 omCharModelNoTbl[][6];
 extern s32 omCharMotTbl[][6];
 
-extern UnkPuddlePaddleSpr *D_80111664_puddle_paddle;
-extern UnkPuddlePaddleEntry *D_80111668_puddle_paddle;
-extern const PuddlePaddlePositions D_80111614_puddle_paddle;
+extern PuddlePaddleSprite *m217_sprTbl;
+extern PuddlePaddleBillboard *m217_billboardTbl;
+extern const PuddlePaddlePositions m217_boatPosTbl;
 
-f32 D_80111220_puddle_paddle = 0.0f;
-f32 D_80111224_puddle_paddle = 0.0f;
-f32 D_80111228_puddle_paddle = 180.0f;
-s16 D_8011122C_puddle_paddle = -1;
-s16 D_8011122E_puddle_paddle = 0;
-s16 D_80111230_puddle_paddle = 0;
-s16 D_80111232_puddle_paddle = 0;
-s16 D_80111234_puddle_paddle = 0;
+f32 m217_waterWaveRot = 0.0f;
+f32 m217_waterScrollY = 0.0f;
+f32 m217_waterColorRot = 180.0f;
+s16 m217_mdlObjIdx = -1;
+s16 m217_startF = 0;
+s16 m217_musicF = 0;
+s16 m217_finishF = 0;
+s16 m217_coinStreakCnt = 0;
 
-PuddlePaddleTeam *D_80111650_puddle_paddle BSS;
-PuddlePaddlePlayer *D_80111654_puddle_paddle BSS;
-PuddlePaddleGame *D_80111658_puddle_paddle BSS;
+PuddlePaddleTeam *m217_teamTbl BSS;
+PuddlePaddlePlayer *m217_playerTbl BSS;
+PuddlePaddleGame *m217_gameWork BSS;
 
-const s16 D_80111370_puddle_paddle[] = {
+const s16 m217_fontMesTbl[] = {
     0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0x0000
 };
 
-const s16 D_8011137C_puddle_paddle[] = {
+const s16 m217_fontMesTbl2[] = {
     0x8265, 0x8268, 0x826D, 0x8268, 0x8272, 0x8267, 0x0000, 0x0000
 };
 
-const s16 D_8011138C_puddle_paddle[] = {
+const s16 m217_fontMesTbl3[] = {
     0x8263, 0x8271, 0x8260, 0x8276, 0x0000, 0x0000
 };
 
-void func_801059BC_puddle_paddle(void);
-void func_80105B94_puddle_paddle(void);
-void func_80105C3C_puddle_paddle(omObjData *object);
-void func_80105CE0_puddle_paddle(void);
-void func_80105DBC_puddle_paddle(omObjData *object);
-void func_80106028_puddle_paddle(omObjData *object);
-void func_80106064_puddle_paddle(omObjData *object);
-void func_80106958_puddle_paddle(omObjData *object);
-void func_80106988_puddle_paddle(omObjData *object);
-void func_80106CE4_puddle_paddle(omObjData *object);
-void func_801073AC_puddle_paddle(omObjData *object);
-void func_801073E4_puddle_paddle(omObjData *object);
-void func_801075B8_puddle_paddle(void);
-void func_80107638_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
-void func_801079D4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
-void func_80107B2C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
-void func_8010788C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
-void func_80107588_puddle_paddle(omObjData *object);
-void func_80107DB0_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
-void func_80107E1C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
-void func_80108178_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
-void func_80108368_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
-void func_801087DC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
-void func_80109804_puddle_paddle(PuddlePaddlePlayer *arg0, s16 arg1, u8 arg2);
-void func_801094C4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
-void func_80109718_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
-void func_80109BD4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
-void func_801091F8_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
-void func_8010981C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
-void func_80108E2C_puddle_paddle(s16 index, s16 type, f32 angle, f32 pitch, s16 model);
-s16 func_8010910C_puddle_paddle(s16 type);
-void func_8010A224_puddle_paddle(void);
-void func_80108D10_puddle_paddle(void);
-void func_8010A398_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
-void func_8010ABCC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler);
-void func_8010B574_puddle_paddle(void);
-void func_80105C84_puddle_paddle(omObjData *object);
-void func_80105CBC_puddle_paddle(omObjData *object);
-void func_801069FC_puddle_paddle(omObjData *object);
+void m217_ObjectSetup(void);
+void m217_GameWorkInit(void);
+void m217_ExitCheckObjMain(omObjData *object);
+void m217_CameraUpdate(void);
+void m217_MainObjInit(omObjData *object);
+void m217_MainObjMain(omObjData *object);
+void m217_StageObjInit(omObjData *object);
+void m217_StageObjMain(omObjData *object);
+void m217_WaterObjInit(omObjData *object);
+void m217_PlayerObjInit(omObjData *object);
+void m217_PlayerObjMain(omObjData *object);
+void m217_BoatObjInit(omObjData *object);
+void m217_CameraViewInit(void);
+void m217_ScoreUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
+void m217_StartExec(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
+void m217_WinExec(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
+void m217_TimerUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
+void m217_BoatObjMain(omObjData *object);
+void m217_WipeExitExec(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
+void m217_ThrowerTurnUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
+void m217_ThrowerMotUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
+void m217_ThrowerItemThrow(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
+void m217_ItemUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
+void m217_PlayerStateSet(PuddlePaddlePlayer *arg0, s16 arg1, u8 arg2);
+void m217_PlayerInputUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
+void m217_PlayerMotUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
+void m217_PlayerBoatPosUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
+void m217_PlayerComInput(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
+void m217_TeamComInput(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
+void m217_ItemLaunch(s16 index, s16 type, f32 angle, f32 pitch, s16 model);
+s16 m217_ItemFreeGet(s16 type);
+void m217_PlayerStunUpdate(void);
+void m217_ItemEndUpdate(void);
+void m217_BoatMoveUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
+void m217_BoatHitUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler);
+void m217_ComInit(void);
+void m217_ExitWaitObjMain(omObjData *object);
+void m217_ExitObjMain(omObjData *object);
+void m217_WaterObjMain(omObjData *object);
 
-void func_801059A0_puddle_paddle(void) {
-    func_801059BC_puddle_paddle();
+void m217_Executor(void) {
+    m217_ObjectSetup();
 }
 
-void func_801059BC_puddle_paddle(void) {
+void m217_ObjectSetup(void) {
     u8 camera;
 
     MapCollInit(0x32);
@@ -178,45 +178,45 @@ void func_801059BC_puddle_paddle(void) {
     mgItemObjNum = 0;
     mgPlayerObjNum = 0;
     mgMapObjNum = 0;
-    func_8010B820_puddle_paddle();
-    func_80105B94_puddle_paddle();
-    omAddObj(0x3E8, 0, 0, -1, func_80105DBC_puddle_paddle);
-    omAddObj(0x7D0, 0, 0, -1, func_80105C3C_puddle_paddle);
-    GMesFontMesCreate(D_80111370_puddle_paddle, 1);
-    GMesFontMesCreate(D_8011137C_puddle_paddle, 1);
-    GMesFontMesCreate(D_8011138C_puddle_paddle, 1);
+    m217_SystemCreate();
+    m217_GameWorkInit();
+    omAddObj(0x3E8, 0, 0, -1, m217_MainObjInit);
+    omAddObj(0x7D0, 0, 0, -1, m217_ExitCheckObjMain);
+    GMesFontMesCreate(m217_fontMesTbl, 1);
+    GMesFontMesCreate(m217_fontMesTbl2, 1);
+    GMesFontMesCreate(m217_fontMesTbl3, 1);
 }
 
-void func_80105B94_puddle_paddle(void) {
-    D_80111658_puddle_paddle = HuMemAllocTag(sizeof(PuddlePaddleGame), TAG_OVERLAY);
-    memset(D_80111658_puddle_paddle, 0, sizeof(PuddlePaddleGame));
-    D_80111658_puddle_paddle->items = HuMemAllocTag(16 * sizeof(PuddlePaddleItem), TAG_OVERLAY);
-    memset(D_80111658_puddle_paddle->items, 0, 16 * sizeof(PuddlePaddleItem));
-    D_80111654_puddle_paddle = HuMemAllocTag(4 * sizeof(PuddlePaddlePlayer), TAG_OVERLAY);
-    memset(D_80111654_puddle_paddle, 0, 4 * sizeof(PuddlePaddlePlayer));
-    D_80111650_puddle_paddle = HuMemAllocTag(2 * sizeof(PuddlePaddleTeam), TAG_OVERLAY);
-    memset(D_80111650_puddle_paddle, 0, 2 * sizeof(PuddlePaddleTeam));
+void m217_GameWorkInit(void) {
+    m217_gameWork = HuMemAllocTag(sizeof(PuddlePaddleGame), TAG_OVERLAY);
+    memset(m217_gameWork, 0, sizeof(PuddlePaddleGame));
+    m217_gameWork->items = HuMemAllocTag(16 * sizeof(PuddlePaddleItem), TAG_OVERLAY);
+    memset(m217_gameWork->items, 0, 16 * sizeof(PuddlePaddleItem));
+    m217_playerTbl = HuMemAllocTag(4 * sizeof(PuddlePaddlePlayer), TAG_OVERLAY);
+    memset(m217_playerTbl, 0, 4 * sizeof(PuddlePaddlePlayer));
+    m217_teamTbl = HuMemAllocTag(2 * sizeof(PuddlePaddleTeam), TAG_OVERLAY);
+    memset(m217_teamTbl, 0, 2 * sizeof(PuddlePaddleTeam));
 }
 
-void func_80105C3C_puddle_paddle(omObjData *object) {
+void m217_ExitCheckObjMain(omObjData *object) {
     if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
-        object->func = func_80105C84_puddle_paddle;
+        object->func = m217_ExitWaitObjMain;
     }
 }
 
-void func_80105C84_puddle_paddle(omObjData *object) {
+void m217_ExitWaitObjMain(omObjData *object) {
     if (WipeStatGet() == 0) {
-        object->func = func_80105CBC_puddle_paddle;
+        object->func = m217_ExitObjMain;
     }
 }
 
-void func_80105CBC_puddle_paddle(omObjData *object) {
+void m217_ExitObjMain(omObjData *object) {
     osViBlack(0);
     omOvlReturnEx(1);
 }
 
-void func_80105CE0_puddle_paddle(void) {
+void m217_CameraUpdate(void) {
     if (CRot.x > 360.0f) {
         CRot.x -= 360.0f;
     } else if (CRot.x < 0.0f) {
@@ -227,47 +227,47 @@ void func_80105CE0_puddle_paddle(void) {
     } else if (CRot.y < 0.0f) {
         CRot.y += 360.0f;
     }
-    func_8010BC14_puddle_paddle(0);
+    m217_FuncGroupUpdate(0);
 }
 
-void func_80105DBC_puddle_paddle(omObjData *object) {
+void m217_MainObjInit(omObjData *object) {
     s16 i;
     PuddlePaddleTeam *team;
 
     MgPlayerParamReset();
     MgShadowAltSet(1);
-    func_8010B8B4_puddle_paddle(NULL, 0, 0, 4);
-    func_8010BA04_puddle_paddle(0, 0, 0, func_801075B8_puddle_paddle, 0);
+    m217_FuncGroupCreate(NULL, 0, 0, 4);
+    m217_FuncSet(0, 0, 0, m217_CameraViewInit, 0);
     object->work[1] = 1;
-    func_8010B8B4_puddle_paddle(object, (s8)object->work[1], 0, 4);
-    mgMapObjTbl[0] = omAddObj(10, 1, 2, -1, func_80106064_puddle_paddle);
-    mgMapObjTbl[1] = omAddObj(10, 1, 0, -1, func_80106988_puddle_paddle);
+    m217_FuncGroupCreate(object, (s8)object->work[1], 0, 4);
+    mgMapObjTbl[0] = omAddObj(10, 1, 2, -1, m217_StageObjInit);
+    mgMapObjTbl[1] = omAddObj(10, 1, 0, -1, m217_WaterObjInit);
     omSetStatBit(mgMapObjTbl[1], OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     for (i = 0; i < 4; i++) {
-        team = &D_80111650_puddle_paddle[D_80111654_puddle_paddle[i].team = GwPlayer[i].group];
-        D_80111654_puddle_paddle[i].unk_10 = team->count;
+        team = &m217_teamTbl[m217_playerTbl[i].team = GwPlayer[i].group];
+        m217_playerTbl[i].unk_10 = team->count;
         team->players[team->count++] = i;
     }
     for (i = 0; i < 4; i++) {
-        mgPlayerObjTbl[i] = omAddObj(300, 11, 42, -1, func_80106CE4_puddle_paddle);
+        mgPlayerObjTbl[i] = omAddObj(300, 11, 42, -1, m217_PlayerObjInit);
     }
-    omAddObj(500, 2, 0, -1, func_801073E4_puddle_paddle);
-    D_80111658_puddle_paddle->unk_00 = 1;
-    func_8010BA04_puddle_paddle((s8)object->work[1], 0xF, 0, func_801079D4_puddle_paddle, 0);
-    func_8010BA04_puddle_paddle((s8)object->work[1], 0x1F, 0, func_80107638_puddle_paddle, 0);
+    omAddObj(500, 2, 0, -1, m217_BoatObjInit);
+    m217_gameWork->unk_00 = 1;
+    m217_FuncSet((s8)object->work[1], 0xF, 0, m217_StartExec, 0);
+    m217_FuncSet((s8)object->work[1], 0x1F, 0, m217_ScoreUpdate, 0);
     WipeCreateIn(WIPE_TYPE_PREV, 20);
-    object->func = func_80106028_puddle_paddle;
+    object->func = m217_MainObjMain;
 }
 
-void func_80106028_puddle_paddle(omObjData *object) {
-    func_8010BC14_puddle_paddle((s8)object->work[1]);
-    func_80105CE0_puddle_paddle();
-    func_8010C16C_puddle_paddle();
-    func_8010C664_puddle_paddle();
-    func_8010CCF0_puddle_paddle();
+void m217_MainObjMain(omObjData *object) {
+    m217_FuncGroupUpdate((s8)object->work[1]);
+    m217_CameraUpdate();
+    m217_SprUpdate();
+    m217_AnimMdlUpdate();
+    m217_BillboardUpdate();
 }
 
-void func_80106064_puddle_paddle(omObjData *object) {
+void m217_StageObjInit(omObjData *object) {
     s32 iconFiles[8] = { 8, 9, 10, 11, 12, 13, 14, 15 };
     s32 itemFiles[3] = { 0x210026, 0x210027, 0x320014 };
     s16 itemCounts[3] = { 8, 4, 4 };
@@ -281,7 +281,7 @@ void func_80106064_puddle_paddle(omObjData *object) {
     s16 i, j;
 
     object->work[1] = 2;
-    slot = func_8010B8B4_puddle_paddle(object, (s8)object->work[1], 6, 6)->unk_00;
+    slot = m217_FuncGroupCreate(object, (s8)object->work[1], 6, 6)->unk_00;
     slot->unk_04[0] = Hu3DModelRead(0xA0117, 0x2D9);
     slot->unk_04[1] = Hu3DModelRead(0x320000, 0x2D9);
     slot->unk_04[2] = Hu3DModelRead(9, 0x2D9);
@@ -294,14 +294,14 @@ void func_80106064_puddle_paddle(omObjData *object) {
     Hu3DModelPosSet(slot->unk_04[0], 0.0f, 325.0f, 0.0f);
     Hu3DModelScaleSet(slot->unk_04[2], 1.2f, 1.2f, 1.2f);
     Hu3DModelPosSet(slot->unk_04[2], 0.0f, 320.0f, 0.0f);
-    D_80111658_puddle_paddle->unk_3C = EffectGroupStarCreate(0x6A9, 4);
+    m217_gameWork->unk_3C = EffectGroupStarCreate(0x6A9, 4);
 
     srcModel = 0;
     base = 0;
     for (i = 0; i < 3; i++) {
         for (j = base; j < base + itemCounts[i]; j++) {
-            D_80111658_puddle_paddle->items[j].type = itemTypes[i];
-            D_80111658_puddle_paddle->items[j].radius = 50.0f;
+            m217_gameWork->items[j].type = itemTypes[i];
+            m217_gameWork->items[j].radius = 50.0f;
             if (j == base) {
                 data = DataRead(itemFiles[i]);
                 sprModel = srcModel = Hu3DSprModelCreate(data, 0x9D, 0);
@@ -309,91 +309,91 @@ void func_80106064_puddle_paddle(omObjData *object) {
             } else {
                 sprModel = Hu3DSprModelLink(srcModel, 0);
             }
-            D_80111658_puddle_paddle->items[j].model = Hu3DSprModelData[sprModel].modelId;
+            m217_gameWork->items[j].model = Hu3DSprModelData[sprModel].modelId;
             Hu3DModelScaleSet(Hu3DSprModelData[sprModel].modelId, 3.0f, 3.0f, 1.0f);
         }
         base += itemCounts[i];
     }
 
     for (i = 0; i < 14; i++) {
-        func_8010C214_puddle_paddle(0x32, 3, 1.0f, 0, 0, 0x499);
+        m217_AnimMdlCreate(0x32, 3, 1.0f, 0, 0, 0x499);
     }
     for (i = 0; i < 2; i++) {
-        func_8010C214_puddle_paddle(0, 8, 1.0f, 1, 0, 0x499);
+        m217_AnimMdlCreate(0, 8, 1.0f, 1, 0, 0x499);
     }
     for (i = 0; i < 16; i++) {
-        Hu3DModelScaleSet(D_80111668_puddle_paddle[func_8010C804_puddle_paddle(0x32, 0x16, 0, 0, 0xB)].unk_0C,
+        Hu3DModelScaleSet(m217_billboardTbl[m217_BillboardCreate(0x32, 0x16, 0, 0, 0xB)].unk_0C,
                           1.5f, 1.5f, 1.5f);
     }
 
-    sprite = func_8010BEE8_puddle_paddle(0xFFF, 0x32, 0x15, 0, 0x1000);
-    HuSprTPLvlSet(D_80111664_puddle_paddle[sprite].unk_01, 0, 200);
-    func_8010C088_puddle_paddle(sprite, 76, 32);
-    sprite = func_8010BEE8_puddle_paddle(0xFFF, 0x32, 0x15, 0, 0x1000);
-    HuSprTPLvlSet(D_80111664_puddle_paddle[sprite].unk_01, 0, 200);
-    func_8010C088_puddle_paddle(sprite, 236, 32);
-    func_8010C088_puddle_paddle(func_8010BEE8_puddle_paddle(0xFF, 0x21, 0x1A, 0, 0), 76, 32);
-    func_8010C088_puddle_paddle(func_8010BEE8_puddle_paddle(0xFF, 0x21, 0x1A, 0, 0), 236, 32);
-    func_8010C088_puddle_paddle(func_8010BEE8_puddle_paddle(0xFF, 0x21, 0x1B, 0, 0), 92, 32);
-    func_8010C088_puddle_paddle(func_8010BEE8_puddle_paddle(0xFF, 0x21, 0x1B, 0, 0), 252, 32);
+    sprite = m217_SprCreate(0xFFF, 0x32, 0x15, 0, 0x1000);
+    HuSprTPLvlSet(m217_sprTbl[sprite].unk_01, 0, 200);
+    m217_SprDispOn(sprite, 76, 32);
+    sprite = m217_SprCreate(0xFFF, 0x32, 0x15, 0, 0x1000);
+    HuSprTPLvlSet(m217_sprTbl[sprite].unk_01, 0, 200);
+    m217_SprDispOn(sprite, 236, 32);
+    m217_SprDispOn(m217_SprCreate(0xFF, 0x21, 0x1A, 0, 0), 76, 32);
+    m217_SprDispOn(m217_SprCreate(0xFF, 0x21, 0x1A, 0, 0), 236, 32);
+    m217_SprDispOn(m217_SprCreate(0xFF, 0x21, 0x1B, 0, 0), 92, 32);
+    m217_SprDispOn(m217_SprCreate(0xFF, 0x21, 0x1B, 0, 0), 252, 32);
 
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 2; j++) {
-            func_8010C088_puddle_paddle(
-                func_8010BEE8_puddle_paddle(0xEF, 0x21,
-                                            iconFiles[GwPlayer[D_80111650_puddle_paddle[i].players[j]].chr], 0, 0),
+            m217_SprDispOn(
+                m217_SprCreate(0xEF, 0x21,
+                                            iconFiles[GwPlayer[m217_teamTbl[i].players[j]].chr], 0, 0),
                 i * 160 + 40 + j * 18, 32);
         }
     }
     for (i = 0; i < 2; i++) {
-        D_80111650_puddle_paddle[i].tensSprite = sprModel = func_8010BEE8_puddle_paddle(0xEF, 0, 0x31, 0, 0);
-        func_8010C088_puddle_paddle(sprModel, i * 160 + 104, 32);
-        D_80111650_puddle_paddle[i].onesSprite = sprModel = func_8010BEE8_puddle_paddle(0xEF, 0, 0x31, 0, 0);
-        func_8010C088_puddle_paddle(sprModel, i * 160 + 116, 32);
+        m217_teamTbl[i].tensSprite = sprModel = m217_SprCreate(0xEF, 0, 0x31, 0, 0);
+        m217_SprDispOn(sprModel, i * 160 + 104, 32);
+        m217_teamTbl[i].onesSprite = sprModel = m217_SprCreate(0xEF, 0, 0x31, 0, 0);
+        m217_SprDispOn(sprModel, i * 160 + 116, 32);
     }
 
-    func_8010BA04_puddle_paddle((s8)object->work[1], 0xF, 0, func_80107E1C_puddle_paddle, 0);
-    func_8010BA04_puddle_paddle((s8)object->work[1], 0xFF, 0, func_80108178_puddle_paddle, 0);
-    func_8010BA04_puddle_paddle((s8)object->work[1], 0x1FF, 0, func_80108368_puddle_paddle, 0);
-    func_8010BA04_puddle_paddle((s8)object->work[1], 0xFFF, 0, func_801087DC_puddle_paddle, 0);
+    m217_FuncSet((s8)object->work[1], 0xF, 0, m217_ThrowerTurnUpdate, 0);
+    m217_FuncSet((s8)object->work[1], 0xFF, 0, m217_ThrowerMotUpdate, 0);
+    m217_FuncSet((s8)object->work[1], 0x1FF, 0, m217_ThrowerItemThrow, 0);
+    m217_FuncSet((s8)object->work[1], 0xFFF, 0, m217_ItemUpdate, 0);
     object->model[0] = slot->unk_04[0];
-    func_80110714_puddle_paddle(object);
-    object->func = func_80106958_puddle_paddle;
+    m217_MdlSync(object);
+    object->func = m217_StageObjMain;
 }
 
-void func_80106958_puddle_paddle(omObjData *object) {
-    func_8010BC14_puddle_paddle(2);
-    func_80110714_puddle_paddle(object);
+void m217_StageObjMain(omObjData *object) {
+    m217_FuncGroupUpdate(2);
+    m217_MdlSync(object);
 }
 
-void func_80106988_puddle_paddle(omObjData *object) {
+void m217_WaterObjInit(omObjData *object) {
     object->model[0] = Hu3DModelRead(0x320001, 0x20099);
     Hu3DModelPosSet(object->model[0], 0.0f, 200.0f, 0.0f);
     Hu3DModelVtxBufMake(object->model[0]);
-    func_80110714_puddle_paddle(object);
-    object->func = func_801069FC_puddle_paddle;
+    m217_MdlSync(object);
+    object->func = m217_WaterObjMain;
 }
 
-void func_801069FC_puddle_paddle(omObjData *object) {
-    Hu3DModelTexScroll(object->model[0], sindf(D_80111220_puddle_paddle) * 15.0f, -D_80111224_puddle_paddle, 64, 64);
+void m217_WaterObjMain(omObjData *object) {
+    Hu3DModelTexScroll(object->model[0], sindf(m217_waterWaveRot) * 15.0f, -m217_waterScrollY, 64, 64);
     if (omPauseChk() + omAllPauseF == 0) {
-        D_80111220_puddle_paddle += 0.5f;
-        if (D_80111220_puddle_paddle >= 360.0f) {
-            D_80111220_puddle_paddle -= 360.0f;
+        m217_waterWaveRot += 0.5f;
+        if (m217_waterWaveRot >= 360.0f) {
+            m217_waterWaveRot -= 360.0f;
         }
-        D_80111224_puddle_paddle += 0.2f;
-        if (D_80111224_puddle_paddle >= 64.0f) {
-            D_80111224_puddle_paddle -= 64.0f;
+        m217_waterScrollY += 0.2f;
+        if (m217_waterScrollY >= 64.0f) {
+            m217_waterScrollY -= 64.0f;
         }
-        D_80111228_puddle_paddle += 2.4f;
-        if (D_80111228_puddle_paddle >= 360.0f) {
-            D_80111228_puddle_paddle -= 360.0f;
+        m217_waterColorRot += 2.4f;
+        if (m217_waterColorRot >= 360.0f) {
+            m217_waterColorRot -= 360.0f;
         }
     }
-    func_80110714_puddle_paddle(object);
+    m217_MdlSync(object);
 }
 
-void func_80106B6C_puddle_paddle(s16 srcModel, s16 dstModel, u16 dstObj) {
+void m217_MdlObjAttach(s16 srcModel, s16 dstModel, u16 dstObj) {
     HmfData *dst = Hu3DData[dstModel].hmf;
     HmfData *src = Hu3DData[srcModel].hmf;
     s16 srcObj = 0;
@@ -423,7 +423,7 @@ void func_80106B6C_puddle_paddle(s16 srcModel, s16 dstModel, u16 dstObj) {
     }
 }
 
-void func_80106CE4_puddle_paddle(omObjData *object) {
+void m217_PlayerObjInit(omObjData *object) {
     s32 attr = 0x2B9;
     s32 handFiles[8] = { 12, 13, 14, 15, 16, 17, 18, 19 };
     s32 paddleFiles[8] = { 4, 5, 6, 7, 8, 9, 10, 11 };
@@ -438,7 +438,7 @@ void func_80106CE4_puddle_paddle(omObjData *object) {
         { "C002_000b-bmerge14", "C002_000b-bmerge16" },
     };
     f32 angles[2] = { 0.0f, 180.0f };
-    PuddlePaddlePositions positions = D_80111614_puddle_paddle;
+    PuddlePaddlePositions positions = m217_boatPosTbl;
     PuddlePaddlePlayer *player;
     s32 modelFile;
     s32 motionFile;
@@ -447,17 +447,17 @@ void func_80106CE4_puddle_paddle(omObjData *object) {
 
     object->work[0] = mgPlayerObjNum;
     object->work[1] = object->work[0] + 3;
-    player = &D_80111654_puddle_paddle[object->work[0]];
+    player = &m217_playerTbl[object->work[0]];
     player->chr = GwPlayer[object->work[0]].chr;
     modelFile = omCharModelNoTbl[player->chr][0];
     motionFile = omCharMotTbl[player->chr][0];
     MgPlayerCreate(object, modelFile, motionFile, object->work[0], attr, attr);
     object->model[9] = model = Hu3DModelRead(handFiles[player->chr] | 0x320000, attr);
-    D_8011122C_puddle_paddle = SearchObjectIndex(Hu3DData[object->model[0]].hmf, objNames[player->chr][0]);
-    func_80106B6C_puddle_paddle(model, object->model[0], D_8011122C_puddle_paddle);
+    m217_mdlObjIdx = SearchObjectIndex(Hu3DData[object->model[0]].hmf, objNames[player->chr][0]);
+    m217_MdlObjAttach(model, object->model[0], m217_mdlObjIdx);
     object->model[10] = model = Hu3DModelRead(paddleFiles[player->chr] | 0x320000, attr);
-    D_8011122C_puddle_paddle = SearchObjectIndex(Hu3DData[object->model[0]].hmf, objNames[player->chr][1]);
-    func_80106B6C_puddle_paddle(model, object->model[0], D_8011122C_puddle_paddle);
+    m217_mdlObjIdx = SearchObjectIndex(Hu3DData[object->model[0]].hmf, objNames[player->chr][1]);
+    m217_MdlObjAttach(model, object->model[0], m217_mdlObjIdx);
     object->trans.z = 200.0f;
     MgPlayerMotLoad(object, 0, CharMotionDataNumGet(player->chr, 0x98), 0, 0);
     MgPlayerMotLoad(object, 2, CharMotionDataNumGet(player->chr, 2), 1, 0);
@@ -467,11 +467,11 @@ void func_80106CE4_puddle_paddle(omObjData *object) {
     MgPlayerMotLoad(object, 40, CharMotionDataNumGet(player->chr, 0x93), 0, 0);
     MgPlayerMotLoad(object, 39, CharMotionDataNumGet(player->chr, 0x94), 0, 0);
     MgPlayerMotLoad(object, 41, CharMotionDataNumGet(player->chr, 0x95), 0, 0);
-    func_80109804_puddle_paddle(player, 0, 1);
+    m217_PlayerStateSet(player, 0, 1);
     MgPlayerMotSet(object, 0);
     player->unk_0E = -1;
     angle = player->unk_48 = angles[player->unk_10];
-    angle += D_80111650_puddle_paddle[player->team].unk_18;
+    angle += m217_teamTbl[player->team].unk_18;
     if (angle > 360.0f) {
         angle -= 360.0f;
     }
@@ -485,51 +485,51 @@ void func_80106CE4_puddle_paddle(omObjData *object) {
     object->rot.x = object->rot.y = object->rot.z = 0.0f;
     object->scale.x = object->scale.y = object->scale.z = 1.0f;
     mgPlayerObjNum++;
-    func_8010B8B4_puddle_paddle(object, (s8)object->work[1], 0, 4);
-    func_8010BA04_puddle_paddle((s8)object->work[1], 0xF, player, func_801094C4_puddle_paddle, 0);
-    func_8010BA04_puddle_paddle((s8)object->work[1], 0xFFFF, player, func_80109718_puddle_paddle, 0);
-    object->func = func_801073AC_puddle_paddle;
+    m217_FuncGroupCreate(object, (s8)object->work[1], 0, 4);
+    m217_FuncSet((s8)object->work[1], 0xF, player, m217_PlayerInputUpdate, 0);
+    m217_FuncSet((s8)object->work[1], 0xFFFF, player, m217_PlayerMotUpdate, 0);
+    object->func = m217_PlayerObjMain;
 }
 
-const PuddlePaddlePositions D_80111614_puddle_paddle = {
+const PuddlePaddlePositions m217_boatPosTbl = {
     { { -300.0f, 200.0f, 0.0f }, { 300.0f, 200.0f, 0.0f } }
 };
 
-void func_801073AC_puddle_paddle(omObjData *object) {
-    func_8010BC14_puddle_paddle(object->work[1]);
+void m217_PlayerObjMain(omObjData *object) {
+    m217_FuncGroupUpdate(object->work[1]);
     MgPlayerMotUpdate(object);
-    func_80110714_puddle_paddle(object);
+    m217_MdlSync(object);
 }
 
-void func_801073E4_puddle_paddle(omObjData *object) {
+void m217_BoatObjInit(omObjData *object) {
     s32 flags = 0x99;
-    PuddlePaddlePositions positions = D_80111614_puddle_paddle;
+    PuddlePaddlePositions positions = m217_boatPosTbl;
     PuddlePaddleSlot *slot;
     s16 i;
 
     object->work[1] = 7;
-    slot = func_8010B8B4_puddle_paddle(object, (s8)object->work[1], 2, 6)->unk_00;
+    slot = m217_FuncGroupCreate(object, (s8)object->work[1], 2, 6)->unk_00;
     for (i = 0; i < 2; i++) {
         slot->unk_04[i] = Hu3DModelRead(0x320002, flags);
         Hu3DModelPosSet(slot->unk_04[i], positions.points[i].x, positions.points[i].y, positions.points[i].z);
     }
-    func_8010BA04_puddle_paddle((s8)object->work[1], 0xFF, 0, func_8010A398_puddle_paddle, 0);
-    func_8010BA04_puddle_paddle((s8)object->work[1], 0xFFF, 0, func_80109BD4_puddle_paddle, 0);
-    func_8010BA04_puddle_paddle((s8)object->work[1], 0x1FFF, 0, func_8010A224_puddle_paddle, 0);
-    func_8010BA04_puddle_paddle((s8)object->work[1], 0xFFFF, 0, func_8010ABCC_puddle_paddle, 0);
+    m217_FuncSet((s8)object->work[1], 0xFF, 0, m217_BoatMoveUpdate, 0);
+    m217_FuncSet((s8)object->work[1], 0xFFF, 0, m217_PlayerBoatPosUpdate, 0);
+    m217_FuncSet((s8)object->work[1], 0x1FFF, 0, m217_PlayerStunUpdate, 0);
+    m217_FuncSet((s8)object->work[1], 0xFFFF, 0, m217_BoatHitUpdate, 0);
     object->model[0] = slot->unk_04[0];
-    func_80110714_puddle_paddle(object);
-    object->func = func_80107588_puddle_paddle;
+    m217_MdlSync(object);
+    object->func = m217_BoatObjMain;
 }
 
-void func_80107588_puddle_paddle(omObjData *object) {
-    func_8010BC14_puddle_paddle(object->work[1]);
-    func_80110714_puddle_paddle(object);
+void m217_BoatObjMain(omObjData *object) {
+    m217_FuncGroupUpdate(object->work[1]);
+    m217_MdlSync(object);
 }
 
-void func_801075B8_puddle_paddle(void) {
+void m217_CameraViewInit(void) {
     // The original call omits the buffer argument.
-    void (*initBuffer)() = (void (*)())func_8010BAA8_puddle_paddle;
+    void (*initBuffer)() = (void (*)())m217_FuncReset;
 
     Center.x = 0.0f;
     Center.y = 280.0f;
@@ -541,49 +541,49 @@ void func_801075B8_puddle_paddle(void) {
     initBuffer(0);
 }
 
-void func_80107638_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
+void m217_ScoreUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     s16 i;
     s16 score;
     s16 tens, ones;
 
     for (i = 0; i < 2; i++) {
-        score = D_80111650_puddle_paddle[i].score;
+        score = m217_teamTbl[i].score;
         if (score < 100) {
             ones = score % 10;
             tens = score * 0.1f;
             if (tens != 0) {
-                func_8010C088_puddle_paddle(D_80111650_puddle_paddle[i].tensSprite, i * 160 + 104, 32);
+                m217_SprDispOn(m217_teamTbl[i].tensSprite, i * 160 + 104, 32);
             } else {
-                func_8010C11C_puddle_paddle(D_80111650_puddle_paddle[i].tensSprite);
+                m217_SprDispOff(m217_teamTbl[i].tensSprite);
             }
-            HuSprPatNoSet(D_80111664_puddle_paddle[D_80111650_puddle_paddle[i].tensSprite].unk_01, 0, tens);
-            HuSprPatNoSet(D_80111664_puddle_paddle[D_80111650_puddle_paddle[i].onesSprite].unk_01, 0, ones);
+            HuSprPatNoSet(m217_sprTbl[m217_teamTbl[i].tensSprite].unk_01, 0, tens);
+            HuSprPatNoSet(m217_sprTbl[m217_teamTbl[i].onesSprite].unk_01, 0, ones);
         } else {
-            HuSprPatNoSet(D_80111664_puddle_paddle[D_80111650_puddle_paddle[i].tensSprite].unk_01, 0, 9);
-            HuSprPatNoSet(D_80111664_puddle_paddle[D_80111650_puddle_paddle[i].onesSprite].unk_01, 0, 9);
+            HuSprPatNoSet(m217_sprTbl[m217_teamTbl[i].tensSprite].unk_01, 0, 9);
+            HuSprPatNoSet(m217_sprTbl[m217_teamTbl[i].onesSprite].unk_01, 0, 9);
         }
     }
 }
 
-void func_8010788C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
+void m217_TimerUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     if (handler->unk_04 == 0) {
-        D_80111658_puddle_paddle->timer = 900.0f;
-        GMesCreate(26, D_80111658_puddle_paddle->timer / 30.0f, 160, 28);
+        m217_gameWork->timer = 900.0f;
+        GMesCreate(26, m217_gameWork->timer / 30.0f, 160, 28);
         handler->unk_04 = 1;
     }
-    D_80111658_puddle_paddle->timer -= 1.0f;
-    GMesTimerValueSet((s16)((D_80111658_puddle_paddle->timer + 29.0f) * (1.0f / 30.0f)));
-    if (D_80111658_puddle_paddle->timer < 0.0f) {
-        D_80111658_puddle_paddle->unk_00 = 4;
+    m217_gameWork->timer -= 1.0f;
+    GMesTimerValueSet((s16)((m217_gameWork->timer + 29.0f) * (1.0f / 30.0f)));
+    if (m217_gameWork->timer < 0.0f) {
+        m217_gameWork->unk_00 = 4;
         HuAudSeqFadeOut(120);
         GMesCreate(16);
         GMesTimerEnd();
-        func_8010BA04_puddle_paddle((s8)slot->unk_00->work[1], 0, 0, func_80107B2C_puddle_paddle, 0);
-        func_8010BAA8_puddle_paddle((s8)slot->unk_00->work[1], handler);
+        m217_FuncSet((s8)slot->unk_00->work[1], 0, 0, m217_WinExec, 0);
+        m217_FuncReset((s8)slot->unk_00->work[1], handler);
     }
 }
 
-void func_801079D4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
+void m217_StartExec(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     s32 status;
 
     switch (++handler->unk_1C[0]) {
@@ -595,31 +595,31 @@ void func_801079D4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
             HuAudFXPlay(14);
             break;
         case 50:
-            D_8011122E_puddle_paddle = 1;
+            m217_startF = 1;
             break;
         default:
-            if (D_8011122E_puddle_paddle == 1 && (status = GMesStatGet()) == 2) {
-                func_8010B574_puddle_paddle();
-                func_8010BA04_puddle_paddle((s8)slot->unk_00->work[1], 0xF, 0, func_8010788C_puddle_paddle, 0);
-                D_80111658_puddle_paddle->unk_00 = status;
-                func_8010BAA8_puddle_paddle((s8)slot->unk_00->work[1], handler);
+            if (m217_startF == 1 && (status = GMesStatGet()) == 2) {
+                m217_ComInit();
+                m217_FuncSet((s8)slot->unk_00->work[1], 0xF, 0, m217_TimerUpdate, 0);
+                m217_gameWork->unk_00 = status;
+                m217_FuncReset((s8)slot->unk_00->work[1], handler);
             }
             break;
     }
-    if (D_80111230_puddle_paddle == 0 && GMesStatGet() != 0) {
+    if (m217_musicF == 0 && GMesStatGet() != 0) {
         HuAudSeqPlay(0x30);
-        D_80111230_puddle_paddle = 1;
+        m217_musicF = 1;
     }
 }
 
-void func_80107B2C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
+void m217_WinExec(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     s16 won[2];
     s16 i, j;
 
     if (GMesStatGet() == 0) {
-        D_80111232_puddle_paddle = 1;
+        m217_finishF = 1;
     }
-    if (D_80111232_puddle_paddle == 0) {
+    if (m217_finishF == 0) {
         return;
     }
     switch (++handler->unk_1C[0]) {
@@ -627,12 +627,12 @@ void func_80107B2C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
             won[0] = won[1] = 0;
             for (i = 0; i < 2; i++) {
                 for (j = 0; j < 2; j++) {
-                    if (D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[j]].unk_56 != 0) {
-                        func_80109804_puddle_paddle(&D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[j]], 13, 1);
-                        HuAudPlayerFXPlay(GwPlayer[D_80111650_puddle_paddle[i].players[j]].chr + 0x290,
-                                           D_80111650_puddle_paddle[i].players[j]);
-                        D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[j]].unk_58 = -1;
-                        D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[j]].unk_0E = -1;
+                    if (m217_playerTbl[m217_teamTbl[i].players[j]].unk_56 != 0) {
+                        m217_PlayerStateSet(&m217_playerTbl[m217_teamTbl[i].players[j]], 13, 1);
+                        HuAudPlayerFXPlay(GwPlayer[m217_teamTbl[i].players[j]].chr + 0x290,
+                                           m217_teamTbl[i].players[j]);
+                        m217_playerTbl[m217_teamTbl[i].players[j]].unk_58 = -1;
+                        m217_playerTbl[m217_teamTbl[i].players[j]].unk_0E = -1;
                         won[i] = 1;
                     }
                 }
@@ -646,13 +646,13 @@ void func_80107B2C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
             }
             break;
         case 140:
-            func_8010BA04_puddle_paddle((s8)slot->unk_00->work[1], 0, 0, func_80107DB0_puddle_paddle, 0);
-            func_8010BAA8_puddle_paddle((s8)slot->unk_00->work[1], handler);
+            m217_FuncSet((s8)slot->unk_00->work[1], 0, 0, m217_WipeExitExec, 0);
+            m217_FuncReset((s8)slot->unk_00->work[1], handler);
             break;
     }
 }
 
-void func_80107DB0_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
+void m217_WipeExitExec(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     switch (handler->unk_04) {
         case 0:
             WipeCreateOut(WIPE_TYPE_NORMAL, 20);
@@ -666,23 +666,23 @@ void func_80107DB0_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     }
 }
 
-void func_80107E1C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
+void m217_ThrowerTurnUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     HmfModel *model = &Hu3DData[slot->unk_04[0]];
     f32 angle, target;
 
-    if (D_80111658_puddle_paddle->unk_00 & 1) {
+    if (m217_gameWork->unk_00 & 1) {
         return;
     }
-    if (D_80111658_puddle_paddle->unk_40 != 0) {
+    if (m217_gameWork->unk_40 != 0) {
         return;
     }
-    if (D_80111658_puddle_paddle->unk_00 & 4) {
+    if (m217_gameWork->unk_00 & 4) {
         if (handler->unk_1C[0] != 0) {
             return;
         }
         angle = model->rot.y;
         target = 0.0f;
-        func_80110BBC_puddle_paddle(&angle, &target);
+        m217_AngleDiffMinimize(&angle, &target);
         if (model->rot.y >= 360.0f) {
             model->rot.y -= 360.0f;
         } else if (model->rot.y < 0.0f) {
@@ -703,7 +703,7 @@ void func_80107E1C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
         }
         angle = model->rot.y;
         target = handler->unk_2C[0];
-        func_80110BBC_puddle_paddle(&angle, &target);
+        m217_AngleDiffMinimize(&angle, &target);
         if (ABS(model->rot.y - handler->unk_2C[0]) < 5.0f) {
             handler->unk_0C[0] = 0;
         }
@@ -715,25 +715,25 @@ void func_80107E1C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     }
 }
 
-void func_80108178_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
+void m217_ThrowerMotUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     omObjData *object = slot->unk_00;
     f32 time;
 
-    if (!(D_80111658_puddle_paddle->unk_00 & 2)) {
+    if (!(m217_gameWork->unk_00 & 2)) {
         handler->unk_1C[0] = 0;
     }
     if (handler->unk_04 == 0) {
         handler->unk_1C[0] = 0;
         handler->unk_1C[1] = 10;
-        D_80111658_puddle_paddle->unk_40 = 0;
+        m217_gameWork->unk_40 = 0;
         handler->unk_04 = 1;
     }
-    if (D_80111658_puddle_paddle->unk_40 == 0) {
+    if (m217_gameWork->unk_40 == 0) {
         if (++handler->unk_1C[0] > handler->unk_1C[1]) {
             Hu3DMotionModelSet(slot->unk_04[0], object->motion[1]);
             Hu3DMotionSpeedSet(slot->unk_04[0], 2.0f);
             Hu3DMotionTimeSet(object->model[0], 0.0f);
-            D_80111658_puddle_paddle->unk_40 = 1;
+            m217_gameWork->unk_40 = 1;
             handler->unk_1C[0] = 0;
             handler->unk_1C[1] = (f32)(rand16() % 61 + 40);
         }
@@ -745,7 +745,7 @@ void func_80108178_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     }
 }
 
-void func_80108368_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
+void m217_ThrowerItemThrow(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     omObjData *object = slot->unk_00;
     f32 angles[5];
     f32 time;
@@ -757,15 +757,15 @@ void func_80108368_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     s16 i, j;
     s16 overlap;
 
-    if (D_80111658_puddle_paddle->unk_40 == 0) {
+    if (m217_gameWork->unk_40 == 0) {
         return;
     }
     time = Hu3DData[object->model[0]].motTime;
     if ((time >= 30.0f) & (time <= 35.0f)) {
-        D_80111658_puddle_paddle->unk_40 = 0;
+        m217_gameWork->unk_40 = 0;
         count = rand16() % 3 + 2;
         for (i = 0; i < count; i++) {
-            if (D_80111234_puddle_paddle < 11) {
+            if (m217_coinStreakCnt < 11) {
                 chance = rand16() % 101;
             } else {
                 chance = 65;
@@ -786,20 +786,20 @@ void func_80108368_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
             } while (overlap);
             type = 0;
             if (chance < 61) {
-                D_80111234_puddle_paddle++;
+                m217_coinStreakCnt++;
             } else if (chance < 71) {
-                D_80111234_puddle_paddle = 0;
+                m217_coinStreakCnt = 0;
                 type = 1;
             } else if (chance < 101) {
                 type = 2;
             }
-            func_80108E2C_puddle_paddle(func_8010910C_puddle_paddle(type), type, angle, pitch, slot->unk_04[0]);
+            m217_ItemLaunch(m217_ItemFreeGet(type), type, angle, pitch, slot->unk_04[0]);
         }
     }
 }
 
-void func_801087DC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
-    PuddlePaddleItem *item = D_80111658_puddle_paddle->items;
+void m217_ItemUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
+    PuddlePaddleItem *item = m217_gameWork->items;
     HmfModel *model;
     f32 t;
     s16 i;
@@ -822,9 +822,9 @@ void func_801087DC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
             }
             func_80088910_main(Hu3DData[item->model].mtx, 0.0f, 0.0f, item->spin);
         }
-        if (D_80111658_puddle_paddle->unk_00 & 4) {
-            func_8010BA04_puddle_paddle((s8)slot->unk_00->work[1], 0xFFF, 0, func_80108D10_puddle_paddle, 0);
-            func_8010BAA8_puddle_paddle((s8)slot->unk_00->work[1], handler);
+        if (m217_gameWork->unk_00 & 4) {
+            m217_FuncSet((s8)slot->unk_00->work[1], 0xFFF, 0, m217_ItemEndUpdate, 0);
+            m217_FuncReset((s8)slot->unk_00->work[1], handler);
             return;
         }
         switch (item->state) {
@@ -834,9 +834,9 @@ void func_801087DC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
                 model->pos.z += item->velocity.z;
                 item->velocity.y = item->unk_14 - ++item->timer * 2.45f;
                 if (model->pos.y < 170.0f) {
-                    index = func_8010C42C_puddle_paddle(0);
+                    index = m217_AnimMdlFreeGet(0);
                     if (index != -1) {
-                        func_8010C4D0_puddle_paddle(index, model->pos.x, 170.0f, model->pos.z, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+                        m217_AnimMdlDispOn(index, model->pos.x, 170.0f, model->pos.z, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
                     }
                     if (item->type != 2) {
                         item->state = 2;
@@ -902,8 +902,8 @@ void func_801087DC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     }
 }
 
-void func_80108D10_puddle_paddle(void) {
-    PuddlePaddleItem *item = D_80111658_puddle_paddle->items;
+void m217_ItemEndUpdate(void) {
+    PuddlePaddleItem *item = m217_gameWork->items;
     HmfModel *model;
     s16 i;
     s16 index;
@@ -921,15 +921,15 @@ void func_80108D10_puddle_paddle(void) {
         } else {
             item->state = 5;
             item->timer = 0;
-            index = func_8010C98C_puddle_paddle(0);
+            index = m217_BillboardFreeGet(0);
             if (index != -1) {
-                func_8010CA30_puddle_paddle(index, model->pos.x, model->pos.y - 20.0f, model->pos.z);
+                m217_BillboardDispOn(index, model->pos.x, model->pos.y - 20.0f, model->pos.z);
             }
         }
     }
 }
 
-void func_80108E2C_puddle_paddle(s16 index, s16 type, f32 angle, f32 pitch, s16 model) {
+void m217_ItemLaunch(s16 index, s16 type, f32 angle, f32 pitch, s16 model) {
     PuddlePaddleItem *item;
     f32 speed;
     f32 dx, dz;
@@ -937,7 +937,7 @@ void func_80108E2C_puddle_paddle(s16 index, s16 type, f32 angle, f32 pitch, s16 
     if (index == -1) {
         return;
     }
-    item = &D_80111658_puddle_paddle->items[index];
+    item = &m217_gameWork->items[index];
     speed = (rand16() % 6 + 20) * 0.01f;
     item->velocity.x = sindf(angle) * 20.0f * 5.0f * speed;
     item->velocity.z = cosdf(angle) * 20.0f * 5.0f * speed;
@@ -967,7 +967,7 @@ void func_80108E2C_puddle_paddle(s16 index, s16 type, f32 angle, f32 pitch, s16 
     Hu3DModelPosSet(item->model, Hu3DData[model].pos.x + dx, Hu3DData[model].pos.y + 50.0f, Hu3DData[model].pos.z + dz);
 }
 
-s16 func_8010910C_puddle_paddle(s16 type) {
+s16 m217_ItemFreeGet(s16 type) {
     s16 end = 0;
     s16 start = 0;
     s16 i;
@@ -983,7 +983,7 @@ s16 func_8010910C_puddle_paddle(s16 type) {
             end += 8;
     }
     for (i = start; i < end; i++) {
-        if (D_80111658_puddle_paddle->items[i].state == 0) {
+        if (m217_gameWork->items[i].state == 0) {
             break;
         }
     }
@@ -993,15 +993,15 @@ s16 func_8010910C_puddle_paddle(s16 type) {
     return i;
 }
 
-void func_801091F8_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
+void m217_PlayerComInput(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     omObjData *object = slot->unk_00;
     PuddlePaddlePlayer *players[2]; // [0] = this CPU, [1] = the team's human player
 
-    if (!(D_80111658_puddle_paddle->unk_00 & 2)) {
+    if (!(m217_gameWork->unk_00 & 2)) {
         return;
     }
     players[0] = (PuddlePaddlePlayer *)handler->unk_3C;
-    players[1] = &D_80111654_puddle_paddle[D_80111650_puddle_paddle[players[0]->team].unk_2C];
+    players[1] = &m217_playerTbl[m217_teamTbl[players[0]->team].unk_2C];
     if (handler->unk_04 == 0) {
         switch (GwPlayer[object->work[0]].cpu_difficulty) {
             case 0:
@@ -1034,7 +1034,7 @@ void func_801091F8_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     HuPadStkX[players[0]->unk_00] = 0;
     HuPadStkY[players[0]->unk_00] = 0;
     HuPadBtn[players[0]->unk_00] = 0;
-    if (object->work[0] == D_80111650_puddle_paddle[players[0]->team].unk_2C || (players[1]->unk_04 & 8)) {
+    if (object->work[0] == m217_teamTbl[players[0]->team].unk_2C || (players[1]->unk_04 & 8)) {
         if (++handler->unk_1C[0] > handler->unk_1C[1]) {
             handler->unk_1C[0] = 0;
             handler->unk_1C[1] = rand16() % (handler->unk_0C[1] - handler->unk_0C[0] + 1) + handler->unk_0C[0];
@@ -1043,7 +1043,7 @@ void func_801091F8_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     }
 }
 
-void func_801094C4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
+void m217_PlayerInputUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     PuddlePaddlePlayer *player = (PuddlePaddlePlayer *)handler->unk_3C;
     s16 stickX;
 
@@ -1051,7 +1051,7 @@ void func_801094C4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     if (player->unk_04 & 0x10) {
         return;
     }
-    if (D_80111658_puddle_paddle->unk_00 & 2) {
+    if (m217_gameWork->unk_00 & 2) {
         if (++handler->unk_0C[2] >= 7) {
             handler->unk_0C[2] = 6;
             player->unk_04 &= ~8;
@@ -1101,7 +1101,7 @@ void func_801094C4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     }
 }
 
-void func_80109718_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
+void m217_PlayerMotUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     PuddlePaddlePlayer *player = (PuddlePaddlePlayer *)handler->unk_3C;
     omObjData *object = slot->unk_00;
     HmfModel *model = &Hu3DData[object->model[0]];
@@ -1125,19 +1125,19 @@ void func_80109718_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     }
 }
 
-void func_80109804_puddle_paddle(PuddlePaddlePlayer *arg0, s16 arg1, u8 arg2) {
+void m217_PlayerStateSet(PuddlePaddlePlayer *arg0, s16 arg1, u8 arg2) {
     arg0->unk_08 = arg2;
     arg0->unk_0A = arg0->unk_0C = arg1;
 }
 
-void func_80109814_puddle_paddle(PuddlePaddlePlayer *arg0, s16 arg1) {
+void m217_PlayerNextStateSet(PuddlePaddlePlayer *arg0, s16 arg1) {
     arg0->unk_0E = arg1;
 }
 
-void func_8010981C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
+void m217_TeamComInput(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     PuddlePaddleTeam *team = (PuddlePaddleTeam *)handler->unk_3C;
-    PuddlePaddleItem *item = D_80111658_puddle_paddle->items;
-    PuddlePaddlePlayer *player = &D_80111654_puddle_paddle[team->unk_2C];
+    PuddlePaddleItem *item = m217_gameWork->items;
+    PuddlePaddlePlayer *player = &m217_playerTbl[team->unk_2C];
     HmfModel *models[2]; // [0] = boat, [1] = item
     Vec boatPos;
     Vec itemPos;
@@ -1151,7 +1151,7 @@ void func_8010981C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     if (player->unk_04 & 0x10) {
         return;
     }
-    if (!(D_80111658_puddle_paddle->unk_00 & 2)) {
+    if (!(m217_gameWork->unk_00 & 2)) {
         return;
     }
     models[0] = &Hu3DData[slot->unk_04[handler->unk_05]];
@@ -1184,7 +1184,7 @@ void func_8010981C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     if (closest[0] == -1) {
         return;
     }
-    models[1] = &Hu3DData[D_80111658_puddle_paddle->items[closest[0]].model];
+    models[1] = &Hu3DData[m217_gameWork->items[closest[0]].model];
     itemPos.x = models[1]->pos.x;
     itemPos.y = models[1]->pos.y;
     itemPos.z = models[1]->pos.z;
@@ -1199,7 +1199,7 @@ void func_8010981C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     }
     diff.x = models[0]->rot.y;
     diff.y = value;
-    func_80110BBC_puddle_paddle(&diff.x, &diff.y);
+    m217_AngleDiffMinimize(&diff.x, &diff.y);
     if (ABS(diff.x - diff.y) < 6.0f) {
         return;
     }
@@ -1210,8 +1210,8 @@ void func_8010981C_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     }
 }
 
-void func_80109BD4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
-    PuddlePaddleTeam *team = D_80111650_puddle_paddle;
+void m217_PlayerBoatPosUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
+    PuddlePaddleTeam *team = m217_teamTbl;
     PuddlePaddlePlayer *player;
     HmfModel *boat;
     HmfModel *model;
@@ -1227,7 +1227,7 @@ void func_80109BD4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     for (i = 0; i < 2; i++, team++) {
         boat = &Hu3DData[slot->unk_04[i]];
         for (j = 0; j < 2; j++) {
-            player = &D_80111654_puddle_paddle[team->players[j]];
+            player = &m217_playerTbl[team->players[j]];
             model = &Hu3DData[mgPlayerObjTbl[team->players[j]]->model[0]];
             angle = player->unk_48 + team->unk_18;
             if (angle > 360.0f) {
@@ -1240,19 +1240,19 @@ void func_80109BD4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
             Hu3DModelPosSet(mgPlayerObjTbl[team->players[j]]->model[1], x, boat->pos.y + 34.0f, z);
             if (player->unk_04 & 8) {
                 if (player->unk_04 & 2) {
-                    func_80109804_puddle_paddle(player, 0x27, 0);
+                    m217_PlayerStateSet(player, 0x27, 0);
                 } else if (player->unk_04 & 4) {
-                    func_80109804_puddle_paddle(player, 0x28, 0);
+                    m217_PlayerStateSet(player, 0x28, 0);
                 } else {
-                    func_80109804_puddle_paddle(player, 0x26, 0);
+                    m217_PlayerStateSet(player, 0x26, 0);
                 }
             } else {
                 if (player->unk_04 & 2) {
-                    func_80109804_puddle_paddle(player, 0x27, 0);
+                    m217_PlayerStateSet(player, 0x27, 0);
                 } else if (player->unk_04 & 4) {
-                    func_80109804_puddle_paddle(player, 0x28, 0);
+                    m217_PlayerStateSet(player, 0x28, 0);
                 } else {
-                    func_80109804_puddle_paddle(player, 0, 0);
+                    m217_PlayerStateSet(player, 0, 0);
                 }
             }
             data = mgPlayerObjTbl[team->players[j]]->data;
@@ -1270,7 +1270,7 @@ void func_80109BD4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
             }
             other = &Hu3DData[i == 0 ? slot->unk_04[1] : slot->unk_04[0]];
             if (left) {
-                index = func_8010C42C_puddle_paddle(0);
+                index = m217_AnimMdlFreeGet(0);
                 if (index != -1) {
                     x = model->pos.x + sindf(team->unk_18 + 70.0f) * 20.0f * 5.0f * 2.0f;
                     z = model->pos.z + cosdf(team->unk_18 + 70.0f) * 20.0f * 5.0f * 2.0f;
@@ -1278,12 +1278,12 @@ void func_80109BD4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
                     diff.z = z - other->pos.z;
                     diff.y = HuSqrtf(diff.x * diff.x + diff.z * diff.z);
                     if (diff.y > 200.0f) {
-                        func_8010C4D0_puddle_paddle(index, x, model->pos.y, z, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+                        m217_AnimMdlDispOn(index, x, model->pos.y, z, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
                     }
                 }
             }
             if (right) {
-                index = func_8010C42C_puddle_paddle(0);
+                index = m217_AnimMdlFreeGet(0);
                 if (index != -1) {
                     x = model->pos.x + sindf(team->unk_18 + 290.0f) * 20.0f * 5.0f * 2.0f;
                     z = model->pos.z + cosdf(team->unk_18 + 290.0f) * 20.0f * 5.0f * 2.0f;
@@ -1291,7 +1291,7 @@ void func_80109BD4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
                     diff.z = z - other->pos.z;
                     diff.y = HuSqrtf(diff.x * diff.x + diff.z * diff.z);
                     if (diff.y > 200.0f) {
-                        func_8010C4D0_puddle_paddle(index, x, model->pos.y, z, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+                        m217_AnimMdlDispOn(index, x, model->pos.y, z, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
                     }
                 }
             }
@@ -1302,8 +1302,8 @@ void func_80109BD4_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     }
 }
 
-void func_8010A224_puddle_paddle(void) {
-    PuddlePaddleTeam *team = D_80111650_puddle_paddle;
+void m217_PlayerStunUpdate(void) {
+    PuddlePaddleTeam *team = m217_teamTbl;
     PuddlePaddlePlayer *player;
     omObjData *object;
     s16 i, j;
@@ -1312,7 +1312,7 @@ void func_8010A224_puddle_paddle(void) {
     for (i = 0; i < 2; i++, team++) {
         for (j = 0; j < 2; j++) {
             index = team->players[j];
-            player = &D_80111654_puddle_paddle[index];
+            player = &m217_playerTbl[index];
             object = mgPlayerObjTbl[index];
             if (!(player->unk_04 & 0x10)) {
                 continue;
@@ -1333,8 +1333,8 @@ void func_8010A224_puddle_paddle(void) {
     }
 }
 
-void func_8010A398_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
-    PuddlePaddleTeam *team = D_80111650_puddle_paddle;
+void m217_BoatMoveUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
+    PuddlePaddleTeam *team = m217_teamTbl;
     PuddlePaddlePlayer *player;
     HmfModel *boat;
     f32 x, z;
@@ -1346,7 +1346,7 @@ void func_8010A398_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
         boat = &Hu3DData[slot->unk_04[i]];
         team->power = 0.0f;
         for (j = 0; j < 2; j++) {
-            player = &D_80111654_puddle_paddle[team->players[j]];
+            player = &m217_playerTbl[team->players[j]];
             if ((GwPlayer[team->players[j]].stat & 1) && team->players[j] != team->unk_2C) {
                 if (rand16() % (player->unk_52 + 1) == 0 && (GwPlayer[team->unk_2C].stat & 1)) {
                     team->unk_60 = 0;
@@ -1355,17 +1355,17 @@ void func_8010A398_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
                 player->unk_04 &= ~6;
                 if (++team->unk_60 > team->unk_62) {
                     team->unk_60 = team->unk_62;
-                    if (D_80111654_puddle_paddle[team->unk_2C].unk_04 & 4) {
+                    if (m217_playerTbl[team->unk_2C].unk_04 & 4) {
                         player->unk_04 |= 4;
                     }
-                    if (D_80111654_puddle_paddle[team->unk_2C].unk_04 & 2) {
+                    if (m217_playerTbl[team->unk_2C].unk_04 & 2) {
                         player->unk_04 |= 2;
                     }
                 } else {
-                    if (D_80111654_puddle_paddle[team->unk_2C].unk_04 & 4) {
+                    if (m217_playerTbl[team->unk_2C].unk_04 & 4) {
                         player->unk_04 |= 2;
                     }
-                    if (D_80111654_puddle_paddle[team->unk_2C].unk_04 & 2) {
+                    if (m217_playerTbl[team->unk_2C].unk_04 & 2) {
                         player->unk_04 |= 4;
                     }
                 }
@@ -1429,7 +1429,7 @@ void func_8010A398_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     }
 }
 
-void func_8010ABCC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
+void m217_BoatHitUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     HmfModel *models[3]; // [0], [1] = boats, [2] = item
     Vec a;
     Vec b;
@@ -1444,7 +1444,7 @@ void func_8010ABCC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
 
     models[0] = &Hu3DData[slot->unk_04[0]];
     models[1] = &Hu3DData[slot->unk_04[1]];
-    if (D_80111650_puddle_paddle[0].power > D_80111650_puddle_paddle[1].power) {
+    if (m217_teamTbl[0].power > m217_teamTbl[1].power) {
         a.x = models[1]->pos.x;
         b.x = models[0]->pos.x;
         a.z = models[1]->pos.z;
@@ -1464,7 +1464,7 @@ void func_8010ABCC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
         d.z = d.z / dist * 300.0f;
         a.z = b.z - d.z;
     }
-    if (D_80111650_puddle_paddle[0].power > D_80111650_puddle_paddle[1].power) {
+    if (m217_teamTbl[0].power > m217_teamTbl[1].power) {
         models[1]->pos.x = a.x;
         models[0]->pos.x = b.x;
         models[1]->pos.z = a.z;
@@ -1498,7 +1498,7 @@ void func_8010ABCC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
         a.y = models[i]->pos.y + 50.0f;
         a.z = models[i]->pos.z;
         range = 120.00001f;
-        item = D_80111658_puddle_paddle->items;
+        item = m217_gameWork->items;
         for (j = 0; j < 16; j++, item++) {
             if (item->state == 0) {
                 continue;
@@ -1525,38 +1525,38 @@ void func_8010ABCC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
             Hu3DModelAttrSet(item->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             switch (item->type) {
                 case 0:
-                    Hu3DModelScaleSet(EffectGroupEmit(D_80111658_puddle_paddle->unk_3C, b.x, b.y, b.z), 2.0f, 2.0f, 2.0f);
-                    D_80111650_puddle_paddle[i].score += 1;
-                    GwPlayer[D_80111650_puddle_paddle[i].players[0]].gameCoin += 1;
-                    GwPlayer[D_80111650_puddle_paddle[i].players[1]].gameCoin += 1;
-                    D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[0]].unk_56 += 1;
-                    D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[1]].unk_56 += 1;
+                    Hu3DModelScaleSet(EffectGroupEmit(m217_gameWork->unk_3C, b.x, b.y, b.z), 2.0f, 2.0f, 2.0f);
+                    m217_teamTbl[i].score += 1;
+                    GwPlayer[m217_teamTbl[i].players[0]].gameCoin += 1;
+                    GwPlayer[m217_teamTbl[i].players[1]].gameCoin += 1;
+                    m217_playerTbl[m217_teamTbl[i].players[0]].unk_56 += 1;
+                    m217_playerTbl[m217_teamTbl[i].players[1]].unk_56 += 1;
                     HuAudFXPlay(9);
                     break;
                 case 1:
-                    Hu3DModelScaleSet(EffectGroupEmit(D_80111658_puddle_paddle->unk_3C, b.x, b.y, b.z), 2.0f, 2.0f, 2.0f);
-                    D_80111650_puddle_paddle[i].score += 5;
-                    GwPlayer[D_80111650_puddle_paddle[i].players[0]].gameCoin += 5;
-                    GwPlayer[D_80111650_puddle_paddle[i].players[1]].gameCoin += 5;
-                    D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[0]].unk_56 += 5;
-                    D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[1]].unk_56 += 5;
+                    Hu3DModelScaleSet(EffectGroupEmit(m217_gameWork->unk_3C, b.x, b.y, b.z), 2.0f, 2.0f, 2.0f);
+                    m217_teamTbl[i].score += 5;
+                    GwPlayer[m217_teamTbl[i].players[0]].gameCoin += 5;
+                    GwPlayer[m217_teamTbl[i].players[1]].gameCoin += 5;
+                    m217_playerTbl[m217_teamTbl[i].players[0]].unk_56 += 5;
+                    m217_playerTbl[m217_teamTbl[i].players[1]].unk_56 += 5;
                     HuAudFXPlay(0x15);
                     break;
                 case 2:
-                    if (D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[0]].unk_04 & 0x10) {
+                    if (m217_playerTbl[m217_teamTbl[i].players[0]].unk_04 & 0x10) {
                         break;
                     }
                     for (k = 0; k < 2; k++) {
-                        omVibrate(D_80111650_puddle_paddle[i].players[k], 20, 0, 20);
-                        D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[k]].unk_04 |= 0x10;
-                        func_80109804_puddle_paddle(&D_80111654_puddle_paddle[D_80111650_puddle_paddle[i].players[k]], 0x29, 1);
-                        _HuAudPlayerFXPlay(GwPlayer[D_80111650_puddle_paddle[i].players[k]].chr + 0x95, D_80111650_puddle_paddle[i].players[k]);
-                        D_80111650_puddle_paddle[i].unk_50 = models[i]->pos.x;
-                        D_80111650_puddle_paddle[i].unk_54 = models[i]->pos.z;
+                        omVibrate(m217_teamTbl[i].players[k], 20, 0, 20);
+                        m217_playerTbl[m217_teamTbl[i].players[k]].unk_04 |= 0x10;
+                        m217_PlayerStateSet(&m217_playerTbl[m217_teamTbl[i].players[k]], 0x29, 1);
+                        _HuAudPlayerFXPlay(GwPlayer[m217_teamTbl[i].players[k]].chr + 0x95, m217_teamTbl[i].players[k]);
+                        m217_teamTbl[i].unk_50 = models[i]->pos.x;
+                        m217_teamTbl[i].unk_54 = models[i]->pos.z;
                     }
-                    index = func_8010C42C_puddle_paddle(1);
+                    index = m217_AnimMdlFreeGet(1);
                     if (index != -1) {
-                        func_8010C4D0_puddle_paddle(index, models[i]->pos.x, models[i]->pos.y + 20.0f, models[i]->pos.z, 0.0f, 0.0f, 0.0f, 1.2f, 0.0f);
+                        m217_AnimMdlDispOn(index, models[i]->pos.x, models[i]->pos.y + 20.0f, models[i]->pos.z, 0.0f, 0.0f, 0.0f, 1.2f, 0.0f);
                     }
                     break;
             }
@@ -1564,16 +1564,16 @@ void func_8010ABCC_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *ha
     }
 }
 
-void func_8010B574_puddle_paddle(void) {
-    PuddlePaddleTeam *team = D_80111650_puddle_paddle;
+void m217_ComInit(void) {
+    PuddlePaddleTeam *team = m217_teamTbl;
     s16 isCpu[2];
     s16 difficulty[2];
     s16 i, j;
     s16 index;
 
     for (i = 0; i < 2; i++, team++) {
-        isCpu[0] = GwPlayer[D_80111650_puddle_paddle[i].players[0]].stat & 1;
-        isCpu[1] = GwPlayer[D_80111650_puddle_paddle[i].players[1]].stat & 1;
+        isCpu[0] = GwPlayer[m217_teamTbl[i].players[0]].stat & 1;
+        isCpu[1] = GwPlayer[m217_teamTbl[i].players[1]].stat & 1;
         if (isCpu[0] && isCpu[1]) {
             difficulty[0] = GwPlayer[team->players[0]].cpu_difficulty;
             difficulty[1] = GwPlayer[team->players[1]].cpu_difficulty;
@@ -1584,9 +1584,9 @@ void func_8010B574_puddle_paddle(void) {
             }
             for (j = 0; j < 2; j++) {
                 index = team->players[j];
-                func_8010BA04_puddle_paddle(index + 3, 0, &D_80111654_puddle_paddle[index], func_801091F8_puddle_paddle, 0);
+                m217_FuncSet(index + 3, 0, &m217_playerTbl[index], m217_PlayerComInput, 0);
             }
-            func_8010BA04_puddle_paddle(7, 0, &D_80111650_puddle_paddle[i], func_8010981C_puddle_paddle, i);
+            m217_FuncSet(7, 0, &m217_teamTbl[i], m217_TeamComInput, i);
         } else if (isCpu[0] || isCpu[1]) {
             if (isCpu[0]) {
                 team->unk_2C = team->players[1];
@@ -1596,7 +1596,7 @@ void func_8010B574_puddle_paddle(void) {
             for (j = 0; j < 2; j++) {
                 index = team->players[j];
                 if (index != team->unk_2C) {
-                    func_8010BA04_puddle_paddle(index + 3, 0, &D_80111654_puddle_paddle[index], func_801091F8_puddle_paddle, 0);
+                    m217_FuncSet(index + 3, 0, &m217_playerTbl[index], m217_PlayerComInput, 0);
                 }
             }
         }

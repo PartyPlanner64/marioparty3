@@ -10,7 +10,7 @@
 #include "game/window.h"
 #include "game/overlays/minigame.h"
 
-// Per-player work for each of the four quads, allocated in func_80107584_mpiq
+// Work for the buzzer blocks above each player, allocated in m233_BlockCreateAll
 typedef struct {
     /* 0x00 */ f32 x;
     /* 0x04 */ f32 y;
@@ -22,20 +22,20 @@ typedef struct {
     /* 0x1C */ f32 scale;
     /* 0x20 */ s32 counter;
     /* 0x24 */ s16 unk_24;
-} MpiqObjWork; // Size 0x28
+} MpiqBlockWork; // Size 0x28
 
 typedef struct {
     /* 0x00 */ char unk_00[8];
     /* 0x08 */ f32 rotY;
     /* 0x0C */ s32 flags;
-} MpiqDanceObjData; // Size 0x10
+} MpiqHostWork; // Size 0x10
 
-// CPU input timing for each player, set up in func_80106664_mpiq
+// CPU input timing for each player, set up in m233_ComInputSet
 typedef struct {
     /* 0x00 */ s32 delay;
     /* 0x04 */ s32 hold;
     /* 0x08 */ u16 button;
-} MpiqCpuInput; // Size 0xC
+} MpiqComInput; // Size 0xC
 
 // Data of the objects registered in mgMapObjTbl
 typedef struct {
@@ -43,7 +43,7 @@ typedef struct {
     /* 0xB0 */ void *unkB0;
 } MpiqStageData; // Size 0xB4
 
-// Work for the meter objects created in func_80108178_mpiq
+// Work for the meter objects created in m233_MeterCreateAll
 typedef struct {
     /* 0x00 */ char unk_00[8];
     /* 0x08 */ f32 x;
@@ -56,143 +56,143 @@ typedef struct {
     /* 0x40 */ s32 index;
 } MpiqMeterWork; // Size 0x44
 
-// Work for the sign object created in func_80108B74_mpiq
+// Work for the A/B/C choice sign object created in m233_ChoiceCreate
 typedef struct {
     /* 0x00 */ f32 x;
     /* 0x04 */ f32 y;
     /* 0x08 */ s32 flags;
     /* 0x0C */ f32 scale;
-} MpiqSignWork; // Size 0x10
+} MpiqChoiceWork; // Size 0x10
 
-// Work for the marker object created in func_80107F28_mpiq
+// Work for the stun effect object created in m233_StunCreate
 typedef struct {
     /* 0x00 */ s32 flags;
     /* 0x04 */ s32 timer;
-} MpiqMarkerObjWork; // Size 0x8
+} MpiqStunWork; // Size 0x8
 
-// Sprite IDs for the result images created in func_80108D10_mpiq
+// Sprite IDs for the A/B/C choice images created in m233_ChoiceCreate
 typedef struct {
     /* 0x00 */ u16 espIds[3];
     /* 0x06 */ s16 imageIds[3];
-} MpiqBssCAEC; // Size 0xC
+} MpiqChoiceSpr; // Size 0xC
 
 extern s32 omCharModelNoTbl[][6];
 extern u8 omAllPauseF;
 
-MinigameFlow D_8010C680_mpiq = {
+MinigameFlow m233_mgFlow = {
     MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_NONE, MG_TIME_DISP_NONE, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
     { 0.0f, 0.0f, 0.0f, 0.0f },
     { 0, 0, 0, 0 },
     60, 900, -1, 75, 135
 };
-f32 D_8010C6A8_mpiq[4] = { 64.0f, 128.0f, 192.0f, 256.0f };
-s32 D_8010C6B8_mpiq = -1;
-s32 D_8010C6BC_mpiq[17] = { 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 20, 30, 0 };
+f32 m233_playerScreenXTbl[4] = { 64.0f, 128.0f, 192.0f, 256.0f };
+s32 m233_choiceNo = -1;
+s32 m233_insertAnswerTbl[17] = { 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 10, 10, 10, 10, 20, 30, 0 };
 
-f32 D_8010C9B0_mpiq BSS;
-s32 D_8010C9B4_mpiq BSS;
-u8 D_8010C9B8_mpiq BSS;
-s16 D_8010C9BA_mpiq BSS;
-s32 D_8010C9BC_mpiq BSS;
-s16 D_8010C9C0_mpiq BSS;
-s16 D_8010C9C2_mpiq BSS;
-u8 D_8010C9C4_mpiq[4] BSS; /* Unreferenced. */
-s32 D_8010C9C8_mpiq[4] BSS;
-s32 D_8010C9D8_mpiq BSS;
-u16 D_8010C9DC_mpiq[2] BSS;
-u16 D_8010C9E0_mpiq BSS;
-u16 D_8010C9E2_mpiq BSS;
-u8 D_8010C9E4_mpiq[4] BSS; /* Unreferenced. */
-s32 D_8010C9E8_mpiq[4] BSS;
-s32 D_8010C9F8_mpiq BSS;
-s32 D_8010C9FC_mpiq BSS;
-s16 D_8010CA00_mpiq BSS;
-u8 D_8010CA04_mpiq[4] BSS; /* Unreferenced. */
-MpiqCpuInput D_8010CA08_mpiq[4] BSS;
-s16 D_8010CA38_mpiq[10] BSS;
-s16 D_8010CA4C_mpiq BSS;
-s32 D_8010CA50_mpiq[10] BSS;
-omObjData *D_8010CA78_mpiq BSS;
-u8 D_8010CA7C_mpiq[4] BSS; /* Unreferenced. */
-omObjData *D_8010CA80_mpiq[4] BSS;
-s32 D_8010CA90_mpiq[4] BSS;
-s32 D_8010CAA0_mpiq[4] BSS;
-f32 D_8010CAB0_mpiq[4] BSS;
-omObjData *D_8010CAC0_mpiq[4] BSS;
-omObjData *D_8010CAD0_mpiq BSS;
-omObjData *D_8010CAD4_mpiq BSS;
-omObjData *D_8010CAD8_mpiq[4] BSS;
-omObjData *D_8010CAE8_mpiq BSS;
-MpiqBssCAEC mpiqBssCAEC BSS;
-s32 D_8010CAF8_mpiq BSS;
-s16 D_8010CAFC_mpiq BSS;
-s32 D_8010CB00_mpiq[10][4] BSS;
-s16 D_8010CBA0_mpiq[12] BSS;
-s16 D_8010CBB8_mpiq[10] BSS;
-s32 D_8010CBCC_mpiq BSS;
-s32 D_8010CBD0_mpiq[10] BSS;
-s32 D_8010CBF8_mpiq[1] BSS;
-s32 D_8010CBFC_mpiq[2] BSS;
-s32 D_8010CC04_mpiq BSS;
-u8 D_8010CC08_mpiq[8] BSS; /* Unreferenced. */
-s32 D_8010CC10_mpiq[256] BSS;
-s32 D_8010D010_mpiq BSS;
-u8 D_8010D014_mpiq[12] BSS; /* Unreferenced. */
-s32 D_8010D020_mpiq BSS;
+f32 m233_stageScale BSS;
+s32 m233_cameraNo BSS;
+u8 m233_setupF BSS;
+s16 m233_setupCnt BSS;
+s32 m233_answerPlayer BSS;
+s16 m233_quizFlag BSS;
+s16 m233_buzzLockF BSS;
+u8 m233_buzzLockPad[4] BSS; /* Unreferenced. */
+s32 m233_scoreTbl[4] BSS;
+s32 m233_winner BSS;
+u16 m233_judgeSprTbl[2] BSS;
+u16 m233_logoSpr BSS;
+u16 m233_logoBackSpr BSS;
+u8 m233_logoBackSprPad[4] BSS; /* Unreferenced. */
+s32 m233_playerFlagTbl[4] BSS;
+s32 m233_endlessF BSS;
+s32 m233_questionNoBase BSS;
+s16 m233_questionWin BSS;
+u8 m233_questionWinPad[4] BSS; /* Unreferenced. */
+MpiqComInput m233_comInputTbl[4] BSS;
+s16 m233_correctChoiceTbl[10] BSS;
+s16 m233_questionNo BSS;
+s32 m233_questionMesTbl[10] BSS;
+omObjData *m233_hostObj BSS;
+u8 m233_hostObjPad[4] BSS; /* Unreferenced. */
+omObjData *m233_standObjTbl[4] BSS;
+s32 m233_standFlagTbl[4] BSS;
+s32 m233_standLevelTbl[4] BSS;
+f32 m233_standHeightTbl[4] BSS;
+omObjData *m233_blockObjTbl[4] BSS;
+omObjData *m233_hitEffObj BSS;
+omObjData *m233_stunObj BSS;
+omObjData *m233_meterObjTbl[4] BSS;
+omObjData *m233_choiceObj BSS;
+MpiqChoiceSpr m233_choiceSpr BSS;
+s32 m233_countdown BSS;
+s16 m233_questionWinNo BSS;
+s32 m233_choiceTbl[10][4] BSS;
+s16 m233_questionFlagTbl[12] BSS;
+s16 m233_insertMesTbl[10] BSS;
+s32 m233_boardPickCnt BSS;
+s32 m233_choiceUnitMesTbl[10] BSS;
+s32 m233_boardPickTbl[1] BSS;
+s32 m233_boardPickWrongTbl[2] BSS;
+s32 m233_boardPickNo BSS;
+u8 m233_boardPickPad[8] BSS; /* Unreferenced. */
+s32 m233_answerBuf[256] BSS;
+s32 m233_answerValue BSS;
+u8 m233_answerValuePad[12] BSS; /* Unreferenced. */
+s32 m233_endlessQuestionNo BSS;
 
 // Aliases into the variables above, see undefined_syms.txt.
-extern s16 D_8010C9BE_mpiq;
-extern u16 D_8010CAEC_mpiq[3];
-extern s16 D_8010CAF2_mpiq[3];
-extern s16 D_8010CAFA_mpiq;
+extern s16 m233_answerPlayerS16;
+extern u16 m233_choiceSprTbl[3];
+extern s16 m233_choiceSprAnimTbl[3];
+extern s16 m233_countdownS16;
 
-void func_80105C60_mpiq(omObjData *obj);
-void func_80105D60_mpiq(omObjData *obj);
-void func_80105DA4_mpiq(omObjData *obj);
-void func_80105DC0_mpiq(omObjData *obj);
-void func_80105DDC_mpiq(omObjData *obj);
-void func_80105DF8_mpiq(omObjData *obj);
-void func_80105E14_mpiq(omObjData *obj, s32 index);
-void func_8010651C_mpiq(omObjData *obj);
-s32 func_80106658_mpiq(void);
-void func_80106B5C_mpiq(void);
-void func_80107114_mpiq(void);
-void func_80106E98_mpiq(void);
-void func_8010720C_mpiq(void);
-void func_8010747C_mpiq(omObjData *obj);
-void func_80107584_mpiq(void);
-void func_80107774_mpiq(omObjData *obj);
-void func_80107D70_mpiq(void);
-void func_80107DE0_mpiq(omObjData *obj);
-void func_80107E90_mpiq(f32 x, f32 y, f32 z);
-void func_80107F28_mpiq(void);
-void func_80107FC4_mpiq(omObjData *obj);
-void func_80108178_mpiq(void);
-void func_80108494_mpiq(omObjData *obj);
-void func_80108688_mpiq(void);
-void func_801087F8_mpiq(omObjData *obj);
-void func_80108A3C_mpiq(f32 zoom, f32 rotX, f32 rotY, f32 rotZ, f32 centerX, f32 centerY, f32 centerZ);
-void func_80108B74_mpiq(void);
-s16 func_801089D0_mpiq(omObjData *objA, omObjData *objB);
-void func_80108D10_mpiq(void);
-void func_80108E20_mpiq(omObjData *obj);
-void func_80109018_mpiq(void);
-void func_80109414_mpiq(void);
-s32 func_8010C4C0_mpiq(s32 index);
-s32 func_801096C0_mpiq(s32 index, s32 question);
-void func_8010A010_mpiq(s32 index);
-void func_8010A184_mpiq(s32 index);
-s16 func_8010AB44_mpiq(s32 index, s32 answer);
-s32 func_8010AEDC_mpiq(s32 index);
-s32 func_8010AFAC_mpiq(s32 index, s32 range, s32 base, s32 scale);
-void func_8010B0CC_mpiq(void);
-void func_8010C5B8_mpiq(omObjData *obj);
-s16 func_8010BB74_mpiq(void);
-void func_8010C2F0_mpiq(void);
-void func_8010BA64_mpiq(omObjData *obj);
-s16 func_8010BD1C_mpiq(void);
+void m233_MainObjMain(omObjData *obj);
+void m233_ExitObjMain(omObjData *obj);
+void m233_Player0ObjInit(omObjData *obj);
+void m233_Player1ObjInit(omObjData *obj);
+void m233_Player2ObjInit(omObjData *obj);
+void m233_Player3ObjInit(omObjData *obj);
+void m233_PlayerInit(omObjData *obj, s32 index);
+void m233_PlayerObjMain(omObjData *obj);
+s32 m233_BuzzLockGet(void);
+void m233_StageCreate(void);
+void m233_LogoPulseCreate(void);
+void m233_LogoInProc(void);
+void m233_StandCreateAll(void);
+void m233_StandObjMain(omObjData *obj);
+void m233_BlockCreateAll(void);
+void m233_BlockObjMain(omObjData *obj);
+void m233_HitEffCreate(void);
+void m233_HitEffObjMain(omObjData *obj);
+void m233_HitEffStart(f32 x, f32 y, f32 z);
+void m233_StunCreate(void);
+void m233_StunObjMain(omObjData *obj);
+void m233_MeterCreateAll(void);
+void m233_MeterObjMain(omObjData *obj);
+void m233_HostCreate(void);
+void m233_HostObjMain(omObjData *obj);
+void m233_CameraInit(f32 zoom, f32 rotX, f32 rotY, f32 rotZ, f32 centerX, f32 centerY, f32 centerZ);
+void m233_ChoiceCreate(void);
+s16 m233_ObjHitCheck(omObjData *objA, omObjData *objB);
+void m233_ComInputProc(void);
+void m233_ChoiceObjMain(omObjData *obj);
+void m233_ChoiceSelectProc(void);
+void m233_QuestionTblCreate(void);
+s32 m233_PlayerOnStandCheck(s32 index);
+s32 m233_QuestionCheck(s32 index, s32 question);
+void m233_QuestionInsertSet(s32 index);
+void m233_AnswerCalc(s32 index);
+s16 m233_ChoiceGet(s32 index, s32 answer);
+s32 m233_ChoiceChrGet(s32 index);
+s32 m233_ChoiceNumGet(s32 index, s32 range, s32 base, s32 scale);
+void m233_QuizProc(void);
+void m233_WinPauseObjMain(omObjData *obj);
+s16 m233_QuestionWinCreate(void);
+void m233_CountdownProc(void);
+void m233_BuzzObjMain(omObjData *obj);
+s16 m233_ChoiceWinCreate(void);
 
-void func_801059A0_mpiq(void) {
+void m233_ObjectSetup(void) {
     omObjData *obj;
 
     omInitObjMan(40, 20);
@@ -203,47 +203,47 @@ void func_801059A0_mpiq(void) {
     omGameSysInit();
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
     omSetStatBit(obj, 0xA0);
-    func_80108A3C_mpiq(2000.0f, 0.0f, 0.0f, 0.0f, 0.0f, 420.0f, 0.0f);
+    m233_CameraInit(2000.0f, 0.0f, 0.0f, 0.0f, 0.0f, 420.0f, 0.0f);
     omOutView(obj);
     Hu3DBGColorSet(0, 0, 0);
-    MgFlowInit(&D_8010C680_mpiq);
+    MgFlowInit(&m233_mgFlow);
     WipeCreateIn(0xFF, 16);
     mgMapObjNum = 0;
     mgPlayerObjNum = 0;
     MgPlayerParamReset();
     mgPlayerFallMax = 1.0f;
-    D_8010C9F8_mpiq = 0;
-    D_8010D020_mpiq = 58;
+    m233_endlessF = 0;
+    m233_endlessQuestionNo = 58;
     MgShadowAltSet(1);
     HuWinInit();
-    func_80106B5C_mpiq();
-    func_8010720C_mpiq();
-    D_8010CA00_mpiq = -1;
-    omSetStatBit(omAddObj(0x5000, 0, 0, -1, func_8010C5B8_mpiq), 0xA0);
-    omAddObj(4, 10, 60, -1, func_80105DA4_mpiq);
-    omAddObj(4, 10, 60, -1, func_80105DC0_mpiq);
-    omAddObj(4, 10, 60, -1, func_80105DDC_mpiq);
-    omAddObj(4, 10, 60, -1, func_80105DF8_mpiq);
-    D_8010C9C2_mpiq = 1;
-    func_80108B74_mpiq();
-    D_8010C9FC_mpiq = 0;
-    func_80109414_mpiq();
-    omAddPrcObj(func_8010B0CC_mpiq, 0x5000, 0x1000, 0);
-    func_80108688_mpiq();
-    func_80108178_mpiq();
-    omAddPrcObj(func_80106E98_mpiq, 0x4700, 0x1000, 0);
-    omAddObj(0x5000, 0, 0, -1, func_80105C60_mpiq);
-    func_80107584_mpiq();
-    func_80107D70_mpiq();
-    func_80107F28_mpiq();
-    D_8010C9B8_mpiq = 0;
-    D_8010C9BA_mpiq = 0;
+    m233_StageCreate();
+    m233_StandCreateAll();
+    m233_questionWin = -1;
+    omSetStatBit(omAddObj(0x5000, 0, 0, -1, m233_WinPauseObjMain), 0xA0);
+    omAddObj(4, 10, 60, -1, m233_Player0ObjInit);
+    omAddObj(4, 10, 60, -1, m233_Player1ObjInit);
+    omAddObj(4, 10, 60, -1, m233_Player2ObjInit);
+    omAddObj(4, 10, 60, -1, m233_Player3ObjInit);
+    m233_buzzLockF = 1;
+    m233_ChoiceCreate();
+    m233_questionNoBase = 0;
+    m233_QuestionTblCreate();
+    omAddPrcObj(m233_QuizProc, 0x5000, 0x1000, 0);
+    m233_HostCreate();
+    m233_MeterCreateAll();
+    omAddPrcObj(m233_LogoInProc, 0x4700, 0x1000, 0);
+    omAddObj(0x5000, 0, 0, -1, m233_MainObjMain);
+    m233_BlockCreateAll();
+    m233_HitEffCreate();
+    m233_StunCreate();
+    m233_setupF = 0;
+    m233_setupCnt = 0;
     mgFieldStat = 0;
     mgFlowSeqNo = 49;
     mgFlowSeqTime = 60;
 }
 
-void func_80105C60_mpiq(omObjData *obj) {
+void m233_MainObjMain(omObjData *obj) {
     if (omSysExitReq != 0) {
         HuAudFXAllStop();
         HuAudSeqFadeOut(30);
@@ -256,24 +256,24 @@ void func_80105C60_mpiq(omObjData *obj) {
         case 4:
             break;
         case 3:
-            if (D_8010C9D8_mpiq != -1) {
-                D_8010C680_mpiq.resultType = MG_RESULT_WIN_1;
-                D_8010C680_mpiq.winners[0] = D_8010C9D8_mpiq;
+            if (m233_winner != -1) {
+                m233_mgFlow.resultType = MG_RESULT_WIN_1;
+                m233_mgFlow.winners[0] = m233_winner;
             } else {
-                D_8010C680_mpiq.resultType = MG_RESULT_DRAW;
+                m233_mgFlow.resultType = MG_RESULT_DRAW;
             }
             break;
         case 5:
-            if (D_8010C9D8_mpiq != -1) {
-                GwPlayer[D_8010C9D8_mpiq].bonusCoin += 10;
+            if (m233_winner != -1) {
+                GwPlayer[m233_winner].bonusCoin += 10;
             }
             WipeCreateOut(WIPE_TYPE_NORMAL, 20);
-            obj->func = func_80105D60_mpiq;
+            obj->func = m233_ExitObjMain;
             break;
     }
 }
 
-void func_80105D60_mpiq(omObjData *obj) {
+void m233_ExitObjMain(omObjData *obj) {
     if (WipeStatGet() == 0) {
         HuWinAllKill();
         GMesClose();
@@ -282,23 +282,23 @@ void func_80105D60_mpiq(omObjData *obj) {
     }
 }
 
-void func_80105DA4_mpiq(omObjData *obj) {
-    func_80105E14_mpiq(obj, 0);
+void m233_Player0ObjInit(omObjData *obj) {
+    m233_PlayerInit(obj, 0);
 }
 
-void func_80105DC0_mpiq(omObjData *obj) {
-    func_80105E14_mpiq(obj, 1);
+void m233_Player1ObjInit(omObjData *obj) {
+    m233_PlayerInit(obj, 1);
 }
 
-void func_80105DDC_mpiq(omObjData *obj) {
-    func_80105E14_mpiq(obj, 2);
+void m233_Player2ObjInit(omObjData *obj) {
+    m233_PlayerInit(obj, 2);
 }
 
-void func_80105DF8_mpiq(omObjData *obj) {
-    func_80105E14_mpiq(obj, 3);
+void m233_Player3ObjInit(omObjData *obj) {
+    m233_PlayerInit(obj, 3);
 }
 
-void func_80105E14_mpiq(omObjData *obj, s32 index) {
+void m233_PlayerInit(omObjData *obj, s32 index) {
     Vec2f screenPos;
     Vec pos;
     s32 motion0[8] = { 0x9B, 0x9B, 0x9B, 0x9B, 0x9B, 0x9B, 0x9B, 0x9B };
@@ -340,7 +340,7 @@ void func_80105E14_mpiq(omObjData *obj, s32 index) {
     MgPlayerMotLoad(obj, 42, CharMotionDataNumGet(chr, motion9[chr]), 0, 0);
     MgPlayerMotLoad(obj, 43, CharMotionDataNumGet(chr, motion10[chr]), 1, 0);
     MgPlayerMotLoad(obj, 33, CharMotionDataNumGet(chr, motion11[chr]), 1, 0);
-    screenPos.x = D_8010C6A8_mpiq[index];
+    screenPos.x = m233_playerScreenXTbl[index];
     screenPos.y = 180.0f;
     Hu3D2Dto3D(0, CZoom, &screenPos, &pos);
     omSetTra(obj, pos.x, 0.0f, 0.0f);
@@ -354,24 +354,24 @@ void func_80105E14_mpiq(omObjData *obj, s32 index) {
     MgPlayerMapAttrSet(obj, 3, 2);
     MgPlayerMapAttrSet(obj, 4, 2);
     MgPlayerMotSet(obj, 0);
-    D_8010C9C8_mpiq[index] = 0;
-    D_8010C9E8_mpiq[index] = 0;
-    data->unk104[2] = func_80106658_mpiq;
-    obj->func = func_8010651C_mpiq;
+    m233_scoreTbl[index] = 0;
+    m233_playerFlagTbl[index] = 0;
+    data->unk104[2] = m233_BuzzLockGet;
+    obj->func = m233_PlayerObjMain;
 }
 
-void func_8010651C_mpiq(omObjData *obj) {
+void m233_PlayerObjMain(omObjData *obj) {
     MgPlayerWork *data = obj->data;
     f32 x = obj->trans.x;
     f32 z = obj->trans.z;
 
     HuPadStkX[data->unk57] = 0;
     HuPadStkY[data->unk57] = 0;
-    if (D_8010C9E8_mpiq[data->unk59] & 1) {
+    if (m233_playerFlagTbl[data->unk59] & 1) {
         HuPadBtn[data->unk57] = 0;
         HuPadBtnDown[data->unk57] = 0;
     }
-    if (D_8010C9C2_mpiq == 1 && !(GwPlayer[data->unk59].stat & 1)) {
+    if (m233_buzzLockF == 1 && !(GwPlayer[data->unk59].stat & 1)) {
         HuPadBtn[data->unk57] &= 0x7FFF;
         HuPadBtnDown[data->unk57] &= 0x7FFF;
     }
@@ -381,11 +381,11 @@ void func_8010651C_mpiq(omObjData *obj) {
     obj->trans.z = z;
 }
 
-s32 func_80106658_mpiq(void) {
-    return D_8010C9C2_mpiq;
+s32 m233_BuzzLockGet(void) {
+    return m233_buzzLockF;
 }
 
-void func_80106664_mpiq(s32 index) {
+void m233_ComInputSet(s32 index) {
     u16 buttons[3] = { 0x8000, 0x4000, 0x2000 };
     s32 offset;
     s32 holdRange;
@@ -397,13 +397,13 @@ void func_80106664_mpiq(s32 index) {
     s32 range;
 
     accuracy = 0;
-    mes = MessDataMesGet((void *)D_8010CA50_mpiq[D_8010CA4C_mpiq]);
+    mes = MessDataMesGet((void *)m233_questionMesTbl[m233_questionNo]);
     base = HuWinStrLen(mes) * 5 - 40;
     holdBase = 0;
     holdRange = 0;
     offset = 0;
     range = 0;
-    D_8010CA08_mpiq[index].button = 0;
+    m233_comInputTbl[index].button = 0;
     switch (GwPlayer[index].cpu_difficulty) {
         case 0:
             range = 60;
@@ -434,45 +434,45 @@ void func_80106664_mpiq(s32 index) {
             accuracy = 8;
             break;
     }
-    D_8010CA08_mpiq[index].delay = base + offset + (rand8() % (range + 1) - (range >> 1));
-    if (D_8010CA08_mpiq[index].delay <= 30) {
-        D_8010CA08_mpiq[index].delay = 30;
+    m233_comInputTbl[index].delay = base + offset + (rand8() % (range + 1) - (range >> 1));
+    if (m233_comInputTbl[index].delay <= 30) {
+        m233_comInputTbl[index].delay = 30;
     }
-    D_8010CA08_mpiq[index].hold = (rand8() % holdRange + holdBase) * 10;
+    m233_comInputTbl[index].hold = (rand8() % holdRange + holdBase) * 10;
     if ((u8)(rand8() % 10) == 0 ? accuracy >= 2 : accuracy > 0) {
-        D_8010CA08_mpiq[index].button = buttons[D_8010CA38_mpiq[D_8010CA4C_mpiq]];
+        m233_comInputTbl[index].button = buttons[m233_correctChoiceTbl[m233_questionNo]];
     } else {
         choice = (u8)(rand8() % 3);
-        if (choice == D_8010CA38_mpiq[D_8010CA4C_mpiq]) {
+        if (choice == m233_correctChoiceTbl[m233_questionNo]) {
             choice = (choice + 1) % 3;
         }
-        D_8010CA08_mpiq[index].button = buttons[choice];
+        m233_comInputTbl[index].button = buttons[choice];
     }
     MessDataMesFree(mes);
 }
 
-void func_801069F8_mpiq(s32 index) {
+void m233_ComInput(s32 index) {
     MgPlayerWork *data = mgPlayerObjTbl[index]->data;
 
-    if (D_8010C9E8_mpiq[index] & 1) {
+    if (m233_playerFlagTbl[index] & 1) {
         return;
     }
-    if (D_8010C9C2_mpiq == 0 && D_8010CA08_mpiq[index].delay != 0) {
-        D_8010CA08_mpiq[index].delay--;
-        if (D_8010CA08_mpiq[index].delay == 0) {
+    if (m233_buzzLockF == 0 && m233_comInputTbl[index].delay != 0) {
+        m233_comInputTbl[index].delay--;
+        if (m233_comInputTbl[index].delay == 0) {
             HuPadBtn[data->unk57] |= 0x8000;
             HuPadBtnDown[data->unk57] |= 0x8000;
         }
-    } else if (index == D_8010C9BC_mpiq && D_8010CA08_mpiq[index].hold != 0) {
-        D_8010CA08_mpiq[index].hold--;
-        if (D_8010CA08_mpiq[index].hold == 0) {
-            HuPadBtn[data->unk57] |= D_8010CA08_mpiq[index].button;
-            HuPadBtnDown[data->unk57] |= D_8010CA08_mpiq[index].button;
+    } else if (index == m233_answerPlayer && m233_comInputTbl[index].hold != 0) {
+        m233_comInputTbl[index].hold--;
+        if (m233_comInputTbl[index].hold == 0) {
+            HuPadBtn[data->unk57] |= m233_comInputTbl[index].button;
+            HuPadBtnDown[data->unk57] |= m233_comInputTbl[index].button;
         }
     }
 }
 
-void func_80106B5C_mpiq(void) {
+void m233_StageCreate(void) {
     omObjData *obj;
     MpiqStageData *work;
     u16 sprite;
@@ -481,7 +481,7 @@ void func_80106B5C_mpiq(void) {
     work = HuMemAllocTag(sizeof(MpiqStageData), TAG_OVERLAY);
     obj->data = work;
     obj->model[0] = 0;
-    D_8010C9B0_mpiq = 1.0f;
+    m233_stageScale = 1.0f;
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
@@ -499,40 +499,40 @@ void func_80106B5C_mpiq(void) {
     espScaleSet(sprite, 1.0f, 1.0f);
     espPriSet(sprite, 255);
 
-    D_8010C9DC_mpiq[0] = espEntry(HuSprAnimDataRead(0x42000C), 0, 1);
-    espAttrSet(D_8010C9DC_mpiq[0], 0x4008);
-    espPosSet(D_8010C9DC_mpiq[0], 158, 86);
-    espDispOff(D_8010C9DC_mpiq[0]);
-    espScaleSet(D_8010C9DC_mpiq[0], 1.0f, 1.0f);
-    espPriSet(D_8010C9DC_mpiq[0], 3);
+    m233_judgeSprTbl[0] = espEntry(HuSprAnimDataRead(0x42000C), 0, 1);
+    espAttrSet(m233_judgeSprTbl[0], 0x4008);
+    espPosSet(m233_judgeSprTbl[0], 158, 86);
+    espDispOff(m233_judgeSprTbl[0]);
+    espScaleSet(m233_judgeSprTbl[0], 1.0f, 1.0f);
+    espPriSet(m233_judgeSprTbl[0], 3);
 
-    D_8010C9DC_mpiq[1] = espEntry(HuSprAnimDataRead(0x42000D), 0, 1);
-    espAttrSet(D_8010C9DC_mpiq[1], 0x4008);
-    espPosSet(D_8010C9DC_mpiq[1], 158, 86);
-    espDispOff(D_8010C9DC_mpiq[1]);
-    espScaleSet(D_8010C9DC_mpiq[1], 1.0f, 1.0f);
-    espPriSet(D_8010C9DC_mpiq[1], 3);
+    m233_judgeSprTbl[1] = espEntry(HuSprAnimDataRead(0x42000D), 0, 1);
+    espAttrSet(m233_judgeSprTbl[1], 0x4008);
+    espPosSet(m233_judgeSprTbl[1], 158, 86);
+    espDispOff(m233_judgeSprTbl[1]);
+    espScaleSet(m233_judgeSprTbl[1], 1.0f, 1.0f);
+    espPriSet(m233_judgeSprTbl[1], 3);
 
-    D_8010C9E0_mpiq = espEntry(HuSprAnimDataRead(0x420001), 0, 1);
-    espAttrSet(D_8010C9E0_mpiq, 0x4008);
-    espPosSet(D_8010C9E0_mpiq, 160, -90);
-    espDispOn(D_8010C9E0_mpiq);
-    espScaleSet(D_8010C9E0_mpiq, 1.0f, 1.0f);
-    espPriSet(D_8010C9E0_mpiq, 254);
+    m233_logoSpr = espEntry(HuSprAnimDataRead(0x420001), 0, 1);
+    espAttrSet(m233_logoSpr, 0x4008);
+    espPosSet(m233_logoSpr, 160, -90);
+    espDispOn(m233_logoSpr);
+    espScaleSet(m233_logoSpr, 1.0f, 1.0f);
+    espPriSet(m233_logoSpr, 254);
 
-    D_8010C9E2_mpiq = espEntry(HuSprAnimDataRead(0x420002), 0, 1);
-    espAttrSet(D_8010C9E2_mpiq, 0x4008);
-    espPosSet(D_8010C9E2_mpiq, 160, -90);
-    espDispOn(D_8010C9E2_mpiq);
-    espScaleSet(D_8010C9E2_mpiq, 1.0f, 1.0f);
-    espTPLvlSet(D_8010C9E2_mpiq, 230);
-    espPriSet(D_8010C9E2_mpiq, 255);
+    m233_logoBackSpr = espEntry(HuSprAnimDataRead(0x420002), 0, 1);
+    espAttrSet(m233_logoBackSpr, 0x4008);
+    espPosSet(m233_logoBackSpr, 160, -90);
+    espDispOn(m233_logoBackSpr);
+    espScaleSet(m233_logoBackSpr, 1.0f, 1.0f);
+    espTPLvlSet(m233_logoBackSpr, 230);
+    espPriSet(m233_logoBackSpr, 255);
 
-    func_80107114_mpiq();
+    m233_LogoPulseCreate();
     obj->func = NULL;
 }
 
-void func_80106E98_mpiq(void) {
+void m233_LogoInProc(void) {
     Vec2f screenPos;
     Vec pos;
     s32 i;
@@ -544,57 +544,57 @@ void func_80106E98_mpiq(void) {
         screenPos.x = 260.0f;
         screenPos.y = (i - 30.0f) * 4.0f;
         Hu3D2Dto3D(0, CZoom, &screenPos, &pos);
-        D_8010CA78_mpiq->trans.y = pos.y;
+        m233_hostObj->trans.y = pos.y;
         offset = (30 - i) * 6;
-        espPosSet(D_8010C9E0_mpiq, 160, 90 - offset);
-        espPosSet(D_8010C9E2_mpiq, 158, 82 - offset);
+        espPosSet(m233_logoSpr, 160, 90 - offset);
+        espPosSet(m233_logoBackSpr, 158, 82 - offset);
         HuPrcVSleep();
     }
-    espPosSet(D_8010C9E0_mpiq, 160, 84);
-    espPosSet(D_8010C9E2_mpiq, 158, 78);
+    espPosSet(m233_logoSpr, 160, 84);
+    espPosSet(m233_logoBackSpr, 158, 78);
     HuPrcVSleep();
-    espPosSet(D_8010C9E0_mpiq, 160, 94);
-    espPosSet(D_8010C9E2_mpiq, 158, 88);
+    espPosSet(m233_logoSpr, 160, 94);
+    espPosSet(m233_logoBackSpr, 158, 88);
     HuPrcVSleep();
-    espPosSet(D_8010C9E0_mpiq, 160, 88);
-    espPosSet(D_8010C9E2_mpiq, 158, 82);
+    espPosSet(m233_logoSpr, 160, 88);
+    espPosSet(m233_logoBackSpr, 158, 82);
     HuPrcVSleep();
-    espPosSet(D_8010C9E0_mpiq, 160, 92);
-    espPosSet(D_8010C9E2_mpiq, 158, 86);
+    espPosSet(m233_logoSpr, 160, 92);
+    espPosSet(m233_logoBackSpr, 158, 86);
     HuPrcVSleep();
-    espPosSet(D_8010C9E0_mpiq, 160, 89);
-    espPosSet(D_8010C9E2_mpiq, 158, 83);
+    espPosSet(m233_logoSpr, 160, 89);
+    espPosSet(m233_logoBackSpr, 158, 83);
     HuPrcVSleep();
-    espPosSet(D_8010C9E0_mpiq, 160, 91);
-    espPosSet(D_8010C9E2_mpiq, 158, 85);
+    espPosSet(m233_logoSpr, 160, 91);
+    espPosSet(m233_logoBackSpr, 158, 85);
     HuPrcVSleep();
-    espPosSet(D_8010C9E0_mpiq, 160, 90);
-    espPosSet(D_8010C9E2_mpiq, 158, 84);
+    espPosSet(m233_logoSpr, 160, 90);
+    espPosSet(m233_logoBackSpr, 158, 84);
     omDelPrcObj(NULL);
 }
 
-void func_80107168_mpiq(omObjData *obj);
+void m233_LogoPulseObjMain(omObjData *obj);
 
-void func_80107114_mpiq(void) {
-    omObjData *obj = omAddObj(5, 0, 0, -1, func_80107168_mpiq);
+void m233_LogoPulseCreate(void) {
+    omObjData *obj = omAddObj(5, 0, 0, -1, m233_LogoPulseObjMain);
     f32 *angle = HuMemAllocTag(sizeof(f32), TAG_OVERLAY);
 
     obj->data = angle;
     *angle = 0.0f;
 }
 
-void func_80107168_mpiq(omObjData *obj) {
+void m233_LogoPulseObjMain(omObjData *obj) {
     f32 *angle = obj->data;
     f32 scale = sindf(*angle) * 0.02f + 1.02;
 
-    espScaleSet(D_8010C9E0_mpiq, scale, scale);
+    espScaleSet(m233_logoSpr, scale, scale);
     *angle += 5.0f;
     if (*angle >= 360.0f) {
         *angle -= 360.0f;
     }
 }
 
-void func_8010720C_mpiq(void) {
+void m233_StandCreateAll(void) {
     Vec2f screenPos;
     Vec pos;
     f32 heights[3] = { 47.0f, 94.0f, 141.0f };
@@ -604,18 +604,18 @@ void func_8010720C_mpiq(void) {
     s32 j;
 
     for (i = 0; i < 4; i++) {
-        obj = omAddObj(2, 2, 0, -1, func_8010747C_mpiq);
+        obj = omAddObj(2, 2, 0, -1, m233_StandObjMain);
         obj->data = HuMemAllocTag(sizeof(MpiqStageData), TAG_OVERLAY);
-        D_8010CA80_mpiq[i] = obj;
+        m233_standObjTbl[i] = obj;
         work = obj->data;
         work->unkB0 = HuMemAllocTag(0x14, TAG_OVERLAY);
         if (i == 0) {
             obj->model[0] = Hu3DModelRead2(0x42000E, 0x29D);
         } else {
-            obj->model[0] = Hu3DModelLink(D_8010CA80_mpiq[0]->model[0]);
+            obj->model[0] = Hu3DModelLink(m233_standObjTbl[0]->model[0]);
         }
-        D_8010C9B0_mpiq = 1.0f;
-        screenPos.x = D_8010C6A8_mpiq[i];
+        m233_stageScale = 1.0f;
+        screenPos.x = m233_playerScreenXTbl[i];
         screenPos.y = 180.0f;
         Hu3D2Dto3D(0, CZoom, &screenPos, &pos);
         omSetTra(obj, pos.x, 0.0f, 0.0f);
@@ -625,54 +625,54 @@ void func_8010720C_mpiq(void) {
         work->header.unk08 = 0.5f;
         work->header.unk04 = i + 1;
         MgMapBlockSet(obj, 0.0f, 100.0f, -100.0f, -100.0f, 100.0f, 100.0f);
-        D_8010CA90_mpiq[i] = 0;
-        D_8010CAA0_mpiq[i] = 0;
+        m233_standFlagTbl[i] = 0;
+        m233_standLevelTbl[i] = 0;
     }
     for (j = 0; j < 3; j++) {
-        D_8010CAB0_mpiq[j] = heights[j];
+        m233_standHeightTbl[j] = heights[j];
     }
-    obj->func = func_8010747C_mpiq;
+    obj->func = m233_StandObjMain;
 }
 
-void func_8010747C_mpiq(omObjData *obj) {
-    MpiqObjWork *work;
+void m233_StandObjMain(omObjData *obj) {
+    MpiqBlockWork *work;
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        if (obj == D_8010CA80_mpiq[i]) {
+        if (obj == m233_standObjTbl[i]) {
             break;
         }
     }
-    if (D_8010CA90_mpiq[i] & 1) {
+    if (m233_standFlagTbl[i] & 1) {
         obj->trans.y += 4.7f;
-        work = D_8010CAC0_mpiq[i]->data;
+        work = m233_blockObjTbl[i]->data;
         work->y += 4.7f;
-        if (obj->trans.y >= D_8010CAB0_mpiq[D_8010CAA0_mpiq[i] - 1]) {
-            obj->trans.y = D_8010CAB0_mpiq[D_8010CAA0_mpiq[i] - 1];
+        if (obj->trans.y >= m233_standHeightTbl[m233_standLevelTbl[i] - 1]) {
+            obj->trans.y = m233_standHeightTbl[m233_standLevelTbl[i] - 1];
             work->unk_0C = work->y;
-            D_8010CA90_mpiq[i] &= ~1;
+            m233_standFlagTbl[i] &= ~1;
         }
     }
 }
 
-void func_80107558_mpiq(s32 index, s32 value) {
-    D_8010CAA0_mpiq[index] = value;
-    D_8010CA90_mpiq[index] |= 1;
+void m233_StandRaise(s32 index, s32 value) {
+    m233_standLevelTbl[index] = value;
+    m233_standFlagTbl[index] |= 1;
 }
 
-void func_80107584_mpiq(void) {
+void m233_BlockCreateAll(void) {
     Vec2f screenPos;
     Vec pos;
     omObjData *obj;
-    MpiqObjWork *work;
+    MpiqBlockWork *work;
     s32 i;
     s32 attr = 0x699;
     s32 attr2 = 0xA89;
 
     for (i = 0; i < 4; i++) {
-        obj = omAddObj(10, 3, 0, -1, func_80107774_mpiq);
-        D_8010CAC0_mpiq[i] = obj;
-        obj->data = HuMemAllocTag(sizeof(MpiqObjWork), TAG_OVERLAY);
+        obj = omAddObj(10, 3, 0, -1, m233_BlockObjMain);
+        m233_blockObjTbl[i] = obj;
+        obj->data = HuMemAllocTag(sizeof(MpiqBlockWork), TAG_OVERLAY);
         work = obj->data;
         if (i == 0) {
             obj->model[0] = Hu3DModelRead2(0x42000B, attr);
@@ -680,12 +680,12 @@ void func_80107584_mpiq(void) {
             Hu3DModelTPLvlInit(obj->model[1]);
             obj->model[2] = Hu3DModelRead(0x5D0008, attr | 4);
         } else {
-            obj->model[0] = Hu3DModelLink(D_8010CAC0_mpiq[0]->model[0]);
-            obj->model[1] = Hu3DModelLink(D_8010CAC0_mpiq[0]->model[1]);
-            obj->model[2] = Hu3DModelLink(D_8010CAC0_mpiq[0]->model[2]);
+            obj->model[0] = Hu3DModelLink(m233_blockObjTbl[0]->model[0]);
+            obj->model[1] = Hu3DModelLink(m233_blockObjTbl[0]->model[1]);
+            obj->model[2] = Hu3DModelLink(m233_blockObjTbl[0]->model[2]);
         }
         Hu3DMotionAttrSet(obj->model[0], 1, 1);
-        screenPos.x = D_8010C6A8_mpiq[i];
+        screenPos.x = m233_playerScreenXTbl[i];
         screenPos.y = 52.0f;
         Hu3D2Dto3D(0, CZoom, &screenPos, &pos);
         omSetTra(obj, pos.x, pos.y, 0.0f);
@@ -700,9 +700,9 @@ void func_80107584_mpiq(void) {
     }
 }
 
-void func_80107774_mpiq(omObjData *obj) {
+void m233_BlockObjMain(omObjData *obj) {
     f32 bounce[12] = { 0.0f, 10.0f, 25.0f, 40.0f, 52.0f, 50.0f, 50.0f, 48.0f, 38.0f, 29.0f, 25.0f, 160.0f };
-    MpiqObjWork *work = obj->data;
+    MpiqBlockWork *work = obj->data;
     f32 limit;
     s16 model;
     s32 i;
@@ -711,12 +711,12 @@ void func_80107774_mpiq(omObjData *obj) {
     if (work->flags & 1) {
         work->y -= work->unk_08;
         work->unk_08 += 8.0f;
-        limit = D_8010CA80_mpiq[work->index]->trans.y + 30.0f;
+        limit = m233_standObjTbl[work->index]->trans.y + 30.0f;
         if (work->y <= limit) {
             work->y = limit;
             work->flags &= ~1;
             work->flags |= 2;
-            func_80107E90_mpiq(obj->trans.x, obj->trans.y - 50.0f, obj->trans.z);
+            m233_HitEffStart(obj->trans.x, obj->trans.y - 50.0f, obj->trans.z);
         }
     }
     if (work->flags & 2) {
@@ -752,19 +752,19 @@ void func_80107774_mpiq(omObjData *obj) {
             work->flags &= ~0x20;
         }
     }
-    if (func_801089D0_mpiq(obj, mgPlayerObjTbl[D_8010C9BC_mpiq])) {
+    if (m233_ObjHitCheck(obj, mgPlayerObjTbl[m233_answerPlayer])) {
         if (work->flags & 3) {
             if (work->unk_24 == 0) {
-                _HuAudPlayerFXPlay(0x411, D_8010C9BE_mpiq);
+                _HuAudPlayerFXPlay(0x411, m233_answerPlayerS16);
                 work->unk_24 = 1;
             }
-            MgPlayerSquashSet(mgPlayerObjTbl[D_8010C9BC_mpiq], 1);
-            omVibrate(D_8010C9BE_mpiq, 20, 0, 20);
-        } else if (D_8010C9C2_mpiq == 0) {
+            MgPlayerSquashSet(mgPlayerObjTbl[m233_answerPlayer], 1);
+            omVibrate(m233_answerPlayerS16, 20, 0, 20);
+        } else if (m233_buzzLockF == 0) {
             Hu3DMotionAttrSet(obj->model[0], 4, 0);
             Hu3DMotionAttrSet(obj->model[0], 1, 0);
-            MgPlayerMotSwap(mgPlayerObjTbl[D_8010C9BC_mpiq], 0x26, 0);
-            D_8010C9C2_mpiq = 1;
+            MgPlayerMotSwap(mgPlayerObjTbl[m233_answerPlayer], 0x26, 0);
+            m233_buzzLockF = 1;
             for (i = 0; i < 4; i++) {
                 MgPlayerVelYSet(mgPlayerObjTbl[i], 1000.0f);
             }
@@ -779,52 +779,52 @@ void func_80107774_mpiq(omObjData *obj) {
     }
 }
 
-void func_80107C18_mpiq(s32 index) {
-    MpiqObjWork *work = OM_GET_DATA_PTR(D_8010CAC0_mpiq[index], MpiqObjWork);
+void m233_BlockDrop(s32 index) {
+    MpiqBlockWork *work = OM_GET_DATA_PTR(m233_blockObjTbl[index], MpiqBlockWork);
     work->flags |= 1;
     work->unk_08 = 4.0f;
     work->index = index;
 }
 
-void func_80107C50_mpiq(s32 index) {
-    OM_GET_DATA_PTR(D_8010CAC0_mpiq[index], MpiqObjWork)->flags |= 8;
+void m233_BlockMotStop(s32 index) {
+    OM_GET_DATA_PTR(m233_blockObjTbl[index], MpiqBlockWork)->flags |= 8;
 }
 
-void func_80107C74_mpiq(void) {
+void m233_BlockEffStartAll(void) {
     omObjData *obj;
-    MpiqObjWork *work;
+    MpiqBlockWork *work;
     f32 x;
     f32 y;
     f32 z;
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        obj = D_8010CAC0_mpiq[i];
+        obj = m233_blockObjTbl[i];
         x = obj->trans.x;
         y = obj->trans.y;
         z = obj->trans.z + 200.0f;
         work = obj->data;
         work->flags |= 0x10;
         work->timer = 15;
-        Hu3DModelPosSet(D_8010CAC0_mpiq[i]->model[2], x, y, z);
-        Hu3DModelScaleSet(D_8010CAC0_mpiq[i]->model[2], 1.0f, 1.0f, 1.0f);
-        Hu3DModelAttrSet(D_8010CAC0_mpiq[i]->model[2], 4, 0);
+        Hu3DModelPosSet(m233_blockObjTbl[i]->model[2], x, y, z);
+        Hu3DModelScaleSet(m233_blockObjTbl[i]->model[2], 1.0f, 1.0f, 1.0f);
+        Hu3DModelAttrSet(m233_blockObjTbl[i]->model[2], 4, 0);
     }
 }
 
-void func_80107D70_mpiq(void) {
+void m233_HitEffCreate(void) {
     omObjData *obj;
     s32 *flags;
 
-    obj = omAddObj(0xFF, 1, 0, -1, func_80107DE0_mpiq);
-    D_8010CAD0_mpiq = obj;
+    obj = omAddObj(0xFF, 1, 0, -1, m233_HitEffObjMain);
+    m233_hitEffObj = obj;
     flags = HuMemAllocTag(sizeof(s32), TAG_OVERLAY);
     obj->data = flags;
     *flags = 0;
     *obj->model = Hu3DModelRead(8, 0x69D);
 }
 
-void func_80107DE0_mpiq(omObjData *obj) {
+void m233_HitEffObjMain(omObjData *obj) {
     s32 *flags = obj->data;
     s16 model;
 
@@ -837,23 +837,23 @@ void func_80107DE0_mpiq(omObjData *obj) {
     }
 }
 
-void func_80107E90_mpiq(f32 x, f32 y, f32 z) {
-    omObjData *obj = D_8010CAD0_mpiq;
+void m233_HitEffStart(f32 x, f32 y, f32 z) {
+    omObjData *obj = m233_hitEffObj;
     s32 *flags = obj->data;
 
     *flags |= 1;
     Hu3DModelAttrSet(obj->model[0], 4, 0);
-    Hu3DMotionTimeSet(D_8010CAD0_mpiq->model[0], 0.0f);
-    omSetTra(D_8010CAD0_mpiq, x, y, z);
+    Hu3DMotionTimeSet(m233_hitEffObj->model[0], 0.0f);
+    omSetTra(m233_hitEffObj, x, y, z);
 }
 
-void func_80107F28_mpiq(void) {
+void m233_StunCreate(void) {
     omObjData *obj;
-    MpiqMarkerObjWork *work;
+    MpiqStunWork *work;
 
-    obj = omAddObj(0xFF, 1, 0, -1, func_80107FC4_mpiq);
-    D_8010CAD4_mpiq = obj;
-    work = HuMemAllocTag(sizeof(MpiqMarkerObjWork), TAG_OVERLAY);
+    obj = omAddObj(0xFF, 1, 0, -1, m233_StunObjMain);
+    m233_stunObj = obj;
+    work = HuMemAllocTag(sizeof(MpiqStunWork), TAG_OVERLAY);
     obj->data = work;
     work->flags = 0;
     obj->model[0] = Hu3DModelRead(0x230009, 0x69D);
@@ -861,39 +861,39 @@ void func_80107F28_mpiq(void) {
     work->timer = 0;
 }
 
-void func_80107FC4_mpiq(omObjData *obj) {
+void m233_StunObjMain(omObjData *obj) {
 }
 
-void func_80107FCC_mpiq(s32 index) {
+void m233_StunStart(s32 index) {
     f32 heights[8] = { 100.0f, 110.0f, 100.0f, 110.0f, 100.0f, 120.0f, 110.0f, 100.0f };
     omObjData *player = mgPlayerObjTbl[index];
     s32 chr = GwPlayer[index].chr;
     f32 x = player->trans.x;
     f32 y = player->trans.y + heights[chr];
     f32 z = player->trans.z;
-    omObjData *obj = D_8010CAD4_mpiq;
-    MpiqMarkerObjWork *work = obj->data;
+    omObjData *obj = m233_stunObj;
+    MpiqStunWork *work = obj->data;
 
     work->flags |= 1;
     if (work->timer == 0) {
         Hu3DModelAttrSet(obj->model[0], 4, 0);
-        Hu3DMotionTimeSet(D_8010CAD4_mpiq->model[0], 0.0f);
-        Hu3DMotionAttrSet(D_8010CAD4_mpiq->model[0], 2, 2);
+        Hu3DMotionTimeSet(m233_stunObj->model[0], 0.0f);
+        Hu3DMotionAttrSet(m233_stunObj->model[0], 2, 2);
     }
-    omSetTra(D_8010CAD4_mpiq, x, y, z);
+    omSetTra(m233_stunObj, x, y, z);
     work->timer++;
 }
 
-void func_8010811C_mpiq(void) {
-    MpiqMarkerObjWork *work = OM_GET_DATA_PTR(D_8010CAD4_mpiq, MpiqMarkerObjWork);
+void m233_StunEnd(void) {
+    MpiqStunWork *work = OM_GET_DATA_PTR(m233_stunObj, MpiqStunWork);
 
     if (--work->timer == 0) {
-        Hu3DModelAttrSet(*D_8010CAD4_mpiq->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(*m233_stunObj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         work->flags &= ~1;
     }
 }
 
-void func_80108178_mpiq(void) {
+void m233_MeterCreateAll(void) {
     Vec2f screenPos;
     Vec pos;
     omObjData *obj;
@@ -902,8 +902,8 @@ void func_80108178_mpiq(void) {
     s32 j;
 
     for (i = 0; i < 4; i++) {
-        obj = omAddObj(2, 5, 0, -1, func_80108494_mpiq);
-        D_8010CAD8_mpiq[i] = obj;
+        obj = omAddObj(2, 5, 0, -1, m233_MeterObjMain);
+        m233_meterObjTbl[i] = obj;
         obj->data = HuMemAllocTag(sizeof(MpiqMeterWork), TAG_OVERLAY);
         work = obj->data;
         omSetSca(obj, 2.0f, 3.0f, 2.0f);
@@ -914,15 +914,15 @@ void func_80108178_mpiq(void) {
             obj->model[3] = Hu3DModelRead(0x420009, 0x6BD);
             obj->model[4] = Hu3DModelRead(0x420006, 0x6B9);
         } else {
-            obj->model[0] = Hu3DModelLink(D_8010CAD8_mpiq[0]->model[0]);
-            obj->model[1] = Hu3DModelLink(D_8010CAD8_mpiq[0]->model[1]);
-            obj->model[2] = Hu3DModelLink(D_8010CAD8_mpiq[0]->model[2]);
-            obj->model[3] = Hu3DModelLink(D_8010CAD8_mpiq[0]->model[3]);
-            obj->model[4] = Hu3DModelLink(D_8010CAD8_mpiq[0]->model[4]);
+            obj->model[0] = Hu3DModelLink(m233_meterObjTbl[0]->model[0]);
+            obj->model[1] = Hu3DModelLink(m233_meterObjTbl[0]->model[1]);
+            obj->model[2] = Hu3DModelLink(m233_meterObjTbl[0]->model[2]);
+            obj->model[3] = Hu3DModelLink(m233_meterObjTbl[0]->model[3]);
+            obj->model[4] = Hu3DModelLink(m233_meterObjTbl[0]->model[4]);
         }
         work->stage = 0;
         work->flags = 0;
-        screenPos.x = D_8010C6A8_mpiq[i];
+        screenPos.x = m233_playerScreenXTbl[i];
         screenPos.y = 180.0f;
         Hu3D2Dto3D(0, CZoom, &screenPos, &pos);
         omSetTra(obj, pos.x, -144.0f, 0.0f);
@@ -940,12 +940,12 @@ void func_80108178_mpiq(void) {
     }
 }
 
-void func_80108494_mpiq(omObjData *obj) {
+void m233_MeterObjMain(omObjData *obj) {
     MpiqMeterWork *work;
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        if (obj == D_8010CAD8_mpiq[i]) {
+        if (obj == m233_meterObjTbl[i]) {
             break;
         }
     }
@@ -955,36 +955,36 @@ void func_80108494_mpiq(omObjData *obj) {
     }
     if (work->flags & 1) {
         work->barScale[work->stage] += 0.2f;
-        Hu3DData[obj->model[4]].pos.y = D_8010CA80_mpiq[D_8010C9BC_mpiq]->trans.y;
+        Hu3DData[obj->model[4]].pos.y = m233_standObjTbl[m233_answerPlayer]->trans.y;
         if (work->barScale[work->stage] >= 2.0f) {
             work->barScale[work->stage] = 2.0f;
         }
-        if (!(D_8010CA90_mpiq[work->index] & 1)) {
+        if (!(m233_standFlagTbl[work->index] & 1)) {
             work->stage++;
             work->flags &= ~1;
         }
     }
 }
 
-void func_801085F4_mpiq(s32 index) {
-    MpiqMeterWork *work = D_8010CAD8_mpiq[index]->data;
+void m233_MeterAdd(s32 index) {
+    MpiqMeterWork *work = m233_meterObjTbl[index]->data;
 
     work->flags |= 1;
     work->index = index;
-    Hu3DModelAttrSet(D_8010CAD8_mpiq[index]->model[work->stage + 1], 4, 0);
+    Hu3DModelAttrSet(m233_meterObjTbl[index]->model[work->stage + 1], 4, 0);
     _HuAudPlayerFXPlay(0x410, index);
     omVibrate(index, 10, 0, 10);
 }
 
-void func_80108688_mpiq(void) {
+void m233_HostCreate(void) {
     Vec pos;
     Vec2f screenPos;
     omObjData *obj;
-    MpiqDanceObjData *work;
+    MpiqHostWork *work;
 
-    obj = omAddObj(10, 1, 1, -1, func_801087F8_mpiq);
-    obj->data = HuMemAllocTag(sizeof(MpiqDanceObjData), TAG_OVERLAY);
-    D_8010CA78_mpiq = obj;
+    obj = omAddObj(10, 1, 1, -1, m233_HostObjMain);
+    obj->data = HuMemAllocTag(sizeof(MpiqHostWork), TAG_OVERLAY);
+    m233_hostObj = obj;
     work = obj->data;
     obj->model[0] = Hu3DModelRead(0xA005D, 0x6D9);
     Hu3DMotionAttrSet(obj->model[0], 2, 2);
@@ -1002,8 +1002,8 @@ void func_80108688_mpiq(void) {
     work->rotY = 0.0f;
 }
 
-void func_801087F8_mpiq(omObjData *obj) {
-    MpiqDanceObjData *work = obj->data;
+void m233_HostObjMain(omObjData *obj) {
+    MpiqHostWork *work = obj->data;
     s16 model;
 
     omSetRot(obj, 0.0f, work->rotY, 0.0f);
@@ -1031,14 +1031,14 @@ void func_801087F8_mpiq(omObjData *obj) {
     }
 }
 
-void func_801089A4_mpiq(s32 flags) {
-    MpiqDanceObjData *work = OM_GET_DATA_PTR(D_8010CA78_mpiq, MpiqDanceObjData);
+void m233_HostTurnSet(s32 flags) {
+    MpiqHostWork *work = OM_GET_DATA_PTR(m233_hostObj, MpiqHostWork);
     work->flags &= ~2;
     work->flags &= ~4;
     work->flags |= flags;
 }
 
-s16 func_801089D0_mpiq(omObjData *objA, omObjData *objB) {
+s16 m233_ObjHitCheck(omObjData *objA, omObjData *objB) {
     s32 result = 0;
     f32 ax = objA->trans.x;
     f32 ay = objA->trans.y;
@@ -1051,11 +1051,11 @@ s16 func_801089D0_mpiq(omObjData *objA, omObjData *objB) {
     return result;
 }
 
-void func_80108A3C_mpiq(f32 zoom, f32 rotX, f32 rotY, f32 rotZ, f32 centerX, f32 centerY, f32 centerZ) {
+void m233_CameraInit(f32 zoom, f32 rotX, f32 rotY, f32 rotZ, f32 centerX, f32 centerY, f32 centerZ) {
     CamSetupInit(1);
-    D_8010C9B4_mpiq = CamSetupMapCullAdd();
-    ScissorSet(D_8010C9B4_mpiq, 0.0f, 0.0f, 320.0f, 240.0f);
-    ViewportSet(D_8010C9B4_mpiq, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
+    m233_cameraNo = CamSetupMapCullAdd();
+    ScissorSet(m233_cameraNo, 0.0f, 0.0f, 320.0f, 240.0f);
+    ViewportSet(m233_cameraNo, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     CZoom = zoom;
     CRot.x = rotX;
     CRot.y = rotY;
@@ -1063,36 +1063,36 @@ void func_80108A3C_mpiq(f32 zoom, f32 rotX, f32 rotY, f32 rotZ, f32 centerX, f32
     Center.x = centerX;
     Center.y = centerY;
     Center.z = centerZ;
-    Hu3DCameraPerspectiveSet(D_8010C9B4_mpiq, 30.0f, 80.0f, 8000.0f);
+    Hu3DCameraPerspectiveSet(m233_cameraNo, 30.0f, 80.0f, 8000.0f);
 }
 
-void func_80108B74_mpiq(void) {
+void m233_ChoiceCreate(void) {
     s32 images[3] = { 3, 4, 5 };
     omObjData *obj;
-    MpiqSignWork *work;
+    MpiqChoiceWork *work;
     s32 i;
 
-    obj = omAddObj(10, 0, 0, -1, func_80108E20_mpiq);
-    obj->data = work = HuMemAllocTag(sizeof(MpiqSignWork), TAG_OVERLAY);
-    D_8010CAE8_mpiq = obj;
+    obj = omAddObj(10, 0, 0, -1, m233_ChoiceObjMain);
+    obj->data = work = HuMemAllocTag(sizeof(MpiqChoiceWork), TAG_OVERLAY);
+    m233_choiceObj = obj;
     work->flags = 0;
     work->scale = 0.0f;
     work->x = 0.0f;
     work->y = 0.0f;
     for (i = 0; i < 3; i++) {
-        D_8010CAF2_mpiq[i] = HuSprAnimDataRead(images[i] | 0x420000);
-        D_8010CAEC_mpiq[i] = espEntry(D_8010CAF2_mpiq[i], 0, 1);
-        espAttrSet(D_8010CAEC_mpiq[i], 8);
-        espPosSet(D_8010CAEC_mpiq[i], 160, 120);
-        espDispOn(D_8010CAEC_mpiq[i]);
-        espScaleSet(D_8010CAEC_mpiq[i], 1.0f, 1.0f);
-        espPriSet(D_8010CAEC_mpiq[i], 255);
+        m233_choiceSprAnimTbl[i] = HuSprAnimDataRead(images[i] | 0x420000);
+        m233_choiceSprTbl[i] = espEntry(m233_choiceSprAnimTbl[i], 0, 1);
+        espAttrSet(m233_choiceSprTbl[i], 8);
+        espPosSet(m233_choiceSprTbl[i], 160, 120);
+        espDispOn(m233_choiceSprTbl[i]);
+        espScaleSet(m233_choiceSprTbl[i], 1.0f, 1.0f);
+        espPriSet(m233_choiceSprTbl[i], 255);
     }
-    omAddPrcObj(func_80109018_mpiq, 0x4800, 0, 0);
-    omAddPrcObj(func_80108D10_mpiq, 0x5100, 0, 0);
+    omAddPrcObj(m233_ChoiceSelectProc, 0x4800, 0, 0);
+    omAddPrcObj(m233_ComInputProc, 0x5100, 0, 0);
 }
 
-void func_80108D10_mpiq(void) {
+void m233_ComInputProc(void) {
     s32 i;
 
     while (TRUE) {
@@ -1102,35 +1102,35 @@ void func_80108D10_mpiq(void) {
                 HuPadBtnDown[GwPlayer[i].pad] &= 0x1FFF;
             }
             if (MgFlowStatGet() == MG_STATE_PLAY && (GwPlayer[i].stat & 1)) {
-                func_801069F8_mpiq(i);
+                m233_ComInput(i);
             }
         }
         HuPrcVSleep();
     }
 }
 
-void func_80108E20_mpiq(omObjData *obj) {
-    MpiqSignWork *work = obj->data;
+void m233_ChoiceObjMain(omObjData *obj) {
+    MpiqChoiceWork *work = obj->data;
     s32 i;
 
     if (work->flags & 4) {
-        espDispOn(D_8010CAEC_mpiq[0]);
+        espDispOn(m233_choiceSprTbl[0]);
     } else {
-        espDispOff(D_8010CAEC_mpiq[0]);
+        espDispOff(m233_choiceSprTbl[0]);
     }
     if (work->flags & 8) {
-        espDispOn(D_8010CAEC_mpiq[1]);
+        espDispOn(m233_choiceSprTbl[1]);
     } else {
-        espDispOff(D_8010CAEC_mpiq[1]);
+        espDispOff(m233_choiceSprTbl[1]);
     }
     if (work->flags & 0x10) {
-        espDispOn(D_8010CAEC_mpiq[2]);
+        espDispOn(m233_choiceSprTbl[2]);
     } else {
-        espDispOff(D_8010CAEC_mpiq[2]);
+        espDispOff(m233_choiceSprTbl[2]);
     }
     for (i = 0; i < 3; i++) {
-        espPosSet(D_8010CAEC_mpiq[i], work->x, work->y);
-        espScaleSet(D_8010CAEC_mpiq[i], work->scale, work->scale);
+        espPosSet(m233_choiceSprTbl[i], work->x, work->y);
+        espScaleSet(m233_choiceSprTbl[i], work->scale, work->scale);
     }
     if (work->flags & 1) {
         work->scale += 0.2f;
@@ -1144,24 +1144,24 @@ void func_80108E20_mpiq(omObjData *obj) {
         if (work->scale <= 0.2f) {
             work->scale = 0.2f;
             work->flags &= ~0x1E;
-            D_8010C9C0_mpiq &= ~0x20;
+            m233_quizFlag &= ~0x20;
         }
     }
 }
 
-void func_80109018_mpiq(void) {
+void m233_ChoiceSelectProc(void) {
     Vec2f screenPos;
     Vec pos;
     omObjData *player;
-    MpiqSignWork *work;
+    MpiqChoiceWork *work;
     u16 buttons;
 
     while (TRUE) {
-        player = mgPlayerObjTbl[D_8010C9BC_mpiq];
-        if (D_8010C9C2_mpiq == 1 && D_8010C6B8_mpiq == -1 && (D_8010C9C0_mpiq & 4) &&
-            func_8010C4C0_mpiq(D_8010C9BC_mpiq)) {
-            buttons = HuPadBtnDown[GwPlayer[D_8010C9BC_mpiq].pad];
-            work = D_8010CAE8_mpiq->data;
+        player = mgPlayerObjTbl[m233_answerPlayer];
+        if (m233_buzzLockF == 1 && m233_choiceNo == -1 && (m233_quizFlag & 4) &&
+            m233_PlayerOnStandCheck(m233_answerPlayer)) {
+            buttons = HuPadBtnDown[GwPlayer[m233_answerPlayer].pad];
+            work = m233_choiceObj->data;
             pos.x = player->trans.x;
             pos.y = player->trans.y;
             pos.z = player->trans.z;
@@ -1170,7 +1170,7 @@ void func_80109018_mpiq(void) {
             work->y = screenPos.y - 46.0f;
             work->scale = 0.0f;
             if ((buttons & 0xE000) == 0x8000) {
-                D_8010C6B8_mpiq = 0;
+                m233_choiceNo = 0;
                 MgPlayerMotSwap(player, 0x26, 0);
                 MgPlayerMotForceSet(player, 0x27);
                 while (Hu3DData[player->model[0]].motTime < Hu3DMotion[Hu3DData[player->model[0]].motId].unk02) {
@@ -1181,10 +1181,10 @@ void func_80109018_mpiq(void) {
                 work->flags |= 5;
                 HuPrcSleep(30);
                 work->flags |= 2;
-                D_8010C9C0_mpiq &= ~0x20;
+                m233_quizFlag &= ~0x20;
             }
             if ((buttons & 0xE000) == 0x4000) {
-                D_8010C6B8_mpiq = 1;
+                m233_choiceNo = 1;
                 MgPlayerMotSwap(player, 0x26, 0);
                 MgPlayerMotForceSet(player, 0x27);
                 while (Hu3DData[player->model[0]].motTime < Hu3DMotion[Hu3DData[player->model[0]].motId].unk02) {
@@ -1195,10 +1195,10 @@ void func_80109018_mpiq(void) {
                 work->flags |= 9;
                 HuPrcSleep(30);
                 work->flags |= 2;
-                D_8010C9C0_mpiq &= ~0x20;
+                m233_quizFlag &= ~0x20;
             }
             if ((buttons & 0xE000) == 0x2000) {
-                D_8010C6B8_mpiq = 2;
+                m233_choiceNo = 2;
                 MgPlayerMotSwap(player, 0x26, 0);
                 MgPlayerMotForceSet(player, 0x27);
                 while (Hu3DData[player->model[0]].motTime < Hu3DMotion[Hu3DData[player->model[0]].motId].unk02) {
@@ -1209,14 +1209,14 @@ void func_80109018_mpiq(void) {
                 work->flags |= 0x11;
                 HuPrcSleep(30);
                 work->flags |= 2;
-                D_8010C9C0_mpiq &= ~0x20;
+                m233_quizFlag &= ~0x20;
             }
         }
         HuPrcVSleep();
     }
 }
 
-void func_80109414_mpiq(void) {
+void m233_QuestionTblCreate(void) {
     s32 used[64];
     s32 answerUsed[3];
     s32 mes = 0;
@@ -1229,14 +1229,14 @@ void func_80109414_mpiq(void) {
         used[i] = 0;
     }
     for (i = 0; i < 10; i++) {
-        D_8010CBA0_mpiq[i] = 0;
+        m233_questionFlagTbl[i] = 0;
         while (TRUE) {
             question = rand8() % 64;
-            if (D_8010C9F8_mpiq != 0) {
-                question = D_8010D020_mpiq;
-                D_8010D020_mpiq++;
-                if (D_8010D020_mpiq > 64) {
-                    D_8010D020_mpiq = 0;
+            if (m233_endlessF != 0) {
+                question = m233_endlessQuestionNo;
+                m233_endlessQuestionNo++;
+                if (m233_endlessQuestionNo > 64) {
+                    m233_endlessQuestionNo = 0;
                 }
             }
             if (question >= 36) {
@@ -1245,37 +1245,37 @@ void func_80109414_mpiq(void) {
                 } else {
                     mes = (question - 49) * 2 + 0x5400;
                 }
-                D_8010CA50_mpiq[i] = mes;
-                func_8010A010_mpiq(i);
+                m233_questionMesTbl[i] = mes;
+                m233_QuestionInsertSet(i);
             }
-            if (used[question] == 0 && func_801096C0_mpiq(i, question)) {
+            if (used[question] == 0 && m233_QuestionCheck(i, question)) {
                 if (question < 36) {
                     mes = question * 4 + 0x5500;
-                    D_8010CA50_mpiq[i] = mes;
-                    D_8010CBD0_mpiq[i] = 0x5307;
+                    m233_questionMesTbl[i] = mes;
+                    m233_choiceUnitMesTbl[i] = 0x5307;
                 }
-                if (D_8010C9F8_mpiq == 0) {
+                if (m233_endlessF == 0) {
                     used[question]++;
                 }
                 for (j = 0; j < 3; j++) {
                     answerUsed[j] = 0;
-                    D_8010CB00_mpiq[i][j] = -1;
+                    m233_choiceTbl[i][j] = -1;
                 }
                 if (question >= 36) {
-                    func_8010A184_mpiq(i);
+                    m233_AnswerCalc(i);
                 }
-                D_8010CBCC_mpiq = 0;
+                m233_boardPickCnt = 0;
                 for (j = 0; j < 3; j++) {
                     while (TRUE) {
                         answer = (u8)(rand8() % 3);
                         if (answerUsed[answer] == 0) {
                             if (question < 36) {
-                                D_8010CB00_mpiq[i][j] = mes + 1 + answer;
+                                m233_choiceTbl[i][j] = mes + 1 + answer;
                             } else {
-                                D_8010CB00_mpiq[i][j] = func_8010AB44_mpiq(i, answer);
+                                m233_choiceTbl[i][j] = m233_ChoiceGet(i, answer);
                             }
                             if (answer == 0) {
-                                D_8010CA38_mpiq[i] = j;
+                                m233_correctChoiceTbl[i] = j;
                             }
                             answerUsed[answer]++;
                             break;
@@ -1288,7 +1288,7 @@ void func_80109414_mpiq(void) {
     }
 }
 
-s32 func_801096C0_mpiq(s32 index, s32 question) {
+s32 m233_QuestionCheck(s32 index, s32 question) {
     s32 list[2][6];
     s32 result = TRUE;
     s32 mes;
@@ -1300,7 +1300,7 @@ s32 func_801096C0_mpiq(s32 index, s32 question) {
     s32 i;
     s32 j;
 
-    if (D_8010C9F8_mpiq != 0) {
+    if (m233_endlessF != 0) {
         return TRUE;
     }
     if (question >= 36) {
@@ -1316,7 +1316,7 @@ s32 func_801096C0_mpiq(s32 index, s32 question) {
         }
         switch (mes) {
             case 0x5302:
-                value = D_8010CBB8_mpiq[index] - 0x1C60;
+                value = m233_insertMesTbl[index] - 0x1C60;
                 count = MgStoryRankGet(value);
                 if (count == -1) {
                     return FALSE;
@@ -1392,17 +1392,17 @@ s32 func_801096C0_mpiq(s32 index, s32 question) {
                 if (count != 0) {
                     pick = rand8() % count;
                 }
-                D_8010CBF8_mpiq[0] = list[1][pick];
+                m233_boardPickTbl[0] = list[1][pick];
                 for (i = 0; i < 2; i++) {
                     do {
                         pick = rand8() % (6 - count) + count;
                         for (j = 0, temp = 0; j < i + 1; j++) {
-                            if (list[1][pick] == D_8010CBF8_mpiq[j]) {
+                            if (list[1][pick] == m233_boardPickTbl[j]) {
                                 temp++;
                             }
                         }
                     } while (temp != 0);
-                    D_8010CBF8_mpiq[i + 1] = list[1][pick];
+                    m233_boardPickTbl[i + 1] = list[1][pick];
                 }
                 break;
             case 0x5316:
@@ -1416,7 +1416,7 @@ s32 func_801096C0_mpiq(s32 index, s32 question) {
                 if (value == 0) {
                     result = FALSE;
                 } else {
-                    D_8010CC04_mpiq = list[0][rand8() % value];
+                    m233_boardPickNo = list[0][rand8() % value];
                 }
                 break;
             case 0x5318:
@@ -1430,7 +1430,7 @@ s32 func_801096C0_mpiq(s32 index, s32 question) {
                 if (value == 0) {
                     result = FALSE;
                 } else {
-                    D_8010CC04_mpiq = list[0][rand8() % value];
+                    m233_boardPickNo = list[0][rand8() % value];
                 }
                 break;
             case 0x5404:
@@ -1508,7 +1508,7 @@ s32 func_801096C0_mpiq(s32 index, s32 question) {
                 }
                 break;
             case 0x541A:
-                value = D_8010CBB8_mpiq[index] - 0x1C60;
+                value = m233_insertMesTbl[index] - 0x1C60;
                 for (i = 0; i < 4; i++) {
                     if (GwPlayer[i].chr == value) {
                         break;
@@ -1519,7 +1519,7 @@ s32 func_801096C0_mpiq(s32 index, s32 question) {
                 }
                 break;
             case 0x541C:
-                value = D_8010CBB8_mpiq[index] - 0x1C60;
+                value = m233_insertMesTbl[index] - 0x1C60;
                 for (i = 0; i < 4; i++) {
                     if (GwPlayer[i].chr == value) {
                         break;
@@ -1571,43 +1571,43 @@ s32 func_801096C0_mpiq(s32 index, s32 question) {
     return result;
 }
 
-void func_8010A010_mpiq(s32 index) {
+void m233_QuestionInsertSet(s32 index) {
     s32 value;
 
-    switch (D_8010CA50_mpiq[index]) {
+    switch (m233_questionMesTbl[index]) {
         case 0x5300:
             value = rand8() & 0xF;
-            D_8010CBB8_mpiq[index] = value + 0x531B;
-            D_8010CBA0_mpiq[index] |= 2;
+            m233_insertMesTbl[index] = value + 0x531B;
+            m233_questionFlagTbl[index] |= 2;
             break;
         case 0x5302:
             value = (u8)(rand8() % 6);
-            D_8010CBB8_mpiq[index] = value + 0x1C60;
-            D_8010CBA0_mpiq[index] |= 2;
+            m233_insertMesTbl[index] = value + 0x1C60;
+            m233_questionFlagTbl[index] |= 2;
             break;
         case 0x5316:
-            value = D_8010CC04_mpiq;
-            D_8010CBB8_mpiq[index] = value + 0x532B;
-            D_8010CBA0_mpiq[index] |= 2;
+            value = m233_boardPickNo;
+            m233_insertMesTbl[index] = value + 0x532B;
+            m233_questionFlagTbl[index] |= 2;
             break;
         case 0x5318:
-            value = D_8010CC04_mpiq;
-            D_8010CBB8_mpiq[index] = value + 0x5331;
-            D_8010CBA0_mpiq[index] |= 2;
+            value = m233_boardPickNo;
+            m233_insertMesTbl[index] = value + 0x5331;
+            m233_questionFlagTbl[index] |= 2;
             break;
         case 0x541A:
         case 0x541C:
             value = rand8() & 3;
-            D_8010CBB8_mpiq[index] = GwPlayer[value].chr + 0x1C60;
-            D_8010CBA0_mpiq[index] |= 2;
+            m233_insertMesTbl[index] = GwPlayer[value].chr + 0x1C60;
+            m233_questionFlagTbl[index] |= 2;
             break;
         default:
-            D_8010CBB8_mpiq[index] = 0;
+            m233_insertMesTbl[index] = 0;
             break;
     }
 }
 
-void func_8010A184_mpiq(s32 index) {
+void m233_AnswerCalc(s32 index) {
     s32 list[4];
     s32 value;
     s32 other;
@@ -1616,95 +1616,95 @@ void func_8010A184_mpiq(s32 index) {
     s32 i;
 
     for (i = 0; i < 256; i++) {
-        D_8010CC10_mpiq[i] = 0;
+        m233_answerBuf[i] = 0;
     }
-    switch (D_8010CA50_mpiq[index]) {
+    switch (m233_questionMesTbl[index]) {
         case 0x5300:
-            D_8010CBA0_mpiq[index] |= 1;
-            value = D_8010CBB8_mpiq[index] - 0x531B;
-            D_8010D010_mpiq = D_8010C6BC_mpiq[value];
+            m233_questionFlagTbl[index] |= 1;
+            value = m233_insertMesTbl[index] - 0x531B;
+            m233_answerValue = m233_insertAnswerTbl[value];
             break;
         case 0x5302:
-            value = D_8010CBB8_mpiq[index] - 0x1C60;
+            value = m233_insertMesTbl[index] - 0x1C60;
             rank = MgStoryRankGet(value);
             other = 0x533B;
-            D_8010D010_mpiq = other - rank;
-            if (D_8010C9F8_mpiq != 0) {
-                D_8010D010_mpiq = 0x5337;
+            m233_answerValue = other - rank;
+            if (m233_endlessF != 0) {
+                m233_answerValue = 0x5337;
             }
             break;
         case 0x5304:
-            D_8010CBA0_mpiq[index] |= 1;
-            D_8010D010_mpiq = GWMgRecordGet(0);
+            m233_questionFlagTbl[index] |= 1;
+            m233_answerValue = GWMgRecordGet(0);
             break;
         case 0x5306:
-            D_8010CBA0_mpiq[index] |= 4;
-            D_8010D010_mpiq = GWMgRecordGet(2);
+            m233_questionFlagTbl[index] |= 4;
+            m233_answerValue = GWMgRecordGet(2);
             break;
         case 0x5308:
-            D_8010CBA0_mpiq[index] |= 32;
-            D_8010D010_mpiq = GWMgRecordGet(4);
+            m233_questionFlagTbl[index] |= 32;
+            m233_answerValue = GWMgRecordGet(4);
             break;
         case 0x530A:
-            D_8010CBA0_mpiq[index] |= 4;
-            D_8010D010_mpiq = GWMgRecordGet(3) * 2;
+            m233_questionFlagTbl[index] |= 4;
+            m233_answerValue = GWMgRecordGet(3) * 2;
             break;
         case 0x530C:
-            D_8010CBA0_mpiq[index] |= 4;
-            D_8010D010_mpiq = GWMgRecordGet(5);
+            m233_questionFlagTbl[index] |= 4;
+            m233_answerValue = GWMgRecordGet(5);
             break;
         case 0x530E:
-            D_8010CBA0_mpiq[index] |= 4;
-            D_8010D010_mpiq = GWMgRecordGet(6);
+            m233_questionFlagTbl[index] |= 4;
+            m233_answerValue = GWMgRecordGet(6);
             break;
         case 0x5310:
-            D_8010CBA0_mpiq[index] |= 4;
-            D_8010D010_mpiq = GWMgRecordGet(7);
+            m233_questionFlagTbl[index] |= 4;
+            m233_answerValue = GWMgRecordGet(7);
             break;
         case 0x5312:
-            D_8010D010_mpiq = D_8010CBF8_mpiq[0] + 0x532B;
+            m233_answerValue = m233_boardPickTbl[0] + 0x532B;
             break;
         case 0x5314:
-            D_8010D010_mpiq = D_8010CBF8_mpiq[0] + 0x5331;
+            m233_answerValue = m233_boardPickTbl[0] + 0x5331;
             break;
         case 0x5316:
-            D_8010CBA0_mpiq[index] |= 1;
-            value = D_8010CBB8_mpiq[index] - 0x532B;
-            D_8010D010_mpiq = GwCommon.boardRecord[0][value].playCount;
+            m233_questionFlagTbl[index] |= 1;
+            value = m233_insertMesTbl[index] - 0x532B;
+            m233_answerValue = GwCommon.boardRecord[0][value].playCount;
             break;
         case 0x5318:
-            D_8010CBA0_mpiq[index] |= 1;
-            value = D_8010CBB8_mpiq[index] - 0x5331;
-            D_8010D010_mpiq = GwCommon.boardRecord[1][value].playCount;
+            m233_questionFlagTbl[index] |= 1;
+            value = m233_insertMesTbl[index] - 0x5331;
+            m233_answerValue = GwCommon.boardRecord[1][value].playCount;
             break;
         case 0x5400:
-            D_8010CBA0_mpiq[index] |= 1;
+            m233_questionFlagTbl[index] |= 1;
             value = 0;
             for (i = 0; i < 4; i++) {
                 value += GwPlayer[i].star & 0x7F;
             }
-            D_8010D010_mpiq = value;
+            m233_answerValue = value;
             break;
         case 0x5402:
-            D_8010CBA0_mpiq[index] |= 1;
+            m233_questionFlagTbl[index] |= 1;
             value = 0;
             for (i = 0; i < 4; i++) {
                 value += GwPlayer[i].coin;
             }
-            D_8010D010_mpiq = value;
+            m233_answerValue = value;
             break;
         case 0x5404:
         case 0x5412:
         case 0x5414:
         case 0x5416:
         case 0x5418:
-            other = D_8010CA50_mpiq[index];
+            other = m233_questionMesTbl[index];
             value = 1000;
             if (other == 0x5404 || other == 0x5412 || other == 0x5414) {
                 value = 0;
             }
             for (i = 0; i < 4; i++) {
-                switch (D_8010CA50_mpiq[index]) {
+                switch (m233_questionMesTbl[index]) {
                     case 0x5404:
                         other = GwPlayer[i].gamePrize;
                         break;
@@ -1718,8 +1718,8 @@ void func_8010A184_mpiq(s32 index) {
                         other = GwPlayer[i].coin;
                         break;
                 }
-                if (D_8010CA50_mpiq[index] == 0x5404 || D_8010CA50_mpiq[index] == 0x5412 ||
-                    D_8010CA50_mpiq[index] == 0x5414) {
+                if (m233_questionMesTbl[index] == 0x5404 || m233_questionMesTbl[index] == 0x5412 ||
+                    m233_questionMesTbl[index] == 0x5414) {
                     if (value < other) {
                         value = other;
                     }
@@ -1731,7 +1731,7 @@ void func_8010A184_mpiq(s32 index) {
             }
             count = 0;
             for (i = 0; i < 4; i++) {
-                switch (D_8010CA50_mpiq[index]) {
+                switch (m233_questionMesTbl[index]) {
                     case 0x5404:
                         other = GwPlayer[i].gamePrize;
                         break;
@@ -1751,15 +1751,15 @@ void func_8010A184_mpiq(s32 index) {
                 }
             }
             value = rand8() % count;
-            D_8010D010_mpiq = GwPlayer[list[value]].chr + 0x1C60;
+            m233_answerValue = GwPlayer[list[value]].chr + 0x1C60;
             break;
         case 0x5406:
         case 0x5408:
         case 0x540A:
-            D_8010CBA0_mpiq[index] |= 1;
+            m233_questionFlagTbl[index] |= 1;
             value = 0;
             for (i = 0; i < 4; i++) {
-                switch (D_8010CA50_mpiq[index]) {
+                switch (m233_questionMesTbl[index]) {
                     case 0x5406:
                         value += GwPlayer[i].stats.prize.redPrize & 0x7F;
                         break;
@@ -1771,63 +1771,63 @@ void func_8010A184_mpiq(s32 index) {
                         break;
                 }
             }
-            D_8010D010_mpiq = value;
+            m233_answerValue = value;
             break;
         case 0x540C:
-            D_8010CBA0_mpiq[index] |= 1;
-            D_8010D010_mpiq = GwSystem.bank_coins;
+            m233_questionFlagTbl[index] |= 1;
+            m233_answerValue = GwSystem.bank_coins;
             break;
         case 0x540E:
-            D_8010CBA0_mpiq[index] |= 1;
-            D_8010D010_mpiq = index + D_8010C9FC_mpiq + 1;
+            m233_questionFlagTbl[index] |= 1;
+            m233_answerValue = index + m233_questionNoBase + 1;
             break;
         case 0x5410:
-            D_8010CBA0_mpiq[index] |= 1;
-            D_8010D010_mpiq = (GwSystem.current_turn + 1) & 0x7F;
+            m233_questionFlagTbl[index] |= 1;
+            m233_answerValue = (GwSystem.current_turn + 1) & 0x7F;
             break;
         case 0x541A:
         case 0x541C:
-            D_8010CBA0_mpiq[index] |= 1;
-            value = D_8010CBB8_mpiq[index] - 0x1C60;
+            m233_questionFlagTbl[index] |= 1;
+            value = m233_insertMesTbl[index] - 0x1C60;
             for (i = 0; i < 4; i++) {
                 if (GwPlayer[i].chr == value) {
                     break;
                 }
             }
-            if (D_8010CA50_mpiq[index] == 0x541A) {
-                D_8010D010_mpiq = GwPlayer[i].coin;
+            if (m233_questionMesTbl[index] == 0x541A) {
+                m233_answerValue = GwPlayer[i].coin;
             } else {
-                D_8010D010_mpiq = GwPlayer[i].star & 0x7F;
+                m233_answerValue = GwPlayer[i].star & 0x7F;
             }
             break;
     }
-    D_8010CBD0_mpiq[index] = D_8010CA50_mpiq[index] + 1;
+    m233_choiceUnitMesTbl[index] = m233_questionMesTbl[index] + 1;
 }
 
-s16 func_8010AB44_mpiq(s32 index, s32 answer) {
+s16 m233_ChoiceGet(s32 index, s32 answer) {
     s32 offset;
     s32 value = 0;
     s32 found;
     s32 i;
 
     if (answer == 0) {
-        value = D_8010D010_mpiq;
+        value = m233_answerValue;
     } else {
-        switch (D_8010CA50_mpiq[index]) {
+        switch (m233_questionMesTbl[index]) {
             case 0x5300:
             case 0x540C:
-                value = func_8010AFAC_mpiq(index, 11, -5, 1);
+                value = m233_ChoiceNumGet(index, 11, -5, 1);
                 break;
             case 0x5302:
                 do {
                     offset = rand8() & 3;
-                    if (D_8010C9F8_mpiq != 0) {
+                    if (m233_endlessF != 0) {
                         return offset + 0x5337;
                     }
                     found = 0;
                     for (i = 0; i < 3; i++) {
                         value = offset + 0x5337;
-                        if (value == D_8010CB00_mpiq[index][i] || value == D_8010D010_mpiq || value < 0) {
+                        if (value == m233_choiceTbl[index][i] || value == m233_answerValue || value < 0) {
                             found++;
                             break;
                         }
@@ -1835,60 +1835,60 @@ s16 func_8010AB44_mpiq(s32 index, s32 answer) {
                 } while (found != 0);
                 break;
             case 0x5304:
-                value = func_8010AFAC_mpiq(index, 16, -5, 10);
+                value = m233_ChoiceNumGet(index, 16, -5, 10);
                 break;
             case 0x5306:
             case 0x530A:
             case 0x530C:
             case 0x530E:
             case 0x5310:
-                value = func_8010AFAC_mpiq(index, 9, -3, 60);
+                value = m233_ChoiceNumGet(index, 9, -3, 60);
                 break;
             case 0x5308:
-                value = func_8010AFAC_mpiq(index, 16, -5, 100);
+                value = m233_ChoiceNumGet(index, 16, -5, 100);
                 break;
             case 0x5312:
-                value = D_8010CBFC_mpiq[D_8010CBCC_mpiq] + 0x532B;
-                D_8010CBCC_mpiq++;
+                value = m233_boardPickWrongTbl[m233_boardPickCnt] + 0x532B;
+                m233_boardPickCnt++;
                 break;
             case 0x5314:
-                value = D_8010CBFC_mpiq[D_8010CBCC_mpiq] + 0x5331;
-                D_8010CBCC_mpiq++;
+                value = m233_boardPickWrongTbl[m233_boardPickCnt] + 0x5331;
+                m233_boardPickCnt++;
                 break;
             case 0x5316:
             case 0x5318:
             case 0x540E:
             case 0x541C:
-                value = func_8010AFAC_mpiq(index, 4, -1, 1);
+                value = m233_ChoiceNumGet(index, 4, -1, 1);
                 break;
             case 0x5400:
-                value = func_8010AFAC_mpiq(index, 5, -2, 1);
+                value = m233_ChoiceNumGet(index, 5, -2, 1);
                 break;
             case 0x5402:
             case 0x541A:
-                value = func_8010AFAC_mpiq(index, 21, -10, 1);
+                value = m233_ChoiceNumGet(index, 21, -10, 1);
                 break;
             case 0x5404:
             case 0x5412:
             case 0x5414:
             case 0x5416:
             case 0x5418:
-                value = func_8010AEDC_mpiq(index);
+                value = m233_ChoiceChrGet(index);
                 break;
             case 0x5406:
             case 0x5408:
             case 0x540A:
-                value = func_8010AFAC_mpiq(index, 7, -3, 1);
+                value = m233_ChoiceNumGet(index, 7, -3, 1);
                 break;
             case 0x5410:
-                value = func_8010AFAC_mpiq(index, 9, -3, 1);
+                value = m233_ChoiceNumGet(index, 9, -3, 1);
                 break;
         }
     }
     return value;
 }
 
-s32 func_8010AEDC_mpiq(s32 index) {
+s32 m233_ChoiceChrGet(s32 index) {
     s32 value = 0;
     s32 found;
     s32 chr;
@@ -1905,7 +1905,7 @@ s32 func_8010AEDC_mpiq(s32 index) {
         if (i == 4) {
             value = chr + 0x1C60;
             for (i = 0; i < 3; i++) {
-                if (value == D_8010CB00_mpiq[index][i]) {
+                if (value == m233_choiceTbl[index][i]) {
                     break;
                 }
             }
@@ -1917,7 +1917,7 @@ s32 func_8010AEDC_mpiq(s32 index) {
     return value;
 }
 
-s32 func_8010AFAC_mpiq(s32 index, s32 range, s32 base, s32 scale) {
+s32 m233_ChoiceNumGet(s32 index, s32 range, s32 base, s32 scale) {
     s32 offset;
     s32 tries = 0;
     s32 value;
@@ -1928,13 +1928,13 @@ s32 func_8010AFAC_mpiq(s32 index, s32 range, s32 base, s32 scale) {
         offset = (rand8() % range + base) * scale;
         found = 0;
         for (i = 0; i < 3; i++) {
-            value = offset + D_8010D010_mpiq;
-            if (value == D_8010CB00_mpiq[index][i] || value == D_8010D010_mpiq || value <= 0) {
+            value = offset + m233_answerValue;
+            if (value == m233_choiceTbl[index][i] || value == m233_answerValue || value <= 0) {
                 found++;
                 break;
             }
         }
-        if (found == 0 || (D_8010C9F8_mpiq != 0 && tries == 100)) {
+        if (found == 0 || (m233_endlessF != 0 && tries == 100)) {
             break;
         }
         tries++;
@@ -1942,10 +1942,10 @@ s32 func_8010AFAC_mpiq(s32 index, s32 range, s32 base, s32 scale) {
     return value;
 }
 
-void func_8010B0CC_mpiq(void) {
+void m233_QuizProc(void) {
     s32 counts[4];
     omObjData *player;
-    MpiqDanceObjData *data;
+    MpiqHostWork *data;
     s32 i;
     s32 round;
     s32 count;
@@ -1958,95 +1958,95 @@ void func_8010B0CC_mpiq(void) {
     for (i = 0; i < 4; i++) {
         counts[i] = 0;
     }
-    D_8010C9D8_mpiq = -1;
+    m233_winner = -1;
     while (1) {
         for (round = 0; round < 10; round++) {
-            D_8010C9C0_mpiq = 0;
-            D_8010CA4C_mpiq = round;
-            D_8010C6B8_mpiq = -1;
+            m233_quizFlag = 0;
+            m233_questionNo = round;
+            m233_choiceNo = -1;
             for (i = 0; i < 4; i++) {
-                func_80106664_mpiq(i);
+                m233_ComInputSet(i);
             }
-            func_801089A4_mpiq(4);
-            D_8010CA00_mpiq = func_8010BB74_mpiq();
-            omAddPrcObj(func_8010C2F0_mpiq, 0x4900, 0, 0);
+            m233_HostTurnSet(4);
+            m233_questionWin = m233_QuestionWinCreate();
+            omAddPrcObj(m233_CountdownProc, 0x4900, 0, 0);
             HuPrcVSleep();
-            D_8010C9C2_mpiq = 0;
-            omAddObj(6, 0, 0, -1, func_8010BA64_mpiq);
-            while (HuWinStatGet(D_8010CA00_mpiq) != 0) {
-                if (D_8010C9C0_mpiq & 4) {
+            m233_buzzLockF = 0;
+            omAddObj(6, 0, 0, -1, m233_BuzzObjMain);
+            while (HuWinStatGet(m233_questionWin) != 0) {
+                if (m233_quizFlag & 4) {
                     break;
                 }
                 HuPrcVSleep();
             }
-            if (!(D_8010C9C0_mpiq & 4)) {
-                D_8010C9C0_mpiq |= 0x10;
-                while (D_8010C9C0_mpiq & 0x10) {
+            if (!(m233_quizFlag & 4)) {
+                m233_quizFlag |= 0x10;
+                while (m233_quizFlag & 0x10) {
                     HuPrcVSleep();
                 }
             }
-            HuWinKill(D_8010CA00_mpiq);
-            D_8010CA00_mpiq = -1;
-            if (D_8010C9C0_mpiq & 4) {
-                _HuAudPlayerFXPlay(0x40D, D_8010C9BC_mpiq);
-                PlayerFXPlay(0xCA, D_8010C9BC_mpiq);
-                D_8010CA00_mpiq = func_8010BD1C_mpiq();
-                func_801089A4_mpiq(2);
-                D_8010C9C0_mpiq |= 0x20;
-                while (D_8010C9C0_mpiq & 0x20) {
+            HuWinKill(m233_questionWin);
+            m233_questionWin = -1;
+            if (m233_quizFlag & 4) {
+                _HuAudPlayerFXPlay(0x40D, m233_answerPlayer);
+                PlayerFXPlay(0xCA, m233_answerPlayer);
+                m233_questionWin = m233_ChoiceWinCreate();
+                m233_HostTurnSet(2);
+                m233_quizFlag |= 0x20;
+                while (m233_quizFlag & 0x20) {
                     HuPrcVSleep();
                 }
-                HuWinKill(D_8010CA00_mpiq);
-                D_8010CA00_mpiq = -1;
-                func_80107C50_mpiq(D_8010C9BC_mpiq);
-                player = mgPlayerObjTbl[D_8010C9BC_mpiq];
-                data = D_8010CA78_mpiq->data;
-                if (D_8010C6B8_mpiq == D_8010CA38_mpiq[round]) {
-                    _HuAudPlayerFXPlay(0x40E, D_8010C9BC_mpiq);
-                    PlayerFXPlay(0x274, D_8010C9BC_mpiq);
-                    espDispOn(D_8010C9DC_mpiq[0]);
+                HuWinKill(m233_questionWin);
+                m233_questionWin = -1;
+                m233_BlockMotStop(m233_answerPlayer);
+                player = mgPlayerObjTbl[m233_answerPlayer];
+                data = m233_hostObj->data;
+                if (m233_choiceNo == m233_correctChoiceTbl[round]) {
+                    _HuAudPlayerFXPlay(0x40E, m233_answerPlayer);
+                    PlayerFXPlay(0x274, m233_answerPlayer);
+                    espDispOn(m233_judgeSprTbl[0]);
                     MgPlayerMotForceSet(player, 0x29);
-                    Hu3DMotionShiftSet(D_8010CA78_mpiq->model[0], Hu3DData[D_8010CA78_mpiq->motion[1]].motId, 0, 10, 0);
+                    Hu3DMotionShiftSet(m233_hostObj->model[0], Hu3DData[m233_hostObj->motion[1]].motId, 0, 10, 0);
                     data->flags |= 1;
                     HuPrcSleep(30);
-                    if (D_8010C9F8_mpiq == 0) {
-                        func_80107558_mpiq(D_8010C9BC_mpiq, ++D_8010C9C8_mpiq[D_8010C9BC_mpiq]);
-                        func_801085F4_mpiq(D_8010C9BC_mpiq);
+                    if (m233_endlessF == 0) {
+                        m233_StandRaise(m233_answerPlayer, ++m233_scoreTbl[m233_answerPlayer]);
+                        m233_MeterAdd(m233_answerPlayer);
                         HuPrcSleep(30);
                     }
                 } else {
-                    _HuAudPlayerFXPlay(0x40F, D_8010C9BC_mpiq);
-                    PlayerFXPlay(0x286, D_8010C9BC_mpiq);
-                    espDispOn(D_8010C9DC_mpiq[1]);
+                    _HuAudPlayerFXPlay(0x40F, m233_answerPlayer);
+                    PlayerFXPlay(0x286, m233_answerPlayer);
+                    espDispOn(m233_judgeSprTbl[1]);
                     MgPlayerMotForceSet(player, 0x2A);
-                    Hu3DMotionShiftSet(D_8010CA78_mpiq->model[0], Hu3DData[D_8010CA78_mpiq->motion[2]].motId, 0, 10, 0);
+                    Hu3DMotionShiftSet(m233_hostObj->model[0], Hu3DData[m233_hostObj->motion[2]].motId, 0, 10, 0);
                     data->flags |= 1;
                     HuPrcSleep(30);
-                    func_80107C18_mpiq(D_8010C9BC_mpiq);
+                    m233_BlockDrop(m233_answerPlayer);
                     HuPrcSleep(70);
-                    if (D_8010C6B8_mpiq == -1) {
+                    if (m233_choiceNo == -1) {
                         MgPlayerMotSwap(player, 0x26, 0);
                     }
                     MgPlayerMotForceSet(player, 0x2B);
-                    D_8010C9E8_mpiq[D_8010C9BC_mpiq] |= 1;
-                    counts[D_8010C9BC_mpiq] = 2;
+                    m233_playerFlagTbl[m233_answerPlayer] |= 1;
+                    counts[m233_answerPlayer] = 2;
                     HuPrcSleep(20);
-                    func_80107FCC_mpiq(D_8010C9BC_mpiq);
+                    m233_StunStart(m233_answerPlayer);
                 }
-                espDispOff(D_8010C9DC_mpiq[0]);
-                espDispOff(D_8010C9DC_mpiq[1]);
+                espDispOff(m233_judgeSprTbl[0]);
+                espDispOff(m233_judgeSprTbl[1]);
             }
             count = 0;
             for (i = 0; i < 4; i++) {
                 player = mgPlayerObjTbl[i];
-                if (D_8010C9E8_mpiq[i] & 1) {
+                if (m233_playerFlagTbl[i] & 1) {
                     counts[i]--;
                     if (round == 9) {
                         counts[i] = 0;
                     }
                     if (counts[i] == 0) {
                         MgPlayerMotForceSet(player, 0x21);
-                        func_8010811C_mpiq();
+                        m233_StunEnd();
                         count++;
                     }
                 }
@@ -2056,52 +2056,52 @@ void func_8010B0CC_mpiq(void) {
             }
             for (i = 0; i < 4; i++) {
                 player = mgPlayerObjTbl[i];
-                if (D_8010C9E8_mpiq[i] & 1) {
+                if (m233_playerFlagTbl[i] & 1) {
                     if (counts[i] == 0) {
                         MgPlayerMotForceSet(player, 0);
-                        D_8010C9E8_mpiq[i] &= ~1;
+                        m233_playerFlagTbl[i] &= ~1;
                     }
                 }
             }
             HuPrcSleep(30);
             for (i = 0; i < 4; i++) {
-                if (D_8010C9C8_mpiq[i] == 3) {
-                    D_8010C9D8_mpiq = i;
+                if (m233_scoreTbl[i] == 3) {
+                    m233_winner = i;
                 }
             }
-            if (D_8010C9D8_mpiq != -1) {
+            if (m233_winner != -1) {
                 break;
             }
         }
-        if (D_8010C9F8_mpiq == 0) {
+        if (m233_endlessF == 0) {
             break;
         }
-        D_8010C9FC_mpiq += 10;
-        func_80109414_mpiq();
+        m233_questionNoBase += 10;
+        m233_QuestionTblCreate();
     }
-    if (D_8010C9D8_mpiq == -1) {
+    if (m233_winner == -1) {
         for (round = 0; round < 2; round++) {
             wins = 2 - round;
             tied = 0;
-            D_8010C9D8_mpiq = -1;
+            m233_winner = -1;
             for (i = 0; i < 4; i++) {
-                if (D_8010C9C8_mpiq[i] == wins) {
+                if (m233_scoreTbl[i] == wins) {
                     tied++;
-                    D_8010C9D8_mpiq = i;
+                    m233_winner = i;
                 }
             }
             if (tied == 1) {
                 break;
             }
             if (tied > 1) {
-                D_8010C9D8_mpiq = -1;
+                m233_winner = -1;
                 break;
             }
         }
     }
     MgFlowStatSet(MG_STATE_FINISH);
-    func_80107C74_mpiq();
-    func_801089A4_mpiq(2);
+    m233_BlockEffStartAll();
+    m233_HostTurnSet(2);
     for (i = 0; i < 16; i++) {
         for (round = 0; round < 4; round++) {
             mgPlayerObjTbl[round]->rot.y = i * 12 + 180.0f;
@@ -2112,7 +2112,7 @@ void func_8010B0CC_mpiq(void) {
         HuPrcVSleep();
     }
     for (round = 0; round < 4; round++) {
-        if (round == D_8010C9D8_mpiq) {
+        if (round == m233_winner) {
             MgPlayerMotForceSet(mgPlayerObjTbl[round], 0xD);
             HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[round].chr][0] | 0x2F);
         } else {
@@ -2122,25 +2122,25 @@ void func_8010B0CC_mpiq(void) {
     omDelPrcObj(NULL);
 }
 
-void func_8010B900_mpiq(void) {
+void m233_BuzzProc(void) {
     s32 pressed[4];
     s32 count;
     s32 i;
 
-    while (!(D_8010C9C0_mpiq & 2)) {
+    while (!(m233_quizFlag & 2)) {
         count = 0;
         for (i = 0; i < 4; i++) {
-            if (D_8010C9E8_mpiq[i] & 1) {
+            if (m233_playerFlagTbl[i] & 1) {
                 continue;
             }
             if (HuPadBtnDown[GwPlayer[i].pad] & 0x8000) {
                 pressed[count++] = i;
-                D_8010C9C0_mpiq &= ~0x10;
-                D_8010C9C0_mpiq |= 4;
+                m233_quizFlag &= ~0x10;
+                m233_quizFlag |= 4;
             }
         }
         if (count != 0) {
-            D_8010C9BC_mpiq = pressed[rand8() % count];
+            m233_answerPlayer = pressed[rand8() % count];
             break;
         }
         HuPrcVSleep();
@@ -2148,62 +2148,62 @@ void func_8010B900_mpiq(void) {
     omDelPrcObj(NULL);
 }
 
-void func_8010BA64_mpiq(omObjData *obj) {
+void m233_BuzzObjMain(omObjData *obj) {
     s32 pressed[4];
     s32 count;
     s32 i;
 
-    if (!(D_8010C9C0_mpiq & 2)) {
+    if (!(m233_quizFlag & 2)) {
         count = 0;
         for (i = 0; i < 4; i++) {
             if (HuPadBtnDown[GwPlayer[i].pad] & 0x8000) {
                 pressed[count++] = i;
-                D_8010C9C0_mpiq &= ~0x10;
-                D_8010C9C0_mpiq |= 4;
+                m233_quizFlag &= ~0x10;
+                m233_quizFlag |= 4;
             }
         }
         if (count == 0) {
             return;
         }
-        D_8010C9BC_mpiq = pressed[rand8() % count];
+        m233_answerPlayer = pressed[rand8() % count];
     }
     omDelObj(obj);
 }
 
-const char D_8010C964_mpiq[] = "%d";
-const char D_8010C968_mpiq[] = "%02d%c%02d%c%02d";
-const char D_8010C97C_mpiq[] = "%d%c%02d";
+const char m233_numFmtStr[] = "%d";
+const char m233_timeFmtStr[] = "%02d%c%02d%c%02d";
+const char m233_decimalFmtStr[] = "%d%c%02d";
 
-s16 func_8010BB74_mpiq(void) {
+s16 m233_QuestionWinCreate(void) {
     s16 size[2];
     char buf[256];
     s32 mes;
     s16 win;
 
-    mes = D_8010CA50_mpiq[D_8010CA4C_mpiq];
-    sprintf(buf, D_8010C964_mpiq, D_8010CA4C_mpiq + 1 + D_8010C9FC_mpiq);
+    mes = m233_questionMesTbl[m233_questionNo];
+    sprintf(buf, m233_numFmtStr, m233_questionNo + 1 + m233_questionNoBase);
     HuWinInsertMesSizeGet((u32)buf, 1);
-    if (D_8010CBA0_mpiq[D_8010CA4C_mpiq] & 2) {
-        HuWinInsertMesSizeGet(D_8010CBB8_mpiq[D_8010CA4C_mpiq], 0);
+    if (m233_questionFlagTbl[m233_questionNo] & 2) {
+        HuWinInsertMesSizeGet(m233_insertMesTbl[m233_questionNo], 0);
     }
     HuWinMesMaxSizeGet(1, size, mes);
     win = HuWinCreate(79, 45, 165, 80, 0, 0);
-    D_8010CAFC_mpiq = win;
+    m233_questionWinNo = win;
     HuWinAttrSet(win, 64, 64);
     HuWinMesSpeedSet(win, 5);
     HuWinDummy(win);
     HuWinBGTPLvlSet(win, 0);
     HuWinActivePlayerSet(win, 1 << GwPlayer[0].pad);
     HuWinInsertMesSet(win, (u32)buf, 1);
-    if (D_8010CBA0_mpiq[D_8010CA4C_mpiq] & 2) {
-        HuWinInsertMesSet(win, D_8010CBB8_mpiq[D_8010CA4C_mpiq], 0);
+    if (m233_questionFlagTbl[m233_questionNo] & 2) {
+        HuWinInsertMesSet(win, m233_insertMesTbl[m233_questionNo], 0);
     }
     HuWinHomeClear(win);
     HuWinMesSet(win, mes, -1, -1);
     return win;
 }
 
-s16 func_8010BD1C_mpiq(void) {
+s16 m233_ChoiceWinCreate(void) {
     s16 size[2];
     char buf[3][256];
     char *bufs[3];
@@ -2217,51 +2217,51 @@ s16 func_8010BD1C_mpiq(void) {
     s32 fraction;
     s16 win;
 
-    if (D_8010CBA0_mpiq[D_8010CA4C_mpiq] & 1) {
-        sprintf(buf[0], D_8010C964_mpiq, D_8010CB00_mpiq[D_8010CA4C_mpiq][0]);
-        sprintf(buf[1], D_8010C964_mpiq, D_8010CB00_mpiq[D_8010CA4C_mpiq][1]);
-        sprintf(buf[2], D_8010C964_mpiq, D_8010CB00_mpiq[D_8010CA4C_mpiq][2]);
+    if (m233_questionFlagTbl[m233_questionNo] & 1) {
+        sprintf(buf[0], m233_numFmtStr, m233_choiceTbl[m233_questionNo][0]);
+        sprintf(buf[1], m233_numFmtStr, m233_choiceTbl[m233_questionNo][1]);
+        sprintf(buf[2], m233_numFmtStr, m233_choiceTbl[m233_questionNo][2]);
         HuWinInsertMesSizeGet((u32)buf[0], 0);
         HuWinInsertMesSizeGet((u32)buf[1], 1);
         HuWinInsertMesSizeGet((u32)buf[2], 2);
-        HuWinInsertMesSizeGet(D_8010CBD0_mpiq[D_8010CA4C_mpiq], 3);
+        HuWinInsertMesSizeGet(m233_choiceUnitMesTbl[m233_questionNo], 3);
         count = 1;
     }
-    if (D_8010CBA0_mpiq[D_8010CA4C_mpiq] & 4) {
+    if (m233_questionFlagTbl[m233_questionNo] & 4) {
         bufs[0] = buf[0];
         bufs[1] = buf[1];
         bufs[2] = buf[2];
         for (i = 0; i < 3; i++) {
-            value = D_8010CB00_mpiq[D_8010CA4C_mpiq][i];
+            value = m233_choiceTbl[m233_questionNo][i];
             quotient = value / 3600;
             value %= 3600;
             minutes = value / 60;
             seconds = value % 60;
             fraction = seconds * 100 / 60;
-            if (D_8010CA50_mpiq[D_8010CA4C_mpiq] == 0x530A) {
+            if (m233_questionMesTbl[m233_questionNo] == 0x530A) {
                 fraction = seconds * 99 / 60;
             }
-            sprintf(bufs[i], D_8010C968_mpiq, quotient, 0x5C, minutes, 0x5B, fraction);
+            sprintf(bufs[i], m233_timeFmtStr, quotient, 0x5C, minutes, 0x5B, fraction);
             HuWinInsertMesSizeGet((u32)bufs[i], i);
         }
         count++;
     }
-    if (D_8010CBA0_mpiq[D_8010CA4C_mpiq] & 0x20) {
+    if (m233_questionFlagTbl[m233_questionNo] & 0x20) {
         bufs[0] = buf[0];
         bufs[1] = buf[1];
         bufs[2] = buf[2];
         for (i = 0; i < 3; i++) {
-            value = D_8010CB00_mpiq[D_8010CA4C_mpiq][i];
+            value = m233_choiceTbl[m233_questionNo][i];
             quotient = value / 100;
             value %= 100;
-            sprintf(bufs[i], D_8010C97C_mpiq, quotient, 0x85, value);
+            sprintf(bufs[i], m233_decimalFmtStr, quotient, 0x85, value);
             HuWinInsertMesSizeGet((u32)bufs[i], i);
         }
         count++;
     }
     if (count == 0) {
         for (i = 0; i < 3; i++) {
-            HuWinInsertMesSizeGet(D_8010CB00_mpiq[D_8010CA4C_mpiq][i], (s8)i);
+            HuWinInsertMesSizeGet(m233_choiceTbl[m233_questionNo][i], (s8)i);
         }
     }
     HuWinMesMaxSizeGet(1, size, mes);
@@ -2272,14 +2272,14 @@ s16 func_8010BD1C_mpiq(void) {
     HuWinBGTPLvlSet(win, 0);
     HuWinActivePlayerSet(win, 1 << GwPlayer[0].pad);
     count = 0;
-    if (D_8010CBA0_mpiq[D_8010CA4C_mpiq] & 0x21) {
+    if (m233_questionFlagTbl[m233_questionNo] & 0x21) {
         HuWinInsertMesSet(win, (u32)buf[0], 0);
         HuWinInsertMesSet(win, (u32)buf[1], 1);
         HuWinInsertMesSet(win, (u32)buf[2], 2);
-        HuWinInsertMesSet(win, D_8010CBD0_mpiq[D_8010CA4C_mpiq], 3);
+        HuWinInsertMesSet(win, m233_choiceUnitMesTbl[m233_questionNo], 3);
         count = 1;
     }
-    if (D_8010CBA0_mpiq[D_8010CA4C_mpiq] & 4) {
+    if (m233_questionFlagTbl[m233_questionNo] & 4) {
         HuWinInsertMesSet(win, (u32)buf[0], 0);
         HuWinInsertMesSet(win, (u32)buf[1], 1);
         HuWinInsertMesSet(win, (u32)buf[2], 2);
@@ -2287,54 +2287,54 @@ s16 func_8010BD1C_mpiq(void) {
     }
     if (count == 0) {
         for (i = 0; i < 3; i++) {
-            HuWinInsertMesSet(win, D_8010CB00_mpiq[D_8010CA4C_mpiq][i], i);
+            HuWinInsertMesSet(win, m233_choiceTbl[m233_questionNo][i], i);
         }
-        HuWinInsertMesSet(win, D_8010CBD0_mpiq[D_8010CA4C_mpiq], 3);
+        HuWinInsertMesSet(win, m233_choiceUnitMesTbl[m233_questionNo], 3);
     }
     HuWinHomeClear(win);
     HuWinMesSet(win, mes, -1, -1);
     return win;
 }
 
-void func_8010C2F0_mpiq(void) {
+void m233_CountdownProc(void) {
     s32 timer;
     s32 mode;
     s32 i;
 
-    D_8010CAF8_mpiq = 5;
+    m233_countdown = 5;
     timer = 30;
     while (TRUE) {
-        if (D_8010C9C0_mpiq & 0x10) {
+        if (m233_quizFlag & 0x10) {
             mode = 1;
             break;
         }
-        if (D_8010C9C0_mpiq & 4) {
+        if (m233_quizFlag & 4) {
             mode = 2;
             break;
         }
         HuPrcVSleep();
     }
-    GMesPosSet(GMesCreate(0x1A, D_8010CAF8_mpiq, 160, 28), 154.0f, 28.0f);
-    while (D_8010CAF8_mpiq > 0) {
+    GMesPosSet(GMesCreate(0x1A, m233_countdown, 160, 28), 154.0f, 28.0f);
+    while (m233_countdown > 0) {
         if (--timer == 0) {
             timer = 30;
-            D_8010CAF8_mpiq--;
+            m233_countdown--;
         }
-        GMesTimerValueSet(D_8010CAFA_mpiq);
-        if (mode == 1 && (D_8010C9C0_mpiq & 4)) {
-            D_8010CAF8_mpiq = 5;
+        GMesTimerValueSet(m233_countdownS16);
+        if (mode == 1 && (m233_quizFlag & 4)) {
+            m233_countdown = 5;
             timer = 30;
             mode = 3;
         }
-        if (D_8010C6B8_mpiq != -1 || D_8010CAF8_mpiq == 0) {
+        if (m233_choiceNo != -1 || m233_countdown == 0) {
             break;
         }
         HuPrcVSleep();
     }
-    D_8010C9C0_mpiq = (D_8010C9C0_mpiq | 2) & ~0x14;
-    D_8010C9C2_mpiq = 1;
-    if (D_8010CAF8_mpiq == 0) {
-        D_8010C9C0_mpiq &= ~0x20;
+    m233_quizFlag = (m233_quizFlag | 2) & ~0x14;
+    m233_buzzLockF = 1;
+    if (m233_countdown == 0) {
+        m233_quizFlag &= ~0x20;
         for (i = 0; i < 4; i++) {
             MgPlayerVelYSet(mgPlayerObjTbl[i], 1000.0f);
         }
@@ -2343,51 +2343,51 @@ void func_8010C2F0_mpiq(void) {
     omDelPrcObj(NULL);
 }
 
-s32 func_8010C4C0_mpiq(s32 index) {
+s32 m233_PlayerOnStandCheck(s32 index) {
     s32 result = 0;
-    if (mgPlayerObjTbl[index]->trans.y == D_8010CA80_mpiq[index]->trans.y) {
+    if (mgPlayerObjTbl[index]->trans.y == m233_standObjTbl[index]->trans.y) {
         result = 1;
     }
     return result;
 }
 
-void func_8010C558_mpiq(omObjData *obj);
+void m233_EndlessDispObjMain(omObjData *obj);
 
-void func_8010C504_mpiq(void) {
-    omObjData *obj = omAddObj(0xA, 0, 0, -1, func_8010C558_mpiq);
+void m233_EndlessDispCreate(void) {
+    omObjData *obj = omAddObj(0xA, 0, 0, -1, m233_EndlessDispObjMain);
     s32 *value = HuMemAllocTag(sizeof(s32), TAG_OVERLAY);
 
     obj->data = value;
     *value = 0;
 }
 
-const char D_8010C988_mpiq[] = "ENDLESS";
+const char m233_endlessStr[] = "ENDLESS";
 
-void func_8010C558_mpiq(omObjData *obj) {
+void m233_EndlessDispObjMain(omObjData *obj) {
     s32 *counter = obj->data;
 
     if (((*counter += 1) & 0x10) != 0) {
         fontcolor = FONT_COLOR_WHITE;
-        sprintf(omDBGStrBuf, D_8010C988_mpiq);
+        sprintf(omDBGStrBuf, m233_endlessStr);
         print8(0xE8, 0x10, omDBGStrBuf);
     }
 }
 
-void func_8010C5B8_mpiq(omObjData *obj) {
+void m233_WinPauseObjMain(omObjData *obj) {
     if (omPauseChk() + omAllPauseF != 0) {
-        if (D_8010CA00_mpiq != -1) {
-            HuWinDispOff(D_8010CA00_mpiq);
+        if (m233_questionWin != -1) {
+            HuWinDispOff(m233_questionWin);
         }
-    } else if (D_8010CA00_mpiq != -1) {
-        HuWinDispOn(D_8010CA00_mpiq);
+    } else if (m233_questionWin != -1) {
+        HuWinDispOn(m233_questionWin);
     }
 }
 
-const char D_8010C990_mpiq[] = "MOTION ERROR! WINNER=%d\n";
-const char D_8010C9AC_mpiq[] = "";
+const char m233_motionErrorStr[] = "MOTION ERROR! WINNER=%d\n";
+const char m233_emptyStr[] = "";
 
-void func_8010C624_mpiq(void) {
+void m233_MotionErrorPrint(void) {
     fontcolor = FONT_COLOR_WHITE;
-    sprintf(omDBGStrBuf, D_8010C990_mpiq, D_8010C9D8_mpiq);
+    sprintf(omDBGStrBuf, m233_motionErrorStr, m233_winner);
     print8(0x20, 0xB0, omDBGStrBuf);
 }

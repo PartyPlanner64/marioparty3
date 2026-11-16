@@ -16,11 +16,11 @@ typedef struct FridgedBridgesCameraTarget {
     /* 0x04 */ omObjData *playerObj;
 } FridgedBridgesCameraTarget; // sizeof 0x8
 
-extern s16 D_8010CF48_fridged_bridges[4];
-extern s16 D_8010DA30_fridged_bridges[1][12];
-extern u16 D_8010DA48_fridged_bridges[1][12];
-extern omObjData *D_8010DA88_fridged_bridges;
-extern FridgedBridgesCamCollWork D_8010DA90_fridged_bridges[4];
+extern s16 m236_cameraBitTbl[4];
+extern s16 m236_effMdlTbl[1][12];
+extern u16 m236_effUseTbl[1][12];
+extern omObjData *m236_effObj;
+extern FridgedBridgesCamCollWork m236_camCollWorkTbl[4];
 
 extern f32 CFanLenM[];
 extern CollisionGrid *MapCollData;
@@ -31,24 +31,24 @@ extern Mtx *MTXBuf;
 extern s16 MTXBufNum;
 extern f32 CFanOfsM[];
 
-void func_8010BE88_fridged_bridges(omObjData *arg0);
-void func_8010C178_fridged_bridges(omObjData *arg0);
-void func_8010C46C_fridged_bridges(HmfModel *model, HuMtx4F mtx);
-void func_8010CDE4_fridged_bridges(u16 index, FridgedBridgesCamCollWork *work, HmfData *hmf, u16 object);
+void m236_CameraTargetObjMain(omObjData *arg0);
+void m236_EffObjMain(omObjData *arg0);
+void m236_ModelMtxGet(HmfModel *model, HuMtx4F mtx);
+void m236_CullBatchAdd(u16 index, FridgedBridgesCamCollWork *work, HmfData *hmf, u16 object);
 
 // Effect model file, object function and lifetime for each effect type. These
 // are separate arrays of one entry each.
-s32 D_8010D240_fridged_bridges[1] = { 0x0045000C };
-omObjFunc D_8010D244_fridged_bridges[1] = { func_8010C178_fridged_bridges };
-s32 D_8010D248_fridged_bridges[1] = { 35 };
+s32 m236_effMdlFileTbl[1] = { 0x0045000C };
+omObjFunc m236_effFuncTbl[1] = { m236_EffObjMain };
+s32 m236_effTimeTbl[1] = { 35 };
 
-void func_8010BDF0_fridged_bridges(void) {
+void m236_OvlReturn(void) {
     omOvlReturnEx(1);
 }
 
-void func_8010BE0C_fridged_bridges(omObjData *arg0) {
+void m236_CameraTargetCreate(omObjData *arg0) {
     FridgedBridgesPlayer *player = OM_GET_DATA_PTR(arg0, FridgedBridgesPlayer);
-    omObjData *obj = omAddObj(0x32, 0, 0, -1, func_8010BE88_fridged_bridges);
+    omObjData *obj = omAddObj(0x32, 0, 0, -1, m236_CameraTargetObjMain);
     FridgedBridgesCameraTarget *target;
 
     player->unk_2C = obj;
@@ -59,7 +59,7 @@ void func_8010BE0C_fridged_bridges(omObjData *arg0) {
     obj->work[0] = 0;
 }
 
-void func_8010BE88_fridged_bridges(omObjData *arg0) {
+void m236_CameraTargetObjMain(omObjData *arg0) {
     FridgedBridgesCameraTarget *target = arg0->data;
 
     if (arg0->work[0] != 0) {
@@ -69,57 +69,57 @@ void func_8010BE88_fridged_bridges(omObjData *arg0) {
 }
 
 // Preloads the pool of effect models used by func_8010BFD0.
-void func_8010BEE8_fridged_bridges(void) {
+void m236_EffInit(void) {
     s32 i;
     s32 j;
 
-    D_8010DA88_fridged_bridges = omAddObj(60, 0, 0, -1, NULL);
+    m236_effObj = omAddObj(60, 0, 0, -1, NULL);
     for (i = 0; i < 1; i++) {
         for (j = 0; j < 12; j++) {
-            D_8010DA30_fridged_bridges[i][j] = Hu3DModelRead(D_8010D240_fridged_bridges[i], 0x68D);
-            D_8010DA48_fridged_bridges[i][j] = 0;
+            m236_effMdlTbl[i][j] = Hu3DModelRead(m236_effMdlFileTbl[i], 0x68D);
+            m236_effUseTbl[i][j] = 0;
         }
     }
 }
 
 // Spawns an effect of the given type from the model pool, in the given player's camera.
-omObjData *func_8010BFD0_fridged_bridges(u16 type, u16 playerId, f32 x, f32 y, f32 z) {
+omObjData *m236_EffCreate(u16 type, u16 playerId, f32 x, f32 y, f32 z) {
     omObjData *obj;
     s16 model;
     s32 i;
 
     for (i = 0; i < 12; i++) {
-        if (D_8010DA48_fridged_bridges[type][i] == 0) {
+        if (m236_effUseTbl[type][i] == 0) {
             break;
         }
     }
     if (i == 12) {
         return NULL;
     }
-    model = D_8010DA30_fridged_bridges[type][i];
-    D_8010DA48_fridged_bridges[type][i] = 1;
-    obj = omAddObj(60, 1, 0, -1, D_8010D244_fridged_bridges[type]);
+    model = m236_effMdlTbl[type][i];
+    m236_effUseTbl[type][i] = 1;
+    obj = omAddObj(60, 1, 0, -1, m236_effFuncTbl[type]);
     obj->model[0] = model;
     Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, 0);
-    Hu3DModelCameraSet(obj->model[0], D_8010CF48_fridged_bridges[playerId]);
+    Hu3DModelCameraSet(obj->model[0], m236_cameraBitTbl[playerId]);
     Hu3DMotionTimeSet(obj->model[0], 0.0f);
     omSetTra(obj, x, y, z);
     omSetSca(obj, 2.0f, 1.0f, 2.0f);
-    obj->work[0] = D_8010D248_fridged_bridges[type];
+    obj->work[0] = m236_effTimeTbl[type];
     obj->work[1] = i;
     return obj;
 }
 
-void func_8010C178_fridged_bridges(omObjData *arg0) {
+void m236_EffObjMain(omObjData *arg0) {
     if (--arg0->work[0] == 0) {
         Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        D_8010DA48_fridged_bridges[0][arg0->work[1]] = 0;
+        m236_effUseTbl[0][arg0->work[1]] = 0;
         omDelObj(arg0);
     }
 }
 
 // Updates each player's camera from CenterM/CRotM/CZoomM.
-void func_8010C1D8_fridged_bridges(omObjData *arg0) {
+void m236_CameraOutView(omObjData *arg0) {
     Vec pos;
     Vec at;
     Vec up;
@@ -139,19 +139,19 @@ void func_8010C1D8_fridged_bridges(omObjData *arg0) {
         up.x = sindf(rotY) * sindf(rotX);
         up.y = cosdf(rotX);
         up.z = cosdf(rotY) * sindf(rotX);
-        D_8010DA90_fridged_bridges[i].fan.x = pos.x;
-        D_8010DA90_fridged_bridges[i].fan.z = pos.z;
-        D_8010DA90_fridged_bridges[i].fan.angle = CRotM[i].y;
-        D_8010DA90_fridged_bridges[i].fan.shape.spread = gCameraList[i].fov;
-        D_8010DA90_fridged_bridges[i].fan.shape.length = CFanLenM[i];
-        D_8010DA90_fridged_bridges[i].fan.shape.offset = CFanOfsM[i];
+        m236_camCollWorkTbl[i].fan.x = pos.x;
+        m236_camCollWorkTbl[i].fan.z = pos.z;
+        m236_camCollWorkTbl[i].fan.angle = CRotM[i].y;
+        m236_camCollWorkTbl[i].fan.shape.spread = gCameraList[i].fov;
+        m236_camCollWorkTbl[i].fan.shape.length = CFanLenM[i];
+        m236_camCollWorkTbl[i].fan.shape.offset = CFanOfsM[i];
         Hu3DCameraPosSetV(i, &pos, &at, &up);
         Hu3DCamUpdateMtx(i);
     }
 }
 
 // Copy of Hu3DModelMtxGet.
-void func_8010C46C_fridged_bridges(HmfModel *model, HuMtx4F mtx) {
+void m236_ModelMtxGet(HmfModel *model, HuMtx4F mtx) {
     HmfSkeletonNode *node;
     HuMtx4F temp;
 
@@ -184,7 +184,7 @@ void func_8010C46C_fridged_bridges(HmfModel *model, HuMtx4F mtx) {
 
 // Variant of MapCullFan that batches the visible objects of each of the
 // three object layers into a single display list per layer.
-void func_8010C738_fridged_bridges(FridgedBridgesCamCollWork *work, HmfModel *model) {
+void m236_MapCullFanBatch(FridgedBridgesCamCollWork *work, HmfModel *model) {
     Hu3DPoint tri[3];
     HuMtx4F mtx;
     HuMtx4F ident;
@@ -209,7 +209,7 @@ void func_8010C738_fridged_bridges(FridgedBridgesCamCollWork *work, HmfModel *mo
         Hu3DLLightSet(model->unkB4);
     }
     gridIndex = model->unk10;
-    func_8010C46C_fridged_bridges(model, mtx);
+    m236_ModelMtxGet(model, mtx);
     guMtxIdentF(ident);
     /* Dead stores (only the sindf/cosdf calls survive), as in MapCullFan. */
     x0 = MapCollData[gridIndex].width * MapCollData[gridIndex].cellWidth / 2.0f + work->fan.x +
@@ -251,37 +251,37 @@ void func_8010C738_fridged_bridges(FridgedBridgesCamCollWork *work, HmfModel *mo
             object = grid->unk_14[cell];
             if (object != -1) {
                 if (MapIflnnerTriangle(x0, z0, tri) == TRUE) {
-                    func_8010CDE4_fridged_bridges(0, work, model->hmf, object);
+                    m236_CullBatchAdd(0, work, model->hmf, object);
                 } else if (MapIflnnerTriangle(x1, z0, tri) == TRUE) {
-                    func_8010CDE4_fridged_bridges(0, work, model->hmf, object);
+                    m236_CullBatchAdd(0, work, model->hmf, object);
                 } else if (MapIflnnerTriangle(x0, z1, tri) == TRUE) {
-                    func_8010CDE4_fridged_bridges(0, work, model->hmf, object);
+                    m236_CullBatchAdd(0, work, model->hmf, object);
                 } else if (MapIflnnerTriangle(x1, z1, tri) == TRUE) {
-                    func_8010CDE4_fridged_bridges(0, work, model->hmf, object);
+                    m236_CullBatchAdd(0, work, model->hmf, object);
                 }
             }
             object = grid->unk_18[cell];
             if (object != -1) {
                 if (MapIflnnerTriangle(x0, z0, tri) == TRUE) {
-                    func_8010CDE4_fridged_bridges(1, work, model->hmf, object);
+                    m236_CullBatchAdd(1, work, model->hmf, object);
                 } else if (MapIflnnerTriangle(x1, z0, tri) == TRUE) {
-                    func_8010CDE4_fridged_bridges(1, work, model->hmf, object);
+                    m236_CullBatchAdd(1, work, model->hmf, object);
                 } else if (MapIflnnerTriangle(x0, z1, tri) == TRUE) {
-                    func_8010CDE4_fridged_bridges(1, work, model->hmf, object);
+                    m236_CullBatchAdd(1, work, model->hmf, object);
                 } else if (MapIflnnerTriangle(x1, z1, tri) == TRUE) {
-                    func_8010CDE4_fridged_bridges(1, work, model->hmf, object);
+                    m236_CullBatchAdd(1, work, model->hmf, object);
                 }
             }
             object = grid->unk_1C[cell];
             if (object != -1) {
                 if (MapIflnnerTriangle(x0, z0, tri) == TRUE) {
-                    func_8010CDE4_fridged_bridges(2, work, model->hmf, object);
+                    m236_CullBatchAdd(2, work, model->hmf, object);
                 } else if (MapIflnnerTriangle(x1, z0, tri) == TRUE) {
-                    func_8010CDE4_fridged_bridges(2, work, model->hmf, object);
+                    m236_CullBatchAdd(2, work, model->hmf, object);
                 } else if (MapIflnnerTriangle(x0, z1, tri) == TRUE) {
-                    func_8010CDE4_fridged_bridges(2, work, model->hmf, object);
+                    m236_CullBatchAdd(2, work, model->hmf, object);
                 } else if (MapIflnnerTriangle(x1, z1, tri) == TRUE) {
-                    func_8010CDE4_fridged_bridges(2, work, model->hmf, object);
+                    m236_CullBatchAdd(2, work, model->hmf, object);
                 }
             }
         }
@@ -297,7 +297,7 @@ void func_8010C738_fridged_bridges(FridgedBridgesCamCollWork *work, HmfModel *mo
 }
 
 // Adds an object's display list to the batch for the given layer.
-void func_8010CDE4_fridged_bridges(u16 index, FridgedBridgesCamCollWork *work, HmfData *hmf, u16 object) {
+void m236_CullBatchAdd(u16 index, FridgedBridgesCamCollWork *work, HmfData *hmf, u16 object) {
     u16 *count = &work->dlCount[index];
 
     if (*count == 0) {

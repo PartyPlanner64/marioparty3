@@ -85,11 +85,11 @@ typedef struct {
     /* 0x06 */ char unk_06[0x2];
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
-} CheepCheepChaseGameUnk04; // sizeof 0x10
+} CheepCheepChaseObstacle; // sizeof 0x10
 
 typedef struct CheepCheepChaseGame {
     /* 0x00 */ CheepCheepChaseSegment *segments;
-    /* 0x04 */ CheepCheepChaseGameUnk04 *unk_04;
+    /* 0x04 */ CheepCheepChaseObstacle *unk_04;
     /* 0x08 */ u8 *segmentOrder;
     /* 0x0C */ u8 *unk_0C;
     /* 0x10 */ omObjData *unk_10;
@@ -128,112 +128,112 @@ typedef struct {
     /* 0x00 */ s16 model;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ f32 unk_04;
-} CheepCheepChaseUnk368; // sizeof 0x8
+} CheepCheepChaseCheep; // sizeof 0x8
 
 extern u8 omAllPauseF;
 extern s32 omCharModelNoTbl[][6];
 
-u8 D_8010E010_cheep_cheep_chase = 0;
-f32 D_8010E014_cheep_cheep_chase = 0.0f;
-f32 D_8010E018_cheep_cheep_chase = 0.0f;
-s16 D_8010E01C_cheep_cheep_chase = 0;
-s16 D_8010E01E_cheep_cheep_chase = 0;
-s16 D_8010E020_cheep_cheep_chase = 0;
-s16 D_8010E022_cheep_cheep_chase = 0;
-s16 D_8010E024_cheep_cheep_chase = 1;
-s16 D_8010E026_cheep_cheep_chase = 0;
-s32 D_8010E028_cheep_cheep_chase[8] = { 0x000200A5, 0x000300A5, 0x000700A5, 0x000400A5, 0x000500A5, 0x000600A5, 0x000800A5, 0x0009001C };
-s16 D_8010E048_cheep_cheep_chase = 0;
+u8 m238_ctrlMode = 0;
+f32 m238_waterScrollY = 0.0f;
+f32 m238_floatAngle = 0.0f;
+s16 m238_readyCnt = 0;
+s16 m238_startPhase = 0;
+s16 m238_startFrame = 0;
+s16 m238_startTimer = 0;
+s16 m238_resultPhase = 1;
+s16 m238_drawPhase = 0;
+s32 m238_winAnimTbl[8] = { 0x000200A5, 0x000300A5, 0x000700A5, 0x000400A5, 0x000500A5, 0x000600A5, 0x000800A5, 0x0009001C };
+s16 m238_swallowF = 0;
 
-CheepCheepChaseGame *D_8010E360_cheep_cheep_chase BSS;
-CheepCheepChasePlayer *D_8010E364_cheep_cheep_chase BSS;
-CheepCheepChaseUnk368 *D_8010E368_cheep_cheep_chase BSS;
-u8 D_8010E36C_cheep_cheep_chase[4] BSS; /* Unreferenced. */
-f32 D_8010E370_cheep_cheep_chase[4] BSS;
-s16 D_8010E380_cheep_cheep_chase[8] BSS;
-SpriteData *D_8010E390_cheep_cheep_chase BSS;
-AnimModelData *D_8010E394_cheep_cheep_chase BSS;
-FuncGroup *D_8010E398_cheep_cheep_chase BSS;
+CheepCheepChaseGame *m238_gameWork BSS;
+CheepCheepChasePlayer *m238_playerTbl BSS;
+CheepCheepChaseCheep *m238_cheepWork BSS;
+u8 m238_cheepWorkPad[4] BSS; /* Unreferenced. */
+f32 m238_laneTbl[4] BSS;
+s16 m238_seNoTbl[8] BSS;
+SpriteData *m238_sprTbl BSS;
+AnimModelData *m238_animMdlTbl BSS;
+FuncGroup *m238_funcGroupTbl BSS;
 
-const s16 D_8010E050_cheep_cheep_chase[] = { 0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0x0000 };
+const s16 m238_fontMesTbl[] = { 0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0x0000 };
 
-const s16 D_8010E05C_cheep_cheep_chase[] = { 0x8265, 0x8268, 0x826D, 0x8268, 0x8272, 0x8267, 0x0000, 0x0000 };
+const s16 m238_fontMesTbl2[] = { 0x8265, 0x8268, 0x826D, 0x8268, 0x8272, 0x8267, 0x0000, 0x0000 };
 
-const s16 D_8010E06C_cheep_cheep_chase[] = { 0x8263, 0x8271, 0x8260, 0x8276, 0x0000, 0x0000 };
+const s16 m238_fontMesTbl3[] = { 0x8263, 0x8271, 0x8260, 0x8276, 0x0000, 0x0000 };
 
-void func_801059BC_cheep_cheep_chase(void);
-void func_80105BBC_cheep_cheep_chase(void);
-void func_80105DD0_cheep_cheep_chase(omObjData *object);
-void func_80105E18_cheep_cheep_chase(omObjData *object);
-void func_80105E50_cheep_cheep_chase(omObjData *object);
-void func_80105E74_cheep_cheep_chase(void);
-void func_80105F50_cheep_cheep_chase(omObjData *object);
-void func_8010619C_cheep_cheep_chase(omObjData *object);
-void func_801061C8_cheep_cheep_chase(omObjData *object);
-void func_80106388_cheep_cheep_chase(omObjData *object);
-void func_8010665C_cheep_cheep_chase(omObjData *object);
-void func_80106978_cheep_cheep_chase(omObjData *object);
-void func_80106E80_cheep_cheep_chase(omObjData *object);
-void func_80107440_cheep_cheep_chase(omObjData *object);
-void func_801076B4_cheep_cheep_chase(FuncContext *ctx);
-void func_8010636C_cheep_cheep_chase(omObjData *object);
-void func_80108170_cheep_cheep_chase(FuncContext *ctx);
-void func_80108C98_cheep_cheep_chase(FuncContext *ctx);
-void func_80108F78_cheep_cheep_chase(FuncContext *ctx);
-void func_801090E0_cheep_cheep_chase(FuncContext *ctx);
-void func_8010D560_cheep_cheep_chase(void);
-void func_8010B63C_cheep_cheep_chase(CheepCheepChasePlayer *player, s16 motion, s8 updateMotion);
-void func_801088F8_cheep_cheep_chase(FuncContext *ctx);
-void func_801091FC_cheep_cheep_chase(u8 index);
-void func_8010D198_cheep_cheep_chase(FuncContext *ctx);
-void func_8010D62C_cheep_cheep_chase(FuncGroup *group, s16 maxFuncs);
-s16 func_8010D6F4_cheep_cheep_chase(s8 groupId, s8 prio, s16 param, s8 state, void *data, void (*func)(FuncContext *), u8 sort, s8 execFunc);
-void func_8010D7F4_cheep_cheep_chase(s8 groupId, FuncContext *ctx);
-void func_8010D8FC_cheep_cheep_chase(s8 groupId);
-void func_8010D9E8_cheep_cheep_chase(FuncGroup *group);
-s16 func_8010DB8C_cheep_cheep_chase(s32 dir, s32 file, f32 freq, s32 arg3);
-void func_8010DDF4_cheep_cheep_chase(void);
-void func_8010C8EC_cheep_cheep_chase(s16 model1, s16 model2, f32 t, s32 node1, s32 node2, s32 full);
-u8 func_8010DF48_cheep_cheep_chase(f32 *outPos, u8 *tickPtr, f32 posA, f32 posB, f32 numTicks);
-void func_80106484_cheep_cheep_chase(omObjData *object);
-void func_801093CC_cheep_cheep_chase(s32 arg0);
-void func_80109444_cheep_cheep_chase(s32 arg0);
-void func_801067B0_cheep_cheep_chase(omObjData *object);
-void func_80106AA0_cheep_cheep_chase(omObjData *object);
-void func_801094C0_cheep_cheep_chase(omObjData *object, s16 offset);
-void func_80107698_cheep_cheep_chase(omObjData *object);
-void func_8010BEA4_cheep_cheep_chase(FuncContext *ctx);
-s16 func_8010DC7C_cheep_cheep_chase(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 rotX, f32 rotY, f32 rotZ, f32 scale, f32 animStart);
-void func_80108AF4_cheep_cheep_chase(FuncContext *ctx);
-void func_8010A08C_cheep_cheep_chase(FuncContext *ctx);
-void func_8010D85C_cheep_cheep_chase(s8 groupId);
-void func_801080C8_cheep_cheep_chase(FuncContext *ctx);
-void func_8010C988_cheep_cheep_chase(FuncContext *ctx);
-void func_8010CAD4_cheep_cheep_chase(FuncContext *ctx);
-void func_8010CBBC_cheep_cheep_chase(FuncContext *ctx);
-void func_8010D02C_cheep_cheep_chase(FuncContext *ctx);
-void func_8010ACD8_cheep_cheep_chase(s32 arg0);
-void func_8010B648_cheep_cheep_chase(FuncContext *ctx);
-void func_8010B52C_cheep_cheep_chase(FuncContext *ctx);
-void func_8010BB9C_cheep_cheep_chase(FuncContext *ctx);
-void func_8010732C_cheep_cheep_chase(omObjData *object);
-void func_801085FC_cheep_cheep_chase(FuncContext *ctx);
-void func_80109750_cheep_cheep_chase(FuncContext *ctx);
-void func_801092B8_cheep_cheep_chase(FuncContext *ctx);
-void func_80109CAC_cheep_cheep_chase(FuncContext *ctx);
-void func_8010A57C_cheep_cheep_chase(FuncContext *ctx);
-void func_8010A938_cheep_cheep_chase(FuncContext *ctx);
-void func_8010AD14_cheep_cheep_chase(FuncContext *ctx);
-void func_8010AF70_cheep_cheep_chase(FuncContext *ctx);
-void func_8010B148_cheep_cheep_chase(FuncContext *ctx);
-void func_8010B33C_cheep_cheep_chase(FuncContext *ctx);
-void func_8010C440_cheep_cheep_chase(FuncContext *ctx);
+void m238_ObjectSetup(void);
+void m238_WorkCreate(void);
+void m238_ExitCheckObjMain(omObjData *object);
+void m238_ExitWaitObjMain(omObjData *object);
+void m238_ExitObjMain(omObjData *object);
+void m238_CameraUpdate(void);
+void m238_MainObjInit(omObjData *object);
+void m238_MainObjMain(omObjData *object);
+void m238_RiverObjInit(omObjData *object);
+void m238_WaterObjInit(omObjData *object);
+void m238_SideObjInit(omObjData *object);
+void m238_ObstacleObjInit(omObjData *object);
+void m238_PlayerObjInit(omObjData *object);
+void m238_CheepObjInit(omObjData *object);
+void m238_CameraViewInit(FuncContext *ctx);
+void m238_RiverObjMain(omObjData *object);
+void m238_StartExec(FuncContext *ctx);
+void m238_RiverInit(FuncContext *ctx);
+void m238_RiverUpdate(FuncContext *ctx);
+void m238_RiverStartHide(FuncContext *ctx);
+void m238_SystemCreate(void);
+void m238_PlayerStateSet(CheepCheepChasePlayer *player, s16 motion, s8 updateMotion);
+void m238_FinishSeFade(FuncContext *ctx);
+void m238_SegmentPlace(u8 index);
+void m238_ObstacleSwallowExec(FuncContext *ctx);
+void m238_FuncGroupCreate(FuncGroup *group, s16 maxFuncs);
+s16 m238_FuncSet(s8 groupId, s8 prio, s16 param, s8 state, void *data, void (*func)(FuncContext *), u8 sort, s8 execFunc);
+void m238_FuncReset(s8 groupId, FuncContext *ctx);
+void m238_FuncGroupUpdate(s8 groupId);
+void m238_FuncGroupSort(FuncGroup *group);
+s16 m238_AnimMdlCreate(s32 dir, s32 file, f32 freq, s32 arg3);
+void m238_AnimMdlUpdate(void);
+void m238_MdlVtxMorph(s16 model1, s16 model2, f32 t, s32 node1, s32 node2, s32 full);
+u8 m238_LerpCalc(f32 *outPos, u8 *tickPtr, f32 posA, f32 posB, f32 numTicks);
+void m238_WaterObjMain(omObjData *object);
+void m238_WaterTilePlace(s32 arg0);
+void m238_SidePlace(s32 arg0);
+void m238_SideObjMain(omObjData *object);
+void m238_ObstacleObjMain(omObjData *object);
+void m238_ObstacleRowPlace(omObjData *object, s16 offset);
+void m238_CheepObjMain(omObjData *object);
+void m238_PlayerStunExec(FuncContext *ctx);
+s16 m238_AnimMdlDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 rotX, f32 rotY, f32 rotZ, f32 scale, f32 animStart);
+void m238_DrawExec(FuncContext *ctx);
+void m238_PlayerGoalExec(FuncContext *ctx);
+void m238_FuncGroupReset(s8 groupId);
+void m238_CameraFollowUpdate(FuncContext *ctx);
+void m238_CheepMorphUpdate(FuncContext *ctx);
+void m238_CheepMotUpdate(FuncContext *ctx);
+void m238_CheepEffUpdate(FuncContext *ctx);
+void m238_CheepObstacleCheck(FuncContext *ctx);
+void m238_PadClear(s32 arg0);
+void m238_PlayerEffUpdate(FuncContext *ctx);
+void m238_PlayerMotUpdate(FuncContext *ctx);
+void m238_PlayerObstacleHit(FuncContext *ctx);
+void m238_PlayerObjMain(omObjData *object);
+void m238_GoalCheckUpdate(FuncContext *ctx);
+void m238_PlayerDiveExec(FuncContext *ctx);
+void m238_StartMdlPlay(FuncContext *ctx);
+void m238_PlayerStartExec(FuncContext *ctx);
+void m238_PlayerComInput(FuncContext *ctx);
+void m238_PlayerComInputB(FuncContext *ctx);
+void m238_PlayerInputUpdate(FuncContext *ctx);
+void m238_PlayerInputUpdateB(FuncContext *ctx);
+void m238_PlayerMove(FuncContext *ctx);
+void m238_PlayerJumpUpdate(FuncContext *ctx);
+void m238_CheepUpdate(FuncContext *ctx);
 
-void func_801059A0_cheep_cheep_chase(void) {
-    func_801059BC_cheep_cheep_chase();
+void m238_Executor(void) {
+    m238_ObjectSetup();
 }
 
-void func_801059BC_cheep_cheep_chase(void) {
+void m238_ObjectSetup(void) {
     u8 camera;
 
     MapCollInit(50);
@@ -252,38 +252,38 @@ void func_801059BC_cheep_cheep_chase(void) {
     mgItemObjNum = 0;
     mgPlayerObjNum = 0;
     mgMapObjNum = 0;
-    func_8010D560_cheep_cheep_chase();
-    func_80105BBC_cheep_cheep_chase();
-    func_8010D6F4_cheep_cheep_chase(0, 0, -1, 0, NULL, func_801076B4_cheep_cheep_chase, FALSE, FALSE);
-    omAddObj(100, 0, 0, -1, func_80105F50_cheep_cheep_chase);
-    omAddObj(1000, 0, 0, -1, func_80105DD0_cheep_cheep_chase);
-    GMesFontMesCreate(D_8010E050_cheep_cheep_chase, 1);
-    GMesFontMesCreate(D_8010E05C_cheep_cheep_chase, 1);
-    GMesFontMesCreate(D_8010E06C_cheep_cheep_chase, 1);
+    m238_SystemCreate();
+    m238_WorkCreate();
+    m238_FuncSet(0, 0, -1, 0, NULL, m238_CameraViewInit, FALSE, FALSE);
+    omAddObj(100, 0, 0, -1, m238_MainObjInit);
+    omAddObj(1000, 0, 0, -1, m238_ExitCheckObjMain);
+    GMesFontMesCreate(m238_fontMesTbl, 1);
+    GMesFontMesCreate(m238_fontMesTbl2, 1);
+    GMesFontMesCreate(m238_fontMesTbl3, 1);
 }
 
-void func_80105BBC_cheep_cheep_chase(void) {
+void m238_WorkCreate(void) {
     s16 i;
     s16 j;
 
-    D_8010E360_cheep_cheep_chase = HuMemAllocTag(sizeof(CheepCheepChaseGame), TAG_OVERLAY);
-    memset(D_8010E360_cheep_cheep_chase, 0, sizeof(CheepCheepChaseGame));
-    D_8010E360_cheep_cheep_chase->segments = HuMemAllocTag(6 * sizeof(CheepCheepChaseSegment), TAG_OVERLAY);
-    memset(D_8010E360_cheep_cheep_chase->segments, 0, 6 * sizeof(CheepCheepChaseSegment));
-    D_8010E360_cheep_cheep_chase->unk_04 = HuMemAllocTag(8 * sizeof(CheepCheepChaseGameUnk04), TAG_OVERLAY);
-    memset(D_8010E360_cheep_cheep_chase->unk_04, 0, 8 * sizeof(CheepCheepChaseGameUnk04));
-    D_8010E360_cheep_cheep_chase->segmentOrder = HuMemAllocTag(7, TAG_OVERLAY);
-    memset(D_8010E360_cheep_cheep_chase->segmentOrder, 0, 7);
-    D_8010E360_cheep_cheep_chase->unk_0C = HuMemAllocTag(7, TAG_OVERLAY);
-    memset(D_8010E360_cheep_cheep_chase->unk_0C, 0, 7);
-    D_8010E364_cheep_cheep_chase = HuMemAllocTag(4 * sizeof(CheepCheepChasePlayer), TAG_OVERLAY);
-    memset(D_8010E364_cheep_cheep_chase, 0, 4 * sizeof(CheepCheepChasePlayer));
-    D_8010E368_cheep_cheep_chase = HuMemAllocTag(8, TAG_OVERLAY);
-    memset(D_8010E368_cheep_cheep_chase, 0, 8);
+    m238_gameWork = HuMemAllocTag(sizeof(CheepCheepChaseGame), TAG_OVERLAY);
+    memset(m238_gameWork, 0, sizeof(CheepCheepChaseGame));
+    m238_gameWork->segments = HuMemAllocTag(6 * sizeof(CheepCheepChaseSegment), TAG_OVERLAY);
+    memset(m238_gameWork->segments, 0, 6 * sizeof(CheepCheepChaseSegment));
+    m238_gameWork->unk_04 = HuMemAllocTag(8 * sizeof(CheepCheepChaseObstacle), TAG_OVERLAY);
+    memset(m238_gameWork->unk_04, 0, 8 * sizeof(CheepCheepChaseObstacle));
+    m238_gameWork->segmentOrder = HuMemAllocTag(7, TAG_OVERLAY);
+    memset(m238_gameWork->segmentOrder, 0, 7);
+    m238_gameWork->unk_0C = HuMemAllocTag(7, TAG_OVERLAY);
+    memset(m238_gameWork->unk_0C, 0, 7);
+    m238_playerTbl = HuMemAllocTag(4 * sizeof(CheepCheepChasePlayer), TAG_OVERLAY);
+    memset(m238_playerTbl, 0, 4 * sizeof(CheepCheepChasePlayer));
+    m238_cheepWork = HuMemAllocTag(8, TAG_OVERLAY);
+    memset(m238_cheepWork, 0, 8);
     for (i = 0; i < 4; i++) {
-        D_8010E370_cheep_cheep_chase[i] = rand16() % 4;
+        m238_laneTbl[i] = rand16() % 4;
         for (j = 0; j < i; j++) {
-            if (D_8010E370_cheep_cheep_chase[j] == D_8010E370_cheep_cheep_chase[i]) {
+            if (m238_laneTbl[j] == m238_laneTbl[i]) {
                 i--;
                 break;
             }
@@ -291,25 +291,25 @@ void func_80105BBC_cheep_cheep_chase(void) {
     }
 }
 
-void func_80105DD0_cheep_cheep_chase(omObjData *object) {
+void m238_ExitCheckObjMain(omObjData *object) {
     if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
-        object->func = func_80105E18_cheep_cheep_chase;
+        object->func = m238_ExitWaitObjMain;
     }
 }
 
-void func_80105E18_cheep_cheep_chase(omObjData *object) {
+void m238_ExitWaitObjMain(omObjData *object) {
     if (WipeStatGet() == 0) {
-        object->func = func_80105E50_cheep_cheep_chase;
+        object->func = m238_ExitObjMain;
     }
 }
 
-void func_80105E50_cheep_cheep_chase(omObjData *object) {
+void m238_ExitObjMain(omObjData *object) {
     osViBlack(0);
     omOvlReturnEx(1);
 }
 
-void func_80105E74_cheep_cheep_chase(void) {
+void m238_CameraUpdate(void) {
     if (CRot.x > 360.0f) {
         CRot.x -= 360.0f;
     } else if (CRot.x < 0.0f) {
@@ -320,67 +320,67 @@ void func_80105E74_cheep_cheep_chase(void) {
     } else if (CRot.y < 0.0f) {
         CRot.y += 360.0f;
     }
-    func_8010D8FC_cheep_cheep_chase(0);
+    m238_FuncGroupUpdate(0);
 }
 
-void func_80105F50_cheep_cheep_chase(omObjData *object) {
+void m238_MainObjInit(omObjData *object) {
     s32 attr = 0x499;
     u8 i;
 
-    omAddObj(10, 7, 0, -1, func_801061C8_cheep_cheep_chase);
-    omSetStatBit(omAddObj(10, 4, 0, -1, func_80106388_cheep_cheep_chase), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    omAddObj(10, 3, 0, -1, func_8010665C_cheep_cheep_chase);
-    omAddObj(10, 8, 0, -1, func_80106978_cheep_cheep_chase);
+    omAddObj(10, 7, 0, -1, m238_RiverObjInit);
+    omSetStatBit(omAddObj(10, 4, 0, -1, m238_WaterObjInit), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    omAddObj(10, 3, 0, -1, m238_SideObjInit);
+    omAddObj(10, 8, 0, -1, m238_ObstacleObjInit);
     MgPlayerParamReset();
     MgShadowAltSet(1);
     for (i = 0; i < 4; i++) {
-        mgPlayerObjTbl[i] = omAddObj(200, 10, 44, -1, func_80106E80_cheep_cheep_chase);
+        mgPlayerObjTbl[i] = omAddObj(200, 10, 44, -1, m238_PlayerObjInit);
     }
-    omSetStatBit(omAddObj(300, 2, 2, -1, func_80107440_cheep_cheep_chase), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    omSetStatBit(omAddObj(300, 2, 2, -1, m238_CheepObjInit), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     for (i = 0; i < 18; i++) {
-        func_8010DB8C_cheep_cheep_chase(0x47, 5, 1.0f, attr);
+        m238_AnimMdlCreate(0x47, 5, 1.0f, attr);
     }
     for (i = 0; i < 4; i++) {
-        func_8010DB8C_cheep_cheep_chase(1, 0x13, 2.0f, attr);
+        m238_AnimMdlCreate(1, 0x13, 2.0f, attr);
     }
     for (i = 0; i < 8; i++) {
-        func_8010DB8C_cheep_cheep_chase(0x47, 7, 1.0f, attr);
+        m238_AnimMdlCreate(0x47, 7, 1.0f, attr);
     }
     for (i = 0; i < 8; i++) {
-        func_8010DB8C_cheep_cheep_chase(0x47, 6, 1.0f, attr);
+        m238_AnimMdlCreate(0x47, 6, 1.0f, attr);
     }
-    func_8010D6F4_cheep_cheep_chase(1, 0, -1, 0, NULL, func_80108170_cheep_cheep_chase, TRUE, FALSE);
+    m238_FuncSet(1, 0, -1, 0, NULL, m238_StartExec, TRUE, FALSE);
     WipeCreateIn(0xFF, 16);
-    object->func = func_8010619C_cheep_cheep_chase;
+    object->func = m238_MainObjMain;
 }
 
-void func_8010619C_cheep_cheep_chase(omObjData *object) {
-    func_8010D8FC_cheep_cheep_chase(1);
-    func_8010DDF4_cheep_cheep_chase();
-    func_80105E74_cheep_cheep_chase();
+void m238_MainObjMain(omObjData *object) {
+    m238_FuncGroupUpdate(1);
+    m238_AnimMdlUpdate();
+    m238_CameraUpdate();
 }
 
-void func_801061C8_cheep_cheep_chase(omObjData *object) {
+void m238_RiverObjInit(omObjData *object) {
     s16 i;
 
-    object->model[0] = D_8010E360_cheep_cheep_chase->segments[0].model = Hu3DModelRead(0x470000, 0x9D);
-    object->model[1] = D_8010E360_cheep_cheep_chase->segments[1].model = Hu3DModelRead(0x470002, 0x9D);
-    object->model[2] = D_8010E360_cheep_cheep_chase->segments[2].model = Hu3DModelRead(0x470001, 0x9D);
+    object->model[0] = m238_gameWork->segments[0].model = Hu3DModelRead(0x470000, 0x9D);
+    object->model[1] = m238_gameWork->segments[1].model = Hu3DModelRead(0x470002, 0x9D);
+    object->model[2] = m238_gameWork->segments[2].model = Hu3DModelRead(0x470001, 0x9D);
     for (i = 0; i < 3; i++) {
-        object->model[i + 3] = D_8010E360_cheep_cheep_chase->segments[i + 3].model = Hu3DModelLink(object->model[2]);
+        object->model[i + 3] = m238_gameWork->segments[i + 3].model = Hu3DModelLink(object->model[2]);
     }
     object->model[6] = Hu3DModelRead(0x470008, 0x9D);
-    func_8010D6F4_cheep_cheep_chase(2, 0, object->model[6], 0, NULL, func_80108C98_cheep_cheep_chase, FALSE, TRUE);
-    func_8010D6F4_cheep_cheep_chase(2, 1, -1, 0, NULL, func_80108F78_cheep_cheep_chase, FALSE, TRUE);
-    func_8010D6F4_cheep_cheep_chase(2, 0, -1, 1, NULL, func_801090E0_cheep_cheep_chase, TRUE, FALSE);
-    object->func = func_8010636C_cheep_cheep_chase;
+    m238_FuncSet(2, 0, object->model[6], 0, NULL, m238_RiverInit, FALSE, TRUE);
+    m238_FuncSet(2, 1, -1, 0, NULL, m238_RiverUpdate, FALSE, TRUE);
+    m238_FuncSet(2, 0, -1, 1, NULL, m238_RiverStartHide, TRUE, FALSE);
+    object->func = m238_RiverObjMain;
 }
 
-void func_8010636C_cheep_cheep_chase(omObjData *object) {
-    func_8010D8FC_cheep_cheep_chase(2);
+void m238_RiverObjMain(omObjData *object) {
+    m238_FuncGroupUpdate(2);
 }
 
-void func_80106388_cheep_cheep_chase(omObjData *object) {
+void m238_WaterObjInit(omObjData *object) {
     u16 i;
 
     object->model[0] = Hu3DModelRead(0x470003, 0x2009D);
@@ -391,20 +391,20 @@ void func_80106388_cheep_cheep_chase(omObjData *object) {
     object->trans.x = 0.0f;
     object->trans.z = -250.0f;
     object->trans.y = 110.0f;
-    D_8010E360_cheep_cheep_chase->zTick++;
+    m238_gameWork->zTick++;
     for (i = 1; i < 4; i++) {
-        func_801093CC_cheep_cheep_chase(object->model[i]);
+        m238_WaterTilePlace(object->model[i]);
     }
-    object->func = func_80106484_cheep_cheep_chase;
+    object->func = m238_WaterObjMain;
 }
 
-void func_80106484_cheep_cheep_chase(omObjData *object) {
+void m238_WaterObjMain(omObjData *object) {
     HmfModel *model;
     s16 i;
 
-    Hu3DModelTexScroll(object->model[0], 0.0f, D_8010E014_cheep_cheep_chase, 64, 64);
+    Hu3DModelTexScroll(object->model[0], 0.0f, m238_waterScrollY, 64, 64);
     if (omPauseChk() + omAllPauseF == 0) {
-        D_8010E014_cheep_cheep_chase += D_8010E360_cheep_cheep_chase->unk_18;
+        m238_waterScrollY += m238_gameWork->unk_18;
     }
     for (i = 0; i < 4; i++) {
         model = &Hu3DData[object->model[i]];
@@ -414,16 +414,16 @@ void func_80106484_cheep_cheep_chase(omObjData *object) {
         if (Center.z + 1000.0f <= model->pos.z) {
             Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             if (i != 0) {
-                func_801093CC_cheep_cheep_chase(object->model[i]);
+                m238_WaterTilePlace(object->model[i]);
             } else {
-                object->trans.z = -250.0 - (D_8010E360_cheep_cheep_chase->zTick * 500.0);
-                D_8010E360_cheep_cheep_chase->zTick++;
+                object->trans.z = -250.0 - (m238_gameWork->zTick * 500.0);
+                m238_gameWork->zTick++;
             }
         }
     }
 }
 
-void func_8010665C_cheep_cheep_chase(omObjData *object) {
+void m238_SideObjInit(omObjData *object) {
     u16 i;
 
     object->model[0] = Hu3DModelRead(0x470009, 0x9D);
@@ -433,15 +433,15 @@ void func_8010665C_cheep_cheep_chase(omObjData *object) {
     object->trans.x = -325.0f;
     object->trans.y = 200.0f;
     object->trans.z = -800.0f;
-    D_8010E360_cheep_cheep_chase->xTick++;
+    m238_gameWork->xTick++;
     for (i = 1; i < 3; i++) {
-        func_80109444_cheep_cheep_chase(object->model[i]);
+        m238_SidePlace(object->model[i]);
     }
-    D_8010E360_cheep_cheep_chase->unk_20 = Hu3DMotion[Hu3DData[object->model[0]].motId].unk02;
-    object->func = func_801067B0_cheep_cheep_chase;
+    m238_gameWork->unk_20 = Hu3DMotion[Hu3DData[object->model[0]].motId].unk02;
+    object->func = m238_SideObjMain;
 }
 
-void func_801067B0_cheep_cheep_chase(omObjData *object) {
+void m238_SideObjMain(omObjData *object) {
     HmfModel *model;
     s16 i;
 
@@ -453,63 +453,63 @@ void func_801067B0_cheep_cheep_chase(omObjData *object) {
         if (model->pos.z >= Center.z + 700.0) {
             Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             if (i != 0) {
-                func_80109444_cheep_cheep_chase(object->model[i]);
+                m238_SidePlace(object->model[i]);
             } else {
-                object->trans.z = 200.0 - (D_8010E360_cheep_cheep_chase->xTick * 1000.0);
-                D_8010E360_cheep_cheep_chase->xTick++;
+                object->trans.z = 200.0 - (m238_gameWork->xTick * 1000.0);
+                m238_gameWork->xTick++;
             }
         }
-        if (Hu3DData[object->model[i]].motTime >= D_8010E360_cheep_cheep_chase->unk_20) {
+        if (Hu3DData[object->model[i]].motTime >= m238_gameWork->unk_20) {
             Hu3DData[object->model[i]].motTime = 0.0f;
         }
     }
 }
 
-void func_80106978_cheep_cheep_chase(omObjData *object) {
+void m238_ObstacleObjInit(omObjData *object) {
     u16 i;
 
-    object->model[0] = D_8010E360_cheep_cheep_chase->unk_04[0].model = Hu3DModelRead(0x470004, 0x2008D);
+    object->model[0] = m238_gameWork->unk_04[0].model = Hu3DModelRead(0x470004, 0x2008D);
     for (i = 1; i < 8; i++) {
-        object->model[i] = D_8010E360_cheep_cheep_chase->unk_04[i].model = Hu3DModelLink(object->model[0]);
+        object->model[i] = m238_gameWork->unk_04[i].model = Hu3DModelLink(object->model[0]);
     }
     for (i = 0; i < 8; i++) {
         Hu3DModelScaleSet(object->model[i], 0.9f, 0.9f, 0.9f);
     }
-    func_801094C0_cheep_cheep_chase(object, 0);
-    func_801094C0_cheep_cheep_chase(object, 4);
-    D_8010E360_cheep_cheep_chase->unk_10 = object;
-    object->func = func_80106AA0_cheep_cheep_chase;
+    m238_ObstacleRowPlace(object, 0);
+    m238_ObstacleRowPlace(object, 4);
+    m238_gameWork->unk_10 = object;
+    object->func = m238_ObstacleObjMain;
 }
 
-void func_80106AA0_cheep_cheep_chase(omObjData *object) {
+void m238_ObstacleObjMain(omObjData *object) {
     HmfModel *model;
     s16 i;
 
     for (i = 0; i < 8; i++) {
         model = &Hu3DData[object->model[i]];
-        if (!D_8010E360_cheep_cheep_chase->unk_04[i].unk_03) {
-            if (!D_8010E360_cheep_cheep_chase->unk_04[i].unk_02) {
-                D_8010E018_cheep_cheep_chase += 0.25f;
-                if (D_8010E018_cheep_cheep_chase > 180.0f) {
-                    D_8010E018_cheep_cheep_chase = 0.0f;
+        if (!m238_gameWork->unk_04[i].unk_03) {
+            if (!m238_gameWork->unk_04[i].unk_02) {
+                m238_floatAngle += 0.25f;
+                if (m238_floatAngle > 180.0f) {
+                    m238_floatAngle = 0.0f;
                 }
                 if (i == 0) {
-                    object->trans.y = 105.0 - sindf(D_8010E018_cheep_cheep_chase) * 20.0f * 5.0f * 0.1;
+                    object->trans.y = 105.0 - sindf(m238_floatAngle) * 20.0f * 5.0f * 0.1;
                 } else {
-                    model->pos.y = 105.0 - sindf(D_8010E018_cheep_cheep_chase) * 20.0f * 5.0f * 0.1;
+                    model->pos.y = 105.0 - sindf(m238_floatAngle) * 20.0f * 5.0f * 0.1;
                 }
-                D_8010E360_cheep_cheep_chase->unk_04[i].unk_0C += 0.75f;
-                if (D_8010E360_cheep_cheep_chase->unk_04[i].unk_0C >= 360.0f) {
-                    D_8010E360_cheep_cheep_chase->unk_04[i].unk_0C -= 360.0f;
+                m238_gameWork->unk_04[i].unk_0C += 0.75f;
+                if (m238_gameWork->unk_04[i].unk_0C >= 360.0f) {
+                    m238_gameWork->unk_04[i].unk_0C -= 360.0f;
                 }
-                D_8010E360_cheep_cheep_chase->unk_04[i].unk_08 =
-                    sindf(D_8010E360_cheep_cheep_chase->unk_04[i].unk_0C) * (D_8010E360_cheep_cheep_chase->unk_04[i].unk_04 * 15.0);
+                m238_gameWork->unk_04[i].unk_08 =
+                    sindf(m238_gameWork->unk_04[i].unk_0C) * (m238_gameWork->unk_04[i].unk_04 * 15.0);
                 if (i == 0) {
-                    object->trans.z = -(D_8010E360_cheep_cheep_chase->unk_0C[D_8010E360_cheep_cheep_chase->unk_04[i].unk_04] * 100) +
-                                      D_8010E360_cheep_cheep_chase->unk_04[i].unk_08;
+                    object->trans.z = -(m238_gameWork->unk_0C[m238_gameWork->unk_04[i].unk_04] * 100) +
+                                      m238_gameWork->unk_04[i].unk_08;
                 } else {
-                    model->pos.z = -(D_8010E360_cheep_cheep_chase->unk_0C[D_8010E360_cheep_cheep_chase->unk_04[i].unk_04] * 100) +
-                                   D_8010E360_cheep_cheep_chase->unk_04[i].unk_08;
+                    model->pos.z = -(m238_gameWork->unk_0C[m238_gameWork->unk_04[i].unk_04] * 100) +
+                                   m238_gameWork->unk_04[i].unk_08;
                 }
                 if (Center.z - 1000.0f <= model->pos.z) {
                     Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -521,13 +521,13 @@ void func_80106AA0_cheep_cheep_chase(omObjData *object) {
         if (Center.z + 700.0f <= model->pos.z) {
             Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             if (i == 0 || i == 4) {
-                func_801094C0_cheep_cheep_chase(object, i);
+                m238_ObstacleRowPlace(object, i);
             }
         }
     }
 }
 
-void func_80106E80_cheep_cheep_chase(omObjData *object) {
+void m238_PlayerObjInit(omObjData *object) {
     s32 attr = 0x2A9;
     f32 chrTable[8] = { -0.2f, 0.1f, 0.0f, 0.0f, 0.0f, 0.1f, 0.0f, 0.0f };
     MgPlayerWork *data;
@@ -551,7 +551,7 @@ void func_80106E80_cheep_cheep_chase(omObjData *object) {
     MgPlayerMotLoad(object, 0x2B, CharMotionDataNumGet(chr, 0x5D), 1, 0);
     MgPlayerMotLoad(object, 0xD, CharMotionDataNumGet(chr, 0x2F), 1, 999);
     Hu3DModelScaleSet(object->model[0], 0.7f, 0.7f, 0.7f);
-    object->trans.x = 300.0 - (D_8010E370_cheep_cheep_chase[mgPlayerObjNum] + 1.0f) * 120.0;
+    object->trans.x = 300.0 - (m238_laneTbl[mgPlayerObjNum] + 1.0f) * 120.0;
     object->trans.y = 1060.0f;
     object->trans.z = -600.0f;
     object->rot.y = 180.0f;
@@ -560,22 +560,22 @@ void func_80106E80_cheep_cheep_chase(omObjData *object) {
     Hu3DModelAttrSet(object->model[1], 4, 4);
     mgPlayerObjNum++;
     data = object->data;
-    D_8010E364_cheep_cheep_chase[object->work[0]].padId = data->unk57;
-    D_8010E364_cheep_cheep_chase[object->work[0]].unk_01 = 0;
-    D_8010E364_cheep_cheep_chase[object->work[0]].unk_04 = chrTable[GwPlayer[object->work[0]].chr] * 20.0f * 5.0f;
-    D_8010E364_cheep_cheep_chase[object->work[0]].unk_20 = Hu3DMotion[Hu3DData[object->model[9]].motId].unk02;
-    func_8010D6F4_cheep_cheep_chase(object->work[0] + 4, 9, object->model[0], 0, NULL, func_8010B52C_cheep_cheep_chase, FALSE, FALSE);
-    func_8010D6F4_cheep_cheep_chase(object->work[0] + 4, 8, object->model[0], 1, NULL, func_8010BB9C_cheep_cheep_chase, TRUE, FALSE);
-    object->func = func_8010732C_cheep_cheep_chase;
+    m238_playerTbl[object->work[0]].padId = data->unk57;
+    m238_playerTbl[object->work[0]].unk_01 = 0;
+    m238_playerTbl[object->work[0]].unk_04 = chrTable[GwPlayer[object->work[0]].chr] * 20.0f * 5.0f;
+    m238_playerTbl[object->work[0]].unk_20 = Hu3DMotion[Hu3DData[object->model[9]].motId].unk02;
+    m238_FuncSet(object->work[0] + 4, 9, object->model[0], 0, NULL, m238_PlayerMotUpdate, FALSE, FALSE);
+    m238_FuncSet(object->work[0] + 4, 8, object->model[0], 1, NULL, m238_PlayerObstacleHit, TRUE, FALSE);
+    object->func = m238_PlayerObjMain;
 }
 
-void func_8010732C_cheep_cheep_chase(omObjData *object) {
-    FuncGroup *group = &D_8010E398_cheep_cheep_chase[object->work[0] + 4];
+void m238_PlayerObjMain(omObjData *object) {
+    FuncGroup *group = &m238_funcGroupTbl[object->work[0] + 4];
     FuncContext *ctx = group->funcCtx;
     s8 i;
 
     if (group->sort) {
-        func_8010D9E8_cheep_cheep_chase(group);
+        m238_FuncGroupSort(group);
     }
     for (i = 0; i < FUNC_PRIO_MAX; i++) {
         s8 funcId = group->order[i];
@@ -589,10 +589,10 @@ void func_8010732C_cheep_cheep_chase(omObjData *object) {
     MgPlayerMotUpdate(object);
 }
 
-void func_80107440_cheep_cheep_chase(omObjData *object) {
+void m238_CheepObjInit(omObjData *object) {
     s16 ctxId;
 
-    object->model[1] = D_8010E368_cheep_cheep_chase->model = Hu3DModelRead(0xA0086, 0x289);
+    object->model[1] = m238_cheepWork->model = Hu3DModelRead(0xA0086, 0x289);
     object->model[0] = Hu3DModelRead(0xA0087, 0x28D);
     object->motion[0] = Hu3DModelRead(0xA0088, 0x28D);
     Hu3DMotionModelSet(object->model[1], object->motion[0]);
@@ -607,20 +607,20 @@ void func_80107440_cheep_cheep_chase(omObjData *object) {
     Hu3DModelScaleSet(object->model[1], 1.4f, 1.4f, 1.4f);
     Hu3DModelPosSet(object->model[1], 0.0f, 40.0f, 0.0f);
     Hu3DModelRotSet(object->model[1], 0.0f, 180.0f, 0.0f);
-    ctxId = func_8010D6F4_cheep_cheep_chase(3, 7, -1, 0, NULL, func_8010C988_cheep_cheep_chase, FALSE, FALSE);
-    D_8010E398_cheep_cheep_chase[3].funcCtx[ctxId].work.s16[0] = object->model[1];
-    D_8010E398_cheep_cheep_chase[3].funcCtx[ctxId].work.s16[1] = object->model[0];
-    func_8010D6F4_cheep_cheep_chase(3, 8, object->model[1], 0, NULL, func_8010CAD4_cheep_cheep_chase, FALSE, TRUE);
-    func_8010D6F4_cheep_cheep_chase(3, 9, object->model[1], 1, NULL, func_8010CBBC_cheep_cheep_chase, FALSE, FALSE);
-    func_8010D6F4_cheep_cheep_chase(3, 1, object->model[1], 1, NULL, func_8010D02C_cheep_cheep_chase, TRUE, FALSE);
-    object->func = func_80107698_cheep_cheep_chase;
+    ctxId = m238_FuncSet(3, 7, -1, 0, NULL, m238_CheepMorphUpdate, FALSE, FALSE);
+    m238_funcGroupTbl[3].funcCtx[ctxId].work.s16[0] = object->model[1];
+    m238_funcGroupTbl[3].funcCtx[ctxId].work.s16[1] = object->model[0];
+    m238_FuncSet(3, 8, object->model[1], 0, NULL, m238_CheepMotUpdate, FALSE, TRUE);
+    m238_FuncSet(3, 9, object->model[1], 1, NULL, m238_CheepEffUpdate, FALSE, FALSE);
+    m238_FuncSet(3, 1, object->model[1], 1, NULL, m238_CheepObstacleCheck, TRUE, FALSE);
+    object->func = m238_CheepObjMain;
 }
 
-void func_80107698_cheep_cheep_chase(omObjData *object) {
-    func_8010D8FC_cheep_cheep_chase(3);
+void m238_CheepObjMain(omObjData *object) {
+    m238_FuncGroupUpdate(3);
 }
 
-void func_801076B4_cheep_cheep_chase(FuncContext *ctx) {
+void m238_CameraViewInit(FuncContext *ctx) {
     if (ctx->state == 0) {
         Center.x = -26.0f;
         Center.y = 327.0f;
@@ -629,11 +629,11 @@ void func_801076B4_cheep_cheep_chase(FuncContext *ctx) {
         CRot.y = 180.0f;
         CRot.z = 0.0f;
         CZoom = 1670.0f;
-        func_8010D7F4_cheep_cheep_chase(0, ctx);
+        m238_FuncReset(0, ctx);
     }
 }
 
-void func_80107760_cheep_cheep_chase(FuncContext *ctx) {
+void m238_CameraDebugPad(FuncContext *ctx) {
     u16 buttons;
 
     switch (ctx->state) {
@@ -722,7 +722,7 @@ void func_80107760_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-void func_80107BDC_cheep_cheep_chase(FuncContext *ctx) {
+void m238_CameraStartMove(FuncContext *ctx) {
     f32 t;
 
     switch (ctx->state) {
@@ -746,16 +746,16 @@ void func_80107BDC_cheep_cheep_chase(FuncContext *ctx) {
                 Center.z = -455.0f;
                 CRot.x = 315.0f;
                 CRot.y = 90.0f;
-                func_8010D7F4_cheep_cheep_chase(0, ctx);
-                func_8010D6F4_cheep_cheep_chase(0, 2, -1, 0, NULL, func_801080C8_cheep_cheep_chase, FALSE, FALSE);
+                m238_FuncReset(0, ctx);
+                m238_FuncSet(0, 2, -1, 0, NULL, m238_CameraFollowUpdate, FALSE, FALSE);
             }
             break;
     }
 }
 
-void func_80107E3C_cheep_cheep_chase(FuncContext *ctx) {
+void m238_CameraWinMove(FuncContext *ctx) {
     omObjData *object = mgPlayerObjTbl[0];
-    CheepCheepChasePlayer *player = D_8010E364_cheep_cheep_chase;
+    CheepCheepChasePlayer *player = m238_playerTbl;
     s16 i;
     f32 t;
 
@@ -786,13 +786,13 @@ void func_80107E3C_cheep_cheep_chase(FuncContext *ctx) {
                 Center.z = ctx->work.f32[1];
                 CRot.x = 340.0f;
                 CRot.y = 121.0f;
-                func_8010D7F4_cheep_cheep_chase(0, ctx);
+                m238_FuncReset(0, ctx);
             }
             break;
     }
 }
 
-void func_801080C8_cheep_cheep_chase(FuncContext *ctx) {
+void m238_CameraFollowUpdate(FuncContext *ctx) {
     s16 i;
 
     switch (ctx->state) {
@@ -813,16 +813,16 @@ void func_801080C8_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-void func_80108170_cheep_cheep_chase(FuncContext *ctx) {
+void m238_StartExec(FuncContext *ctx) {
     omObjData *object = mgPlayerObjTbl[0];
     s16 i;
 
-    if (D_8010E01C_cheep_cheep_chase >= 4) {
+    if (m238_readyCnt >= 4) {
         HuAudSeqPlay(0x34);
     }
     switch (ctx->state) {
         case 0:
-            D_8010E380_cheep_cheep_chase[0] = HuAudFXPlay(0x433);
+            m238_seNoTbl[0] = HuAudFXPlay(0x433);
             ctx->work.s16[0] = 0;
             ctx->state = 1;
             break;
@@ -830,53 +830,53 @@ void func_80108170_cheep_cheep_chase(FuncContext *ctx) {
             switch (ctx->work.s16[0]++) {
                 case 10:
                     for (i = 0; i < 4; i++, object++) {
-                        func_8010D6F4_cheep_cheep_chase(i + 4, 0, object->model[0], 0, NULL, func_80109750_cheep_cheep_chase, FALSE, FALSE);
+                        m238_FuncSet(i + 4, 0, object->model[0], 0, NULL, m238_PlayerDiveExec, FALSE, FALSE);
                     }
                     break;
                 case 80:
-                    func_8010D6F4_cheep_cheep_chase(2, 0, D_8010E360_cheep_cheep_chase->unk_24, 0, NULL, func_801092B8_cheep_cheep_chase, FALSE, FALSE);
+                    m238_FuncSet(2, 0, m238_gameWork->unk_24, 0, NULL, m238_StartMdlPlay, FALSE, FALSE);
                     break;
                 case 90:
                     object = mgPlayerObjTbl[0];
                     for (i = 0; i < 4; i++, object++) {
-                        func_8010D6F4_cheep_cheep_chase(i + 4, 4, object->model[0], 0, NULL, func_80109CAC_cheep_cheep_chase, FALSE, FALSE);
+                        m238_FuncSet(i + 4, 4, object->model[0], 0, NULL, m238_PlayerStartExec, FALSE, FALSE);
                     }
                     break;
                 case 70:
-                    func_8010D6F4_cheep_cheep_chase(0, 0, -1, 0, NULL, func_80107BDC_cheep_cheep_chase, FALSE, FALSE);
+                    m238_FuncSet(0, 0, -1, 0, NULL, m238_CameraStartMove, FALSE, FALSE);
                     break;
                 case 110:
                     GMesCreate(3);
                     HuAudFXPlay(0xE);
-                    D_8010E01E_cheep_cheep_chase = 1;
+                    m238_startPhase = 1;
                     break;
                 default:
-                    if (D_8010E01E_cheep_cheep_chase == 1) {
-                        if (++D_8010E022_cheep_cheep_chase > 60) {
+                    if (m238_startPhase == 1) {
+                        if (++m238_startTimer > 60) {
                             for (i = 0; i < 4; i++, object++) {
                                 if (GwPlayer[object->work[0]].stat & 1) {
-                                    if (D_8010E010_cheep_cheep_chase == 0) {
-                                        func_8010D6F4_cheep_cheep_chase(i + 4, 0, object->model[0], 0, NULL, func_8010A57C_cheep_cheep_chase, FALSE, FALSE);
+                                    if (m238_ctrlMode == 0) {
+                                        m238_FuncSet(i + 4, 0, object->model[0], 0, NULL, m238_PlayerComInput, FALSE, FALSE);
                                     } else {
-                                        func_8010D6F4_cheep_cheep_chase(i + 4, 0, object->model[0], 0, NULL, func_8010A938_cheep_cheep_chase, FALSE, FALSE);
+                                        m238_FuncSet(i + 4, 0, object->model[0], 0, NULL, m238_PlayerComInputB, FALSE, FALSE);
                                     }
                                 }
-                                if (D_8010E010_cheep_cheep_chase == 0) {
-                                    func_8010D6F4_cheep_cheep_chase(i + 4, 1, object->model[0], 0, NULL, func_8010AD14_cheep_cheep_chase, FALSE, FALSE);
+                                if (m238_ctrlMode == 0) {
+                                    m238_FuncSet(i + 4, 1, object->model[0], 0, NULL, m238_PlayerInputUpdate, FALSE, FALSE);
                                 } else {
-                                    func_8010D6F4_cheep_cheep_chase(i + 4, 1, object->model[0], 0, NULL, func_8010AF70_cheep_cheep_chase, FALSE, FALSE);
+                                    m238_FuncSet(i + 4, 1, object->model[0], 0, NULL, m238_PlayerInputUpdateB, FALSE, FALSE);
                                 }
-                                func_8010D6F4_cheep_cheep_chase(i + 4, 2, object->model[0], 0, NULL, func_8010B148_cheep_cheep_chase, FALSE, FALSE);
-                                func_8010D6F4_cheep_cheep_chase(i + 4, 3, object->model[0], 0, NULL, func_8010B33C_cheep_cheep_chase, FALSE, FALSE);
+                                m238_FuncSet(i + 4, 2, object->model[0], 0, NULL, m238_PlayerMove, FALSE, FALSE);
+                                m238_FuncSet(i + 4, 3, object->model[0], 0, NULL, m238_PlayerJumpUpdate, FALSE, FALSE);
                             }
-                            D_8010E020_cheep_cheep_chase = ctx->work.s16[0] + 10;
-                            D_8010E01E_cheep_cheep_chase = 2;
+                            m238_startFrame = ctx->work.s16[0] + 10;
+                            m238_startPhase = 2;
                         }
-                    } else if (D_8010E01E_cheep_cheep_chase == 2) {
-                        if (ctx->work.s16[0] >= D_8010E020_cheep_cheep_chase) {
-                            func_8010D6F4_cheep_cheep_chase(3, 0, D_8010E368_cheep_cheep_chase->model, 0, NULL, func_8010C440_cheep_cheep_chase, FALSE, FALSE);
-                            func_8010D7F4_cheep_cheep_chase(1, ctx);
-                            func_8010D6F4_cheep_cheep_chase(1, 0, -1, 1, NULL, func_801085FC_cheep_cheep_chase, FALSE, FALSE);
+                    } else if (m238_startPhase == 2) {
+                        if (ctx->work.s16[0] >= m238_startFrame) {
+                            m238_FuncSet(3, 0, m238_cheepWork->model, 0, NULL, m238_CheepUpdate, FALSE, FALSE);
+                            m238_FuncReset(1, ctx);
+                            m238_FuncSet(1, 0, -1, 1, NULL, m238_GoalCheckUpdate, FALSE, FALSE);
                         }
                     }
                     break;
@@ -885,9 +885,9 @@ void func_80108170_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-void func_801085FC_cheep_cheep_chase(FuncContext *ctx) {
+void m238_GoalCheckUpdate(FuncContext *ctx) {
     omObjData *object = mgPlayerObjTbl[0];
-    CheepCheepChasePlayer *player = D_8010E364_cheep_cheep_chase;
+    CheepCheepChasePlayer *player = m238_playerTbl;
     s16 caughtCount = 0;
     s16 caught[4] = { -1, -1, -1, -1 };
     s16 index;
@@ -897,17 +897,17 @@ void func_801085FC_cheep_cheep_chase(FuncContext *ctx) {
         case 0:
             break;
         case 1:
-            if (D_8010E360_cheep_cheep_chase->unk_2E == 4) {
-                func_8010D85C_cheep_cheep_chase(1);
-                func_8010D6F4_cheep_cheep_chase(1, 0, -1, 0, NULL, func_80108AF4_cheep_cheep_chase, FALSE, TRUE);
+            if (m238_gameWork->unk_2E == 4) {
+                m238_FuncGroupReset(1);
+                m238_FuncSet(1, 0, -1, 0, NULL, m238_DrawExec, FALSE, TRUE);
                 break;
             }
-            if (D_8010E360_cheep_cheep_chase->unk_30 == 4) {
+            if (m238_gameWork->unk_30 == 4) {
                 break;
             }
-            if (D_8010E360_cheep_cheep_chase->unk_28 != 0.0f) {
+            if (m238_gameWork->unk_28 != 0.0f) {
                 for (i = 0; i < 4; i++, object++) {
-                    if (object->trans.z < D_8010E360_cheep_cheep_chase->unk_28 - 350.0) {
+                    if (object->trans.z < m238_gameWork->unk_28 - 350.0) {
                         caught[caughtCount++] = i;
                     }
                 }
@@ -921,47 +921,47 @@ void func_801085FC_cheep_cheep_chase(FuncContext *ctx) {
                     continue;
                 }
                 if (i == caught[index]) {
-                    D_8010E360_cheep_cheep_chase->unk_2C = i;
+                    m238_gameWork->unk_2C = i;
                     player->unk_01 = 6;
                 } else {
                     player->unk_01 = 7;
                 }
-                func_8010D85C_cheep_cheep_chase(i + 4);
-                func_8010D6F4_cheep_cheep_chase(i + 4, 0, object->model[0], 0, NULL, func_8010A08C_cheep_cheep_chase, FALSE, FALSE);
+                m238_FuncGroupReset(i + 4);
+                m238_FuncSet(i + 4, 0, object->model[0], 0, NULL, m238_PlayerGoalExec, FALSE, FALSE);
             }
-            func_8010D7F4_cheep_cheep_chase(1, ctx);
+            m238_FuncReset(1, ctx);
             HuAudSeqFadeOut(120);
             GMesCreate(0xE);
-            func_8010D6F4_cheep_cheep_chase(1, 0, -1, 0, NULL, func_801088F8_cheep_cheep_chase, FALSE, TRUE);
-            D_8010E360_cheep_cheep_chase->unk_18 = 0.4f;
+            m238_FuncSet(1, 0, -1, 0, NULL, m238_FinishSeFade, FALSE, TRUE);
+            m238_gameWork->unk_18 = 0.4f;
             break;
     }
 }
 
-void func_801088F8_cheep_cheep_chase(FuncContext *ctx) {
+void m238_FinishSeFade(FuncContext *ctx) {
     if (ctx->state == 0) {
         ctx->work.s16[0] = 0;
         ctx->state = 1;
     }
     if (++ctx->work.s16[0] >= 16) {
         ctx->work.s16[0] = 15;
-        HuAudFXFadeOut(D_8010E380_cheep_cheep_chase[0], 15);
-        func_8010D7F4_cheep_cheep_chase(1, ctx);
+        HuAudFXFadeOut(m238_seNoTbl[0], 15);
+        m238_FuncReset(1, ctx);
     }
 }
 
-void func_8010896C_cheep_cheep_chase(FuncContext *ctx) {
+void m238_WinExec(FuncContext *ctx) {
     switch (ctx->state) {
         case 0:
             ctx->work.s16[0] = 0;
             ctx->state = 1;
             break;
         case 1:
-            if (D_8010E024_cheep_cheep_chase >= 2) {
+            if (m238_resultPhase >= 2) {
                 if (GMesStatGet() == 0) {
-                    D_8010E024_cheep_cheep_chase = 3;
+                    m238_resultPhase = 3;
                 }
-                if (D_8010E024_cheep_cheep_chase == 3) {
+                if (m238_resultPhase == 3) {
                     if (++ctx->work.s16[0] >= 15) {
                         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                         ctx->state = 2;
@@ -969,13 +969,13 @@ void func_8010896C_cheep_cheep_chase(FuncContext *ctx) {
                 }
             } else {
                 if ((u16)ctx->work.s16[0]++ == 0) {
-                    GMesCreate(0x16, GwPlayer[D_8010E360_cheep_cheep_chase->unk_2C].chr);
+                    GMesCreate(0x16, GwPlayer[m238_gameWork->unk_2C].chr);
                     HuAudSeqPlay(0x65);
-                    GwPlayer[D_8010E360_cheep_cheep_chase->unk_2C].bonusCoin += 10;
+                    GwPlayer[m238_gameWork->unk_2C].bonusCoin += 10;
                 }
                 if (GMesStatGet() != 0) {
                     ctx->work.s16[0] = 0;
-                    D_8010E024_cheep_cheep_chase = 2;
+                    m238_resultPhase = 2;
                 }
             }
             break;
@@ -987,11 +987,11 @@ void func_8010896C_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-void func_80108AF4_cheep_cheep_chase(FuncContext *ctx) {
-    if (D_8010E026_cheep_cheep_chase == 1 && GMesStatGet() == 0) {
+void m238_DrawExec(FuncContext *ctx) {
+    if (m238_drawPhase == 1 && GMesStatGet() == 0) {
         ctx->state = 99;
         ctx->work.s16[0] = 0;
-        D_8010E026_cheep_cheep_chase = 2;
+        m238_drawPhase = 2;
     }
     switch (ctx->state) {
         case 0:
@@ -1003,13 +1003,13 @@ void func_80108AF4_cheep_cheep_chase(FuncContext *ctx) {
                 case 0:
                     HuAudSeqFadeOut(120);
                     GMesCreate(0xE);
-                    func_8010D6F4_cheep_cheep_chase(1, 0, -1, 0, NULL, func_801088F8_cheep_cheep_chase, FALSE, TRUE);
+                    m238_FuncSet(1, 0, -1, 0, NULL, m238_FinishSeFade, FALSE, TRUE);
                     ctx->state = 3;
                     break;
                 case 15:
                     GMesCreate(0x20);
                     HuAudSeqPlay(0x6C);
-                    D_8010E026_cheep_cheep_chase = 1;
+                    m238_drawPhase = 1;
                     break;
             }
             break;
@@ -1032,59 +1032,59 @@ void func_80108AF4_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-void func_80108C98_cheep_cheep_chase(FuncContext *ctx) {
+void m238_RiverInit(FuncContext *ctx) {
     s16 i;
 
     if (ctx->state == 0) {
-        D_8010E360_cheep_cheep_chase->segments[0].unk_04 = 1200.0f;
-        D_8010E360_cheep_cheep_chase->segments[0].unk_08 = 600.0f;
-        D_8010E360_cheep_cheep_chase->segments[0].length = 1000.0f;
-        D_8010E360_cheep_cheep_chase->segments[1].unk_04 = 1200.0f;
-        D_8010E360_cheep_cheep_chase->segments[1].unk_08 = 600.0f;
-        D_8010E360_cheep_cheep_chase->segments[1].length = 1000.0f;
+        m238_gameWork->segments[0].unk_04 = 1200.0f;
+        m238_gameWork->segments[0].unk_08 = 600.0f;
+        m238_gameWork->segments[0].length = 1000.0f;
+        m238_gameWork->segments[1].unk_04 = 1200.0f;
+        m238_gameWork->segments[1].unk_08 = 600.0f;
+        m238_gameWork->segments[1].length = 1000.0f;
         for (i = 0; i < 4; i++) {
-            D_8010E360_cheep_cheep_chase->segments[i + 2].unk_04 = 1200.0f;
-            D_8010E360_cheep_cheep_chase->segments[i + 2].unk_08 = 600.0f;
-            D_8010E360_cheep_cheep_chase->segments[i + 2].length = 1000.0f;
+            m238_gameWork->segments[i + 2].unk_04 = 1200.0f;
+            m238_gameWork->segments[i + 2].unk_08 = 600.0f;
+            m238_gameWork->segments[i + 2].length = 1000.0f;
         }
-        D_8010E360_cheep_cheep_chase->zTick = 0;
-        D_8010E360_cheep_cheep_chase->xTick = 0;
-        D_8010E360_cheep_cheep_chase->scaleIndex = 0;
-        D_8010E360_cheep_cheep_chase->unk_28 = 0.0f;
-        D_8010E360_cheep_cheep_chase->unk_18 = 0.4f;
-        D_8010E360_cheep_cheep_chase->unk_2C = -1;
-        D_8010E360_cheep_cheep_chase->unk_2E = 0;
-        D_8010E360_cheep_cheep_chase->unk_30 = 0;
-        D_8010E360_cheep_cheep_chase->segmentOrder[0] = 0;
-        D_8010E360_cheep_cheep_chase->segmentOrder[1] = 2;
-        D_8010E360_cheep_cheep_chase->segmentOrder[2] = 3;
-        D_8010E360_cheep_cheep_chase->segmentOrder[3] = 4;
-        D_8010E360_cheep_cheep_chase->segmentOrder[4] = 5;
-        D_8010E360_cheep_cheep_chase->segmentOrder[5] = 2;
-        D_8010E360_cheep_cheep_chase->segmentOrder[6] = 1;
+        m238_gameWork->zTick = 0;
+        m238_gameWork->xTick = 0;
+        m238_gameWork->scaleIndex = 0;
+        m238_gameWork->unk_28 = 0.0f;
+        m238_gameWork->unk_18 = 0.4f;
+        m238_gameWork->unk_2C = -1;
+        m238_gameWork->unk_2E = 0;
+        m238_gameWork->unk_30 = 0;
+        m238_gameWork->segmentOrder[0] = 0;
+        m238_gameWork->segmentOrder[1] = 2;
+        m238_gameWork->segmentOrder[2] = 3;
+        m238_gameWork->segmentOrder[3] = 4;
+        m238_gameWork->segmentOrder[4] = 5;
+        m238_gameWork->segmentOrder[5] = 2;
+        m238_gameWork->segmentOrder[6] = 1;
         for (i = 0; i < 5; i++) {
-            func_801091FC_cheep_cheep_chase(i);
+            m238_SegmentPlace(i);
         }
-        func_801091FC_cheep_cheep_chase(6);
-        D_8010E360_cheep_cheep_chase->unk_0C[0] = 10;
-        D_8010E360_cheep_cheep_chase->unk_0C[1] = 18;
-        D_8010E360_cheep_cheep_chase->unk_0C[2] = 28;
-        D_8010E360_cheep_cheep_chase->unk_0C[3] = 32;
-        D_8010E360_cheep_cheep_chase->unk_0C[4] = 40;
-        D_8010E360_cheep_cheep_chase->unk_0C[5] = 47;
-        D_8010E360_cheep_cheep_chase->unk_0C[6] = 56;
-        D_8010E360_cheep_cheep_chase->unk_24 = ctx->param;
+        m238_SegmentPlace(6);
+        m238_gameWork->unk_0C[0] = 10;
+        m238_gameWork->unk_0C[1] = 18;
+        m238_gameWork->unk_0C[2] = 28;
+        m238_gameWork->unk_0C[3] = 32;
+        m238_gameWork->unk_0C[4] = 40;
+        m238_gameWork->unk_0C[5] = 47;
+        m238_gameWork->unk_0C[6] = 56;
+        m238_gameWork->unk_24 = ctx->param;
         Hu3DModelScaleSet(ctx->param, 1.4f, 1.4f, 1.4f);
         Hu3DModelPosSet(ctx->param, 0.0f, -100.0f, 0.0f);
         Hu3DModelAttrSet(ctx->param, 4, 0);
         Hu3DData[ctx->param].motSpeed = 0.0f;
         Hu3DData[ctx->param].motTime = 0.0f;
-        func_8010D7F4_cheep_cheep_chase(2, ctx);
+        m238_FuncReset(2, ctx);
     }
 }
 
-void func_80108F78_cheep_cheep_chase(FuncContext *ctx) {
-    CheepCheepChaseSegment *segment = &D_8010E360_cheep_cheep_chase->segments[1];
+void m238_RiverUpdate(FuncContext *ctx) {
+    CheepCheepChaseSegment *segment = &m238_gameWork->segments[1];
     HmfModel *model;
     s16 i;
 
@@ -1102,7 +1102,7 @@ void func_80108F78_cheep_cheep_chase(FuncContext *ctx) {
                 if (Center.z + 1700.0f <= model->pos.z) {
                     Hu3DModelAttrSet(segment->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     if (i >= 2 && ctx->work.s8[0] < 7) {
-                        func_801091FC_cheep_cheep_chase(ctx->work.s8[0]++);
+                        m238_SegmentPlace(ctx->work.s8[0]++);
                     }
                 }
             }
@@ -1112,8 +1112,8 @@ void func_80108F78_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-void func_801090E0_cheep_cheep_chase(FuncContext *ctx) {
-    CheepCheepChaseSegment *segment = D_8010E360_cheep_cheep_chase->segments;
+void m238_RiverStartHide(FuncContext *ctx) {
+    CheepCheepChaseSegment *segment = m238_gameWork->segments;
     HmfModel *model = &Hu3DData[segment->model];
 
     switch (ctx->state) {
@@ -1125,8 +1125,8 @@ void func_801090E0_cheep_cheep_chase(FuncContext *ctx) {
             }
             if (model->pos.z >= Center.z + 1700.0f + 400.0) {
                 Hu3DModelAttrSet(segment->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                func_8010D7F4_cheep_cheep_chase(2, ctx);
-                Hu3DModelAttrSet(D_8010E360_cheep_cheep_chase->unk_24, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                m238_FuncReset(2, ctx);
+                Hu3DModelAttrSet(m238_gameWork->unk_24, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             break;
         case 2:
@@ -1134,25 +1134,25 @@ void func_801090E0_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-void func_801091FC_cheep_cheep_chase(u8 index) {
+void m238_SegmentPlace(u8 index) {
     f32 z = 0.0f;
     CheepCheepChaseSegment *segment;
     s16 i;
 
     if (index != 0) {
         for (i = 0; i < index; i++) {
-            segment = &D_8010E360_cheep_cheep_chase->segments[D_8010E360_cheep_cheep_chase->segmentOrder[i]];
+            segment = &m238_gameWork->segments[m238_gameWork->segmentOrder[i]];
             z -= segment->length;
         }
     }
-    segment = &D_8010E360_cheep_cheep_chase->segments[D_8010E360_cheep_cheep_chase->segmentOrder[index]];
-    if (D_8010E360_cheep_cheep_chase->segmentOrder[index] == 1) {
-        D_8010E360_cheep_cheep_chase->unk_28 = z;
+    segment = &m238_gameWork->segments[m238_gameWork->segmentOrder[index]];
+    if (m238_gameWork->segmentOrder[index] == 1) {
+        m238_gameWork->unk_28 = z;
     }
     Hu3DModelPosSet(segment->model, 0.0f, 0.0f, z);
 }
 
-void func_801092B8_cheep_cheep_chase(FuncContext *ctx) {
+void m238_StartMdlPlay(FuncContext *ctx) {
     HmfModel *model = &Hu3DData[ctx->param];
 
     switch (ctx->state) {
@@ -1164,46 +1164,46 @@ void func_801092B8_cheep_cheep_chase(FuncContext *ctx) {
             break;
         case 1:
             if (Hu3DData[ctx->param].motTime >= ctx->work.f32[0]) {
-                func_8010D7F4_cheep_cheep_chase(2, ctx);
+                m238_FuncReset(2, ctx);
             }
             break;
     }
 }
 
-void func_801093CC_cheep_cheep_chase(s32 arg0) {
-    Hu3DModelPosSet(arg0, 0.0f, 110.0f, -250.0 - (D_8010E360_cheep_cheep_chase->zTick * 500.0));
-    D_8010E360_cheep_cheep_chase->zTick++;
+void m238_WaterTilePlace(s32 arg0) {
+    Hu3DModelPosSet(arg0, 0.0f, 110.0f, -250.0 - (m238_gameWork->zTick * 500.0));
+    m238_gameWork->zTick++;
 }
 
-void func_80109444_cheep_cheep_chase(s32 arg0) {
-    Hu3DModelPosSet(arg0, -325.0f, 200.0f, 200.0 - (D_8010E360_cheep_cheep_chase->xTick * 1000.0));
-    D_8010E360_cheep_cheep_chase->xTick++;
+void m238_SidePlace(s32 arg0) {
+    Hu3DModelPosSet(arg0, -325.0f, 200.0f, 200.0 - (m238_gameWork->xTick * 1000.0));
+    m238_gameWork->xTick++;
 }
 
-void func_801094C0_cheep_cheep_chase(omObjData *object, s16 offset) {
+void m238_ObstacleRowPlace(omObjData *object, s16 offset) {
     s16 i;
 
-    if (D_8010E360_cheep_cheep_chase->scaleIndex < 7) {
+    if (m238_gameWork->scaleIndex < 7) {
         for (i = 0; i < 4; i++) {
             if (offset + i == 0) {
                 object->trans.x = 300.0 - (i + 1) * 120.0;
                 object->trans.y = 110.0f;
-                object->trans.z = -(D_8010E360_cheep_cheep_chase->unk_0C[D_8010E360_cheep_cheep_chase->scaleIndex] * 100);
+                object->trans.z = -(m238_gameWork->unk_0C[m238_gameWork->scaleIndex] * 100);
             } else {
                 Hu3DModelPosSet(object->model[offset + i], 300.0 - (i + 1) * 120.0, 110.0f,
-                                -(D_8010E360_cheep_cheep_chase->unk_0C[D_8010E360_cheep_cheep_chase->scaleIndex] * 100));
+                                -(m238_gameWork->unk_0C[m238_gameWork->scaleIndex] * 100));
             }
-            D_8010E360_cheep_cheep_chase->unk_04[offset + i].unk_04 = D_8010E360_cheep_cheep_chase->scaleIndex;
-            D_8010E360_cheep_cheep_chase->unk_04[offset + i].unk_02 = 0;
-            D_8010E360_cheep_cheep_chase->unk_04[offset + i].unk_03 = 0;
-            D_8010E360_cheep_cheep_chase->unk_04[offset + i].unk_05 = 0;
-            D_8010E360_cheep_cheep_chase->unk_04[offset + i].unk_0C = rand16() % 361;
+            m238_gameWork->unk_04[offset + i].unk_04 = m238_gameWork->scaleIndex;
+            m238_gameWork->unk_04[offset + i].unk_02 = 0;
+            m238_gameWork->unk_04[offset + i].unk_03 = 0;
+            m238_gameWork->unk_04[offset + i].unk_05 = 0;
+            m238_gameWork->unk_04[offset + i].unk_0C = rand16() % 361;
         }
-        D_8010E360_cheep_cheep_chase->scaleIndex++;
+        m238_gameWork->scaleIndex++;
     }
 }
 
-void func_80109750_cheep_cheep_chase(FuncContext *ctx) {
+void m238_PlayerDiveExec(FuncContext *ctx) {
     omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
     f32 chrTable[8] = { 65.0f, 58.0f, 45.0f, 60.0f, 84.0f, 102.0f, 44.0f, 45.0f };
     f32 accel;
@@ -1237,7 +1237,7 @@ void func_80109750_cheep_cheep_chase(FuncContext *ctx) {
                             z = ((rand16() % 9) - 4) * 0.1;
                             start = 30;
                             for (j = start; j < start + 18; j++) {
-                                if (func_8010DC7C_cheep_cheep_chase(j, x * 100.0f + object->trans.x, 160.0f, z * 100.0f + object->trans.z, 0.0f, 90.0f, 0.0f, 1.0f, i) != 0) {
+                                if (m238_AnimMdlDispOn(j, x * 100.0f + object->trans.x, 160.0f, z * 100.0f + object->trans.z, 0.0f, 90.0f, 0.0f, 1.0f, i) != 0) {
                                     break;
                                 }
                             }
@@ -1252,23 +1252,23 @@ void func_80109750_cheep_cheep_chase(FuncContext *ctx) {
                     }
                     accel = chrTable[GwPlayer[object->work[0]].chr] * -9.8f;
                     object->trans.y = sindf(ctx->work.f32[2]) * accel * 0.15f;
-                    if (object->trans.y >= D_8010E364_cheep_cheep_chase[object->work[0]].unk_04 + 60.0) {
+                    if (object->trans.y >= m238_playerTbl[object->work[0]].unk_04 + 60.0) {
                         ctx->work.s8[0] = 2;
                         ctx->work.f32[2] = 0.0f;
                         CharFXPlay(0x82, GwPlayer[object->work[0]].chr);
-                        object->trans.y = D_8010E364_cheep_cheep_chase[object->work[0]].unk_04 + 60.0;
+                        object->trans.y = m238_playerTbl[object->work[0]].unk_04 + 60.0;
                     }
                     break;
             }
             if (ctx->work.s8[0] == 2) {
                 MgPlayerMotSet(object, 0x26);
-                func_8010D7F4_cheep_cheep_chase(ctx->work.s16[0] + 4, ctx);
+                m238_FuncReset(ctx->work.s16[0] + 4, ctx);
             }
             break;
     }
 }
 
-void func_80109CAC_cheep_cheep_chase(FuncContext *ctx) {
+void m238_PlayerStartExec(FuncContext *ctx) {
     omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
     f32 scale = 0.0f;
 
@@ -1294,19 +1294,19 @@ void func_80109CAC_cheep_cheep_chase(FuncContext *ctx) {
                         }
                         switch (ctx->work.s8[3]) {
                             case 0:
-                                if (func_8010DF48_cheep_cheep_chase(&scale, (u8 *)&ctx->work.s8[2], 1.2f, 2.5f, 3.0f)) {
+                                if (m238_LerpCalc(&scale, (u8 *)&ctx->work.s8[2], 1.2f, 2.5f, 3.0f)) {
                                     ctx->work.s8[2] = 0;
                                     ctx->work.s8[3] = 1;
                                 }
                                 Hu3DModelAttrSet(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                                 break;
                             case 1:
-                                if (func_8010DF48_cheep_cheep_chase(&scale, (u8 *)&ctx->work.s8[2], 2.5f, 0.8f, 3.0f)) {
+                                if (m238_LerpCalc(&scale, (u8 *)&ctx->work.s8[2], 2.5f, 0.8f, 3.0f)) {
                                     Hu3DData[object->model[0]].motSpeed = 0.75f;
                                     ctx->work.s8[2] = 0;
                                     ctx->work.s8[3] = 2;
                                     Hu3DModelAttrSet(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                                    D_8010E01C_cheep_cheep_chase++;
+                                    m238_readyCnt++;
                                 }
                                 break;
                         }
@@ -1320,19 +1320,19 @@ void func_80109CAC_cheep_cheep_chase(FuncContext *ctx) {
                 ctx->work.s8[0] = 2;
             }
             if (ctx->work.s8[0] == 2) {
-                func_8010B63C_cheep_cheep_chase(&D_8010E364_cheep_cheep_chase[object->work[0]], 0x26, TRUE);
+                m238_PlayerStateSet(&m238_playerTbl[object->work[0]], 0x26, TRUE);
                 Hu3DData[object->model[0]].motSpeed = 1.0f;
                 Hu3DData[object->model[9]].rot.y = 0.0f;
-                func_8010D7F4_cheep_cheep_chase(ctx->work.s16[0] + 4, ctx);
-                func_8010D6F4_cheep_cheep_chase(object->work[0] + 4, 4, object->model[0], 0, NULL, func_8010B648_cheep_cheep_chase, FALSE, FALSE);
+                m238_FuncReset(ctx->work.s16[0] + 4, ctx);
+                m238_FuncSet(object->work[0] + 4, 4, object->model[0], 0, NULL, m238_PlayerEffUpdate, FALSE, FALSE);
             }
             break;
     }
 }
 
-void func_8010A08C_cheep_cheep_chase(FuncContext *ctx) {
+void m238_PlayerGoalExec(FuncContext *ctx) {
     omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
-    CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
+    CheepCheepChasePlayer *player = &m238_playerTbl[ctx->work.s16[0]];
 
     switch (ctx->state) {
         case 0:
@@ -1364,17 +1364,17 @@ void func_8010A08C_cheep_cheep_chase(FuncContext *ctx) {
                             CharFXPlay(0x1F, GwPlayer[object->work[0]].chr);
                         }
                         if (ctx->work.s8[2] == 0) {
-                            if (func_8010DF48_cheep_cheep_chase(&object->trans.y, (u8 *)&ctx->work.s8[0], player->unk_04 + 60.0, 210.0f, 20.0f)) {
+                            if (m238_LerpCalc(&object->trans.y, (u8 *)&ctx->work.s8[0], player->unk_04 + 60.0, 210.0f, 20.0f)) {
                                 ctx->work.s8[2] = 1;
                             }
                         }
-                        if (func_8010DF48_cheep_cheep_chase(&object->trans.z, (u8 *)&ctx->work.s8[1], ctx->work.f32[0], D_8010E360_cheep_cheep_chase->unk_28 - 700.0, 70.0f)) {
+                        if (m238_LerpCalc(&object->trans.z, (u8 *)&ctx->work.s8[1], ctx->work.f32[0], m238_gameWork->unk_28 - 700.0, 70.0f)) {
                             ctx->work.s8[1] = 70;
                         }
-                        if (func_8010DF48_cheep_cheep_chase(&object->trans.x, (u8 *)&ctx->work.s8[4], ctx->work.f32[1], 0.0f, 70.0f)) {
+                        if (m238_LerpCalc(&object->trans.x, (u8 *)&ctx->work.s8[4], ctx->work.f32[1], 0.0f, 70.0f)) {
                             MgPlayerMotSet(object, 0);
                             ctx->state = 2;
-                            func_8010D6F4_cheep_cheep_chase(0, 0, -1, 0, NULL, func_80107E3C_cheep_cheep_chase, FALSE, FALSE);
+                            m238_FuncSet(0, 0, -1, 0, NULL, m238_CameraWinMove, FALSE, FALSE);
                             ctx->work.s8[1] = 0;
                         }
                     }
@@ -1384,7 +1384,7 @@ void func_8010A08C_cheep_cheep_chase(FuncContext *ctx) {
             }
             break;
         case 2:
-            if (func_8010DF48_cheep_cheep_chase(&object->rot.y, (u8 *)&ctx->work.s8[1], 180.0f, 121.0f, 40.0f)) {
+            if (m238_LerpCalc(&object->rot.y, (u8 *)&ctx->work.s8[1], 180.0f, 121.0f, 40.0f)) {
                 ctx->state = 3;
                 ctx->work.s8[1] = 0;
             }
@@ -1392,23 +1392,23 @@ void func_8010A08C_cheep_cheep_chase(FuncContext *ctx) {
         case 3:
             if (++ctx->work.s8[1] >= 6) {
                 s16 playerNo = ctx->work.s16[0];
-                s32 dataNum = D_8010E028_cheep_cheep_chase[GwPlayer[playerNo].chr];
+                s32 dataNum = m238_winAnimTbl[GwPlayer[playerNo].chr];
 
                 CharAnimCreate(object->model[0], 2, GwPlayer[playerNo].chr, dataNum);
-                func_8010D7F4_cheep_cheep_chase(ctx->work.s16[0] + 4, ctx);
+                m238_FuncReset(ctx->work.s16[0] + 4, ctx);
                 MgPlayerMotSet(object, 0xD);
                 HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[playerNo].chr][0] | 0x2F);
-                func_8010D6F4_cheep_cheep_chase(1, 0, -1, 0, NULL, func_8010896C_cheep_cheep_chase, FALSE, FALSE);
+                m238_FuncSet(1, 0, -1, 0, NULL, m238_WinExec, FALSE, FALSE);
             }
             break;
     }
 }
 
-void func_8010A57C_cheep_cheep_chase(FuncContext *ctx) {
+void m238_PlayerComInput(FuncContext *ctx) {
     omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
-    CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
+    CheepCheepChasePlayer *player = &m238_playerTbl[ctx->work.s16[0]];
     s16 found = FALSE;
-    CheepCheepChaseGameUnk04 *item;
+    CheepCheepChaseObstacle *item;
     s16 i;
 
     switch (ctx->state) {
@@ -1439,19 +1439,19 @@ void func_8010A57C_cheep_cheep_chase(FuncContext *ctx) {
             if (player->unk_01 == 3) {
                 break;
             }
-            func_8010ACD8_cheep_cheep_chase(player->padId);
+            m238_PadClear(player->padId);
             for (i = 0; i < 2; i++) {
-                item = &D_8010E360_cheep_cheep_chase->unk_04[i * 4 + (s16)D_8010E370_cheep_cheep_chase[ctx->work.s16[0]]];
+                item = &m238_gameWork->unk_04[i * 4 + (s16)m238_laneTbl[ctx->work.s16[0]]];
                 if (item->unk_05 != 0 || (Hu3DData[item->model].attr & 4)) {
                     continue;
                 }
                 if (ctx->work.s8[0] == 0) {
-                    if (-(D_8010E360_cheep_cheep_chase->unk_0C[item->unk_04] * 100) + item->unk_08 + 140.0 > object->trans.z) {
+                    if (-(m238_gameWork->unk_0C[item->unk_04] * 100) + item->unk_08 + 140.0 > object->trans.z) {
                         found = TRUE;
                         item->unk_05 = 1;
                     }
                 } else {
-                    if (-(D_8010E360_cheep_cheep_chase->unk_0C[item->unk_04] * 100) + 140.0 > object->trans.z) {
+                    if (-(m238_gameWork->unk_0C[item->unk_04] * 100) + 140.0 > object->trans.z) {
                         found = TRUE;
                         item->unk_05 = 1;
                     }
@@ -1474,11 +1474,11 @@ void func_8010A57C_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-void func_8010A938_cheep_cheep_chase(FuncContext *ctx) {
+void m238_PlayerComInputB(FuncContext *ctx) {
     omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
-    CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
+    CheepCheepChasePlayer *player = &m238_playerTbl[ctx->work.s16[0]];
     s16 found = FALSE;
-    CheepCheepChaseGameUnk04 *item;
+    CheepCheepChaseObstacle *item;
     s16 i;
 
     switch (ctx->state) {
@@ -1509,19 +1509,19 @@ void func_8010A938_cheep_cheep_chase(FuncContext *ctx) {
             if (player->unk_01 == 3) {
                 break;
             }
-            func_8010ACD8_cheep_cheep_chase(player->padId);
+            m238_PadClear(player->padId);
             for (i = 0; i < 2; i++) {
-                item = &D_8010E360_cheep_cheep_chase->unk_04[i * 4 + (s16)D_8010E370_cheep_cheep_chase[ctx->work.s16[0]]];
+                item = &m238_gameWork->unk_04[i * 4 + (s16)m238_laneTbl[ctx->work.s16[0]]];
                 if (item->unk_05 != 0 || (Hu3DData[item->model].attr & 4)) {
                     continue;
                 }
                 if (ctx->work.s8[0] == 0) {
-                    if (object->trans.z < -(D_8010E360_cheep_cheep_chase->unk_0C[item->unk_04] * 100) + item->unk_08 + 100.0f) {
+                    if (object->trans.z < -(m238_gameWork->unk_0C[item->unk_04] * 100) + item->unk_08 + 100.0f) {
                         found = TRUE;
                         item->unk_05 = 1;
                     }
                 } else {
-                    if (object->trans.z < -(D_8010E360_cheep_cheep_chase->unk_0C[item->unk_04] * 100) + 100) {
+                    if (object->trans.z < -(m238_gameWork->unk_0C[item->unk_04] * 100) + 100) {
                         found = TRUE;
                         item->unk_05 = 1;
                     }
@@ -1544,7 +1544,7 @@ void func_8010A938_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-void func_8010ACD8_cheep_cheep_chase(s32 arg0) {
+void m238_PadClear(s32 arg0) {
     arg0 &= 0xFF;
     HuPadStkX[arg0] = 0;
     HuPadStkY[arg0] = 0;
@@ -1552,8 +1552,8 @@ void func_8010ACD8_cheep_cheep_chase(s32 arg0) {
     HuPadBtnDown[arg0] = 0;
 }
 
-void func_8010AD14_cheep_cheep_chase(FuncContext *ctx) {
-    CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
+void m238_PlayerInputUpdate(FuncContext *ctx) {
+    CheepCheepChasePlayer *player = &m238_playerTbl[ctx->work.s16[0]];
     omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
 
     switch (ctx->state) {
@@ -1590,7 +1590,7 @@ void func_8010AD14_cheep_cheep_chase(FuncContext *ctx) {
             } else if (!((u16)HuPadBtn[player->padId] & A_BUTTON)) {
                 ctx->work.s8[0] = 0;
             }
-            if (player->unk_01 == 1 && -(D_8010E360_cheep_cheep_chase->unk_0C[6] + 2) * 100 < object->trans.z) {
+            if (player->unk_01 == 1 && -(m238_gameWork->unk_0C[6] + 2) * 100 < object->trans.z) {
                 if ((u16)HuPadBtn[player->padId] & B_BUTTON) {
                     player->unk_08 = 1;
                 }
@@ -1608,8 +1608,8 @@ void func_8010AD14_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-void func_8010AF70_cheep_cheep_chase(FuncContext *ctx) {
-    CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
+void m238_PlayerInputUpdateB(FuncContext *ctx) {
+    CheepCheepChasePlayer *player = &m238_playerTbl[ctx->work.s16[0]];
 
     switch (ctx->state) {
         case 0:
@@ -1658,9 +1658,9 @@ void func_8010AF70_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-void func_8010B148_cheep_cheep_chase(FuncContext *ctx) {
+void m238_PlayerMove(FuncContext *ctx) {
     omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
-    CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
+    CheepCheepChasePlayer *player = &m238_playerTbl[ctx->work.s16[0]];
 
     if (player->unk_01 == 4) {
         return;
@@ -1689,10 +1689,10 @@ void func_8010B148_cheep_cheep_chase(FuncContext *ctx) {
             if (player->unk_14 >= 180.0f) {
                 player->unk_14 = 0.0f;
                 player->unk_01 = 0;
-                func_8010B63C_cheep_cheep_chase(player, 0x26, FALSE);
+                m238_PlayerStateSet(player, 0x26, FALSE);
             } else {
                 player->unk_01 = 1;
-                func_8010B63C_cheep_cheep_chase(player, 0x27, TRUE);
+                m238_PlayerStateSet(player, 0x27, TRUE);
             }
             break;
         case 2:
@@ -1700,9 +1700,9 @@ void func_8010B148_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-void func_8010B33C_cheep_cheep_chase(FuncContext *ctx) {
+void m238_PlayerJumpUpdate(FuncContext *ctx) {
     omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
-    CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
+    CheepCheepChasePlayer *player = &m238_playerTbl[ctx->work.s16[0]];
 
     switch (ctx->state) {
         case 0:
@@ -1726,17 +1726,17 @@ void func_8010B33C_cheep_cheep_chase(FuncContext *ctx) {
             object->trans.y = player->unk_04 + 60.0 - sindf(ctx->work.f32[0]) * 150.0;
             switch (ctx->work.s8[1]) {
                 case 0:
-                    if (func_8010DF48_cheep_cheep_chase(&object->rot.x, (u8 *)&ctx->work.s8[0], 0.0f, 45.0f, 8.0f)) {
+                    if (m238_LerpCalc(&object->rot.x, (u8 *)&ctx->work.s8[0], 0.0f, 45.0f, 8.0f)) {
                         ctx->work.s8[1] = 1;
                     }
                     break;
                 case 1:
-                    if (func_8010DF48_cheep_cheep_chase(&object->rot.x, (u8 *)&ctx->work.s8[0], 45.0f, -45.0f, 24.0f)) {
+                    if (m238_LerpCalc(&object->rot.x, (u8 *)&ctx->work.s8[0], 45.0f, -45.0f, 24.0f)) {
                         ctx->work.s8[1] = 2;
                     }
                     break;
                 case 2:
-                    if (func_8010DF48_cheep_cheep_chase(&object->rot.x, (u8 *)&ctx->work.s8[0], -45.0f, 0.0f, 17.0f)) {
+                    if (m238_LerpCalc(&object->rot.x, (u8 *)&ctx->work.s8[0], -45.0f, 0.0f, 17.0f)) {
                         ctx->work.s8[1] = 3;
                     }
                     break;
@@ -1747,10 +1747,10 @@ void func_8010B33C_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-void func_8010B52C_cheep_cheep_chase(FuncContext *ctx) {
+void m238_PlayerMotUpdate(FuncContext *ctx) {
     HmfModel *model = &Hu3DData[ctx->param];
     omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
-    CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
+    CheepCheepChasePlayer *player = &m238_playerTbl[ctx->work.s16[0]];
 
     switch (ctx->state) {
         case 0:
@@ -1771,14 +1771,14 @@ void func_8010B52C_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-void func_8010B63C_cheep_cheep_chase(CheepCheepChasePlayer *player, s16 motion, s8 updateMotion) {
+void m238_PlayerStateSet(CheepCheepChasePlayer *player, s16 motion, s8 updateMotion) {
     player->updateMotion = updateMotion;
     player->motion = motion;
 }
 
-void func_8010B648_cheep_cheep_chase(FuncContext *ctx) {
+void m238_PlayerEffUpdate(FuncContext *ctx) {
     omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
-    CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
+    CheepCheepChasePlayer *player = &m238_playerTbl[ctx->work.s16[0]];
     f32 scale = 0.0f;
     f32 chrTable[8] = { 0.3f, 0.2f, 0.2f, 0.2f, 0.2f, 0.0f, 0.2f, 0.2f };
     f32 offset;
@@ -1798,12 +1798,12 @@ void func_8010B648_cheep_cheep_chase(FuncContext *ctx) {
                     if (ctx->work.s8[0]++ > 10) {
                         ctx->work.s8[0] = 0;
                         for (i = 0; i < 18; i++) {
-                            if (func_8010DC7C_cheep_cheep_chase(i, object->trans.x - 0.0, 160.0f, object->trans.z + (0.7 - offset) * 100.0, 0.0f, 90.0f, 0.0f, 1.0f, 0.0f) != 0) {
+                            if (m238_AnimMdlDispOn(i, object->trans.x - 0.0, 160.0f, object->trans.z + (0.7 - offset) * 100.0, 0.0f, 90.0f, 0.0f, 1.0f, 0.0f) != 0) {
                                 break;
                             }
                         }
                         for (i = 0; i < 18; i++) {
-                            if (func_8010DC7C_cheep_cheep_chase(i, object->trans.x + 40.0, 160.0f, object->trans.z + (0.4 - offset) * 100.0, 0.0f, 90.0f, 0.0f, 1.0f, 5.0f) != 0) {
+                            if (m238_AnimMdlDispOn(i, object->trans.x + 40.0, 160.0f, object->trans.z + (0.4 - offset) * 100.0, 0.0f, 90.0f, 0.0f, 1.0f, 5.0f) != 0) {
                                 break;
                             }
                         }
@@ -1811,17 +1811,17 @@ void func_8010B648_cheep_cheep_chase(FuncContext *ctx) {
                 }
             }
             if (player->unk_01 != 4) {
-                if (Hu3DData[D_8010E368_cheep_cheep_chase->model].pos.z - object->trans.z <= 350.0f) {
+                if (Hu3DData[m238_cheepWork->model].pos.z - object->trans.z <= 350.0f) {
                     switch (ctx->work.s8[1]) {
                         case 0:
-                            if (func_8010DF48_cheep_cheep_chase(&scale, (u8 *)&ctx->work.s8[2], 1.2f, 3.0f, 3.0f)) {
+                            if (m238_LerpCalc(&scale, (u8 *)&ctx->work.s8[2], 1.2f, 3.0f, 3.0f)) {
                                 ctx->work.s8[2] = 1;
                                 ctx->work.s8[1] = 1;
                             }
                             Hu3DModelAttrSet(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                             break;
                         case 1:
-                            if (func_8010DF48_cheep_cheep_chase(&scale, (u8 *)&ctx->work.s8[2], 3.0f, 0.8f, 3.0f)) {
+                            if (m238_LerpCalc(&scale, (u8 *)&ctx->work.s8[2], 3.0f, 0.8f, 3.0f)) {
                                 ctx->work.s8[2] = 0;
                                 ctx->work.s8[1] = 2;
                                 Hu3DData[object->model[9]].motSpeed = 1.0f;
@@ -1847,10 +1847,10 @@ void func_8010B648_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-void func_8010BB9C_cheep_cheep_chase(FuncContext *ctx) {
+void m238_PlayerObstacleHit(FuncContext *ctx) {
     omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
-    CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
-    CheepCheepChaseGameUnk04 *item;
+    CheepCheepChasePlayer *player = &m238_playerTbl[ctx->work.s16[0]];
+    CheepCheepChaseObstacle *item;
     s16 i;
     s16 j;
 
@@ -1858,15 +1858,15 @@ void func_8010BB9C_cheep_cheep_chase(FuncContext *ctx) {
         return;
     }
     for (i = 0; i < 2; i++) {
-        item = &D_8010E360_cheep_cheep_chase->unk_04[i * 4 + (s16)D_8010E370_cheep_cheep_chase[ctx->work.s16[0]]];
+        item = &m238_gameWork->unk_04[i * 4 + (s16)m238_laneTbl[ctx->work.s16[0]]];
         if (item->unk_03 != 0 || (Hu3DData[item->model].attr & 4)) {
             continue;
         }
-        if (abs(object->trans.z - (-(D_8010E360_cheep_cheep_chase->unk_0C[item->unk_04] * 100) + item->unk_08)) < 90.0) {
+        if (abs(object->trans.z - (-(m238_gameWork->unk_0C[item->unk_04] * 100) + item->unk_08)) < 90.0) {
             CharFXPlay(0x9D, GwPlayer[object->work[0]].chr);
             player->unk_01 = 3;
             for (j = 18; j < 22; j++) {
-                if (func_8010DC7C_cheep_cheep_chase(j, object->trans.x, 110.0f, -(D_8010E360_cheep_cheep_chase->unk_0C[item->unk_04] * 100) + item->unk_08, 0.0f, 90.0f, 0.0f, 1.0f, 0.0f)) {
+                if (m238_AnimMdlDispOn(j, object->trans.x, 110.0f, -(m238_gameWork->unk_0C[item->unk_04] * 100) + item->unk_08, 0.0f, 90.0f, 0.0f, 1.0f, 0.0f)) {
                     break;
                 }
             }
@@ -1874,20 +1874,20 @@ void func_8010BB9C_cheep_cheep_chase(FuncContext *ctx) {
             omVibrate(ctx->work.s16[0], 2, 2, 20);
             PlayerFXPlay(0x286, ctx->work.s16[0]);
             _HuAudPlayerFXPlay(0x434, ctx->work.s16[0]);
-            func_8010D6F4_cheep_cheep_chase(ctx->work.s16[0] + 4, 0, -1, 0, NULL, func_8010BEA4_cheep_cheep_chase, FALSE, FALSE);
+            m238_FuncSet(ctx->work.s16[0] + 4, 0, -1, 0, NULL, m238_PlayerStunExec, FALSE, FALSE);
         }
     }
 }
 
-void func_8010BEA4_cheep_cheep_chase(FuncContext *ctx) {
+void m238_PlayerStunExec(FuncContext *ctx) {
     omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
-    CheepCheepChasePlayer *player = &D_8010E364_cheep_cheep_chase[ctx->work.s16[0]];
+    CheepCheepChasePlayer *player = &m238_playerTbl[ctx->work.s16[0]];
 
     switch (ctx->state) {
         case 0:
             ctx->work.s8[0] = 30;
             ctx->work.s8[1] = 0;
-            func_8010B63C_cheep_cheep_chase(player, 0x28, TRUE);
+            m238_PlayerStateSet(player, 0x28, TRUE);
             ctx->state = 1;
             break;
         case 1:
@@ -1899,16 +1899,16 @@ void func_8010BEA4_cheep_cheep_chase(FuncContext *ctx) {
             if (--ctx->work.s8[0] == 0) {
                 if (player->unk_01 != 4) {
                     player->unk_01 = 0;
-                    func_8010B63C_cheep_cheep_chase(player, 0x26, TRUE);
+                    m238_PlayerStateSet(player, 0x26, TRUE);
                     object->trans.y = player->unk_04 + 60.0;
                 }
-                func_8010D7F4_cheep_cheep_chase(object->work[0] + 4, ctx);
+                m238_FuncReset(object->work[0] + 4, ctx);
             }
             break;
     }
 }
 
-void func_8010C004_cheep_cheep_chase(FuncContext *ctx) {
+void m238_PlayerSwallowExec(FuncContext *ctx) {
     omObjData *object = mgPlayerObjTbl[ctx->work.s16[0]];
     f32 x;
     f32 z;
@@ -1930,16 +1930,16 @@ void func_8010C004_cheep_cheep_chase(FuncContext *ctx) {
             break;
         case 1:
             if (!ctx->work.s8[1]) {
-                if (func_8010DF48_cheep_cheep_chase(&object->trans.x, (u8 *)&ctx->work.s8[0], ctx->work.f32[0], ctx->work.f32[1], 15.0f)) {
+                if (m238_LerpCalc(&object->trans.x, (u8 *)&ctx->work.s8[0], ctx->work.f32[0], ctx->work.f32[1], 15.0f)) {
                     ctx->work.s8[1] = 1;
                 }
-                func_8010DF48_cheep_cheep_chase(&object->trans.y, (u8 *)&ctx->work.s8[4], ctx->work.f32[2], 40.0f, 15.0f);
+                m238_LerpCalc(&object->trans.y, (u8 *)&ctx->work.s8[4], ctx->work.f32[2], 40.0f, 15.0f);
             }
             if (ctx->work.s8[0] < 11) {
                 object->trans.z += 10.0;
             } else {
-                if (D_8010E048_cheep_cheep_chase == 0) {
-                    D_8010E048_cheep_cheep_chase = 1;
+                if (m238_swallowF == 0) {
+                    m238_swallowF = 1;
                 }
                 object->trans.z += 50.0;
             }
@@ -1951,29 +1951,29 @@ void func_8010C004_cheep_cheep_chase(FuncContext *ctx) {
                 x = rand16() % 5 * 0.1;
                 z = (rand16() % 15 - 10) * 0.1;
                 for (i = 0; i < 18; i++) {
-                    if (func_8010DC7C_cheep_cheep_chase(i, object->trans.x - x * 100.0f, 160.0f, z * 100.0f + object->trans.z, 0.0f, 90.0f, 0.0f, 1.0f, 0.0f)) {
+                    if (m238_AnimMdlDispOn(i, object->trans.x - x * 100.0f, 160.0f, z * 100.0f + object->trans.z, 0.0f, 90.0f, 0.0f, 1.0f, 0.0f)) {
                         break;
                     }
                 }
             }
             if (!ctx->work.s8[2]) {
-                if (Hu3DData[D_8010E368_cheep_cheep_chase->model].pos.z - 40.0 <= object->trans.z) {
+                if (Hu3DData[m238_cheepWork->model].pos.z - 40.0 <= object->trans.z) {
                     ctx->work.s8[2] = 1;
-                    D_8010E368_cheep_cheep_chase->unk_02 = 1;
+                    m238_cheepWork->unk_02 = 1;
                 }
-            } else if (Hu3DData[D_8010E368_cheep_cheep_chase->model].pos.z <= object->trans.z) {
+            } else if (Hu3DData[m238_cheepWork->model].pos.z <= object->trans.z) {
                 Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                D_8010E048_cheep_cheep_chase = 0;
-                func_8010D85C_cheep_cheep_chase(ctx->work.s16[0] + 4);
-                D_8010E360_cheep_cheep_chase->unk_2E++;
+                m238_swallowF = 0;
+                m238_FuncGroupReset(ctx->work.s16[0] + 4);
+                m238_gameWork->unk_2E++;
             }
             break;
     }
 }
 
-void func_8010C440_cheep_cheep_chase(FuncContext *ctx) {
+void m238_CheepUpdate(FuncContext *ctx) {
     omObjData *object = mgPlayerObjTbl[0];
-    CheepCheepChasePlayer *player = D_8010E364_cheep_cheep_chase;
+    CheepCheepChasePlayer *player = m238_playerTbl;
     HmfModel *model = &Hu3DData[ctx->param];
     f32 speed = 0.0f;
     f32 scale = 1.4f;
@@ -2000,10 +2000,10 @@ void func_8010C440_cheep_cheep_chase(FuncContext *ctx) {
                 }
                 if (model->pos.z - object->trans.z <= 300.0f) {
                     omVibrate(i, 20, 0, 20);
-                    D_8010E360_cheep_cheep_chase->unk_30++;
+                    m238_gameWork->unk_30++;
                     player->unk_01 = 4;
-                    func_8010B63C_cheep_cheep_chase(player, 0x2A, TRUE);
-                    func_8010D6F4_cheep_cheep_chase(i + 4, 0, -1, 0, NULL, func_8010C004_cheep_cheep_chase, FALSE, FALSE);
+                    m238_PlayerStateSet(player, 0x2A, TRUE);
+                    m238_FuncSet(i + 4, 0, -1, 0, NULL, m238_PlayerSwallowExec, FALSE, FALSE);
                     Hu3DModelAttrSet(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
                 speed += player->unk_18 + 6.0f;
@@ -2027,29 +2027,29 @@ void func_8010C440_cheep_cheep_chase(FuncContext *ctx) {
                     ctx->work.s8[8] = 1;
                 }
             }
-            if (D_8010E360_cheep_cheep_chase->unk_28 != 0.0f) {
-                if (model->pos.z < D_8010E360_cheep_cheep_chase->unk_28 - 100.0f) {
-                    model->pos.z = D_8010E360_cheep_cheep_chase->unk_28 - 100.0f;
+            if (m238_gameWork->unk_28 != 0.0f) {
+                if (model->pos.z < m238_gameWork->unk_28 - 100.0f) {
+                    model->pos.z = m238_gameWork->unk_28 - 100.0f;
                 }
             }
-            if (D_8010E368_cheep_cheep_chase->unk_02 != 0) {
-                scale += sindf(D_8010E368_cheep_cheep_chase->unk_04) * amplitude[ctx->work.s8[1]];
-                D_8010E368_cheep_cheep_chase->unk_04 += 15.0f;
-                if (D_8010E368_cheep_cheep_chase->unk_04 >= 180.0f) {
-                    D_8010E368_cheep_cheep_chase->unk_04 = 0.0f;
+            if (m238_cheepWork->unk_02 != 0) {
+                scale += sindf(m238_cheepWork->unk_04) * amplitude[ctx->work.s8[1]];
+                m238_cheepWork->unk_04 += 15.0f;
+                if (m238_cheepWork->unk_04 >= 180.0f) {
+                    m238_cheepWork->unk_04 = 0.0f;
                     scale = 1.4f;
                     if (++ctx->work.s8[1] >= 2) {
-                        D_8010E368_cheep_cheep_chase->unk_02 = 0;
+                        m238_cheepWork->unk_02 = 0;
                         ctx->work.s8[1] = 0;
                     }
                 }
-                Hu3DModelScaleSet(D_8010E368_cheep_cheep_chase->model, scale, scale, scale);
+                Hu3DModelScaleSet(m238_cheepWork->model, scale, scale, scale);
             }
             break;
     }
 }
 
-void func_8010C8EC_cheep_cheep_chase(s16 model1, s16 model2, f32 t, s32 node1, s32 node2, s32 full) {
+void m238_MdlVtxMorph(s16 model1, s16 model2, f32 t, s32 node1, s32 node2, s32 full) {
     HmfData *hmf1 = Hu3DData[model1].hmf;
     HmfData *hmf2 = Hu3DData[model2].hmf;
 
@@ -2059,7 +2059,7 @@ void func_8010C8EC_cheep_cheep_chase(s16 model1, s16 model2, f32 t, s32 node1, s
     HmfObjVtxMorph(hmf1, hmf2, t, node1, node2, full);
 }
 
-void func_8010C988_cheep_cheep_chase(FuncContext *ctx) {
+void m238_CheepMorphUpdate(FuncContext *ctx) {
     switch (ctx->state) {
         case 0:
             ctx->work.s8[0] = 0;
@@ -2089,10 +2089,10 @@ void func_8010C988_cheep_cheep_chase(FuncContext *ctx) {
         case 2:
             break;
     }
-    func_8010C8EC_cheep_cheep_chase(ctx->work.s16[0], ctx->work.s16[1], ctx->work.f32[0], 0, 0, 0);
+    m238_MdlVtxMorph(ctx->work.s16[0], ctx->work.s16[1], ctx->work.f32[0], 0, 0, 0);
 }
 
-void func_8010CAD4_cheep_cheep_chase(FuncContext *ctx) {
+void m238_CheepMotUpdate(FuncContext *ctx) {
     if (omPauseChk() + omAllPauseF != 0) {
         return;
     }
@@ -2111,7 +2111,7 @@ void func_8010CAD4_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-void func_8010CBBC_cheep_cheep_chase(FuncContext *ctx) {
+void m238_CheepEffUpdate(FuncContext *ctx) {
     HmfModel *model = &Hu3DData[ctx->param];
     s16 start;
     f32 x;
@@ -2139,7 +2139,7 @@ void func_8010CBBC_cheep_cheep_chase(FuncContext *ctx) {
                     x = (rand16() % 5 + 4) * 0.1;
                     z = (rand16() % 7 - 5) * 0.1f;
                     animStart = rand16() % 6;
-                    if (func_8010DC7C_cheep_cheep_chase(i, x * 100.0f + model->pos.x, -10.0f, model->pos.z + 100.0f + z, 0.0f, 90.0f, 0.0f, 1.0f, animStart)) {
+                    if (m238_AnimMdlDispOn(i, x * 100.0f + model->pos.x, -10.0f, model->pos.z + 100.0f + z, 0.0f, 90.0f, 0.0f, 1.0f, animStart)) {
                         break;
                     }
                 }
@@ -2147,7 +2147,7 @@ void func_8010CBBC_cheep_cheep_chase(FuncContext *ctx) {
                     x = (rand16() % 5 - 2) * 0.1f;
                     z = (rand16() % 16 + 15) * 0.1;
                     animStart = rand16() % 6;
-                    if (func_8010DC7C_cheep_cheep_chase(i, x * 100.0f + model->pos.x, 20.0f, z * 100.0f + model->pos.z, 0.0f, 90.0f, 0.0f, 1.0f, animStart)) {
+                    if (m238_AnimMdlDispOn(i, x * 100.0f + model->pos.x, 20.0f, z * 100.0f + model->pos.z, 0.0f, 90.0f, 0.0f, 1.0f, animStart)) {
                         break;
                     }
                 }
@@ -2156,9 +2156,9 @@ void func_8010CBBC_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-void func_8010D02C_cheep_cheep_chase(FuncContext *ctx) {
+void m238_CheepObstacleCheck(FuncContext *ctx) {
     HmfModel *model = &Hu3DData[ctx->param];
-    CheepCheepChaseGameUnk04 *unk;
+    CheepCheepChaseObstacle *unk;
     s16 i;
 
     if (omPauseChk() + omAllPauseF != 0) {
@@ -2166,10 +2166,10 @@ void func_8010D02C_cheep_cheep_chase(FuncContext *ctx) {
     }
     if (ctx->state == 1) {
         for (i = 0; i < 2; i++) {
-            unk = &D_8010E360_cheep_cheep_chase->unk_04[i * 4];
+            unk = &m238_gameWork->unk_04[i * 4];
             if (unk->unk_03 == 0) {
                 if (model->pos.z - (Hu3DData[unk->model].pos.z - unk->unk_08) <= 200.0f) {
-                    func_8010D6F4_cheep_cheep_chase(3, 2, ctx->param, 0, (void *)(i * 4), func_8010D198_cheep_cheep_chase, FALSE, FALSE);
+                    m238_FuncSet(3, 2, ctx->param, 0, (void *)(i * 4), m238_ObstacleSwallowExec, FALSE, FALSE);
                     unk->unk_03 = 1;
                     unk++;
                     unk->unk_03 = 1;
@@ -2183,8 +2183,8 @@ void func_8010D02C_cheep_cheep_chase(FuncContext *ctx) {
     }
 }
 
-void func_8010D198_cheep_cheep_chase(FuncContext *ctx) {
-    CheepCheepChaseGameUnk04 *item = &D_8010E360_cheep_cheep_chase->unk_04[(s32)ctx->data];
+void m238_ObstacleSwallowExec(FuncContext *ctx) {
+    CheepCheepChaseObstacle *item = &m238_gameWork->unk_04[(s32)ctx->data];
     s16 active = FALSE;
     HmfModel *model;
     s16 i;
@@ -2218,18 +2218,18 @@ void func_8010D198_cheep_cheep_chase(FuncContext *ctx) {
                 active = TRUE;
                 if (i + (s32)ctx->data == 0) {
                     if (!ctx->work.s8[i + 4]) {
-                        if (func_8010DF48_cheep_cheep_chase(&D_8010E360_cheep_cheep_chase->unk_10->trans.x, (u8 *)&ctx->work.s8[i], ctx->work.f32[i], 0.0f, 10.0f)) {
+                        if (m238_LerpCalc(&m238_gameWork->unk_10->trans.x, (u8 *)&ctx->work.s8[i], ctx->work.f32[i], 0.0f, 10.0f)) {
                             ctx->work.s8[i + 4] = 1;
                         }
                     }
                     if (ctx->work.s8[i] < 7) {
-                        D_8010E360_cheep_cheep_chase->unk_10->trans.z += 10.0;
+                        m238_gameWork->unk_10->trans.z += 10.0;
                     } else {
-                        D_8010E360_cheep_cheep_chase->unk_10->trans.z += 50.0;
+                        m238_gameWork->unk_10->trans.z += 50.0;
                     }
                 } else {
                     if (!ctx->work.s8[i + 4]) {
-                        if (func_8010DF48_cheep_cheep_chase(&model->pos.x, (u8 *)&ctx->work.s8[i], ctx->work.f32[i], 0.0f, 10.0f)) {
+                        if (m238_LerpCalc(&model->pos.x, (u8 *)&ctx->work.s8[i], ctx->work.f32[i], 0.0f, 10.0f)) {
                             ctx->work.s8[i + 4] = 1;
                         }
                     }
@@ -2240,37 +2240,37 @@ void func_8010D198_cheep_cheep_chase(FuncContext *ctx) {
                     }
                 }
                 if (!ctx->work.s8[8]) {
-                    if (Hu3DData[D_8010E368_cheep_cheep_chase->model].pos.z - 40.0 <= model->pos.z) {
+                    if (Hu3DData[m238_cheepWork->model].pos.z - 40.0 <= model->pos.z) {
                         ctx->work.s8[8] = 1;
-                        D_8010E368_cheep_cheep_chase->unk_02 = 1;
+                        m238_cheepWork->unk_02 = 1;
                         HuAudFXPlay(0x432);
                     }
-                } else if (Hu3DData[D_8010E368_cheep_cheep_chase->model].pos.z <= model->pos.z) {
+                } else if (Hu3DData[m238_cheepWork->model].pos.z <= model->pos.z) {
                     Hu3DModelAttrSet(item->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     item->unk_02 = 1;
                     item->unk_03 = 1;
                 }
             }
             if (!active) {
-                func_8010D7F4_cheep_cheep_chase(3, ctx);
+                m238_FuncReset(3, ctx);
             }
             break;
     }
 }
 
-void func_8010D560_cheep_cheep_chase(void) {
+void m238_SystemCreate(void) {
     s8 maxFuncs[FUNC_GRP_MAX] = { 4, 5, 4, 6, 12, 12, 12, 12 };
     s16 i;
 
-    D_8010E394_cheep_cheep_chase = HuMemAllocTag(ANIMMDL_MAX * sizeof(AnimModelData), TAG_OVERLAY);
-    memset(D_8010E394_cheep_cheep_chase, 0, ANIMMDL_MAX * sizeof(AnimModelData));
-    D_8010E398_cheep_cheep_chase = HuMemAllocTag(FUNC_GRP_MAX * sizeof(FuncGroup), TAG_OVERLAY);
+    m238_animMdlTbl = HuMemAllocTag(ANIMMDL_MAX * sizeof(AnimModelData), TAG_OVERLAY);
+    memset(m238_animMdlTbl, 0, ANIMMDL_MAX * sizeof(AnimModelData));
+    m238_funcGroupTbl = HuMemAllocTag(FUNC_GRP_MAX * sizeof(FuncGroup), TAG_OVERLAY);
     for (i = 0; i < FUNC_GRP_MAX; i++) {
-        func_8010D62C_cheep_cheep_chase(&D_8010E398_cheep_cheep_chase[i], maxFuncs[i]);
+        m238_FuncGroupCreate(&m238_funcGroupTbl[i], maxFuncs[i]);
     }
 }
 
-void func_8010D62C_cheep_cheep_chase(FuncGroup *group, s16 maxFuncs) {
+void m238_FuncGroupCreate(FuncGroup *group, s16 maxFuncs) {
     s16 i;
 
     group->funcCtx = HuMemAllocTag(maxFuncs * sizeof(FuncContext), TAG_OVERLAY);
@@ -2283,8 +2283,8 @@ void func_8010D62C_cheep_cheep_chase(FuncGroup *group, s16 maxFuncs) {
     group->maxFuncs = maxFuncs;
 }
 
-s16 func_8010D6F4_cheep_cheep_chase(s8 groupId, s8 prio, s16 param, s8 state, void *data, void (*func)(FuncContext *), u8 sort, s8 execFunc) {
-    FuncGroup *group = &D_8010E398_cheep_cheep_chase[groupId];
+s16 m238_FuncSet(s8 groupId, s8 prio, s16 param, s8 state, void *data, void (*func)(FuncContext *), u8 sort, s8 execFunc) {
+    FuncGroup *group = &m238_funcGroupTbl[groupId];
     FuncContext *ctx = group->funcCtx;
     s16 i = 0;
     s16 maxFuncs = group->maxFuncs;
@@ -2307,7 +2307,7 @@ s16 func_8010D6F4_cheep_cheep_chase(s8 groupId, s8 prio, s16 param, s8 state, vo
         ctx->func(ctx);
     }
     if (sort) {
-        func_8010D9E8_cheep_cheep_chase(group);
+        m238_FuncGroupSort(group);
         group->sort = FALSE;
     } else {
         group->sort = TRUE;
@@ -2315,16 +2315,16 @@ s16 func_8010D6F4_cheep_cheep_chase(s8 groupId, s8 prio, s16 param, s8 state, vo
     return i;
 }
 
-void func_8010D7F4_cheep_cheep_chase(s8 groupId, FuncContext *ctx) {
+void m238_FuncReset(s8 groupId, FuncContext *ctx) {
     s8 next = ctx->next;
 
     memset(ctx, 0, sizeof(FuncContext));
     ctx->next = next;
-    D_8010E398_cheep_cheep_chase[groupId].sort = TRUE;
+    m238_funcGroupTbl[groupId].sort = TRUE;
 }
 
-void func_8010D85C_cheep_cheep_chase(s8 groupId) {
-    FuncGroup *group = &D_8010E398_cheep_cheep_chase[groupId];
+void m238_FuncGroupReset(s8 groupId) {
+    FuncGroup *group = &m238_funcGroupTbl[groupId];
     s8 i = 0;
 
     memset(group->funcCtx, 0, group->maxFuncs * sizeof(FuncContext));
@@ -2334,13 +2334,13 @@ void func_8010D85C_cheep_cheep_chase(s8 groupId) {
     }
 }
 
-void func_8010D8FC_cheep_cheep_chase(s8 groupId) {
-    FuncGroup *group = &D_8010E398_cheep_cheep_chase[groupId];
+void m238_FuncGroupUpdate(s8 groupId) {
+    FuncGroup *group = &m238_funcGroupTbl[groupId];
     FuncContext *ctx = group->funcCtx;
     s8 i;
 
     if (group->sort) {
-        func_8010D9E8_cheep_cheep_chase(group);
+        m238_FuncGroupSort(group);
     }
     for (i = 0; i < FUNC_PRIO_MAX; i++) {
         s8 funcId = group->order[i];
@@ -2352,7 +2352,7 @@ void func_8010D8FC_cheep_cheep_chase(s8 groupId) {
     }
 }
 
-void func_8010D9E8_cheep_cheep_chase(FuncGroup *group) {
+void m238_FuncGroupSort(FuncGroup *group) {
     FuncContext *currCtx = group->funcCtx;
     s8 prio;
     s8 i;
@@ -2371,12 +2371,12 @@ void func_8010D9E8_cheep_cheep_chase(FuncGroup *group) {
     group->sort = FALSE;
 }
 
-s16 func_8010DA74_cheep_cheep_chase(s32 dir, s32 file, u16 arg2, s32 attr) {
+s16 m238_SprCreate(s32 dir, s32 file, u16 arg2, s32 attr) {
     SpriteData *sprite;
     HuSprite *spr;
     s16 i;
 
-    sprite = D_8010E390_cheep_cheep_chase;
+    sprite = m238_sprTbl;
     for (i = 0; i < SPRITES_MAX; i++, sprite++) {
         if (sprite->state == SPRITE_STATE_NOTSET) {
             sprite->unk02 = HuSprAnimDataRead((dir << 16) | file);
@@ -2403,8 +2403,8 @@ s16 func_8010DA74_cheep_cheep_chase(s32 dir, s32 file, u16 arg2, s32 attr) {
     return i;
 }
 
-void func_8010DA84_cheep_cheep_chase(s16 spriteId, s32 posX, s32 posY) {
-    SpriteData *sprite = &D_8010E390_cheep_cheep_chase[spriteId];
+void m238_SprDispOn(s16 spriteId, s32 posX, s32 posY) {
+    SpriteData *sprite = &m238_sprTbl[spriteId];
 
     if (sprite->state != SPRITE_STATE_NOTSET) {
         HuSprPatNoSet(sprite->groupId, 0, 0);
@@ -2414,8 +2414,8 @@ void func_8010DA84_cheep_cheep_chase(s16 spriteId, s32 posX, s32 posY) {
     }
 }
 
-void func_8010DB24_cheep_cheep_chase(s16 arg0) {
-    SpriteData *sprite = &D_8010E390_cheep_cheep_chase[arg0];
+void m238_SprDispOff(s16 arg0) {
+    SpriteData *sprite = &m238_sprTbl[arg0];
 
     if (sprite->state != SPRITE_STATE_NOTSET) {
         HuSprDispOff(sprite->groupId, 0);
@@ -2423,11 +2423,11 @@ void func_8010DB24_cheep_cheep_chase(s16 arg0) {
     }
 }
 
-void func_8010DB80_cheep_cheep_chase(void) {
+void m238_SprUpdate(void) {
     SpriteData *sprite;
     s16 i;
 
-    sprite = D_8010E390_cheep_cheep_chase;
+    sprite = m238_sprTbl;
     for (i = 0; i < SPRITES_MAX; i++, sprite++) {
         switch (sprite->state) {
             case SPRITE_STATE_VISIBLE:
@@ -2440,12 +2440,12 @@ void func_8010DB80_cheep_cheep_chase(void) {
     }
 }
 
-s16 func_8010DB8C_cheep_cheep_chase(s32 dir, s32 file, f32 freq, s32 arg3) {
+s16 m238_AnimMdlCreate(s32 dir, s32 file, f32 freq, s32 arg3) {
     AnimModelData *animModel;
     HmfModel *hmfModel;
     s16 i;
 
-    animModel = D_8010E394_cheep_cheep_chase;
+    animModel = m238_animMdlTbl;
     for (i = 0; i < ANIMMDL_MAX; i++, animModel++) {
         if (!animModel->set) {
             animModel->modelId = Hu3DModelRead((dir << 16) | file, arg3);
@@ -2465,17 +2465,17 @@ s16 func_8010DB8C_cheep_cheep_chase(s32 dir, s32 file, f32 freq, s32 arg3) {
     return i;
 }
 
-s16 func_8010DC7C_cheep_cheep_chase(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 rotX, f32 rotY, f32 rotZ, f32 scale, f32 animStart) {
+s16 m238_AnimMdlDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 rotX, f32 rotY, f32 rotZ, f32 scale, f32 animStart) {
     AnimModelData *animModel;
     HmfModel *hmfModel;
 
     if (animModelId >= ANIMMDL_MAX) {
         return FALSE;
     }
-    if (!D_8010E394_cheep_cheep_chase[animModelId].set) {
+    if (!m238_animMdlTbl[animModelId].set) {
         return FALSE;
     }
-    animModel = &D_8010E394_cheep_cheep_chase[animModelId];
+    animModel = &m238_animMdlTbl[animModelId];
     hmfModel = &Hu3DData[animModel->modelId];
     if ((hmfModel->attr & 4) && animModel->state == ANIMMDL_STATE_INVISIBLE) {
         Hu3DModelPosSet(animModel->modelId, posX, posY, posZ);
@@ -2497,12 +2497,12 @@ s16 func_8010DC7C_cheep_cheep_chase(s16 animModelId, f32 posX, f32 posY, f32 pos
     return FALSE;
 }
 
-void func_8010DDF4_cheep_cheep_chase(void) {
+void m238_AnimMdlUpdate(void) {
     AnimModelData *animModel;
     HmfModel *hmfModel;
     s16 i;
 
-    animModel = D_8010E394_cheep_cheep_chase;
+    animModel = m238_animMdlTbl;
     for (i = 0; i < ANIMMDL_MAX; i++, animModel++) {
         if (!animModel->set || animModel->state == ANIMMDL_STATE_INVISIBLE) {
             continue;
@@ -2531,7 +2531,7 @@ void func_8010DDF4_cheep_cheep_chase(void) {
     }
 }
 
-u8 func_8010DF48_cheep_cheep_chase(f32 *outPos, u8 *tickPtr, f32 posA, f32 posB, f32 numTicks) {
+u8 m238_LerpCalc(f32 *outPos, u8 *tickPtr, f32 posA, f32 posB, f32 numTicks) {
     u8 ticks;
     f32 frac = (f32)*tickPtr / numTicks;
 
@@ -2546,7 +2546,7 @@ u8 func_8010DF48_cheep_cheep_chase(f32 *outPos, u8 *tickPtr, f32 posA, f32 posB,
     return 0;
 }
 
-f32 func_8010DFC0_cheep_cheep_chase(f32 t, f32 p0, f32 p1, f32 p2) {
+f32 m238_BezierCalc(f32 t, f32 p0, f32 p1, f32 p2) {
     f32 u = 1.0f - t;
     f32 ret;
 

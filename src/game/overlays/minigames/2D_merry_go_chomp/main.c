@@ -2,8 +2,8 @@
 #include "math.h"
 #include "game/overlays/minigame.h"
 
-// Per-chomp state at D_8010C420_merry_go_chomp, indexed by omObjData::work[0]
-typedef struct D_8010C420_merry_go_chomp_Entry {
+// Per-chomp state at m245_playerWorkTbl, indexed by omObjData::work[0]
+typedef struct MerryGoChompPlayerWork {
     /* 0x00 */ Vec unk_00;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
@@ -15,10 +15,10 @@ typedef struct D_8010C420_merry_go_chomp_Entry {
     /* 0x1F */ s8 unk_1F;
     /* 0x20 */ s8 unk_20;
     /* 0x21 */ char unk_21[3];
-} D_8010C420_merry_go_chomp_Entry; // Size 0x24
+} MerryGoChompPlayerWork; // Size 0x24
 
-// One entry of the 50 entry object table at D_8010C500_merry_go_chomp. Layout
-// derived from the table clear in func_80105A74_merry_go_chomp, which walks 50
+// One entry of the 50 entry object table at m245_objWorkTbl. Layout
+// derived from the table clear in m245_ObjWorkInit, which walks 50
 // entries of 0x84 bytes.
 typedef struct {
     /* 0x00 */ omObjData *obj;
@@ -48,7 +48,7 @@ typedef struct {
     /* 0x5C */ Vec unk_5C;
     /* 0x68 */ f32 unk_68[4];
     /* 0x78 */ Vec unk_78;
-} MerryGoChompEntry; // sizeof 0x84
+} MerryGoChompObjWork; // sizeof 0x84
 
 typedef struct {
     /* 0x00 */ f32 scissorX;
@@ -61,100 +61,100 @@ typedef struct {
 } MerryGoChompCamera; // sizeof 0x2C
 
 // Group of misaligned byte variables (see undefined_syms.txt for aliases).
-typedef struct MerryGoChompBssC4BC {
-    /* 0x00 */ s8 unk00; // D_8010C4BC_merry_go_chomp
-    /* 0x01 */ s8 unk01; // D_8010C4BD_merry_go_chomp
-    /* 0x02 */ s8 unk02[5]; // D_8010C4BE_merry_go_chomp
-} MerryGoChompBssC4BC; // sizeof 0x08
+typedef struct MerryGoChompSeqWork {
+    /* 0x00 */ s8 unk00; // m245_seqNo
+    /* 0x01 */ s8 unk01; // m245_queueNo
+    /* 0x02 */ s8 unk02[5]; // m245_seatFreeTbl
+} MerryGoChompSeqWork; // sizeof 0x08
 
 extern s32 omCharModelNoTbl[][6];
 
-s32 D_8010C140_merry_go_chomp[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
-s8 D_8010C160_merry_go_chomp[17] = { 60, 30, 20, 15, 10, 5, 0, 0, 0, 0, -15, -15, -20, -40, -50, -60, -65 };
-f32 D_8010C174_merry_go_chomp[17] = { 1.0f, 0.95f, 0.9f, 0.85f, 0.8f, 0.75f, 0.7f, 0.65f, 0.7f, 0.75f, 0.8f, 0.85f, 0.9f, 0.95f, 1.0f, 1.0f, 1.0f };
-f32 D_8010C1B8_merry_go_chomp[4] = { 345.0f, 450.0f, 555.0f, 660.0f };
-f32 D_8010C1C8_merry_go_chomp[4] = { -200.0f, -260.0f, -320.0f, -380.0f };
-f32 D_8010C1D8_merry_go_chomp[3][5] = {
+s32 m245_voiceChrTbl[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+s8 m245_jumpYTbl[17] = { 60, 30, 20, 15, 10, 5, 0, 0, 0, 0, -15, -15, -20, -40, -50, -60, -65 };
+f32 m245_jumpShadowScaleTbl[17] = { 1.0f, 0.95f, 0.9f, 0.85f, 0.8f, 0.75f, 0.7f, 0.65f, 0.7f, 0.75f, 0.8f, 0.85f, 0.9f, 0.95f, 1.0f, 1.0f, 1.0f };
+f32 m245_queuePosXTbl[4] = { 345.0f, 450.0f, 555.0f, 660.0f };
+f32 m245_queuePosZTbl[4] = { -200.0f, -260.0f, -320.0f, -380.0f };
+f32 m245_seatAngleTbl[3][5] = {
     { 0.0f, 72.0f, 144.0f, 216.0f, 288.0f },
     { 0.0f, 90.0f, 180.0f, 270.0f, 0.0f },
     { 0.0f, 120.0f, 240.0f, 0.0f, 0.0f },
 };
-Vec2f D_8010C214_merry_go_chomp = { -800.0f, 0.0f };
-f32 D_8010C21C_merry_go_chomp[3] = { -500.0f, -600.0f, -400.0f };
-f32 D_8010C228_merry_go_chomp[3] = { -475.0f, -300.0f, -300.0f };
-s16 D_8010C234_merry_go_chomp[8] = { -700, -500, -700, -500, -600, -500, -600, -600 };
-s16 D_8010C244_merry_go_chomp[8] = { -50, -50, 150, 150, 350, 350, 25, 225 };
-s32 D_8010C254_merry_go_chomp = 0;
-MerryGoChompCamera D_8010C258_merry_go_chomp[2] = {
+Vec2f m245_chainAnchor = { -800.0f, 0.0f };
+f32 m245_outPosXTbl[3] = { -500.0f, -600.0f, -400.0f };
+f32 m245_outPosZTbl[3] = { -475.0f, -300.0f, -300.0f };
+s16 m245_wanwanTargetXTbl[8] = { -700, -500, -700, -500, -600, -500, -600, -600 };
+s16 m245_wanwanTargetZTbl[8] = { -50, -50, 150, 150, 350, 350, 25, 225 };
+s32 m245_cameraSetF = 0;
+MerryGoChompCamera m245_cameraViewTbl[2] = {
     { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 34.5f },
     { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 34.5f },
 };
 
-s16 D_8010C410_merry_go_chomp BSS;
-HuSprAnimData *D_8010C414_merry_go_chomp BSS;
-s8 D_8010C418_merry_go_chomp BSS;
-u8 D_8010C41C_merry_go_chomp[4] BSS; /* Unreferenced. */
-D_8010C420_merry_go_chomp_Entry D_8010C420_merry_go_chomp[4] BSS;
-s8 D_8010C4B0_merry_go_chomp BSS;
-s16 D_8010C4B2_merry_go_chomp BSS;
-f32 D_8010C4B4_merry_go_chomp[2] BSS;
-MerryGoChompBssC4BC merryGoChompBssC4BC BSS;
-s16 D_8010C4C4_merry_go_chomp BSS;
-omObjData *D_8010C4C8_merry_go_chomp BSS;
-s16 D_8010C4CC_merry_go_chomp BSS;
-s8 D_8010C4CE_merry_go_chomp BSS;
-Vec2f D_8010C4D0_merry_go_chomp[6] BSS;
-MerryGoChompEntry D_8010C500_merry_go_chomp[50] BSS;
-s8 D_8010DEC8_merry_go_chomp BSS;
-s16 D_8010DECA_merry_go_chomp BSS;
-u8 D_8010DECC_merry_go_chomp[8] BSS;
-f32 D_8010DED4_merry_go_chomp BSS;
-s8 D_8010DED8_merry_go_chomp BSS;
-s16 D_8010DEDA_merry_go_chomp BSS;
-s8 D_8010DEDC_merry_go_chomp BSS;
-s8 D_8010DEDD_merry_go_chomp BSS;
+s16 m245_spinSeNo BSS;
+HuSprAnimData *m245_lowerBackSpr BSS;
+s8 m245_carouselSeRound BSS;
+u8 m245_carouselSeRoundPad[4] BSS; /* Unreferenced. */
+MerryGoChompPlayerWork m245_playerWorkTbl[4] BSS;
+s8 m245_phase BSS;
+s16 m245_timer BSS;
+f32 m245_stopAngleTbl[2] BSS;
+MerryGoChompSeqWork m245_seqWork BSS;
+s16 m245_carouselSeNo BSS;
+omObjData *m245_winnerObj BSS;
+s16 m245_spinSeSpeed BSS;
+s8 m245_roundNo BSS;
+Vec2f m245_chainPosTbl[6] BSS;
+MerryGoChompObjWork m245_objWorkTbl[50] BSS;
+s8 m245_outPlayerNo BSS;
+s16 m245_musicTimer BSS;
+u8 m245_seatPlayerTbl[8] BSS;
+f32 m245_carouselSpeed BSS;
+s8 m245_stopSeatNo BSS;
+s16 m245_spinSePitch BSS;
+s8 m245_doneBits BSS;
+s8 m245_jumpTurnNo BSS;
 
-// Aliases into merryGoChompBssC4BC (see undefined_syms.txt).
-extern s8 D_8010C4BC_merry_go_chomp;
-extern s8 D_8010C4BD_merry_go_chomp;
-extern s8 D_8010C4BE_merry_go_chomp[5];
-// Entries and entry fields of D_8010C500_merry_go_chomp, accessed through
+// Aliases into m245_seqWork (see undefined_syms.txt).
+extern s8 m245_seqNo;
+extern s8 m245_queueNo;
+extern s8 m245_seatFreeTbl[5];
+// Entries and entry fields of m245_objWorkTbl, accessed through
 // separate symbols (see undefined_syms.txt).
-extern s16 D_8010C540_merry_go_chomp; // [0].unk_40[0]
-extern s16 D_8010C542_merry_go_chomp; // [0].unk_40[1]
-extern f32 D_8010C544_merry_go_chomp; // [0].unk_44.x
-extern f32 D_8010C548_merry_go_chomp; // [0].unk_44.y
-extern MerryGoChompEntry D_8010C794_merry_go_chomp[]; // &[5]
-extern omObjData *D_8010CA28_merry_go_chomp; // [10].obj
-extern omObjData *D_8010CCBC_merry_go_chomp; // [15].obj
-extern f32 D_8010CD04_merry_go_chomp; // [15].unk_44.y
-extern f32 D_8010CD08_merry_go_chomp; // [15].unk_44.z
-extern omObjData *D_8010D1E4_merry_go_chomp; // [25].obj
-extern omObjData *D_8010D478_merry_go_chomp; // [30].obj
-extern const s16 D_8010C400_merry_go_chomp[];
+extern s16 m245_backSprAnim; // [0].unk_40[0]
+extern s16 m245_backSprNo; // [0].unk_40[1]
+extern f32 m245_backSprX; // [0].unk_44.x
+extern f32 m245_backSprY; // [0].unk_44.y
+extern MerryGoChompObjWork m245_playerObjWorkTbl[]; // &[5]
+extern omObjData *m245_wanwanObj; // [10].obj
+extern omObjData *m245_stageObj; // [15].obj
+extern f32 m245_gateY; // [15].unk_44.y
+extern f32 m245_gateZ; // [15].unk_44.z
+extern omObjData *m245_carouselObj; // [25].obj
+extern omObjData *m245_biteEffObj; // [30].obj
+extern const s16 m245_fontMesTbl[];
 
-void func_80106384_merry_go_chomp(omObjData *);
-void func_801064E0_merry_go_chomp(omObjData *obj);
-void func_8010637C_merry_go_chomp(omObjData *obj);
-void func_801064E8_merry_go_chomp(omObjData *);
-void func_80106668_merry_go_chomp(omObjData *obj);
-void func_80106920_merry_go_chomp(omObjData *);
-void func_80109670_merry_go_chomp(omObjData *obj);
-void func_80109A04_merry_go_chomp(omObjData *obj);
-void func_8010A9D0_merry_go_chomp(omObjData *);
-void func_8010AE24_merry_go_chomp(omObjData *obj);
-void func_8010AE2C_merry_go_chomp(omObjData *);
-void func_801084C8_merry_go_chomp(void);
-void func_8010AF08_merry_go_chomp(void);
-void func_8010BBA0_merry_go_chomp(omObjData *obj);
-void func_8010BC30_merry_go_chomp(omObjData *obj);
-void func_8010C030_merry_go_chomp(void);
+void m245_BackObjInit(omObjData *);
+void m245_StageObjMain(omObjData *obj);
+void m245_BackObjMain(omObjData *obj);
+void m245_StageObjInit(omObjData *);
+void m245_CarouselObjMain(omObjData *obj);
+void m245_CarouselObjInit(omObjData *);
+void m245_WanwanChainUpdate(omObjData *obj);
+void m245_WanwanObjMain(omObjData *obj);
+void m245_WanwanObjInit(omObjData *);
+void m245_BiteEffObjMain(omObjData *obj);
+void m245_BiteEffObjInit(omObjData *);
+void m245_PlayerPushUpdate(void);
+void m245_RoundUpdate(void);
+void m245_ExitWaitObjMain(omObjData *obj);
+void m245_MainObjMain(omObjData *obj);
+void m245_ObjectSetup(void);
 
-void func_801059A0_merry_go_chomp(void) {
-    func_8010C030_merry_go_chomp();
+void m245_Executor(void) {
+    m245_ObjectSetup();
 }
 
-f32 func_801059BC_merry_go_chomp(f32 arg0, f32 arg1) {
+f32 m245_AngleAdd(f32 arg0, f32 arg1) {
     f32 angle = arg0 + arg1;
 
     while (angle >= 360.0f) {
@@ -168,15 +168,15 @@ f32 func_801059BC_merry_go_chomp(f32 arg0, f32 arg1) {
     return angle;
 }
 
-u8 func_80105A3C_merry_go_chomp(u32 arg0) {
+u8 m245_RandMulGet(u32 arg0) {
     return (rand8() * arg0) >> 8;
 }
 
-void func_80105A74_merry_go_chomp(void) {
-    MerryGoChompEntry *entry;
+void m245_ObjWorkInit(void) {
+    MerryGoChompObjWork *entry;
     u32 i;
 
-    for (i = 0, entry = D_8010C500_merry_go_chomp; i < 50; i++, entry++) {
+    for (i = 0, entry = m245_objWorkTbl; i < 50; i++, entry++) {
         entry->obj = NULL;
         entry->unk_04 = 0;
         entry->unk_06 = 0;
@@ -211,14 +211,14 @@ void func_80105A74_merry_go_chomp(void) {
     }
 }
 
-void func_80105B3C_merry_go_chomp(s32 playerIndex) {
+void m245_PadClear(s32 playerIndex) {
     HuPadBtn[GwPlayer[playerIndex].pad] = 0;
     HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
     HuPadStkX[GwPlayer[playerIndex].pad] = 0;
     HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
-void func_80105BB4_merry_go_chomp(f32 x0, f32 z0, f32 x1, f32 z1) {
+void m245_CameraDebugPrint(f32 x0, f32 z0, f32 x1, f32 z1) {
     f32 dx = (x0 - x1) * 5.0f;
     f32 dz = (z0 - z1) * 5.0f;
     f32 zoom;
@@ -231,25 +231,25 @@ void func_80105BB4_merry_go_chomp(f32 x0, f32 z0, f32 x1, f32 z1) {
         dz = 0.0f - dz;
     }
     zoom = sqrtf(dx * dx + dz * dz);
-    rot = func_801059BC_merry_go_chomp(atan2df(dx, dz), 0.0f);
+    rot = m245_AngleAdd(atan2df(dx, dz), 0.0f);
     osSyncPrintf("Zoom = %f\n", zoom);
     osSyncPrintf("Rot  = %f\n", 360.0f - rot);
 }
 
-s32 func_80105CE4_merry_go_chomp(s32 arg0) {
+s32 m245_RandGet(s32 arg0) {
     return rand8() % arg0;
 }
 
-void func_80105D38_merry_go_chomp(omObjData *obj, u16 motion, s16 shift) {
+void m245_MotSet(omObjData *obj, u16 motion, s16 shift) {
     Hu3DMotionModelSet(obj->model[0], obj->motion[motion]);
     Hu3DMotionAttrSet(obj->model[0], shift, shift);
 }
 
-void func_80105DA0_merry_go_chomp(omObjData *arg0, u16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void m245_MotShiftSet(omObjData *arg0, u16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     Hu3DMotionShiftSet(arg0->model[0], Hu3DData[arg0->motion[arg1]].motId, arg2, arg3, arg4);
 }
 
-void func_80105E0C_merry_go_chomp(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f32 *velZ, f32 *angle, f32 speed) {
+void m245_ChaseVelCalc(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f32 *velZ, f32 *angle, f32 speed) {
     f32 dx = x0 - x1;
     f32 dz = z0 - z1;
     f32 dist = sqrtf(dx * dx + dz * dz);
@@ -279,7 +279,7 @@ void func_80105E0C_merry_go_chomp(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f32
     *angle = atan2df(dx, dz);
 }
 
-s8 func_80105F40_merry_go_chomp(omObjData *obj, f32 target) {
+s8 m245_RotYTurn(omObjData *obj, f32 target) {
     f32 rotY = obj->rot.y;
     f32 diff = target - rotY;
 
@@ -290,23 +290,23 @@ s8 func_80105F40_merry_go_chomp(omObjData *obj, f32 target) {
         obj->rot.y = target;
     } else if (rotY < target) {
         if (diff > 180.0f) {
-            obj->rot.y = func_801059BC_merry_go_chomp(obj->rot.y, -15.0f);
+            obj->rot.y = m245_AngleAdd(obj->rot.y, -15.0f);
         } else {
-            obj->rot.y = func_801059BC_merry_go_chomp(obj->rot.y, 15.0f);
+            obj->rot.y = m245_AngleAdd(obj->rot.y, 15.0f);
         }
         return 1;
     } else if (target < rotY) {
         if (diff > 180.0f) {
-            obj->rot.y = func_801059BC_merry_go_chomp(obj->rot.y, 15.0f);
+            obj->rot.y = m245_AngleAdd(obj->rot.y, 15.0f);
         } else {
-            obj->rot.y = func_801059BC_merry_go_chomp(obj->rot.y, -15.0f);
+            obj->rot.y = m245_AngleAdd(obj->rot.y, -15.0f);
         }
         return 1;
     }
     return 0;
 }
 
-void func_80106054_merry_go_chomp(Gfx **gfxP, s32 arg1, s32 arg2) {
+void m245_BackDraw(Gfx **gfxP, s32 arg1, s32 arg2) {
     Gfx *gfx = *gfxP;
     s32 x;
     s32 y;
@@ -322,10 +322,10 @@ void func_80106054_merry_go_chomp(Gfx **gfxP, s32 arg1, s32 arg2) {
     gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, 255);
     gDPSetRenderMode(gfx++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-    gDPLoadTLUT_pal256(gfx++, D_8010C414_merry_go_chomp->pal);
+    gDPLoadTLUT_pal256(gfx++, m245_lowerBackSpr->pal);
     x = 0;
     for (i = 0, y = 180; i < 60; i += 4) {
-        gDPLoadTextureTile(gfx++, D_8010C414_merry_go_chomp->data, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 0, 0, i, 320, i + 4,
+        gDPLoadTextureTile(gfx++, m245_lowerBackSpr->data, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 0, 0, i, 320, i + 4,
                            0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                            G_TX_NOLOD);
         gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 320 << 2, 4 << 2);
@@ -335,33 +335,33 @@ void func_80106054_merry_go_chomp(Gfx **gfxP, s32 arg1, s32 arg2) {
     *gfxP = gfx;
 }
 
-void func_8010637C_merry_go_chomp(omObjData *obj) {
+void m245_BackObjMain(omObjData *obj) {
 }
 
-void func_80106384_merry_go_chomp(omObjData *obj) {
-    D_8010C544_merry_go_chomp = 160.0f;
-    D_8010C548_merry_go_chomp = 107.0f;
-    D_8010C540_merry_go_chomp = HuSprAnimDataRead(0x4E0000);
-    D_8010C542_merry_go_chomp = espEntry(D_8010C540_merry_go_chomp, 0, 0);
-    espAttrSet(D_8010C542_merry_go_chomp, 0x5000);
-    espPosSet(D_8010C542_merry_go_chomp, D_8010C544_merry_go_chomp,
-              D_8010C548_merry_go_chomp);
-    D_8010C414_merry_go_chomp = HuSprAnimDataGet(HuSprAnimDataRead(0x4E0001));
-    Hu3DModelCameraSet(Hu3DHookFuncCreate(0, func_80106054_merry_go_chomp, 2), 1);
+void m245_BackObjInit(omObjData *obj) {
+    m245_backSprX = 160.0f;
+    m245_backSprY = 107.0f;
+    m245_backSprAnim = HuSprAnimDataRead(0x4E0000);
+    m245_backSprNo = espEntry(m245_backSprAnim, 0, 0);
+    espAttrSet(m245_backSprNo, 0x5000);
+    espPosSet(m245_backSprNo, m245_backSprX,
+              m245_backSprY);
+    m245_lowerBackSpr = HuSprAnimDataGet(HuSprAnimDataRead(0x4E0001));
+    Hu3DModelCameraSet(Hu3DHookFuncCreate(0, m245_BackDraw, 2), 1);
     obj->model[0] = -1;
-    obj->func = func_8010637C_merry_go_chomp;
+    obj->func = m245_BackObjMain;
 }
 
-void func_801064A0_merry_go_chomp(void) {
-    omObjData *obj = omAddObj(0x1F4, 1, 1, -1, func_80106384_merry_go_chomp);
+void m245_BackObjCreate(void) {
+    omObjData *obj = omAddObj(0x1F4, 1, 1, -1, m245_BackObjInit);
     obj->work[0] = 0;
-    D_8010C500_merry_go_chomp[0].obj = obj;
+    m245_objWorkTbl[0].obj = obj;
 }
 
-void func_801064E0_merry_go_chomp(omObjData *obj) {
+void m245_StageObjMain(omObjData *obj) {
 }
 
-void func_801064E8_merry_go_chomp(omObjData *obj) {
+void m245_StageObjInit(omObjData *obj) {
     f32 zero;
 
     obj->model[0] = Hu3DModelRead(0x4E0004, 0x2B9);
@@ -369,29 +369,29 @@ void func_801064E8_merry_go_chomp(omObjData *obj) {
     obj->model[2] = Hu3DModelRead(0x4E0002, 0x2B9);
     obj->trans.x = -500.0f;
     obj->trans.y = zero = 0.0f;
-    D_8010CD04_merry_go_chomp = zero;
+    m245_gateY = zero;
     obj->trans.z = -400.0f;
-    D_8010CD08_merry_go_chomp = -225.0f;
+    m245_gateZ = -225.0f;
     Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
-    Hu3DModelPosSet(obj->model[1], obj->trans.x, D_8010CD04_merry_go_chomp, D_8010CD08_merry_go_chomp);
+    Hu3DModelPosSet(obj->model[1], obj->trans.x, m245_gateY, m245_gateZ);
     Hu3DModelPosSet(obj->model[2], zero, zero, zero);
     Hu3DModelCameraSet(obj->model[0], 2);
     Hu3DModelCameraSet(obj->model[1], 2);
     Hu3DModelCameraSet(obj->model[2], 2);
-    obj->func = func_801064E0_merry_go_chomp;
+    obj->func = m245_StageObjMain;
 }
 
-void func_8010662C_merry_go_chomp(void) {
-    D_8010CCBC_merry_go_chomp = omAddObj(0x2BC, 4, 1, -1, func_801064E8_merry_go_chomp);
+void m245_StageObjCreate(void) {
+    m245_stageObj = omAddObj(0x2BC, 4, 1, -1, m245_StageObjInit);
 }
 
-void func_80106668_merry_go_chomp(omObjData *obj) {
-    MerryGoChompEntry *entry = &D_8010C500_merry_go_chomp[25];
+void m245_CarouselObjMain(omObjData *obj) {
+    MerryGoChompObjWork *entry = &m245_objWorkTbl[25];
 
-    obj->rot.y = func_801059BC_merry_go_chomp(obj->rot.y, -D_8010DED4_merry_go_chomp);
-    switch (D_8010C4B0_merry_go_chomp) {
+    obj->rot.y = m245_AngleAdd(obj->rot.y, -m245_carouselSpeed);
+    switch (m245_phase) {
         case 0:
-            D_8010DED4_merry_go_chomp = 3.0f;
+            m245_carouselSpeed = 3.0f;
             entry->unk_06 = 0;
             entry->unk_08 = 0;
             break;
@@ -400,7 +400,7 @@ void func_80106668_merry_go_chomp(omObjData *obj) {
         case 3:
             break;
         case 4:
-            if (D_8010C4B2_merry_go_chomp < 50) {
+            if (m245_timer < 50) {
                 if (obj->trans.y > 0.0f) {
                     obj->trans.y -= 10.0f;
                 } else {
@@ -409,7 +409,7 @@ void func_80106668_merry_go_chomp(omObjData *obj) {
             }
             break;
         case 9:
-            if (D_8010C4B2_merry_go_chomp == 50) {
+            if (m245_timer == 50) {
                 if (entry->unk_06 == 0) {
                     if (entry->unk_08 == 0) {
                         HuAudFXPlay(0x473);
@@ -422,10 +422,10 @@ void func_80106668_merry_go_chomp(omObjData *obj) {
                         entry->unk_04++;
                         Hu3DModelAttrSet(obj->model[entry->unk_04], 4, 0);
                         entry->unk_06 = 1;
-                        if (D_8010C4CE_merry_go_chomp == 0) {
+                        if (m245_roundNo == 0) {
                             obj->rot.y = 0.0f;
                         }
-                        if (D_8010C4CE_merry_go_chomp == 1) {
+                        if (m245_roundNo == 1) {
                             obj->rot.y = 30.0f;
                         }
                     }
@@ -438,7 +438,7 @@ void func_80106668_merry_go_chomp(omObjData *obj) {
                         obj->trans.y += 15.0f;
                     } else {
                         obj->trans.y = 500.0f;
-                        D_8010DEDC_merry_go_chomp |= 8;
+                        m245_doneBits |= 8;
                         if (entry->unk_08 == 2) {
                             HuAudFXPlay(0x478);
                             entry->unk_08++;
@@ -452,14 +452,14 @@ void func_80106668_merry_go_chomp(omObjData *obj) {
     Hu3DModelRotSet(obj->model[entry->unk_04], obj->rot.x, obj->rot.y, obj->rot.z);
 }
 
-void func_80106920_merry_go_chomp(omObjData *obj) {
+void m245_CarouselObjInit(omObjData *obj) {
     obj->model[0] = Hu3DModelRead(0x4E0006, 0x2B9);
     obj->model[1] = Hu3DModelRead(0x4E0007, 0x2B9);
     obj->model[2] = Hu3DModelRead(0x4E0008, 0x2B9);
     Hu3DModelAttrSet(obj->model[2], 4, 4);
     obj->model[3] = Hu3DModelRead(0x4E0009, 0x2B9);
     Hu3DModelAttrSet(obj->model[3], 4, 4);
-    D_8010C500_merry_go_chomp[25].unk_04 = 1;
+    m245_objWorkTbl[25].unk_04 = 1;
     obj->trans.x = 0.0f;
     obj->trans.y = 500.0f;
     obj->trans.z = 0.0f;
@@ -467,24 +467,24 @@ void func_80106920_merry_go_chomp(omObjData *obj) {
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
     Hu3DModelPosSet(obj->model[2], obj->trans.x, obj->trans.y, obj->trans.z);
     Hu3DModelPosSet(obj->model[3], obj->trans.x, obj->trans.y, obj->trans.z);
-    D_8010C4BE_merry_go_chomp[0] = 1;
-    D_8010C4BE_merry_go_chomp[1] = 1;
-    D_8010C4BE_merry_go_chomp[2] = 1;
-    D_8010C4BE_merry_go_chomp[3] = 1;
-    D_8010C4BE_merry_go_chomp[4] = 1;
+    m245_seatFreeTbl[0] = 1;
+    m245_seatFreeTbl[1] = 1;
+    m245_seatFreeTbl[2] = 1;
+    m245_seatFreeTbl[3] = 1;
+    m245_seatFreeTbl[4] = 1;
     Hu3DModelCameraSet(obj->model[0], 1);
     Hu3DModelCameraSet(obj->model[1], 1);
     Hu3DModelCameraSet(obj->model[2], 1);
     Hu3DModelCameraSet(obj->model[3], 1);
-    obj->func = func_80106668_merry_go_chomp;
+    obj->func = m245_CarouselObjMain;
 }
 
-void func_80106AB8_merry_go_chomp(void) {
-    D_8010D1E4_merry_go_chomp = omAddObj(0x258, 5, 1, -1, func_80106920_merry_go_chomp);
+void m245_CarouselObjCreate(void) {
+    m245_carouselObj = omAddObj(0x258, 5, 1, -1, m245_CarouselObjInit);
 }
 
-void func_80106AF4_merry_go_chomp(omObjData *obj) {
-    MerryGoChompEntry *entry = &D_8010C500_merry_go_chomp[obj->work[0] + 5];
+void m245_PlayerStepSeUpdate(omObjData *obj) {
+    MerryGoChompObjWork *entry = &m245_objWorkTbl[obj->work[0] + 5];
 
     if (obj->work[2] == 0) {
         if (entry->unk_14 != 0) {
@@ -495,9 +495,9 @@ void func_80106AF4_merry_go_chomp(omObjData *obj) {
     obj->work[2] = (obj->work[2] + 1) % 11;
 }
 
-void func_80106B9C_merry_go_chomp(omObjData *obj, s8 motion) {
+void m245_PlayerMotChange(omObjData *obj, s8 motion) {
     s8 chr = GwPlayer[obj->work[0]].chr;
-    MerryGoChompEntry *entry = &D_8010C500_merry_go_chomp[obj->work[0] + 5];
+    MerryGoChompObjWork *entry = &m245_objWorkTbl[obj->work[0] + 5];
     s16 shift;
 
     if (entry->unk_06 != motion) {
@@ -522,22 +522,22 @@ void func_80106B9C_merry_go_chomp(omObjData *obj, s8 motion) {
                 break;
         }
         Hu3DMotionSpeedSet(obj->model[0], 1.0f);
-        func_80105DA0_merry_go_chomp(obj, motion, 0, 5, shift);
+        m245_MotShiftSet(obj, motion, 0, 5, shift);
         entry->unk_06 = motion;
         if (motion == 9) {
-            HuAudCharVoicePlay((D_8010C140_merry_go_chomp[chr] << 16) | 0x30);
+            HuAudCharVoicePlay((m245_voiceChrTbl[chr] << 16) | 0x30);
         }
     }
 }
 
-s8 func_80106CC4_merry_go_chomp(omObjData *obj) {
-    MerryGoChompEntry *entry = &D_8010C500_merry_go_chomp[obj->work[0] + 5];
-    omObjData *chomp = D_8010C500_merry_go_chomp[25].obj;
+s8 m245_PlayerSeatCheck(omObjData *obj) {
+    MerryGoChompObjWork *entry = &m245_objWorkTbl[obj->work[0] + 5];
+    omObjData *chomp = m245_objWorkTbl[25].obj;
     s8 zone = 99;
-    f32 angle = func_801059BC_merry_go_chomp(chomp->rot.y, -120.0f);
+    f32 angle = m245_AngleAdd(chomp->rot.y, -120.0f);
 
     if (!(GwPlayer[obj->work[0]].stat & 1)) {
-        switch (D_8010C4CE_merry_go_chomp) {
+        switch (m245_roundNo) {
             case 0:
                 if (angle >= 324.0f || angle < 36.0f) {
                     zone = 0;
@@ -582,7 +582,7 @@ s8 func_80106CC4_merry_go_chomp(omObjData *obj) {
                 break;
         }
     } else {
-        switch (D_8010C4CE_merry_go_chomp) {
+        switch (m245_roundNo) {
             case 0:
                 if (angle >= 324.0f || angle < 36.0f) {
                     zone = 0;
@@ -630,50 +630,50 @@ s8 func_80106CC4_merry_go_chomp(omObjData *obj) {
             return 0;
         }
     }
-    if (!(GwPlayer[obj->work[0]].stat & 1) || D_8010C4B2_merry_go_chomp <= 0) {
-        if (D_8010C4BE_merry_go_chomp[zone] != 0) {
+    if (!(GwPlayer[obj->work[0]].stat & 1) || m245_timer <= 0) {
+        if (m245_seatFreeTbl[zone] != 0) {
             entry->unk_0A = zone;
-            D_8010DECC_merry_go_chomp[entry->unk_0A] = obj->work[0];
-            D_8010C4BE_merry_go_chomp[zone] = 0;
+            m245_seatPlayerTbl[entry->unk_0A] = obj->work[0];
+            m245_seatFreeTbl[zone] = 0;
             return 1;
         }
     } else if (entry->unk_0C == zone) {
         entry->unk_0A = zone;
-        D_8010DECC_merry_go_chomp[entry->unk_0A] = obj->work[0];
-        D_8010C4BE_merry_go_chomp[zone] = 0;
+        m245_seatPlayerTbl[entry->unk_0A] = obj->work[0];
+        m245_seatFreeTbl[zone] = 0;
         return 1;
     }
     return 0;
 }
 
-void func_80107664_merry_go_chomp(omObjData *obj) {
-    MerryGoChompEntry *entry = &D_8010C500_merry_go_chomp[obj->work[0] + 5];
-    omObjData *chomp = D_8010C500_merry_go_chomp[25].obj;
-    D_8010C420_merry_go_chomp_Entry *move = &D_8010C420_merry_go_chomp[obj->work[0]];
+void m245_PlayerSeatJumpStart(omObjData *obj) {
+    MerryGoChompObjWork *entry = &m245_objWorkTbl[obj->work[0] + 5];
+    omObjData *chomp = m245_objWorkTbl[25].obj;
+    MerryGoChompPlayerWork *move = &m245_playerWorkTbl[obj->work[0]];
     f32 angle;
 
-    angle = func_801059BC_merry_go_chomp(chomp->rot.y,
-                                         -D_8010C1D8_merry_go_chomp[D_8010C4CE_merry_go_chomp][entry->unk_0A]);
-    angle = func_801059BC_merry_go_chomp(angle, -(D_8010DED4_merry_go_chomp * 15.0f));
+    angle = m245_AngleAdd(chomp->rot.y,
+                                         -m245_seatAngleTbl[m245_roundNo][entry->unk_0A]);
+    angle = m245_AngleAdd(angle, -(m245_carouselSpeed * 15.0f));
     move->unk_00.x = sindf(angle) * 180.0f;
     move->unk_00.y = cosdf(angle) * 180.0f;
     move->unk_00.x = (move->unk_00.x - obj->trans.x) / 15.0f;
     move->unk_00.y = (move->unk_00.y - obj->trans.z) / 15.0f;
     move->unk_00.z = atan2df(move->unk_00.x, move->unk_00.y);
-    func_80105D38_merry_go_chomp(obj, 6, 0);
+    m245_MotSet(obj, 6, 0);
     Hu3DMotionSpeedSet(obj->model[0], 1.5f);
     entry->unk_06 = 6;
 }
 
-void func_801077D0_merry_go_chomp(omObjData *obj) {
-    D_8010C420_merry_go_chomp_Entry *entry = &D_8010C420_merry_go_chomp[obj->work[0]];
+void m245_PlayerVelApply(omObjData *obj) {
+    MerryGoChompPlayerWork *entry = &m245_playerWorkTbl[obj->work[0]];
 
     obj->trans.x += entry->unk_00.x;
     obj->trans.z += entry->unk_00.y;
     obj->rot.y = entry->unk_00.z;
 }
 
-void func_80107818_merry_go_chomp(omObjData *obj, f32 *outX, f32 *outZ, f32 scale) {
+void m245_RotVelCalc(omObjData *obj, f32 *outX, f32 *outZ, f32 scale) {
     f32 angle = obj->rot.y;
     s16 quadrant = 0;
 
@@ -709,9 +709,9 @@ void func_80107818_merry_go_chomp(omObjData *obj, f32 *outX, f32 *outZ, f32 scal
     }
 }
 
-s8 func_80107980_merry_go_chomp(void) {
-    MerryGoChompEntry *entry;
-    D_8010C420_merry_go_chomp_Entry *move;
+s8 m245_OutPlayerGet(void) {
+    MerryGoChompObjWork *entry;
+    MerryGoChompPlayerWork *move;
     omObjData *obj;
     s8 found = -1;
     s8 zone;
@@ -719,13 +719,13 @@ s8 func_80107980_merry_go_chomp(void) {
     f32 angle;
 
     for (i = 0; i < 4; i++) {
-        entry = &D_8010C500_merry_go_chomp[i + 5];
+        entry = &m245_objWorkTbl[i + 5];
         obj = entry->obj;
         if (entry->unk_04 == 0) {
-            move = &D_8010C420_merry_go_chomp[i];
+            move = &m245_playerWorkTbl[i];
             zone = -1;
-            angle = func_801059BC_merry_go_chomp(atan2df(obj->trans.x, obj->trans.z), 0.0f);
-            switch (D_8010C4CE_merry_go_chomp) {
+            angle = m245_AngleAdd(atan2df(obj->trans.x, obj->trans.z), 0.0f);
+            switch (m245_roundNo) {
                 case 0:
                     if (angle >= 306.0f || angle < 18.0f) {
                         zone = 0;
@@ -775,10 +775,10 @@ s8 func_80107980_merry_go_chomp(void) {
     return found;
 }
 
-void func_80107E34_merry_go_chomp(omObjData *obj) {
+void m245_PlayerReturnUpdate(omObjData *obj) {
     s8 index = obj->work[0];
-    MerryGoChompEntry *entry = &D_8010C500_merry_go_chomp[index + 5];
-    D_8010C420_merry_go_chomp_Entry *move = &D_8010C420_merry_go_chomp[index];
+    MerryGoChompObjWork *entry = &m245_objWorkTbl[index + 5];
+    MerryGoChompPlayerWork *move = &m245_playerWorkTbl[index];
 
     if (entry->unk_04 != 0) {
         return;
@@ -790,10 +790,10 @@ void func_80107E34_merry_go_chomp(omObjData *obj) {
             move->unk_14 = obj->trans.x;
             move->unk_18 = obj->trans.z;
             move->unk_10 = 18.0f;
-            move->unk_0C = func_801059BC_merry_go_chomp(atan2df(obj->trans.x, obj->trans.z), 0.0f);
-            func_80106B9C_merry_go_chomp(obj, 1);
+            move->unk_0C = m245_AngleAdd(atan2df(obj->trans.x, obj->trans.z), 0.0f);
+            m245_PlayerMotChange(obj, 1);
             move->unk_1C++;
-            D_8010C4BD_merry_go_chomp = 0;
+            m245_queueNo = 0;
             break;
         case 1:
             move->unk_14 += sindf(move->unk_0C) * move->unk_10;
@@ -804,22 +804,22 @@ void func_80107E34_merry_go_chomp(omObjData *obj) {
             break;
         case 2:
             if (move->unk_1E != 0) {
-                func_80106B9C_merry_go_chomp(obj, 0);
+                m245_PlayerMotChange(obj, 0);
                 move->unk_1E++;
                 if (move->unk_1E < 16) {
                     break;
                 }
-                func_80106B9C_merry_go_chomp(obj, 1);
+                m245_PlayerMotChange(obj, 1);
                 move->unk_1E = 0;
             }
             move->unk_0C =
-                func_801059BC_merry_go_chomp(atan2df(410.0f - move->unk_14, 100.0f - move->unk_18), 0.0f);
+                m245_AngleAdd(atan2df(410.0f - move->unk_14, 100.0f - move->unk_18), 0.0f);
             move->unk_14 += sindf(move->unk_0C) * move->unk_10;
             move->unk_18 += cosdf(move->unk_0C) * move->unk_10;
             if (move->unk_10 == 0.0f) {
-                func_80106B9C_merry_go_chomp(obj, 0);
+                m245_PlayerMotChange(obj, 0);
             } else {
-                func_80106B9C_merry_go_chomp(obj, 1);
+                m245_PlayerMotChange(obj, 1);
             }
             if (move->unk_14 > 390.0f && move->unk_14 < 430.0f && move->unk_18 > 80.0f && move->unk_18 < 120.0f) {
                 move->unk_1C++;
@@ -827,40 +827,40 @@ void func_80107E34_merry_go_chomp(omObjData *obj) {
             break;
         case 3:
             if (move->unk_1E != 0) {
-                func_80106B9C_merry_go_chomp(obj, 0);
+                m245_PlayerMotChange(obj, 0);
                 move->unk_1E++;
                 if (move->unk_1E < 16) {
                     break;
                 }
-                func_80106B9C_merry_go_chomp(obj, 1);
+                m245_PlayerMotChange(obj, 1);
                 move->unk_1E = 0;
             }
             move->unk_0C =
-                func_801059BC_merry_go_chomp(atan2df(490.0f - move->unk_14, -20.0f - move->unk_18), 0.0f);
+                m245_AngleAdd(atan2df(490.0f - move->unk_14, -20.0f - move->unk_18), 0.0f);
             move->unk_14 += sindf(move->unk_0C) * move->unk_10;
             move->unk_18 += cosdf(move->unk_0C) * move->unk_10;
             if (move->unk_10 == 0.0f) {
-                func_80106B9C_merry_go_chomp(obj, 0);
+                m245_PlayerMotChange(obj, 0);
             } else {
-                func_80106B9C_merry_go_chomp(obj, 1);
+                m245_PlayerMotChange(obj, 1);
             }
             if (move->unk_14 > 470.0f && move->unk_14 < 510.0f && move->unk_18 > -40.0f && move->unk_18 < 0.0f) {
                 move->unk_1C++;
-                obj->work[1] = D_8010C4BD_merry_go_chomp;
-                D_8010C4BD_merry_go_chomp++;
+                obj->work[1] = m245_queueNo;
+                m245_queueNo++;
             }
             break;
         case 4:
-            func_80106B9C_merry_go_chomp(obj, 2);
+            m245_PlayerMotChange(obj, 2);
             Hu3DModelAttrSet(obj->model[1], 4, 4);
             obj->rot.y = 210.0f;
             if (obj->trans.y < 630.0f) {
                 obj->trans.y += 10.0f;
             } else {
                 obj->trans.y = 630.0f;
-                func_80106B9C_merry_go_chomp(obj, 6);
-                move->unk_00.x = (D_8010C1B8_merry_go_chomp[obj->work[1]] - move->unk_14) / 17.0f;
-                move->unk_00.y = (D_8010C1C8_merry_go_chomp[obj->work[1]] - move->unk_18) / 17.0f;
+                m245_PlayerMotChange(obj, 6);
+                move->unk_00.x = (m245_queuePosXTbl[obj->work[1]] - move->unk_14) / 17.0f;
+                move->unk_00.y = (m245_queuePosZTbl[obj->work[1]] - move->unk_18) / 17.0f;
                 move->unk_00.z = atan2df(move->unk_00.x, move->unk_00.y);
                 move->unk_1D = 0;
                 move->unk_1C++;
@@ -871,24 +871,24 @@ void func_80107E34_merry_go_chomp(omObjData *obj) {
                 PlayerFXPlay(0x3A, obj->work[0]);
             }
             Hu3DModelAttrSet(obj->model[1], 4, 0);
-            func_801077D0_merry_go_chomp(obj);
+            m245_PlayerVelApply(obj);
             move->unk_1F = 1;
-            obj->trans.y += D_8010C160_merry_go_chomp[move->unk_1D];
-            entry->unk_24 = D_8010C174_merry_go_chomp[move->unk_1D];
+            obj->trans.y += m245_jumpYTbl[move->unk_1D];
+            entry->unk_24 = m245_jumpShadowScaleTbl[move->unk_1D];
             move->unk_1D++;
             if (move->unk_1D >= 17) {
                 move->unk_1F = 0;
-                func_80106B9C_merry_go_chomp(obj, 0);
+                m245_PlayerMotChange(obj, 0);
                 move->unk_1C++;
                 PlayerFXPlay(0x31, obj->work[0]);
             }
             break;
         case 6:
-            if (func_80105F40_merry_go_chomp(obj, 330.0f)) {
-                func_80106B9C_merry_go_chomp(obj, 1);
+            if (m245_RotYTurn(obj, 330.0f)) {
+                m245_PlayerMotChange(obj, 1);
             } else {
-                func_80106B9C_merry_go_chomp(obj, 0);
-                D_8010DEDC_merry_go_chomp |= 1 << obj->work[1];
+                m245_PlayerMotChange(obj, 0);
+                m245_doneBits |= 1 << obj->work[1];
                 move->unk_1C++;
             }
             break;
@@ -896,15 +896,15 @@ void func_80107E34_merry_go_chomp(omObjData *obj) {
             break;
     }
     if (entry->unk_06 == 1) {
-        func_80106AF4_merry_go_chomp(obj);
+        m245_PlayerStepSeUpdate(obj);
     }
 }
 
-void func_801084C8_merry_go_chomp(void) {
-    D_8010C420_merry_go_chomp_Entry *move;
-    D_8010C420_merry_go_chomp_Entry *other;
-    MerryGoChompEntry *entry;
-    MerryGoChompEntry *otherEntry;
+void m245_PlayerPushUpdate(void) {
+    MerryGoChompPlayerWork *move;
+    MerryGoChompPlayerWork *other;
+    MerryGoChompObjWork *entry;
+    MerryGoChompObjWork *otherEntry;
     omObjData *obj;
     omObjData *otherObj;
     s8 push = 0;
@@ -917,13 +917,13 @@ void func_801084C8_merry_go_chomp(void) {
     f32 dz;
 
     for (i = 0; i < 4; i++) {
-        move = &D_8010C420_merry_go_chomp[i];
-        entry = &D_8010C500_merry_go_chomp[i + 5];
+        move = &m245_playerWorkTbl[i];
+        entry = &m245_objWorkTbl[i + 5];
         obj = entry->obj;
         if (move->unk_1C >= 2 && entry->unk_04 == 0) {
             dist = sqrtf(move->unk_14 * move->unk_14 + move->unk_18 * move->unk_18);
             if (dist < 350.0f) {
-                angle = func_801059BC_merry_go_chomp(atan2df(move->unk_14, move->unk_18), 0.0f);
+                angle = m245_AngleAdd(atan2df(move->unk_14, move->unk_18), 0.0f);
                 move->unk_14 = sindf(angle) * 350.0f;
                 move->unk_18 = cosdf(angle) * 350.0f;
             }
@@ -933,8 +933,8 @@ void func_801084C8_merry_go_chomp(void) {
     do {
         collided = 0;
         for (i = 0; i < 4; i++) {
-            move = &D_8010C420_merry_go_chomp[i];
-            entry = &D_8010C500_merry_go_chomp[i + 5];
+            move = &m245_playerWorkTbl[i];
+            entry = &m245_objWorkTbl[i + 5];
             obj = entry->obj;
             if (entry->unk_04 != 0 || obj->trans.y > 5.0f) {
                 continue;
@@ -943,8 +943,8 @@ void func_801084C8_merry_go_chomp(void) {
                 if (i == j) {
                     continue;
                 }
-                other = &D_8010C420_merry_go_chomp[j];
-                otherEntry = &D_8010C500_merry_go_chomp[j + 5];
+                other = &m245_playerWorkTbl[j];
+                otherEntry = &m245_objWorkTbl[j + 5];
                 otherObj = otherEntry->obj;
                 if (otherEntry->unk_04 != 0) {
                     continue;
@@ -976,14 +976,14 @@ void func_801084C8_merry_go_chomp(void) {
                         case 0:
                             break;
                         case 1:
-                            angle = func_801059BC_merry_go_chomp(
+                            angle = m245_AngleAdd(
                                 atan2df(move->unk_14 - other->unk_14, move->unk_18 - other->unk_18), 0.0f);
                             move->unk_14 = sindf(angle) * 121.0f + other->unk_14;
                             move->unk_18 = cosdf(angle) * 121.0f + other->unk_18;
                             move->unk_1E = collided = 1;
                             break;
                         case 2:
-                            angle = func_801059BC_merry_go_chomp(
+                            angle = m245_AngleAdd(
                                 atan2df(other->unk_14 - move->unk_14, other->unk_18 - move->unk_18), 0.0f);
                             other->unk_14 = sindf(angle) * 121.0f + move->unk_14;
                             other->unk_18 = cosdf(angle) * 121.0f + move->unk_18;
@@ -996,8 +996,8 @@ void func_801084C8_merry_go_chomp(void) {
     } while (collided);
 
     for (i = 0; i < 4; i++) {
-        move = &D_8010C420_merry_go_chomp[i];
-        entry = &D_8010C500_merry_go_chomp[i + 5];
+        move = &m245_playerWorkTbl[i];
+        entry = &m245_objWorkTbl[i + 5];
         obj = entry->obj;
         if (entry->unk_04 == 0 && move->unk_1C < 5) {
             obj->trans.x = move->unk_14;
@@ -1007,10 +1007,10 @@ void func_801084C8_merry_go_chomp(void) {
     }
 }
 
-void func_80108A88_merry_go_chomp(omObjData *obj) {
+void m245_PlayerObjMain(omObjData *obj) {
     s8 index = obj->work[0];
-    MerryGoChompEntry *entry = &D_8010C500_merry_go_chomp[index + 5];
-    D_8010C420_merry_go_chomp_Entry *move = &D_8010C420_merry_go_chomp[index];
+    MerryGoChompObjWork *entry = &m245_objWorkTbl[index + 5];
+    MerryGoChompPlayerWork *move = &m245_playerWorkTbl[index];
     s8 choices[5];
     s8 count;
     s8 i;
@@ -1022,72 +1022,72 @@ void func_80108A88_merry_go_chomp(omObjData *obj) {
         }
         return;
     }
-    switch (D_8010C4B0_merry_go_chomp) {
+    switch (m245_phase) {
         case 0:
             move->unk_1C = 0;
             move->unk_1D = 0;
             entry->unk_0C = -1;
-            func_80106B9C_merry_go_chomp(obj, 0);
+            m245_PlayerMotChange(obj, 0);
             break;
         case 1:
-            if (D_8010C4B2_merry_go_chomp < 144 && obj->work[1] == D_8010DEDD_merry_go_chomp) {
-                if (D_8010C4B2_merry_go_chomp > 0) {
+            if (m245_timer < 144 && obj->work[1] == m245_jumpTurnNo) {
+                if (m245_timer > 0) {
                     if (GwPlayer[index].stat & 1) {
                         if (entry->unk_0C < 0) {
-                            for (i = 0, count = 0; i < 5 - D_8010C4CE_merry_go_chomp; i++) {
-                                if (D_8010C4BE_merry_go_chomp[i] != 0) {
+                            for (i = 0, count = 0; i < 5 - m245_roundNo; i++) {
+                                if (m245_seatFreeTbl[i] != 0) {
                                     choices[count] = i;
                                     count++;
                                 }
                             }
-                            entry->unk_0C = choices[func_80105CE4_merry_go_chomp(count)];
+                            entry->unk_0C = choices[m245_RandGet(count)];
                         }
                     } else if (!(HuPadBtnDown[obj->work[3]] & 0x8000)) {
                         break;
                     }
                 }
-                if (func_80106CC4_merry_go_chomp(obj)) {
-                    D_8010DEDC_merry_go_chomp = 1;
-                    func_80107664_merry_go_chomp(obj);
+                if (m245_PlayerSeatCheck(obj)) {
+                    m245_doneBits = 1;
+                    m245_PlayerSeatJumpStart(obj);
                 }
             }
             break;
         case 2:
-            if (obj->work[1] == D_8010DEDD_merry_go_chomp) {
-                if (D_8010C4B2_merry_go_chomp == 0) {
+            if (obj->work[1] == m245_jumpTurnNo) {
+                if (m245_timer == 0) {
                     PlayerFXPlay(0x3A, obj->work[0]);
                 }
-                if (D_8010C4B2_merry_go_chomp < 15) {
+                if (m245_timer < 15) {
                     move->unk_1F = 1;
                     obj->trans.x += move->unk_00.x;
                     obj->trans.z += move->unk_00.y;
-                    obj->trans.y += D_8010C160_merry_go_chomp[D_8010C4B2_merry_go_chomp];
+                    obj->trans.y += m245_jumpYTbl[m245_timer];
                     obj->rot.y = move->unk_00.z;
-                    entry->unk_24 = D_8010C174_merry_go_chomp[D_8010C4B2_merry_go_chomp];
+                    entry->unk_24 = m245_jumpShadowScaleTbl[m245_timer];
                 }
-                if (D_8010C4B2_merry_go_chomp == 10) {
-                    func_80106B9C_merry_go_chomp(obj, 0);
+                if (m245_timer == 10) {
+                    m245_PlayerMotChange(obj, 0);
                 }
-                if (D_8010C4B2_merry_go_chomp == 15) {
+                if (m245_timer == 15) {
                     PlayerFXPlay(0x31, obj->work[0]);
                     move->unk_1F = 0;
-                    entry->unk_18 = func_801059BC_merry_go_chomp(atan2df(obj->trans.x, obj->trans.z), 0.0f);
+                    entry->unk_18 = m245_AngleAdd(atan2df(obj->trans.x, obj->trans.z), 0.0f);
                     entry->unk_1C = sqrtf(obj->trans.x * obj->trans.x + obj->trans.z * obj->trans.z);
                     entry->unk_08++;
                 }
             } else if (entry->unk_08 == 0) {
-                func_80106B9C_merry_go_chomp(obj, 1);
-                func_80106AF4_merry_go_chomp(obj);
+                m245_PlayerMotChange(obj, 1);
+                m245_PlayerStepSeUpdate(obj);
                 obj->trans.x -= 7.0f;
                 obj->trans.z += 4.0f;
             }
             break;
         case 3:
-            func_80106B9C_merry_go_chomp(obj, 0);
+            m245_PlayerMotChange(obj, 0);
             break;
         case 4:
-            if (D_8010C4B2_merry_go_chomp < 50) {
-                func_80106B9C_merry_go_chomp(obj, 5);
+            if (m245_timer < 50) {
+                m245_PlayerMotChange(obj, 5);
                 if (obj->trans.y > 5.0f) {
                     obj->trans.y -= 10.0f;
                 } else {
@@ -1096,45 +1096,45 @@ void func_80108A88_merry_go_chomp(omObjData *obj) {
             }
             break;
         case 5:
-            if (D_8010C4B2_merry_go_chomp < 30) {
+            if (m245_timer < 30) {
                 entry->unk_08 = 0;
                 if (move->unk_20 == -1) {
-                    entry->unk_0E = 3 - D_8010C4CE_merry_go_chomp;
+                    entry->unk_0E = 3 - m245_roundNo;
                 }
             } else if (move->unk_20 == -1) {
-                if (!func_80105F40_merry_go_chomp(obj, 270.0f)) {
-                    func_80106B9C_merry_go_chomp(obj, 7);
+                if (!m245_RotYTurn(obj, 270.0f)) {
+                    m245_PlayerMotChange(obj, 7);
                     PlayerFXPlay(0x286, obj->work[0]);
                     entry->unk_04 = 1;
                 }
-            } else if (!func_80105F40_merry_go_chomp(obj, 0.0f)) {
-                if (D_8010C4CE_merry_go_chomp == 2) {
-                    D_8010C4C8_merry_go_chomp = obj;
-                    func_80106B9C_merry_go_chomp(obj, 0);
+            } else if (!m245_RotYTurn(obj, 0.0f)) {
+                if (m245_roundNo == 2) {
+                    m245_winnerObj = obj;
+                    m245_PlayerMotChange(obj, 0);
                 } else {
-                    func_80106B9C_merry_go_chomp(obj, 8);
+                    m245_PlayerMotChange(obj, 8);
                 }
             }
             break;
         case 9:
-            func_80107E34_merry_go_chomp(obj);
+            m245_PlayerReturnUpdate(obj);
             break;
         case 6:
-            if (!func_80105F40_merry_go_chomp(obj, 0.0f)) {
-                func_80106B9C_merry_go_chomp(obj, 8);
+            if (!m245_RotYTurn(obj, 0.0f)) {
+                m245_PlayerMotChange(obj, 8);
             }
             break;
         case 7:
-            func_80106B9C_merry_go_chomp(obj, 5);
+            m245_PlayerMotChange(obj, 5);
             break;
         case 8:
             break;
     }
     if (entry->unk_08 != 0) {
-        entry->unk_18 = func_801059BC_merry_go_chomp(entry->unk_18, -D_8010DED4_merry_go_chomp);
+        entry->unk_18 = m245_AngleAdd(entry->unk_18, -m245_carouselSpeed);
         obj->trans.x = sindf(entry->unk_18) * entry->unk_1C;
         obj->trans.z = cosdf(entry->unk_18) * entry->unk_1C;
-        obj->rot.y = func_801059BC_merry_go_chomp(obj->rot.y, -D_8010DED4_merry_go_chomp);
+        obj->rot.y = m245_AngleAdd(obj->rot.y, -m245_carouselSpeed);
     }
     if (move->unk_1F == 0) {
         entry->unk_20 = obj->trans.y;
@@ -1149,9 +1149,9 @@ void func_80108A88_merry_go_chomp(omObjData *obj) {
     Hu3DModelScaleSet(obj->model[1], entry->unk_24, 1.0f, entry->unk_24);
 }
 
-void func_801090B0_merry_go_chomp(omObjData *obj) {
+void m245_PlayerObjInit(omObjData *obj) {
     u16 player = obj->work[0];
-    MerryGoChompEntry *entry = &D_8010C500_merry_go_chomp[player + 5];
+    MerryGoChompObjWork *entry = &m245_objWorkTbl[player + 5];
     u16 chr = GwPlayer[player].chr;
 
     obj->model[0] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][3], 0x2B9);
@@ -1171,27 +1171,27 @@ void func_801090B0_merry_go_chomp(omObjData *obj) {
     Hu3DModelRemakeStatic(obj->model[1]);
     Hu3DModelDynamicFree(obj->model[1]);
     func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 0.0f, 0.0f);
-    omSetTra(obj, D_8010C1B8_merry_go_chomp[obj->work[1]], 505.0f, D_8010C1C8_merry_go_chomp[obj->work[1]]);
+    omSetTra(obj, m245_queuePosXTbl[obj->work[1]], 505.0f, m245_queuePosZTbl[obj->work[1]]);
     omSetRot(obj, 0.0f, 330.0f, 0.0f);
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
     entry->unk_24 = 1.0f;
-    func_80105D38_merry_go_chomp(obj, 0, 2);
+    m245_MotSet(obj, 0, 2);
     entry->unk_06 = 0;
     Hu3DModelCameraSet(obj->model[0], 2);
     Hu3DModelCameraSet(obj->model[1], 2);
-    D_8010C420_merry_go_chomp[player].unk_00.x = 0.0f;
-    D_8010C420_merry_go_chomp[player].unk_00.y = 0.0f;
-    D_8010C420_merry_go_chomp[player].unk_00.z = 0.0f;
-    D_8010C420_merry_go_chomp[player].unk_1C = 0;
-    D_8010C420_merry_go_chomp[player].unk_1D = 0;
-    D_8010C420_merry_go_chomp[player].unk_1F = 0;
-    D_8010DEDD_merry_go_chomp = 0;
+    m245_playerWorkTbl[player].unk_00.x = 0.0f;
+    m245_playerWorkTbl[player].unk_00.y = 0.0f;
+    m245_playerWorkTbl[player].unk_00.z = 0.0f;
+    m245_playerWorkTbl[player].unk_1C = 0;
+    m245_playerWorkTbl[player].unk_1D = 0;
+    m245_playerWorkTbl[player].unk_1F = 0;
+    m245_jumpTurnNo = 0;
     obj->work[3] = GwPlayer[player].pad;
-    obj->func = func_80108A88_merry_go_chomp;
+    obj->func = m245_PlayerObjMain;
 }
 
-void func_80109420_merry_go_chomp(void) {
-    MerryGoChompEntry *entry;
+void m245_PlayerObjCreateAll(void) {
+    MerryGoChompObjWork *entry;
     omObjData *obj;
     s8 slots[4];
     u16 player = 0;
@@ -1217,11 +1217,11 @@ void func_80109420_merry_go_chomp(void) {
                 player = 3;
                 break;
         }
-        entry = &D_8010C500_merry_go_chomp[i + 5];
-        obj = omAddObj(0x320, 3, 12, -1, func_801090B0_merry_go_chomp);
+        entry = &m245_objWorkTbl[i + 5];
+        obj = omAddObj(0x320, 3, 12, -1, m245_PlayerObjInit);
         obj->work[0] = player;
         entry->obj = obj;
-        pick = func_80105CE4_merry_go_chomp(4 - i);
+        pick = m245_RandGet(4 - i);
         obj->work[1] = slots[pick];
         slots[pick] = -1;
         for (j = 1; j < 4 - i; j++) {
@@ -1233,18 +1233,18 @@ void func_80109420_merry_go_chomp(void) {
     }
 }
 
-void func_80109604_merry_go_chomp(void) {
-    MerryGoChompEntry *entry;
+void m245_ResultSet(void) {
+    MerryGoChompObjWork *entry;
     s8 i;
 
     for (i = 0; i < 4; i++) {
-        entry = &D_8010C794_merry_go_chomp[i];
+        entry = &m245_playerObjWorkTbl[i];
         GwPlayer[entry->obj->work[0]].bonusCoin = entry->unk_0E;
     }
 }
 
-void func_80109670_merry_go_chomp(omObjData *obj) {
-    MerryGoChompEntry *chomp = &D_8010C500_merry_go_chomp[10];
+void m245_WanwanChainUpdate(omObjData *obj) {
+    MerryGoChompObjWork *chomp = &m245_objWorkTbl[10];
     Vec2f *link;
     f32 angle;
     f32 divisor;
@@ -1256,8 +1256,8 @@ void func_80109670_merry_go_chomp(omObjData *obj) {
     if (chomp->unk_18 != 0.0f || chomp->unk_1C != 0.0f || chomp->unk_30 != obj->rot.y) {
         obj->trans.x += chomp->unk_18;
         obj->trans.z += chomp->unk_1C;
-        angle = func_801059BC_merry_go_chomp(obj->rot.y, 180.0f);
-        link = D_8010C4D0_merry_go_chomp;
+        angle = m245_AngleAdd(obj->rot.y, 180.0f);
+        link = m245_chainPosTbl;
         link->x = sindf(angle) * 70.0f + obj->trans.x;
         link->y = cosdf(angle) * 70.0f + obj->trans.z;
         if (chomp->unk_2C > 15.0f) {
@@ -1266,9 +1266,9 @@ void func_80109670_merry_go_chomp(omObjData *obj) {
             divisor = 5.0f;
         }
         for (i = 1; i < 6; i++) {
-            link = &D_8010C4D0_merry_go_chomp[i];
-            dx = D_8010C4D0_merry_go_chomp[i - 1].x - link->x;
-            dz = D_8010C4D0_merry_go_chomp[i - 1].y - link->y;
+            link = &m245_chainPosTbl[i];
+            dx = m245_chainPosTbl[i - 1].x - link->x;
+            dz = m245_chainPosTbl[i - 1].y - link->y;
             dist = dx * dx + dz * dz;
             if (dist > 5625.0f) {
                 link->x = dx / divisor + link->x;
@@ -1277,14 +1277,14 @@ void func_80109670_merry_go_chomp(omObjData *obj) {
             Hu3DModelPosSet(obj->model[i], link->x, 30.0f, link->y);
             Hu3DModelPosSet(obj->model[i + 6], link->x, 5.0f, link->y);
         }
-        link = &D_8010C4D0_merry_go_chomp[5];
-        if (link->x != D_8010C214_merry_go_chomp.x || link->y != D_8010C214_merry_go_chomp.y) {
-            link->x = D_8010C214_merry_go_chomp.x;
-            link->y = D_8010C214_merry_go_chomp.y;
+        link = &m245_chainPosTbl[5];
+        if (link->x != m245_chainAnchor.x || link->y != m245_chainAnchor.y) {
+            link->x = m245_chainAnchor.x;
+            link->y = m245_chainAnchor.y;
             for (i = 4; i >= 0; i--) {
-                link = &D_8010C4D0_merry_go_chomp[i];
-                dx = D_8010C4D0_merry_go_chomp[i + 1].x - link->x;
-                dz = D_8010C4D0_merry_go_chomp[i + 1].y - link->y;
+                link = &m245_chainPosTbl[i];
+                dx = m245_chainPosTbl[i + 1].x - link->x;
+                dz = m245_chainPosTbl[i + 1].y - link->y;
                 dist = dx * dx + dz * dz;
                 if (dist > 5625.0f) {
                     link->x = dx / divisor + link->x;
@@ -1298,22 +1298,22 @@ void func_80109670_merry_go_chomp(omObjData *obj) {
     chomp->unk_30 = obj->rot.y;
 }
 
-void func_80109A04_merry_go_chomp(omObjData *obj) {
+void m245_WanwanObjMain(omObjData *obj) {
     f32 angle = 0.0f;
-    MerryGoChompEntry *chomp = &D_8010C500_merry_go_chomp[10];
-    MerryGoChompEntry *entry = &D_8010C500_merry_go_chomp[D_8010DEC8_merry_go_chomp + 5];
+    MerryGoChompObjWork *chomp = &m245_objWorkTbl[10];
+    MerryGoChompObjWork *entry = &m245_objWorkTbl[m245_outPlayerNo + 5];
     omObjData *player = entry->obj;
-    D_8010C420_merry_go_chomp_Entry *move = &D_8010C420_merry_go_chomp[player->work[0]];
-    MerryGoChompEntry *fence = &D_8010C500_merry_go_chomp[15];
+    MerryGoChompPlayerWork *move = &m245_playerWorkTbl[player->work[0]];
+    MerryGoChompObjWork *fence = &m245_objWorkTbl[15];
     omObjData *fenceObj = fence->obj;
-    omObjData *star = D_8010C500_merry_go_chomp[30].obj;
+    omObjData *star = m245_objWorkTbl[30].obj;
     f32 dx;
     f32 dz;
     f32 limit;
     s8 frame;
     s8 pick;
 
-    switch (D_8010C4B0_merry_go_chomp) {
+    switch (m245_phase) {
         case 9:
             if (chomp->unk_08 != 0) {
                 chomp->unk_10 = 0;
@@ -1330,26 +1330,26 @@ void func_80109A04_merry_go_chomp(omObjData *obj) {
             }
             if (chomp->unk_04 == 0) {
                 chomp->unk_04 = 1;
-                pick = func_80105CE4_merry_go_chomp(8);
+                pick = m245_RandGet(8);
                 if (chomp->unk_0C != pick) {
                     chomp->unk_0C = pick;
                 } else {
                     chomp->unk_0C = (pick + 1) % 8;
                 }
-                chomp->unk_20 = D_8010C234_merry_go_chomp[chomp->unk_0C];
-                chomp->unk_24 = D_8010C244_merry_go_chomp[chomp->unk_0C];
+                chomp->unk_20 = m245_wanwanTargetXTbl[chomp->unk_0C];
+                chomp->unk_24 = m245_wanwanTargetZTbl[chomp->unk_0C];
             }
             chomp->unk_28 = atan2df(chomp->unk_20 - obj->trans.x, chomp->unk_24 - obj->trans.z);
-            chomp->unk_28 = func_801059BC_merry_go_chomp(chomp->unk_28, 0.0f);
-            func_80105F40_merry_go_chomp(obj, chomp->unk_28);
-            func_80107818_merry_go_chomp(obj, &chomp->unk_18, &chomp->unk_1C, 0.1f);
+            chomp->unk_28 = m245_AngleAdd(chomp->unk_28, 0.0f);
+            m245_RotYTurn(obj, chomp->unk_28);
+            m245_RotVelCalc(obj, &chomp->unk_18, &chomp->unk_1C, 0.1f);
             dx = chomp->unk_20 - obj->trans.x;
             dz = chomp->unk_24 - obj->trans.z;
             if (dx * dx + dz * dz < 900.0f) {
                 chomp->unk_04 = 0;
             }
-            if (func_80105CE4_merry_go_chomp(65) == 0) {
-                chomp->unk_0E = func_80105CE4_merry_go_chomp(15) + 15;
+            if (m245_RandGet(65) == 0) {
+                chomp->unk_0E = m245_RandGet(15) + 15;
                 chomp->unk_04 = 0;
                 chomp->unk_18 = 0.0f;
                 chomp->unk_1C = 0.0f;
@@ -1358,11 +1358,11 @@ void func_80109A04_merry_go_chomp(omObjData *obj) {
         case 4:
             switch (chomp->unk_10) {
                 case 0:
-                    func_80105E0C_merry_go_chomp(-450.0f, 0.0f, obj->trans.x, obj->trans.z, &chomp->unk_18,
+                    m245_ChaseVelCalc(-450.0f, 0.0f, obj->trans.x, obj->trans.z, &chomp->unk_18,
                                                  &chomp->unk_1C, &obj->rot.y, 13.0f);
                     if (chomp->unk_18 + chomp->unk_1C == 0.0f) {
-                        func_80105F40_merry_go_chomp(obj, 90.0f);
-                        if (D_8010C4B2_merry_go_chomp >= 110) {
+                        m245_RotYTurn(obj, 90.0f);
+                        if (m245_timer >= 110) {
                             chomp->unk_10 = 1;
                         }
                     }
@@ -1378,7 +1378,7 @@ void func_80109A04_merry_go_chomp(omObjData *obj) {
                         obj->trans.x += 10.0f;
                     }
                     if (chomp->unk_06 != 2) {
-                        func_80105DA0_merry_go_chomp(obj, 2, 0, 10, 2);
+                        m245_MotShiftSet(obj, 2, 0, 10, 2);
                         Hu3DMotionSpeedSet(obj->model[0], 2.0f);
                         chomp->unk_06 = 2;
                         chomp->unk_34 = 5.0f;
@@ -1416,7 +1416,7 @@ void func_80109A04_merry_go_chomp(omObjData *obj) {
             goto chomp_hit;
         case 6:
             if (chomp->unk_06 != 1) {
-                func_80105D38_merry_go_chomp(obj, 1, 2);
+                m245_MotSet(obj, 1, 2);
                 Hu3DMotionSpeedSet(obj->model[0], 1.0f);
                 chomp->unk_06 = 1;
             }
@@ -1435,7 +1435,7 @@ void func_80109A04_merry_go_chomp(omObjData *obj) {
                 obj->trans.x += 10.0f;
             }
             if (chomp->unk_06 != 2) {
-                func_80105DA0_merry_go_chomp(obj, 2, 0, 10, 2);
+                m245_MotShiftSet(obj, 2, 0, 10, 2);
                 Hu3DMotionSpeedSet(obj->model[0], 2.0f);
                 chomp->unk_06 = 2;
                 chomp->unk_34 = 5.0f;
@@ -1446,7 +1446,7 @@ void func_80109A04_merry_go_chomp(omObjData *obj) {
         chomp_hit:
             if (chomp->unk_08 == 0 && entry->unk_04 != 0) {
                 chomp->unk_10 = 3;
-                if (func_80105F40_merry_go_chomp(
+                if (m245_RotYTurn(
                         obj, atan2df(player->trans.x - obj->trans.x, player->trans.z - obj->trans.z))) {
                     obj->trans.x = sindf(obj->rot.y) * 100.0f + -450.0f;
                     obj->trans.z = cosdf(obj->rot.y) * 60.0f;
@@ -1489,7 +1489,7 @@ void func_80109A04_merry_go_chomp(omObjData *obj) {
                 move->unk_00.z = 0.0f;
                 player->trans.y = 110.0f;
                 player->trans.z += 50.0f;
-                func_80106B9C_merry_go_chomp(player, 3);
+                m245_PlayerMotChange(player, 3);
                 Hu3DMotionSpeedSet(obj->model[0], 0.0f);
                 HuAudFXPlay(0x476);
                 if (!(GwPlayer[player->work[0]].stat & 1)) {
@@ -1504,7 +1504,7 @@ void func_80109A04_merry_go_chomp(omObjData *obj) {
                     Hu3DModelAttrSet(star->model[0], 4, 4);
                 }
             }
-            func_80105E0C_merry_go_chomp(chomp->unk_20, chomp->unk_24, obj->trans.x, obj->trans.z, &chomp->unk_18,
+            m245_ChaseVelCalc(chomp->unk_20, chomp->unk_24, obj->trans.x, obj->trans.z, &chomp->unk_18,
                                          &chomp->unk_1C, &obj->rot.y, chomp->unk_2C);
             if (chomp->unk_18 + chomp->unk_1C == 0.0f) {
                 chomp->unk_0A = 0;
@@ -1514,14 +1514,14 @@ void func_80109A04_merry_go_chomp(omObjData *obj) {
             break;
         case 2:
             if (chomp->unk_06 != 0) {
-                func_80105D38_merry_go_chomp(obj, 0, 2);
+                m245_MotSet(obj, 0, 2);
                 chomp->unk_06 = 0;
             }
-            func_80105E0C_merry_go_chomp(-500.0f, 0.0f, obj->trans.x, obj->trans.z, &chomp->unk_18, &chomp->unk_1C,
+            m245_ChaseVelCalc(-500.0f, 0.0f, obj->trans.x, obj->trans.z, &chomp->unk_18, &chomp->unk_1C,
                                          &angle, chomp->unk_2C);
-            func_80105E0C_merry_go_chomp(-420.0f, 0.0f, player->trans.x, player->trans.z, &move->unk_00.x,
+            m245_ChaseVelCalc(-420.0f, 0.0f, player->trans.x, player->trans.z, &move->unk_00.x,
                                          &move->unk_00.y, &angle, chomp->unk_2C);
-            func_801077D0_merry_go_chomp(player);
+            m245_PlayerVelApply(player);
             Hu3DModelPosSet(player->model[1], player->trans.x, 5.0f, player->trans.z);
             if (chomp->unk_18 + chomp->unk_1C == 0.0f) {
                 chomp->unk_08++;
@@ -1536,19 +1536,19 @@ void func_80109A04_merry_go_chomp(omObjData *obj) {
                 fence->unk_44.y += 40.0f;
             }
             player->rot.z = 270.0f;
-            func_80105E0C_merry_go_chomp(-400.0f, -280.0f, player->trans.x, player->trans.z, &move->unk_00.x,
+            m245_ChaseVelCalc(-400.0f, -280.0f, player->trans.x, player->trans.z, &move->unk_00.x,
                                          &move->unk_00.y, &angle, chomp->unk_2C);
-            func_801077D0_merry_go_chomp(player);
+            m245_PlayerVelApply(player);
             Hu3DModelPosSet(player->model[1], player->trans.x, 5.0f, player->trans.z);
-            func_80105E0C_merry_go_chomp(-500.0f, -200.0f, obj->trans.x, obj->trans.z, &chomp->unk_18,
+            m245_ChaseVelCalc(-500.0f, -200.0f, obj->trans.x, obj->trans.z, &chomp->unk_18,
                                          &chomp->unk_1C, &obj->rot.y, chomp->unk_2C);
             if (chomp->unk_18 + chomp->unk_1C == 0.0f) {
                 chomp->unk_08++;
                 player->rot.z = 0.0f;
                 player->trans.y = 65.0f;
                 player->trans.x = obj->trans.x;
-                move->unk_00.x = (D_8010C21C_merry_go_chomp[D_8010C4CE_merry_go_chomp] - player->trans.x) / 16.0f;
-                move->unk_00.y = (D_8010C228_merry_go_chomp[D_8010C4CE_merry_go_chomp] - player->trans.z) / 16.0f;
+                move->unk_00.x = (m245_outPosXTbl[m245_roundNo] - player->trans.x) / 16.0f;
+                move->unk_00.y = (m245_outPosZTbl[m245_roundNo] - player->trans.z) / 16.0f;
                 move->unk_00.z = atan2df(move->unk_00.x, move->unk_00.y);
             }
             goto fence_pos;
@@ -1557,10 +1557,10 @@ void func_80109A04_merry_go_chomp(omObjData *obj) {
                 if (chomp->unk_0A == 0) {
                     PlayerFXPlay(0x3A, player->work[0]);
                 }
-                player->trans.y += D_8010C160_merry_go_chomp[chomp->unk_0A];
-                func_801077D0_merry_go_chomp(player);
+                player->trans.y += m245_jumpYTbl[chomp->unk_0A];
+                m245_PlayerVelApply(player);
                 player->rot.y = 0.0f;
-                func_80105D38_merry_go_chomp(player, 4, 2);
+                m245_MotSet(player, 4, 2);
                 entry->unk_06 = 0;
                 Hu3DMotionSpeedSet(player->model[0], 0.0f);
                 Hu3DModelPosSet(player->model[1], player->trans.x, 5.0f, player->trans.z);
@@ -1570,7 +1570,7 @@ void func_80109A04_merry_go_chomp(omObjData *obj) {
                 entry->unk_04 = 2;
             }
             if (++chomp->unk_0A >= 11) {
-                func_80105E0C_merry_go_chomp(-500.0f, 100.0f, obj->trans.x, obj->trans.z, &chomp->unk_18,
+                m245_ChaseVelCalc(-500.0f, 100.0f, obj->trans.x, obj->trans.z, &chomp->unk_18,
                                              &chomp->unk_1C, &obj->rot.y, chomp->unk_2C);
             }
             if (chomp->unk_0A == 20) {
@@ -1588,7 +1588,7 @@ void func_80109A04_merry_go_chomp(omObjData *obj) {
             Hu3DModelPosSet(fenceObj->model[1], fenceObj->trans.x, fence->unk_44.y, fence->unk_44.z);
             break;
     }
-    func_80109670_merry_go_chomp(obj);
+    m245_WanwanChainUpdate(obj);
     if (chomp->unk_08 == 1 || chomp->unk_08 == 2) {
         limit = obj->trans.x + 80.0f;
         if (player->trans.x < limit) {
@@ -1600,8 +1600,8 @@ void func_80109A04_merry_go_chomp(omObjData *obj) {
     }
 }
 
-void func_8010A9D0_merry_go_chomp(omObjData *obj) {
-    MerryGoChompEntry *chomp = &D_8010C500_merry_go_chomp[10];
+void m245_WanwanObjInit(omObjData *obj) {
+    MerryGoChompObjWork *chomp = &m245_objWorkTbl[10];
     void *anim = DataRead(0xA00E5);
     s32 chain;
     s32 shadow;
@@ -1629,7 +1629,7 @@ void func_8010A9D0_merry_go_chomp(omObjData *obj) {
     for (i = 7; i < 12; i++) {
         obj->model[i] = Hu3DModelLink(shadow);
     }
-    func_80105D38_merry_go_chomp(obj, 0, 2);
+    m245_MotSet(obj, 0, 2);
     chomp->unk_06 = 0;
     omSetTra(obj, -500.0f, 0.0f, 60.0f);
     omSetRot(obj, 0.0f, 60.0f, 0.0f);
@@ -1638,265 +1638,265 @@ void func_8010A9D0_merry_go_chomp(omObjData *obj) {
         Hu3DModelCameraSet(obj->model[i], 2);
     }
     for (i = 1; i < 6; i++) {
-        D_8010C4D0_merry_go_chomp[i].x = (5 - i) * 45 + D_8010C214_merry_go_chomp.x + 20.0f;
-        D_8010C4D0_merry_go_chomp[i].y = (5 - i) * 10 + D_8010C214_merry_go_chomp.y;
-        Hu3DModelPosSet(obj->model[i], D_8010C4D0_merry_go_chomp[i].x, 30.0f, D_8010C4D0_merry_go_chomp[i].y);
-        Hu3DModelPosSet(obj->model[i + 6], D_8010C4D0_merry_go_chomp[i].x, 5.0f, D_8010C4D0_merry_go_chomp[i].y);
+        m245_chainPosTbl[i].x = (5 - i) * 45 + m245_chainAnchor.x + 20.0f;
+        m245_chainPosTbl[i].y = (5 - i) * 10 + m245_chainAnchor.y;
+        Hu3DModelPosSet(obj->model[i], m245_chainPosTbl[i].x, 30.0f, m245_chainPosTbl[i].y);
+        Hu3DModelPosSet(obj->model[i + 6], m245_chainPosTbl[i].x, 5.0f, m245_chainPosTbl[i].y);
         Hu3DModelScaleSet(obj->model[i + 6], 0.8f, 1.0f, 0.8f);
     }
     Hu3DModelAttrSet(obj->model[5], 4, 4);
     Hu3DModelAttrSet(obj->model[11], 4, 4);
-    obj->func = func_80109A04_merry_go_chomp;
+    obj->func = m245_WanwanObjMain;
 }
 
-const char D_8010C3C4_merry_go_chomp[] = "";
+const char m245_emptyStr[] = "";
 
-void func_8010ADE8_merry_go_chomp(void) {
-    D_8010CA28_merry_go_chomp = omAddObj(0x384, 0xF, 4, -1, func_8010A9D0_merry_go_chomp);
+void m245_WanwanObjCreate(void) {
+    m245_wanwanObj = omAddObj(0x384, 0xF, 4, -1, m245_WanwanObjInit);
 }
 
-void func_8010AE24_merry_go_chomp(omObjData *obj) {
+void m245_BiteEffObjMain(omObjData *obj) {
 }
 
-void func_8010AE2C_merry_go_chomp(omObjData *obj) {
+void m245_BiteEffObjInit(omObjData *obj) {
     obj->model[0] = Hu3DModelRead(0x4E0003, 0x2B9);
     Hu3DModelAttrSet(obj->model[0], 4, 4);
     Hu3DMotionSpeedSet(obj->model[0], 0.0f);
     obj->scale.x = obj->scale.y = obj->scale.z = 2.5f;
     obj->rot.y = 270.0f;
     Hu3DModelCameraSet(obj->model[0], 2);
-    obj->func = func_8010AE24_merry_go_chomp;
+    obj->func = m245_BiteEffObjMain;
 }
 
-void func_8010AECC_merry_go_chomp(void) {
-    D_8010D478_merry_go_chomp = omAddObj(0x3E8, 1, 1, -1, func_8010AE2C_merry_go_chomp);
+void m245_BiteEffObjCreate(void) {
+    m245_biteEffObj = omAddObj(0x3E8, 1, 1, -1, m245_BiteEffObjInit);
 }
 
-void func_8010AF08_merry_go_chomp(void) {
-    omObjData *obj = D_8010D1E4_merry_go_chomp;
+void m245_RoundUpdate(void) {
+    omObjData *obj = m245_carouselObj;
     s8 result;
 
-    switch (D_8010C4B0_merry_go_chomp) {
+    switch (m245_phase) {
         case 0:
             GMesCreate(0x1A, 10, 0xA0, 0x1C);
-            D_8010C4B2_merry_go_chomp = 151;
-            if (D_8010C418_merry_go_chomp == D_8010C4CE_merry_go_chomp) {
-                D_8010C4C4_merry_go_chomp = HuAudFXPlay(0x471);
-                D_8010C410_merry_go_chomp = -1;
-                D_8010C418_merry_go_chomp++;
+            m245_timer = 151;
+            if (m245_carouselSeRound == m245_roundNo) {
+                m245_carouselSeNo = HuAudFXPlay(0x471);
+                m245_spinSeNo = -1;
+                m245_carouselSeRound++;
             }
-            D_8010DED4_merry_go_chomp = 3.0f;
-            D_8010C4B0_merry_go_chomp = 1;
+            m245_carouselSpeed = 3.0f;
+            m245_phase = 1;
             break;
         case 1:
-            if (D_8010C4B2_merry_go_chomp > 0) {
-                D_8010C4B2_merry_go_chomp--;
-                GMesTimerValueSet((D_8010C4B2_merry_go_chomp + 29) / 30);
+            if (m245_timer > 0) {
+                m245_timer--;
+                GMesTimerValueSet((m245_timer + 29) / 30);
             } else {
                 GMesTimerEnd();
             }
-            if (D_8010DEDC_merry_go_chomp != 0) {
-                D_8010DEDC_merry_go_chomp = 0;
+            if (m245_doneBits != 0) {
+                m245_doneBits = 0;
                 GMesTimerEnd();
-                D_8010C4B2_merry_go_chomp = 0;
-                D_8010C4B0_merry_go_chomp = 2;
+                m245_timer = 0;
+                m245_phase = 2;
             }
             break;
         case 2:
-            if (D_8010C4B2_merry_go_chomp < 15) {
-                D_8010C4B2_merry_go_chomp++;
-            } else if (++D_8010DEDD_merry_go_chomp == 4 - D_8010C4CE_merry_go_chomp) {
-                D_8010C4B0_merry_go_chomp = 3;
-                D_8010C4B2_merry_go_chomp = 0;
-                switch (D_8010C4CE_merry_go_chomp) {
+            if (m245_timer < 15) {
+                m245_timer++;
+            } else if (++m245_jumpTurnNo == 4 - m245_roundNo) {
+                m245_phase = 3;
+                m245_timer = 0;
+                switch (m245_roundNo) {
                     case 0:
-                        D_8010DED8_merry_go_chomp = func_80105CE4_merry_go_chomp(5);
-                        D_8010C4B4_merry_go_chomp[0] =
-                            func_801059BC_merry_go_chomp(270.0f, -D_8010DED8_merry_go_chomp * 72);
+                        m245_stopSeatNo = m245_RandGet(5);
+                        m245_stopAngleTbl[0] =
+                            m245_AngleAdd(270.0f, -m245_stopSeatNo * 72);
                         break;
                     case 1:
-                        D_8010DED8_merry_go_chomp = func_80105CE4_merry_go_chomp(4);
-                        D_8010C4B4_merry_go_chomp[0] =
-                            func_801059BC_merry_go_chomp(270.0f, -D_8010DED8_merry_go_chomp * 90);
+                        m245_stopSeatNo = m245_RandGet(4);
+                        m245_stopAngleTbl[0] =
+                            m245_AngleAdd(270.0f, -m245_stopSeatNo * 90);
                         break;
                     case 2:
-                        D_8010DED8_merry_go_chomp = func_80105CE4_merry_go_chomp(3);
-                        D_8010C4B4_merry_go_chomp[0] =
-                            func_801059BC_merry_go_chomp(270.0f, -D_8010DED8_merry_go_chomp * 120);
+                        m245_stopSeatNo = m245_RandGet(3);
+                        m245_stopAngleTbl[0] =
+                            m245_AngleAdd(270.0f, -m245_stopSeatNo * 120);
                         break;
                 }
-                D_8010C4B4_merry_go_chomp[0] = func_801059BC_merry_go_chomp(D_8010C4B4_merry_go_chomp[0], -3.0f);
-                D_8010C4B4_merry_go_chomp[1] = func_801059BC_merry_go_chomp(D_8010C4B4_merry_go_chomp[0], 6.0f);
-                D_8010C410_merry_go_chomp = HuAudFXPlay(0x472);
+                m245_stopAngleTbl[0] = m245_AngleAdd(m245_stopAngleTbl[0], -3.0f);
+                m245_stopAngleTbl[1] = m245_AngleAdd(m245_stopAngleTbl[0], 6.0f);
+                m245_spinSeNo = HuAudFXPlay(0x472);
             } else {
-                D_8010C4B0_merry_go_chomp = 0;
+                m245_phase = 0;
             }
             break;
         case 3:
-            D_8010DEDA_merry_go_chomp = D_8010DED4_merry_go_chomp * 40.0f;
-            if (D_8010DEDA_merry_go_chomp > 1200) {
-                D_8010DEDA_merry_go_chomp = 1200;
+            m245_spinSePitch = m245_carouselSpeed * 40.0f;
+            if (m245_spinSePitch > 1200) {
+                m245_spinSePitch = 1200;
             }
-            HuAudFXPitchSet(D_8010C4C4_merry_go_chomp, D_8010DEDA_merry_go_chomp);
-            if (D_8010C410_merry_go_chomp > 0) {
-                D_8010C4CC_merry_go_chomp = D_8010DED4_merry_go_chomp * 26.0f;
-                HuAudFXPitchSet(D_8010C410_merry_go_chomp, D_8010DEDA_merry_go_chomp);
+            HuAudFXPitchSet(m245_carouselSeNo, m245_spinSePitch);
+            if (m245_spinSeNo > 0) {
+                m245_spinSeSpeed = m245_carouselSpeed * 26.0f;
+                HuAudFXPitchSet(m245_spinSeNo, m245_spinSePitch);
             }
-            if (D_8010C4B2_merry_go_chomp < 54) {
-                D_8010C4B2_merry_go_chomp++;
-                D_8010DED4_merry_go_chomp += 0.5;
-                if (D_8010C4B2_merry_go_chomp == 53) {
+            if (m245_timer < 54) {
+                m245_timer++;
+                m245_carouselSpeed += 0.5;
+                if (m245_timer == 53) {
                     obj->rot.y -= 0.5;
                 }
             } else {
-                D_8010C4B2_merry_go_chomp = 0;
-                D_8010DED4_merry_go_chomp = 30.0f;
-                D_8010C4B0_merry_go_chomp = 4;
+                m245_timer = 0;
+                m245_carouselSpeed = 30.0f;
+                m245_phase = 4;
             }
             break;
         case 4:
-            D_8010DEDA_merry_go_chomp = D_8010DED4_merry_go_chomp * 40.0f;
-            if (D_8010DEDA_merry_go_chomp > 1200) {
-                D_8010DEDA_merry_go_chomp = 1200;
+            m245_spinSePitch = m245_carouselSpeed * 40.0f;
+            if (m245_spinSePitch > 1200) {
+                m245_spinSePitch = 1200;
             }
-            HuAudFXPitchSet(D_8010C4C4_merry_go_chomp, D_8010DEDA_merry_go_chomp);
-            HuAudFXPitchSet(D_8010C410_merry_go_chomp, D_8010DEDA_merry_go_chomp);
-            D_8010C4B2_merry_go_chomp++;
-            if (D_8010DED4_merry_go_chomp > 3.0f) {
-                D_8010DED4_merry_go_chomp -= 0.2f;
+            HuAudFXPitchSet(m245_carouselSeNo, m245_spinSePitch);
+            HuAudFXPitchSet(m245_spinSeNo, m245_spinSePitch);
+            m245_timer++;
+            if (m245_carouselSpeed > 3.0f) {
+                m245_carouselSpeed -= 0.2f;
             } else {
-                D_8010DED4_merry_go_chomp = 3.0f;
-                if ((obj->rot.y >= D_8010C4B4_merry_go_chomp[0] && obj->rot.y <= D_8010C4B4_merry_go_chomp[1]) ||
-                    (obj->rot.y >= D_8010C4B4_merry_go_chomp[0] && obj->rot.y > 355.0f &&
-                     D_8010C4B4_merry_go_chomp[1] < 5.0f) ||
-                    (obj->rot.y < 5.0f && obj->rot.y <= D_8010C4B4_merry_go_chomp[1] &&
-                     D_8010C4B4_merry_go_chomp[0] > 355.0f)) {
-                    D_8010DED4_merry_go_chomp = 0.0f;
-                    D_8010C4B2_merry_go_chomp = 0;
-                    HuAudFXStop(D_8010C4C4_merry_go_chomp);
-                    HuAudFXStop(D_8010C410_merry_go_chomp);
+                m245_carouselSpeed = 3.0f;
+                if ((obj->rot.y >= m245_stopAngleTbl[0] && obj->rot.y <= m245_stopAngleTbl[1]) ||
+                    (obj->rot.y >= m245_stopAngleTbl[0] && obj->rot.y > 355.0f &&
+                     m245_stopAngleTbl[1] < 5.0f) ||
+                    (obj->rot.y < 5.0f && obj->rot.y <= m245_stopAngleTbl[1] &&
+                     m245_stopAngleTbl[0] > 355.0f)) {
+                    m245_carouselSpeed = 0.0f;
+                    m245_timer = 0;
+                    HuAudFXStop(m245_carouselSeNo);
+                    HuAudFXStop(m245_spinSeNo);
                     HuAudFXPlay(0x477);
-                    result = func_80107980_merry_go_chomp();
+                    result = m245_OutPlayerGet();
                     if (result == -1) {
-                        D_8010C4B2_merry_go_chomp = 0;
-                        D_8010C4B0_merry_go_chomp = 6;
+                        m245_timer = 0;
+                        m245_phase = 6;
                     } else {
-                        D_8010DEC8_merry_go_chomp = result;
-                        D_8010C4B0_merry_go_chomp = 5;
+                        m245_outPlayerNo = result;
+                        m245_phase = 5;
                     }
                 }
             }
             break;
         case 6:
-            if (++D_8010C4B2_merry_go_chomp > 60) {
-                switch (D_8010C4CE_merry_go_chomp) {
+            if (++m245_timer > 60) {
+                switch (m245_roundNo) {
                     case 0:
-                        D_8010DED8_merry_go_chomp = func_80105CE4_merry_go_chomp(4) + 1;
-                        D_8010C4B4_merry_go_chomp[0] =
-                            func_801059BC_merry_go_chomp(obj->rot.y, -D_8010DED8_merry_go_chomp * 72);
+                        m245_stopSeatNo = m245_RandGet(4) + 1;
+                        m245_stopAngleTbl[0] =
+                            m245_AngleAdd(obj->rot.y, -m245_stopSeatNo * 72);
                         break;
                     case 1:
-                        D_8010DED8_merry_go_chomp = func_80105CE4_merry_go_chomp(3) + 1;
-                        D_8010C4B4_merry_go_chomp[0] =
-                            func_801059BC_merry_go_chomp(obj->rot.y, -D_8010DED8_merry_go_chomp * 90);
+                        m245_stopSeatNo = m245_RandGet(3) + 1;
+                        m245_stopAngleTbl[0] =
+                            m245_AngleAdd(obj->rot.y, -m245_stopSeatNo * 90);
                         break;
                     case 2:
-                        D_8010DED8_merry_go_chomp = func_80105CE4_merry_go_chomp(2) + 1;
-                        D_8010C4B4_merry_go_chomp[0] =
-                            func_801059BC_merry_go_chomp(obj->rot.y, -D_8010DED8_merry_go_chomp * 120);
+                        m245_stopSeatNo = m245_RandGet(2) + 1;
+                        m245_stopAngleTbl[0] =
+                            m245_AngleAdd(obj->rot.y, -m245_stopSeatNo * 120);
                         break;
                 }
-                D_8010C4B4_merry_go_chomp[0] = func_801059BC_merry_go_chomp(D_8010C4B4_merry_go_chomp[0], -3.0f);
-                D_8010C4B4_merry_go_chomp[1] = func_801059BC_merry_go_chomp(D_8010C4B4_merry_go_chomp[0], 6.0f);
-                D_8010C4B0_merry_go_chomp = 7;
-                D_8010DED4_merry_go_chomp = 3.0f;
-                D_8010C4B2_merry_go_chomp = 0;
-                D_8010C4C4_merry_go_chomp = HuAudFXPlay(0x471);
-                D_8010C410_merry_go_chomp = HuAudFXPlay(0x472);
+                m245_stopAngleTbl[0] = m245_AngleAdd(m245_stopAngleTbl[0], -3.0f);
+                m245_stopAngleTbl[1] = m245_AngleAdd(m245_stopAngleTbl[0], 6.0f);
+                m245_phase = 7;
+                m245_carouselSpeed = 3.0f;
+                m245_timer = 0;
+                m245_carouselSeNo = HuAudFXPlay(0x471);
+                m245_spinSeNo = HuAudFXPlay(0x472);
             }
             break;
         case 7:
-            D_8010DEDA_merry_go_chomp = D_8010DED4_merry_go_chomp * 40.0f;
-            if (D_8010DEDA_merry_go_chomp > 1200) {
-                D_8010DEDA_merry_go_chomp = 1200;
+            m245_spinSePitch = m245_carouselSpeed * 40.0f;
+            if (m245_spinSePitch > 1200) {
+                m245_spinSePitch = 1200;
             }
-            HuAudFXPitchSet(D_8010C4C4_merry_go_chomp, D_8010DEDA_merry_go_chomp);
-            if (D_8010C410_merry_go_chomp > 0) {
-                D_8010C4CC_merry_go_chomp = D_8010DED4_merry_go_chomp * 26.0f;
-                HuAudFXPitchSet(D_8010C410_merry_go_chomp, D_8010DEDA_merry_go_chomp);
+            HuAudFXPitchSet(m245_carouselSeNo, m245_spinSePitch);
+            if (m245_spinSeNo > 0) {
+                m245_spinSeSpeed = m245_carouselSpeed * 26.0f;
+                HuAudFXPitchSet(m245_spinSeNo, m245_spinSePitch);
             }
-            if (D_8010C4B2_merry_go_chomp < 54) {
-                D_8010C4B2_merry_go_chomp++;
-                D_8010DED4_merry_go_chomp += 0.5;
-                if (D_8010C4B2_merry_go_chomp == 53) {
+            if (m245_timer < 54) {
+                m245_timer++;
+                m245_carouselSpeed += 0.5;
+                if (m245_timer == 53) {
                     obj->rot.y -= 0.5;
                 }
             } else {
-                D_8010C4B2_merry_go_chomp = 0;
-                D_8010DED4_merry_go_chomp = 30.0f;
-                D_8010C4B0_merry_go_chomp = 4;
+                m245_timer = 0;
+                m245_carouselSpeed = 30.0f;
+                m245_phase = 4;
             }
             break;
         case 8:
-            D_8010DEDA_merry_go_chomp = D_8010DED4_merry_go_chomp * 40.0f;
-            if (D_8010DEDA_merry_go_chomp > 1200) {
-                D_8010DEDA_merry_go_chomp = 1200;
+            m245_spinSePitch = m245_carouselSpeed * 40.0f;
+            if (m245_spinSePitch > 1200) {
+                m245_spinSePitch = 1200;
             }
-            HuAudFXPitchSet(D_8010C4C4_merry_go_chomp, D_8010DEDA_merry_go_chomp);
-            HuAudFXPitchSet(D_8010C410_merry_go_chomp, D_8010DEDA_merry_go_chomp);
-            D_8010C4B2_merry_go_chomp++;
-            if (D_8010DED4_merry_go_chomp > 3.0f) {
-                D_8010DED4_merry_go_chomp -= 0.2f;
+            HuAudFXPitchSet(m245_carouselSeNo, m245_spinSePitch);
+            HuAudFXPitchSet(m245_spinSeNo, m245_spinSePitch);
+            m245_timer++;
+            if (m245_carouselSpeed > 3.0f) {
+                m245_carouselSpeed -= 0.2f;
             } else {
-                D_8010DED4_merry_go_chomp = 3.0f;
-                if ((obj->rot.y >= D_8010C4B4_merry_go_chomp[0] && obj->rot.y <= D_8010C4B4_merry_go_chomp[1]) ||
-                    (obj->rot.y >= D_8010C4B4_merry_go_chomp[0] && obj->rot.y > 355.0f &&
-                     D_8010C4B4_merry_go_chomp[1] < 5.0f) ||
-                    (obj->rot.y < 5.0f && obj->rot.y <= D_8010C4B4_merry_go_chomp[1] &&
-                     D_8010C4B4_merry_go_chomp[0] > 355.0f)) {
-                    D_8010DED4_merry_go_chomp = 0.0f;
-                    D_8010C4B2_merry_go_chomp = 0;
-                    HuAudFXStop(D_8010C4C4_merry_go_chomp);
-                    HuAudFXStop(D_8010C410_merry_go_chomp);
+                m245_carouselSpeed = 3.0f;
+                if ((obj->rot.y >= m245_stopAngleTbl[0] && obj->rot.y <= m245_stopAngleTbl[1]) ||
+                    (obj->rot.y >= m245_stopAngleTbl[0] && obj->rot.y > 355.0f &&
+                     m245_stopAngleTbl[1] < 5.0f) ||
+                    (obj->rot.y < 5.0f && obj->rot.y <= m245_stopAngleTbl[1] &&
+                     m245_stopAngleTbl[0] > 355.0f)) {
+                    m245_carouselSpeed = 0.0f;
+                    m245_timer = 0;
+                    HuAudFXStop(m245_carouselSeNo);
+                    HuAudFXStop(m245_spinSeNo);
                     HuAudFXPlay(0x477);
-                    result = func_80107980_merry_go_chomp();
+                    result = m245_OutPlayerGet();
                     if (result == -1) {
-                        D_8010C4B2_merry_go_chomp = 0;
-                        D_8010C4B0_merry_go_chomp = 6;
+                        m245_timer = 0;
+                        m245_phase = 6;
                     } else {
-                        D_8010DEC8_merry_go_chomp = result;
-                        D_8010C4B0_merry_go_chomp = 5;
+                        m245_outPlayerNo = result;
+                        m245_phase = 5;
                     }
                 }
             }
             break;
         case 5:
-            if (D_8010C4B2_merry_go_chomp < 80) {
-                D_8010C4B2_merry_go_chomp++;
+            if (m245_timer < 80) {
+                m245_timer++;
             } else {
-                D_8010C4B2_merry_go_chomp = 0;
-                if (D_8010C4CE_merry_go_chomp == 2) {
-                    D_8010C4B0_merry_go_chomp = 10;
+                m245_timer = 0;
+                if (m245_roundNo == 2) {
+                    m245_phase = 10;
                 } else {
-                    D_8010C4B0_merry_go_chomp = 9;
+                    m245_phase = 9;
                 }
             }
             break;
         case 9:
-            if (D_8010C4B2_merry_go_chomp < 50) {
-                D_8010C4B2_merry_go_chomp++;
+            if (m245_timer < 50) {
+                m245_timer++;
             }
-            if ((D_8010C4CE_merry_go_chomp == 0 && D_8010DEDC_merry_go_chomp == 15) ||
-                (D_8010C4CE_merry_go_chomp == 1 && D_8010DEDC_merry_go_chomp == 11)) {
-                D_8010DEDC_merry_go_chomp = 0;
-                D_8010C4B2_merry_go_chomp = 0;
-                D_8010DEDD_merry_go_chomp = 0;
-                D_8010C4BE_merry_go_chomp[0] = 1;
-                D_8010C4BE_merry_go_chomp[1] = 1;
-                D_8010C4BE_merry_go_chomp[2] = 1;
-                D_8010C4BE_merry_go_chomp[3] = 1;
-                D_8010C4CE_merry_go_chomp++;
-                D_8010C4B0_merry_go_chomp = 0;
+            if ((m245_roundNo == 0 && m245_doneBits == 15) ||
+                (m245_roundNo == 1 && m245_doneBits == 11)) {
+                m245_doneBits = 0;
+                m245_timer = 0;
+                m245_jumpTurnNo = 0;
+                m245_seatFreeTbl[0] = 1;
+                m245_seatFreeTbl[1] = 1;
+                m245_seatFreeTbl[2] = 1;
+                m245_seatFreeTbl[3] = 1;
+                m245_roundNo++;
+                m245_phase = 0;
             }
             break;
         case 10:
@@ -1904,11 +1904,11 @@ void func_8010AF08_merry_go_chomp(void) {
     }
 }
 
-void func_8010BAB8_merry_go_chomp(void) {
+void m245_CameraViewInit(void) {
     u32 i;
 
-    if (D_8010C254_merry_go_chomp == 0) {
-        D_8010C254_merry_go_chomp = 1;
+    if (m245_cameraSetF == 0) {
+        m245_cameraSetF = 1;
         for (i = 0; i < 2; i++) {
             CZoomM[i] = 2023.0191f;
             CRotM[i].x = 330.45712f;
@@ -1921,96 +1921,96 @@ void func_8010BAB8_merry_go_chomp(void) {
     }
 }
 
-void func_8010BB7C_merry_go_chomp(omObjData *obj) {
+void m245_ExitObjMain(omObjData *obj) {
     osViBlack(FALSE);
     omOvlReturnEx(1);
 }
 
-void func_8010BBA0_merry_go_chomp(omObjData *obj) {
+void m245_ExitWaitObjMain(omObjData *obj) {
     if (WipeStatGet() == 0) {
-        obj->func = func_8010BB7C_merry_go_chomp;
+        obj->func = m245_ExitObjMain;
     }
 }
 
-void func_8010BBD8_merry_go_chomp(omObjData *obj) {
+void m245_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq == 1) {
         WipeCreateOut(0, 20);
-        obj->func = func_8010BBA0_merry_go_chomp;
+        obj->func = m245_ExitWaitObjMain;
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
     }
 }
 
-void func_8010BC30_merry_go_chomp(omObjData *obj) {
-    switch (D_8010C4BC_merry_go_chomp) {
+void m245_MainObjMain(omObjData *obj) {
+    switch (m245_seqNo) {
         case 0:
             GMesCreate(7);
-            D_8010C4BC_merry_go_chomp = 1;
-            D_8010DECA_merry_go_chomp = 0;
+            m245_seqNo = 1;
+            m245_musicTimer = 0;
             break;
         case 1:
             if (GMesStatGet() == 0) {
-                D_8010C4BC_merry_go_chomp = 2;
-                D_8010C4B0_merry_go_chomp = 0;
+                m245_seqNo = 2;
+                m245_phase = 0;
             }
-            if (++D_8010DECA_merry_go_chomp == 4) {
+            if (++m245_musicTimer == 4) {
                 HuAudSeqPlay(0x34);
             }
             break;
         case 2:
-            if (D_8010C4B0_merry_go_chomp == 9) {
-                func_801084C8_merry_go_chomp();
+            if (m245_phase == 9) {
+                m245_PlayerPushUpdate();
             }
-            func_8010AF08_merry_go_chomp();
-            if (D_8010C4B0_merry_go_chomp == 10) {
+            m245_RoundUpdate();
+            if (m245_phase == 10) {
                 GMesCreate(0x12);
-                func_80109604_merry_go_chomp();
+                m245_ResultSet();
                 HuAudSeqFadeOut(120);
-                D_8010C4B2_merry_go_chomp = 0;
-                D_8010C4BC_merry_go_chomp = 3;
+                m245_timer = 0;
+                m245_seqNo = 3;
             }
             break;
         case 3:
             if (GMesStatGet() == 0) {
-                if (++D_8010C4B2_merry_go_chomp == 15) {
+                if (++m245_timer == 15) {
                     HuAudSeqPlay(0x65);
-                    func_80106B9C_merry_go_chomp(D_8010C4C8_merry_go_chomp, 9);
+                    m245_PlayerMotChange(m245_winnerObj, 9);
                 }
-                if (D_8010C4B2_merry_go_chomp == 113) {
+                if (m245_timer == 113) {
                     WipeCreateOut(0, 20);
-                    obj->func = func_8010BBA0_merry_go_chomp;
+                    obj->func = m245_ExitWaitObjMain;
                 }
             }
             break;
     }
 }
 
-void func_8010BDE8_merry_go_chomp(omObjData *obj) {
-    D_8010C4BC_merry_go_chomp = 0;
-    D_8010C4B0_merry_go_chomp = 20;
-    D_8010DEDC_merry_go_chomp = 0;
-    D_8010C4B2_merry_go_chomp = 0;
-    D_8010C4CE_merry_go_chomp = 0;
-    D_8010DED4_merry_go_chomp = 0;
-    D_8010C4C4_merry_go_chomp = D_8010C410_merry_go_chomp = -1;
-    D_8010DED8_merry_go_chomp = 0;
-    D_8010DEC8_merry_go_chomp = 0;
-    D_8010C418_merry_go_chomp = 0;
-    func_8010BAB8_merry_go_chomp();
-    func_801064A0_merry_go_chomp();
-    func_80109420_merry_go_chomp();
-    func_8010ADE8_merry_go_chomp();
-    func_80106AB8_merry_go_chomp();
-    func_8010662C_merry_go_chomp();
-    func_8010AECC_merry_go_chomp();
+void m245_MainObjInit(omObjData *obj) {
+    m245_seqNo = 0;
+    m245_phase = 20;
+    m245_doneBits = 0;
+    m245_timer = 0;
+    m245_roundNo = 0;
+    m245_carouselSpeed = 0;
+    m245_carouselSeNo = m245_spinSeNo = -1;
+    m245_stopSeatNo = 0;
+    m245_outPlayerNo = 0;
+    m245_carouselSeRound = 0;
+    m245_CameraViewInit();
+    m245_BackObjCreate();
+    m245_PlayerObjCreateAll();
+    m245_WanwanObjCreate();
+    m245_CarouselObjCreate();
+    m245_StageObjCreate();
+    m245_BiteEffObjCreate();
     WipeCreateIn(0xFF, 16);
-    obj->func = func_8010BC30_merry_go_chomp;
+    obj->func = m245_MainObjMain;
 }
 
-void func_8010BEB4_merry_go_chomp(void) {
+void m245_Dummy(void) {
 }
 
-void func_8010BEBC_merry_go_chomp(void) {
+void m245_CameraInit(void) {
     omObjData *obj;
     s32 i;
 
@@ -2020,21 +2020,21 @@ void func_8010BEBC_merry_go_chomp(void) {
     CamSetupInit(2);
     CamSetupMapCullAddMulti(2);
     for (i = 0; i < 2; i++) {
-        ScissorSet(i, D_8010C258_merry_go_chomp[i].scissorX, D_8010C258_merry_go_chomp[i].scissorY,
-                   D_8010C258_merry_go_chomp[i].scissorWidth, D_8010C258_merry_go_chomp[i].scissorHeight);
-        ViewportSet(i, D_8010C258_merry_go_chomp[i].viewportScale.x, D_8010C258_merry_go_chomp[i].viewportScale.y,
-                    D_8010C258_merry_go_chomp[i].viewportScale.z, D_8010C258_merry_go_chomp[i].viewportTranslate.x,
-                    D_8010C258_merry_go_chomp[i].viewportTranslate.y, D_8010C258_merry_go_chomp[i].viewportTranslate.z);
-        Hu3DCameraPerspectiveSet(i, D_8010C258_merry_go_chomp[i].fov, 80.0f, 8000.0f);
+        ScissorSet(i, m245_cameraViewTbl[i].scissorX, m245_cameraViewTbl[i].scissorY,
+                   m245_cameraViewTbl[i].scissorWidth, m245_cameraViewTbl[i].scissorHeight);
+        ViewportSet(i, m245_cameraViewTbl[i].viewportScale.x, m245_cameraViewTbl[i].viewportScale.y,
+                    m245_cameraViewTbl[i].viewportScale.z, m245_cameraViewTbl[i].viewportTranslate.x,
+                    m245_cameraViewTbl[i].viewportTranslate.y, m245_cameraViewTbl[i].viewportTranslate.z);
+        Hu3DCameraPerspectiveSet(i, m245_cameraViewTbl[i].fov, 80.0f, 8000.0f);
     }
 }
 
-void func_8010C030_merry_go_chomp(void) {
+void m245_ObjectSetup(void) {
     MapCollInit(50);
     Hu3DSprModelInit(50);
     omInitObjMan(60, 0);
     omGameSysInit();
-    func_8010BEBC_merry_go_chomp();
+    m245_CameraInit();
     Hu3DGLightMaxSet(1);
     Hu3DGLightMaxSet(2);
     Hu3DGLightDirSet(0, -33.0f, 0.0f, 115.0f);
@@ -2043,11 +2043,11 @@ void func_8010C030_merry_go_chomp(void) {
     mgItemObjNum = 0;
     mgPlayerObjNum = 0;
     mgMapObjNum = 0;
-    GMesFontMesCreate(D_8010C400_merry_go_chomp, 0);
-    GMesFontMesCreate(D_8010C400_merry_go_chomp, 1);
-    omAddObj(1500, 0, 0, -1, func_8010BDE8_merry_go_chomp);
-    omAddObj(1500, 0, 0, -1, func_8010BBD8_merry_go_chomp);
-    func_80105A74_merry_go_chomp();
+    GMesFontMesCreate(m245_fontMesTbl, 0);
+    GMesFontMesCreate(m245_fontMesTbl, 1);
+    omAddObj(1500, 0, 0, -1, m245_MainObjInit);
+    omAddObj(1500, 0, 0, -1, m245_ExitCheckObjMain);
+    m245_ObjWorkInit();
 }
 
-const s16 D_8010C400_merry_go_chomp[] = { 0x8260, 0x8261, 0x8262, 0 };
+const s16 m245_fontMesTbl[] = { 0x8260, 0x8261, 0x8262, 0 };

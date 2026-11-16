@@ -74,96 +74,96 @@ typedef struct {
     /* 0x02 */ s16 unk_02;
 } BeatGoesOnButton; // sizeof 0x4
 
-u8 D_8010C280_the_beat_goes_on = 0;
-u8 D_8010C284_the_beat_goes_on[24][4] = {
+u8 m232_fireState = 0;
+u8 m232_standOrderTbl[24][4] = {
     { 0, 1, 2, 3 }, { 0, 1, 3, 2 }, { 0, 2, 1, 3 }, { 0, 2, 3, 1 }, { 0, 3, 1, 2 }, { 0, 3, 2, 1 }, { 1, 0, 2, 3 }, { 1, 0, 3, 2 }, { 1, 2, 3, 0 }, { 1, 2, 0, 3 }, { 1, 3, 0, 2 }, { 1, 3, 2, 0 }, { 2, 0, 1, 3 }, { 2, 0, 3, 1 }, { 2, 1, 0, 3 }, { 2, 1, 3, 0 }, { 2, 3, 0, 1 }, { 2, 3, 1, 0 }, { 3, 0, 1, 2 }, { 3, 0, 2, 1 }, { 3, 1, 0, 2 }, { 3, 1, 2, 0 }, { 3, 2, 0, 1 }, { 3, 2, 1, 0 }
 };
-s32 D_8010C2E4_the_beat_goes_on = 0;
-s32 D_8010C2E8_the_beat_goes_on = 0;
-s8 D_8010C2EC_the_beat_goes_on = 0;
-BeatGoesOnPos D_8010C2F0_the_beat_goes_on[8] = { { 26, 15 }, { 26, 14 }, { 26, 13 }, { 26, 13 }, { 26, 13 }, { 26, 13 }, { 27, 12 }, { 27, 12 } };
-u8 D_8010C310_the_beat_goes_on = 0;
-s8 D_8010C311_the_beat_goes_on = 0;
-f32 D_8010C314_the_beat_goes_on = -90.0f;
-f32 D_8010C318_the_beat_goes_on = 0.0f;
-s8 D_8010C31C_the_beat_goes_on = 4;
-s8 D_8010C31D_the_beat_goes_on = 0;
-s8 D_8010C31E_the_beat_goes_on = 0;
-s8 D_8010C31F_the_beat_goes_on = 0;
-s8 D_8010C320_the_beat_goes_on = 0;
-s8 D_8010C321_the_beat_goes_on = 0;
-s32 D_8010C324_the_beat_goes_on = 0;
-s32 D_8010C328_the_beat_goes_on[4][4] = { { 0, -2, -4, -6 }, { 0, -2, -4, -6 }, { 0, -2, -4, -6 }, { 0, -2, -4, -6 } };
-f32 D_8010C368_the_beat_goes_on[4] = { 0.5f, 1.0f, 1.5f, 2.0f };
-f32 D_8010C378_the_beat_goes_on = 20.0f;
-f32 D_8010C37C_the_beat_goes_on = 0.0f;
-f32 D_8010C380_the_beat_goes_on = 0.0f;
-s8 D_8010C384_the_beat_goes_on = 90;
+s32 m232_exitTimer = 0;
+s32 m232_finishTimer = 0;
+s8 m232_exitF = 0;
+BeatGoesOnPos m232_fireFramePosTbl[8] = { { 26, 15 }, { 26, 14 }, { 26, 13 }, { 26, 13 }, { 26, 13 }, { 26, 13 }, { 27, 12 }, { 27, 12 } };
+u8 m232_cameraState = 0;
+s8 m232_playerCreateNo = 0;
+f32 m232_outDrumY = -90.0f;
+f32 m232_outStageZ = 0.0f;
+s8 m232_playerAliveNum = 4;
+s8 m232_drumState = 0;
+s8 m232_cameraTurnState = 0;
+s8 m232_turnF = 0;
+s8 m232_musicStopF = 0;
+s8 m232_drawF = 0;
+s32 m232_turnTimer = 0;
+s32 m232_smokeTimerTbl[4][4] = { { 0, -2, -4, -6 }, { 0, -2, -4, -6 }, { 0, -2, -4, -6 }, { 0, -2, -4, -6 } };
+f32 m232_smokeScaleTbl[4] = { 0.5f, 1.0f, 1.5f, 2.0f };
+f32 m232_cursorX = 20.0f;
+f32 m232_noteScaleAngle = 0.0f;
+f32 m232_pulseAngle = 0.0f;
+s8 m232_pulseTimer = 90;
 
-s16 D_8010C460_the_beat_goes_on BSS;
-s16 D_8010C462_the_beat_goes_on BSS;
-s16 D_8010C464_the_beat_goes_on BSS;
-s16 D_8010C466_the_beat_goes_on BSS;
-s16 D_8010C468_the_beat_goes_on BSS;
-s8 D_8010C46A_the_beat_goes_on BSS;
-s16 D_8010C46C_the_beat_goes_on BSS;
-f32 D_8010C470_the_beat_goes_on BSS;
-s8 D_8010C474_the_beat_goes_on BSS;
-s8 D_8010C475_the_beat_goes_on BSS;
-MinigameFlow D_8010C478_the_beat_goes_on BSS;
-BeatGoesOnButton D_8010C4A0_the_beat_goes_on[16] BSS;
-omObjData *D_8010C4E0_the_beat_goes_on BSS;
-omObjData *D_8010C4E4_the_beat_goes_on BSS;
-s8 D_8010C4E8_the_beat_goes_on BSS;
-s8 D_8010C4E9_the_beat_goes_on BSS;
-u8 D_8010C4EA_the_beat_goes_on BSS;
-s16 D_8010C4EC_the_beat_goes_on[4] BSS;
-s16 D_8010C4F4_the_beat_goes_on BSS;
-s16 D_8010C4F6_the_beat_goes_on BSS;
-s16 D_8010C4F8_the_beat_goes_on BSS;
-s16 D_8010C4FA_the_beat_goes_on BSS;
-s32 D_8010C4FC_the_beat_goes_on BSS;
-u16 D_8010C500_the_beat_goes_on[2] BSS;
-f32 D_8010C504_the_beat_goes_on BSS;
-u16 D_8010C508_the_beat_goes_on[2] BSS;
-u16 D_8010C50C_the_beat_goes_on BSS;
-u16 D_8010C50E_the_beat_goes_on BSS;
-u16 D_8010C510_the_beat_goes_on BSS;
-u8 D_8010C514_the_beat_goes_on[4] BSS; /* Unreferenced. */
-u16 D_8010C518_the_beat_goes_on[15] BSS;
-u16 D_8010C538_the_beat_goes_on[16] BSS;
-u16 D_8010C558_the_beat_goes_on[16] BSS;
-u16 D_8010C578_the_beat_goes_on[16] BSS;
+s16 m232_fireLitMdl BSS;
+s16 m232_fireBaseMdl BSS;
+s16 m232_fireFlareMdl BSS;
+s16 m232_fireCreateNo BSS;
+s16 m232_fireAnim BSS;
+s8 m232_standNo BSS;
+s16 m232_standMdl BSS;
+f32 m232_outJumpAngle BSS;
+s8 m232_cameraTurnTimer BSS;
+s8 m232_noteHitNo BSS;
+MinigameFlow m232_mgFlow BSS;
+BeatGoesOnButton m232_seqTbl[16] BSS;
+omObjData *m232_drummerObj BSS;
+omObjData *m232_sheetObj BSS;
+s8 m232_seqLen BSS;
+s8 m232_seqNo BSS;
+u8 m232_standOrderNo BSS;
+s16 m232_smokeMdlTbl[4] BSS;
+s16 m232_signGrp BSS;
+s16 m232_drumAMdl BSS;
+s16 m232_drumBMdl BSS;
+s16 m232_drumZMdl BSS;
+s32 m232_signY BSS;
+u16 m232_waterTexSize[2] BSS;
+f32 m232_waterScroll BSS;
+u16 m232_sheetLineSprTbl[2] BSS;
+u16 m232_cursorSpr BSS;
+u16 m232_noteMarkSpr BSS;
+u16 m232_hitMarkSpr BSS;
+u8 m232_hitMarkSprPad[4] BSS; /* Unreferenced. */
+u16 m232_noteSprTbl[15] BSS;
+u16 m232_noteASprTbl[16] BSS;
+u16 m232_noteBSprTbl[16] BSS;
+u16 m232_noteZSprTbl[16] BSS;
 extern u32 omCharModelNoTbl[][6];
 extern s32 omCharMot2Tbl[][6];
 extern u8 omAllPauseF;
 
-void func_80105C68_the_beat_goes_on(MinigameFlow *flow);
-void func_80105CDC_the_beat_goes_on(void);
-void func_801060B0_the_beat_goes_on(f32 speed);
-void func_80106358_the_beat_goes_on(omObjData *object);
-void func_80106708_the_beat_goes_on(omObjData *obj);
-void func_80106E40_the_beat_goes_on(omObjData *obj);
-void func_80107504_the_beat_goes_on(omObjData *obj);
-void func_8010775C_the_beat_goes_on(omObjData *obj);
-void func_801080DC_the_beat_goes_on(void);
-u16 func_80108198_the_beat_goes_on(s8 index);
-void func_80108324_the_beat_goes_on(omObjData *obj);
-void func_80108810_the_beat_goes_on(omObjData *obj);
-u16 func_8010A5FC_the_beat_goes_on(MgPlayerWork *data);
-void func_8010A88C_the_beat_goes_on(u16 button);
-void func_8010A94C_the_beat_goes_on(omObjData *obj, s8 *state);
-void func_8010AD60_the_beat_goes_on(s8 *state, f32 speed);
-void func_8010AF10_the_beat_goes_on(omObjData *obj);
-void func_8010B058_the_beat_goes_on(omObjData *obj);
-void func_8010B0E0_the_beat_goes_on(omObjData *obj);
-void func_8010B17C_the_beat_goes_on(omObjData *obj);
-Vec *func_8010C1A4_the_beat_goes_on(Vec *out, Vec *from, Vec *to);
-void func_8010B6DC_the_beat_goes_on(omObjData *obj);
-void func_8010C0F4_the_beat_goes_on(BeatGoesOnPos *pos);
-void func_8010C14C_the_beat_goes_on(void);
+void m232_FlowInit(MinigameFlow *flow);
+void m232_CameraInit(void);
+void m232_CameraWideMove(f32 speed);
+void m232_MainObjMain(omObjData *object);
+void m232_FireObjInit(omObjData *obj);
+void m232_FireObjMain(omObjData *obj);
+void m232_DrummerObjInit(omObjData *obj);
+void m232_DrummerObjMain(omObjData *obj);
+void m232_SeqInit(void);
+u16 m232_SeqBtnGet(s8 index);
+void m232_PlayerObjInit(omObjData *obj);
+void m232_PlayerObjMain(omObjData *obj);
+u16 m232_PlayerComInput(MgPlayerWork *data);
+void m232_SheetBtnSet(u16 button);
+void m232_DrumHitUpdate(omObjData *obj, s8 *state);
+void m232_CameraTurnUpdate(s8 *state, f32 speed);
+void m232_SmokeUpdate(omObjData *obj);
+void m232_WaterObjInit(omObjData *obj);
+void m232_WaterObjMain(omObjData *obj);
+void m232_SheetObjInit(omObjData *obj);
+Vec *m232_DirCalc(Vec *out, Vec *from, Vec *to);
+void m232_SheetObjMain(omObjData *obj);
+void m232_SheetPosGet(BeatGoesOnPos *pos);
+void m232_SheetClear(void);
 
-void func_801059A0_the_beat_goes_on(void) {
+void m232_ObjectSetup(void) {
     s16 model;
     s32 i;
 
@@ -176,37 +176,37 @@ void func_801059A0_the_beat_goes_on(void) {
     mgPlayerObjNum = 0;
     mgMapObjNum = 0;
     MgFieldStatClear();
-    func_80105CDC_the_beat_goes_on();
-    func_80105C68_the_beat_goes_on(&D_8010C478_the_beat_goes_on);
-    MgFlowInit(&D_8010C478_the_beat_goes_on);
+    m232_CameraInit();
+    m232_FlowInit(&m232_mgFlow);
+    MgFlowInit(&m232_mgFlow);
     Hu3DGLightColorSet(1, 0x40, 0x40, 0x40);
     Hu3DGLightDirSet(1, 0.0f, 0.0f, 100.0f);
-    omSetStatBit(omAddObj(0, 0, 0, -1, func_80106358_the_beat_goes_on), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    omSetStatBit(omAddObj(0, 1, 0, -1, func_8010B058_the_beat_goes_on), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    D_8010C4E0_the_beat_goes_on = omAddObj(0, 4, 5, -1, func_80107504_the_beat_goes_on);
+    omSetStatBit(omAddObj(0, 0, 0, -1, m232_MainObjMain), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    omSetStatBit(omAddObj(0, 1, 0, -1, m232_WaterObjInit), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    m232_drummerObj = omAddObj(0, 4, 5, -1, m232_DrummerObjInit);
     model = Hu3DModelRead(0x41000A, 0x819);
     for (i = 0; i < 4; i++) {
         if (i == 0) {
-            D_8010C4EC_the_beat_goes_on[i] = model;
+            m232_smokeMdlTbl[i] = model;
         } else {
-            D_8010C4EC_the_beat_goes_on[i] = Hu3DModelLink(model);
+            m232_smokeMdlTbl[i] = Hu3DModelLink(model);
         }
-        Hu3DModelAttrSet(D_8010C4EC_the_beat_goes_on[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(m232_smokeMdlTbl[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
-    D_8010C4E4_the_beat_goes_on = omAddObj(1, 0, 0, -1, func_8010B17C_the_beat_goes_on);
-    omSetStatBit(D_8010C4E4_the_beat_goes_on, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    D_8010C4EA_the_beat_goes_on = rand8() * 3U / 32;
+    m232_sheetObj = omAddObj(1, 0, 0, -1, m232_SheetObjInit);
+    omSetStatBit(m232_sheetObj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    m232_standOrderNo = rand8() * 3U / 32;
     for (i = 0; i < 4; i++) {
-        mgPlayerObjTbl[i] = omAddObj(2, 7, 10, -1, func_80108324_the_beat_goes_on);
+        mgPlayerObjTbl[i] = omAddObj(2, 7, 10, -1, m232_PlayerObjInit);
     }
     for (i = 0; i < 5; i++) {
-        omSetStatBit(omAddObj(3, 4, 2, -1, func_80106708_the_beat_goes_on), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+        omSetStatBit(omAddObj(3, 4, 2, -1, m232_FireObjInit), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     }
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     WipeCreateIn(WIPE_TYPE_PREV, 16);
 }
 
-void func_80105C68_the_beat_goes_on(MinigameFlow *flow) {
+void m232_FlowInit(MinigameFlow *flow) {
     s32 i;
 
     flow->state = MG_STATE_OPENING;
@@ -227,7 +227,7 @@ void func_80105C68_the_beat_goes_on(MinigameFlow *flow) {
     }
 }
 
-void func_80105CDC_the_beat_goes_on(void) {
+void m232_CameraInit(void) {
     s32 camIndex;
 
     Center.x = 0.0f;
@@ -243,7 +243,7 @@ void func_80105CDC_the_beat_goes_on(void) {
     Hu3DCameraPerspectiveSet(camIndex, 30.0f, 80.0f, 8000.0f);
 }
 
-void func_80105E0C_the_beat_goes_on(f32 speed) {
+void m232_CameraOutMove(f32 speed) {
     f32 zoomStep = 1500.0f;
     f32 centerStep = -500.0f;
     f32 rotStep = -20.0f;
@@ -266,10 +266,10 @@ void func_80105E0C_the_beat_goes_on(f32 speed) {
     pos.y = -100.0f;
     pos.z = -1794.6355f;
     Hu3DCam3Dto2D(0, &pos, &screenPos);
-    HuSprPosSet(D_8010C4F4_the_beat_goes_on, 0, 160, screenPos.y + -50.0f);
+    HuSprPosSet(m232_signGrp, 0, 160, screenPos.y + -50.0f);
 }
 
-void func_80105F60_the_beat_goes_on(f32 speed) {
+void m232_CameraCloseMove(f32 speed) {
     f32 zoomStep = -1500.0f;
     f32 centerStep = 500.0f;
     f32 rotStep = 20.0f;
@@ -292,10 +292,10 @@ void func_80105F60_the_beat_goes_on(f32 speed) {
     pos.y = -100.0f;
     pos.z = -1794.6355f;
     Hu3DCam3Dto2D(0, &pos, &screenPos);
-    HuSprPosSet(D_8010C4F4_the_beat_goes_on, 0, 160, screenPos.y + -50.0f);
+    HuSprPosSet(m232_signGrp, 0, 160, screenPos.y + -50.0f);
 }
 
-void func_801060B0_the_beat_goes_on(f32 speed) {
+void m232_CameraWideMove(f32 speed) {
     f32 zoomStep = 1140.0f;
     f32 centerStep = 240.0f;
     f32 rotStep = 10.0f;
@@ -318,10 +318,10 @@ void func_801060B0_the_beat_goes_on(f32 speed) {
     pos.y = -100.0f;
     pos.z = -1794.6355f;
     Hu3DCam3Dto2D(0, &pos, &screenPos);
-    HuSprPosSet(D_8010C4F4_the_beat_goes_on, 0, 160, screenPos.y + -50.0f);
+    HuSprPosSet(m232_signGrp, 0, 160, screenPos.y + -50.0f);
 }
 
-void func_80106204_the_beat_goes_on(f32 speed) {
+void m232_CameraHomeMove(f32 speed) {
     f32 zoomStep = -1140.0f;
     f32 centerStep = -240.0f;
     f32 rotStep = -10.0f;
@@ -344,15 +344,15 @@ void func_80106204_the_beat_goes_on(f32 speed) {
     pos.y = -100.0f;
     pos.z = -1794.6355f;
     Hu3DCam3Dto2D(0, &pos, &screenPos);
-    HuSprPosSet(D_8010C4F4_the_beat_goes_on, 0, 160, screenPos.y + -50.0f);
+    HuSprPosSet(m232_signGrp, 0, 160, screenPos.y + -50.0f);
 }
 
-void func_80106358_the_beat_goes_on(omObjData *object) {
+void m232_MainObjMain(omObjData *object) {
     omObjData *player;
     s32 i;
 
     if (omPauseChk() + omAllPauseF == 0) {
-        if (D_8010C2EC_the_beat_goes_on == 0 && omSysExitReq == 1) {
+        if (m232_exitF == 0 && omSysExitReq == 1) {
             HuAudFXAllStop();
             if (!(HuAudStat & 4)) {
                 HuAudSeqFadeOut(30);
@@ -360,7 +360,7 @@ void func_80106358_the_beat_goes_on(omObjData *object) {
                 HuAudSeqStop();
             }
             MgFlowStatSet(MG_STATE_EXIT);
-            D_8010C2EC_the_beat_goes_on = 1;
+            m232_exitF = 1;
         }
         MgFieldStatUpdate();
         switch (MgFlowMain()) {
@@ -369,7 +369,7 @@ void func_80106358_the_beat_goes_on(omObjData *object) {
                     HuAudSeqPlay(0x3F);
                     HuAudFXPlay(0x40B);
                 } else if (MgFlowStatTimeGet() >= 27) {
-                    func_801060B0_the_beat_goes_on(40.0f);
+                    m232_CameraWideMove(40.0f);
                 }
                 break;
             case 1:
@@ -377,15 +377,15 @@ void func_80106358_the_beat_goes_on(omObjData *object) {
             case 2:
                 break;
             case 3:
-                if (D_8010C2E8_the_beat_goes_on == 0) {
+                if (m232_finishTimer == 0) {
                     HuAudFXAllFadeOut(30);
-                    if (D_8010C478_the_beat_goes_on.resultType == MG_RESULT_WIN_1) {
-                        player = mgPlayerObjTbl[D_8010C478_the_beat_goes_on.winners[0]];
+                    if (m232_mgFlow.resultType == MG_RESULT_WIN_1) {
+                        player = mgPlayerObjTbl[m232_mgFlow.winners[0]];
                         Hu3DModelAttrSet(player->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         Hu3DModelAttrSet(player->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         Hu3DModelAttrSet(player->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
-                } else if (D_8010C2E8_the_beat_goes_on == 30 && D_8010C478_the_beat_goes_on.resultType == MG_RESULT_DRAW) {
+                } else if (m232_finishTimer == 30 && m232_mgFlow.resultType == MG_RESULT_DRAW) {
                     for (i = 0; i < 4; i++) {
                         player = mgPlayerObjTbl[i];
                         if (player->work[0] == 10) {
@@ -399,13 +399,13 @@ void func_80106358_the_beat_goes_on(omObjData *object) {
                         }
                     }
                 }
-                D_8010C2E8_the_beat_goes_on++;
+                m232_finishTimer++;
                 break;
             case 4:
                 if (MgFlowStatTimeGet() == 1) {
-                    switch (D_8010C478_the_beat_goes_on.resultType) {
+                    switch (m232_mgFlow.resultType) {
                         case 0:
-                            GMesCreate(0x16, GwPlayer[D_8010C478_the_beat_goes_on.winners[0]].chr);
+                            GMesCreate(0x16, GwPlayer[m232_mgFlow.winners[0]].chr);
                             HuAudSeqPlay(0x65);
                             break;
                         case 4:
@@ -413,29 +413,29 @@ void func_80106358_the_beat_goes_on(omObjData *object) {
                             HuAudSeqPlay(0x6C);
                             break;
                     }
-                    D_8010C478_the_beat_goes_on.resultType = MG_RESULT_NONE;
+                    m232_mgFlow.resultType = MG_RESULT_NONE;
                 }
                 break;
             case 5:
-                if (D_8010C2E4_the_beat_goes_on == 0) {
+                if (m232_exitTimer == 0) {
                     WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                 } else if (WipeStatGet() == 0 && !(HuAudStat & 4)) {
                     omOvlReturnEx(1);
                 }
-                D_8010C2E4_the_beat_goes_on++;
+                m232_exitTimer++;
                 break;
         }
     }
 }
 
-void func_80106708_the_beat_goes_on(omObjData *obj) {
+void m232_FireObjInit(omObjData *obj) {
     BeatGoesOnPlayerWork *work;
     u16 id;
 
     obj->data = HuMemAllocTag(sizeof(BeatGoesOnPlayerWork), TAG_OVERLAY);
     memset(obj->data, 0, sizeof(BeatGoesOnPlayerWork));
     work = obj->data;
-    work->unk_1C = D_8010C466_the_beat_goes_on;
+    work->unk_1C = m232_fireCreateNo;
     if (work->unk_1C == 4) {
         work->unk_10 = 0;
     } else if (work->unk_1C == 0) {
@@ -445,51 +445,51 @@ void func_80106708_the_beat_goes_on(omObjData *obj) {
     }
     work->unk_14 = 0;
     obj->scale.x = obj->scale.y = obj->scale.z = 3.0f;
-    if (D_8010C466_the_beat_goes_on == 0) {
-        id = D_8010C462_the_beat_goes_on = SprModelRead(0x410001, 0, 16);
+    if (m232_fireCreateNo == 0) {
+        id = m232_fireBaseMdl = SprModelRead(0x410001, 0, 16);
     } else {
-        id = Hu3DSprModelLink(D_8010C462_the_beat_goes_on, 16);
+        id = Hu3DSprModelLink(m232_fireBaseMdl, 16);
     }
-    Hu3DSprModelFrameSet(id, D_8010C466_the_beat_goes_on & 7);
+    Hu3DSprModelFrameSet(id, m232_fireCreateNo & 7);
     work->entry = &Hu3DSprModelData[(s16)id];
     obj->model[1] = work->entry->modelId;
-    obj->trans.x = sindf(D_8010C466_the_beat_goes_on * 45.0f - 90.0f) * 160.0f;
+    obj->trans.x = sindf(m232_fireCreateNo * 45.0f - 90.0f) * 160.0f;
     obj->trans.y = 40.0f;
-    obj->trans.z = cosdf(D_8010C466_the_beat_goes_on * 45.0f - 90.0f) * 160.0f;
+    obj->trans.z = cosdf(m232_fireCreateNo * 45.0f - 90.0f) * 160.0f;
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
     Hu3DModelScaleSet(obj->model[1], obj->scale.x, obj->scale.y, obj->scale.z);
-    if (D_8010C466_the_beat_goes_on == 0) {
-        id = D_8010C460_the_beat_goes_on = SprModelRead(0x410000, 0, 16);
+    if (m232_fireCreateNo == 0) {
+        id = m232_fireLitMdl = SprModelRead(0x410000, 0, 16);
     } else {
-        id = Hu3DSprModelLink(D_8010C460_the_beat_goes_on, 16);
+        id = Hu3DSprModelLink(m232_fireLitMdl, 16);
     }
     obj->model[0] = Hu3DSprModelData[(s16)id].modelId;
     Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    if (D_8010C466_the_beat_goes_on == 0) {
-        id = D_8010C464_the_beat_goes_on = SprModelRead(0x410002, 0, 16);
+    if (m232_fireCreateNo == 0) {
+        id = m232_fireFlareMdl = SprModelRead(0x410002, 0, 16);
     } else {
-        id = Hu3DSprModelLink(D_8010C464_the_beat_goes_on, 16);
+        id = Hu3DSprModelLink(m232_fireFlareMdl, 16);
     }
     obj->model[2] = Hu3DSprModelData[(s16)id].modelId;
     Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     id = obj->model[3] = Hu3DModelRead(0x410003, 0xAA9);
-    if (D_8010C466_the_beat_goes_on == 0) {
-        D_8010C468_the_beat_goes_on = Hu3DAnimRead(Hu3DData[(s16)id].hmf, 0xA008C, "c201n_00_DEF");
+    if (m232_fireCreateNo == 0) {
+        m232_fireAnim = Hu3DAnimRead(Hu3DData[(s16)id].hmf, 0xA008C, "c201n_00_DEF");
     } else {
-        Hu3DAnimLink(Hu3DData[(s16)id].hmf, D_8010C468_the_beat_goes_on, 0, "c201n_00_DEF");
-        Hu3DAnimLink(Hu3DData[obj->model[3]].hmf, D_8010C468_the_beat_goes_on, 0, "c201n_00_DEF");
+        Hu3DAnimLink(Hu3DData[(s16)id].hmf, m232_fireAnim, 0, "c201n_00_DEF");
+        Hu3DAnimLink(Hu3DData[obj->model[3]].hmf, m232_fireAnim, 0, "c201n_00_DEF");
     }
     Hu3DModelRemakeStatic(id);
     Hu3DModelDynamicFree(id);
     Hu3DModelScaleSet(id, 0.6f, 0.6f, 0.6f);
-    Hu3DModelPosSet(id, (D_8010C466_the_beat_goes_on - 4) * 25 * obj->scale.x, 0.0f, 0.0f);
+    Hu3DModelPosSet(id, (m232_fireCreateNo - 4) * 25 * obj->scale.x, 0.0f, 0.0f);
     omObjMotionRead(obj, 0, 0x410003);
     omObjMotionRead(obj, 1, 0x410004);
-    obj->func = func_80106E40_the_beat_goes_on;
-    D_8010C466_the_beat_goes_on++;
+    obj->func = m232_FireObjMain;
+    m232_fireCreateNo++;
 }
 
-void func_80106BE0_the_beat_goes_on(omObjData *obj) {
+void m232_FirePosUpdate(omObjData *obj) {
     BeatGoesOnPlayerWork *work = obj->data;
     HmfModelEntry *entry = work->entry;
     u16 modelId = entry->modelId;
@@ -508,8 +508,8 @@ void func_80106BE0_the_beat_goes_on(omObjData *obj) {
     Hu3DModelRotSet(modelId, obj->rot.x, obj->rot.y, obj->rot.z);
     rot = &Hu3DAnimSetData[(u16)entry->unk_02].rot[entry->pointIdx];
     frame = rot->frames[entry->nodeIdx].unk00;
-    ox = D_8010C2F0_the_beat_goes_on[frame].x - 16;
-    oy = 16 - D_8010C2F0_the_beat_goes_on[frame].y;
+    ox = m232_fireFramePosTbl[frame].x - 16;
+    oy = 16 - m232_fireFramePosTbl[frame].y;
     oz = 0.0f;
     x = ox * cosdf(CRot.y) + sindf(CRot.y) * oz;
     y = oy * cosdf(CRot.x) - sindf(CRot.x) * oz;
@@ -527,14 +527,14 @@ void func_80106BE0_the_beat_goes_on(omObjData *obj) {
     Hu3DModelRotSet(obj->model[3], CRot.x, CRot.y, CRot.z);
 }
 
-void func_80106E40_the_beat_goes_on(omObjData *obj) {
+void m232_FireObjMain(omObjData *obj) {
     BeatGoesOnPlayerWork *work = obj->data;
     Vec dir;
     Vec from;
     Vec to;
     s32 i;
 
-    switch (D_8010C280_the_beat_goes_on) {
+    switch (m232_fireState) {
         case 0:
             Hu3DModelScaleSet(obj->model[1], obj->scale.x, obj->scale.y, obj->scale.z);
             Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
@@ -546,7 +546,7 @@ void func_80106E40_the_beat_goes_on(omObjData *obj) {
                 Hu3DMotionShiftSet(obj->model[3], Hu3DData[obj->motion[0]].motId, 0, 1, 2);
             }
             work->unk_0C = 0;
-            func_80106BE0_the_beat_goes_on(obj);
+            m232_FirePosUpdate(obj);
             break;
         case 1:
             Hu3DModelScaleSet(obj->model[0], obj->scale.x, obj->scale.y, obj->scale.z);
@@ -557,7 +557,7 @@ void func_80106E40_the_beat_goes_on(omObjData *obj) {
             if (Hu3DMotion[Hu3DData[obj->model[3]].motId].unk02 - 2.0f <= Hu3DData[obj->model[3]].motTime) {
                 Hu3DMotionShiftSet(obj->model[3], Hu3DData[obj->motion[0]].motId, 0, 1, 2);
             }
-            func_80106BE0_the_beat_goes_on(obj);
+            m232_FirePosUpdate(obj);
             work->unk_14 = 0.0f;
             break;
         case 2:
@@ -583,7 +583,7 @@ void func_80106E40_the_beat_goes_on(omObjData *obj) {
                             to.x = 75 - rand8() % 150;
                             to.y = -100.0f;
                             to.z = 5 - rand8() % 10 + 600.0f;
-                            func_8010C1A4_the_beat_goes_on(&dir, &from, &to);
+                            m232_DirCalc(&dir, &from, &to);
                             work->pos.x += dir.x * 25.0f;
                             work->pos.y += dir.y * 25.0f;
                             work->pos.z += dir.z * 25.0f;
@@ -611,9 +611,9 @@ void func_80106E40_the_beat_goes_on(omObjData *obj) {
                         work->pos.y -= 2.0f;
                         Hu3DModelPosSet(obj->model[3], work->pos.x, work->pos.y, work->pos.z);
                         if (work->pos.y < -90.0f && work->unk_1C == 0) {
-                            D_8010C280_the_beat_goes_on = 0;
+                            m232_fireState = 0;
                             work->unk_0C = 0;
-                            func_80106BE0_the_beat_goes_on(obj);
+                            m232_FirePosUpdate(obj);
                             break;
                         }
                     } else {
@@ -626,10 +626,10 @@ void func_80106E40_the_beat_goes_on(omObjData *obj) {
     }
 }
 
-void func_80107504_the_beat_goes_on(omObjData *obj) {
+void m232_DrummerObjInit(omObjData *obj) {
     BeatGoesOnConductorWork *work;
 
-    obj->func = func_8010775C_the_beat_goes_on;
+    obj->func = m232_DrummerObjMain;
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = -100.0f;
@@ -640,9 +640,9 @@ void func_80107504_the_beat_goes_on(omObjData *obj) {
     work->unk_00 = 0;
     work->unk_02 = 0;
     obj->model[0] = Hu3DModelRead(0xA014D, 0x2D9);
-    D_8010C4F6_the_beat_goes_on = obj->model[1] = Hu3DModelRead(0x410009, 0x2D9);
-    D_8010C4F8_the_beat_goes_on = obj->model[2] = Hu3DModelRead(0x410008, 0x2D9);
-    D_8010C4FA_the_beat_goes_on = obj->model[3] = Hu3DModelRead(0x410007, 0x2D9);
+    m232_drumAMdl = obj->model[1] = Hu3DModelRead(0x410009, 0x2D9);
+    m232_drumBMdl = obj->model[2] = Hu3DModelRead(0x410008, 0x2D9);
+    m232_drumZMdl = obj->model[3] = Hu3DModelRead(0x410007, 0x2D9);
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
     Hu3DModelPosSet(obj->model[2], obj->trans.x, obj->trans.y, obj->trans.z);
     Hu3DModelPosSet(obj->model[3], obj->trans.x, obj->trans.y, obj->trans.z);
@@ -658,10 +658,10 @@ void func_80107504_the_beat_goes_on(omObjData *obj) {
     Hu3DMotionAttrSet(obj->model[2], 2, 2);
     Hu3DMotionAttrSet(obj->model[3], 2, 2);
     Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[0]].motId, 0, 1, 2);
-    func_801080DC_the_beat_goes_on();
+    m232_SeqInit();
 }
 
-void func_8010775C_the_beat_goes_on(omObjData *obj) {
+void m232_DrummerObjMain(omObjData *obj) {
     BeatGoesOnConductorWork *work = obj->data;
     BeatGoesOnNotes *notes;
 
@@ -674,7 +674,7 @@ void func_8010775C_the_beat_goes_on(omObjData *obj) {
     if (Hu3DMotion[Hu3DData[obj->model[3]].motId].unk02 - 2.0f <= Hu3DData[obj->model[3]].motTime) {
         Hu3DMotionAttrSet(obj->model[3], 2, 1);
     }
-    notes = D_8010C4E4_the_beat_goes_on->data;
+    notes = m232_sheetObj->data;
     if (MgFlowStatGet() == MG_STATE_START) {
         if (work->unk_02 >= 73) {
             notes->unk_16 = 1;
@@ -688,7 +688,7 @@ void func_8010775C_the_beat_goes_on(omObjData *obj) {
             return;
         }
         if (obj->work[0] == 0) {
-            func_80106204_the_beat_goes_on(33.0f);
+            m232_CameraHomeMove(33.0f);
             if (CZoom == 1060.0f && Center.z == 140.0f && CRot.x == -40.0f) {
                 obj->work[0] = 1;
             }
@@ -699,49 +699,49 @@ void func_8010775C_the_beat_goes_on(omObjData *obj) {
             } else {
                 work->unk_02++;
             }
-            switch (D_8010C310_the_beat_goes_on) {
+            switch (m232_cameraState) {
                 case 0:
-                    func_801060B0_the_beat_goes_on(63.5f);
+                    m232_CameraWideMove(63.5f);
                     if (CZoom == 2200.0f && Center.z == 380.0f && CRot.x == -30.0f) {
-                        D_8010C310_the_beat_goes_on = 1;
+                        m232_cameraState = 1;
                     }
                     break;
                 case 1:
-                    func_80105F60_the_beat_goes_on(63.5f);
+                    m232_CameraCloseMove(63.5f);
                     if (CZoom == 700.0f && Center.z == 880.0f && CRot.x == -10.0f) {
-                        D_8010C310_the_beat_goes_on = 2;
+                        m232_cameraState = 2;
                         obj->work[0] = 6;
                     }
                     break;
             }
         } else {
             notes->unk_08 = 1;
-            if (D_8010C4E9_the_beat_goes_on < 4 &&
-                work->unk_00 >= D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].unk_02) {
-                if (D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].button == A_BUTTON) {
+            if (m232_seqNo < 4 &&
+                work->unk_00 >= m232_seqTbl[m232_seqNo].unk_02) {
+                if (m232_seqTbl[m232_seqNo].button == A_BUTTON) {
                     Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[3]].motId, 0, 1, 2);
                     Hu3DMotionSpeedSet(obj->model[0], 1.0f);
                     obj->work[0] = 4;
-                    notes->btnA[D_8010C4E9_the_beat_goes_on] = 1;
+                    notes->btnA[m232_seqNo] = 1;
                     notes->unk_0C = 1;
                     notes->unk_0A = A_BUTTON;
-                } else if (D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].button == B_BUTTON) {
+                } else if (m232_seqTbl[m232_seqNo].button == B_BUTTON) {
                     Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[1]].motId, 0, 1, 2);
                     Hu3DMotionSpeedSet(obj->model[0], 1.0f);
                     obj->work[0] = 2;
-                    notes->btnB[D_8010C4E9_the_beat_goes_on] = 1;
+                    notes->btnB[m232_seqNo] = 1;
                     notes->unk_0C = 1;
                     notes->unk_0A = B_BUTTON;
-                } else if (D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].button == Z_TRIG) {
+                } else if (m232_seqTbl[m232_seqNo].button == Z_TRIG) {
                     Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[2]].motId, 0, 1, 2);
                     Hu3DMotionSpeedSet(obj->model[0], 1.0f);
                     obj->work[0] = 3;
-                    notes->btnZ[D_8010C4E9_the_beat_goes_on] = 1;
+                    notes->btnZ[m232_seqNo] = 1;
                     notes->unk_0C = 1;
                     notes->unk_0A = Z_TRIG;
                 }
                 work->unk_00 = 0;
-                D_8010C4E9_the_beat_goes_on++;
+                m232_seqNo++;
             } else {
                 if (obj->work[0] != 1) {
                     if (Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 - 2.0f <= Hu3DData[obj->model[0]].motTime) {
@@ -751,16 +751,16 @@ void func_8010775C_the_beat_goes_on(omObjData *obj) {
                     }
                 }
                 if (obj->work[0] != 0) {
-                    if (D_8010C4E9_the_beat_goes_on == 3) {
+                    if (m232_seqNo == 3) {
                         HuAudSeqStop();
                     }
                     if (Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 - 2.0f <= Hu3DData[obj->model[0]].motTime) {
-                        if (D_8010C4E9_the_beat_goes_on >= 4) {
+                        if (m232_seqNo >= 4) {
                             HuAudFXPlay(0x40A);
                             obj->work[0] = 5;
-                            D_8010C4E8_the_beat_goes_on = 4;
-                            D_8010C4E9_the_beat_goes_on = 0;
-                            func_8010C14C_the_beat_goes_on();
+                            m232_seqLen = 4;
+                            m232_seqNo = 0;
+                            m232_SheetClear();
                             notes->unk_08 = 0;
                         } else {
                             obj->work[0] = 1;
@@ -788,31 +788,31 @@ void func_8010775C_the_beat_goes_on(omObjData *obj) {
     }
 }
 
-void func_801080DC_the_beat_goes_on(void) {
+void m232_SeqInit(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        D_8010C4A0_the_beat_goes_on[i].button = func_80108198_the_beat_goes_on(i);
+        m232_seqTbl[i].button = m232_SeqBtnGet(i);
         if (i == 0) {
-            D_8010C4A0_the_beat_goes_on[i].unk_02 = 26;
+            m232_seqTbl[i].unk_02 = 26;
         } else {
-            D_8010C4A0_the_beat_goes_on[i].unk_02 = 22;
+            m232_seqTbl[i].unk_02 = 22;
         }
     }
     for (i = 4; i < 16; i++) {
-        D_8010C4A0_the_beat_goes_on[i].button = 0;
-        D_8010C4A0_the_beat_goes_on[i].unk_02 = 22;
+        m232_seqTbl[i].button = 0;
+        m232_seqTbl[i].unk_02 = 22;
     }
 }
 
-u16 func_80108198_the_beat_goes_on(s8 index) {
+u16 m232_SeqBtnGet(s8 index) {
     u16 prev;
     u8 roll;
 
     if (index == 0) {
         prev = 0;
     } else {
-        prev = D_8010C4A0_the_beat_goes_on[index - 1].button;
+        prev = m232_seqTbl[index - 1].button;
     }
     roll = rand8() % 30;
     if (roll < 10) {
@@ -845,7 +845,7 @@ u16 func_80108198_the_beat_goes_on(s8 index) {
     return Z_TRIG;
 }
 
-void func_80108324_the_beat_goes_on(omObjData *obj) {
+void m232_PlayerObjInit(omObjData *obj) {
     Vec positions[4] = {
         { 0.0f, -90.0f, 600.0f },
         { 600.0f, -90.0f, 0.0f },
@@ -858,11 +858,11 @@ void func_80108324_the_beat_goes_on(omObjData *obj) {
     u32 model;
     s32 motion;
 
-    chr = GwPlayer[D_8010C311_the_beat_goes_on].chr;
+    chr = GwPlayer[m232_playerCreateNo].chr;
     model = omCharModelNoTbl[chr][0];
     motion = omCharMot2Tbl[chr][0];
     MgShadowAltSet(1);
-    MgPlayerCreate(obj, model, motion, D_8010C311_the_beat_goes_on, 0x2C9, 0x2D9);
+    MgPlayerCreate(obj, model, motion, m232_playerCreateNo, 0x2C9, 0x2D9);
     data = obj->data;
     data->unkE8 = HuMemAllocTag(obj->mtncnt * sizeof(MgMotAttr), TAG_OVERLAY);
     data->unk5A = obj->model[0];
@@ -872,22 +872,22 @@ void func_80108324_the_beat_goes_on(omObjData *obj) {
     work = data->unk158;
     obj->rot.x = obj->rot.y = obj->rot.z = 0.0f;
     obj->work[0] = 0;
-    D_8010C46A_the_beat_goes_on = D_8010C284_the_beat_goes_on[D_8010C4EA_the_beat_goes_on][D_8010C311_the_beat_goes_on];
-    obj->trans.x = positions[D_8010C46A_the_beat_goes_on].x;
-    obj->trans.y = positions[D_8010C46A_the_beat_goes_on].y;
-    obj->trans.z = positions[D_8010C46A_the_beat_goes_on].z;
-    work->unk_04 = D_8010C46A_the_beat_goes_on * 90.0f;
+    m232_standNo = m232_standOrderTbl[m232_standOrderNo][m232_playerCreateNo];
+    obj->trans.x = positions[m232_standNo].x;
+    obj->trans.y = positions[m232_standNo].y;
+    obj->trans.z = positions[m232_standNo].z;
+    work->unk_04 = m232_standNo * 90.0f;
     work->unk_00 = 0;
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
     Hu3DModelScaleSet(obj->model[1], obj->scale.x, obj->scale.y, obj->scale.z);
-    if (D_8010C311_the_beat_goes_on == 0) {
-        D_8010C46C_the_beat_goes_on = obj->model[2] = Hu3DModelRead(0x410006, 0x2D9);
+    if (m232_playerCreateNo == 0) {
+        m232_standMdl = obj->model[2] = Hu3DModelRead(0x410006, 0x2D9);
     } else {
-        obj->model[2] = Hu3DModelLink(D_8010C46C_the_beat_goes_on);
+        obj->model[2] = Hu3DModelLink(m232_standMdl);
     }
-    obj->model[3] = Hu3DModelLink(D_8010C4F6_the_beat_goes_on);
-    obj->model[4] = Hu3DModelLink(D_8010C4F8_the_beat_goes_on);
-    obj->model[5] = Hu3DModelLink(D_8010C4FA_the_beat_goes_on);
+    obj->model[3] = Hu3DModelLink(m232_drumAMdl);
+    obj->model[4] = Hu3DModelLink(m232_drumBMdl);
+    obj->model[5] = Hu3DModelLink(m232_drumZMdl);
     Hu3DModelPosSet(obj->model[2], obj->trans.x, obj->trans.y, obj->trans.z);
     Hu3DModelPosSet(obj->model[3], obj->trans.x, obj->trans.y, obj->trans.z);
     Hu3DModelPosSet(obj->model[4], obj->trans.x, obj->trans.y, obj->trans.z);
@@ -910,11 +910,11 @@ void func_80108324_the_beat_goes_on(omObjData *obj) {
     omObjMotionRead(obj, 6, CharMotionDataNumGet(chr, 0x1A));
     Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[0]].motId, 0, 30, 2);
     obj->work[1] = 0;
-    obj->func = func_80108810_the_beat_goes_on;
-    D_8010C311_the_beat_goes_on++;
+    obj->func = m232_PlayerObjMain;
+    m232_playerCreateNo++;
 }
 
-void func_80108810_the_beat_goes_on(omObjData *obj) {
+void m232_PlayerObjMain(omObjData *obj) {
     MgPlayerWork *data = obj->data;
     BeatGoesOnSpinWork *work = data->unk158;
     BeatGoesOnNotes *notes;
@@ -923,37 +923,37 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
     s32 dir;
     u16 button;
 
-    if (D_8010C4E0_the_beat_goes_on->work[0] != 6) {
+    if (m232_drummerObj->work[0] != 6) {
         return;
     }
     if (mgPlayerObjTbl[0]->work[0] != 7 && mgPlayerObjTbl[1]->work[0] != 7 &&
         mgPlayerObjTbl[2]->work[0] != 7 && mgPlayerObjTbl[3]->work[0] != 7) {
-        D_8010C31F_the_beat_goes_on = 0;
+        m232_turnF = 0;
     } else {
         for (i = 0; i < 4; i++) {
             if (mgPlayerObjTbl[i]->work[0] == 7) {
-                D_8010C31F_the_beat_goes_on = 1;
+                m232_turnF = 1;
                 break;
             }
         }
     }
-    if (D_8010C31F_the_beat_goes_on != 0) {
-        if (D_8010C324_the_beat_goes_on > 120) {
-            if (D_8010C31C_the_beat_goes_on < 5) {
-                if (D_8010C31C_the_beat_goes_on >= 2) {
-                    func_8010AD60_the_beat_goes_on(&D_8010C31E_the_beat_goes_on, 348.0f);
+    if (m232_turnF != 0) {
+        if (m232_turnTimer > 120) {
+            if (m232_playerAliveNum < 5) {
+                if (m232_playerAliveNum >= 2) {
+                    m232_CameraTurnUpdate(&m232_cameraTurnState, 348.0f);
                 }
             }
         } else {
-            D_8010C324_the_beat_goes_on++;
+            m232_turnTimer++;
         }
     } else {
-        D_8010C324_the_beat_goes_on = 0;
+        m232_turnTimer = 0;
     }
     if (obj->trans.z < 600.0f && obj->work[0] != 7 && obj->work[0] != 8 && obj->work[0] != 9) {
         return;
     }
-    notes = D_8010C4E4_the_beat_goes_on->data;
+    notes = m232_sheetObj->data;
     switch (obj->work[0]) {
         case 0:
             if (work->unk_00 >= 10) {
@@ -966,21 +966,21 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
         case 1:
             if (work->unk_00 >= 20) {
                 obj->work[0] = 2;
-                D_8010C280_the_beat_goes_on = 1;
+                m232_fireState = 1;
                 work->unk_00 = 0;
                 notes->unk_08 = 1;
             } else {
                 if (work->unk_00 == 0) {
                     notes->unk_04 = 20;
                     notes->unk_06 = 30;
-                    notes->unk_0E = (s8)(D_8010C4E8_the_beat_goes_on % 8) * 30 + 55;
-                    if (D_8010C4E8_the_beat_goes_on < 8) {
+                    notes->unk_0E = (s8)(m232_seqLen % 8) * 30 + 55;
+                    if (m232_seqLen < 8) {
                         notes->unk_10 = 30;
                     } else {
                         notes->unk_10 = 50;
                     }
                     notes->unk_16 = notes->unk_17 = notes->unk_18 = 1;
-                    for (i = 0; i < D_8010C4E8_the_beat_goes_on; i++) {
+                    for (i = 0; i < m232_seqLen; i++) {
                         notes->noteFlags[i] = 1;
                     }
                 }
@@ -988,24 +988,24 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
             }
             break;
         case 2:
-            func_8010A94C_the_beat_goes_on(obj, &D_8010C31D_the_beat_goes_on);
+            m232_DrumHitUpdate(obj, &m232_drumState);
             if (notes->unk_09 == 1) {
-                button = func_8010A5FC_the_beat_goes_on(data);
+                button = m232_PlayerComInput(data);
                 if (obj->work[1] == 0 && (button & (A_BUTTON | B_BUTTON | Z_TRIG))) {
                     if (button == A_BUTTON) {
                         Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[5]].motId, 0, 1, 2);
                         Hu3DMotionSpeedSet(obj->model[0], 1.0f);
                         Hu3DMotionTimeSet(obj->model[0], 0.0f);
                         obj->work[1] = 5;
-                        D_8010C31D_the_beat_goes_on = 1;
-                        if (D_8010C4E9_the_beat_goes_on == D_8010C4E8_the_beat_goes_on ||
-                            D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].button == button) {
-                            func_8010A88C_the_beat_goes_on(A_BUTTON);
+                        m232_drumState = 1;
+                        if (m232_seqNo == m232_seqLen ||
+                            m232_seqTbl[m232_seqNo].button == button) {
+                            m232_SheetBtnSet(A_BUTTON);
                             obj->work[0] = 3;
                             notes->unk_0C = 1;
                             notes->unk_0A = A_BUTTON;
-                        } else if (D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].button != A_BUTTON) {
-                            func_8010A88C_the_beat_goes_on(A_BUTTON);
+                        } else if (m232_seqTbl[m232_seqNo].button != A_BUTTON) {
+                            m232_SheetBtnSet(A_BUTTON);
                             obj->work[0] = 4;
                             notes->unk_19 = 1;
                             notes->unk_0C = 1;
@@ -1016,15 +1016,15 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
                         Hu3DMotionSpeedSet(obj->model[0], 1.0f);
                         Hu3DMotionTimeSet(obj->model[0], 0.0f);
                         obj->work[1] = 3;
-                        D_8010C31D_the_beat_goes_on = 2;
-                        if (D_8010C4E9_the_beat_goes_on == D_8010C4E8_the_beat_goes_on ||
-                            D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].button == button) {
-                            func_8010A88C_the_beat_goes_on(B_BUTTON);
+                        m232_drumState = 2;
+                        if (m232_seqNo == m232_seqLen ||
+                            m232_seqTbl[m232_seqNo].button == button) {
+                            m232_SheetBtnSet(B_BUTTON);
                             obj->work[0] = 3;
                             notes->unk_0C = 1;
                             notes->unk_0A = B_BUTTON;
-                        } else if (D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].button != B_BUTTON) {
-                            func_8010A88C_the_beat_goes_on(B_BUTTON);
+                        } else if (m232_seqTbl[m232_seqNo].button != B_BUTTON) {
+                            m232_SheetBtnSet(B_BUTTON);
                             obj->work[0] = 4;
                             notes->unk_19 = 1;
                             notes->unk_0C = 1;
@@ -1035,15 +1035,15 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
                         Hu3DMotionSpeedSet(obj->model[0], 1.0f);
                         Hu3DMotionTimeSet(obj->model[0], 0.0f);
                         obj->work[1] = 4;
-                        D_8010C31D_the_beat_goes_on = 3;
-                        if (D_8010C4E9_the_beat_goes_on == D_8010C4E8_the_beat_goes_on ||
-                            D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].button == button) {
-                            func_8010A88C_the_beat_goes_on(Z_TRIG);
+                        m232_drumState = 3;
+                        if (m232_seqNo == m232_seqLen ||
+                            m232_seqTbl[m232_seqNo].button == button) {
+                            m232_SheetBtnSet(Z_TRIG);
                             obj->work[0] = 3;
                             notes->unk_0C = 1;
                             notes->unk_0A = Z_TRIG;
-                        } else if (D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].button != Z_TRIG) {
-                            func_8010A88C_the_beat_goes_on(Z_TRIG);
+                        } else if (m232_seqTbl[m232_seqNo].button != Z_TRIG) {
+                            m232_SheetBtnSet(Z_TRIG);
                             obj->work[0] = 4;
                             notes->unk_19 = 1;
                             notes->unk_0C = 1;
@@ -1059,14 +1059,14 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
                     obj->work[1] = 0;
                 }
             }
-            func_8010A94C_the_beat_goes_on(obj, &D_8010C31D_the_beat_goes_on);
-            func_8010C0F4_the_beat_goes_on(&pos);
+            m232_DrumHitUpdate(obj, &m232_drumState);
+            m232_SheetPosGet(&pos);
             if (pos.x + 11 < notes->unk_04 && pos.y == notes->unk_06) {
                 obj->work[0] = 4;
                 work->unk_00 = 0;
                 notes->unk_19 = 1;
                 notes->unk_0C = 1;
-                if (D_8010C4E9_the_beat_goes_on == D_8010C4E8_the_beat_goes_on) {
+                if (m232_seqNo == m232_seqLen) {
                     notes->unk_0A = D_JPAD;
                 } else {
                     notes->unk_0A = U_JPAD;
@@ -1074,16 +1074,16 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
             }
             break;
         case 3:
-            func_8010A94C_the_beat_goes_on(obj, &D_8010C31D_the_beat_goes_on);
+            m232_DrumHitUpdate(obj, &m232_drumState);
             if (Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 - 2.0f <= Hu3DData[obj->model[0]].motTime) {
                 Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[0]].motId, 0, 1, 2);
                 Hu3DMotionSpeedSet(obj->model[0], 1.0f);
                 obj->work[1] = 0;
             }
-            func_8010C0F4_the_beat_goes_on(&pos);
+            m232_SheetPosGet(&pos);
             if (pos.y == notes->unk_06 && (pos.x + 11 < notes->unk_04 || notes->unk_04 == 280)) {
-                if (D_8010C4E8_the_beat_goes_on == D_8010C4E9_the_beat_goes_on) {
-                    if (D_8010C4E8_the_beat_goes_on + 1 == 16) {
+                if (m232_seqLen == m232_seqNo) {
+                    if (m232_seqLen + 1 == 16) {
                         for (i = 0; i < 4; i++) {
                             if (mgPlayerObjTbl[i]->work[0] != 10) {
                                 mgPlayerObjTbl[i]->work[0] = 9;
@@ -1098,32 +1098,32 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
                         for (i = 0; i < 4; i++) {
                             if (mgPlayerObjTbl[i]->work[0] != 10) {
                                 mgPlayerObjTbl[i]->work[0] = 7;
-                                D_8010C320_the_beat_goes_on = 0;
-                                D_8010C31E_the_beat_goes_on = 0;
+                                m232_musicStopF = 0;
+                                m232_cameraTurnState = 0;
                                 HuAudSeqStop();
                             }
                         }
                         Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[7]].motId, 0, 1, 2);
                         Hu3DMotionSpeedSet(obj->model[0], 1.0f);
                         work->unk_00 = 0;
-                        D_8010C4E9_the_beat_goes_on = 0;
-                        D_8010C4E8_the_beat_goes_on++;
+                        m232_seqNo = 0;
+                        m232_seqLen++;
                     }
                 } else {
-                    D_8010C4E9_the_beat_goes_on++;
+                    m232_seqNo++;
                     obj->work[0] = 2;
                 }
             }
             break;
         case 4:
-            func_8010A94C_the_beat_goes_on(obj, &D_8010C31D_the_beat_goes_on);
+            m232_DrumHitUpdate(obj, &m232_drumState);
             MgPlayerEffSet(obj, 6, obj->trans.x, -50.0f, obj->trans.z + 50.0f, 90.0f, 0.0f);
             Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[2]].motId, 0, 1, 2);
             Hu3DMotionSpeedSet(obj->model[0], 1.0f);
             obj->work[1] = 2;
             work->unk_00 = 0;
-            D_8010C4E9_the_beat_goes_on = 0;
-            D_8010C31C_the_beat_goes_on--;
+            m232_seqNo = 0;
+            m232_playerAliveNum--;
             obj->work[0] = 5;
             break;
         case 5:
@@ -1136,11 +1136,11 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
                 HuAudPlayerFXPlay(0x40C, 0);
             } else if (Hu3DData[obj->model[0]].motTime == 20.0f) {
                 notes->unk_08 = 0;
-                func_8010C14C_the_beat_goes_on();
+                m232_SheetClear();
             } else if (Hu3DData[obj->model[0]].motTime == 50.0f) {
-                D_8010C280_the_beat_goes_on = 2;
+                m232_fireState = 2;
             }
-            func_8010A94C_the_beat_goes_on(obj, &D_8010C31D_the_beat_goes_on);
+            m232_DrumHitUpdate(obj, &m232_drumState);
             break;
         case 6:
             if (obj->trans.x < -450.0f) {
@@ -1148,52 +1148,52 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
                     Hu3DModelAttrSet(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
                 for (i = 0; i < 4; i++) {
-                    Hu3DModelAttrSet(D_8010C4EC_the_beat_goes_on[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(m232_smokeMdlTbl[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
                 for (i = 0; i < 4; i++) {
                     if (obj == mgPlayerObjTbl[i]) {
                         obj->work[0] = 10;
                     } else if (mgPlayerObjTbl[i]->work[0] != 10) {
                         mgPlayerObjTbl[i]->work[0] = 7;
-                        D_8010C320_the_beat_goes_on = 1;
-                        D_8010C31E_the_beat_goes_on = 0;
+                        m232_musicStopF = 1;
+                        m232_cameraTurnState = 0;
                         HuAudSeqStop();
                     }
                 }
-                D_8010C314_the_beat_goes_on = -90.0f;
-                D_8010C470_the_beat_goes_on = 0.0f;
-                D_8010C318_the_beat_goes_on = 0.0f;
+                m232_outDrumY = -90.0f;
+                m232_outJumpAngle = 0.0f;
+                m232_outStageZ = 0.0f;
             } else {
-                func_8010AF10_the_beat_goes_on(obj);
+                m232_SmokeUpdate(obj);
                 if (obj->trans.x == 0.0f) {
                     Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[6]].motId, 0, 1, 2);
                     Hu3DMotionSpeedSet(obj->model[0], 1.0f);
                     PlayerFXPlay(0x286, data->unk59);
                     HuAudPlayerFXPlay(0x409, 0);
                     omVibrate(data->unk59, 2, 2, 20);
-                } else if (obj->trans.x < -200.0f && D_8010C31C_the_beat_goes_on == 1) {
+                } else if (obj->trans.x < -200.0f && m232_playerAliveNum == 1) {
                     for (i = 0; i < 4; i++) {
                         if (mgPlayerObjTbl[i]->work[0] == 0) {
-                            D_8010C478_the_beat_goes_on.resultType = MG_RESULT_WIN_1;
-                            D_8010C478_the_beat_goes_on.winners[0] = i;
-                            D_8010C478_the_beat_goes_on.winners[1] = 0xFF;
+                            m232_mgFlow.resultType = MG_RESULT_WIN_1;
+                            m232_mgFlow.winners[0] = i;
+                            m232_mgFlow.winners[1] = 0xFF;
                             MgFlowStatSet(MG_STATE_FINISH);
                             break;
                         }
                     }
                 }
                 obj->trans.x -= 15.0f;
-                obj->trans.y = sindf(D_8010C470_the_beat_goes_on) * 200.0f + -90.0f;
-                D_8010C470_the_beat_goes_on += 5.0f;
-                if (D_8010C470_the_beat_goes_on >= 180.0f) {
-                    D_8010C470_the_beat_goes_on = 0.0f;
+                obj->trans.y = sindf(m232_outJumpAngle) * 200.0f + -90.0f;
+                m232_outJumpAngle += 5.0f;
+                if (m232_outJumpAngle >= 180.0f) {
+                    m232_outJumpAngle = 0.0f;
                 }
                 Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                D_8010C314_the_beat_goes_on -= 2.0f;
-                D_8010C318_the_beat_goes_on += 15.0f;
-                Hu3DModelPosSet(obj->model[2], 0.0f, -90.0f, D_8010C318_the_beat_goes_on + 600.0f);
+                m232_outDrumY -= 2.0f;
+                m232_outStageZ += 15.0f;
+                Hu3DModelPosSet(obj->model[2], 0.0f, -90.0f, m232_outStageZ + 600.0f);
                 for (i = 3; i < 6; i++) {
-                    Hu3DModelPosSet(obj->model[i], 0.0f, D_8010C314_the_beat_goes_on, 600.0f);
+                    Hu3DModelPosSet(obj->model[i], 0.0f, m232_outDrumY, 600.0f);
                 }
                 obj->rot.y -= 15.0f;
                 if (obj->rot.y < -90.0f) {
@@ -1202,20 +1202,20 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
             }
             break;
         case 7:
-            D_8010C280_the_beat_goes_on = 0;
-            func_8010A94C_the_beat_goes_on(obj, &D_8010C31D_the_beat_goes_on);
+            m232_fireState = 0;
+            m232_DrumHitUpdate(obj, &m232_drumState);
             if (work->unk_00 < 30) {
                 if (work->unk_00 == 20) {
                     notes->unk_08 = 0;
-                    func_8010C14C_the_beat_goes_on();
+                    m232_SheetClear();
                 }
-                if (D_8010C31C_the_beat_goes_on == 1) {
+                if (m232_playerAliveNum == 1) {
                     work->unk_00 = 30;
                 } else {
                     work->unk_00++;
                 }
             } else if (work->unk_00 == 30) {
-                if (D_8010C31C_the_beat_goes_on >= 2 && !(HuAudStat & 2)) {
+                if (m232_playerAliveNum >= 2 && !(HuAudStat & 2)) {
                     HuAudSeqPlay(0x40);
                 }
                 Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[0]].motId, 0, 1, 2);
@@ -1224,7 +1224,7 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
                 work->unk_00++;
             } else {
                 work->unk_00++;
-                switch (D_8010C31C_the_beat_goes_on) {
+                switch (m232_playerAliveNum) {
                     case 4:
                         work->unk_04 -= 0.92783505f;
                         if (work->unk_04 < 0.0f) {
@@ -1245,7 +1245,7 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
                         }
                         break;
                     case 3:
-                        if (D_8010C320_the_beat_goes_on == 0) {
+                        if (m232_musicStopF == 0) {
                             work->unk_04 -= 1.2371134f;
                         } else {
                             work->unk_04 -= 0.92783505f;
@@ -1266,7 +1266,7 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
                         }
                         break;
                     case 2:
-                        if (D_8010C320_the_beat_goes_on == 0) {
+                        if (m232_musicStopF == 0) {
                             work->unk_04 -= 1.8556701f;
                         } else {
                             work->unk_04 -= 1.2371134f;
@@ -1294,7 +1294,7 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
                             obj->trans.z = 600.0f;
                             obj->work[0] = 8;
                             work->unk_00 = 0;
-                            D_8010C31E_the_beat_goes_on = 0;
+                            m232_cameraTurnState = 0;
                         }
                         break;
                 }
@@ -1347,7 +1347,7 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
             }
             break;
         case 9:
-            func_8010A94C_the_beat_goes_on(obj, &D_8010C31D_the_beat_goes_on);
+            m232_DrumHitUpdate(obj, &m232_drumState);
             if (obj->work[1] == 3 || obj->work[1] == 4 || obj->work[1] == 5) {
                 if (Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 - 2.0f <= Hu3DData[obj->model[0]].motTime) {
                     Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[0]].motId, 0, 1, 2);
@@ -1357,9 +1357,9 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
                 }
             }
             if (obj->work[1] == 0) {
-                D_8010C321_the_beat_goes_on = 1;
+                m232_drawF = 1;
             }
-            if (D_8010C321_the_beat_goes_on != 0 && work->unk_00 == 60) {
+            if (m232_drawF != 0 && work->unk_00 == 60) {
                 for (i = 0; i < 4; i++) {
                     if (mgPlayerObjTbl[i]->work[1] == 0) {
                         Hu3DMotionShiftSet(mgPlayerObjTbl[i]->model[0],
@@ -1368,11 +1368,11 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
                         mgPlayerObjTbl[i]->work[1] = 2;
                     }
                 }
-                D_8010C321_the_beat_goes_on = 0;
+                m232_drawF = 0;
             }
             if (work->unk_00 == 0) {
-                func_8010C14C_the_beat_goes_on();
-                D_8010C478_the_beat_goes_on.resultType = MG_RESULT_DRAW;
+                m232_SheetClear();
+                m232_mgFlow.resultType = MG_RESULT_DRAW;
                 MgFlowStatSet(MG_STATE_FINISH);
             } else {
                 if (work->unk_00 > 60 &&
@@ -1393,7 +1393,7 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
             for (i = 1; i < 6; i++) {
                 Hu3DModelPosSet(obj->model[i], obj->trans.x, obj->trans.y, obj->trans.z);
             }
-            func_80105E0C_the_beat_goes_on(240.0f);
+            m232_CameraOutMove(240.0f);
             break;
         case 10:
             break;
@@ -1405,7 +1405,7 @@ void func_80108810_the_beat_goes_on(omObjData *obj) {
     }
 }
 
-u16 func_8010A5FC_the_beat_goes_on(MgPlayerWork *data) {
+u16 m232_PlayerComInput(MgPlayerWork *data) {
     u16 button = 0;
     u8 roll;
     s32 chance;
@@ -1413,9 +1413,9 @@ u16 func_8010A5FC_the_beat_goes_on(MgPlayerWork *data) {
     if (!(GwPlayer[data->unk59].stat & 1)) {
         return HuPadBtnDown[data->unk57];
     }
-    if (D_8010C4E9_the_beat_goes_on == D_8010C4E8_the_beat_goes_on &&
-        D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].button == 0) {
-        button = func_80108198_the_beat_goes_on(D_8010C4E9_the_beat_goes_on);
+    if (m232_seqNo == m232_seqLen &&
+        m232_seqTbl[m232_seqNo].button == 0) {
+        button = m232_SeqBtnGet(m232_seqNo);
     } else {
         roll = rand8() * 100U / 256;
         switch (GwPlayer[data->unk59].cpu_difficulty) {
@@ -1435,30 +1435,30 @@ u16 func_8010A5FC_the_beat_goes_on(MgPlayerWork *data) {
                 chance = 65;
                 break;
         }
-        if (D_8010C4E9_the_beat_goes_on < 5) {
+        if (m232_seqNo < 5) {
             chance = 99;
-        } else if (D_8010C4E9_the_beat_goes_on >= 13) {
+        } else if (m232_seqNo >= 13) {
             if (GwPlayer[data->unk59].cpu_difficulty == 0) {
                 chance = 45;
             } else {
                 chance = 50;
             }
-        } else if (D_8010C4E9_the_beat_goes_on >= 9) {
+        } else if (m232_seqNo >= 9) {
             chance -= 5;
         }
         if (roll < chance) {
-            button = D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].button;
-        } else if (D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].button == A_BUTTON) {
+            button = m232_seqTbl[m232_seqNo].button;
+        } else if (m232_seqTbl[m232_seqNo].button == A_BUTTON) {
             button = Z_TRIG;
             if (rand8() >> 7) {
                 button = B_BUTTON;
             }
-        } else if (D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].button == B_BUTTON) {
+        } else if (m232_seqTbl[m232_seqNo].button == B_BUTTON) {
             button = A_BUTTON;
             if (rand8() >> 7) {
                 button = Z_TRIG;
             }
-        } else if (D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].button == Z_TRIG) {
+        } else if (m232_seqTbl[m232_seqNo].button == Z_TRIG) {
             button = B_BUTTON;
             if (rand8() >> 7) {
                 button = A_BUTTON;
@@ -1468,25 +1468,25 @@ u16 func_8010A5FC_the_beat_goes_on(MgPlayerWork *data) {
     return button;
 }
 
-void func_8010A88C_the_beat_goes_on(u16 button) {
-    BeatGoesOnNotes *notes = (BeatGoesOnNotes *)D_8010C4E4_the_beat_goes_on->data;
+void m232_SheetBtnSet(u16 button) {
+    BeatGoesOnNotes *notes = (BeatGoesOnNotes *)m232_sheetObj->data;
 
     if (button == A_BUTTON) {
-        notes->btnA[D_8010C4E9_the_beat_goes_on] = 1;
+        notes->btnA[m232_seqNo] = 1;
     } else if (button == B_BUTTON) {
-        notes->btnB[D_8010C4E9_the_beat_goes_on] = 1;
+        notes->btnB[m232_seqNo] = 1;
     } else if (button == Z_TRIG) {
-        notes->btnZ[D_8010C4E9_the_beat_goes_on] = 1;
+        notes->btnZ[m232_seqNo] = 1;
     }
-    if (D_8010C4E9_the_beat_goes_on == D_8010C4E8_the_beat_goes_on) {
+    if (m232_seqNo == m232_seqLen) {
         notes->unk_18 = 0;
-        D_8010C4A0_the_beat_goes_on[D_8010C4E9_the_beat_goes_on].button = button;
+        m232_seqTbl[m232_seqNo].button = button;
     } else {
-        notes->noteFlags[D_8010C4E9_the_beat_goes_on] = 0;
+        notes->noteFlags[m232_seqNo] = 0;
     }
 }
 
-void func_8010A94C_the_beat_goes_on(omObjData *obj, s8 *state) {
+void m232_DrumHitUpdate(omObjData *obj, s8 *state) {
     MgPlayerWork *data = obj->data;
 
     if (Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 / 2.0f <= Hu3DData[obj->model[0]].motTime &&
@@ -1541,24 +1541,24 @@ void func_8010A94C_the_beat_goes_on(omObjData *obj, s8 *state) {
     }
 }
 
-void func_8010AD60_the_beat_goes_on(s8 *state, f32 speed) {
+void m232_CameraTurnUpdate(s8 *state, f32 speed) {
     switch (*state) {
         case 0:
-            func_80105E0C_the_beat_goes_on(speed / 2.0f);
+            m232_CameraOutMove(speed / 2.0f);
             if (CZoom == 2200.0f && Center.z == 380.0f && CRot.x == -30.0f) {
                 *state = 1;
             }
             break;
         case 1:
-            if (D_8010C474_the_beat_goes_on > 40) {
-                D_8010C474_the_beat_goes_on = 0;
+            if (m232_cameraTurnTimer > 40) {
+                m232_cameraTurnTimer = 0;
                 *state = 2;
             } else {
-                D_8010C474_the_beat_goes_on++;
+                m232_cameraTurnTimer++;
             }
             break;
         case 2:
-            func_80105F60_the_beat_goes_on(speed / 2.0f);
+            m232_CameraCloseMove(speed / 2.0f);
             if (CZoom == 700.0f && Center.z == 880.0f && CRot.x == -10.0f) {
                 *state = 3;
             }
@@ -1566,48 +1566,48 @@ void func_8010AD60_the_beat_goes_on(s8 *state, f32 speed) {
     }
 }
 
-void func_8010AF10_the_beat_goes_on(omObjData *obj) {
+void m232_SmokeUpdate(omObjData *obj) {
     MgPlayerWork *data = obj->data;
     s32 player = data->unk59;
     f32 scale;
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        if (D_8010C328_the_beat_goes_on[player][i] >= 0) {
-            if (D_8010C328_the_beat_goes_on[player][i] == 0) {
-                Hu3DModelPosSet(D_8010C4EC_the_beat_goes_on[i], obj->trans.x, obj->trans.y, obj->trans.z);
-                Hu3DModelAttrSet(D_8010C4EC_the_beat_goes_on[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        if (m232_smokeTimerTbl[player][i] >= 0) {
+            if (m232_smokeTimerTbl[player][i] == 0) {
+                Hu3DModelPosSet(m232_smokeMdlTbl[i], obj->trans.x, obj->trans.y, obj->trans.z);
+                Hu3DModelAttrSet(m232_smokeMdlTbl[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
-            if (D_8010C328_the_beat_goes_on[player][i] < 8) {
-                scale = D_8010C368_the_beat_goes_on[D_8010C328_the_beat_goes_on[player][i] / 2];
-                Hu3DModelScaleSet(D_8010C4EC_the_beat_goes_on[i], scale, scale, 1.0f);
+            if (m232_smokeTimerTbl[player][i] < 8) {
+                scale = m232_smokeScaleTbl[m232_smokeTimerTbl[player][i] / 2];
+                Hu3DModelScaleSet(m232_smokeMdlTbl[i], scale, scale, 1.0f);
             }
-            if (D_8010C328_the_beat_goes_on[player][i] >= 8) {
-                D_8010C328_the_beat_goes_on[player][i] = -1;
+            if (m232_smokeTimerTbl[player][i] >= 8) {
+                m232_smokeTimerTbl[player][i] = -1;
             }
         }
-        D_8010C328_the_beat_goes_on[player][i]++;
+        m232_smokeTimerTbl[player][i]++;
     }
 }
 
-void func_8010B058_the_beat_goes_on(omObjData *obj) {
-    obj->func = func_8010B0E0_the_beat_goes_on;
+void m232_WaterObjInit(omObjData *obj) {
+    obj->func = m232_WaterObjMain;
     obj->trans.x = obj->trans.y = obj->trans.z = 0.0f;
     obj->model[0] = Hu3DModelRead(0x410005, 0x699);
     Hu3DModelVtxBufMake(obj->model[0]);
-    Hu3DTexSizeGet("mizu_DEF", D_8010C500_the_beat_goes_on);
-    D_8010C504_the_beat_goes_on = 0.0f;
+    Hu3DTexSizeGet("mizu_DEF", m232_waterTexSize);
+    m232_waterScroll = 0.0f;
 }
 
-void func_8010B0E0_the_beat_goes_on(omObjData *obj) {
+void m232_WaterObjMain(omObjData *obj) {
     if (omPauseChk() + omAllPauseF == 0) {
-        D_8010C504_the_beat_goes_on += 0.2f;
+        m232_waterScroll += 0.2f;
     }
-    Hu3DModelObjTexScroll(obj->model[0], 0.0f, D_8010C504_the_beat_goes_on, D_8010C500_the_beat_goes_on[0],
-                       D_8010C500_the_beat_goes_on[1], "m232_001c-cube7", 0);
+    Hu3DModelObjTexScroll(obj->model[0], 0.0f, m232_waterScroll, m232_waterTexSize[0],
+                       m232_waterTexSize[1], "m232_001c-cube7", 0);
 }
 
-void func_8010B17C_the_beat_goes_on(omObjData *obj) {
+void m232_SheetObjInit(omObjData *obj) {
     BeatGoesOnNotes *notes;
     s16 sprAnim;
     s16 anim;
@@ -1618,11 +1618,11 @@ void func_8010B17C_the_beat_goes_on(omObjData *obj) {
     s32 j;
 
     sprAnim = HuSprAnimDataRead(0x41000C);
-    HuSprGrpMemberSet(D_8010C4F4_the_beat_goes_on = HuSprGrpCreate(1, 0), 0, sprAnim, 0);
-    HuSprAttrReset(D_8010C4F4_the_beat_goes_on, 0, 0xFFFF);
-    HuSprAttrSet(D_8010C4F4_the_beat_goes_on, 0, 0x5000);
-    D_8010C4FC_the_beat_goes_on = 120;
-    HuSprPosSet(D_8010C4F4_the_beat_goes_on, 0, 160, D_8010C4FC_the_beat_goes_on);
+    HuSprGrpMemberSet(m232_signGrp = HuSprGrpCreate(1, 0), 0, sprAnim, 0);
+    HuSprAttrReset(m232_signGrp, 0, 0xFFFF);
+    HuSprAttrSet(m232_signGrp, 0, 0x5000);
+    m232_signY = 120;
+    HuSprPosSet(m232_signGrp, 0, 160, m232_signY);
     obj->data = HuMemAllocTag(sizeof(BeatGoesOnNotes), TAG_OVERLAY);
     memset(obj->data, 0, sizeof(BeatGoesOnNotes));
     notes = obj->data;
@@ -1633,42 +1633,42 @@ void func_8010B17C_the_beat_goes_on(omObjData *obj) {
     notes->unk_10 = 50;
     anim = HuSprAnimDataRead(0x410011);
     for (i = 0; i < 2; i++) {
-        D_8010C508_the_beat_goes_on[i] = espEntry(anim, 0, 1);
-        espPriSet(D_8010C508_the_beat_goes_on[i], 0x30);
-        espPosSet(D_8010C508_the_beat_goes_on[i], 160, i * 20 + 30);
-        espTPLvlSet(D_8010C508_the_beat_goes_on[i], 0x40);
-        espDispOff(D_8010C508_the_beat_goes_on[i]);
+        m232_sheetLineSprTbl[i] = espEntry(anim, 0, 1);
+        espPriSet(m232_sheetLineSprTbl[i], 0x30);
+        espPosSet(m232_sheetLineSprTbl[i], 160, i * 20 + 30);
+        espTPLvlSet(m232_sheetLineSprTbl[i], 0x40);
+        espDispOff(m232_sheetLineSprTbl[i]);
         notes->unk_16 = 0;
     }
-    D_8010C510_the_beat_goes_on = espEntry(HuSprAnimDataRead(0x410015), 0, 1);
-    espPriSet(D_8010C50C_the_beat_goes_on, 0x10);
-    espPosSet(D_8010C510_the_beat_goes_on, notes->unk_12, notes->unk_14);
-    espDispOff(D_8010C510_the_beat_goes_on);
+    m232_hitMarkSpr = espEntry(HuSprAnimDataRead(0x410015), 0, 1);
+    espPriSet(m232_cursorSpr, 0x10);
+    espPosSet(m232_hitMarkSpr, notes->unk_12, notes->unk_14);
+    espDispOff(m232_hitMarkSpr);
     notes->unk_19 = 0;
-    D_8010C50C_the_beat_goes_on = espEntry(HuSprAnimDataRead(0x410014), 0, 1);
-    espPriSet(D_8010C50C_the_beat_goes_on, 0x10);
-    espPosSet(D_8010C50C_the_beat_goes_on, notes->unk_04, notes->unk_06);
-    espDispOff(D_8010C50C_the_beat_goes_on);
+    m232_cursorSpr = espEntry(HuSprAnimDataRead(0x410014), 0, 1);
+    espPriSet(m232_cursorSpr, 0x10);
+    espPosSet(m232_cursorSpr, notes->unk_04, notes->unk_06);
+    espDispOff(m232_cursorSpr);
     notes->unk_17 = 0;
     notes->unk_08 = 0;
     notes->unk_09 = 0;
     notes->unk_0C = 0;
     notes->unk_0A = 0;
-    D_8010C50E_the_beat_goes_on = espEntry(HuSprAnimDataRead(0x410012), 0, 1);
-    espPriSet(D_8010C50E_the_beat_goes_on, 0x20);
-    espPosSet(D_8010C50E_the_beat_goes_on, notes->unk_0E, notes->unk_10);
-    espDispOff(D_8010C50E_the_beat_goes_on);
+    m232_noteMarkSpr = espEntry(HuSprAnimDataRead(0x410012), 0, 1);
+    espPriSet(m232_noteMarkSpr, 0x20);
+    espPosSet(m232_noteMarkSpr, notes->unk_0E, notes->unk_10);
+    espDispOff(m232_noteMarkSpr);
     notes->unk_18 = 0;
     anim = HuSprAnimDataRead(0x410013);
     for (i = 0; i < 15; i++) {
-        D_8010C518_the_beat_goes_on[i] = espEntry(anim, 0, 1);
-        espPriSet(D_8010C518_the_beat_goes_on[i], 0x20);
+        m232_noteSprTbl[i] = espEntry(anim, 0, 1);
+        espPriSet(m232_noteSprTbl[i], 0x20);
         if (i < 8) {
-            espPosSet(D_8010C518_the_beat_goes_on[i], i * 30 + 55, 30);
+            espPosSet(m232_noteSprTbl[i], i * 30 + 55, 30);
         } else {
-            espPosSet(D_8010C518_the_beat_goes_on[i], (i - 8) * 30 + 55, 50);
+            espPosSet(m232_noteSprTbl[i], (i - 8) * 30 + 55, 50);
         }
-        espDispOff(D_8010C518_the_beat_goes_on[i]);
+        espDispOff(m232_noteSprTbl[i]);
         notes->noteFlags[i] = 0;
     }
     animA = HuSprAnimDataRead(0x41000E);
@@ -1676,27 +1676,27 @@ void func_8010B17C_the_beat_goes_on(omObjData *obj) {
     animZ = HuSprAnimDataRead(0x410010);
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 8; i++) {
-            D_8010C538_the_beat_goes_on[j * 8 + i] = espEntry(animA, 0, 1);
-            espPriSet(D_8010C538_the_beat_goes_on[j * 8 + i], 0x20);
-            espPosSet(D_8010C538_the_beat_goes_on[j * 8 + i], i * 30 + 55, j * 20 + 30);
-            espDispOff(D_8010C538_the_beat_goes_on[j * 8 + i]);
+            m232_noteASprTbl[j * 8 + i] = espEntry(animA, 0, 1);
+            espPriSet(m232_noteASprTbl[j * 8 + i], 0x20);
+            espPosSet(m232_noteASprTbl[j * 8 + i], i * 30 + 55, j * 20 + 30);
+            espDispOff(m232_noteASprTbl[j * 8 + i]);
             notes->btnA[j * 8 + i] = 0;
-            D_8010C558_the_beat_goes_on[j * 8 + i] = espEntry(animB, 0, 1);
-            espPriSet(D_8010C558_the_beat_goes_on[j * 8 + i], 0x20);
-            espPosSet(D_8010C558_the_beat_goes_on[j * 8 + i], i * 30 + 55, j * 20 + 30);
-            espDispOff(D_8010C558_the_beat_goes_on[j * 8 + i]);
+            m232_noteBSprTbl[j * 8 + i] = espEntry(animB, 0, 1);
+            espPriSet(m232_noteBSprTbl[j * 8 + i], 0x20);
+            espPosSet(m232_noteBSprTbl[j * 8 + i], i * 30 + 55, j * 20 + 30);
+            espDispOff(m232_noteBSprTbl[j * 8 + i]);
             notes->btnB[j * 8 + i] = 0;
-            D_8010C578_the_beat_goes_on[j * 8 + i] = espEntry(animZ, 0, 1);
-            espPriSet(D_8010C578_the_beat_goes_on[j * 8 + i], 0x20);
-            espPosSet(D_8010C578_the_beat_goes_on[j * 8 + i], i * 30 + 55, j * 20 + 30);
-            espDispOff(D_8010C578_the_beat_goes_on[j * 8 + i]);
+            m232_noteZSprTbl[j * 8 + i] = espEntry(animZ, 0, 1);
+            espPriSet(m232_noteZSprTbl[j * 8 + i], 0x20);
+            espPosSet(m232_noteZSprTbl[j * 8 + i], i * 30 + 55, j * 20 + 30);
+            espDispOff(m232_noteZSprTbl[j * 8 + i]);
             notes->btnZ[j * 8 + i] = 0;
         }
     }
-    obj->func = func_8010B6DC_the_beat_goes_on;
+    obj->func = m232_SheetObjMain;
 }
 
-void func_8010B6DC_the_beat_goes_on(omObjData *obj) {
+void m232_SheetObjMain(omObjData *obj) {
     BeatGoesOnNotes *notes;
     BeatGoesOnPos pos;
     f32 scale;
@@ -1704,122 +1704,122 @@ void func_8010B6DC_the_beat_goes_on(omObjData *obj) {
     s32 j;
 
     if (omPauseChk() + omAllPauseF != 0) {
-        espDispOff(D_8010C50C_the_beat_goes_on);
-        espDispOff(D_8010C50E_the_beat_goes_on);
-        espDispOff(D_8010C510_the_beat_goes_on);
+        espDispOff(m232_cursorSpr);
+        espDispOff(m232_noteMarkSpr);
+        espDispOff(m232_hitMarkSpr);
         for (i = 0; i < 2; i++) {
-            espDispOff(D_8010C508_the_beat_goes_on[i]);
+            espDispOff(m232_sheetLineSprTbl[i]);
         }
         for (i = 0; i < 15; i++) {
-            espDispOff(D_8010C518_the_beat_goes_on[i]);
+            espDispOff(m232_noteSprTbl[i]);
         }
         for (j = 0; j < 2; j++) {
             for (i = 0; i < 8; i++) {
-                espDispOff(D_8010C538_the_beat_goes_on[j * 8 + i]);
-                espDispOff(D_8010C558_the_beat_goes_on[j * 8 + i]);
-                espDispOff(D_8010C578_the_beat_goes_on[j * 8 + i]);
+                espDispOff(m232_noteASprTbl[j * 8 + i]);
+                espDispOff(m232_noteBSprTbl[j * 8 + i]);
+                espDispOff(m232_noteZSprTbl[j * 8 + i]);
             }
         }
         return;
     }
     notes = obj->data;
-    espPosSet(D_8010C50E_the_beat_goes_on, notes->unk_0E, notes->unk_10);
+    espPosSet(m232_noteMarkSpr, notes->unk_0E, notes->unk_10);
     for (i = 0; i < 2; i++) {
         if (notes->unk_16 == 1) {
-            espPriSet(D_8010C508_the_beat_goes_on[i], 0x30);
-            espDispOn(D_8010C508_the_beat_goes_on[i]);
+            espPriSet(m232_sheetLineSprTbl[i], 0x30);
+            espDispOn(m232_sheetLineSprTbl[i]);
         } else {
-            espDispOff(D_8010C508_the_beat_goes_on[i]);
+            espDispOff(m232_sheetLineSprTbl[i]);
         }
     }
     if (notes->unk_17 == 1) {
-        espDispOn(D_8010C50C_the_beat_goes_on);
+        espDispOn(m232_cursorSpr);
     } else {
-        espDispOff(D_8010C50C_the_beat_goes_on);
-        D_8010C378_the_beat_goes_on = 20.0f;
+        espDispOff(m232_cursorSpr);
+        m232_cursorX = 20.0f;
     }
     if (notes->unk_18 == 1) {
-        espDispOn(D_8010C50E_the_beat_goes_on);
+        espDispOn(m232_noteMarkSpr);
     } else {
-        espDispOff(D_8010C50E_the_beat_goes_on);
+        espDispOff(m232_noteMarkSpr);
     }
     if (notes->unk_19 == 1) {
-        espDispOn(D_8010C510_the_beat_goes_on);
+        espDispOn(m232_hitMarkSpr);
     } else {
-        espDispOff(D_8010C510_the_beat_goes_on);
+        espDispOff(m232_hitMarkSpr);
     }
     for (i = 0; i < 15; i++) {
         if (notes->noteFlags[i] == 1) {
-            espDispOn(D_8010C518_the_beat_goes_on[i]);
+            espDispOn(m232_noteSprTbl[i]);
         } else {
-            espDispOff(D_8010C518_the_beat_goes_on[i]);
+            espDispOff(m232_noteSprTbl[i]);
         }
     }
     for (j = 0; j < 2; j++) {
         for (i = 0; i < 8; i++) {
             if (notes->btnA[j * 8 + i] == 1) {
-                espDispOn(D_8010C538_the_beat_goes_on[j * 8 + i]);
+                espDispOn(m232_noteASprTbl[j * 8 + i]);
             } else {
-                espDispOff(D_8010C538_the_beat_goes_on[j * 8 + i]);
+                espDispOff(m232_noteASprTbl[j * 8 + i]);
             }
             if (notes->btnB[j * 8 + i] == 1) {
-                espDispOn(D_8010C558_the_beat_goes_on[j * 8 + i]);
+                espDispOn(m232_noteBSprTbl[j * 8 + i]);
             } else {
-                espDispOff(D_8010C558_the_beat_goes_on[j * 8 + i]);
+                espDispOff(m232_noteBSprTbl[j * 8 + i]);
             }
             if (notes->btnZ[j * 8 + i] == 1) {
-                espDispOn(D_8010C578_the_beat_goes_on[j * 8 + i]);
+                espDispOn(m232_noteZSprTbl[j * 8 + i]);
             } else {
-                espDispOff(D_8010C578_the_beat_goes_on[j * 8 + i]);
+                espDispOff(m232_noteZSprTbl[j * 8 + i]);
             }
         }
     }
     if (notes->unk_08 == 0) {
-        D_8010C384_the_beat_goes_on = 90;
-        espPosSet(D_8010C50C_the_beat_goes_on, notes->unk_04, notes->unk_06);
-        D_8010C380_the_beat_goes_on = 0.0f;
-        espScaleSet(D_8010C50E_the_beat_goes_on, 1.0f, 1.0f);
-        D_8010C37C_the_beat_goes_on = 0.0f;
+        m232_pulseTimer = 90;
+        espPosSet(m232_cursorSpr, notes->unk_04, notes->unk_06);
+        m232_pulseAngle = 0.0f;
+        espScaleSet(m232_noteMarkSpr, 1.0f, 1.0f);
+        m232_noteScaleAngle = 0.0f;
         for (j = 0; j < 2; j++) {
             for (i = 0; i < 8; i++) {
-                espScaleSet(D_8010C538_the_beat_goes_on[j * 8 + i], 1.0f, 1.0f);
-                espScaleSet(D_8010C558_the_beat_goes_on[j * 8 + i], 1.0f, 1.0f);
-                espScaleSet(D_8010C578_the_beat_goes_on[j * 8 + i], 1.0f, 1.0f);
+                espScaleSet(m232_noteASprTbl[j * 8 + i], 1.0f, 1.0f);
+                espScaleSet(m232_noteBSprTbl[j * 8 + i], 1.0f, 1.0f);
+                espScaleSet(m232_noteZSprTbl[j * 8 + i], 1.0f, 1.0f);
             }
         }
         for (i = 0; i < 15; i++) {
-            espScaleSet(D_8010C518_the_beat_goes_on[i], 1.0f, 1.0f);
+            espScaleSet(m232_noteSprTbl[i], 1.0f, 1.0f);
         }
         return;
     }
-    if (D_8010C4E9_the_beat_goes_on == D_8010C4E8_the_beat_goes_on) {
-        func_8010C0F4_the_beat_goes_on(&pos);
+    if (m232_seqNo == m232_seqLen) {
+        m232_SheetPosGet(&pos);
         if (notes->unk_18 == 1 && ABS(notes->unk_04 - pos.x) <= 0 && pos.y == notes->unk_06 &&
-            D_8010C384_the_beat_goes_on != 0) {
+            m232_pulseTimer != 0) {
             f32 pulse;
 
-            D_8010C384_the_beat_goes_on--;
-            D_8010C380_the_beat_goes_on += 30.0f;
-            if (D_8010C380_the_beat_goes_on >= 180.0f) {
-                D_8010C380_the_beat_goes_on = 0.0f;
+            m232_pulseTimer--;
+            m232_pulseAngle += 30.0f;
+            if (m232_pulseAngle >= 180.0f) {
+                m232_pulseAngle = 0.0f;
             }
-            pulse = sindf(D_8010C380_the_beat_goes_on) * 0.5f + 1.0f;
-            espScaleSet(D_8010C50E_the_beat_goes_on, pulse, pulse);
+            pulse = sindf(m232_pulseAngle) * 0.5f + 1.0f;
+            espScaleSet(m232_noteMarkSpr, pulse, pulse);
         } else {
-            D_8010C378_the_beat_goes_on += 1.33333f;
+            m232_cursorX += 1.33333f;
         }
     } else {
-        D_8010C378_the_beat_goes_on += 1.33333f;
+        m232_cursorX += 1.33333f;
     }
-    if ((notes->unk_04 = D_8010C378_the_beat_goes_on) >= 280) {
+    if ((notes->unk_04 = m232_cursorX) >= 280) {
         if (notes->unk_06 == 30) {
-            if (D_8010C4E8_the_beat_goes_on + 1 == 8) {
+            if (m232_seqLen + 1 == 8) {
                 notes->unk_04 = 280;
-                D_8010C378_the_beat_goes_on = 280.0f;
+                m232_cursorX = 280.0f;
             } else {
                 notes->unk_04 = 40;
-                D_8010C378_the_beat_goes_on = 40.0f;
-                if (D_8010C4E8_the_beat_goes_on + 1 >= 9) {
+                m232_cursorX = 40.0f;
+                if (m232_seqLen + 1 >= 9) {
                     notes->unk_06 += 20;
                 }
             }
@@ -1827,57 +1827,57 @@ void func_8010B6DC_the_beat_goes_on(omObjData *obj) {
             notes->unk_04 = 280;
         }
     }
-    espPosSet(D_8010C50C_the_beat_goes_on, notes->unk_04, notes->unk_06);
+    espPosSet(m232_cursorSpr, notes->unk_04, notes->unk_06);
     if (notes->unk_0C != 0) {
-        if (D_8010C37C_the_beat_goes_on == 0.0f) {
-            D_8010C475_the_beat_goes_on = D_8010C4E9_the_beat_goes_on;
+        if (m232_noteScaleAngle == 0.0f) {
+            m232_noteHitNo = m232_seqNo;
         }
         if (notes->unk_19 != 0) {
-            D_8010C37C_the_beat_goes_on += 36.0f;
-            if (D_8010C37C_the_beat_goes_on >= 36.0f) {
-                D_8010C37C_the_beat_goes_on = 36.0f;
+            m232_noteScaleAngle += 36.0f;
+            if (m232_noteScaleAngle >= 36.0f) {
+                m232_noteScaleAngle = 36.0f;
                 notes->unk_0C = 0;
             }
         } else {
-            D_8010C37C_the_beat_goes_on += 36.0f;
-            if (D_8010C37C_the_beat_goes_on >= 180.0f) {
-                D_8010C37C_the_beat_goes_on = 0.0f;
+            m232_noteScaleAngle += 36.0f;
+            if (m232_noteScaleAngle >= 180.0f) {
+                m232_noteScaleAngle = 0.0f;
                 notes->unk_0C = 0;
             }
         }
-        scale = sindf(D_8010C37C_the_beat_goes_on) + 1.0f;
+        scale = sindf(m232_noteScaleAngle) + 1.0f;
         switch (notes->unk_0A) {
             case 0x8000:
-                if (D_8010C4E0_the_beat_goes_on->work[0] != 6) {
-                    espScaleSet(D_8010C538_the_beat_goes_on[D_8010C475_the_beat_goes_on - 1], scale, scale);
+                if (m232_drummerObj->work[0] != 6) {
+                    espScaleSet(m232_noteASprTbl[m232_noteHitNo - 1], scale, scale);
                 } else {
-                    espScaleSet(D_8010C538_the_beat_goes_on[D_8010C475_the_beat_goes_on], scale, scale);
+                    espScaleSet(m232_noteASprTbl[m232_noteHitNo], scale, scale);
                 }
                 break;
             case 0x4000:
-                if (D_8010C4E0_the_beat_goes_on->work[0] != 6) {
-                    espScaleSet(D_8010C558_the_beat_goes_on[D_8010C475_the_beat_goes_on - 1], scale, scale);
+                if (m232_drummerObj->work[0] != 6) {
+                    espScaleSet(m232_noteBSprTbl[m232_noteHitNo - 1], scale, scale);
                 } else {
-                    espScaleSet(D_8010C558_the_beat_goes_on[D_8010C475_the_beat_goes_on], scale, scale);
+                    espScaleSet(m232_noteBSprTbl[m232_noteHitNo], scale, scale);
                 }
                 break;
             case 0x2000:
-                if (D_8010C4E0_the_beat_goes_on->work[0] != 6) {
-                    espScaleSet(D_8010C578_the_beat_goes_on[D_8010C475_the_beat_goes_on - 1], scale, scale);
+                if (m232_drummerObj->work[0] != 6) {
+                    espScaleSet(m232_noteZSprTbl[m232_noteHitNo - 1], scale, scale);
                 } else {
-                    espScaleSet(D_8010C578_the_beat_goes_on[D_8010C475_the_beat_goes_on], scale, scale);
+                    espScaleSet(m232_noteZSprTbl[m232_noteHitNo], scale, scale);
                 }
                 break;
             case 0x800:
-                espScaleSet(D_8010C518_the_beat_goes_on[D_8010C475_the_beat_goes_on], scale, scale);
+                espScaleSet(m232_noteSprTbl[m232_noteHitNo], scale, scale);
                 break;
             case 0x400:
-                espScaleSet(D_8010C50E_the_beat_goes_on, scale, scale);
+                espScaleSet(m232_noteMarkSpr, scale, scale);
                 break;
         }
     }
-    if (D_8010C4E0_the_beat_goes_on->work[0] == 6) {
-        func_8010C0F4_the_beat_goes_on(&pos);
+    if (m232_drummerObj->work[0] == 6) {
+        m232_SheetPosGet(&pos);
         if (ABS(notes->unk_04 - pos.x) <= 10 && pos.y == notes->unk_06) {
             notes->unk_09 = 1;
         } else {
@@ -1886,23 +1886,23 @@ void func_8010B6DC_the_beat_goes_on(omObjData *obj) {
         if (notes->unk_09 == 1 && notes->unk_19 == 0) {
             notes->unk_12 = pos.x;
             notes->unk_14 = pos.y;
-            espPosSet(D_8010C510_the_beat_goes_on, notes->unk_12, notes->unk_14);
+            espPosSet(m232_hitMarkSpr, notes->unk_12, notes->unk_14);
         }
     }
 }
 
-void func_8010C0F4_the_beat_goes_on(BeatGoesOnPos *pos) {
-    if (D_8010C4E9_the_beat_goes_on < 8) {
-        pos->x = D_8010C4E9_the_beat_goes_on * 30 + 55;
+void m232_SheetPosGet(BeatGoesOnPos *pos) {
+    if (m232_seqNo < 8) {
+        pos->x = m232_seqNo * 30 + 55;
         pos->y = 30;
     } else {
-        pos->x = (D_8010C4E9_the_beat_goes_on - 8) * 30 + 55;
+        pos->x = (m232_seqNo - 8) * 30 + 55;
         pos->y = 50;
     }
 }
 
-void func_8010C14C_the_beat_goes_on(void) {
-    BeatGoesOnNotes *notes = (BeatGoesOnNotes *)D_8010C4E4_the_beat_goes_on->data;
+void m232_SheetClear(void) {
+    BeatGoesOnNotes *notes = (BeatGoesOnNotes *)m232_sheetObj->data;
     s32 i;
 
     notes->unk_19 = 0;
@@ -1920,7 +1920,7 @@ void func_8010C14C_the_beat_goes_on(void) {
     }
 }
 
-Vec *func_8010C1A4_the_beat_goes_on(Vec *out, Vec *from, Vec *to) {
+Vec *m232_DirCalc(Vec *out, Vec *from, Vec *to) {
     Vec dir;
     f32 len;
 

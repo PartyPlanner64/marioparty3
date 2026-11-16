@@ -46,7 +46,7 @@ typedef struct GameGuysMagicBoxesPlayerInfo { // 0x8 bytes
     /* 0x06 */ s16 coins;
 } GameGuysMagicBoxesPlayerInfo;
 
-typedef struct GameGuysMagicBoxesBssC9D8 { // 0x10 bytes
+typedef struct GameGuysMagicBoxesStateWork { // 0x10 bytes
     /* 0x00 */ u8 unk_00;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ u8 unk_02;
@@ -56,185 +56,185 @@ typedef struct GameGuysMagicBoxesBssC9D8 { // 0x10 bytes
     /* 0x0B */ u8 unk_0B[3];
     /* 0x0E */ u8 unk_0E;
     /* 0x0F */ u8 unk_0F;
-} GameGuysMagicBoxesBssC9D8;
+} GameGuysMagicBoxesStateWork;
 
-f32 D_8010C1E0_game_guys_magic_boxes = 1.0f;
-f32 D_8010C1E4_game_guys_magic_boxes = 1.0f;
-s16 D_8010C1E8_game_guys_magic_boxes[3] = { 5, 25, 60 }; // COM key wait frames, indexed by CPU difficulty
-u8 D_8010C1EE_game_guys_magic_boxes = 0;
-u8 D_8010C1EF_game_guys_magic_boxes = 0; // drop state
-u16 D_8010C1F0_game_guys_magic_boxes = 0;
-f32 D_8010C1F4_game_guys_magic_boxes = 0.0f;
-u16 D_8010C1F8_game_guys_magic_boxes = 0;
-u8 D_8010C1FA_game_guys_magic_boxes = 0;
-u8 D_8010C1FB_game_guys_magic_boxes = 0;
-u8 D_8010C1FC_game_guys_magic_boxes = 0;   // choice state
-s16 D_8010C1FE_game_guys_magic_boxes = 0;  // countdown tick timer
-s16 D_8010C200_game_guys_magic_boxes = 10; // countdown seconds
-s16 D_8010C202_game_guys_magic_boxes = 0;  // CPU decision timer
-f32 D_8010C204_game_guys_magic_boxes = 0.0f;
-u16 D_8010C208_game_guys_magic_boxes = 0;
-u8 D_8010C20A_game_guys_magic_boxes = 0;
-f32 D_8010C20C_game_guys_magic_boxes = 1.0f;
-u8 D_8010C210_game_guys_magic_boxes = 0;
-u16 D_8010C212_game_guys_magic_boxes = 0;
-s16 D_8010C214_game_guys_magic_boxes = 0;
-s16 D_8010C216_game_guys_magic_boxes = 0;
-u8 D_8010C218_game_guys_magic_boxes = 0;
-u16 D_8010C21A_game_guys_magic_boxes = 0;
-u8 D_8010C21C_game_guys_magic_boxes = 0;     // state
-u16 D_8010C21E_game_guys_magic_boxes = 0x80; // sprite alpha timer
-u8 D_8010C220_game_guys_magic_boxes = 0;
-s16 D_8010C222_game_guys_magic_boxes = -1;
-s16 D_8010C224_game_guys_magic_boxes = 0;
-extern s16 D_8010C248_game_guys_magic_boxes;
-extern u8 D_8010C24A_game_guys_magic_boxes;
-extern f32 D_8010C24C_game_guys_magic_boxes; // box scale
-extern u8 D_8010C250_game_guys_magic_boxes;  // current motion
-extern u8 D_8010C251_game_guys_magic_boxes;  // current motion
-extern u8 D_8010C252_game_guys_magic_boxes;  // scale
-extern u8 D_8010C253_game_guys_magic_boxes;  // current motion
-extern u8 D_8010C254_game_guys_magic_boxes;  // scale
+f32 m268_boxScaleL = 1.0f;
+f32 m268_boxScaleR = 1.0f;
+s16 m268_comKeyWaitTbl[3] = { 5, 25, 60 }; // COM key wait frames, indexed by CPU difficulty
+u8 m268_introDoneF = 0;
+u8 m268_boxDropState = 0; // drop state
+u16 m268_boxDropTimer = 0;
+f32 m268_boxDropVel = 0.0f;
+u16 m268_shuffleTimer = 0;
+u8 m268_startMesState = 0;
+u8 m268_startMesStatePad = 0;
+u8 m268_selectState = 0;   // choice state
+s16 m268_countTimer = 0;  // countdown tick timer
+s16 m268_countNum = 10; // countdown seconds
+s16 m268_comWait = 0;  // CPU decision timer
+f32 m268_portraitScale = 0.0f;
+u16 m268_selectPrev = 0;
+u8 m268_finishMesState = 0;
+f32 m268_portraitScaleOut = 1.0f;
+u8 m268_boxSpotState = 0;
+u16 m268_boxSpotTPLvl = 0;
+s16 m268_boxSpotX = 0;
+s16 m268_boxSpotY = 0;
+u8 m268_boxOpenState = 0;
+u16 m268_boxOpenTimer = 0;
+u8 m268_nextRoundState = 0;     // state
+u16 m268_nextRoundTPLvl = 0x80; // sprite alpha timer
+u8 m268_resultTimer = 0;
+s16 m268_resultState = -1;
+s16 m268_resultMesId = 0;
+extern s16 m268_bannerTimer;
+extern u8 m268_bannerFrame;
+extern f32 m268_curtainScale; // box scale
+extern u8 m268_gambleMotPrev;  // current motion
+extern u8 m268_kinopioMotPrev;  // current motion
+extern u8 m268_kinopioShadowScale;  // scale
+extern u8 m268_koopaJrMotPrev;  // current motion
+extern u8 m268_koopaJrShadowScale;  // scale
 
-const GameGuysMagicBoxesCharSprites D_8010C270_game_guys_magic_boxes = { { 16, 17, 18, 19, 20, 21, 22, 23 } };
-extern const GameGuysMagicBoxesBonus D_8010C5A0_game_guys_magic_boxes;
-extern const GameGuysMagicBoxesPadValues D_8010C5A8_game_guys_magic_boxes; // COM keys
-extern const GameGuysMagicBoxesPadValues D_8010C5B0_game_guys_magic_boxes; // active players
+const GameGuysMagicBoxesCharSprites m268_chrSprFileTbl = { { 16, 17, 18, 19, 20, 21, 22, 23 } };
+extern const GameGuysMagicBoxesBonus m268_bonusTbl;
+extern const GameGuysMagicBoxesPadValues m268_comKeyTbl; // COM keys
+extern const GameGuysMagicBoxesPadValues m268_activePlayerTbl; // active players
 
-u8 D_8010C5D0_game_guys_magic_boxes[4] BSS;
-s16 D_8010C5D4_game_guys_magic_boxes BSS;
-u16 D_8010C5D6_game_guys_magic_boxes BSS;
-Vec D_8010C5D8_game_guys_magic_boxes[2] BSS;
-Vec2f D_8010C5F0_game_guys_magic_boxes[2] BSS;
-Vec2f D_8010C600_game_guys_magic_boxes[3][2] BSS;
-char D_8010C630_game_guys_magic_boxes[0x100] BSS;
-GameGuysMagicBoxesCamera D_8010C730_game_guys_magic_boxes BSS;
-GameGuysMagicBoxesPlayerInfo gameGuysMagicBoxesBssC750 BSS;
-extern u8 D_8010C750_game_guys_magic_boxes[5]; // [0] player index, [1] pad, [2] chr, [3] cpu, [4] difficulty
-extern u8 D_8010C751_game_guys_magic_boxes[3]; // [0] pad, [1] chr, [2] cpu flag (mode for the window helpers)
-extern u8 D_8010C753_game_guys_magic_boxes[2]; // [0] cpu flag, [1] cpu difficulty
-extern s16 D_8010C756_game_guys_magic_boxes[]; // [0] coins
-omObjData *D_8010C758_game_guys_magic_boxes BSS;
-omObjData *D_8010C75C_game_guys_magic_boxes BSS;
-omObjData *D_8010C760_game_guys_magic_boxes BSS;
-omObjData *D_8010C764_game_guys_magic_boxes BSS;
-omObjData *D_8010C768_game_guys_magic_boxes BSS;
-omObjData *D_8010C76C_game_guys_magic_boxes BSS;
-omObjData *D_8010C770_game_guys_magic_boxes BSS;
-Process *D_8010C774_game_guys_magic_boxes BSS;
-Process *D_8010C778_game_guys_magic_boxes BSS;
-Process *D_8010C77C_game_guys_magic_boxes BSS;
-GameGuysMagicBoxesSprite D_8010C780_game_guys_magic_boxes BSS;
-u8 D_8010C79C_game_guys_magic_boxes[4] BSS; /* Unreferenced. */
-GameGuysMagicBoxesSprite D_8010C7A0_game_guys_magic_boxes BSS;
-GameGuysMagicBoxesSprite D_8010C7BC_game_guys_magic_boxes BSS;
-GameGuysMagicBoxesSprite D_8010C7D8_game_guys_magic_boxes BSS;
-u8 D_8010C7F4_game_guys_magic_boxes[4] BSS; /* Unreferenced. */
-GameGuysMagicBoxesSprite D_8010C7F8_game_guys_magic_boxes BSS;
-u8 D_8010C814_game_guys_magic_boxes[4] BSS; /* Unreferenced. */
-GameGuysMagicBoxesSprite D_8010C818_game_guys_magic_boxes BSS;
-u8 D_8010C834_game_guys_magic_boxes[4] BSS; /* Unreferenced. */
-GameGuysMagicBoxesSprite D_8010C838_game_guys_magic_boxes BSS;
-u8 D_8010C854_game_guys_magic_boxes[4] BSS; /* Unreferenced. */
-GameGuysMagicBoxesSprite D_8010C858_game_guys_magic_boxes[3][2] BSS;
-GameGuysMagicBoxesSprite D_8010C900_game_guys_magic_boxes BSS;
-GameGuysMagicBoxesSprite D_8010C91C_game_guys_magic_boxes BSS;
-GameGuysMagicBoxesSprite D_8010C938_game_guys_magic_boxes[3] BSS;
-u8 D_8010C98C_game_guys_magic_boxes[4] BSS; /* Unreferenced. */
-GameGuysMagicBoxesSprite D_8010C990_game_guys_magic_boxes BSS;
-u8 D_8010C9AC_game_guys_magic_boxes[4] BSS; /* Unreferenced. */
-Vec D_8010C9B0_game_guys_magic_boxes[2] BSS;
-u8 D_8010C9C8_game_guys_magic_boxes BSS;
-u8 D_8010C9C9_game_guys_magic_boxes BSS;
-u8 D_8010C9CA_game_guys_magic_boxes BSS;
-s16 D_8010C9CC_game_guys_magic_boxes BSS;
-f32 D_8010C9D0_game_guys_magic_boxes BSS;
-f32 D_8010C9D4_game_guys_magic_boxes BSS;
-GameGuysMagicBoxesBssC9D8 gameGuysMagicBoxesBssC9D8 BSS;
-extern u8 D_8010C9D8_game_guys_magic_boxes;       // gameGuysMagicBoxesBssC9D8
-extern u8 D_8010C9D9_game_guys_magic_boxes;       // gameGuysMagicBoxesBssC9D8
-extern u8 D_8010C9DA_game_guys_magic_boxes;       // gameGuysMagicBoxesBssC9D8
-extern u8 D_8010C9DB_game_guys_magic_boxes[3][2]; // gameGuysMagicBoxesBssC9D8
-extern u8 D_8010C9E1_game_guys_magic_boxes;       // gameGuysMagicBoxesBssC9D8
-extern u8 D_8010C9E2_game_guys_magic_boxes;       // gameGuysMagicBoxesBssC9D8
-extern u8 D_8010C9E3_game_guys_magic_boxes[];     // gameGuysMagicBoxesBssC9D8
-extern u8 D_8010C9E6_game_guys_magic_boxes;       // gameGuysMagicBoxesBssC9D8
-extern u8 D_8010C9E7_game_guys_magic_boxes;       // gameGuysMagicBoxesBssC9D8
-u8 D_8010C9E8_game_guys_magic_boxes BSS;
-HuSprite *D_8010C9EC_game_guys_magic_boxes BSS;
-s16 D_8010C9F0_game_guys_magic_boxes BSS;
-u8 *D_8010C9F4_game_guys_magic_boxes[3] BSS;
-u8 D_8010CA00_game_guys_magic_boxes BSS;
-s16 D_8010CA02_game_guys_magic_boxes BSS;
-s16 D_8010CA04_game_guys_magic_boxes BSS;
-u8 D_8010CA06_game_guys_magic_boxes BSS;
-s32 D_8010CA08_game_guys_magic_boxes BSS;
-s16 D_8010CA0C_game_guys_magic_boxes BSS;
-s16 D_8010CA0E_game_guys_magic_boxes BSS;
-s16 D_8010CA10_game_guys_magic_boxes BSS;
-s16 D_8010CA12_game_guys_magic_boxes BSS;
-s16 D_8010CA14_game_guys_magic_boxes BSS;
+u8 m268_comResultTbl[4] BSS;
+s16 m268_boxSpotUnused BSS;
+u16 m268_boxSpotDropTPLvl BSS;
+Vec m268_boxSpotPosTbl[2] BSS;
+Vec2f m268_boxSpotScreenPosTbl[2] BSS;
+Vec2f m268_boxSpotHistoryTbl[3][2] BSS;
+char m268_mesBuf[0x100] BSS;
+GameGuysMagicBoxesCamera m268_cameraParam BSS;
+GameGuysMagicBoxesPlayerInfo m268_playerInfo BSS;
+extern u8 m268_playerInfoNo[5]; // [0] player index, [1] pad, [2] chr, [3] cpu, [4] difficulty
+extern u8 m268_playerInfoPad[3]; // [0] pad, [1] chr, [2] cpu flag (mode for the window helpers)
+extern u8 m268_playerInfoCom[2]; // [0] cpu flag, [1] cpu difficulty
+extern s16 m268_playerInfoCoin[]; // [0] coins
+omObjData *m268_hudObj BSS;
+omObjData *m268_curtainObj BSS;
+omObjData *m268_gambleObj BSS;
+omObjData *m268_kinopioObj BSS;
+omObjData *m268_boxObj BSS;
+omObjData *m268_koopaJrObj BSS;
+omObjData *m268_box2Obj BSS;
+Process *m268_ruleProc BSS;
+Process *m268_shuffleMesProc BSS;
+Process *m268_continueProc BSS;
+GameGuysMagicBoxesSprite m268_backSpr BSS;
+u8 m268_backSprPad[4] BSS; /* Unreferenced. */
+GameGuysMagicBoxesSprite m268_bannerSpr BSS;
+GameGuysMagicBoxesSprite m268_bannerSprA BSS;
+GameGuysMagicBoxesSprite m268_bannerSprB BSS;
+u8 m268_bannerSprBPad[4] BSS; /* Unreferenced. */
+GameGuysMagicBoxesSprite m268_sideSprL BSS;
+u8 m268_sideSprLPad[4] BSS; /* Unreferenced. */
+GameGuysMagicBoxesSprite m268_sideSprR BSS;
+u8 m268_sideSprRPad[4] BSS; /* Unreferenced. */
+GameGuysMagicBoxesSprite m268_roundPanelSpr BSS;
+u8 m268_roundPanelSprPad[4] BSS; /* Unreferenced. */
+GameGuysMagicBoxesSprite m268_roundLampSprTbl[3][2] BSS;
+GameGuysMagicBoxesSprite m268_coinIconSpr BSS;
+GameGuysMagicBoxesSprite m268_coinCrossSpr BSS;
+GameGuysMagicBoxesSprite m268_coinDigitSprTbl[3] BSS;
+u8 m268_coinDigitSprTblPad[4] BSS; /* Unreferenced. */
+GameGuysMagicBoxesSprite m268_portraitSpr BSS;
+u8 m268_portraitSprPad[4] BSS; /* Unreferenced. */
+Vec m268_boxPosTbl[2] BSS;
+u8 m268_kinopioMotNo BSS;
+u8 m268_koopaJrMotNo BSS;
+u8 m268_gambleMotNo BSS;
+s16 m268_gambleMotFrame BSS;
+f32 m268_curtainXL BSS;
+f32 m268_curtainXR BSS;
+GameGuysMagicBoxesStateWork m268_stateWork BSS;
+extern u8 m268_curtainState;       // m268_stateWork
+extern u8 m268_bannerStopF;       // m268_stateWork
+extern u8 m268_continueCursor;       // m268_stateWork
+extern u8 m268_kinopioSideTbl[3][2]; // m268_stateWork
+extern u8 m268_selectNo;       // m268_stateWork
+extern u8 m268_winF;       // m268_stateWork
+extern u8 m268_comSelectTbl[];     // m268_stateWork
+extern u8 m268_comWinF;       // m268_stateWork
+extern u8 m268_roundNo;       // m268_stateWork
+u8 m268_mainPhase BSS;
+HuSprite *m268_boxSpotSpr BSS;
+s16 m268_boxSpotGrp BSS;
+u8 *m268_boxSpotBufTbl[3] BSS;
+u8 m268_boxSpotBufNo BSS;
+s16 m268_comPayout BSS;
+s16 m268_comRoundMax BSS;
+u8 m268_shadowGrowF BSS;
+s32 m268_coinStart BSS;
+s16 m268_startMesId BSS;
+s16 m268_procResult BSS;
+s16 m268_boxMdl BSS;
+s16 m268_boxLidMdl BSS;
+s16 m268_comLevel BSS;
 
-void func_80105A28_game_guys_magic_boxes(void);
-void func_80105AC0_game_guys_magic_boxes(void);
-void func_80105AC8_game_guys_magic_boxes(void);
-void func_80105B44_game_guys_magic_boxes(void);
-void func_80105B60_game_guys_magic_boxes(omObjData *object);
-void func_80105CCC_game_guys_magic_boxes(void);
-void func_80105FB4_game_guys_magic_boxes(omObjData *object);
-void func_80108D88_game_guys_magic_boxes(omObjData *object);
-void func_80106558_game_guys_magic_boxes(omObjData *object);
-void func_801066F8_game_guys_magic_boxes(omObjData *object);
-void func_80106828_game_guys_magic_boxes(omObjData *object);
-void func_80106A2C_game_guys_magic_boxes(omObjData *object);
-void func_80106B50_game_guys_magic_boxes(omObjData *object);
-void func_80106CB8_game_guys_magic_boxes(omObjData *object);
-void func_80106DC4_game_guys_magic_boxes(omObjData *object);
-void func_80107020_game_guys_magic_boxes(void);
-void func_801071B8_game_guys_magic_boxes(void);
-void func_80107834_game_guys_magic_boxes(void);
-void func_80107A3C_game_guys_magic_boxes(void);
-void func_80107AE0_game_guys_magic_boxes(void);
-void func_80107B64_game_guys_magic_boxes(void);
-void func_80108294_game_guys_magic_boxes(void);
-void func_80108498_game_guys_magic_boxes(void);
-void func_8010861C_game_guys_magic_boxes(void);
-void func_80108914_game_guys_magic_boxes(void);
-void func_80108AF8_game_guys_magic_boxes(void);
-void func_80108C04_game_guys_magic_boxes(void);
-void func_8010942C_game_guys_magic_boxes(omObjData *object);
-void func_80109600_game_guys_magic_boxes(omObjData *object);
-void func_80109658_game_guys_magic_boxes(omObjData *object);
-void func_8010982C_game_guys_magic_boxes(omObjData *object);
-void func_801090F0_game_guys_magic_boxes(omObjData *object);
-void func_8010935C_game_guys_magic_boxes(omObjData *object);
-void func_80109884_game_guys_magic_boxes(omObjData *object);
-void func_80109984_game_guys_magic_boxes(omObjData *object);
-void func_801099E4_game_guys_magic_boxes(omObjData *object);
-void func_80109A0C_game_guys_magic_boxes(void);
-void func_80109AD8_game_guys_magic_boxes(GameGuysMagicBoxesCamera *cam, f32 camId, f32 zoom, f32 rotX, f32 rotY,
+void m268_ObjectSetup(void);
+void m268_LightInit(void);
+void m268_CameraInit(void);
+void m268_WinInit(void);
+void m268_MainObjInit(omObjData *object);
+void m268_RoundInit(void);
+void m268_HudObjInit(omObjData *object);
+void m268_HudObjMain(omObjData *object);
+void m268_CurtainObjInit(omObjData *object);
+void m268_GambleObjInit(omObjData *object);
+void m268_KinopioObjInit(omObjData *object);
+void m268_BoxObjInit(omObjData *object);
+void m268_KoopaJrObjInit(omObjData *object);
+void m268_Box2ObjInit(omObjData *object);
+void m268_MainObjMain(omObjData *object);
+void m268_RuleProc(void);
+void m268_BoxDropUpdate(void);
+void m268_ShuffleUpdate(void);
+void m268_ShuffleMesProc(void);
+void m268_StartMesUpdate(void);
+void m268_BoxSelectUpdate(void);
+void m268_FinishMesUpdate(void);
+void m268_BoxSpotUpdate(void);
+void m268_BoxOpenUpdate(void);
+void m268_ContinueProc(void);
+void m268_NextRoundUpdate(void);
+void m268_ResultUpdate(void);
+void m268_KinopioObjMain(omObjData *object);
+void m268_BoxObjMain(omObjData *object);
+void m268_KoopaJrObjMain(omObjData *object);
+void m268_Box2ObjMain(omObjData *object);
+void m268_CurtainObjMain(omObjData *object);
+void m268_GambleObjMain(omObjData *object);
+void m268_ExitStartObjMain(omObjData *object);
+void m268_ExitObjMain(omObjData *object);
+void m268_ExitCheckObjMain(omObjData *object);
+void m268_CameraSetup(void);
+void m268_CameraParamSet(GameGuysMagicBoxesCamera *cam, f32 camId, f32 zoom, f32 rotX, f32 rotY,
                                          f32 rotZ, f32 centerX, f32 centerY, f32 centerZ);
-void func_80109B10_game_guys_magic_boxes(GameGuysMagicBoxesCamera *cam);
-void func_80109E1C_game_guys_magic_boxes(void);
-void func_8010A000_game_guys_magic_boxes(void);
-void func_80109C98_game_guys_magic_boxes(GameGuysMagicBoxesSprite *sprite, s32 spriteIndex, u16 numSlots,
+void m268_CameraApply(GameGuysMagicBoxesCamera *cam);
+void m268_PlayerInfoInit(void);
+void m268_BoxSpotLayerInit(void);
+void m268_EspSlotCreate(GameGuysMagicBoxesSprite *sprite, s32 spriteIndex, u16 numSlots,
                                          u16 visibility);
-void func_80109CFC_game_guys_magic_boxes(GameGuysMagicBoxesSprite *sprite, s16 priority, s16 unk04, s16 x,
+void m268_SprParamSet(GameGuysMagicBoxesSprite *sprite, s16 priority, s16 unk04, s16 x,
                                          s16 y, s16 xSub, s16 ySub, f32 unk10, f32 scaleX, f32 scaleY);
-void func_80109D3C_game_guys_magic_boxes(GameGuysMagicBoxesSprite *sprite, u8 visible);
-void func_8010A1B0_game_guys_magic_boxes(s16 x, s16 y, s16 radius);
-void func_8010A388_game_guys_magic_boxes(s16 x, s16 y, s16 radius);
-s16 func_8010A4EC_game_guys_magic_boxes(s16 x, s16 y, s16 lines);
-void func_8010A560_game_guys_magic_boxes(s16 win, s16 player, s16 mode);
-s16 func_8010A6AC_game_guys_magic_boxes(s16 win, s16 player, s16 mode, s16 count, u16 cancel);
-void func_8010A878_game_guys_magic_boxes(s16 win);
-void func_8010A4CC_game_guys_magic_boxes(void);
+void m268_SprDispSet(GameGuysMagicBoxesSprite *sprite, u8 visible);
+void m268_BoxSpotDraw(s16 x, s16 y, s16 radius);
+void m268_BoxSpotErase(s16 x, s16 y, s16 radius);
+s16 m268_WinCreate(s16 x, s16 y, s16 lines);
+void m268_WinKeyWait(s16 win, s16 player, s16 mode);
+s16 m268_WinChoiceGet(s16 win, s16 player, s16 mode, s16 count, u16 cancel);
+void m268_WinClose(s16 win);
+void m268_BoxSpotReset(void);
 
-void func_801059A0_game_guys_magic_boxes(void) {
-    func_80105A28_game_guys_magic_boxes();
+void m268_Executor(void) {
+    m268_ObjectSetup();
 }
 
-s32 func_801059BC_game_guys_magic_boxes(f32 arg0) {
+s32 m268_Rand(f32 arg0) {
     u8 randomByte1 = rand8();
     u8 randomByte2 = rand8();
     s32 shiftedByte1 = (randomByte1 << 8);
@@ -243,164 +243,164 @@ s32 func_801059BC_game_guys_magic_boxes(f32 arg0) {
     return scaledRandom;
 }
 
-void func_80105A28_game_guys_magic_boxes(void) {
+void m268_ObjectSetup(void) {
     MapCollInit(32);
     Hu3DSprModelInit(32);
     omInitObjMan(32, 32);
     omGameSysInit();
-    func_80105AC0_game_guys_magic_boxes();
-    func_80105AC8_game_guys_magic_boxes();
-    func_80109E1C_game_guys_magic_boxes();
-    func_80105B44_game_guys_magic_boxes();
-    omAddObj(1000, 0, 0, -1, func_80105B60_game_guys_magic_boxes);
-    omAddObj(10000, 0, 0, -1, func_801099E4_game_guys_magic_boxes);
+    m268_LightInit();
+    m268_CameraInit();
+    m268_PlayerInfoInit();
+    m268_WinInit();
+    omAddObj(1000, 0, 0, -1, m268_MainObjInit);
+    omAddObj(10000, 0, 0, -1, m268_ExitCheckObjMain);
 }
 
-void func_80105AC0_game_guys_magic_boxes(void) {
+void m268_LightInit(void) {
 }
 
-void func_80105AC8_game_guys_magic_boxes(void) {
-    func_80109A0C_game_guys_magic_boxes();
-    func_80109AD8_game_guys_magic_boxes(&D_8010C730_game_guys_magic_boxes, 19.03f, 1498.69f, 334.75f, 0.0f, 0.0f,
+void m268_CameraInit(void) {
+    m268_CameraSetup();
+    m268_CameraParamSet(&m268_cameraParam, 19.03f, 1498.69f, 334.75f, 0.0f, 0.0f,
                                         0.0f, 10.82f, -505.55f);
-    func_80109B10_game_guys_magic_boxes(&D_8010C730_game_guys_magic_boxes);
+    m268_CameraApply(&m268_cameraParam);
 }
 
-void func_80105B44_game_guys_magic_boxes(void) {
+void m268_WinInit(void) {
     HuWinInit();
 }
 
-void func_80105B60_game_guys_magic_boxes(omObjData *object) {
-    func_8010A8C0_game_guys_magic_boxes(160, 190);
-    func_80105CCC_game_guys_magic_boxes();
-    func_8010A000_game_guys_magic_boxes();
-    D_8010C758_game_guys_magic_boxes = omAddObj(1, 10, 10, -1, func_80105FB4_game_guys_magic_boxes);
-    D_8010C75C_game_guys_magic_boxes = omAddObj(2, 10, 10, -1, func_80106558_game_guys_magic_boxes);
-    D_8010C760_game_guys_magic_boxes = omAddObj(3, 10, 10, -1, func_801066F8_game_guys_magic_boxes);
-    D_8010C764_game_guys_magic_boxes = omAddObj(4, 10, 10, -1, func_80106828_game_guys_magic_boxes);
-    D_8010C768_game_guys_magic_boxes = omAddObj(5, 10, 10, -1, func_80106A2C_game_guys_magic_boxes);
-    D_8010C76C_game_guys_magic_boxes = omAddObj(6, 10, 10, -1, func_80106B50_game_guys_magic_boxes);
-    D_8010C770_game_guys_magic_boxes = omAddObj(7, 10, 10, -1, func_80106CB8_game_guys_magic_boxes);
+void m268_MainObjInit(omObjData *object) {
+    m268_SpotIntroInit(160, 190);
+    m268_RoundInit();
+    m268_BoxSpotLayerInit();
+    m268_hudObj = omAddObj(1, 10, 10, -1, m268_HudObjInit);
+    m268_curtainObj = omAddObj(2, 10, 10, -1, m268_CurtainObjInit);
+    m268_gambleObj = omAddObj(3, 10, 10, -1, m268_GambleObjInit);
+    m268_kinopioObj = omAddObj(4, 10, 10, -1, m268_KinopioObjInit);
+    m268_boxObj = omAddObj(5, 10, 10, -1, m268_BoxObjInit);
+    m268_koopaJrObj = omAddObj(6, 10, 10, -1, m268_KoopaJrObjInit);
+    m268_box2Obj = omAddObj(7, 10, 10, -1, m268_Box2ObjInit);
     WipeCreateIn(0xFF, 0x10);
-    object->func = func_80106DC4_game_guys_magic_boxes;
+    object->func = m268_MainObjMain;
 }
 
-void func_80105CCC_game_guys_magic_boxes(void) {
+void m268_RoundInit(void) {
     u8 i;
 
-    D_8010C9B0_game_guys_magic_boxes[0].x = -150.0f;
-    D_8010C9B0_game_guys_magic_boxes[0].y = 0.0f;
-    D_8010C9B0_game_guys_magic_boxes[0].z = -1500.0f;
-    D_8010C9B0_game_guys_magic_boxes[1].x = 150.0f;
-    D_8010C9B0_game_guys_magic_boxes[1].y = 0.0f;
-    D_8010C9B0_game_guys_magic_boxes[1].z = -1500.0f;
-    D_8010CA06_game_guys_magic_boxes = 0;
-    D_8010C9D0_game_guys_magic_boxes = -260.0f;
-    D_8010C9D4_game_guys_magic_boxes = 260.0f;
-    D_8010C9D8_game_guys_magic_boxes = 0;
-    D_8010C9D9_game_guys_magic_boxes = 0;
-    D_8010C1E0_game_guys_magic_boxes = 1.0f;
-    D_8010C1E4_game_guys_magic_boxes = 1.0f;
+    m268_boxPosTbl[0].x = -150.0f;
+    m268_boxPosTbl[0].y = 0.0f;
+    m268_boxPosTbl[0].z = -1500.0f;
+    m268_boxPosTbl[1].x = 150.0f;
+    m268_boxPosTbl[1].y = 0.0f;
+    m268_boxPosTbl[1].z = -1500.0f;
+    m268_shadowGrowF = 0;
+    m268_curtainXL = -260.0f;
+    m268_curtainXR = 260.0f;
+    m268_curtainState = 0;
+    m268_bannerStopF = 0;
+    m268_boxScaleL = 1.0f;
+    m268_boxScaleR = 1.0f;
     for (i = 0; i < 3; i++) {
-        D_8010C9DB_game_guys_magic_boxes[i][0] = func_801059BC_game_guys_magic_boxes(2.0f);
-        if (D_8010C9DB_game_guys_magic_boxes[i][0] == 0) {
-            D_8010C9DB_game_guys_magic_boxes[i][1] = 1;
+        m268_kinopioSideTbl[i][0] = m268_Rand(2.0f);
+        if (m268_kinopioSideTbl[i][0] == 0) {
+            m268_kinopioSideTbl[i][1] = 1;
         } else {
-            D_8010C9DB_game_guys_magic_boxes[i][1] = 0;
+            m268_kinopioSideTbl[i][1] = 0;
         }
     }
-    if (D_8010C753_game_guys_magic_boxes[0] == 0) {
-        D_8010C9E1_game_guys_magic_boxes = 0;
-    } else if (D_8010C753_game_guys_magic_boxes[0] == 1) {
-        D_8010CA04_game_guys_magic_boxes = func_801059BC_game_guys_magic_boxes(3.0f);
-        if (D_8010C753_game_guys_magic_boxes[1] != 0) {
-            D_8010CA04_game_guys_magic_boxes = func_801059BC_game_guys_magic_boxes(D_8010C753_game_guys_magic_boxes[1]);
-            if (D_8010CA04_game_guys_magic_boxes <= 0) {
-                D_8010CA04_game_guys_magic_boxes = 0;
+    if (m268_playerInfoCom[0] == 0) {
+        m268_selectNo = 0;
+    } else if (m268_playerInfoCom[0] == 1) {
+        m268_comRoundMax = m268_Rand(3.0f);
+        if (m268_playerInfoCom[1] != 0) {
+            m268_comRoundMax = m268_Rand(m268_playerInfoCom[1]);
+            if (m268_comRoundMax <= 0) {
+                m268_comRoundMax = 0;
             }
         }
-        for (i = 0; i <= D_8010CA04_game_guys_magic_boxes; i++) {
-            D_8010C9E3_game_guys_magic_boxes[i] = func_801059BC_game_guys_magic_boxes(2.0f);
+        for (i = 0; i <= m268_comRoundMax; i++) {
+            m268_comSelectTbl[i] = m268_Rand(2.0f);
         }
-        D_8010C9E6_game_guys_magic_boxes = 1;
-        for (i = 0; i <= D_8010CA04_game_guys_magic_boxes; i++) {
-            if (D_8010C9DB_game_guys_magic_boxes[i][D_8010C9E3_game_guys_magic_boxes[i]] == 0) {
-                D_8010C5D0_game_guys_magic_boxes[i] = 0;
-                D_8010C9E6_game_guys_magic_boxes = 0;
+        m268_comWinF = 1;
+        for (i = 0; i <= m268_comRoundMax; i++) {
+            if (m268_kinopioSideTbl[i][m268_comSelectTbl[i]] == 0) {
+                m268_comResultTbl[i] = 0;
+                m268_comWinF = 0;
             } else {
-                D_8010C5D0_game_guys_magic_boxes[i] = 1;
+                m268_comResultTbl[i] = 1;
             }
         }
-        if (D_8010C9E6_game_guys_magic_boxes == 0) {
-            D_8010CA02_game_guys_magic_boxes = 0;
+        if (m268_comWinF == 0) {
+            m268_comPayout = 0;
         } else {
-            D_8010CA02_game_guys_magic_boxes = D_8010C756_game_guys_magic_boxes[0] * ((D_8010CA04_game_guys_magic_boxes + 1) << 1);
+            m268_comPayout = m268_playerInfoCoin[0] * ((m268_comRoundMax + 1) << 1);
         }
     }
-    D_8010C9E7_game_guys_magic_boxes = 0;
-    D_8010C9E8_game_guys_magic_boxes = 0;
+    m268_roundNo = 0;
+    m268_mainPhase = 0;
 }
 
-void func_80105FB4_game_guys_magic_boxes(omObjData *object) {
+void m268_HudObjInit(omObjData *object) {
     GameGuysMagicBoxesCharSprites charSprites;
     u8 chr;
     u8 i;
 
-    chr = GwPlayer[D_8010C750_game_guys_magic_boxes[0]].chr;
-    charSprites = D_8010C270_game_guys_magic_boxes;
-    func_80109C98_game_guys_magic_boxes(&D_8010C780_game_guys_magic_boxes, 0x650000, 0, 0x4000);
-    func_80109CFC_game_guys_magic_boxes(&D_8010C780_game_guys_magic_boxes, 1000, 0x100, 0, 0, 320, 240, 0.0f, 1.0f,
+    chr = GwPlayer[m268_playerInfoNo[0]].chr;
+    charSprites = m268_chrSprFileTbl;
+    m268_EspSlotCreate(&m268_backSpr, 0x650000, 0, 0x4000);
+    m268_SprParamSet(&m268_backSpr, 1000, 0x100, 0, 0, 320, 240, 0.0f, 1.0f,
                                         1.0f);
-    func_80109D3C_game_guys_magic_boxes(&D_8010C780_game_guys_magic_boxes, 1);
-    func_80109C98_game_guys_magic_boxes(&D_8010C7A0_game_guys_magic_boxes, 0x650001, 0, 0);
-    func_80109CFC_game_guys_magic_boxes(&D_8010C7A0_game_guys_magic_boxes, 800, 0x100, 0, 0, 320, 186, 0.0f, 1.0f,
+    m268_SprDispSet(&m268_backSpr, 1);
+    m268_EspSlotCreate(&m268_bannerSpr, 0x650001, 0, 0);
+    m268_SprParamSet(&m268_bannerSpr, 800, 0x100, 0, 0, 320, 186, 0.0f, 1.0f,
                                         1.0f);
-    func_80109D3C_game_guys_magic_boxes(&D_8010C7A0_game_guys_magic_boxes, 1);
-    func_80109C98_game_guys_magic_boxes(&D_8010C7BC_game_guys_magic_boxes, 0x650002, 0, 0);
-    func_80109CFC_game_guys_magic_boxes(&D_8010C7BC_game_guys_magic_boxes, 800, 0x100, 0, 0, 320, 186, 0.0f, 1.0f,
+    m268_SprDispSet(&m268_bannerSpr, 1);
+    m268_EspSlotCreate(&m268_bannerSprA, 0x650002, 0, 0);
+    m268_SprParamSet(&m268_bannerSprA, 800, 0x100, 0, 0, 320, 186, 0.0f, 1.0f,
                                         1.0f);
-    func_80109D3C_game_guys_magic_boxes(&D_8010C7BC_game_guys_magic_boxes, 0);
-    func_80109C98_game_guys_magic_boxes(&D_8010C7D8_game_guys_magic_boxes, 0x650003, 0, 0);
-    func_80109CFC_game_guys_magic_boxes(&D_8010C7D8_game_guys_magic_boxes, 800, 0x100, 0, 0, 320, 186, 0.0f, 1.0f,
+    m268_SprDispSet(&m268_bannerSprA, 0);
+    m268_EspSlotCreate(&m268_bannerSprB, 0x650003, 0, 0);
+    m268_SprParamSet(&m268_bannerSprB, 800, 0x100, 0, 0, 320, 186, 0.0f, 1.0f,
                                         1.0f);
-    func_80109D3C_game_guys_magic_boxes(&D_8010C7D8_game_guys_magic_boxes, 0);
-    func_80109C98_game_guys_magic_boxes(&D_8010C838_game_guys_magic_boxes, 0x650004, 0, 0);
-    func_80109CFC_game_guys_magic_boxes(&D_8010C838_game_guys_magic_boxes, 800, 0x100, 242, 16, 54, 54, 0.0f, 1.0f,
+    m268_SprDispSet(&m268_bannerSprB, 0);
+    m268_EspSlotCreate(&m268_roundPanelSpr, 0x650004, 0, 0);
+    m268_SprParamSet(&m268_roundPanelSpr, 800, 0x100, 242, 16, 54, 54, 0.0f, 1.0f,
                                         1.0f);
-    func_80109D3C_game_guys_magic_boxes(&D_8010C838_game_guys_magic_boxes, 1);
+    m268_SprDispSet(&m268_roundPanelSpr, 1);
     for (i = 0; i < 3; i++) {
-        func_80109C98_game_guys_magic_boxes(&D_8010C858_game_guys_magic_boxes[i][0], 0x21002A, 0, 0);
-        func_80109CFC_game_guys_magic_boxes(&D_8010C858_game_guys_magic_boxes[i][0], 99, 0x100, i * 16 + 24, 32, 16,
+        m268_EspSlotCreate(&m268_roundLampSprTbl[i][0], 0x21002A, 0, 0);
+        m268_SprParamSet(&m268_roundLampSprTbl[i][0], 99, 0x100, i * 16 + 24, 32, 16,
                                             16, 0.0f, 1.0f, 1.0f);
-        func_80109D3C_game_guys_magic_boxes(&D_8010C858_game_guys_magic_boxes[i][0], 0);
-        func_80109C98_game_guys_magic_boxes(&D_8010C858_game_guys_magic_boxes[i][1], 0x21002B, 0, 0);
-        func_80109CFC_game_guys_magic_boxes(&D_8010C858_game_guys_magic_boxes[i][1], 100, 0x100, i * 16 + 24, 32, 16,
+        m268_SprDispSet(&m268_roundLampSprTbl[i][0], 0);
+        m268_EspSlotCreate(&m268_roundLampSprTbl[i][1], 0x21002B, 0, 0);
+        m268_SprParamSet(&m268_roundLampSprTbl[i][1], 100, 0x100, i * 16 + 24, 32, 16,
                                             16, 0.0f, 1.0f, 1.0f);
-        func_80109D3C_game_guys_magic_boxes(&D_8010C858_game_guys_magic_boxes[i][1], 1);
+        m268_SprDispSet(&m268_roundLampSprTbl[i][1], 1);
     }
-    func_80109D3C_game_guys_magic_boxes(&D_8010C858_game_guys_magic_boxes[0][0], 1);
-    func_80109C98_game_guys_magic_boxes(&D_8010C900_game_guys_magic_boxes, 0x21001A, 0, 0);
-    func_80109CFC_game_guys_magic_boxes(&D_8010C900_game_guys_magic_boxes, 100, 0x100, 24, 16, 12, 12, 0.0f, 1.0f,
+    m268_SprDispSet(&m268_roundLampSprTbl[0][0], 1);
+    m268_EspSlotCreate(&m268_coinIconSpr, 0x21001A, 0, 0);
+    m268_SprParamSet(&m268_coinIconSpr, 100, 0x100, 24, 16, 12, 12, 0.0f, 1.0f,
                                         1.0f);
-    func_80109D3C_game_guys_magic_boxes(&D_8010C900_game_guys_magic_boxes, 1);
-    func_80109C98_game_guys_magic_boxes(&D_8010C91C_game_guys_magic_boxes, 0x21001B, 0, 0);
-    func_80109CFC_game_guys_magic_boxes(&D_8010C91C_game_guys_magic_boxes, 100, 0x100, 36, 16, 12, 12, 0.0f, 1.0f,
+    m268_SprDispSet(&m268_coinIconSpr, 1);
+    m268_EspSlotCreate(&m268_coinCrossSpr, 0x21001B, 0, 0);
+    m268_SprParamSet(&m268_coinCrossSpr, 100, 0x100, 36, 16, 12, 12, 0.0f, 1.0f,
                                         1.0f);
-    func_80109D3C_game_guys_magic_boxes(&D_8010C91C_game_guys_magic_boxes, 1);
+    m268_SprDispSet(&m268_coinCrossSpr, 1);
     for (i = 0; i < 3; i++) {
-        func_80109C98_game_guys_magic_boxes(&D_8010C938_game_guys_magic_boxes[i], 0x31, 1, 0);
-        func_80109CFC_game_guys_magic_boxes(&D_8010C938_game_guys_magic_boxes[i], 100, 0x100, i * 12 + 48, 16, 12, 12,
+        m268_EspSlotCreate(&m268_coinDigitSprTbl[i], 0x31, 1, 0);
+        m268_SprParamSet(&m268_coinDigitSprTbl[i], 100, 0x100, i * 12 + 48, 16, 12, 12,
                                             0.0f, 1.0f, 1.0f);
-        func_80109D3C_game_guys_magic_boxes(&D_8010C938_game_guys_magic_boxes[i], 1);
+        m268_SprDispSet(&m268_coinDigitSprTbl[i], 1);
     }
-    func_80109C98_game_guys_magic_boxes(&D_8010C990_game_guys_magic_boxes, charSprites.ids[chr] | 0x210000, 0, 0);
-    func_80109CFC_game_guys_magic_boxes(&D_8010C990_game_guys_magic_boxes, 100, 0x100, 55, 70, 46, 46, 0.0f, 1.0f,
+    m268_EspSlotCreate(&m268_portraitSpr, charSprites.ids[chr] | 0x210000, 0, 0);
+    m268_SprParamSet(&m268_portraitSpr, 100, 0x100, 55, 70, 46, 46, 0.0f, 1.0f,
                                         1.0f);
-    func_80109D3C_game_guys_magic_boxes(&D_8010C990_game_guys_magic_boxes, 0);
-    object->func = func_80108D88_game_guys_magic_boxes;
+    m268_SprDispSet(&m268_portraitSpr, 0);
+    object->func = m268_HudObjMain;
 }
 
-void func_80106558_game_guys_magic_boxes(omObjData *object) {
+void m268_CurtainObjInit(omObjData *object) {
     object->model[0] = Hu3DModelRead(0x650006, 0x2B9);
     omSetTra(object, 330.0f, -400.0f, -1000.0f);
     omSetRot(object, 0.0f, 0.0f, 0.0f);
@@ -417,10 +417,10 @@ void func_80106558_game_guys_magic_boxes(omObjData *object) {
     Hu3DModelPosSet(object->model[3], 460.0f, -400.0f, -999.0f);
     Hu3DModelRotSet(object->model[3], 0.0f, 0.0f, 0.0f);
     Hu3DModelScaleSet(object->model[3], 1.0f, 1.0f, 1.0f);
-    object->func = func_801090F0_game_guys_magic_boxes;
+    object->func = m268_CurtainObjMain;
 }
 
-void func_801066F8_game_guys_magic_boxes(omObjData *object) {
+void m268_GambleObjInit(omObjData *object) {
     object->model[0] = Hu3DModelRead(0xA0063, 0x2B9);
     Hu3DMotionSpeedSet(object->model[0], 1.0f);
     omSetTra(object, 0.0f, 0.0f, -150.0f);
@@ -429,22 +429,22 @@ void func_801066F8_game_guys_magic_boxes(omObjData *object) {
     omObjMotionRead(object, 0, 0xA0063);
     omObjMotionRead(object, 1, 0xA0068);
     omObjMotionRead(object, 2, 0xA006C);
-    D_8010C9CA_game_guys_magic_boxes = 0;
+    m268_gambleMotNo = 0;
     object->model[1] = Hu3DModelRead(9, 0x2B9);
     Hu3DModelPosSet(object->model[1], 0.0f, 0.0f, -150.0f);
     Hu3DModelRotSet(object->model[1], 0.0f, 0.0f, 0.0f);
     Hu3DModelScaleSet(object->model[1], 1.0f, 1.0f, 1.0f);
-    object->func = func_8010935C_game_guys_magic_boxes;
+    object->func = m268_GambleObjMain;
 }
 
-void func_80106828_game_guys_magic_boxes(omObjData *object) {
+void m268_KinopioObjInit(omObjData *object) {
     void *data;
     s16 anim;
 
     object->model[0] = Hu3DModelRead(0xA0000, 0x2A9);
     Hu3DMotionSpeedSet(object->model[0], 1.0f);
-    omSetTra(object, D_8010C9B0_game_guys_magic_boxes[0].x, D_8010C9B0_game_guys_magic_boxes[0].y,
-             D_8010C9B0_game_guys_magic_boxes[0].z);
+    omSetTra(object, m268_boxPosTbl[0].x, m268_boxPosTbl[0].y,
+             m268_boxPosTbl[0].z);
     omSetRot(object, 0.0f, 0.0f, 0.0f);
     omSetSca(object, 1.0f, 1.0f, 1.0f);
     omObjMotionRead(object, 0, 0xA0001);
@@ -459,35 +459,35 @@ void func_80106828_game_guys_magic_boxes(omObjData *object) {
     Hu3DModelDynamicFree(object->model[0]);
     Hu3DAnimAttrSet(anim, 1, 0);
     Hu3DAnimBankSet(anim, 0);
-    D_8010C9C8_game_guys_magic_boxes = 1;
+    m268_kinopioMotNo = 1;
     object->model[1] = Hu3DModelRead(9, 0x2B9);
     Hu3DModelPosSet(object->model[1], -150.0f, -700.0f, -1500.0f);
     Hu3DModelRotSet(object->model[1], -15.0f, 0.0f, 0.0f);
     Hu3DModelScaleSet(object->model[1], 1.0f, 1.0f, 1.0f);
-    object->func = func_8010942C_game_guys_magic_boxes;
+    object->func = m268_KinopioObjMain;
 }
 
-void func_80106A2C_game_guys_magic_boxes(omObjData *object) {
-    D_8010CA10_game_guys_magic_boxes = object->model[0] = Hu3DModelRead(0x650009, 0x2B9);
+void m268_BoxObjInit(omObjData *object) {
+    m268_boxMdl = object->model[0] = Hu3DModelRead(0x650009, 0x2B9);
     Hu3DMotionSpeedSet(object->model[0], 1.0f);
-    omSetTra(object, D_8010C9B0_game_guys_magic_boxes[0].x, D_8010C9B0_game_guys_magic_boxes[0].y,
-             D_8010C9B0_game_guys_magic_boxes[0].z);
+    omSetTra(object, m268_boxPosTbl[0].x, m268_boxPosTbl[0].y,
+             m268_boxPosTbl[0].z);
     omSetRot(object, 0.0f, 0.0f, 0.0f);
     omSetSca(object, 1.0f, 1.0f, 1.0f);
     omObjMotionRead(object, 0, 0x65000A);
-    D_8010CA12_game_guys_magic_boxes = object->model[1] = Hu3DModelRead(0x650008, 0x2B9);
-    Hu3DModelPosSet(object->model[1], D_8010C9B0_game_guys_magic_boxes[0].x, D_8010C9B0_game_guys_magic_boxes[0].y,
-                    D_8010C9B0_game_guys_magic_boxes[0].z);
+    m268_boxLidMdl = object->model[1] = Hu3DModelRead(0x650008, 0x2B9);
+    Hu3DModelPosSet(object->model[1], m268_boxPosTbl[0].x, m268_boxPosTbl[0].y,
+                    m268_boxPosTbl[0].z);
     Hu3DModelRotSet(object->model[1], 0.0f, 0.0f, 0.0f);
     Hu3DModelScaleSet(object->model[1], 1.0f, 1.0f, 1.0f);
-    object->func = func_80109600_game_guys_magic_boxes;
+    object->func = m268_BoxObjMain;
 }
 
-void func_80106B50_game_guys_magic_boxes(omObjData *object) {
+void m268_KoopaJrObjInit(omObjData *object) {
     object->model[0] = Hu3DModelRead(0xA00EE, 0x2B9);
     Hu3DMotionSpeedSet(object->model[0], 1.0f);
-    omSetTra(object, D_8010C9B0_game_guys_magic_boxes[1].x, D_8010C9B0_game_guys_magic_boxes[1].y,
-             D_8010C9B0_game_guys_magic_boxes[1].z);
+    omSetTra(object, m268_boxPosTbl[1].x, m268_boxPosTbl[1].y,
+             m268_boxPosTbl[1].z);
     omSetRot(object, 0.0f, 0.0f, 0.0f);
     omSetSca(object, 1.0f, 1.0f, 1.0f);
     omObjMotionRead(object, 0, 0xA00EE);
@@ -495,127 +495,127 @@ void func_80106B50_game_guys_magic_boxes(omObjData *object) {
     omObjMotionRead(object, 2, 0xA00F5);
     omObjMotionRead(object, 3, 0xA00FD);
     omObjMotionRead(object, 4, 0xA00FE);
-    D_8010C9C9_game_guys_magic_boxes = 1;
+    m268_koopaJrMotNo = 1;
     object->model[1] = Hu3DModelRead(9, 0x2B9);
     Hu3DModelPosSet(object->model[1], 150.0f, -700.0f, -1500.0f);
     Hu3DModelRotSet(object->model[1], -15.0f, 0.0f, 0.0f);
     Hu3DModelScaleSet(object->model[1], 1.0f, 1.0f, 1.0f);
-    object->func = func_80109658_game_guys_magic_boxes;
+    object->func = m268_KoopaJrObjMain;
 }
 
-void func_80106CB8_game_guys_magic_boxes(omObjData *object) {
-    object->model[0] = Hu3DModelLink(D_8010CA10_game_guys_magic_boxes);
+void m268_Box2ObjInit(omObjData *object) {
+    object->model[0] = Hu3DModelLink(m268_boxMdl);
     Hu3DMotionSpeedSet(object->model[0], 1.0f);
-    omSetTra(object, D_8010C9B0_game_guys_magic_boxes[1].x, D_8010C9B0_game_guys_magic_boxes[1].y,
-             D_8010C9B0_game_guys_magic_boxes[1].z);
+    omSetTra(object, m268_boxPosTbl[1].x, m268_boxPosTbl[1].y,
+             m268_boxPosTbl[1].z);
     omSetRot(object, 0.0f, 0.0f, 0.0f);
     omSetSca(object, 1.0f, 1.0f, 1.0f);
     omObjMotionRead(object, 0, 0x65000A);
-    object->model[1] = Hu3DModelLink(D_8010CA12_game_guys_magic_boxes);
-    Hu3DModelPosSet(object->model[1], D_8010C9B0_game_guys_magic_boxes[1].x, D_8010C9B0_game_guys_magic_boxes[1].y,
-                    D_8010C9B0_game_guys_magic_boxes[1].z);
+    object->model[1] = Hu3DModelLink(m268_boxLidMdl);
+    Hu3DModelPosSet(object->model[1], m268_boxPosTbl[1].x, m268_boxPosTbl[1].y,
+                    m268_boxPosTbl[1].z);
     Hu3DModelRotSet(object->model[1], 0.0f, 0.0f, 0.0f);
     Hu3DModelScaleSet(object->model[1], 1.0f, 1.0f, 1.0f);
-    object->func = func_8010982C_game_guys_magic_boxes;
+    object->func = m268_Box2ObjMain;
 }
 
-void func_80106DC4_game_guys_magic_boxes(omObjData *object) {
-    switch (D_8010C9E8_game_guys_magic_boxes) {
+void m268_MainObjMain(omObjData *object) {
+    switch (m268_mainPhase) {
         case 0:
-            D_8010C1EE_game_guys_magic_boxes = func_8010AC18_game_guys_magic_boxes();
-            if (D_8010C1EE_game_guys_magic_boxes == 1) {
-                D_8010C9E8_game_guys_magic_boxes = 1;
+            m268_introDoneF = m268_SpotIntroUpdate();
+            if (m268_introDoneF == 1) {
+                m268_mainPhase = 1;
             }
             break;
         case 1:
-            D_8010C774_game_guys_magic_boxes = omAddPrcObj(func_80107020_game_guys_magic_boxes, 0x3F00, 0x800, 0);
-            D_8010C9E8_game_guys_magic_boxes = 2;
+            m268_ruleProc = omAddPrcObj(m268_RuleProc, 0x3F00, 0x800, 0);
+            m268_mainPhase = 2;
             break;
         case 2:
-            if (D_8010CA0E_game_guys_magic_boxes == 1) {
-                D_8010C9E8_game_guys_magic_boxes = 3;
-                D_8010CA0E_game_guys_magic_boxes = 0;
-                omDelPrcObj(D_8010C774_game_guys_magic_boxes);
+            if (m268_procResult == 1) {
+                m268_mainPhase = 3;
+                m268_procResult = 0;
+                omDelPrcObj(m268_ruleProc);
             }
             break;
         case 3:
-            func_801071B8_game_guys_magic_boxes();
+            m268_BoxDropUpdate();
             break;
         case 4:
-            func_80107834_game_guys_magic_boxes();
+            m268_ShuffleUpdate();
             break;
         case 5:
-            D_8010C778_game_guys_magic_boxes = omAddPrcObj(func_80107A3C_game_guys_magic_boxes, 0x3F00, 0x800, 0);
-            D_8010C9E8_game_guys_magic_boxes = 6;
+            m268_shuffleMesProc = omAddPrcObj(m268_ShuffleMesProc, 0x3F00, 0x800, 0);
+            m268_mainPhase = 6;
             break;
         case 6:
-            if (D_8010CA0E_game_guys_magic_boxes == 1) {
-                D_8010C9E8_game_guys_magic_boxes = 7;
-                D_8010CA0E_game_guys_magic_boxes = 0;
-                omDelPrcObj(D_8010C778_game_guys_magic_boxes);
+            if (m268_procResult == 1) {
+                m268_mainPhase = 7;
+                m268_procResult = 0;
+                omDelPrcObj(m268_shuffleMesProc);
             }
             break;
         case 7:
-            func_80107AE0_game_guys_magic_boxes();
+            m268_StartMesUpdate();
             break;
         case 8:
-            func_80107B64_game_guys_magic_boxes();
+            m268_BoxSelectUpdate();
             break;
         case 9:
-            func_80108294_game_guys_magic_boxes();
+            m268_FinishMesUpdate();
             break;
         case 10:
-            func_80108498_game_guys_magic_boxes();
+            m268_BoxSpotUpdate();
             break;
         case 11:
-            func_8010861C_game_guys_magic_boxes();
+            m268_BoxOpenUpdate();
             break;
         case 12:
-            D_8010C77C_game_guys_magic_boxes = omAddPrcObj(func_80108914_game_guys_magic_boxes, 0x3F00, 0x800, 0);
-            D_8010C9E8_game_guys_magic_boxes = 13;
+            m268_continueProc = omAddPrcObj(m268_ContinueProc, 0x3F00, 0x800, 0);
+            m268_mainPhase = 13;
             break;
         case 13:
-            if (D_8010CA0E_game_guys_magic_boxes == 1) {
-                D_8010C9E8_game_guys_magic_boxes = 14;
-                D_8010CA0E_game_guys_magic_boxes = 0;
-                omDelPrcObj(D_8010C77C_game_guys_magic_boxes);
-            } else if (D_8010CA0E_game_guys_magic_boxes == 2) {
+            if (m268_procResult == 1) {
+                m268_mainPhase = 14;
+                m268_procResult = 0;
+                omDelPrcObj(m268_continueProc);
+            } else if (m268_procResult == 2) {
                 HuAudSeqFadeOut(14);
-                D_8010C9E8_game_guys_magic_boxes = 15;
-                D_8010CA0E_game_guys_magic_boxes = 0;
-                omDelPrcObj(D_8010C77C_game_guys_magic_boxes);
+                m268_mainPhase = 15;
+                m268_procResult = 0;
+                omDelPrcObj(m268_continueProc);
             }
             break;
         case 14:
-            func_80108AF8_game_guys_magic_boxes();
+            m268_NextRoundUpdate();
             break;
         case 15:
-            func_80108C04_game_guys_magic_boxes();
+            m268_ResultUpdate();
             break;
         case 16:
-            object->func = func_80109884_game_guys_magic_boxes;
+            object->func = m268_ExitStartObjMain;
             break;
     }
 }
 
-void func_80107020_game_guys_magic_boxes(void) {
+void m268_RuleProc(void) {
     s16 win;
     s16 choice;
     s16 done = FALSE;
 
-    D_8010CA0E_game_guys_magic_boxes = 0;
-    win = func_8010A4EC_game_guys_magic_boxes(130, 160, 12);
+    m268_procResult = 0;
+    win = m268_WinCreate(130, 160, 12);
     HuAudFXPlay(0x11D);
     HuWinExOpen(win, 1);
     HuWinMesSet(win, 0x2C00, -1, -1);
-    func_8010A560_game_guys_magic_boxes(win, D_8010C751_game_guys_magic_boxes[0], D_8010C751_game_guys_magic_boxes[2]);
+    m268_WinKeyWait(win, m268_playerInfoPad[0], m268_playerInfoPad[2]);
     HuWinMesSet(win, 0x2C01, -1, -1);
     while (done == FALSE) {
-        choice = func_8010A6AC_game_guys_magic_boxes(win, D_8010C751_game_guys_magic_boxes[0], D_8010C751_game_guys_magic_boxes[2], 1, 0);
+        choice = m268_WinChoiceGet(win, m268_playerInfoPad[0], m268_playerInfoPad[2], 1, 0);
         switch (choice) {
             case 0:
                 HuWinMesSet(win, 0x2C02, -1, -1);
-                func_8010A560_game_guys_magic_boxes(win, D_8010C751_game_guys_magic_boxes[0], D_8010C751_game_guys_magic_boxes[2]);
+                m268_WinKeyWait(win, m268_playerInfoPad[0], m268_playerInfoPad[2]);
                 /* fallthrough */
             case 1:
                 done = TRUE;
@@ -624,489 +624,489 @@ void func_80107020_game_guys_magic_boxes(void) {
         HuPrcVSleep();
     }
     HuWinMesSet(win, 0x2C03, -1, -1);
-    func_8010A560_game_guys_magic_boxes(win, D_8010C751_game_guys_magic_boxes[0], D_8010C751_game_guys_magic_boxes[2]);
-    func_8010A878_game_guys_magic_boxes(win);
-    D_8010CA0E_game_guys_magic_boxes = 1;
+    m268_WinKeyWait(win, m268_playerInfoPad[0], m268_playerInfoPad[2]);
+    m268_WinClose(win);
+    m268_procResult = 1;
     while (TRUE) {
         HuPrcVSleep();
     }
 }
 
-void func_801071B8_game_guys_magic_boxes(void) {
-    D_8010C9B0_game_guys_magic_boxes[0].y -= D_8010C1F4_game_guys_magic_boxes;
-    D_8010C9B0_game_guys_magic_boxes[1].y -= D_8010C1F4_game_guys_magic_boxes;
-    D_8010C5D8_game_guys_magic_boxes[0].x = D_8010C9B0_game_guys_magic_boxes[0].x;
-    D_8010C5D8_game_guys_magic_boxes[0].y = D_8010C9B0_game_guys_magic_boxes[0].y + 100.0f;
-    D_8010C5D8_game_guys_magic_boxes[0].z = D_8010C9B0_game_guys_magic_boxes[0].z;
-    D_8010C5D8_game_guys_magic_boxes[1].x = D_8010C9B0_game_guys_magic_boxes[1].x;
-    D_8010C5D8_game_guys_magic_boxes[1].y = D_8010C9B0_game_guys_magic_boxes[1].y + 100.0f;
-    D_8010C5D8_game_guys_magic_boxes[1].z = D_8010C9B0_game_guys_magic_boxes[1].z;
-    Hu3D3Dto2D(0, &D_8010C5D8_game_guys_magic_boxes[0], &D_8010C5F0_game_guys_magic_boxes[0]);
-    Hu3D3Dto2D(0, &D_8010C5D8_game_guys_magic_boxes[1], &D_8010C5F0_game_guys_magic_boxes[1]);
+void m268_BoxDropUpdate(void) {
+    m268_boxPosTbl[0].y -= m268_boxDropVel;
+    m268_boxPosTbl[1].y -= m268_boxDropVel;
+    m268_boxSpotPosTbl[0].x = m268_boxPosTbl[0].x;
+    m268_boxSpotPosTbl[0].y = m268_boxPosTbl[0].y + 100.0f;
+    m268_boxSpotPosTbl[0].z = m268_boxPosTbl[0].z;
+    m268_boxSpotPosTbl[1].x = m268_boxPosTbl[1].x;
+    m268_boxSpotPosTbl[1].y = m268_boxPosTbl[1].y + 100.0f;
+    m268_boxSpotPosTbl[1].z = m268_boxPosTbl[1].z;
+    Hu3D3Dto2D(0, &m268_boxSpotPosTbl[0], &m268_boxSpotScreenPosTbl[0]);
+    Hu3D3Dto2D(0, &m268_boxSpotPosTbl[1], &m268_boxSpotScreenPosTbl[1]);
 
-    switch (D_8010C1EF_game_guys_magic_boxes) {
+    switch (m268_boxDropState) {
         case 0:
-            D_8010C5D4_game_guys_magic_boxes = 0;
-            D_8010C5D6_game_guys_magic_boxes = 0;
-            D_8010C9D9_game_guys_magic_boxes = 1;
-            D_8010C1EF_game_guys_magic_boxes++;
+            m268_boxSpotUnused = 0;
+            m268_boxSpotDropTPLvl = 0;
+            m268_bannerStopF = 1;
+            m268_boxDropState++;
             break;
         case 1:
-            if (D_8010C5D6_game_guys_magic_boxes >= 0x80) {
-                D_8010C1F4_game_guys_magic_boxes = 8.0f;
-                D_8010CA06_game_guys_magic_boxes = 0;
+            if (m268_boxSpotDropTPLvl >= 0x80) {
+                m268_boxDropVel = 8.0f;
+                m268_shadowGrowF = 0;
             } else {
-                D_8010C5D6_game_guys_magic_boxes += 8;
+                m268_boxSpotDropTPLvl += 8;
             }
-            HuSprTPLvlSet(D_8010C9F0_game_guys_magic_boxes, 0, D_8010C5D6_game_guys_magic_boxes);
-            if (D_8010C9B0_game_guys_magic_boxes[0].y == -128.0f) {
+            HuSprTPLvlSet(m268_boxSpotGrp, 0, m268_boxSpotDropTPLvl);
+            if (m268_boxPosTbl[0].y == -128.0f) {
                 HuAudFXPlay(0x535);
             }
-            if (D_8010C9B0_game_guys_magic_boxes[0].y <= -450.0f) {
+            if (m268_boxPosTbl[0].y <= -450.0f) {
                 HuAudFXPlay(0x531);
                 HuAudFXPlay(0x530);
-                D_8010C1EF_game_guys_magic_boxes++;
+                m268_boxDropState++;
             }
             break;
         case 2:
-            D_8010C1F4_game_guys_magic_boxes -= 0.4f;
-            if (D_8010C1F4_game_guys_magic_boxes < 0.0f) {
-                omVibrate(D_8010C750_game_guys_magic_boxes[0], 2, 3, 10);
-                D_8010C1F4_game_guys_magic_boxes = 0.0f;
-                D_8010C1EF_game_guys_magic_boxes++;
+            m268_boxDropVel -= 0.4f;
+            if (m268_boxDropVel < 0.0f) {
+                omVibrate(m268_playerInfoNo[0], 2, 3, 10);
+                m268_boxDropVel = 0.0f;
+                m268_boxDropState++;
             }
             break;
         case 3:
-            if (D_8010C5D6_game_guys_magic_boxes == 0) {
-                D_8010C1EF_game_guys_magic_boxes = 4;
+            if (m268_boxSpotDropTPLvl == 0) {
+                m268_boxDropState = 4;
             } else {
-                D_8010C5D6_game_guys_magic_boxes -= 8;
+                m268_boxSpotDropTPLvl -= 8;
             }
-            HuSprTPLvlSet(D_8010C9F0_game_guys_magic_boxes, 0, D_8010C5D6_game_guys_magic_boxes);
+            HuSprTPLvlSet(m268_boxSpotGrp, 0, m268_boxSpotDropTPLvl);
             break;
         case 4:
-            if (D_8010C9E2_game_guys_magic_boxes != 0) {
+            if (m268_winF != 0) {
                 HuAudFXPlay(0x531);
                 HuAudFXPlay(0x530);
             }
             HuAudFXPlay(0x52E);
-            Hu3DMotionSpeedSet(D_8010C768_game_guys_magic_boxes->model[0], -1.2f);
-            Hu3DMotionSpeedSet(D_8010C770_game_guys_magic_boxes->model[0], -1.2f);
-            D_8010C1EF_game_guys_magic_boxes = 5;
-            D_8010C9D9_game_guys_magic_boxes = 0;
+            Hu3DMotionSpeedSet(m268_boxObj->model[0], -1.2f);
+            Hu3DMotionSpeedSet(m268_box2Obj->model[0], -1.2f);
+            m268_boxDropState = 5;
+            m268_bannerStopF = 0;
             break;
         case 5:
-            if (D_8010C1F0_game_guys_magic_boxes >= 13) {
-                D_8010C9C8_game_guys_magic_boxes = 0;
-                if (D_8010C9E7_game_guys_magic_boxes == 0) {
-                    D_8010C9C9_game_guys_magic_boxes = 0;
+            if (m268_boxDropTimer >= 13) {
+                m268_kinopioMotNo = 0;
+                if (m268_roundNo == 0) {
+                    m268_koopaJrMotNo = 0;
                 }
             } else {
-                D_8010C1F0_game_guys_magic_boxes++;
+                m268_boxDropTimer++;
             }
-            if (Hu3DData[D_8010C768_game_guys_magic_boxes->model[0]].motTime < 0.0f) {
-                Hu3DMotionSpeedSet(D_8010C768_game_guys_magic_boxes->model[0], 0.0f);
-                D_8010C1EF_game_guys_magic_boxes = 6;
+            if (Hu3DData[m268_boxObj->model[0]].motTime < 0.0f) {
+                Hu3DMotionSpeedSet(m268_boxObj->model[0], 0.0f);
+                m268_boxDropState = 6;
             }
-            if (Hu3DData[D_8010C770_game_guys_magic_boxes->model[0]].motTime < 0.0f) {
-                Hu3DMotionSpeedSet(D_8010C770_game_guys_magic_boxes->model[0], 0.0f);
-                D_8010C1EF_game_guys_magic_boxes = 6;
+            if (Hu3DData[m268_box2Obj->model[0]].motTime < 0.0f) {
+                Hu3DMotionSpeedSet(m268_box2Obj->model[0], 0.0f);
+                m268_boxDropState = 6;
             }
             break;
         case 6:
-            Hu3DModelCameraSet(D_8010C76C_game_guys_magic_boxes->model[0], 0);
-            Hu3DModelCameraSet(D_8010C764_game_guys_magic_boxes->model[0], 0);
-            D_8010C1F0_game_guys_magic_boxes = 0;
-            D_8010C1EF_game_guys_magic_boxes = 4;
-            D_8010C1F4_game_guys_magic_boxes = 0.0f;
-            Hu3DMotionSpeedSet(D_8010C768_game_guys_magic_boxes->model[0], 0.0f);
-            Hu3DMotionSpeedSet(D_8010C770_game_guys_magic_boxes->model[0], 0.0f);
-            D_8010C9CA_game_guys_magic_boxes = 1;
-            D_8010C9E8_game_guys_magic_boxes = 4;
+            Hu3DModelCameraSet(m268_koopaJrObj->model[0], 0);
+            Hu3DModelCameraSet(m268_kinopioObj->model[0], 0);
+            m268_boxDropTimer = 0;
+            m268_boxDropState = 4;
+            m268_boxDropVel = 0.0f;
+            Hu3DMotionSpeedSet(m268_boxObj->model[0], 0.0f);
+            Hu3DMotionSpeedSet(m268_box2Obj->model[0], 0.0f);
+            m268_gambleMotNo = 1;
+            m268_mainPhase = 4;
             break;
     }
 
-    if (D_8010C1EF_game_guys_magic_boxes < 4) {
-        func_8010A388_game_guys_magic_boxes(D_8010C600_game_guys_magic_boxes[D_8010CA00_game_guys_magic_boxes][0].x,
-                                            D_8010C600_game_guys_magic_boxes[D_8010CA00_game_guys_magic_boxes][0].y, 50);
-        func_8010A388_game_guys_magic_boxes(D_8010C600_game_guys_magic_boxes[D_8010CA00_game_guys_magic_boxes][1].x,
-                                            D_8010C600_game_guys_magic_boxes[D_8010CA00_game_guys_magic_boxes][1].y, 50);
-        D_8010C600_game_guys_magic_boxes[D_8010CA00_game_guys_magic_boxes][0].x = D_8010C5F0_game_guys_magic_boxes[0].x;
-        D_8010C600_game_guys_magic_boxes[D_8010CA00_game_guys_magic_boxes][1].x = D_8010C5F0_game_guys_magic_boxes[1].x;
-        D_8010C600_game_guys_magic_boxes[D_8010CA00_game_guys_magic_boxes][0].y = D_8010C5F0_game_guys_magic_boxes[0].y;
-        D_8010C600_game_guys_magic_boxes[D_8010CA00_game_guys_magic_boxes][1].y = D_8010C5F0_game_guys_magic_boxes[1].y;
-        func_8010A1B0_game_guys_magic_boxes(D_8010C5F0_game_guys_magic_boxes[0].x, D_8010C5F0_game_guys_magic_boxes[0].y,
+    if (m268_boxDropState < 4) {
+        m268_BoxSpotErase(m268_boxSpotHistoryTbl[m268_boxSpotBufNo][0].x,
+                                            m268_boxSpotHistoryTbl[m268_boxSpotBufNo][0].y, 50);
+        m268_BoxSpotErase(m268_boxSpotHistoryTbl[m268_boxSpotBufNo][1].x,
+                                            m268_boxSpotHistoryTbl[m268_boxSpotBufNo][1].y, 50);
+        m268_boxSpotHistoryTbl[m268_boxSpotBufNo][0].x = m268_boxSpotScreenPosTbl[0].x;
+        m268_boxSpotHistoryTbl[m268_boxSpotBufNo][1].x = m268_boxSpotScreenPosTbl[1].x;
+        m268_boxSpotHistoryTbl[m268_boxSpotBufNo][0].y = m268_boxSpotScreenPosTbl[0].y;
+        m268_boxSpotHistoryTbl[m268_boxSpotBufNo][1].y = m268_boxSpotScreenPosTbl[1].y;
+        m268_BoxSpotDraw(m268_boxSpotScreenPosTbl[0].x, m268_boxSpotScreenPosTbl[0].y,
                                             50);
-        func_8010A1B0_game_guys_magic_boxes(D_8010C5F0_game_guys_magic_boxes[1].x, D_8010C5F0_game_guys_magic_boxes[1].y,
+        m268_BoxSpotDraw(m268_boxSpotScreenPosTbl[1].x, m268_boxSpotScreenPosTbl[1].y,
                                             50);
-        D_8010C9EC_game_guys_magic_boxes->data->pat->data =
-            D_8010C9F4_game_guys_magic_boxes[D_8010CA00_game_guys_magic_boxes];
-        D_8010CA00_game_guys_magic_boxes = (u8)(D_8010CA00_game_guys_magic_boxes + 1) % 3;
+        m268_boxSpotSpr->data->pat->data =
+            m268_boxSpotBufTbl[m268_boxSpotBufNo];
+        m268_boxSpotBufNo = (u8)(m268_boxSpotBufNo + 1) % 3;
     }
 }
 
-void func_80107834_game_guys_magic_boxes(void) {
-    switch (D_8010C1F8_game_guys_magic_boxes) {
+void m268_ShuffleUpdate(void) {
+    switch (m268_shuffleTimer) {
         case 10:
             HuAudFXPlay(0x532);
             break;
         case 18:
-            D_8010C9D8_game_guys_magic_boxes = 1;
+            m268_curtainState = 1;
             break;
         case 30:
-            if (D_8010C9DB_game_guys_magic_boxes[D_8010C9E7_game_guys_magic_boxes][0] == 1) {
-                D_8010C9B0_game_guys_magic_boxes[0].x = -150.0f;
-                D_8010C9B0_game_guys_magic_boxes[1].x = 150.0f;
+            if (m268_kinopioSideTbl[m268_roundNo][0] == 1) {
+                m268_boxPosTbl[0].x = -150.0f;
+                m268_boxPosTbl[1].x = 150.0f;
             } else {
-                D_8010C9B0_game_guys_magic_boxes[0].x = 150.0f;
-                D_8010C9B0_game_guys_magic_boxes[1].x = -150.0f;
+                m268_boxPosTbl[0].x = 150.0f;
+                m268_boxPosTbl[1].x = -150.0f;
             }
             break;
         case 27:
             HuAudFXPlay(0x52D);
             break;
         case 43:
-            D_8010C9CA_game_guys_magic_boxes = 2;
+            m268_gambleMotNo = 2;
             break;
         case 45:
-            Hu3DMotionSpeedSet(D_8010C760_game_guys_magic_boxes->model[0], 0.0f);
+            Hu3DMotionSpeedSet(m268_gambleObj->model[0], 0.0f);
             break;
         case 48:
-            Hu3DMotionSpeedSet(D_8010C760_game_guys_magic_boxes->model[0], 1.0f);
+            Hu3DMotionSpeedSet(m268_gambleObj->model[0], 1.0f);
             break;
         case 91:
-            D_8010C9CA_game_guys_magic_boxes = 1;
+            m268_gambleMotNo = 1;
             break;
         case 94:
             HuAudFXPlay(0x52D);
-            Hu3DMotionTimeSet(D_8010C760_game_guys_magic_boxes->model[0], 90.0f);
-            Hu3DMotionSpeedSet(D_8010C760_game_guys_magic_boxes->model[0], -1.0f);
+            Hu3DMotionTimeSet(m268_gambleObj->model[0], 90.0f);
+            Hu3DMotionSpeedSet(m268_gambleObj->model[0], -1.0f);
             break;
         case 122:
             HuAudFXPlay(0x533);
-            D_8010C9D8_game_guys_magic_boxes = 2;
+            m268_curtainState = 2;
             break;
         case 138:
-            D_8010C9CA_game_guys_magic_boxes = 0;
+            m268_gambleMotNo = 0;
             break;
         case 140:
-            Hu3DMotionSpeedSet(D_8010C760_game_guys_magic_boxes->model[0], 1.0f);
-            D_8010C7F8_game_guys_magic_boxes.x = -58;
-            D_8010C818_game_guys_magic_boxes.x = 250;
-            D_8010C1F8_game_guys_magic_boxes = 0;
-            D_8010C9E8_game_guys_magic_boxes = 5;
+            Hu3DMotionSpeedSet(m268_gambleObj->model[0], 1.0f);
+            m268_sideSprL.x = -58;
+            m268_sideSprR.x = 250;
+            m268_shuffleTimer = 0;
+            m268_mainPhase = 5;
             break;
         // Empty cases; needed for the jump table.
         case 11:
         case 12:
             break;
     }
-    D_8010C1F8_game_guys_magic_boxes++;
+    m268_shuffleTimer++;
 }
 
-void func_80107A3C_game_guys_magic_boxes(void) {
+void m268_ShuffleMesProc(void) {
     s16 win;
 
-    D_8010CA0E_game_guys_magic_boxes = 0;
-    win = func_8010A4EC_game_guys_magic_boxes(130, 160, 12);
+    m268_procResult = 0;
+    win = m268_WinCreate(130, 160, 12);
     HuAudFXPlay(0x11D);
     HuWinExOpen(win, 1);
     HuWinMesSet(win, 0x2C04, -1, -1);
-    func_8010A560_game_guys_magic_boxes(win, D_8010C751_game_guys_magic_boxes[0], D_8010C751_game_guys_magic_boxes[2]);
-    func_8010A878_game_guys_magic_boxes(win);
-    D_8010CA0E_game_guys_magic_boxes = 1;
+    m268_WinKeyWait(win, m268_playerInfoPad[0], m268_playerInfoPad[2]);
+    m268_WinClose(win);
+    m268_procResult = 1;
     while (TRUE) {
         HuPrcVSleep();
     }
 }
 
-void func_80107AE0_game_guys_magic_boxes(void) {
-    if (D_8010C1FA_game_guys_magic_boxes == 0) {
+void m268_StartMesUpdate(void) {
+    if (m268_startMesState == 0) {
         GMesClose();
-        D_8010CA0C_game_guys_magic_boxes = GMesCreate(GMES_MES_9);
-        D_8010C1FA_game_guys_magic_boxes = 1;
-    } else if (D_8010C1FA_game_guys_magic_boxes == 1) {
+        m268_startMesId = GMesCreate(GMES_MES_9);
+        m268_startMesState = 1;
+    } else if (m268_startMesState == 1) {
         if (GMesStatGet() == GMES_STAT_NONE) {
-            D_8010C9E8_game_guys_magic_boxes = 8;
-            D_8010C1FA_game_guys_magic_boxes = 0;
-            D_8010C1FB_game_guys_magic_boxes = 0;
+            m268_mainPhase = 8;
+            m268_startMesState = 0;
+            m268_startMesStatePad = 0;
         }
     }
 }
 
-void func_80107B64_game_guys_magic_boxes(void) {
+void m268_BoxSelectUpdate(void) {
     u8 dir = 0;
     s32 confirm = FALSE;
     u16 buttons;
 
-    switch (D_8010C1FC_game_guys_magic_boxes) {
+    switch (m268_selectState) {
         case 0:
             GMesCreate(26, 10, 156, 56);
-            D_8010C9E1_game_guys_magic_boxes = 0;
-            D_8010C208_game_guys_magic_boxes = 0;
-            D_8010C1FC_game_guys_magic_boxes = 10;
+            m268_selectNo = 0;
+            m268_selectPrev = 0;
+            m268_selectState = 10;
             break;
         case 10:
-            D_8010C990_game_guys_magic_boxes.x = 55;
-            D_8010C990_game_guys_magic_boxes.scaleY = D_8010C204_game_guys_magic_boxes;
-            D_8010C990_game_guys_magic_boxes.scaleX = D_8010C204_game_guys_magic_boxes;
-            if (D_8010C204_game_guys_magic_boxes < 1.0f) {
-                D_8010C204_game_guys_magic_boxes += 0.25f;
+            m268_portraitSpr.x = 55;
+            m268_portraitSpr.scaleY = m268_portraitScale;
+            m268_portraitSpr.scaleX = m268_portraitScale;
+            if (m268_portraitScale < 1.0f) {
+                m268_portraitScale += 0.25f;
             } else {
-                D_8010C1FC_game_guys_magic_boxes = 1;
+                m268_selectState = 1;
             }
-            func_80109D3C_game_guys_magic_boxes(&D_8010C990_game_guys_magic_boxes, 1);
-            if (D_8010C9DB_game_guys_magic_boxes[D_8010C9E7_game_guys_magic_boxes][D_8010C9E1_game_guys_magic_boxes] == 0) {
-                if (D_8010C1E0_game_guys_magic_boxes > 1.0f) {
-                    D_8010C1E0_game_guys_magic_boxes -= 0.05f;
+            m268_SprDispSet(&m268_portraitSpr, 1);
+            if (m268_kinopioSideTbl[m268_roundNo][m268_selectNo] == 0) {
+                if (m268_boxScaleL > 1.0f) {
+                    m268_boxScaleL -= 0.05f;
                 }
-                if (D_8010C1E4_game_guys_magic_boxes < 1.1f) {
-                    D_8010C1E4_game_guys_magic_boxes += 0.05f;
+                if (m268_boxScaleR < 1.1f) {
+                    m268_boxScaleR += 0.05f;
                 }
             } else {
-                if (D_8010C1E0_game_guys_magic_boxes < 1.1f) {
-                    D_8010C1E0_game_guys_magic_boxes += 0.05f;
+                if (m268_boxScaleL < 1.1f) {
+                    m268_boxScaleL += 0.05f;
                 }
-                if (D_8010C1E4_game_guys_magic_boxes > 1.0f) {
-                    D_8010C1E4_game_guys_magic_boxes -= 0.05f;
+                if (m268_boxScaleR > 1.0f) {
+                    m268_boxScaleR -= 0.05f;
                 }
             }
-            omSetSca(D_8010C768_game_guys_magic_boxes, D_8010C1E0_game_guys_magic_boxes, D_8010C1E0_game_guys_magic_boxes,
-                     D_8010C1E0_game_guys_magic_boxes);
-            Hu3DModelScaleSet(D_8010C768_game_guys_magic_boxes->model[1], D_8010C1E0_game_guys_magic_boxes,
-                              D_8010C1E0_game_guys_magic_boxes, D_8010C1E0_game_guys_magic_boxes);
-            omSetSca(D_8010C770_game_guys_magic_boxes, D_8010C1E4_game_guys_magic_boxes, D_8010C1E4_game_guys_magic_boxes,
-                     D_8010C1E4_game_guys_magic_boxes);
-            Hu3DModelScaleSet(D_8010C770_game_guys_magic_boxes->model[1], D_8010C1E4_game_guys_magic_boxes,
-                              D_8010C1E4_game_guys_magic_boxes, D_8010C1E4_game_guys_magic_boxes);
+            omSetSca(m268_boxObj, m268_boxScaleL, m268_boxScaleL,
+                     m268_boxScaleL);
+            Hu3DModelScaleSet(m268_boxObj->model[1], m268_boxScaleL,
+                              m268_boxScaleL, m268_boxScaleL);
+            omSetSca(m268_box2Obj, m268_boxScaleR, m268_boxScaleR,
+                     m268_boxScaleR);
+            Hu3DModelScaleSet(m268_box2Obj->model[1], m268_boxScaleR,
+                              m268_boxScaleR, m268_boxScaleR);
             break;
         case 1:
-            if (D_8010C751_game_guys_magic_boxes[2] == 0) {
-                if (HuPadStkX[D_8010C751_game_guys_magic_boxes[0]] > 64) {
+            if (m268_playerInfoPad[2] == 0) {
+                if (HuPadStkX[m268_playerInfoPad[0]] > 64) {
                     dir = 1;
                 }
-                if (HuPadStkX[D_8010C751_game_guys_magic_boxes[0]] < -64) {
+                if (HuPadStkX[m268_playerInfoPad[0]] < -64) {
                     dir = 2;
                 }
-                buttons = HuPadBtn[D_8010C751_game_guys_magic_boxes[0]];
+                buttons = HuPadBtn[m268_playerInfoPad[0]];
                 if (buttons & A_BUTTON) {
                     confirm = TRUE;
                 }
                 if (dir == 1) {
-                    D_8010C9E1_game_guys_magic_boxes = 1;
+                    m268_selectNo = 1;
                 } else if (dir == 2) {
-                    D_8010C9E1_game_guys_magic_boxes = 0;
+                    m268_selectNo = 0;
                 }
-            } else if (D_8010C751_game_guys_magic_boxes[2] == 1) {
-                if (D_8010C202_game_guys_magic_boxes >= 35) {
-                    if (D_8010C9E3_game_guys_magic_boxes[D_8010C9E7_game_guys_magic_boxes] !=
-                        D_8010C9E1_game_guys_magic_boxes) {
-                        D_8010C9E1_game_guys_magic_boxes = 1;
-                        D_8010C202_game_guys_magic_boxes = 0;
+            } else if (m268_playerInfoPad[2] == 1) {
+                if (m268_comWait >= 35) {
+                    if (m268_comSelectTbl[m268_roundNo] !=
+                        m268_selectNo) {
+                        m268_selectNo = 1;
+                        m268_comWait = 0;
                     } else {
-                        D_8010C202_game_guys_magic_boxes = 0;
+                        m268_comWait = 0;
                         confirm = TRUE;
                     }
                 } else {
-                    D_8010C202_game_guys_magic_boxes++;
+                    m268_comWait++;
                 }
             }
-            if (D_8010C208_game_guys_magic_boxes != D_8010C9E1_game_guys_magic_boxes) {
-                if (D_8010C9E1_game_guys_magic_boxes == 1) {
+            if (m268_selectPrev != m268_selectNo) {
+                if (m268_selectNo == 1) {
                     HuAudFXPlay(1);
-                    D_8010C990_game_guys_magic_boxes.x = 140;
-                } else if (D_8010C9E1_game_guys_magic_boxes == 0) {
+                    m268_portraitSpr.x = 140;
+                } else if (m268_selectNo == 0) {
                     HuAudFXPlay(1);
-                    D_8010C990_game_guys_magic_boxes.x = 55;
+                    m268_portraitSpr.x = 55;
                 }
-                D_8010C208_game_guys_magic_boxes = D_8010C9E1_game_guys_magic_boxes;
+                m268_selectPrev = m268_selectNo;
             }
-            if (D_8010C9DB_game_guys_magic_boxes[D_8010C9E7_game_guys_magic_boxes][D_8010C9E1_game_guys_magic_boxes] == 0) {
-                if (D_8010C1E0_game_guys_magic_boxes > 1.0f) {
-                    D_8010C1E0_game_guys_magic_boxes -= 0.05f;
+            if (m268_kinopioSideTbl[m268_roundNo][m268_selectNo] == 0) {
+                if (m268_boxScaleL > 1.0f) {
+                    m268_boxScaleL -= 0.05f;
                 }
-                if (D_8010C1E4_game_guys_magic_boxes < 1.1f) {
-                    D_8010C1E4_game_guys_magic_boxes += 0.05f;
+                if (m268_boxScaleR < 1.1f) {
+                    m268_boxScaleR += 0.05f;
                 }
             } else {
-                if (D_8010C1E0_game_guys_magic_boxes < 1.1f) {
-                    D_8010C1E0_game_guys_magic_boxes += 0.05f;
+                if (m268_boxScaleL < 1.1f) {
+                    m268_boxScaleL += 0.05f;
                 }
-                if (D_8010C1E4_game_guys_magic_boxes > 1.0f) {
-                    D_8010C1E4_game_guys_magic_boxes -= 0.05f;
+                if (m268_boxScaleR > 1.0f) {
+                    m268_boxScaleR -= 0.05f;
                 }
             }
-            omSetSca(D_8010C768_game_guys_magic_boxes, D_8010C1E0_game_guys_magic_boxes, D_8010C1E0_game_guys_magic_boxes,
-                     D_8010C1E0_game_guys_magic_boxes);
-            Hu3DModelScaleSet(D_8010C768_game_guys_magic_boxes->model[1], D_8010C1E0_game_guys_magic_boxes,
-                              D_8010C1E0_game_guys_magic_boxes, D_8010C1E0_game_guys_magic_boxes);
-            omSetSca(D_8010C770_game_guys_magic_boxes, D_8010C1E4_game_guys_magic_boxes, D_8010C1E4_game_guys_magic_boxes,
-                     D_8010C1E4_game_guys_magic_boxes);
-            Hu3DModelScaleSet(D_8010C770_game_guys_magic_boxes->model[1], D_8010C1E4_game_guys_magic_boxes,
-                              D_8010C1E4_game_guys_magic_boxes, D_8010C1E4_game_guys_magic_boxes);
-            func_80109D3C_game_guys_magic_boxes(&D_8010C990_game_guys_magic_boxes, 1);
-            if (D_8010C1FE_game_guys_magic_boxes >= 30) {
-                D_8010C200_game_guys_magic_boxes--;
-                D_8010C1FE_game_guys_magic_boxes = 0;
-                GMesTimerValueSet(D_8010C200_game_guys_magic_boxes);
+            omSetSca(m268_boxObj, m268_boxScaleL, m268_boxScaleL,
+                     m268_boxScaleL);
+            Hu3DModelScaleSet(m268_boxObj->model[1], m268_boxScaleL,
+                              m268_boxScaleL, m268_boxScaleL);
+            omSetSca(m268_box2Obj, m268_boxScaleR, m268_boxScaleR,
+                     m268_boxScaleR);
+            Hu3DModelScaleSet(m268_box2Obj->model[1], m268_boxScaleR,
+                              m268_boxScaleR, m268_boxScaleR);
+            m268_SprDispSet(&m268_portraitSpr, 1);
+            if (m268_countTimer >= 30) {
+                m268_countNum--;
+                m268_countTimer = 0;
+                GMesTimerValueSet(m268_countNum);
             } else {
-                D_8010C1FE_game_guys_magic_boxes++;
+                m268_countTimer++;
             }
-            if ((confirm == TRUE) | (D_8010C200_game_guys_magic_boxes < 1)) {
-                D_8010C204_game_guys_magic_boxes = 0.0f;
-                D_8010C1FC_game_guys_magic_boxes = 2;
+            if ((confirm == TRUE) | (m268_countNum < 1)) {
+                m268_portraitScale = 0.0f;
+                m268_selectState = 2;
             }
             break;
         case 2:
-            if (D_8010C9DB_game_guys_magic_boxes[D_8010C9E7_game_guys_magic_boxes][D_8010C9E1_game_guys_magic_boxes] == 1) {
-                D_8010C9E2_game_guys_magic_boxes = 1;
+            if (m268_kinopioSideTbl[m268_roundNo][m268_selectNo] == 1) {
+                m268_winF = 1;
             } else {
-                D_8010C9E2_game_guys_magic_boxes = 0;
+                m268_winF = 0;
             }
             HuAudFXPlay(3);
             omSysPauseDisableF = 1;
             GMesTimerEnd();
-            D_8010C9E8_game_guys_magic_boxes = 9;
-            D_8010C1FC_game_guys_magic_boxes = 0;
-            D_8010C1FE_game_guys_magic_boxes = 0;
-            D_8010C200_game_guys_magic_boxes = 10;
-            D_8010C204_game_guys_magic_boxes = 0.0f;
+            m268_mainPhase = 9;
+            m268_selectState = 0;
+            m268_countTimer = 0;
+            m268_countNum = 10;
+            m268_portraitScale = 0.0f;
             break;
     }
 }
 
-void func_80108294_game_guys_magic_boxes(void) {
-    if (D_8010C20C_game_guys_magic_boxes > 0.0f) {
-        D_8010C20C_game_guys_magic_boxes -= 0.25f;
-        func_80109D3C_game_guys_magic_boxes(&D_8010C990_game_guys_magic_boxes, 1);
+void m268_FinishMesUpdate(void) {
+    if (m268_portraitScaleOut > 0.0f) {
+        m268_portraitScaleOut -= 0.25f;
+        m268_SprDispSet(&m268_portraitSpr, 1);
     } else {
-        func_80109D3C_game_guys_magic_boxes(&D_8010C990_game_guys_magic_boxes, 0);
+        m268_SprDispSet(&m268_portraitSpr, 0);
     }
-    D_8010C990_game_guys_magic_boxes.scaleX = D_8010C990_game_guys_magic_boxes.scaleY =
-        D_8010C20C_game_guys_magic_boxes;
-    if (D_8010C1E0_game_guys_magic_boxes > 1.0f) {
-        D_8010C1E0_game_guys_magic_boxes -= 0.05f;
+    m268_portraitSpr.scaleX = m268_portraitSpr.scaleY =
+        m268_portraitScaleOut;
+    if (m268_boxScaleL > 1.0f) {
+        m268_boxScaleL -= 0.05f;
     }
-    if (D_8010C1E4_game_guys_magic_boxes > 1.0f) {
-        D_8010C1E4_game_guys_magic_boxes -= 0.05f;
+    if (m268_boxScaleR > 1.0f) {
+        m268_boxScaleR -= 0.05f;
     }
-    omSetSca(D_8010C768_game_guys_magic_boxes, D_8010C1E0_game_guys_magic_boxes, D_8010C1E0_game_guys_magic_boxes,
-             D_8010C1E0_game_guys_magic_boxes);
-    Hu3DModelScaleSet(D_8010C768_game_guys_magic_boxes->model[1], D_8010C1E0_game_guys_magic_boxes,
-                      D_8010C1E0_game_guys_magic_boxes, D_8010C1E0_game_guys_magic_boxes);
-    omSetSca(D_8010C770_game_guys_magic_boxes, D_8010C1E4_game_guys_magic_boxes, D_8010C1E4_game_guys_magic_boxes,
-             D_8010C1E4_game_guys_magic_boxes);
-    Hu3DModelScaleSet(D_8010C770_game_guys_magic_boxes->model[1], D_8010C1E4_game_guys_magic_boxes,
-                      D_8010C1E4_game_guys_magic_boxes, D_8010C1E4_game_guys_magic_boxes);
-    if (D_8010C20A_game_guys_magic_boxes == 0) {
+    omSetSca(m268_boxObj, m268_boxScaleL, m268_boxScaleL,
+             m268_boxScaleL);
+    Hu3DModelScaleSet(m268_boxObj->model[1], m268_boxScaleL,
+                      m268_boxScaleL, m268_boxScaleL);
+    omSetSca(m268_box2Obj, m268_boxScaleR, m268_boxScaleR,
+             m268_boxScaleR);
+    Hu3DModelScaleSet(m268_box2Obj->model[1], m268_boxScaleR,
+                      m268_boxScaleR, m268_boxScaleR);
+    if (m268_finishMesState == 0) {
         HuAudSeqVolFadeOut(120);
         GMesCreate(20);
-        D_8010C20A_game_guys_magic_boxes = 1;
-    } else if (D_8010C20A_game_guys_magic_boxes == 1) {
+        m268_finishMesState = 1;
+    } else if (m268_finishMesState == 1) {
         if (GMesStatGet() == GMES_STAT_NONE) {
-            D_8010C9E8_game_guys_magic_boxes = 10;
-            D_8010C20C_game_guys_magic_boxes = 1.0f;
-            D_8010C20A_game_guys_magic_boxes = 0;
-            D_8010C990_game_guys_magic_boxes.x = 55;
+            m268_mainPhase = 10;
+            m268_portraitScaleOut = 1.0f;
+            m268_finishMesState = 0;
+            m268_portraitSpr.x = 55;
         }
     }
 }
 
-void func_80108498_game_guys_magic_boxes(void) {
+void m268_BoxSpotUpdate(void) {
     u8 *pixels;
     s32 i;
 
-    switch (D_8010C210_game_guys_magic_boxes) {
+    switch (m268_boxSpotState) {
         case 0:
             HuAudSubSeqPlay(0x49);
             GMesClose();
-            D_8010C9D9_game_guys_magic_boxes = 1;
-            D_8010C212_game_guys_magic_boxes = 0;
-            if (D_8010C9E1_game_guys_magic_boxes == 1) {
-                D_8010C214_game_guys_magic_boxes = 203;
+            m268_bannerStopF = 1;
+            m268_boxSpotTPLvl = 0;
+            if (m268_selectNo == 1) {
+                m268_boxSpotX = 203;
             } else {
-                D_8010C214_game_guys_magic_boxes = 117;
+                m268_boxSpotX = 117;
             }
-            D_8010C216_game_guys_magic_boxes = 120;
-            pixels = D_8010C9F4_game_guys_magic_boxes[0];
+            m268_boxSpotY = 120;
+            pixels = m268_boxSpotBufTbl[0];
             for (i = 0; i < 0x9600; i++) {
                 *pixels++ = 0;
             }
-            D_8010CA00_game_guys_magic_boxes = 0;
-            func_8010A1B0_game_guys_magic_boxes(D_8010C214_game_guys_magic_boxes, D_8010C216_game_guys_magic_boxes, 50);
-            D_8010C9EC_game_guys_magic_boxes->data->pat->data = D_8010C9F4_game_guys_magic_boxes[0];
-            D_8010C210_game_guys_magic_boxes = 1;
+            m268_boxSpotBufNo = 0;
+            m268_BoxSpotDraw(m268_boxSpotX, m268_boxSpotY, 50);
+            m268_boxSpotSpr->data->pat->data = m268_boxSpotBufTbl[0];
+            m268_boxSpotState = 1;
             break;
         case 1:
-            if (D_8010C212_game_guys_magic_boxes >= 0x80) {
-                D_8010C210_game_guys_magic_boxes = 2;
+            if (m268_boxSpotTPLvl >= 0x80) {
+                m268_boxSpotState = 2;
             } else {
-                D_8010C212_game_guys_magic_boxes += 8;
+                m268_boxSpotTPLvl += 8;
             }
-            HuSprTPLvlSet(D_8010C9F0_game_guys_magic_boxes, 0, D_8010C212_game_guys_magic_boxes);
+            HuSprTPLvlSet(m268_boxSpotGrp, 0, m268_boxSpotTPLvl);
             break;
         case 2:
-            D_8010C210_game_guys_magic_boxes = 0;
-            D_8010C214_game_guys_magic_boxes = 0;
-            D_8010C216_game_guys_magic_boxes = 0;
-            D_8010C9E8_game_guys_magic_boxes = 11;
+            m268_boxSpotState = 0;
+            m268_boxSpotX = 0;
+            m268_boxSpotY = 0;
+            m268_mainPhase = 11;
             break;
     }
 }
 
-void func_8010861C_game_guys_magic_boxes(void) {
-    switch (D_8010C218_game_guys_magic_boxes) {
+void m268_BoxOpenUpdate(void) {
+    switch (m268_boxOpenState) {
         case 0:
-            if (D_8010C21A_game_guys_magic_boxes >= 30) {
+            if (m268_boxOpenTimer >= 30) {
                 HuAudSubSeqVolFadeOut(1);
-                D_8010C21A_game_guys_magic_boxes = 0;
-                D_8010C218_game_guys_magic_boxes = 1;
+                m268_boxOpenTimer = 0;
+                m268_boxOpenState = 1;
             } else {
-                D_8010C21A_game_guys_magic_boxes++;
+                m268_boxOpenTimer++;
             }
             break;
         case 1:
             HuAudFXPlay(0x52F);
-            Hu3DModelCameraSet(D_8010C76C_game_guys_magic_boxes->model[0], 1);
-            Hu3DModelCameraSet(D_8010C764_game_guys_magic_boxes->model[0], 1);
-            Hu3DMotionSpeedSet(D_8010C768_game_guys_magic_boxes->model[0], 1.0f);
-            Hu3DMotionSpeedSet(D_8010C770_game_guys_magic_boxes->model[0], 1.0f);
-            D_8010C9C8_game_guys_magic_boxes = 2;
-            D_8010C9C9_game_guys_magic_boxes = 2;
-            D_8010C218_game_guys_magic_boxes = 2;
-            if (D_8010C9E2_game_guys_magic_boxes == 1) {
-                if (D_8010C9E7_game_guys_magic_boxes == 2) {
-                    omVibrate(D_8010C750_game_guys_magic_boxes[0], 30, 0, 30);
+            Hu3DModelCameraSet(m268_koopaJrObj->model[0], 1);
+            Hu3DModelCameraSet(m268_kinopioObj->model[0], 1);
+            Hu3DMotionSpeedSet(m268_boxObj->model[0], 1.0f);
+            Hu3DMotionSpeedSet(m268_box2Obj->model[0], 1.0f);
+            m268_kinopioMotNo = 2;
+            m268_koopaJrMotNo = 2;
+            m268_boxOpenState = 2;
+            if (m268_winF == 1) {
+                if (m268_roundNo == 2) {
+                    omVibrate(m268_playerInfoNo[0], 30, 0, 30);
                 } else {
-                    omVibrate(D_8010C750_game_guys_magic_boxes[0], 10, 0, 10);
+                    omVibrate(m268_playerInfoNo[0], 10, 0, 10);
                 }
             } else {
-                omVibrate(D_8010C750_game_guys_magic_boxes[0], 2, 2, 20);
+                omVibrate(m268_playerInfoNo[0], 2, 2, 20);
             }
             break;
         case 2:
-            if (D_8010C21A_game_guys_magic_boxes >= 45) {
-                if (D_8010C9E2_game_guys_magic_boxes == 0) {
+            if (m268_boxOpenTimer >= 45) {
+                if (m268_winF == 0) {
                     HuAudFXPlay(0x534);
                 } else {
                     HuAudFXPlay(0x535);
                 }
-                D_8010C21A_game_guys_magic_boxes = 0;
-                D_8010C218_game_guys_magic_boxes = 3;
+                m268_boxOpenTimer = 0;
+                m268_boxOpenState = 3;
             } else {
-                D_8010C21A_game_guys_magic_boxes++;
+                m268_boxOpenTimer++;
             }
-            if (D_8010C21A_game_guys_magic_boxes == 23) {
-                if (D_8010C9E2_game_guys_magic_boxes == 1) {
-                    D_8010C9C8_game_guys_magic_boxes = 4;
-                    D_8010C9C9_game_guys_magic_boxes = 4;
+            if (m268_boxOpenTimer == 23) {
+                if (m268_winF == 1) {
+                    m268_kinopioMotNo = 4;
+                    m268_koopaJrMotNo = 4;
                 } else {
-                    D_8010C9C8_game_guys_magic_boxes = 3;
-                    D_8010C9C9_game_guys_magic_boxes = 3;
+                    m268_kinopioMotNo = 3;
+                    m268_koopaJrMotNo = 3;
                 }
             }
-            if (D_8010C21A_game_guys_magic_boxes == 25) {
-                if (D_8010C9E2_game_guys_magic_boxes == 1) {
+            if (m268_boxOpenTimer == 25) {
+                if (m268_winF == 1) {
                     HuAudFXPlay(0x531);
                 } else {
                     HuAudFXPlay(0x530);
@@ -1114,44 +1114,44 @@ void func_8010861C_game_guys_magic_boxes(void) {
             }
             break;
         case 3:
-            if (D_8010C9E2_game_guys_magic_boxes == 1 && D_8010C9E7_game_guys_magic_boxes != 2) {
+            if (m268_winF == 1 && m268_roundNo != 2) {
                 HuAudSubSeqPlay(0x70);
-                D_8010C9E8_game_guys_magic_boxes = 12;
-                D_8010C218_game_guys_magic_boxes = 0;
-                D_8010C21A_game_guys_magic_boxes = 0;
-            } else if (D_8010C9E2_game_guys_magic_boxes == 0 || D_8010C9E7_game_guys_magic_boxes == 2) {
-                D_8010C9E8_game_guys_magic_boxes = 15;
+                m268_mainPhase = 12;
+                m268_boxOpenState = 0;
+                m268_boxOpenTimer = 0;
+            } else if (m268_winF == 0 || m268_roundNo == 2) {
+                m268_mainPhase = 15;
             }
             break;
     }
 }
 
-void func_80108914_game_guys_magic_boxes(void) {
+void m268_ContinueProc(void) {
     s16 win;
     s16 done = FALSE;
     s16 choice = 0;
 
     HuPrcSleep(50);
     HuAudSubSeqParamSet(10);
-    D_8010CA0E_game_guys_magic_boxes = 0;
-    win = func_8010A4EC_game_guys_magic_boxes(130, 160, 12);
+    m268_procResult = 0;
+    win = m268_WinCreate(130, 160, 12);
     HuAudFXPlay(0x11D);
     HuWinExOpen(win, 1);
     HuWinMesSet(win, 0x2C05, -1, -1);
-    func_8010A560_game_guys_magic_boxes(win, D_8010C751_game_guys_magic_boxes[0], D_8010C751_game_guys_magic_boxes[2]);
+    m268_WinKeyWait(win, m268_playerInfoPad[0], m268_playerInfoPad[2]);
     HuWinMesSet(win, 0x2C06, -1, -1);
-    if (D_8010CA04_game_guys_magic_boxes != D_8010C9E7_game_guys_magic_boxes) {
-        D_8010C9DA_game_guys_magic_boxes = 0;
+    if (m268_comRoundMax != m268_roundNo) {
+        m268_continueCursor = 0;
     } else {
-        D_8010C9DA_game_guys_magic_boxes = 1;
+        m268_continueCursor = 1;
     }
     while (done == FALSE) {
-        choice = func_8010A6AC_game_guys_magic_boxes(win, D_8010C751_game_guys_magic_boxes[0], D_8010C751_game_guys_magic_boxes[2],
-                                                     D_8010C9DA_game_guys_magic_boxes, 1);
+        choice = m268_WinChoiceGet(win, m268_playerInfoPad[0], m268_playerInfoPad[2],
+                                                     m268_continueCursor, 1);
         switch (choice) {
             case 0:
                 HuWinMesSet(win, 0x2C07, -1, -1);
-                func_8010A560_game_guys_magic_boxes(win, D_8010C751_game_guys_magic_boxes[0], D_8010C751_game_guys_magic_boxes[2]);
+                m268_WinKeyWait(win, m268_playerInfoPad[0], m268_playerInfoPad[2]);
                 /* fallthrough */
             case 1:
                 done = TRUE;
@@ -1159,43 +1159,43 @@ void func_80108914_game_guys_magic_boxes(void) {
         }
         HuPrcVSleep();
     }
-    func_8010A878_game_guys_magic_boxes(win);
+    m268_WinClose(win);
     if (choice == 0) {
-        D_8010CA0E_game_guys_magic_boxes = 1;
+        m268_procResult = 1;
     } else if (choice == 1) {
-        D_8010CA0E_game_guys_magic_boxes = 2;
+        m268_procResult = 2;
     }
     while (TRUE) {
         HuPrcVSleep();
     }
 }
 
-void func_80108AF8_game_guys_magic_boxes(void) {
-    switch (D_8010C21C_game_guys_magic_boxes) {
+void m268_NextRoundUpdate(void) {
+    switch (m268_nextRoundState) {
         case 0:
-            D_8010C9E7_game_guys_magic_boxes++;
-            D_8010C756_game_guys_magic_boxes[0] *= 2;
-            D_8010C9E1_game_guys_magic_boxes = 0;
-            D_8010C21C_game_guys_magic_boxes++;
+            m268_roundNo++;
+            m268_playerInfoCoin[0] *= 2;
+            m268_selectNo = 0;
+            m268_nextRoundState++;
             break;
         case 1:
-            if (D_8010C21E_game_guys_magic_boxes == 0) {
-                D_8010C21C_game_guys_magic_boxes = 2;
+            if (m268_nextRoundTPLvl == 0) {
+                m268_nextRoundState = 2;
             } else {
-                D_8010C21E_game_guys_magic_boxes -= 8;
+                m268_nextRoundTPLvl -= 8;
             }
-            HuSprTPLvlSet(D_8010C9F0_game_guys_magic_boxes, 0, D_8010C21E_game_guys_magic_boxes);
+            HuSprTPLvlSet(m268_boxSpotGrp, 0, m268_nextRoundTPLvl);
             break;
         case 2:
-            D_8010C9D9_game_guys_magic_boxes = 0;
-            D_8010C9E8_game_guys_magic_boxes = 3;
-            D_8010C21C_game_guys_magic_boxes = 0;
-            D_8010C21E_game_guys_magic_boxes = 0x80;
+            m268_bannerStopF = 0;
+            m268_mainPhase = 3;
+            m268_nextRoundState = 0;
+            m268_nextRoundTPLvl = 0x80;
             break;
     }
 }
 
-char *D_8010C228_game_guys_magic_boxes[] = {
+char *m268_chrNameTbl[] = {
     "\x82\x6C\x82\x60\x82\x71\x82\x68\x82\x6E",                 // ＭＡＲＩＯ
     "\x82\x6B\x82\x74\x82\x68\x82\x66\x82\x68",                 // ＬＵＩＧＩ
     "\x82\x6F\x82\x64\x82\x60\x82\x62\x82\x67",                 // ＰＥＡＣＨ
@@ -1206,228 +1206,228 @@ char *D_8010C228_game_guys_magic_boxes[] = {
     "\x82\x63\x82\x60\x82\x68\x82\x72\x82\x78",                 // ＤＡＩＳＹ
 }; // character names
 
-s16 D_8010C248_game_guys_magic_boxes = 0;
-u8 D_8010C24A_game_guys_magic_boxes = 0;
-f32 D_8010C24C_game_guys_magic_boxes = 0.0f; // box scale
-u8 D_8010C250_game_guys_magic_boxes = 0xFF;  // current motion
-u8 D_8010C251_game_guys_magic_boxes = 0xFF;  // current motion
-u8 D_8010C252_game_guys_magic_boxes = 1;     // scale
-u8 D_8010C253_game_guys_magic_boxes = 0xFF;  // current motion
-u8 D_8010C254_game_guys_magic_boxes = 1;     // scale
+s16 m268_bannerTimer = 0;
+u8 m268_bannerFrame = 0;
+f32 m268_curtainScale = 0.0f; // box scale
+u8 m268_gambleMotPrev = 0xFF;  // current motion
+u8 m268_kinopioMotPrev = 0xFF;  // current motion
+u8 m268_kinopioShadowScale = 1;     // scale
+u8 m268_koopaJrMotPrev = 0xFF;  // current motion
+u8 m268_koopaJrShadowScale = 1;     // scale
 
-void func_80108C04_game_guys_magic_boxes(void) {
-    if (D_8010C222_game_guys_magic_boxes == -1) {
-        if (D_8010C220_game_guys_magic_boxes++ >= 15) {
-            D_8010C220_game_guys_magic_boxes = 0;
-            D_8010C222_game_guys_magic_boxes = 0;
+void m268_ResultUpdate(void) {
+    if (m268_resultState == -1) {
+        if (m268_resultTimer++ >= 15) {
+            m268_resultTimer = 0;
+            m268_resultState = 0;
         }
-        if (D_8010C9E2_game_guys_magic_boxes == 0) {
-            D_8010C222_game_guys_magic_boxes = 0;
-            D_8010C220_game_guys_magic_boxes = 0;
+        if (m268_winF == 0) {
+            m268_resultState = 0;
+            m268_resultTimer = 0;
         }
-    } else if (D_8010C222_game_guys_magic_boxes == 0) {
-        if (D_8010C9E2_game_guys_magic_boxes == 1) {
+    } else if (m268_resultState == 0) {
+        if (m268_winF == 1) {
             HuAudSeqPlay(0x73);
-            D_8010C224_game_guys_magic_boxes = GMesCreate(0x16, D_8010C751_game_guys_magic_boxes[1]);
-            GMesTimeMaxSet(D_8010C224_game_guys_magic_boxes, 0x78);
+            m268_resultMesId = GMesCreate(0x16, m268_playerInfoPad[1]);
+            GMesTimeMaxSet(m268_resultMesId, 0x78);
         } else {
             HuAudSeqPlay(0x71);
-            sprintf(D_8010C630_game_guys_magic_boxes, "%s\x81\x40\x82\x6B\x82\x6E\x82\x72\x82\x73\x81\x49",
-                    D_8010C228_game_guys_magic_boxes[D_8010C751_game_guys_magic_boxes[1]]);
-            D_8010C224_game_guys_magic_boxes = GMesCreate(0x19, D_8010C630_game_guys_magic_boxes, 0xA0, 0x78, 1.0, 1.0, 1);
-            GMesTimeMaxSet(D_8010C224_game_guys_magic_boxes, 0x78);
+            sprintf(m268_mesBuf, "%s\x81\x40\x82\x6B\x82\x6E\x82\x72\x82\x73\x81\x49",
+                    m268_chrNameTbl[m268_playerInfoPad[1]]);
+            m268_resultMesId = GMesCreate(0x19, m268_mesBuf, 0xA0, 0x78, 1.0, 1.0, 1);
+            GMesTimeMaxSet(m268_resultMesId, 0x78);
         }
-        D_8010C222_game_guys_magic_boxes = 1;
-    } else if (D_8010C222_game_guys_magic_boxes == 1) {
-        if (D_8010C220_game_guys_magic_boxes++ == 135) {
-            D_8010C9E8_game_guys_magic_boxes = 16;
+        m268_resultState = 1;
+    } else if (m268_resultState == 1) {
+        if (m268_resultTimer++ == 135) {
+            m268_mainPhase = 16;
         }
     }
 }
 
-void func_80108D88_game_guys_magic_boxes(omObjData *object) {
+void m268_HudObjMain(omObjData *object) {
     s16 x;
     s16 hundreds;
     s16 tens;
     u8 i;
 
     x = 0;
-    if (D_8010C248_game_guys_magic_boxes >= 5) {
-        D_8010C24A_game_guys_magic_boxes++;
-        if (D_8010C24A_game_guys_magic_boxes >= 3) {
-            D_8010C24A_game_guys_magic_boxes = 0;
+    if (m268_bannerTimer >= 5) {
+        m268_bannerFrame++;
+        if (m268_bannerFrame >= 3) {
+            m268_bannerFrame = 0;
         }
-        switch (D_8010C24A_game_guys_magic_boxes) {
+        switch (m268_bannerFrame) {
             case 0:
-                func_80109D3C_game_guys_magic_boxes(&D_8010C7BC_game_guys_magic_boxes, 0);
-                func_80109D3C_game_guys_magic_boxes(&D_8010C7D8_game_guys_magic_boxes, 0);
+                m268_SprDispSet(&m268_bannerSprA, 0);
+                m268_SprDispSet(&m268_bannerSprB, 0);
                 break;
             case 1:
-                func_80109D3C_game_guys_magic_boxes(&D_8010C7BC_game_guys_magic_boxes, 1);
-                func_80109D3C_game_guys_magic_boxes(&D_8010C7D8_game_guys_magic_boxes, 0);
+                m268_SprDispSet(&m268_bannerSprA, 1);
+                m268_SprDispSet(&m268_bannerSprB, 0);
                 break;
             case 2:
-                func_80109D3C_game_guys_magic_boxes(&D_8010C7BC_game_guys_magic_boxes, 0);
-                func_80109D3C_game_guys_magic_boxes(&D_8010C7D8_game_guys_magic_boxes, 1);
+                m268_SprDispSet(&m268_bannerSprA, 0);
+                m268_SprDispSet(&m268_bannerSprB, 1);
                 break;
         }
-        D_8010C248_game_guys_magic_boxes = 0;
+        m268_bannerTimer = 0;
     }
-    if (D_8010C9D9_game_guys_magic_boxes != 1 || D_8010C24A_game_guys_magic_boxes != 0) {
-        D_8010C248_game_guys_magic_boxes++;
-    }
-
-    if (D_8010C756_game_guys_magic_boxes[0] >= 999) {
-        D_8010C756_game_guys_magic_boxes[0] = 999;
-    } else if (D_8010C756_game_guys_magic_boxes[0] <= 0) {
-        D_8010C756_game_guys_magic_boxes[0] = 0;
+    if (m268_bannerStopF != 1 || m268_bannerFrame != 0) {
+        m268_bannerTimer++;
     }
 
-    if ((hundreds = D_8010C756_game_guys_magic_boxes[0] / 100) == 0) {
-        func_80109D3C_game_guys_magic_boxes(&D_8010C938_game_guys_magic_boxes[2], 0);
+    if (m268_playerInfoCoin[0] >= 999) {
+        m268_playerInfoCoin[0] = 999;
+    } else if (m268_playerInfoCoin[0] <= 0) {
+        m268_playerInfoCoin[0] = 0;
+    }
+
+    if ((hundreds = m268_playerInfoCoin[0] / 100) == 0) {
+        m268_SprDispSet(&m268_coinDigitSprTbl[2], 0);
     } else {
-        espPatNoSet(D_8010C938_game_guys_magic_boxes[2].unk_00, hundreds);
-        D_8010C938_game_guys_magic_boxes[2].x = x + 48;
-        func_80109D3C_game_guys_magic_boxes(&D_8010C938_game_guys_magic_boxes[2], 1);
+        espPatNoSet(m268_coinDigitSprTbl[2].unk_00, hundreds);
+        m268_coinDigitSprTbl[2].x = x + 48;
+        m268_SprDispSet(&m268_coinDigitSprTbl[2], 1);
         x += 12;
     }
 
-    if ((tens = (s16)(D_8010C756_game_guys_magic_boxes[0] % 100) / 10) == 0 &&
-        (s16)(D_8010C756_game_guys_magic_boxes[0] / 100) == 0) {
-        func_80109D3C_game_guys_magic_boxes(&D_8010C938_game_guys_magic_boxes[1], 0);
+    if ((tens = (s16)(m268_playerInfoCoin[0] % 100) / 10) == 0 &&
+        (s16)(m268_playerInfoCoin[0] / 100) == 0) {
+        m268_SprDispSet(&m268_coinDigitSprTbl[1], 0);
     } else {
-        espPatNoSet(D_8010C938_game_guys_magic_boxes[1].unk_00, tens);
-        D_8010C938_game_guys_magic_boxes[1].x = x + 48;
-        func_80109D3C_game_guys_magic_boxes(&D_8010C938_game_guys_magic_boxes[1], 1);
+        espPatNoSet(m268_coinDigitSprTbl[1].unk_00, tens);
+        m268_coinDigitSprTbl[1].x = x + 48;
+        m268_SprDispSet(&m268_coinDigitSprTbl[1], 1);
         x += 12;
     }
 
-    espPatNoSet(D_8010C938_game_guys_magic_boxes[0].unk_00, D_8010C756_game_guys_magic_boxes[0] % 10);
-    D_8010C938_game_guys_magic_boxes[0].x = x + 48;
-    func_80109D3C_game_guys_magic_boxes(&D_8010C938_game_guys_magic_boxes[0], 1);
+    espPatNoSet(m268_coinDigitSprTbl[0].unk_00, m268_playerInfoCoin[0] % 10);
+    m268_coinDigitSprTbl[0].x = x + 48;
+    m268_SprDispSet(&m268_coinDigitSprTbl[0], 1);
 
-    for (i = 0; i <= D_8010C9E7_game_guys_magic_boxes; i++) {
-        func_80109D3C_game_guys_magic_boxes(&D_8010C858_game_guys_magic_boxes[i][0], 1);
+    for (i = 0; i <= m268_roundNo; i++) {
+        m268_SprDispSet(&m268_roundLampSprTbl[i][0], 1);
     }
 }
 
-void func_801090F0_game_guys_magic_boxes(omObjData *object) {
-    if (D_8010C9D8_game_guys_magic_boxes == 1) {
-        if (D_8010C9D0_game_guys_magic_boxes < -200.0f) {
-            D_8010C9D4_game_guys_magic_boxes -= 12.0f;
-            D_8010C9D0_game_guys_magic_boxes += 12.0f;
-            D_8010C24C_game_guys_magic_boxes += 0.2f;
+void m268_CurtainObjMain(omObjData *object) {
+    if (m268_curtainState == 1) {
+        if (m268_curtainXL < -200.0f) {
+            m268_curtainXR -= 12.0f;
+            m268_curtainXL += 12.0f;
+            m268_curtainScale += 0.2f;
         } else {
-            D_8010C9D8_game_guys_magic_boxes = 0;
-            D_8010C9D0_game_guys_magic_boxes = -200.0f;
-            D_8010C9D4_game_guys_magic_boxes = 200.0f;
-            D_8010C24C_game_guys_magic_boxes = 1.0f;
+            m268_curtainState = 0;
+            m268_curtainXL = -200.0f;
+            m268_curtainXR = 200.0f;
+            m268_curtainScale = 1.0f;
         }
-    } else if (D_8010C9D8_game_guys_magic_boxes == 2) {
-        if (D_8010C24C_game_guys_magic_boxes > 0.0f) {
-            D_8010C9D4_game_guys_magic_boxes += 9.0f;
-            D_8010C9D0_game_guys_magic_boxes -= 9.0f;
-            D_8010C24C_game_guys_magic_boxes -= 0.03f;
+    } else if (m268_curtainState == 2) {
+        if (m268_curtainScale > 0.0f) {
+            m268_curtainXR += 9.0f;
+            m268_curtainXL -= 9.0f;
+            m268_curtainScale -= 0.03f;
         } else {
-            D_8010C9D8_game_guys_magic_boxes = 0;
-            D_8010C9D0_game_guys_magic_boxes = -260.0f;
-            D_8010C9D4_game_guys_magic_boxes = 260.0f;
-            D_8010C24C_game_guys_magic_boxes = 0.0f;
+            m268_curtainState = 0;
+            m268_curtainXL = -260.0f;
+            m268_curtainXR = 260.0f;
+            m268_curtainScale = 0.0f;
         }
     }
-    omSetTra(object, D_8010C9D0_game_guys_magic_boxes, -440.0f, -1000.0f);
-    omSetSca(object, D_8010C24C_game_guys_magic_boxes, 1.0f, 1.0f);
-    Hu3DModelPosSet(object->model[1], D_8010C9D4_game_guys_magic_boxes, -440.0f, -1000.0f);
-    Hu3DModelScaleSet(object->model[1], D_8010C24C_game_guys_magic_boxes, 1.0f, 1.0f);
-    Hu3DModelPosSet(object->model[2], D_8010C9D0_game_guys_magic_boxes, -440.0f, -999.0f);
-    Hu3DModelScaleSet(object->model[2], D_8010C24C_game_guys_magic_boxes, 1.0f, 1.0f);
-    Hu3DModelPosSet(object->model[3], D_8010C9D4_game_guys_magic_boxes, -440.0f, -999.0f);
-    Hu3DModelScaleSet(object->model[3], D_8010C24C_game_guys_magic_boxes, 1.0f, 1.0f);
+    omSetTra(object, m268_curtainXL, -440.0f, -1000.0f);
+    omSetSca(object, m268_curtainScale, 1.0f, 1.0f);
+    Hu3DModelPosSet(object->model[1], m268_curtainXR, -440.0f, -1000.0f);
+    Hu3DModelScaleSet(object->model[1], m268_curtainScale, 1.0f, 1.0f);
+    Hu3DModelPosSet(object->model[2], m268_curtainXL, -440.0f, -999.0f);
+    Hu3DModelScaleSet(object->model[2], m268_curtainScale, 1.0f, 1.0f);
+    Hu3DModelPosSet(object->model[3], m268_curtainXR, -440.0f, -999.0f);
+    Hu3DModelScaleSet(object->model[3], m268_curtainScale, 1.0f, 1.0f);
 }
 
-void func_8010935C_game_guys_magic_boxes(omObjData *object) {
-    if (D_8010C250_game_guys_magic_boxes != D_8010C9CA_game_guys_magic_boxes) {
-        Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[D_8010C9CA_game_guys_magic_boxes]].motId, 0, 4, 2);
-        D_8010C250_game_guys_magic_boxes = D_8010C9CA_game_guys_magic_boxes;
+void m268_GambleObjMain(omObjData *object) {
+    if (m268_gambleMotPrev != m268_gambleMotNo) {
+        Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[m268_gambleMotNo]].motId, 0, 4, 2);
+        m268_gambleMotPrev = m268_gambleMotNo;
     }
-    D_8010C9CC_game_guys_magic_boxes = Hu3DData[object->model[0]].motTime / 2.0f;
+    m268_gambleMotFrame = Hu3DData[object->model[0]].motTime / 2.0f;
 }
 
-void func_8010942C_game_guys_magic_boxes(omObjData *object) {
-    if (D_8010C251_game_guys_magic_boxes != D_8010C9C8_game_guys_magic_boxes) {
-        if (D_8010C9C8_game_guys_magic_boxes != 3) {
-            Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[D_8010C9C8_game_guys_magic_boxes]].motId, 0,
+void m268_KinopioObjMain(omObjData *object) {
+    if (m268_kinopioMotPrev != m268_kinopioMotNo) {
+        if (m268_kinopioMotNo != 3) {
+            Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[m268_kinopioMotNo]].motId, 0,
                                10, 2);
         } else {
-            Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[D_8010C9C8_game_guys_magic_boxes]].motId, 0,
+            Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[m268_kinopioMotNo]].motId, 0,
                                10, 0);
         }
-        D_8010C251_game_guys_magic_boxes = D_8010C9C8_game_guys_magic_boxes;
+        m268_kinopioMotPrev = m268_kinopioMotNo;
     }
-    omSetTra(object, D_8010C9B0_game_guys_magic_boxes[0].x, D_8010C9B0_game_guys_magic_boxes[0].y,
-             D_8010C9B0_game_guys_magic_boxes[0].z);
-    if (D_8010CA06_game_guys_magic_boxes == 1 && D_8010C252_game_guys_magic_boxes < 2.0) {
-        D_8010C252_game_guys_magic_boxes = D_8010C252_game_guys_magic_boxes + 0.01f;
+    omSetTra(object, m268_boxPosTbl[0].x, m268_boxPosTbl[0].y,
+             m268_boxPosTbl[0].z);
+    if (m268_shadowGrowF == 1 && m268_kinopioShadowScale < 2.0) {
+        m268_kinopioShadowScale = m268_kinopioShadowScale + 0.01f;
     }
-    Hu3DModelScaleSet(object->model[1], D_8010C252_game_guys_magic_boxes, 1.0f, D_8010C252_game_guys_magic_boxes);
+    Hu3DModelScaleSet(object->model[1], m268_kinopioShadowScale, 1.0f, m268_kinopioShadowScale);
 }
 
-void func_80109600_game_guys_magic_boxes(omObjData *object) {
-    omSetTra(object, D_8010C9B0_game_guys_magic_boxes[0].x, D_8010C9B0_game_guys_magic_boxes[0].y,
-             D_8010C9B0_game_guys_magic_boxes[0].z);
-    Hu3DModelPosSet(object->model[1], D_8010C9B0_game_guys_magic_boxes[0].x, D_8010C9B0_game_guys_magic_boxes[0].y,
-                    D_8010C9B0_game_guys_magic_boxes[0].z);
+void m268_BoxObjMain(omObjData *object) {
+    omSetTra(object, m268_boxPosTbl[0].x, m268_boxPosTbl[0].y,
+             m268_boxPosTbl[0].z);
+    Hu3DModelPosSet(object->model[1], m268_boxPosTbl[0].x, m268_boxPosTbl[0].y,
+                    m268_boxPosTbl[0].z);
 }
 
-void func_80109658_game_guys_magic_boxes(omObjData *object) {
-    if (D_8010C253_game_guys_magic_boxes != D_8010C9C9_game_guys_magic_boxes) {
-        if (D_8010C9C9_game_guys_magic_boxes != 4) {
-            Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[D_8010C9C9_game_guys_magic_boxes]].motId, 0,
+void m268_KoopaJrObjMain(omObjData *object) {
+    if (m268_koopaJrMotPrev != m268_koopaJrMotNo) {
+        if (m268_koopaJrMotNo != 4) {
+            Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[m268_koopaJrMotNo]].motId, 0,
                                10, 2);
         } else {
-            Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[D_8010C9C9_game_guys_magic_boxes]].motId, 0,
+            Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[m268_koopaJrMotNo]].motId, 0,
                                10, 0);
         }
-        D_8010C253_game_guys_magic_boxes = D_8010C9C9_game_guys_magic_boxes;
+        m268_koopaJrMotPrev = m268_koopaJrMotNo;
     }
-    omSetTra(object, D_8010C9B0_game_guys_magic_boxes[1].x, D_8010C9B0_game_guys_magic_boxes[1].y,
-             D_8010C9B0_game_guys_magic_boxes[1].z);
-    if (D_8010CA06_game_guys_magic_boxes == 1 && D_8010C254_game_guys_magic_boxes < 2.0) {
-        D_8010C254_game_guys_magic_boxes = D_8010C254_game_guys_magic_boxes + 0.01f;
+    omSetTra(object, m268_boxPosTbl[1].x, m268_boxPosTbl[1].y,
+             m268_boxPosTbl[1].z);
+    if (m268_shadowGrowF == 1 && m268_koopaJrShadowScale < 2.0) {
+        m268_koopaJrShadowScale = m268_koopaJrShadowScale + 0.01f;
     }
-    Hu3DModelScaleSet(object->model[1], D_8010C254_game_guys_magic_boxes, 1.0f, D_8010C254_game_guys_magic_boxes);
+    Hu3DModelScaleSet(object->model[1], m268_koopaJrShadowScale, 1.0f, m268_koopaJrShadowScale);
 }
 
-void func_8010982C_game_guys_magic_boxes(omObjData *object) {
-    omSetTra(object, D_8010C9B0_game_guys_magic_boxes[1].x, D_8010C9B0_game_guys_magic_boxes[1].y,
-             D_8010C9B0_game_guys_magic_boxes[1].z);
-    Hu3DModelPosSet(object->model[1], D_8010C9B0_game_guys_magic_boxes[1].x,
-                    D_8010C9B0_game_guys_magic_boxes[1].y, D_8010C9B0_game_guys_magic_boxes[1].z);
+void m268_Box2ObjMain(omObjData *object) {
+    omSetTra(object, m268_boxPosTbl[1].x, m268_boxPosTbl[1].y,
+             m268_boxPosTbl[1].z);
+    Hu3DModelPosSet(object->model[1], m268_boxPosTbl[1].x,
+                    m268_boxPosTbl[1].y, m268_boxPosTbl[1].z);
 }
 
-void func_80109884_game_guys_magic_boxes(omObjData *object) {
+void m268_ExitStartObjMain(omObjData *object) {
     GameGuysMagicBoxesBonus bonus;
     u8 *playerIdx;
 
-    bonus = D_8010C5A0_game_guys_magic_boxes;
-    playerIdx = &D_8010C750_game_guys_magic_boxes[0];
-    GwPlayer[*playerIdx].gameCoin = D_8010CA08_game_guys_magic_boxes;
-    if (D_8010C9E2_game_guys_magic_boxes == 1) {
-        GwPlayer[*playerIdx].bonusCoin = bonus.amount[D_8010C9E7_game_guys_magic_boxes];
+    bonus = m268_bonusTbl;
+    playerIdx = &m268_playerInfoNo[0];
+    GwPlayer[*playerIdx].gameCoin = m268_coinStart;
+    if (m268_winF == 1) {
+        GwPlayer[*playerIdx].bonusCoin = bonus.amount[m268_roundNo];
     } else {
-        GwPlayer[D_8010C750_game_guys_magic_boxes[0]].bonusCoin = 0;
+        GwPlayer[m268_playerInfoNo[0]].bonusCoin = 0;
     }
     WipeCreateOut(WIPE_TYPE_NORMAL, 20);
     HuAudSeqFadeOut(30);
     HuAudFXAllFadeOut(30);
-    object->func = func_80109984_game_guys_magic_boxes;
+    object->func = m268_ExitObjMain;
 }
 
-void func_80109984_game_guys_magic_boxes(omObjData *object) {
+void m268_ExitObjMain(omObjData *object) {
     if (WipeStatGet() != 1) {
         osViBlack(0);
-        func_8010B8B4_game_guys_magic_boxes();
-        func_8010A4CC_game_guys_magic_boxes();
+        m268_SpotDispOff();
+        m268_BoxSpotReset();
         GMesClose();
         HuWinAllKill();
         HuSprAnimAllKill();
@@ -1435,13 +1435,13 @@ void func_80109984_game_guys_magic_boxes(omObjData *object) {
     }
 }
 
-void func_801099E4_game_guys_magic_boxes(omObjData *object) {
+void m268_ExitCheckObjMain(omObjData *object) {
     if (omSysExitReq == 1) {
-        object->func = func_80109884_game_guys_magic_boxes;
+        object->func = m268_ExitStartObjMain;
     }
 }
 
-void func_80109A0C_game_guys_magic_boxes(void) {
+void m268_CameraSetup(void) {
     u8 camIndex;
 
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
@@ -1451,7 +1451,7 @@ void func_80109A0C_game_guys_magic_boxes(void) {
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
 }
 
-void func_80109AD8_game_guys_magic_boxes(GameGuysMagicBoxesCamera *cam, f32 camId, f32 zoom, f32 rotX,
+void m268_CameraParamSet(GameGuysMagicBoxesCamera *cam, f32 camId, f32 zoom, f32 rotX,
                                          f32 rotY, f32 rotZ, f32 centerX, f32 centerY, f32 centerZ) {
     cam->unk_00 = camId;
     cam->unk_04 = zoom;
@@ -1463,7 +1463,7 @@ void func_80109AD8_game_guys_magic_boxes(GameGuysMagicBoxesCamera *cam, f32 camI
     cam->unk_1C = centerZ;
 }
 
-void func_80109B10_game_guys_magic_boxes(GameGuysMagicBoxesCamera *cam) {
+void m268_CameraApply(GameGuysMagicBoxesCamera *cam) {
     if (cam->unk_08 >= 360.0f) {
         cam->unk_08 -= 360.0f;
     } else if (cam->unk_08 < 0.0f) {
@@ -1489,13 +1489,13 @@ void func_80109B10_game_guys_magic_boxes(GameGuysMagicBoxesCamera *cam) {
     Center.z = cam->unk_1C;
 }
 
-void func_80109C98_game_guys_magic_boxes(GameGuysMagicBoxesSprite *sprite, s32 spriteIndex, u16 numSlots,
+void m268_EspSlotCreate(GameGuysMagicBoxesSprite *sprite, s32 spriteIndex, u16 numSlots,
                                          u16 visibility) {
     sprite->unk_00 = espEntry(HuSprAnimDataRead(spriteIndex), 0, numSlots);
     espAttrSet(sprite->unk_00, visibility);
 }
 
-void func_80109CFC_game_guys_magic_boxes(GameGuysMagicBoxesSprite *sprite, s16 priority, s16 unk04, s16 x,
+void m268_SprParamSet(GameGuysMagicBoxesSprite *sprite, s16 priority, s16 unk04, s16 x,
                                          s16 y, s16 xSub, s16 ySub, f32 unk10, f32 scaleX, f32 scaleY) {
     sprite->priority = priority;
     sprite->unk_04 = unk04;
@@ -1508,7 +1508,7 @@ void func_80109CFC_game_guys_magic_boxes(GameGuysMagicBoxesSprite *sprite, s16 p
     sprite->scaleY = scaleY;
 }
 
-void func_80109D3C_game_guys_magic_boxes(GameGuysMagicBoxesSprite *sprite, u8 visible) {
+void m268_SprDispSet(GameGuysMagicBoxesSprite *sprite, u8 visible) {
     espPriSet(sprite->unk_00, sprite->priority);
     espTPLvlSet(sprite->unk_00, sprite->unk_04);
     espPosSet(sprite->unk_00, sprite->x + sprite->xSub / 2, sprite->y + sprite->ySub / 2);
@@ -1521,7 +1521,7 @@ void func_80109D3C_game_guys_magic_boxes(GameGuysMagicBoxesSprite *sprite, u8 vi
     }
 }
 
-void func_80109E1C_game_guys_magic_boxes(void) {
+void m268_PlayerInfoInit(void) {
     u8 i;
 
     for (i = 0; i < 4; i++) {
@@ -1546,37 +1546,37 @@ void func_80109E1C_game_guys_magic_boxes(void) {
             i = 0;
             break;
     }
-    D_8010C750_game_guys_magic_boxes[0] = i;
-    D_8010C750_game_guys_magic_boxes[1] = GwPlayer[i].pad;
-    D_8010C750_game_guys_magic_boxes[2] = GwPlayer[i].chr;
+    m268_playerInfoNo[0] = i;
+    m268_playerInfoNo[1] = GwPlayer[i].pad;
+    m268_playerInfoNo[2] = GwPlayer[i].chr;
     if (GwPlayer[i].stat & 1) {
-        D_8010C750_game_guys_magic_boxes[3] = 1;
-        D_8010C750_game_guys_magic_boxes[4] = GwPlayer[i].cpu_difficulty;
-        D_8010CA14_game_guys_magic_boxes = GwCommon.unkA0;
-        if (D_8010CA14_game_guys_magic_boxes <= 0) {
-            D_8010CA14_game_guys_magic_boxes = 0;
-        } else if (D_8010CA14_game_guys_magic_boxes >= 2) {
-            D_8010CA14_game_guys_magic_boxes = 2;
+        m268_playerInfoNo[3] = 1;
+        m268_playerInfoNo[4] = GwPlayer[i].cpu_difficulty;
+        m268_comLevel = GwCommon.unkA0;
+        if (m268_comLevel <= 0) {
+            m268_comLevel = 0;
+        } else if (m268_comLevel >= 2) {
+            m268_comLevel = 2;
         }
     } else {
-        D_8010C753_game_guys_magic_boxes[0] = 0;
-        D_8010C753_game_guys_magic_boxes[1] = 0;
+        m268_playerInfoCom[0] = 0;
+        m268_playerInfoCom[1] = 0;
     }
 
-    D_8010CA08_game_guys_magic_boxes = D_8010C756_game_guys_magic_boxes[0] = GwPlayer[i].gameCoin;
-    if (D_8010C756_game_guys_magic_boxes[0] >= 999) {
-        D_8010C756_game_guys_magic_boxes[0] = 999;
-    } else if (D_8010C756_game_guys_magic_boxes[0] <= 0) {
-        D_8010C756_game_guys_magic_boxes[0] = 0;
+    m268_coinStart = m268_playerInfoCoin[0] = GwPlayer[i].gameCoin;
+    if (m268_playerInfoCoin[0] >= 999) {
+        m268_playerInfoCoin[0] = 999;
+    } else if (m268_playerInfoCoin[0] <= 0) {
+        m268_playerInfoCoin[0] = 0;
     }
-    if (D_8010CA08_game_guys_magic_boxes >= 999) {
-        D_8010CA08_game_guys_magic_boxes = 999;
-    } else if (D_8010CA08_game_guys_magic_boxes <= 0) {
-        D_8010CA08_game_guys_magic_boxes = 0;
+    if (m268_coinStart >= 999) {
+        m268_coinStart = 999;
+    } else if (m268_coinStart <= 0) {
+        m268_coinStart = 0;
     }
 }
 
-void func_8010A000_game_guys_magic_boxes(void) {
+void m268_BoxSpotLayerInit(void) {
     s16 spriteIndex;
     u16 *pal;
     u8 *pixels;
@@ -1584,18 +1584,18 @@ void func_8010A000_game_guys_magic_boxes(void) {
     s32 j;
 
     spriteIndex = HuSprAnimDataRead(0x650005);
-    D_8010C9F0_game_guys_magic_boxes = HuSprGrpCreate(1, 0);
-    HuSprGrpMemberSet(D_8010C9F0_game_guys_magic_boxes, 0, spriteIndex, 0);
-    HuSprAttrReset(D_8010C9F0_game_guys_magic_boxes, 0, 0xFFFF);
-    HuSprAttrSet(D_8010C9F0_game_guys_magic_boxes, 0, 0x1000);
-    HuSprPosSet(D_8010C9F0_game_guys_magic_boxes, 0, 160, 120);
-    HuSprTPLvlSet(D_8010C9F0_game_guys_magic_boxes, 0, 0);
-    HuSprPriSet(D_8010C9F0_game_guys_magic_boxes, 0, 10);
-    D_8010C9EC_game_guys_magic_boxes = HuSprGet(D_8010C9F0_game_guys_magic_boxes, 0);
-    D_8010C9F4_game_guys_magic_boxes[0] = D_8010C9EC_game_guys_magic_boxes->data->pat->data;
-    pal = D_8010C9EC_game_guys_magic_boxes->data->pal;
-    D_8010C9F4_game_guys_magic_boxes[1] = HuMemAllocTag(0x9600, 0x7918);
-    D_8010C9F4_game_guys_magic_boxes[2] = HuMemAllocTag(0x9600, 0x7918);
+    m268_boxSpotGrp = HuSprGrpCreate(1, 0);
+    HuSprGrpMemberSet(m268_boxSpotGrp, 0, spriteIndex, 0);
+    HuSprAttrReset(m268_boxSpotGrp, 0, 0xFFFF);
+    HuSprAttrSet(m268_boxSpotGrp, 0, 0x1000);
+    HuSprPosSet(m268_boxSpotGrp, 0, 160, 120);
+    HuSprTPLvlSet(m268_boxSpotGrp, 0, 0);
+    HuSprPriSet(m268_boxSpotGrp, 0, 10);
+    m268_boxSpotSpr = HuSprGet(m268_boxSpotGrp, 0);
+    m268_boxSpotBufTbl[0] = m268_boxSpotSpr->data->pat->data;
+    pal = m268_boxSpotSpr->data->pal;
+    m268_boxSpotBufTbl[1] = HuMemAllocTag(0x9600, 0x7918);
+    m268_boxSpotBufTbl[2] = HuMemAllocTag(0x9600, 0x7918);
     pal[0] = 0x0001;
     pal[1] = 0x003F;
     pal[2] = 0x07C1;
@@ -1605,15 +1605,15 @@ void func_8010A000_game_guys_magic_boxes(void) {
     pal[6] = 0xFFC1;
     pal[7] = 0xFFFE;
     for (i = 0; i < 3; i++) {
-        pixels = D_8010C9F4_game_guys_magic_boxes[i];
+        pixels = m268_boxSpotBufTbl[i];
         for (j = 0; j < 0x9600; j++) {
             *pixels++ = 0;
         }
     }
-    D_8010CA00_game_guys_magic_boxes = 0;
+    m268_boxSpotBufNo = 0;
 }
 
-void func_8010A1B0_game_guys_magic_boxes(s16 x, s16 y, s16 radius) {
+void m268_BoxSpotDraw(s16 x, s16 y, s16 radius) {
     s32 radiusSq;
     s16 distYSq;
     s16 px;
@@ -1622,7 +1622,7 @@ void func_8010A1B0_game_guys_magic_boxes(s16 x, s16 y, s16 radius) {
 
     radiusSq = radius * radius;
     for (py = y - radius; py < y + radius; py++) {
-        pixels = D_8010C9F4_game_guys_magic_boxes[D_8010CA00_game_guys_magic_boxes] + (x - radius) / 2 + py * 160;
+        pixels = m268_boxSpotBufTbl[m268_boxSpotBufNo] + (x - radius) / 2 + py * 160;
         distYSq = (py - y) * (py - y);
         for (px = x - radius; px < x + radius; px++) {
             if (px >= 0 && px < 320 && py >= 0 && py < 240) {
@@ -1639,13 +1639,13 @@ void func_8010A1B0_game_guys_magic_boxes(s16 x, s16 y, s16 radius) {
     }
 }
 
-void func_8010A388_game_guys_magic_boxes(s16 x, s16 y, s16 radius) {
+void m268_BoxSpotErase(s16 x, s16 y, s16 radius) {
     s16 px;
     s16 py;
     u8 *pixels;
 
     for (py = y - radius; py < y + radius; py++) {
-        pixels = D_8010C9F4_game_guys_magic_boxes[D_8010CA00_game_guys_magic_boxes] + (x - radius) / 2 + py * 160;
+        pixels = m268_boxSpotBufTbl[m268_boxSpotBufNo] + (x - radius) / 2 + py * 160;
         for (px = x - radius; px < x + radius + 1; px += 2) {
             if (px >= 0 && px < 320 && py >= 0 && py < 240) {
                 *pixels = 0;
@@ -1655,12 +1655,12 @@ void func_8010A388_game_guys_magic_boxes(s16 x, s16 y, s16 radius) {
     }
 }
 
-void func_8010A4CC_game_guys_magic_boxes(void) {
-    D_8010C9EC_game_guys_magic_boxes->data->pat->data =
-        D_8010C9F4_game_guys_magic_boxes[0];
+void m268_BoxSpotReset(void) {
+    m268_boxSpotSpr->data->pat->data =
+        m268_boxSpotBufTbl[0];
 }
 
-s16 func_8010A4EC_game_guys_magic_boxes(s16 x, s16 y, s16 lines) {
+s16 m268_WinCreate(s16 x, s16 y, s16 lines) {
     s16 win;
 
     win = HuWinExCreateStyled(x, y, lines);
@@ -1671,7 +1671,7 @@ s16 func_8010A4EC_game_guys_magic_boxes(s16 x, s16 y, s16 lines) {
     return win;
 }
 
-void func_8010A560_game_guys_magic_boxes(s16 win, s16 player, s16 mode) {
+void m268_WinKeyWait(s16 win, s16 player, s16 mode) {
     s16 i;
 
     HuWinComKeyReset();
@@ -1685,7 +1685,7 @@ void func_8010A560_game_guys_magic_boxes(s16 win, s16 player, s16 mode) {
             case 1:
                 for (i = 0; i < 10; i++) {
                     HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000,
-                                    D_8010C1E8_game_guys_magic_boxes[D_8010CA14_game_guys_magic_boxes]);
+                                    m268_comKeyWaitTbl[m268_comLevel]);
                 }
                 while (HuWinStatGet(win) != 0) {
                     HuPrcVSleep();
@@ -1697,13 +1697,13 @@ void func_8010A560_game_guys_magic_boxes(s16 win, s16 player, s16 mode) {
     HuWinComKeyReset();
 }
 
-s16 func_8010A6AC_game_guys_magic_boxes(s16 win, s16 player, s16 mode, s16 count, u16 cancel) {
+s16 m268_WinChoiceGet(s16 win, s16 player, s16 mode, s16 count, u16 cancel) {
     GameGuysMagicBoxesPadValues keys;
     GameGuysMagicBoxesPadValues players;
     s16 i;
 
-    keys = D_8010C5A8_game_guys_magic_boxes;
-    players = D_8010C5B0_game_guys_magic_boxes;
+    keys = m268_comKeyTbl;
+    players = m268_activePlayerTbl;
     switch (mode) {
         case 0:
             keys.v[player] = -1;
@@ -1714,10 +1714,10 @@ s16 func_8010A6AC_game_guys_magic_boxes(s16 win, s16 player, s16 mode, s16 count
         case 1:
             for (i = 0; i < count; i++) {
                 HuWinComKeyWait(0x400, 0x400, 0x400, 0x400,
-                                D_8010C1E8_game_guys_magic_boxes[D_8010CA14_game_guys_magic_boxes]);
+                                m268_comKeyWaitTbl[m268_comLevel]);
             }
             HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000,
-                            D_8010C1E8_game_guys_magic_boxes[D_8010CA14_game_guys_magic_boxes]);
+                            m268_comKeyWaitTbl[m268_comLevel]);
             break;
     }
     if (cancel == 0) {
@@ -1727,12 +1727,12 @@ s16 func_8010A6AC_game_guys_magic_boxes(s16 win, s16 player, s16 mode, s16 count
     }
 }
 
-void func_8010A878_game_guys_magic_boxes(s16 win) {
+void m268_WinClose(s16 win) {
     HuWinHomeClear(win);
     HuWinExClose(win, 1);
     HuWinExCleanup(win);
 }
 
-const GameGuysMagicBoxesBonus D_8010C5A0_game_guys_magic_boxes = { { 2, 4, 8 } };
-const GameGuysMagicBoxesPadValues D_8010C5A8_game_guys_magic_boxes = { { 0, 0, 0, 0 } }; // COM keys
-const GameGuysMagicBoxesPadValues D_8010C5B0_game_guys_magic_boxes = { { 1, 2, 4, 8 } }; // active players
+const GameGuysMagicBoxesBonus m268_bonusTbl = { { 2, 4, 8 } };
+const GameGuysMagicBoxesPadValues m268_comKeyTbl = { { 0, 0, 0, 0 } }; // COM keys
+const GameGuysMagicBoxesPadValues m268_activePlayerTbl = { { 1, 2, 4, 8 } }; // active players

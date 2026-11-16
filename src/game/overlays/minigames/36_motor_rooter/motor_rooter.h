@@ -41,38 +41,38 @@ typedef struct {
     u8 a;
 } RGBA;
 
-extern SpriteData *m254_sprites;
+extern SpriteData *m254_sprTbl;
 
-void m254_CreateSystem(void);
+void m254_SystemCreate(void);
 
-FuncContext *m254_SetFunc(s8 groupId, s8 prio, s16 param, void *data, void (*func)(FuncContext *), s8 tag, s8 execFunc);
-void m254_ResetFunc(s8 groupId, FuncContext *ctx);
-void m254_ResetFuncTag(s8 groupId, s8 tag);
-void m254_ResetFuncGroup(s8 groupId);
-void m254_UpdateFuncGroup(s8 groupId);
+FuncContext *m254_FuncSet(s8 groupId, s8 prio, s16 param, void *data, void (*func)(FuncContext *), s8 tag, s8 execFunc);
+void m254_FuncReset(s8 groupId, FuncContext *ctx);
+void m254_FuncTagReset(s8 groupId, s8 tag);
+void m254_FuncGroupReset(s8 groupId);
+void m254_FuncGroupUpdate(s8 groupId);
 
-s16 m254_SetSprite(u16 prio, s32 dir, s32 file, u16 arg3, s32 attr);
-void m254_SetSpriteDispOn(s16 spriteId, s32 posX, s32 posY);
-void m254_SetSpriteDispOff(s16 spriteId);
-void m254_UpdateSprites(void);
+s16 m254_SprCreate(u16 prio, s32 dir, s32 file, u16 arg3, s32 attr);
+void m254_SprDispOn(s16 spriteId, s32 posX, s32 posY);
+void m254_SprDispOff(s16 spriteId);
+void m254_SprUpdate(void);
 
-s16 func_8010EFF8_motor_rooter(HuSprAnimData *sprite, f32 scale);
-s16 func_8010FC10_motor_rooter(HuSprAnimData *sprite, RGBA *color);
+s16 m254_BillboardAnimMdlCreate(HuSprAnimData *sprite, f32 scale);
+s16 m254_BillboardColorMdlCreate(HuSprAnimData *sprite, RGBA *color);
 
-s32 m254_SetAnimModel(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4);
-s32 m254_SetAnimModelDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 rotX, f32 rotY, f32 rotZ, f32 scale, f32 animStart);
-void m254_UpdateAnimModels(void);
+s32 m254_AnimMdlCreate(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4);
+s32 m254_AnimMdlDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 rotX, f32 rotY, f32 rotZ, f32 scale, f32 animStart);
+void m254_AnimMdlUpdate(void);
 
-u8 m254_CalcLerp(f32 *out, u8 *timer, f32 start, f32 end, f32 duration);
-f32 m254_CalcQuadraticBezier(f32 t, f32 p0, f32 p1, f32 p2);
-void m254_MakeRandPermutation(s16 *out, s16 n);
-void m254_SyncWithModel(omObjData *object);
-void m254_CalcPitchAndYaw(Vec from, Vec to, f32 *out);
+u8 m254_LerpCalc(f32 *out, u8 *timer, f32 start, f32 end, f32 duration);
+f32 m254_BezierCalc(f32 t, f32 p0, f32 p1, f32 p2);
+void m254_RandPermCreate(s16 *out, s16 n);
+void m254_MdlSync(omObjData *object);
+void m254_PitchYawCalc(Vec from, Vec to, f32 *out);
 
-void m254_MakeIdentityMtx(f32 *out);
-void m254_MakeRotXMtx(f32 *out, f32 angle);
-void m254_MakeRotYMtx(f32 *out, f32 angle);
-void m254_MultiplyMtx(f32 *a, f32 *b, f32 *out);
-void func_801114B0_motor_rooter(f32 *arg0, Vec *arg1, f32 *out);
+void m254_MtxIdentSet(f32 *out);
+void m254_MtxRotXSet(f32 *out, f32 angle);
+void m254_MtxRotYSet(f32 *out, f32 angle);
+void m254_MtxMul(f32 *a, f32 *b, f32 *out);
+void m254_MtxTransCalc(f32 *arg0, Vec *arg1, f32 *out);
 
 #endif

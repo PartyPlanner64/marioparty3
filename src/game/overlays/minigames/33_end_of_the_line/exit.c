@@ -1,5 +1,5 @@
 #include "common.h"
 
-void func_8010C580_end_of_the_line(void) {
+void m251_OvlReturn(void) {
     omOvlReturnEx(1);
 }

@@ -13,7 +13,7 @@ typedef struct {
     u8 unk03;
     u8 unk04;
     u8 unk05[0xAF];
-} LockedOutSetupWork;
+} LockedOutMapWork;
 
 typedef struct {
     Vec pos;
@@ -23,7 +23,7 @@ typedef struct {
     u8 unk0F;
     u8 unk10;
     u8 unk11[3];
-} LockedOutUnkStruct;
+} LockedOutDoor;
 
 typedef struct {
     u8 unk00;
@@ -33,7 +33,7 @@ typedef struct {
     f32 unk04;
     Vec unk08;
     omObjData *unk14;
-} LockedOutBlockWork;
+} LockedOutKeyWork;
 
 typedef struct {
     /* 0x00 */ Vec pos;
@@ -69,7 +69,7 @@ typedef struct {
 
 extern s32 omCharModelNoTbl[][6];
 
-Vec D_8010A110_locked_out[7] = {
+Vec m226_doorPosTbl[7] = {
     { 0.0f, 0.0f, -615.0f },
     { 227.5f, 0.0f, -615.0f },
     { 0.0f, 0.0f, -615.0f },
@@ -78,68 +78,68 @@ Vec D_8010A110_locked_out[7] = {
     { 0.0f, 0.0f, -615.0f },
     { -345.0f, 0.0f, -615.0f }
 };
-s32 D_8010A164_locked_out = 0;
-u16 D_8010A168_locked_out = 0;
-s32 D_8010A16C_locked_out = -1;
-s16 D_8010A170_locked_out = 180;
-s8 D_8010A172_locked_out = 4;
-s8 D_8010A173_locked_out = 3;
-u8 D_8010A174_locked_out = 1;
-u8 D_8010A178_locked_out[4][2] = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 } };
-u8 D_8010A180_locked_out = 0;
-Vec D_8010A184_locked_out[4] = {
+s32 m226_phaseTimer = 0;
+u16 m226_timer = 0;
+s32 m226_winner = -1;
+s16 m226_winCameraAngle = 180;
+s8 m226_survivorNum = 4;
+s8 m226_doorNum = 3;
+u8 m226_firstRoundF = 1;
+u8 m226_playerSlotTbl[4][2] = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 } };
+u8 m226_playerSlotNo = 0;
+Vec m226_playerStartPosTbl[4] = {
     { -300.0f, 0.0f, 400.0f },
     { -100.0f, 0.0f, 400.0f },
     { 100.0f, 0.0f, 400.0f },
     { 300.0f, 0.0f, 400.0f }
 };
-f32 D_8010A1B4_locked_out[4] = { 180.0f, 180.0f, 180.0f, 180.0f };
-Vec D_8010A1C4_locked_out[3] = {
+f32 m226_playerStartRotTbl[4] = { 180.0f, 180.0f, 180.0f, 180.0f };
+Vec m226_finalPosTbl[3] = {
     { -200.0f, 0.0f, 400.0f },
     { 200.0f, 0.0f, 400.0f },
     { 0.0f, 0.0f, 400.0f }
 };
-u32 D_8010A1E8_locked_out = 0x41C64E6D;
+u32 m226_randSeed = 0x41C64E6D;
 
-s32 D_8010A580_locked_out BSS;
-s16 D_8010A584_locked_out BSS;
-MinigameFlow D_8010A588_locked_out BSS;
-u8 D_8010A5B0_locked_out[0x60] BSS; /* Unreferenced. */
-omObjData *D_8010A610_locked_out[10] BSS;
-LockedOutUnkStruct D_8010A638_locked_out[3] BSS;
-s16 D_8010A674_locked_out BSS;
-s16 D_8010A676_locked_out BSS;
-s16 D_8010A678_locked_out BSS;
-s16 D_8010A67A_locked_out BSS;
-u8 D_8010A67C_locked_out[4] BSS; /* Unreferenced. */
-f32 D_8010A680_locked_out[4][4] BSS;
-f32 D_8010A6C0_locked_out[4][4] BSS;
-f32 D_8010A700_locked_out BSS;
-u8 D_8010A704_locked_out[12] BSS;
+s32 m226_resultMusicDelay BSS;
+s16 m226_musicDelay BSS;
+MinigameFlow m226_mgFlow BSS;
+u8 m226_mgFlowPad[0x60] BSS; /* Unreferenced. */
+omObjData *m226_keyObjTbl[10] BSS;
+LockedOutDoor m226_doorTbl[3] BSS;
+s16 m226_phase BSS;
+s16 m226_keyNum BSS;
+s16 m226_keyCreateCnt BSS;
+s16 m226_keyType BSS;
+u8 m226_keyTypePad[4] BSS; /* Unreferenced. */
+f32 m226_cameraMtx[4][4] BSS;
+f32 m226_cameraInvMtx[4][4] BSS;
+f32 m226_cameraFovTan BSS;
+u8 m226_keyOrderTbl[12] BSS;
 
-void func_80105B38_locked_out(omObjData *object);
-void func_80105CB4_locked_out(HuMtx4F, HuMtx4F);
-void func_80106040_locked_out(void);
-void func_80106134_locked_out(omObjData *object);
-void func_80106424_locked_out(omObjData *object);
-void func_8010713C_locked_out(void);
-s32 func_80109D70_locked_out(void);
-f32 func_80109DBC_locked_out(f32 y, f32 x);
-f32 func_80109E34_locked_out(Vec *arg0, Vec *arg1);
-void func_80109110_locked_out(void);
-void func_80109264_locked_out(omObjData *object);
-void func_80109444_locked_out(omObjData *object);
-void func_801071D8_locked_out(omObjData *object);
-void func_801064E0_locked_out(omObjData *object);
-void func_80106FBC_locked_out(omObjData *object);
-void func_80107ABC_locked_out(omObjData *object);
-u16 func_80108A90_locked_out(omObjData *object);
-void func_80109858_locked_out(omObjData *object, u8 isPlayer, u8 canGrab);
-void func_801090FC_locked_out(omObjData *object, MgPlayerWork **data, LockedOutPlayerWork **arg2);
-void func_80109E88_locked_out(s16 model, char *hook, s16 time, Vec *pos);
-void func_80109CDC_locked_out(void);
+void m226_CameraViewInit(omObjData *object);
+void m226_MtxInvert(HuMtx4F, HuMtx4F);
+void m226_MapObjCreateAll(void);
+void m226_MapObjInit(omObjData *object);
+void m226_MapBoundObjInit(omObjData *object);
+void m226_PlayerObjCreateAll(void);
+s32 m226_Rand16Get(void);
+f32 m226_AngleCalc(f32 y, f32 x);
+f32 m226_DistXZCalc(Vec *arg0, Vec *arg1);
+void m226_KeyObjCreateAll(void);
+void m226_KeyObjInit(omObjData *object);
+void m226_KeyObjMain(omObjData *object);
+void m226_PlayerObjInit(omObjData *object);
+void m226_MainObjMain(omObjData *object);
+void m226_DoorPush(omObjData *object);
+void m226_PlayerObjMain(omObjData *object);
+u16 m226_PlayerComInput(omObjData *object);
+void m226_KeyGrabUpdate(omObjData *object, u8 isPlayer, u8 canGrab);
+void m226_PlayerWorkGet(omObjData *object, MgPlayerWork **data, LockedOutPlayerWork **arg2);
+void m226_HookPosGet(s16 model, char *hook, s16 time, Vec *pos);
+void m226_KeyKillAll(void);
 
-void func_801059A0_locked_out(void) {
+void m226_ObjectSetup(void) {
     omObjData *obj;
     u8 camIndex;
 
@@ -155,20 +155,20 @@ void func_801059A0_locked_out(void) {
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 45.0f, 80.0f, 8000.0f);
     MgFieldStatClear();
-    func_80105B38_locked_out(obj);
-    func_80106040_locked_out();
-    memset(&D_8010A588_locked_out, 0, 0x28);
-    D_8010A588_locked_out.type = MINIGAME_BATTLE;
-    MgFlowInit(&D_8010A588_locked_out);
-    func_8010713C_locked_out();
-    D_8010A676_locked_out = 9;
-    D_8010A678_locked_out = 0;
-    func_80109110_locked_out();
+    m226_CameraViewInit(obj);
+    m226_MapObjCreateAll();
+    memset(&m226_mgFlow, 0, 0x28);
+    m226_mgFlow.type = MINIGAME_BATTLE;
+    MgFlowInit(&m226_mgFlow);
+    m226_PlayerObjCreateAll();
+    m226_keyNum = 9;
+    m226_keyCreateCnt = 0;
+    m226_KeyObjCreateAll();
     Hu3DBGColorSet(0, 0, 0);
     WipeCreateIn(WIPE_TYPE_PREV, 0x10);
 }
 
-void func_80105B38_locked_out(omObjData *object) {
+void m226_CameraViewInit(omObjData *object) {
     HuCamera *camera;
     f32 sinFov;
     f32 cosFov;
@@ -185,19 +185,19 @@ void func_80105B38_locked_out(omObjData *object) {
     camera = gCameraList;
     sinFov = sindf(camera->fov / 2.0);
     cosFov = cosdf(camera->fov / 2.0);
-    D_8010A700_locked_out = sinFov / cosFov;
-    guMtxL2F(D_8010A680_locked_out, &camera->mtxs[0].lookAtMtx);
-    guMtxL2F(D_8010A6C0_locked_out, &camera->mtxs[0].lookAtMtx);
-    func_80105CB4_locked_out(D_8010A6C0_locked_out, D_8010A6C0_locked_out);
+    m226_cameraFovTan = sinFov / cosFov;
+    guMtxL2F(m226_cameraMtx, &camera->mtxs[0].lookAtMtx);
+    guMtxL2F(m226_cameraInvMtx, &camera->mtxs[0].lookAtMtx);
+    m226_MtxInvert(m226_cameraInvMtx, m226_cameraInvMtx);
 }
 
-void func_80105C34_locked_out(HuMtx4F mtx, f32 x, f32 y, f32 z, f32 *dst) {
+void m226_MtxVecMul(HuMtx4F mtx, f32 x, f32 y, f32 z, f32 *dst) {
     dst[0] = ((x * mtx[0][0]) + (y * mtx[1][0])) + (z * mtx[2][0]);
     dst[1] = ((x * mtx[0][1]) + (y * mtx[1][1])) + (z * mtx[2][1]);
     dst[2] = ((x * mtx[0][2]) + (y * mtx[1][2])) + (z * mtx[2][2]);
 }
 
-void func_80105CB4_locked_out(HuMtx4F src, HuMtx4F dst) {
+void m226_MtxInvert(HuMtx4F src, HuMtx4F dst) {
     f32 mtx[4][4];
     f32 t0;
     f32 t1;
@@ -235,18 +235,18 @@ void func_80105CB4_locked_out(HuMtx4F src, HuMtx4F dst) {
         dst[0][3] = 0.0f;
         dst[3][3] = 1.0f;
 
-        func_80105C34_locked_out(dst, -mtx[3][0], -mtx[3][1], -mtx[3][2], dstRow3);
+        m226_MtxVecMul(dst, -mtx[3][0], -mtx[3][1], -mtx[3][2], dstRow3);
     }
 }
 
-void func_80105EA4_locked_out(f32 *pos, f32 *dst) {
+void m226_ScreenPosCalc(f32 *pos, f32 *dst) {
     f32 mtx[4][4];
     f32 depth;
     f32 scale;
 
     guTranslateF(mtx, pos[0], pos[1], pos[2]);
-    guMtxCatF(mtx, D_8010A680_locked_out, mtx);
-    depth = mtx[3][2] * D_8010A700_locked_out;
+    guMtxCatF(mtx, m226_cameraMtx, mtx);
+    depth = mtx[3][2] * m226_cameraFovTan;
     scale = __builtin_fabsf(depth);
     if (scale == 0.0) {
         return;
@@ -255,29 +255,29 @@ void func_80105EA4_locked_out(f32 *pos, f32 *dst) {
     dst[1] = -mtx[3][1] * 120.0f / scale;
 }
 
-void func_80105F74_locked_out(f32 x, f32 y, f32 z, f32 *dst) {
-    f32 depth = z + D_8010A680_locked_out[3][2];
-    f32 scale = __builtin_fabsf(depth * D_8010A700_locked_out);
+void m226_WorldPosCalc(f32 x, f32 y, f32 z, f32 *dst) {
+    f32 depth = z + m226_cameraMtx[3][2];
+    f32 scale = __builtin_fabsf(depth * m226_cameraFovTan);
     f32 mtx[4][4];
 
     guTranslateF(mtx, ((x + x) * scale * 1.3333334f) / 320.0f, -((y + y) * scale / 240.0f), depth);
-    guMtxCatF(mtx, D_8010A6C0_locked_out, mtx);
+    guMtxCatF(mtx, m226_cameraInvMtx, mtx);
     dst[0] = mtx[3][0];
     dst[1] = mtx[3][1];
     dst[2] = mtx[3][2];
 }
 
-void func_80106040_locked_out(void) {
+void m226_MapObjCreateAll(void) {
     mgMapObjNum = 0;
     MgMapBaseSet(0);
-    D_8010A67A_locked_out = (f32)func_80109D70_locked_out() * 1.52587890625e-05 * 3.0;
-    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 8, 0, -1, func_80106134_locked_out);
-    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 1, 0, -1, func_80106424_locked_out);
-    D_8010A674_locked_out = 0;
+    m226_keyType = (f32)m226_Rand16Get() * 1.52587890625e-05 * 3.0;
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 8, 0, -1, m226_MapObjInit);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 1, 0, -1, m226_MapBoundObjInit);
+    m226_phase = 0;
 }
 
-void func_80106134_locked_out(omObjData *object) {
-    LockedOutSetupWork *work;
+void m226_MapObjInit(omObjData *object) {
+    LockedOutMapWork *work;
     s32 i;
     s32 tag;
 
@@ -296,29 +296,29 @@ void func_80106134_locked_out(omObjData *object) {
     object->model[6] = Hu3DModelRead(0x3B0010, 0x2DD);
     object->model[7] = Hu3DModelRead(0x3B0011, 0x2DD);
     for (i = 0; i < 3; i++) {
-        D_8010A638_locked_out[i].pos.x = D_8010A110_locked_out[i * 3].x;
-        D_8010A638_locked_out[i].pos.y = D_8010A110_locked_out[i * 3].y;
-        D_8010A638_locked_out[i].pos.z = D_8010A110_locked_out[i * 3].z;
-        D_8010A638_locked_out[i].unk0C = 0;
-        D_8010A638_locked_out[i].unk10 = 1;
-        D_8010A638_locked_out[i].unk0D = object->model[2 + i] =
-            Hu3DModelRead((D_8010A67A_locked_out + 4) | 0x3B0000, tag);
-        Hu3DModelPosSet(object->model[2 + i], D_8010A638_locked_out[i].pos.x, D_8010A638_locked_out[i].pos.y,
-                        D_8010A638_locked_out[i].pos.z);
+        m226_doorTbl[i].pos.x = m226_doorPosTbl[i * 3].x;
+        m226_doorTbl[i].pos.y = m226_doorPosTbl[i * 3].y;
+        m226_doorTbl[i].pos.z = m226_doorPosTbl[i * 3].z;
+        m226_doorTbl[i].unk0C = 0;
+        m226_doorTbl[i].unk10 = 1;
+        m226_doorTbl[i].unk0D = object->model[2 + i] =
+            Hu3DModelRead((m226_keyType + 4) | 0x3B0000, tag);
+        Hu3DModelPosSet(object->model[2 + i], m226_doorTbl[i].pos.x, m226_doorTbl[i].pos.y,
+                        m226_doorTbl[i].pos.z);
         Hu3DMotionSpeedSet(object->model[2 + i], 0.0f);
-        D_8010A638_locked_out[i].unk0F = Hu3DModelRead2(7, 0x2DD);
-        Hu3DMotionSpeedSet(D_8010A638_locked_out[i].unk0F, 0.0f);
-        Hu3DModelRotSet(D_8010A638_locked_out[i].unk0F, 90.0f, 0.0f, 0.0f);
-        D_8010A638_locked_out[i].unk0E = Hu3DModelLink(object->model[6]);
-        Hu3DModelAttrSet(D_8010A638_locked_out[i].unk0E, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        Hu3DMotionSpeedSet(D_8010A638_locked_out[i].unk0E, 0.0f);
+        m226_doorTbl[i].unk0F = Hu3DModelRead2(7, 0x2DD);
+        Hu3DMotionSpeedSet(m226_doorTbl[i].unk0F, 0.0f);
+        Hu3DModelRotSet(m226_doorTbl[i].unk0F, 90.0f, 0.0f, 0.0f);
+        m226_doorTbl[i].unk0E = Hu3DModelLink(object->model[6]);
+        Hu3DModelAttrSet(m226_doorTbl[i].unk0E, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DMotionSpeedSet(m226_doorTbl[i].unk0E, 0.0f);
     }
     object->model[5] = Hu3DModelRead(0x3B000A, 0x2B9);
-    object->func = func_801064E0_locked_out;
+    object->func = m226_MainObjMain;
 }
 
-void func_80106424_locked_out(omObjData *object) {
-    LockedOutSetupWork *work;
+void m226_MapBoundObjInit(omObjData *object) {
+    LockedOutMapWork *work;
 
     work = HuMemAllocTag(0xB4, TAG_OVERLAY);
     object->data = work;
@@ -332,7 +332,7 @@ void func_80106424_locked_out(omObjData *object) {
     object->func = NULL;
 }
 
-void func_801064E0_locked_out(omObjData *object) {
+void m226_MainObjMain(omObjData *object) {
     LockedOutPlayerWork *work;
     s32 i;
     s32 j;
@@ -343,46 +343,46 @@ void func_801064E0_locked_out(omObjData *object) {
     f32 s;
     f32 c;
 
-    switch (D_8010A674_locked_out) {
+    switch (m226_phase) {
         case 0:
             GMesCreate(7);
-            D_8010A168_locked_out = 300;
-            D_8010A674_locked_out++;
-            D_8010A584_locked_out = 20;
+            m226_timer = 300;
+            m226_phase++;
+            m226_musicDelay = 20;
         case 1:
-            if (--D_8010A584_locked_out == 0) {
+            if (--m226_musicDelay == 0) {
                 HuAudSeqPlay(0x35);
             }
             if (GMesStatGet() == 0) {
                 MgFlowStatSet(MG_STATE_PLAY);
-                D_8010A674_locked_out++;
-                GMesCreate(0x1A, (D_8010A168_locked_out + 29) / 30, 0xA0, 0x20);
+                m226_phase++;
+                GMesCreate(0x1A, (m226_timer + 29) / 30, 0xA0, 0x20);
                 HuAudFXPlay(0xE);
                 HuAudSeqPlay(0x35);
             }
             break;
         case 2:
             count = 0;
-            for (i = 0; i < D_8010A173_locked_out; i++) {
-                count += (D_8010A638_locked_out[i].unk10 == 0);
+            for (i = 0; i < m226_doorNum; i++) {
+                count += (m226_doorTbl[i].unk10 == 0);
             }
-            if (count >= D_8010A172_locked_out - 1) {
-                D_8010A674_locked_out = 3;
+            if (count >= m226_survivorNum - 1) {
+                m226_phase = 3;
             }
-            D_8010A168_locked_out--;
-            GMesTimerValueSet((D_8010A168_locked_out + 29) / 30);
-            if (D_8010A168_locked_out == 0) {
-                D_8010A674_locked_out = 3;
+            m226_timer--;
+            GMesTimerValueSet((m226_timer + 29) / 30);
+            if (m226_timer == 0) {
+                m226_phase = 3;
             }
             break;
         case 3:
-            D_8010A172_locked_out = 0;
-            D_8010A16C_locked_out = -1;
+            m226_survivorNum = 0;
+            m226_winner = -1;
             for (i = 0; i < 4; i++) {
                 if (PLAYER_WORK(mgPlayerObjTbl[i])->unk23 != 0) {
-                    D_8010A172_locked_out++;
+                    m226_survivorNum++;
                     rank++;
-                    D_8010A16C_locked_out = i;
+                    m226_winner = i;
                 }
                 if (PLAYER_WORK(mgPlayerObjTbl[i])->unk3C != 0 && PLAYER_WORK(mgPlayerObjTbl[i])->unk3C < 5) {
                     break;
@@ -397,15 +397,15 @@ void func_801064E0_locked_out(omObjData *object) {
                     work->unk24 = rank;
                 }
             }
-            if (D_8010A172_locked_out >= 2) {
+            if (m226_survivorNum >= 2) {
                 WipeCreateOut(0xC, 0x1E);
-                D_8010A674_locked_out = 4;
-                D_8010A174_locked_out = 0;
+                m226_phase = 4;
+                m226_firstRoundF = 0;
             } else {
                 GMesTimerEnd();
                 GMesCreate(0x12);
                 HuAudSeqFadeOut(0x78);
-                D_8010A674_locked_out = 6;
+                m226_phase = 6;
             }
             break;
         case 4:
@@ -415,72 +415,72 @@ void func_801064E0_locked_out(omObjData *object) {
             tag = 0x2B9;
             Hu3DModelKill(object->model[1]);
             object->model[1] = Hu3DModelRead(0x3B0002, tag);
-            D_8010A67A_locked_out = (f32)func_80109D70_locked_out() * 1.52587890625e-05 * 3.0;
-            D_8010A173_locked_out = 2;
+            m226_keyType = (f32)m226_Rand16Get() * 1.52587890625e-05 * 3.0;
+            m226_doorNum = 2;
             for (i = 0; i < 3; i++) {
                 if (object->model[2 + i] != 0) {
                     Hu3DModelKill(object->model[2 + i]);
-                    Hu3DModelKill(D_8010A638_locked_out[i].unk0E);
+                    Hu3DModelKill(m226_doorTbl[i].unk0E);
                     object->model[2 + i] = 0;
-                    D_8010A638_locked_out[i].unk10 = 0;
+                    m226_doorTbl[i].unk10 = 0;
                 }
                 if (i < 2) {
-                    D_8010A638_locked_out[i].pos.x = D_8010A110_locked_out[i * 3 + 1].x;
-                    D_8010A638_locked_out[i].pos.y = D_8010A110_locked_out[i * 3 + 1].y;
-                    D_8010A638_locked_out[i].pos.z = D_8010A110_locked_out[i * 3 + 1].z;
-                    D_8010A638_locked_out[i].unk0C = 0;
-                    D_8010A638_locked_out[i].unk10 = 1;
-                    if (D_8010A172_locked_out == 2) {
-                        D_8010A638_locked_out[i].unk0D = object->model[2 + i] =
-                            Hu3DModelRead((D_8010A67A_locked_out + 13) | 0x3B0000, tag);
+                    m226_doorTbl[i].pos.x = m226_doorPosTbl[i * 3 + 1].x;
+                    m226_doorTbl[i].pos.y = m226_doorPosTbl[i * 3 + 1].y;
+                    m226_doorTbl[i].pos.z = m226_doorPosTbl[i * 3 + 1].z;
+                    m226_doorTbl[i].unk0C = 0;
+                    m226_doorTbl[i].unk10 = 1;
+                    if (m226_survivorNum == 2) {
+                        m226_doorTbl[i].unk0D = object->model[2 + i] =
+                            Hu3DModelRead((m226_keyType + 13) | 0x3B0000, tag);
                     } else {
-                        D_8010A638_locked_out[i].unk0D = object->model[2 + i] =
-                            Hu3DModelRead((D_8010A67A_locked_out + 4) | 0x3B0000, tag);
+                        m226_doorTbl[i].unk0D = object->model[2 + i] =
+                            Hu3DModelRead((m226_keyType + 4) | 0x3B0000, tag);
                     }
-                    if (D_8010A172_locked_out == 2) {
-                        D_8010A638_locked_out[i].unk0E = Hu3DModelLink(object->model[7]);
+                    if (m226_survivorNum == 2) {
+                        m226_doorTbl[i].unk0E = Hu3DModelLink(object->model[7]);
                     } else {
-                        D_8010A638_locked_out[i].unk0E = Hu3DModelLink(object->model[6]);
+                        m226_doorTbl[i].unk0E = Hu3DModelLink(object->model[6]);
                     }
-                    Hu3DMotionSpeedSet(D_8010A638_locked_out[i].unk0E, 0.0f);
-                    Hu3DMotionSpeedSet(D_8010A638_locked_out[i].unk0F, 0.0f);
-                    Hu3DMotionTimeSet(D_8010A638_locked_out[i].unk0F, 0.0f);
-                    Hu3DModelAttrSet(D_8010A638_locked_out[i].unk0F, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                    Hu3DModelPosSet(object->model[2 + i], D_8010A638_locked_out[i].pos.x,
-                                    D_8010A638_locked_out[i].pos.y, D_8010A638_locked_out[i].pos.z);
+                    Hu3DMotionSpeedSet(m226_doorTbl[i].unk0E, 0.0f);
+                    Hu3DMotionSpeedSet(m226_doorTbl[i].unk0F, 0.0f);
+                    Hu3DMotionTimeSet(m226_doorTbl[i].unk0F, 0.0f);
+                    Hu3DModelAttrSet(m226_doorTbl[i].unk0F, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelPosSet(object->model[2 + i], m226_doorTbl[i].pos.x,
+                                    m226_doorTbl[i].pos.y, m226_doorTbl[i].pos.z);
                     Hu3DMotionSpeedSet(object->model[2 + i], 0.0f);
                 }
             }
             Hu3DModelKill(object->model[5]);
-            object->model[5] = Hu3DModelRead((14 - D_8010A172_locked_out) | 0x3B0000, tag);
-            func_80109CDC_locked_out();
-            D_8010A676_locked_out = (D_8010A172_locked_out - 1) * 3;
-            D_8010A678_locked_out = 0;
-            func_80109110_locked_out();
+            object->model[5] = Hu3DModelRead((14 - m226_survivorNum) | 0x3B0000, tag);
+            m226_KeyKillAll();
+            m226_keyNum = (m226_survivorNum - 1) * 3;
+            m226_keyCreateCnt = 0;
+            m226_KeyObjCreateAll();
             GMesTimerValueSet(10);
             WipeCreateIn(0xC, 0x1E);
-            D_8010A674_locked_out++;
+            m226_phase++;
             break;
         case 5:
             if (WipeStatGet() == 0) {
-                D_8010A168_locked_out = 300;
-                D_8010A674_locked_out = 2;
+                m226_timer = 300;
+                m226_phase = 2;
             }
             break;
         case 6:
-            if (D_8010A16C_locked_out != -1) {
-                if (D_8010A170_locked_out != 0) {
-                    s = sindf(D_8010A170_locked_out * 0.5);
-                    c = cosdf(D_8010A170_locked_out * 0.5);
+            if (m226_winner != -1) {
+                if (m226_winCameraAngle != 0) {
+                    s = sindf(m226_winCameraAngle * 0.5);
+                    c = cosdf(m226_winCameraAngle * 0.5);
                     CZoom = (s * 47.0 + 23.0) * 20.0;
                     CRot.x = -(s * 22.0 + 18.0);
-                    Center.x = c * D_8010A638_locked_out[PLAYER_WORK(mgPlayerObjTbl[D_8010A16C_locked_out])->unk3E].pos.x;
+                    Center.x = c * m226_doorTbl[PLAYER_WORK(mgPlayerObjTbl[m226_winner])->unk3E].pos.x;
                     Center.y = (s * 1.5 + 4.0) * 20.0;
-                    Center.z = c * D_8010A638_locked_out[PLAYER_WORK(mgPlayerObjTbl[D_8010A16C_locked_out])->unk3E].pos.z;
-                    D_8010A170_locked_out -= 6;
+                    Center.z = c * m226_doorTbl[PLAYER_WORK(mgPlayerObjTbl[m226_winner])->unk3E].pos.z;
+                    m226_winCameraAngle -= 6;
                 }
             }
-            if (D_8010A16C_locked_out == -1 && D_8010A174_locked_out != 0) {
+            if (m226_winner == -1 && m226_firstRoundF != 0) {
                 for (i = 0; i < 4; i++) {
                     PLAYER_WORK(mgPlayerObjTbl[i])->unk24 = 3;
                 }
@@ -499,22 +499,22 @@ void func_801064E0_locked_out(omObjData *object) {
                 }
             }
             if (GMesStatGet() == 0) {
-                if (D_8010A16C_locked_out == -1) {
-                    D_8010A164_locked_out = 0x9F;
+                if (m226_winner == -1) {
+                    m226_phaseTimer = 0x9F;
                 } else {
-                    D_8010A164_locked_out = 0x71;
+                    m226_phaseTimer = 0x71;
                 }
-                D_8010A580_locked_out = 15;
-                D_8010A674_locked_out++;
+                m226_resultMusicDelay = 15;
+                m226_phase++;
                 MgFlowStatSet(MG_STATE_RESULT);
             }
             break;
         case 7:
-            if (--D_8010A164_locked_out == 0) {
-                D_8010A674_locked_out++;
+            if (--m226_phaseTimer == 0) {
+                m226_phase++;
             }
-            if (--D_8010A580_locked_out == 0) {
-                if (D_8010A16C_locked_out == -1) {
+            if (--m226_resultMusicDelay == 0) {
+                if (m226_winner == -1) {
                     HuAudSeqPlay(0x6C);
                 } else {
                     HuAudSeqPlay(0x65);
@@ -522,16 +522,16 @@ void func_801064E0_locked_out(omObjData *object) {
             }
             break;
         case 8:
-            if (D_8010A164_locked_out != 0) {
-                if (--D_8010A164_locked_out == 0) {
-                    D_8010A674_locked_out++;
+            if (m226_phaseTimer != 0) {
+                if (--m226_phaseTimer == 0) {
+                    m226_phase++;
                 }
             } else {
                 MgFlowStatSet(MG_STATE_EXIT);
-                D_8010A164_locked_out = 16;
-                WipeCreateOut(WIPE_TYPE_NORMAL, D_8010A164_locked_out);
-                HuAudSeqFadeOut(D_8010A164_locked_out);
-                HuAudFXAllFadeOut((s16)D_8010A164_locked_out);
+                m226_phaseTimer = 16;
+                WipeCreateOut(WIPE_TYPE_NORMAL, m226_phaseTimer);
+                HuAudSeqFadeOut(m226_phaseTimer);
+                HuAudFXAllFadeOut((s16)m226_phaseTimer);
             }
             break;
         case 9:
@@ -540,12 +540,12 @@ void func_801064E0_locked_out(omObjData *object) {
             break;
     }
     if (omSysExitReq == 1 && WipeStatGet() == 0) {
-        D_8010A674_locked_out = 8;
+        m226_phase = 8;
     }
 }
 
-void func_80106FBC_locked_out(omObjData *object) {
-    LockedOutUnkStruct *entry;
+void m226_DoorPush(omObjData *object) {
+    LockedOutDoor *entry;
     Vec pos;
     f32 frames;
     f32 radius;
@@ -553,7 +553,7 @@ void func_80106FBC_locked_out(omObjData *object) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
-        entry = &D_8010A638_locked_out[i];
+        entry = &m226_doorTbl[i];
         if (entry->unk0C == 0) {
             continue;
         }
@@ -562,30 +562,30 @@ void func_80106FBC_locked_out(omObjData *object) {
         pos.x = entry->pos.x - 86.5;
         pos.y = entry->pos.y;
         pos.z = entry->pos.z;
-        if (func_80109E34_locked_out(&pos, &object->trans) > radius) {
+        if (m226_DistXZCalc(&pos, &object->trans) > radius) {
             continue;
         }
-        angle = func_80109DBC_locked_out(pos.x - object->trans.x, pos.z - object->trans.z);
+        angle = m226_AngleCalc(pos.x - object->trans.x, pos.z - object->trans.z);
         object->trans.x = pos.x - radius * sindf(angle);
         object->trans.z = pos.z - radius * cosdf(angle);
     }
 }
 
-void func_8010713C_locked_out(void) {
+void m226_PlayerObjCreateAll(void) {
     s32 i;
 
     MgPlayerParamReset();
     MgShadowAltSet(1);
     mgPlayerObjNum = 0;
     for (i = 0; i < 4; i++) {
-        mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(2, 15, 50, -1, func_801071D8_locked_out);
+        mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(2, 15, 50, -1, m226_PlayerObjInit);
     }
 }
 
-const LockedOutCharMotions D_8010A298_locked_out = { { 0, 1, 2, 3, 4, 5, 6, 7 } };
+const LockedOutCharMotions m226_chrAnimTbl = { { 0, 1, 2, 3, 4, 5, 6, 7 } };
 
-void func_801071D8_locked_out(omObjData *object) {
-    LockedOutCharMotions motions = D_8010A298_locked_out;
+void m226_PlayerObjInit(omObjData *object) {
+    LockedOutCharMotions motions = m226_chrAnimTbl;
     s32 anims[3][8] = {
         { 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0x1C },
         { 0xA6, 0xA6, 0xA6, 0xA6, 0xA6, 0xA6, 0xA6, 0x1D },
@@ -599,7 +599,7 @@ void func_801071D8_locked_out(omObjData *object) {
     s32 motion;
     s32 linkModel;
 
-    player = D_8010A178_locked_out[D_8010A180_locked_out][1];
+    player = m226_playerSlotTbl[m226_playerSlotNo][1];
     character = GwPlayer[player].chr;
     model = omCharModelNoTbl[character][0];
     motion = omCharModelNoTbl[character][1];
@@ -609,10 +609,10 @@ void func_801071D8_locked_out(omObjData *object) {
     data = object->data;
     data->unk50 &= ~1;
     data->unkEC = 0;
-    object->trans.x = D_8010A184_locked_out[D_8010A180_locked_out].x;
-    object->trans.y = D_8010A184_locked_out[D_8010A180_locked_out].y;
-    object->trans.z = D_8010A184_locked_out[D_8010A180_locked_out].z;
-    data->unk3C = D_8010A1B4_locked_out[D_8010A180_locked_out];
+    object->trans.x = m226_playerStartPosTbl[m226_playerSlotNo].x;
+    object->trans.y = m226_playerStartPosTbl[m226_playerSlotNo].y;
+    object->trans.z = m226_playerStartPosTbl[m226_playerSlotNo].z;
+    data->unk3C = m226_playerStartRotTbl[m226_playerSlotNo];
     switch (model >> 16) {
         case 6:
             data->unk48 *= 1.25f;
@@ -625,9 +625,9 @@ void func_801071D8_locked_out(omObjData *object) {
             break;
     }
     object->scale.x = object->scale.y = object->scale.z = 1.0f;
-    object->trans.x = D_8010A184_locked_out[D_8010A180_locked_out].x;
-    object->trans.y = D_8010A184_locked_out[D_8010A180_locked_out].y;
-    object->trans.z = D_8010A184_locked_out[D_8010A180_locked_out].z;
+    object->trans.x = m226_playerStartPosTbl[m226_playerSlotNo].x;
+    object->trans.y = m226_playerStartPosTbl[m226_playerSlotNo].y;
+    object->trans.z = m226_playerStartPosTbl[m226_playerSlotNo].z;
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
     Hu3DModelRotSet(object->model[0], object->rot.x, object->rot.y, object->rot.z);
     Hu3DModelScaleSet(object->model[0], object->scale.x, object->scale.y, object->scale.z);
@@ -653,7 +653,7 @@ void func_801071D8_locked_out(omObjData *object) {
     Hu3DModelDynamicFree(object->model[9]);
     MgPlayerMapAttrSet(object, 0, 2);
     data->unk50 |= 0x8000;
-    object->func = func_80107ABC_locked_out;
+    object->func = m226_PlayerObjMain;
     object->model[3] = Hu3DModelRead(3, 0x2DD);
     object->model[6] = Hu3DModelRead(5, 0x2DD);
     MgPlayerMotLoad(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
@@ -683,10 +683,10 @@ void func_801071D8_locked_out(omObjData *object) {
     MgPlayerMotLoad(object, 0x26, CharMotionDataNumGet(character, 0x8D), 1, 0);
     MgPlayerMotLoad(object, 0x27, CharMotionDataNumGet(character, 0x8E), 0, 0);
     MgPlayerMotSet(object, 0);
-    D_8010A180_locked_out++;
+    m226_playerSlotNo++;
 }
 
-void func_80107844_locked_out(omObjData *object, s32 arg1, s32 arg2, u16 player, u16 tag) {
+void m226_PlayerCreate(omObjData *object, s32 arg1, s32 arg2, u16 player, u16 tag) {
     MgPlayerWork *data;
     s32 i;
     u32 character;
@@ -745,12 +745,12 @@ void func_80107844_locked_out(omObjData *object, s32 arg1, s32 arg2, u16 player,
     }
 }
 
-void func_80107ABC_locked_out(omObjData *object) {
-    LockedOutCharMotions motions = D_8010A298_locked_out;
+void m226_PlayerObjMain(omObjData *object) {
+    LockedOutCharMotions motions = m226_chrAnimTbl;
     MgPlayerWork *data;
     LockedOutPlayerWork *work;
-    LockedOutBlockWork *blockWork;
-    LockedOutUnkStruct *entry;
+    LockedOutKeyWork *blockWork;
+    LockedOutDoor *entry;
     omObjData *block;
     Vec pos;
     u32 status;
@@ -767,13 +767,13 @@ void func_80107ABC_locked_out(omObjData *object) {
     work = data->unk158;
     pad = data->unk57;
     canGrab = FALSE;
-    if (D_8010A674_locked_out != 2) {
+    if (m226_phase != 2) {
         HuPadStkY[pad] = 0;
         HuPadStkX[pad] = 0;
         HuPadBtnDown[pad] = 0;
         HuPadBtn[pad] = 0;
     }
-    switch (D_8010A674_locked_out) {
+    switch (m226_phase) {
         case 0:
             work->unk3E = 0;
             work->unk3C = 0;
@@ -792,7 +792,7 @@ void func_80107ABC_locked_out(omObjData *object) {
                 HuPadStkX[pad] = 0;
                 HuPadBtnDown[pad] = 0;
                 HuPadBtn[pad] = 0;
-                func_80108A90_locked_out(object);
+                m226_PlayerComInput(object);
             }
             break;
         case 3:
@@ -802,7 +802,7 @@ void func_80107ABC_locked_out(omObjData *object) {
             if (work->unk23 == 0) {
                 MgPlayerMotSet(object, 0xF);
             }
-            D_8010A180_locked_out = 0;
+            m226_playerSlotNo = 0;
             break;
         case 4:
             if (work->unk23 == 0 && work->unk40 == 0) {
@@ -819,9 +819,9 @@ void func_80107ABC_locked_out(omObjData *object) {
                 work->unk3C = 6;
                 return;
             }
-            object->trans.x = D_8010A1C4_locked_out[D_8010A180_locked_out].x;
-            object->trans.y = D_8010A1C4_locked_out[D_8010A180_locked_out].y;
-            object->trans.z = D_8010A1C4_locked_out[D_8010A180_locked_out++].z;
+            object->trans.x = m226_finalPosTbl[m226_playerSlotNo].x;
+            object->trans.y = m226_finalPosTbl[m226_playerSlotNo].y;
+            object->trans.z = m226_finalPosTbl[m226_playerSlotNo++].z;
             data->unk3C = 180.0f;
             data->unk40 = 0.0f;
             data->unk50 &= ~0x200;
@@ -843,8 +843,8 @@ void func_80107ABC_locked_out(omObjData *object) {
                     work->unk40 = 1;
                     _HuAudPlayerFXPlay(0x3D7, data->unk59);
                 }
-                Hu3DMotionSpeedSet(D_8010A638_locked_out[work->unk3E].unk0E, 1.0f);
-                D_8010A638_locked_out[work->unk3E].unk0C = 1;
+                Hu3DMotionSpeedSet(m226_doorTbl[work->unk3E].unk0E, 1.0f);
+                m226_doorTbl[work->unk3E].unk0C = 1;
                 data->unk3C = 0.0f;
                 Hu3DMotionSpeedSet(object->model[0], 1.0f);
             }
@@ -892,7 +892,7 @@ void func_80107ABC_locked_out(omObjData *object) {
     } else {
         Hu3DData[object->model[0]].motIdShape = 0xFF;
     }
-    entry = &D_8010A638_locked_out[work->unk3E];
+    entry = &m226_doorTbl[work->unk3E];
     switch (work->unk3C) {
         case 0:
             if (status & 0x200000) {
@@ -931,29 +931,29 @@ void func_80107ABC_locked_out(omObjData *object) {
             MgPlayerObjMain(object);
             if (work->unk25 != 0) {
                 for (i = 0; i < 3; i++) {
-                    if (D_8010A638_locked_out[i].unk10 == 0) {
+                    if (m226_doorTbl[i].unk10 == 0) {
                         continue;
                     }
-                    block = D_8010A610_locked_out[work->unk25 - 1];
+                    block = m226_keyObjTbl[work->unk25 - 1];
                     blockWork = block->data;
-                    if (blockWork->unk02 != D_8010A67A_locked_out) {
+                    if (blockWork->unk02 != m226_keyType) {
                         continue;
                     }
-                    if (func_80109E34_locked_out(&object->trans, &D_8010A638_locked_out[i].pos) >
+                    if (m226_DistXZCalc(&object->trans, &m226_doorTbl[i].pos) >
                         data->unk48 + 20.0) {
                         continue;
                     }
-                    Hu3DModelAttrSet(D_8010A638_locked_out[i].unk0E, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-                    Hu3DModelAttrSet(D_8010A638_locked_out[i].unk0D, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                    Hu3DModelPosSet(D_8010A638_locked_out[i].unk0E, D_8010A638_locked_out[i].pos.x,
-                                    D_8010A638_locked_out[i].pos.y, D_8010A638_locked_out[i].pos.z);
+                    Hu3DModelAttrSet(m226_doorTbl[i].unk0E, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(m226_doorTbl[i].unk0D, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelPosSet(m226_doorTbl[i].unk0E, m226_doorTbl[i].pos.x,
+                                    m226_doorTbl[i].pos.y, m226_doorTbl[i].pos.z);
                     canGrab = TRUE;
-                    Hu3DMotionSpeedSet(D_8010A638_locked_out[i].unk0F, 1.0f);
-                    Hu3DModelAttrSet(D_8010A638_locked_out[i].unk0F, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-                    Hu3DModelPosSet(D_8010A638_locked_out[i].unk0F, D_8010A638_locked_out[i].pos.x,
-                                    D_8010A638_locked_out[i].pos.y + 200.0, D_8010A638_locked_out[i].pos.z);
+                    Hu3DMotionSpeedSet(m226_doorTbl[i].unk0F, 1.0f);
+                    Hu3DModelAttrSet(m226_doorTbl[i].unk0F, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelPosSet(m226_doorTbl[i].unk0F, m226_doorTbl[i].pos.x,
+                                    m226_doorTbl[i].pos.y + 200.0, m226_doorTbl[i].pos.z);
                     _HuAudPlayerFXPlay(0x3D9, 4);
-                    D_8010A638_locked_out[i].unk10 = 0;
+                    m226_doorTbl[i].unk10 = 0;
                     work->unk23 = 1;
                     work->unk3C = 1;
                     work->unk3E = i;
@@ -962,14 +962,14 @@ void func_80107ABC_locked_out(omObjData *object) {
                     blockWork->unk00 = 4;
                 }
             }
-            func_80109858_locked_out(object, TRUE, canGrab);
-            func_80106FBC_locked_out(object);
+            m226_KeyGrabUpdate(object, TRUE, canGrab);
+            m226_DoorPush(object);
 
             pos.x = -610.5f;
             pos.y = 0.0f;
             pos.z = -607.0f;
-            if (func_80109E34_locked_out(&pos, &object->trans) <= data->unk48 + 90.0) {
-                angle = func_80109DBC_locked_out(pos.x - object->trans.x, pos.z - object->trans.z);
+            if (m226_DistXZCalc(&pos, &object->trans) <= data->unk48 + 90.0) {
+                angle = m226_AngleCalc(pos.x - object->trans.x, pos.z - object->trans.z);
                 object->trans.x = pos.x - (data->unk48 + 90.0) * sindf(angle);
                 object->trans.z = pos.z - (data->unk48 + 90.0) * cosdf(angle);
             }
@@ -977,8 +977,8 @@ void func_80107ABC_locked_out(omObjData *object) {
             pos.x = 610.5f;
             pos.y = 0.0f;
             pos.z = -607.0f;
-            if (func_80109E34_locked_out(&pos, &object->trans) <= data->unk48 + 80.0) {
-                angle = func_80109DBC_locked_out(pos.x - object->trans.x, pos.z - object->trans.z);
+            if (m226_DistXZCalc(&pos, &object->trans) <= data->unk48 + 80.0) {
+                angle = m226_AngleCalc(pos.x - object->trans.x, pos.z - object->trans.z);
                 object->trans.x = pos.x - (data->unk48 + 90.0) * sindf(angle);
                 object->trans.z = pos.z - (data->unk48 + 90.0) * cosdf(angle);
             }
@@ -986,14 +986,14 @@ void func_80107ABC_locked_out(omObjData *object) {
         case 1:
             MgPlayerMotSet(object, 1);
             data->unk3C = 180.0f;
-            angle = func_80109DBC_locked_out(object->trans.x - (entry->pos.x + data->unk48 * 1.75),
+            angle = m226_AngleCalc(object->trans.x - (entry->pos.x + data->unk48 * 1.75),
                                              object->trans.z - (entry->pos.z + data->unk48 * 1.4));
             object->trans.x = work->unk0C.x - sindf(angle) * 4.0;
             object->trans.z = work->unk0C.z - cosdf(angle) * 4.0;
             pos.x = entry->pos.x + data->unk48 * 1.75;
             pos.y = entry->pos.y;
             pos.z = entry->pos.z + data->unk48 * 1.4;
-            if (func_80109E34_locked_out(&object->trans, &pos) < 5.0) {
+            if (m226_DistXZCalc(&object->trans, &pos) < 5.0) {
                 Hu3DMotionSpeedSet(entry->unk0E, 0.5f);
                 _HuAudPlayerFXPlay(0x3D7, data->unk59);
                 entry->unk0C = 1;
@@ -1044,8 +1044,8 @@ void func_80107ABC_locked_out(omObjData *object) {
             return;
         case 6:
             if (work->unk23 == 0) {
-                func_80109858_locked_out(object, TRUE, canGrab);
-                func_80106FBC_locked_out(object);
+                m226_KeyGrabUpdate(object, TRUE, canGrab);
+                m226_DoorPush(object);
             }
             break;
     }
@@ -1058,7 +1058,7 @@ void func_80107ABC_locked_out(omObjData *object) {
     Hu3DModelPosSet(object->model[1], object->trans.x, 1.0f, object->trans.z);
 }
 
-void func_801089F8_locked_out(omObjData *object, f32 x, f32 y, f32 z) {
+void m226_SplashEffSet(omObjData *object, f32 x, f32 y, f32 z) {
     s32 i;
 
     for (i = 9; i < 12; i++) {
@@ -1069,12 +1069,12 @@ void func_801089F8_locked_out(omObjData *object, f32 x, f32 y, f32 z) {
     }
 }
 
-u16 func_80108A90_locked_out(omObjData *object) {
+u16 m226_PlayerComInput(omObjData *object) {
     HuMtx4F unused; // Unused, but required for the stack layout to match.
     MgPlayerWork *data;
     LockedOutPlayerWork *work;
-    LockedOutBlockWork *blockWork;
-    LockedOutUnkStruct *entry;
+    LockedOutKeyWork *blockWork;
+    LockedOutDoor *entry;
     omObjData *block;
     omObjData *holder;
     s16 pad;
@@ -1083,7 +1083,7 @@ u16 func_80108A90_locked_out(omObjData *object) {
     f32 angle;
     u16 buttons; // Never assigned; the original returns an uninitialized value.
 
-    func_801090FC_locked_out(object, &data, &work);
+    m226_PlayerWorkGet(object, &data, &work);
     pad = data->unk57;
     MgPlayerMotStatGet(object);
     switch (work->unk28) {
@@ -1093,11 +1093,11 @@ u16 func_80108A90_locked_out(omObjData *object) {
             }
             work->unk2C = 0;
             work->unk2E = 0;
-            index = (s32)((f32)func_80109D70_locked_out() * 1.52587890625e-05 * D_8010A676_locked_out);
-            block = D_8010A610_locked_out[index];
+            index = (s32)((f32)m226_Rand16Get() * 1.52587890625e-05 * m226_keyNum);
+            block = m226_keyObjTbl[index];
             blockWork = block->data;
-            if (blockWork->unk02 != D_8010A67A_locked_out) {
-                if ((s32)((f32)func_80109D70_locked_out() * 1.52587890625e-05 * 100.0) < work->unk22 * 5 + 5) {
+            if (blockWork->unk02 != m226_keyType) {
+                if ((s32)((f32)m226_Rand16Get() * 1.52587890625e-05 * 100.0) < work->unk22 * 5 + 5) {
                     break;
                 }
                 work->unk2E = 1;
@@ -1106,7 +1106,7 @@ u16 func_80108A90_locked_out(omObjData *object) {
             work->unk28++;
             break;
         case 1:
-            block = D_8010A610_locked_out[work->unk2C];
+            block = m226_keyObjTbl[work->unk2C];
             blockWork = block->data;
             if (work->unk25 != 0) {
                 work->unk28 = 2;
@@ -1114,18 +1114,18 @@ u16 func_80108A90_locked_out(omObjData *object) {
             }
             if (blockWork->unk00 == 1) {
                 holder = blockWork->unk14;
-                angle = func_80109DBC_locked_out(holder->trans.x - object->trans.x, holder->trans.z - object->trans.z);
-                if (func_80109E34_locked_out(&object->trans, &holder->trans) < data->unk48 * 2.2 + data->unk64) {
+                angle = m226_AngleCalc(holder->trans.x - object->trans.x, holder->trans.z - object->trans.z);
+                if (m226_DistXZCalc(&object->trans, &holder->trans) < data->unk48 * 2.2 + data->unk64) {
                     HuPadBtnDown[pad] |= 0x4000;
                 }
-                for (i = 0; i < D_8010A678_locked_out; i++) {
-                    blockWork = D_8010A610_locked_out[i]->data;
-                    if (blockWork->unk02 == D_8010A67A_locked_out && blockWork->unk00 == 0) {
+                for (i = 0; i < m226_keyCreateCnt; i++) {
+                    blockWork = m226_keyObjTbl[i]->data;
+                    if (blockWork->unk02 == m226_keyType && blockWork->unk00 == 0) {
                         break;
                     }
                 }
-                if (i < D_8010A678_locked_out) {
-                    if ((s32)((f32)func_80109D70_locked_out() * 1.52587890625e-05 * 100.0) < work->unk22 * 5 + 5) {
+                if (i < m226_keyCreateCnt) {
+                    if ((s32)((f32)m226_Rand16Get() * 1.52587890625e-05 * 100.0) < work->unk22 * 5 + 5) {
                         work->unk28 = 0;
                     }
                 }
@@ -1133,8 +1133,8 @@ u16 func_80108A90_locked_out(omObjData *object) {
                 work->unk28 = 0;
                 break;
             } else {
-                angle = func_80109DBC_locked_out(block->trans.x - object->trans.x, block->trans.z - object->trans.z);
-                if (func_80109E34_locked_out(&object->trans, &block->trans) <= data->unk48 + blockWork->unk04 + 2.0 &&
+                angle = m226_AngleCalc(block->trans.x - object->trans.x, block->trans.z - object->trans.z);
+                if (m226_DistXZCalc(&object->trans, &block->trans) <= data->unk48 + blockWork->unk04 + 2.0 &&
                     __builtin_fabs((f64)(angle - data->unk3C)) < 40.0) {
                     HuPadBtnDown[pad] |= 0x8000;
                 }
@@ -1148,8 +1148,8 @@ u16 func_80108A90_locked_out(omObjData *object) {
                 work->unk28 = 1;
                 break;
             }
-            work->unk30 = (s32)((f32)func_80109D70_locked_out() * 1.52587890625e-05 * (s16)(D_8010A676_locked_out / 3));
-            if (D_8010A638_locked_out[work->unk30].unk10 == 0) {
+            work->unk30 = (s32)((f32)m226_Rand16Get() * 1.52587890625e-05 * (s16)(m226_keyNum / 3));
+            if (m226_doorTbl[work->unk30].unk10 == 0) {
                 break;
             }
             work->unk28++;
@@ -1157,11 +1157,11 @@ u16 func_80108A90_locked_out(omObjData *object) {
             if (work->unk25 == 0) {
                 work->unk28 = 1;
             }
-            entry = &D_8010A638_locked_out[work->unk30];
+            entry = &m226_doorTbl[work->unk30];
             if (entry->unk10 == 0) {
                 work->unk28 = 2;
             }
-            angle = func_80109DBC_locked_out(entry->pos.x - object->trans.x, entry->pos.z - object->trans.z);
+            angle = m226_AngleCalc(entry->pos.x - object->trans.x, entry->pos.z - object->trans.z);
             HuPadStkX[pad] = (work->unk22 * 6.0 + 46.0) * sindf(angle);
             HuPadStkY[pad] = (work->unk22 * 6.0 + 46.0) * -cosdf(angle);
             break;
@@ -1169,38 +1169,38 @@ u16 func_80108A90_locked_out(omObjData *object) {
             break;
     }
     if (work->unk2E != 0) {
-        if ((s32)((f32)func_80109D70_locked_out() * 1.52587890625e-05 * 100.0) < work->unk22 * 5 + 5) {
+        if ((s32)((f32)m226_Rand16Get() * 1.52587890625e-05 * 100.0) < work->unk22 * 5 + 5) {
             work->unk28 = 0;
         }
     }
     return buttons;
 }
 
-void func_801090FC_locked_out(omObjData *object, MgPlayerWork **data, LockedOutPlayerWork **arg2) {
+void m226_PlayerWorkGet(omObjData *object, MgPlayerWork **data, LockedOutPlayerWork **arg2) {
     *data = object->data;
     *arg2 = (*data)->unk158;
 }
 
-void func_80109110_locked_out(void) {
+void m226_KeyObjCreateAll(void) {
     s32 i;
     s16 j;
     u8 temp;
 
-    for (i = 0; i < D_8010A676_locked_out; i++) {
-        D_8010A610_locked_out[i] = omAddObj(3, 5, 5, -1, func_80109264_locked_out);
+    for (i = 0; i < m226_keyNum; i++) {
+        m226_keyObjTbl[i] = omAddObj(3, 5, 5, -1, m226_KeyObjInit);
     }
-    for (i = 0; i < D_8010A676_locked_out; i++) {
-        D_8010A704_locked_out[i] = i;
+    for (i = 0; i < m226_keyNum; i++) {
+        m226_keyOrderTbl[i] = i;
     }
-    for (i = D_8010A676_locked_out; i > 0; i--) {
-        j = (f32)func_80109D70_locked_out() * 1.52587890625e-05 * i;
-        temp = D_8010A704_locked_out[i - 1];
-        D_8010A704_locked_out[i - 1] = D_8010A704_locked_out[j];
-        D_8010A704_locked_out[j] = temp;
+    for (i = m226_keyNum; i > 0; i--) {
+        j = (f32)m226_Rand16Get() * 1.52587890625e-05 * i;
+        temp = m226_keyOrderTbl[i - 1];
+        m226_keyOrderTbl[i - 1] = m226_keyOrderTbl[j];
+        m226_keyOrderTbl[j] = temp;
     }
 }
 
-void func_80109264_locked_out(omObjData *object) {
+void m226_KeyObjInit(omObjData *object) {
     Vec positions[9] = {
         { 50.0f, 50.0f, 60.0f },
         { -50.0f, 50.0f, -60.0f },
@@ -1212,29 +1212,29 @@ void func_80109264_locked_out(omObjData *object) {
         { -350.0f, 50.0f, 60.0f },
         { 450.0f, 50.0f, 60.0f },
     };
-    LockedOutBlockWork *work;
+    LockedOutKeyWork *work;
 
-    work = HuMemAllocTag(sizeof(LockedOutBlockWork), TAG_OVERLAY);
+    work = HuMemAllocTag(sizeof(LockedOutKeyWork), TAG_OVERLAY);
     object->data = work;
-    memset(work, 0, sizeof(LockedOutBlockWork));
+    memset(work, 0, sizeof(LockedOutKeyWork));
     work->unk00 = 0;
-    work->unk02 = D_8010A678_locked_out % 3;
+    work->unk02 = m226_keyCreateCnt % 3;
     work->unk04 = 20.0f;
     work->unk14 = 0;
     work->unk01 = 0;
     object->model[0] = Hu3DModelRead((work->unk02 + 7) | 0x3B0000, 0x2D9);
     object->model[1] = Hu3DModelRead3(9, 0x2D9);
     Hu3DModelScaleSet(object->model[1], 0.75f, 0.75f, 0.75f);
-    object->trans.x = positions[D_8010A704_locked_out[D_8010A678_locked_out]].x;
-    object->trans.y = positions[D_8010A704_locked_out[D_8010A678_locked_out]].y;
-    object->trans.z = positions[D_8010A704_locked_out[D_8010A678_locked_out]].z;
+    object->trans.x = positions[m226_keyOrderTbl[m226_keyCreateCnt]].x;
+    object->trans.y = positions[m226_keyOrderTbl[m226_keyCreateCnt]].y;
+    object->trans.z = positions[m226_keyOrderTbl[m226_keyCreateCnt]].z;
     object->rot.x = -90.0f;
-    object->func = func_80109444_locked_out;
-    D_8010A678_locked_out++;
+    object->func = m226_KeyObjMain;
+    m226_keyCreateCnt++;
 }
 
-void func_80109444_locked_out(omObjData *object) {
-    LockedOutBlockWork *work;
+void m226_KeyObjMain(omObjData *object) {
+    LockedOutKeyWork *work;
     Vec pos;
     f32 angle;
 
@@ -1272,8 +1272,8 @@ void func_80109444_locked_out(omObjData *object) {
     pos.x = -610.5f;
     pos.y = 0.0f;
     pos.z = -607.0f;
-    if (func_80109E34_locked_out(&pos, &object->trans) <= work->unk04 + 90.0) {
-        angle = func_80109DBC_locked_out(pos.x - object->trans.x, pos.z - object->trans.z);
+    if (m226_DistXZCalc(&pos, &object->trans) <= work->unk04 + 90.0) {
+        angle = m226_AngleCalc(pos.x - object->trans.x, pos.z - object->trans.z);
         object->trans.x = pos.x - (work->unk04 + 90.0) * sindf(angle);
         object->trans.z = pos.z - (work->unk04 + 90.0) * cosdf(angle);
     }
@@ -1281,8 +1281,8 @@ void func_80109444_locked_out(omObjData *object) {
     pos.x = 610.5f;
     pos.y = 0.0f;
     pos.z = -607.0f;
-    if (func_80109E34_locked_out(&pos, &object->trans) <= work->unk04 + 80.0) {
-        angle = func_80109DBC_locked_out(pos.x - object->trans.x, pos.z - object->trans.z);
+    if (m226_DistXZCalc(&pos, &object->trans) <= work->unk04 + 80.0) {
+        angle = m226_AngleCalc(pos.x - object->trans.x, pos.z - object->trans.z);
         object->trans.x = pos.x - (work->unk04 + 90.0) * sindf(angle);
         object->trans.z = pos.z - (work->unk04 + 90.0) * cosdf(angle);
     }
@@ -1300,15 +1300,15 @@ void func_80109444_locked_out(omObjData *object) {
         object->trans.z = 575.0f;
     }
     Hu3DModelPosSet(object->model[1], object->trans.x, 1.0f, object->trans.z);
-    func_80109858_locked_out(object, 0, 0);
-    func_80106FBC_locked_out(object);
+    m226_KeyGrabUpdate(object, 0, 0);
+    m226_DoorPush(object);
 }
 
-void func_80109858_locked_out(omObjData *object, u8 isPlayer, u8 canGrab) {
+void m226_KeyGrabUpdate(omObjData *object, u8 isPlayer, u8 canGrab) {
     MgPlayerWork *data;
     LockedOutPlayerWork *playerWork;
-    LockedOutBlockWork *selfWork;
-    LockedOutBlockWork *work;
+    LockedOutKeyWork *selfWork;
+    LockedOutKeyWork *work;
     omObjData *block;
     Vec hookPos;
     f32 radius;
@@ -1318,11 +1318,11 @@ void func_80109858_locked_out(omObjData *object, u8 isPlayer, u8 canGrab) {
     s32 i;
 
     selfWork = NULL;
-    if (D_8010A678_locked_out == 0) {
+    if (m226_keyCreateCnt == 0) {
         return;
     }
     if (isPlayer) {
-        func_801090FC_locked_out(object, &data, &playerWork);
+        m226_PlayerWorkGet(object, &data, &playerWork);
         radius = data->unk48;
     } else {
         selfWork = object->data;
@@ -1331,13 +1331,13 @@ void func_80109858_locked_out(omObjData *object, u8 isPlayer, u8 canGrab) {
     }
 
     if (canGrab && playerWork->unk25 != 0) {
-        block = D_8010A610_locked_out[playerWork->unk25 - 1];
+        block = m226_keyObjTbl[playerWork->unk25 - 1];
         work = block->data;
         Hu3DModelAttrSet(block->model[0], 0x4000, 0);
         work->unk08.x = sindf(data->unk3C) * 4.0;
         work->unk08.y = 15.0f;
         work->unk08.z = cosdf(data->unk3C) * 4.0;
-        func_80109E88_locked_out(object->model[0], "item_hook", Hu3DData[object->model[0]].motTime, &hookPos);
+        m226_HookPosGet(object->model[0], "item_hook", Hu3DData[object->model[0]].motTime, &hookPos);
         block->trans.x = work->unk08.x * 20.0f + hookPos.x;
         block->trans.y = hookPos.y + 50.0;
         block->trans.z = work->unk08.z * 20.0f + hookPos.z;
@@ -1350,19 +1350,19 @@ void func_80109858_locked_out(omObjData *object, u8 isPlayer, u8 canGrab) {
         canGrab = FALSE;
     }
 
-    for (i = 0; i < D_8010A676_locked_out; i++) {
-        block = D_8010A610_locked_out[i];
+    for (i = 0; i < m226_keyNum; i++) {
+        block = m226_keyObjTbl[i];
         work = block->data;
         if (work == selfWork) {
             continue;
         }
-        dist = func_80109E34_locked_out(&object->trans, &block->trans);
+        dist = m226_DistXZCalc(&object->trans, &block->trans);
         if (!(dist < radius + work->unk04 + 24.0)) {
             continue;
         }
-        angle = func_80109DBC_locked_out(block->trans.x - object->trans.x, block->trans.z - object->trans.z);
+        angle = m226_AngleCalc(block->trans.x - object->trans.x, block->trans.z - object->trans.z);
         if (dist < radius + work->unk04 && (work->unk00 != 1 || work->unk00 != 4)) {
-            pushAngle = func_80109DBC_locked_out(object->trans.x - block->trans.x, object->trans.z - block->trans.z);
+            pushAngle = m226_AngleCalc(object->trans.x - block->trans.x, object->trans.z - block->trans.z);
             block->trans.x = object->trans.x - (radius + work->unk04) * sindf(pushAngle);
             block->trans.z = object->trans.z - (radius + work->unk04) * cosdf(pushAngle);
         }
@@ -1388,12 +1388,12 @@ void func_80109858_locked_out(omObjData *object, u8 isPlayer, u8 canGrab) {
     }
 }
 
-void func_80109CDC_locked_out(void) {
+void m226_KeyKillAll(void) {
     omObjData *object;
     s32 i;
 
-    for (i = 0; i < D_8010A676_locked_out; i++) {
-        object = D_8010A610_locked_out[i];
+    for (i = 0; i < m226_keyNum; i++) {
+        object = m226_keyObjTbl[i];
         Hu3DModelKill(object->model[0]);
         Hu3DModelKill(object->model[1]);
         HuMemFree(object->data);
@@ -1402,12 +1402,12 @@ void func_80109CDC_locked_out(void) {
     }
 }
 
-s32 func_80109D70_locked_out(void) {
-    D_8010A1E8_locked_out = (D_8010A1E8_locked_out + (rand8() & 0xFF)) * 0x41C64E6D + 0x3039;
-    return D_8010A1E8_locked_out >> 16;
+s32 m226_Rand16Get(void) {
+    m226_randSeed = (m226_randSeed + (rand8() & 0xFF)) * 0x41C64E6D + 0x3039;
+    return m226_randSeed >> 16;
 }
 
-f32 func_80109DBC_locked_out(f32 y, f32 x) {
+f32 m226_AngleCalc(f32 y, f32 x) {
     f32 fullCircle = 360.0f;
     f32 angle = atan2df(y, x);
 
@@ -1419,12 +1419,12 @@ f32 func_80109DBC_locked_out(f32 y, f32 x) {
     return angle;
 }
 
-f32 func_80109E34_locked_out(Vec *arg0, Vec *arg1) {
+f32 m226_DistXZCalc(Vec *arg0, Vec *arg1) {
     return sqrtf(((arg0->x - arg1->x) * (arg0->x - arg1->x)) +
                  ((arg0->z - arg1->z) * (arg0->z - arg1->z)));
 }
 
-void func_80109E88_locked_out(s16 model, char *hook, s16 time, Vec *pos) {
+void m226_HookPosGet(s16 model, char *hook, s16 time, Vec *pos) {
     HuMtx4F transform;
     HuMtx4F result;
     HuMtx4F hookTransform;
@@ -1441,7 +1441,7 @@ void func_80109E88_locked_out(s16 model, char *hook, s16 time, Vec *pos) {
     pos->z = result[0][2] + result[1][2] + result[2][2] + result[3][2];
 }
 
-s16 func_80109FAC_locked_out(s32 dataNum) {
+s16 m226_AnimDataRead(s32 dataNum) {
     void *data;
     s16 spriteId;
 
@@ -1451,7 +1451,7 @@ s16 func_80109FAC_locked_out(s32 dataNum) {
     return spriteId;
 }
 
-s16 func_80109FF4_locked_out(s16 spriteId, s16 count) {
+s16 m226_SprGrpCreate(s16 spriteId, s16 count) {
     s16 groupId;
     s32 i;
 
@@ -1468,6 +1468,6 @@ s16 func_80109FF4_locked_out(s16 spriteId, s16 count) {
     return groupId;
 }
 
-HuSprAnimPat *func_8010A0BC_locked_out(s16 groupId, s16 member) {
+HuSprAnimPat *m226_SprAnimPatGet(s16 groupId, s16 member) {
     return &HuSprAnimDataGet(groupId)->pat[member];
 }

@@ -20,7 +20,7 @@ typedef struct MarioPuzzlePartySpriteBlock {
 extern u8 Hu3DBufNo;
 extern u8 omAllPauseF;
 
-Gfx D_80110230_marios_puzzle_party[] = {
+Gfx m231_sprBatchGfx[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
@@ -37,52 +37,52 @@ Gfx D_80110230_marios_puzzle_party[] = {
     gsSPEndDisplayList(),
 };
 
-MarioPuzzlePartySpriteBlock *D_801168B0_marios_puzzle_party BSS;
-s16 D_801168B4_marios_puzzle_party BSS;     // number of sprite blocks in use
-s16 D_801168B6_marios_puzzle_party BSS;     // model drawing the sprite display list
-Gfx *D_801168B8_marios_puzzle_party[3] BSS; // one display list buffer per frame buffer
-omObjData *D_801168C4_marios_puzzle_party BSS;
-s32 D_801168C8_marios_puzzle_party[4] BSS; // per-board y offset
+MarioPuzzlePartySpriteBlock *m231_sprBatchTbl BSS;
+s16 m231_sprBatchNum BSS;     // number of sprite blocks in use
+s16 m231_sprBatchMdl BSS;     // model drawing the sprite display list
+Gfx *m231_sprBatchGfxBuf[3] BSS; // one display list buffer per frame buffer
+omObjData *m231_sprBatchObj BSS;
+s32 m231_sprBatchOfsYTbl[4] BSS; // per-board y offset
 
-void func_8010F810_marios_puzzle_party(omObjData *object);
+void m231_SprBatchObjMain(omObjData *object);
 
-void func_8010F570_marios_puzzle_party(s16 blockCount) {
+void m231_SprBatchInit(s16 blockCount) {
     s16 i;
 
-    D_801168B0_marios_puzzle_party = HuMemAllocTag(blockCount * sizeof(MarioPuzzlePartySpriteBlock), 0x7918);
-    D_801168B4_marios_puzzle_party = 0;
+    m231_sprBatchTbl = HuMemAllocTag(blockCount * sizeof(MarioPuzzlePartySpriteBlock), 0x7918);
+    m231_sprBatchNum = 0;
     for (i = 0; i < 3; i++) {
-        D_801168B8_marios_puzzle_party[i] = HuMemAllocTag(0x3E80, 0x7918);
-        gSPEndDisplayList(D_801168B8_marios_puzzle_party[i]);
+        m231_sprBatchGfxBuf[i] = HuMemAllocTag(0x3E80, 0x7918);
+        gSPEndDisplayList(m231_sprBatchGfxBuf[i]);
     }
-    D_801168C4_marios_puzzle_party = omAddObj(0x7D0, 0, 0, -1, func_8010F810_marios_puzzle_party);
-    omSetStatBit(D_801168C4_marios_puzzle_party, 0xA0);
-    D_801168B6_marios_puzzle_party = Hu3DModelDLCreate(0, D_801168B8_marios_puzzle_party[Hu3DBufNo], 2);
+    m231_sprBatchObj = omAddObj(0x7D0, 0, 0, -1, m231_SprBatchObjMain);
+    omSetStatBit(m231_sprBatchObj, 0xA0);
+    m231_sprBatchMdl = Hu3DModelDLCreate(0, m231_sprBatchGfxBuf[Hu3DBufNo], 2);
 }
 
-void func_8010F678_marios_puzzle_party(s32 spriteData, s16 count) {
+void m231_SprBatchAdd(s32 spriteData, s16 count) {
     MarioPuzzlePartySprite *sprite;
     s16 groupId;
     s16 groupHandle;
     s16 i;
 
-    D_801168B0_marios_puzzle_party[D_801168B4_marios_puzzle_party].sprites = sprite =
+    m231_sprBatchTbl[m231_sprBatchNum].sprites = sprite =
         HuMemAllocTag(count * sizeof(MarioPuzzlePartySprite), 0x7918);
     groupId = HuSprAnimDataRead(spriteData);
-    D_801168B0_marios_puzzle_party[D_801168B4_marios_puzzle_party].groupId = groupId;
+    m231_sprBatchTbl[m231_sprBatchNum].groupId = groupId;
     groupHandle = HuSprGrpCreate(1, 0);
-    D_801168B0_marios_puzzle_party[D_801168B4_marios_puzzle_party].groupHandle = groupHandle;
+    m231_sprBatchTbl[m231_sprBatchNum].groupHandle = groupHandle;
     HuSprGrpMemberSet(groupHandle, 0, groupId, 0);
     HuSprAttrReset(groupHandle, 0, 0xFFFF);
     HuSprAttrSet(groupHandle, 0, 0x8000);
-    D_801168B0_marios_puzzle_party[D_801168B4_marios_puzzle_party].count = count;
+    m231_sprBatchTbl[m231_sprBatchNum].count = count;
     for (i = 0; i < count; i++, sprite++) {
         sprite->flags = 0;
     }
-    D_801168B4_marios_puzzle_party++;
+    m231_sprBatchNum++;
 }
 
-void func_8010F810_marios_puzzle_party(omObjData *object) {
+void m231_SprBatchObjMain(omObjData *object) {
     Gfx *gfx;
     MarioPuzzlePartySpriteBlock *block;
     MarioPuzzlePartySprite *sprite;
@@ -94,17 +94,17 @@ void func_8010F810_marios_puzzle_party(omObjData *object) {
     s16 i;
     s16 j;
 
-    gfx = (Gfx *)(Hu3DData[D_801168B6_marios_puzzle_party].hmf->unk3C =
-                      (HmfModelData_Unk64_Unk3C_Struct *)D_801168B8_marios_puzzle_party[Hu3DBufNo]);
-    if (D_801168B4_marios_puzzle_party == 0) {
+    gfx = (Gfx *)(Hu3DData[m231_sprBatchMdl].hmf->unk3C =
+                      (HmfModelData_Unk64_Unk3C_Struct *)m231_sprBatchGfxBuf[Hu3DBufNo]);
+    if (m231_sprBatchNum == 0) {
         gSPEndDisplayList(gfx++);
         return;
     }
-    block = D_801168B0_marios_puzzle_party;
-    gSPDisplayList(gfx++, osVirtualToPhysical(D_80110230_marios_puzzle_party));
+    block = m231_sprBatchTbl;
+    gSPDisplayList(gfx++, osVirtualToPhysical(m231_sprBatchGfx));
     gDPSetTextureLUT(gfx++, G_TT_NONE);
     if (omPauseChk() + omAllPauseF == 0) {
-        for (i = 0; i < D_801168B4_marios_puzzle_party; i++, block++) {
+        for (i = 0; i < m231_sprBatchNum; i++, block++) {
             sprite = block->sprites;
             anim = HuSprGet(block->groupHandle, 0)->data;
             image = anim->pat->data;
@@ -117,7 +117,7 @@ void func_8010F810_marios_puzzle_party(omObjData *object) {
                 if (sprite->flags & 1) {
                     yOffset = 0;
                     if (i < 28) {
-                        yOffset = D_801168C8_marios_puzzle_party[i / 7];
+                        yOffset = m231_sprBatchOfsYTbl[i / 7];
                     }
                     gSPScisTextureRectangle(gfx++, sprite->x * 4.0f,
                                             (yOffset + sprite->y - height * sprite->height) * 4.0f,
@@ -130,8 +130,8 @@ void func_8010F810_marios_puzzle_party(omObjData *object) {
     gSPEndDisplayList(gfx++);
 }
 
-s16 func_8010FEDC_marios_puzzle_party(s16 group, f32 x, f32 y) {
-    MarioPuzzlePartySpriteBlock *block = &D_801168B0_marios_puzzle_party[group];
+s16 m231_SprBatchEntryAdd(s16 group, f32 x, f32 y) {
+    MarioPuzzlePartySpriteBlock *block = &m231_sprBatchTbl[group];
     MarioPuzzlePartySprite *sprite = block->sprites;
     s16 i;
 
@@ -148,31 +148,31 @@ s16 func_8010FEDC_marios_puzzle_party(s16 group, f32 x, f32 y) {
     return i + (group << 10);
 }
 
-void func_8010FF78_marios_puzzle_party(s16 index, f32 x, f32 y) {
-    MarioPuzzlePartySprite *sprites = D_801168B0_marios_puzzle_party[index >> 10].sprites;
+void m231_SprBatchPosSet(s16 index, f32 x, f32 y) {
+    MarioPuzzlePartySprite *sprites = m231_sprBatchTbl[index >> 10].sprites;
     MarioPuzzlePartySprite *sprite = sprites + (index & 0x3FF);
     sprite->x = x;
     sprite->y = y;
 }
 
-void func_8010FFBC_marios_puzzle_party(s16 index, f32 width, f32 height) {
-    MarioPuzzlePartySprite *sprites = D_801168B0_marios_puzzle_party[index >> 10].sprites;
+void m231_SprBatchScaleSet(s16 index, f32 width, f32 height) {
+    MarioPuzzlePartySprite *sprites = m231_sprBatchTbl[index >> 10].sprites;
     MarioPuzzlePartySprite *sprite = sprites + (index & 0x3FF);
     sprite->width = width;
     sprite->height = height;
 }
 
-void func_80110000_marios_puzzle_party(s16 index) {
-    MarioPuzzlePartySprite *sprites = D_801168B0_marios_puzzle_party[index >> 10].sprites;
+void m231_SprBatchEntryKill(s16 index) {
+    MarioPuzzlePartySprite *sprites = m231_sprBatchTbl[index >> 10].sprites;
     MarioPuzzlePartySprite *sprite = sprites + (index & 0x3FF);
     sprite->flags = 0;
 }
 
-void func_80110040_marios_puzzle_party(void) {
-    Hu3DModelKill(D_801168B6_marios_puzzle_party);
-    omDelObj(D_801168C4_marios_puzzle_party);
+void m231_SprBatchKill(void) {
+    Hu3DModelKill(m231_sprBatchMdl);
+    omDelObj(m231_sprBatchObj);
 }
 
-void func_8011006C_marios_puzzle_party(s32 board, s32 offset) {
-    D_801168C8_marios_puzzle_party[board] = offset;
+void m231_SprBatchOfsYSet(s32 board, s32 offset) {
+    m231_sprBatchOfsYTbl[board] = offset;
 }

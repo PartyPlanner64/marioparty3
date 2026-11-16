@@ -13,31 +13,31 @@ typedef struct CameraMotionData {
     /* 0x0C */ f32 t;
 } CameraMotionData; // sizeof 0x10
 
-FishingLine *D_8010C180_hand_line_sinker BSS;
-Gfx *D_8010C184_hand_line_sinker BSS;
-HmfData **D_8010C188_hand_line_sinker BSS;
-HmfModel *D_8010C18C_hand_line_sinker BSS;
-omObjData *D_8010C190_hand_line_sinker BSS;
+FishingLine *m201_lineCur BSS;
+Gfx *m201_lineGfx BSS;
+HmfData **m201_lineHmf BSS;
+HmfModel *m201_lineMdlData BSS;
+omObjData *m201_cameraMoveObj BSS;
 extern u8 Hu3DBufNo;
 extern Gfx *gMainGfxPos;
 
-void func_8010B750_hand_line_sinker(omObjData *obj);
+void m201_CameraMoveObjMain(omObjData *obj);
 
-void func_8010B5B0_hand_line_sinker(void) {
+void m201_CameraInit(void) {
     CamSetupInit(1);
     CamSetupMapCullAdd();
     gCameraList->fov = 40.0f;
 }
 
-void func_8010B5EC_hand_line_sinker(MgCameraPreset *preset, MgCameraPreset *to, s16 duration) {
+void m201_CameraMoveStart(MgCameraPreset *preset, MgCameraPreset *to, s16 duration) {
     CameraMotionData *data;
 
     Center = preset->center;
     CRot = preset->rot;
     CZoom = preset->zoom;
-    D_8010C190_hand_line_sinker = omAddObj(40, 0, 0, -1, func_8010B750_hand_line_sinker);
+    m201_cameraMoveObj = omAddObj(40, 0, 0, -1, m201_CameraMoveObjMain);
     data = HuMemAllocTag(sizeof(CameraMotionData), TAG_OVERLAY);
-    D_8010C190_hand_line_sinker->data = data;
+    m201_cameraMoveObj->data = data;
     data->from = preset;
     data->to = to;
     data->duration = data->remaining = duration;
@@ -45,27 +45,27 @@ void func_8010B5EC_hand_line_sinker(MgCameraPreset *preset, MgCameraPreset *to, 
     Center = preset->center;
     CRot = preset->rot;
     CZoom = preset->zoom;
-    D_8010C190_hand_line_sinker->work[0] = 1;
-    D_8010C190_hand_line_sinker->work[1] = 0;
-    D_8010C190_hand_line_sinker->work[2] = 0;
+    m201_cameraMoveObj->work[0] = 1;
+    m201_cameraMoveObj->work[1] = 0;
+    m201_cameraMoveObj->work[2] = 0;
     if (duration >= 0) {
-        D_8010C190_hand_line_sinker->work[3] = 1;
+        m201_cameraMoveObj->work[3] = 1;
     } else {
-        D_8010C190_hand_line_sinker->work[3] = 0;
+        m201_cameraMoveObj->work[3] = 0;
     }
 }
 
-void func_8010B750_hand_line_sinker(omObjData *obj) {
+void m201_CameraMoveObjMain(omObjData *obj) {
     CameraMotionData *data = obj->data;
     MgCameraPreset *from;
     MgCameraPreset *to;
 
-    if (D_8010C190_hand_line_sinker->work[1] == 0) {
+    if (m201_cameraMoveObj->work[1] == 0) {
         return;
     }
     from = data->from;
     to = data->to;
-    if (D_8010C190_hand_line_sinker->work[3] == 1) {
+    if (m201_cameraMoveObj->work[3] == 1) {
         Center.x += (to->center.x - from->center.x) / data->duration;
         Center.y += (to->center.y - from->center.y) / data->duration;
         Center.z += (to->center.z - from->center.z) / data->duration;
@@ -84,7 +84,7 @@ void func_8010B750_hand_line_sinker(omObjData *obj) {
             obj->work[0] = 0;
             if (obj->work[2] == 1) {
                 omDelObj(obj);
-                D_8010C190_hand_line_sinker = NULL;
+                m201_cameraMoveObj = NULL;
             } else {
                 obj->func = NULL;
             }
@@ -99,7 +99,7 @@ void func_8010B750_hand_line_sinker(omObjData *obj) {
         CZoom = from->zoom + (to->zoom - from->zoom) * data->t;
         if (obj->work[0] == 0) {
             if (obj->work[2] == 1) {
-                D_8010C190_hand_line_sinker = NULL;
+                m201_cameraMoveObj = NULL;
                 omDelObj(obj);
             } else {
                 obj->func = NULL;
@@ -108,15 +108,15 @@ void func_8010B750_hand_line_sinker(omObjData *obj) {
     }
 }
 
-void func_8010BA50_hand_line_sinker(f32 arg0) {
-    OM_GET_DATA_PTR(D_8010C190_hand_line_sinker, CameraMotionData)->t = arg0;
+void m201_CameraMoveTimeSet(f32 arg0) {
+    OM_GET_DATA_PTR(m201_cameraMoveObj, CameraMotionData)->t = arg0;
 }
 
-void func_8010BA64_hand_line_sinker(void) {
+void m201_OvlReturn(void) {
     omOvlReturnEx(1);
 }
 
-FishingLine *func_8010BA80_hand_line_sinker(u8 r, u8 g, u8 b) {
+FishingLine *m201_LineCreate(u8 r, u8 g, u8 b) {
     FishingLine *line;
     s16 i;
 
@@ -132,7 +132,7 @@ FishingLine *func_8010BA80_hand_line_sinker(u8 r, u8 g, u8 b) {
     return line;
 }
 
-void func_8010BB58_hand_line_sinker(FishingLine *line, Vec *points, u16 count) {
+void m201_LineDraw(FishingLine *line, Vec *points, u16 count) {
     Gfx *gfx;
     Vtx *vtx;
     s16 i;
@@ -145,10 +145,10 @@ void func_8010BB58_hand_line_sinker(FishingLine *line, Vec *points, u16 count) {
     if (count < 2) {
         osSyncPrintf("Line Count err %d\n", count);
     }
-    D_8010C180_hand_line_sinker = line;
-    D_8010C18C_hand_line_sinker = &Hu3DData[line->model];
-    D_8010C188_hand_line_sinker = &Hu3DData[line->model].hmf;
-    D_8010C184_hand_line_sinker = gfx;
+    m201_lineCur = line;
+    m201_lineMdlData = &Hu3DData[line->model];
+    m201_lineHmf = &Hu3DData[line->model].hmf;
+    m201_lineGfx = gfx;
     Hu3DData[line->model].hmf->unk3C->unk00[0] = gfx;
     gDPSetScissor(gfx++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
     gDPSetCombineMode(gfx++, G_CC_SHADE, G_CC_SHADE);
@@ -183,7 +183,7 @@ void func_8010BB58_hand_line_sinker(FishingLine *line, Vec *points, u16 count) {
     gSPEndDisplayList(gfx++);
 }
 
-void func_8010BE6C_hand_line_sinker(FishingLine *line) {
+void m201_LineKill(FishingLine *line) {
     s16 i;
 
     Hu3DModelKill(line->model);

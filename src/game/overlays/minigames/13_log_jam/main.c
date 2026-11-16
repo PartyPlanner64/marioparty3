@@ -15,18 +15,18 @@
 #include "game/printfunc.h"
 #include "game/gamemes.h"
 
-typedef struct UnkLogJamSprites { // 0xC bytes, two entries
+typedef struct LogJamScore { // 0xC bytes, two entries
     s16 unk_00;
     s16 unk_02;
     s16 unk_04;
     s16 unk_06;
     s16 unk_08;
     s16 unk_0A;
-} UnkLogJamSprites;
+} LogJamScore;
 
-typedef struct LogJamPlayerWork LogJamPlayerWork;
+typedef struct LogJamLogWork LogJamLogWork;
 
-struct LogJamPlayerWork { // 0x78 bytes, 0x20 entries allocated by func_80108D50_log_jam
+struct LogJamLogWork { // 0x78 bytes, 0x20 entries allocated by m219_LogInit
     s16 unk_00;
     s16 unk_02[3]; // model ids
     s16 unk_08;
@@ -45,10 +45,10 @@ struct LogJamPlayerWork { // 0x78 bytes, 0x20 entries allocated by func_80108D50
     s16 unk_34[0x0F];
     s16 unk_52;
     f32 unk_54[8]; // callback work
-    void (*unk_74)(LogJamPlayerWork *work);
+    void (*unk_74)(LogJamLogWork *work);
 };
 
-typedef struct LogJamLogWork { // 0x38 bytes, 4 entries allocated by func_80106190_log_jam
+typedef struct LogJamPlayerWork { // 0x38 bytes, 4 entries allocated by m219_TeamInit
     s16 unk_00;
     s16 unk_02;
     s16 unk_04;
@@ -75,13 +75,13 @@ typedef struct LogJamLogWork { // 0x38 bytes, 4 entries allocated by func_801061
     s16 unk_32;
     s16 unk_34;
     s16 unk_36;
-} LogJamLogWork;
+} LogJamPlayerWork;
 
-typedef struct LogJamTeam { // 0x48 bytes, 2 entries allocated by func_80106190_log_jam
+typedef struct LogJamTeam { // 0x48 bytes, 2 entries allocated by m219_TeamInit
     omObjData *unk_00;
     omObjData *unk_04;
-    LogJamLogWork *unk_08;
-    LogJamLogWork *unk_0C;
+    LogJamPlayerWork *unk_08;
+    LogJamPlayerWork *unk_0C;
     s16 unk_10;
     s16 unk_12;
     s16 unk_14;
@@ -139,33 +139,33 @@ typedef union LogJamWorkBytes { // packs the top byte of each work word
     } bytes;
 } LogJamWorkBytes;
 
-Vec D_8010DE90_log_jam[4] = { { -233.0f, 0.0f, 70.0f }, { -131.0f, 0.0f, -5.0f }, { 131.0f, 0.0f, -5.0f }, { 233.0f, 0.0f, 70.0f } };
-Vec D_8010DEC0_log_jam[4] = { { -170.0f, 0.0f, 40.0f }, { -128.0f, 0.0f, 20.0f }, { 128.0f, 0.0f, 20.0f }, { 170.0f, 0.0f, 40.0f } };
-Vec D_8010DEF0_log_jam[4] = { { -70.0f, 0.0f, 200.0f }, { -190.0f, 0.0f, 250.0f }, { 190.0f, 0.0f, 250.0f }, { 70.0f, 0.0f, 200.0f } };
-f32 D_8010DF20_log_jam[4] = { 45.0f, 15.0f, -15.0f, -45.0f };
-Vec D_8010DF30_log_jam[2] = { { -100.0f, 50.0f, 115.0f }, { 100.0f, 50.0f, 115.0f } };
-LogJamColor D_8010DF48_log_jam = { 0xE9DDA180 };
-LogJamColor D_8010DF4C_log_jam = { 0xFFFFFFFF };
-s32 D_8010DF50_log_jam[8] = { 0x000200A5, 0x000300A5, 0x000700A5, 0x000400A5, 0x000500A5, 0x000600A5, 0x000800A5, 0x0009001C };
-s32 D_8010DF70_log_jam[8] = { 0x000200A6, 0x000300A6, 0x000700A6, 0x000400A6, 0x000500A6, 0x000600A6, 0x000800A6, 0x0009001D };
-s32 D_8010DF90_log_jam = 0;
-s32 D_8010DF94_log_jam[4] = { 0, 1, 2, 3 };
-s16 D_8010DFA4_log_jam[4][2][2] = { { { 0, 1 }, { 2, 3 } }, { { 3, 0 }, { 1, 2 } }, { { 2, 3 }, { 0, 1 } }, { { 1, 2 }, { 3, 0 } } };
-s16 D_8010DFC4_log_jam[4] = { 0, 1, 1, 0 };
-s16 D_8010DFCC_log_jam[4] = { 18, 19, 21, 20 };
-s32 D_8010DFD4_log_jam[8] = { 0x00020000, 0x00030000, 0x00070000, 0x00040000, 0x00050000, 0x00060000, 0x00080000, 0x00090000 };
-s32 D_8010DFF4_log_jam[4] = { 0x2F, 0x30, 0x36, 0x37 };
-s32 D_8010E004_log_jam[3] = { 3, 4, 5 };
-f32 D_8010E010_log_jam[8] = { 200.0f, 200.0f, 200.0f, 200.0f, 200.0f, 250.0f, 200.0f, 200.0f };
-s32 D_8010E030_log_jam[9] = { 0x00340003, 0x00340004, 0x00340005, 0x00340006, 0x00340007, 0x00340008, 0x00340009, 0x0034000A, 0x0034000B };
-Vec2f D_8010E054_log_jam[5] = { { 120.0f, 30.0f }, { 360.0f, 45.0f }, { 0.0f, 52.0f }, { 240.0f, 60.0f }, { 480.0f, 75.0f } };
-f32 D_8010E07C_log_jam[5] = { 0.7f, 0.6f, 0.55f, 0.47f, 0.4f };
-s16 D_8010E090_log_jam[2] = { 38, 282 };
-s32 D_8010E094_log_jam = 0;
-s32 D_8010E098_log_jam = 0;
-s32 D_8010E09C_log_jam = 0;
+Vec m219_playerPosTbl[4] = { { -233.0f, 0.0f, 70.0f }, { -131.0f, 0.0f, -5.0f }, { 131.0f, 0.0f, -5.0f }, { 233.0f, 0.0f, 70.0f } };
+Vec m219_playerSetPosTbl[4] = { { -170.0f, 0.0f, 40.0f }, { -128.0f, 0.0f, 20.0f }, { 128.0f, 0.0f, 20.0f }, { 170.0f, 0.0f, 40.0f } };
+Vec m219_playerWinPosTbl[4] = { { -70.0f, 0.0f, 200.0f }, { -190.0f, 0.0f, 250.0f }, { 190.0f, 0.0f, 250.0f }, { 70.0f, 0.0f, 200.0f } };
+f32 m219_playerRotTbl[4] = { 45.0f, 15.0f, -15.0f, -45.0f };
+Vec m219_stumpPosTbl[2] = { { -100.0f, 50.0f, 115.0f }, { 100.0f, 50.0f, 115.0f } };
+LogJamColor m219_chipColor = { 0xE9DDA180 };
+LogJamColor m219_whiteColor = { 0xFFFFFFFF };
+s32 m219_winAnimTbl[8] = { 0x000200A5, 0x000300A5, 0x000700A5, 0x000400A5, 0x000500A5, 0x000600A5, 0x000800A5, 0x0009001C };
+s32 m219_loseAnimTbl[8] = { 0x000200A6, 0x000300A6, 0x000700A6, 0x000400A6, 0x000500A6, 0x000600A6, 0x000800A6, 0x0009001D };
+s32 m219_exitTimer = 0;
+s32 m219_playerOrderTbl[4] = { 0, 1, 2, 3 };
+s16 m219_teamPlayerAltTbl[4][2][2] = { { { 0, 1 }, { 2, 3 } }, { { 3, 0 }, { 1, 2 } }, { { 2, 3 }, { 0, 1 } }, { { 1, 2 }, { 3, 0 } } };
+s16 m219_roleTbl[4] = { 0, 1, 1, 0 };
+s16 m219_playerPrioTbl[4] = { 18, 19, 21, 20 };
+s32 m219_voiceChrTbl[8] = { 0x00020000, 0x00030000, 0x00070000, 0x00040000, 0x00050000, 0x00060000, 0x00080000, 0x00090000 };
+s32 m219_voiceNoTbl[4] = { 0x2F, 0x30, 0x36, 0x37 };
+s32 m219_heldLogMdlIdxTbl[3] = { 3, 4, 5 };
+f32 m219_chrHeightTbl[8] = { 200.0f, 200.0f, 200.0f, 200.0f, 200.0f, 250.0f, 200.0f, 200.0f };
+s32 m219_logMdlFileTbl[9] = { 0x00340003, 0x00340004, 0x00340005, 0x00340006, 0x00340007, 0x00340008, 0x00340009, 0x0034000A, 0x0034000B };
+Vec2f m219_cloudPosTbl[5] = { { 120.0f, 30.0f }, { 360.0f, 45.0f }, { 0.0f, 52.0f }, { 240.0f, 60.0f }, { 480.0f, 75.0f } };
+f32 m219_cloudScaleTbl[5] = { 0.7f, 0.6f, 0.55f, 0.47f, 0.4f };
+s16 m219_scoreXTbl[2] = { 38, 282 };
+s32 m219_cameraDebugMode = 0;
+s32 m219_cameraDebugX = 0;
+s32 m219_cameraDebugY = 0;
 
-Gfx D_8010E0A0_log_jam[] = {
+Gfx m219_gfxRdpInit[] = {
     gsSPSegment(0x00, 0x00000000),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
@@ -193,22 +193,22 @@ Gfx D_8010E0A0_log_jam[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8010E158_log_jam[] = {
+Gfx m219_gfxRspInit[] = {
     gsSPClearGeometryMode(0xFFFFFFFF),
     gsSPTexture(0, 0, 0, G_TX_RENDERTILE, G_OFF),
     gsSPSetGeometryMode(G_SHADE | G_SHADING_SMOOTH),
     gsSPEndDisplayList(),
 };
 
-Gfx D_8010E178_log_jam[] = {
-    gsSPDisplayList(D_8010E158_log_jam),
-    gsSPDisplayList(D_8010E0A0_log_jam),
+Gfx m219_gfxInit[] = {
+    gsSPDisplayList(m219_gfxRspInit),
+    gsSPDisplayList(m219_gfxRdpInit),
     gsSPEndDisplayList(),
 };
 
-Gfx D_8010E190_log_jam[] = {
+Gfx m219_gfxBillboardInit[] = {
     gsDPPipeSync(),
-    gsSPDisplayList(D_8010E178_log_jam),
+    gsSPDisplayList(m219_gfxInit),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPSetGeometryMode(G_ZBUFFER | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH),
     gsDPSetBlendColor(0x00, 0x00, 0x00, 0x00),
@@ -217,33 +217,33 @@ Gfx D_8010E190_log_jam[] = {
     gsSPEndDisplayList(),
 };
 
-omObjData *D_8010E590_log_jam BSS;
-s32 D_8010E594_log_jam BSS;
-s32 D_8010E598_log_jam BSS;
-s32 D_8010E59C_log_jam BSS;
-s32 D_8010E5A0_log_jam BSS;
-s32 D_8010E5A4_log_jam BSS;
-s32 D_8010E5A8_log_jam BSS;
-LogJamTeam *D_8010E5AC_log_jam BSS;
-omObjData *D_8010E5B0_log_jam[2] BSS;
-LogJamLogWork *D_8010E5B8_log_jam BSS;
-s16 D_8010E5BC_log_jam BSS;
-omObjData *D_8010E5C0_log_jam BSS;
-LogJamPlayerWork *D_8010E5C4_log_jam BSS;
-s16 *D_8010E5C8_log_jam BSS;
-s16 *D_8010E5CC_log_jam BSS;
-UnkLogJamSprites *D_8010E5D0_log_jam BSS;
-LogJamCloud *D_8010E5D4_log_jam BSS;
-omObjData *D_8010E5D8_log_jam BSS;
-LogJamEffect *D_8010E5DC_log_jam BSS;
-omObjData *D_8010E5E0_log_jam BSS;
-LogJamEffect *D_8010E5E4_log_jam BSS;
-MgCameraKey D_8010E5E8_log_jam[2] BSS; // target, origin
-s32 D_8010E630_log_jam BSS;
-s32 D_8010E634_log_jam BSS;
-s32 D_8010E638_log_jam BSS;
-u8 D_8010E63C_log_jam[4] BSS; /* Unreferenced. */
-MinigameFlow D_8010E640_log_jam BSS;
+omObjData *m219_mainObj BSS;
+s32 m219_flag10F BSS;
+s32 m219_frameCnt BSS;
+s32 m219_phaseTimer BSS;
+s32 m219_timer BSS;
+s32 m219_phase BSS;
+s32 m219_resultWait BSS;
+LogJamTeam *m219_teamTbl BSS;
+omObjData *m219_teamObjTbl[2] BSS;
+LogJamPlayerWork *m219_playerWorkTbl BSS;
+s16 m219_winTeamNo BSS;
+omObjData *m219_logObj BSS;
+LogJamLogWork *m219_logTbl BSS;
+s16 *m219_logMdlTbl BSS;
+s16 *m219_sprTbl BSS;
+LogJamScore *m219_scoreTbl BSS;
+LogJamCloud *m219_cloudTbl BSS;
+omObjData *m219_smokeObj BSS;
+LogJamEffect *m219_smokeTbl BSS;
+omObjData *m219_missObj BSS;
+LogJamEffect *m219_missTbl BSS;
+MgCameraKey m219_cameraKeyTbl[2] BSS; // target, origin
+s32 m219_cameraMoveTimer BSS;
+s32 m219_cameraMoveTime BSS;
+s32 m219_cameraMoveF BSS;
+u8 m219_cameraMoveFPad[4] BSS; /* Unreferenced. */
+MinigameFlow m219_mgFlow BSS;
 extern s32 omCharModelNoTbl[][6];
 extern s16 motionBakeMtxCnt;
 extern u8 omAllPauseF;
@@ -254,73 +254,73 @@ extern HuMtx4F *motionBakeMtx;
 extern s16 Hu3DObjMtxStackIdx;
 extern HuMtx4F Hu3DObjMtxStack[];
 
-void func_80105B9C_log_jam(omObjData *object);
-void func_80105C10_log_jam(omObjData *object);
-void func_801060C4_log_jam(omObjData *object);
-void func_801060E8_log_jam(omObjData *object);
-void func_80106190_log_jam(void);
-void func_80106F48_log_jam(omObjData *object);
-void func_80106FAC_log_jam(void);
-void func_801065E8_log_jam(omObjData *object);
-void func_80106968_log_jam(omObjData *object);
-void func_80107080_log_jam(omObjData *object, LogJamTeam *team);
-void func_80107C84_log_jam(omObjData *object, LogJamTeam *team);
-void func_80108840_log_jam(omObjData *object, LogJamTeam *team);
-void func_80108A80_log_jam(omObjData *object, LogJamTeam *team);
-s16 func_80108D1C_log_jam(f32 arg0, f32 arg1);
-void func_80108D50_log_jam(void);
-s16 func_80109044_log_jam(s16 arg0, s16 arg1);
-void func_80109140_log_jam(s16 arg0, f32 arg1, f32 arg2, f32 arg3);
-void func_80109190_log_jam(s16 arg0, f32 arg1, f32 arg2, f32 arg3);
-void func_80109350_log_jam(s16 arg0);
-void func_80108E54_log_jam(omObjData *object);
-s16 func_80108CE0_log_jam(s16 arg0);
-void func_801091DC_log_jam(void);
-LogJamPlayerWork *func_8010910C_log_jam(s16 arg0);
-void func_8010925C_log_jam(s16 arg0);
-void func_801094E4_log_jam(LogJamPlayerWork *work);
-void func_80109A00_log_jam(void);
-s16 func_80109A7C_log_jam(s16 arg0, s16 arg1);
-void func_80109AD8_log_jam(void);
-void func_80109B34_log_jam(void);
-void func_80109B8C_log_jam(omObjData *object);
-void func_8010A0B0_log_jam(omObjData *object);
-u16 func_8010A300_log_jam(s32 file);
-void func_8010A344_log_jam(void);
-s32 func_8010A9D4_log_jam(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color);
-void func_8010A4C0_log_jam(omObjData *object);
-void func_8010A6FC_log_jam(s16 arg0, s16 arg1);
-void func_8010A724_log_jam(void);
-void func_8010A880_log_jam(omObjData *object);
-void func_8010ABA4_log_jam(void);
-void func_8010AD04_log_jam(omObjData *object);
-s32 func_8010AE58_log_jam(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color);
-void func_8010B04C_log_jam(void);
-void func_8010B86C_log_jam(omObjData *object);
-void func_8010BCA8_log_jam(s32 arg0);
-void func_8010BE94_log_jam(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames);
-void func_8010C084_log_jam(s32 camIndex);
-f32 func_8010C1D8_log_jam(f32 arg0, f32 arg1);
-f32 func_8010C2DC_log_jam(f32 target, f32 current, f32 step);
-f32 func_8010C49C_log_jam(f32 t, f32 start, f32 end);
-f32 func_8010C4B4_log_jam(f32 t, f32 start, f32 end);
-void func_8010C55C_log_jam(omObjData *object, u32 arg1);
-u32 func_8010C588_log_jam(omObjData *object);
-f32 func_8010C514_log_jam(f32 arg0, f32 arg1, f32 arg2);
-void func_8010C5DC_log_jam(omObjData *object, s16 motion, s16 shift);
-void func_8010C6A4_log_jam(omObjData *object, s16 motion, s16 time);
-void func_8010C714_log_jam(omObjData *object, s16 motion, s16 time);
-void func_8010C7D0_log_jam(omObjData *object);
-void func_8010C7F8_log_jam(omObjData *object);
-void func_8010C8B0_log_jam(omObjData *object);
-void func_8010C8E0_log_jam(s16 model, const char *name, HuMtx4F *out);
-void func_8010CAC0_log_jam(omObjData *object, const char *name, HuMtx4F out);
-s32 func_8010CB64_log_jam(HuSprAnimData *sprite, u8 *color);
-s32 func_8010D74C_log_jam(HuSprAnimData *sprite, u16 model, u8 *color);
-void func_8010D950_log_jam(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color);
-s32 func_8010DA84_log_jam(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset);
+void m219_MainObjInit(omObjData *object);
+void m219_MainObjMain(omObjData *object);
+void m219_ExitObjMain(omObjData *object);
+void m219_ExitCheck(omObjData *object);
+void m219_TeamInit(void);
+void m219_PlayerObjMain(omObjData *object);
+void m219_PlayerHeldLogKill(void);
+void m219_TeamObjMain(omObjData *object);
+void m219_PlayerObjInit(omObjData *object);
+void m219_SetterUpdate(omObjData *object, LogJamTeam *team);
+void m219_ChopperUpdate(omObjData *object, LogJamTeam *team);
+void m219_SetterComInput(omObjData *object, LogJamTeam *team);
+void m219_ChopperComInput(omObjData *object, LogJamTeam *team);
+s16 m219_JumpTimeCalc(f32 arg0, f32 arg1);
+void m219_LogInit(void);
+s16 m219_LogCreate(s16 arg0, s16 arg1);
+void m219_LogPosSet(s16 arg0, f32 arg1, f32 arg2, f32 arg3);
+void m219_LogRotSet(s16 arg0, f32 arg1, f32 arg2, f32 arg3);
+void m219_LogSplit(s16 arg0);
+void m219_LogObjMain(omObjData *object);
+s16 m219_PlayerAllStateCheck(s16 arg0);
+void m219_LogClose(void);
+LogJamLogWork *m219_LogGet(s16 arg0);
+void m219_LogKill(s16 arg0);
+void m219_LogHalfMove(LogJamLogWork *work);
+void m219_LogMdlInit(void);
+s16 m219_LogMdlLink(s16 arg0, s16 arg1);
+void m219_LogMdlClose(void);
+void m219_StageObjCreate(void);
+void m219_StageObjInit(omObjData *object);
+void m219_StageObjMain(omObjData *object);
+u16 m219_SprAnimRead(s32 file);
+void m219_ScoreInit(void);
+s32 m219_SmokeCreate(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color);
+void m219_ScoreObjMain(omObjData *object);
+void m219_ScoreSet(s16 arg0, s16 arg1);
+void m219_SmokeInit(void);
+void m219_SmokeObjMain(omObjData *object);
+void m219_MissInit(void);
+void m219_MissObjMain(omObjData *object);
+s32 m219_MissCreate(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color);
+void m219_CameraInit(void);
+void m219_CameraMoveObjMain(omObjData *object);
+void m219_CameraKeyStore(s32 arg0);
+void m219_CameraMoveStart(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames);
+void m219_CameraPosUpdate(s32 camIndex);
+f32 m219_AngleDiffCalc(f32 arg0, f32 arg1);
+f32 m219_AngleStepCalc(f32 target, f32 current, f32 step);
+f32 m219_InterpCalc(f32 t, f32 start, f32 end);
+f32 m219_AngleInterpCalc(f32 t, f32 start, f32 end);
+void m219_WorkPtrSet(omObjData *object, u32 arg1);
+u32 m219_WorkPtrGet(omObjData *object);
+f32 m219_StepCalc(f32 arg0, f32 arg1, f32 arg2);
+void m219_MotShiftSet(omObjData *object, s16 motion, s16 shift);
+void m219_MotShiftTimeSet(omObjData *object, s16 motion, s16 time);
+void m219_MotSet(omObjData *object, s16 motion, s16 time);
+void m219_MotStop(omObjData *object);
+void m219_MotShiftUpdate(omObjData *object);
+void m219_EffMdlUpdate(omObjData *object);
+void m219_NodeMtxCalc(s16 model, const char *name, HuMtx4F *out);
+void m219_NodeWorldMtxCalc(omObjData *object, const char *name, HuMtx4F out);
+s32 m219_BillboardColorMdlCreate(HuSprAnimData *sprite, u8 *color);
+s32 m219_BillboardColorMdlLink(HuSprAnimData *sprite, u16 model, u8 *color);
+void m219_BillboardColorPatSet(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color);
+s32 m219_BillboardVtxCreate(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset);
 
-void func_801059A0_log_jam(void) {
+void m219_ObjectSetup(void) {
     omObjData *obj;
     u8 camIndex;
 
@@ -341,91 +341,91 @@ void func_801059A0_log_jam(void) {
     mgPlayerObjNum = 0;
     mgMapObjNum = 0;
     mgItemObjNum = 0;
-    D_8010E5A0_log_jam = 900;
-    D_8010E59C_log_jam = 0;
-    D_8010E598_log_jam = 0;
-    D_8010E5A4_log_jam = -1;
-    D_8010E5A8_log_jam = 0;
-    D_8010E5BC_log_jam = -1;
-    D_8010E5CC_log_jam = HuMemAllocTag(0x40, TAG_OVERLAY);
-    D_8010E590_log_jam = omAddObj(0x20, 0, 0, -1, func_80105B9C_log_jam);
-    memset(&D_8010E640_log_jam, 0, 0x28);
-    D_8010E640_log_jam.type = MINIGAME_BATTLE;
-    MgFlowInit(&D_8010E640_log_jam);
+    m219_timer = 900;
+    m219_phaseTimer = 0;
+    m219_frameCnt = 0;
+    m219_phase = -1;
+    m219_resultWait = 0;
+    m219_winTeamNo = -1;
+    m219_sprTbl = HuMemAllocTag(0x40, TAG_OVERLAY);
+    m219_mainObj = omAddObj(0x20, 0, 0, -1, m219_MainObjInit);
+    memset(&m219_mgFlow, 0, 0x28);
+    m219_mgFlow.type = MINIGAME_BATTLE;
+    MgFlowInit(&m219_mgFlow);
 }
 
-void func_80105B9C_log_jam(omObjData *object) {
-    object->func = func_80105C10_log_jam;
-    func_80109B34_log_jam();
-    func_8010A344_log_jam();
-    func_8010A724_log_jam();
-    func_8010ABA4_log_jam();
-    func_80109A00_log_jam();
-    func_80106190_log_jam();
-    func_80108D50_log_jam();
-    func_8010B04C_log_jam();
+void m219_MainObjInit(omObjData *object) {
+    object->func = m219_MainObjMain;
+    m219_StageObjCreate();
+    m219_ScoreInit();
+    m219_SmokeInit();
+    m219_MissInit();
+    m219_LogMdlInit();
+    m219_TeamInit();
+    m219_LogInit();
+    m219_CameraInit();
     if (_CheckFlag(10)) {
-        D_8010E594_log_jam = 1;
+        m219_flag10F = 1;
     }
 }
 
-void func_80105C10_log_jam(omObjData *object) {
+void m219_MainObjMain(omObjData *object) {
     LogJamTeam *team0;
     LogJamTeam *team1;
 
-    switch (D_8010E5A4_log_jam) {
+    switch (m219_phase) {
         case -1:
-            if (D_8010E59C_log_jam >= 2) {
+            if (m219_phaseTimer >= 2) {
                 WipeCreateIn(0xFF, 16);
-                D_8010E5A4_log_jam = 0;
-                D_8010E59C_log_jam = 0;
+                m219_phase = 0;
+                m219_phaseTimer = 0;
             }
             break;
         case 0:
             if (WipeStatGet() == 0) {
                 GMesCreate(5);
                 HuAudFXPlay(0xE);
-                D_8010E5A4_log_jam++;
-                D_8010E59C_log_jam = 0;
+                m219_phase++;
+                m219_phaseTimer = 0;
             }
             break;
         case 1:
-            if (D_8010E59C_log_jam == 30) {
+            if (m219_phaseTimer == 30) {
                 HuAudSeqPlay(0x2E);
             }
             if (GMesStatGet() == 0) {
-                GMesCreate(0x1A, (D_8010E5A0_log_jam + 29) / 30, 156, 32);
+                GMesCreate(0x1A, (m219_timer + 29) / 30, 156, 32);
                 MgFlowStatSet(MG_STATE_PLAY);
-                D_8010E5A4_log_jam++;
+                m219_phase++;
             }
             break;
         case 2:
-            D_8010E5A0_log_jam--;
-            GMesTimerValueSet((D_8010E5A0_log_jam + 29) / 30);
-            if (D_8010E5A0_log_jam <= 0) {
+            m219_timer--;
+            GMesTimerValueSet((m219_timer + 29) / 30);
+            if (m219_timer <= 0) {
                 GMesTimerEnd();
                 GMesCreate(0x10);
                 MgFlowStatSet(MG_STATE_FINISH);
                 HuAudSeqFadeOut(120);
-                D_8010E5A0_log_jam = 0;
-                D_8010E59C_log_jam = 0;
-                D_8010E5A4_log_jam++;
+                m219_timer = 0;
+                m219_phaseTimer = 0;
+                m219_phase++;
             }
             break;
         case 3:
-            if (func_80108CE0_log_jam(14) && GMesStatGet() == 0) {
+            if (m219_PlayerAllStateCheck(14) && GMesStatGet() == 0) {
                 MgFlowStatSet(MG_STATE_RESULT);
-                func_801091DC_log_jam();
-                func_80106FAC_log_jam();
-                func_80109AD8_log_jam();
-                D_8010E59C_log_jam = 0;
-                D_8010E5A4_log_jam++;
+                m219_LogClose();
+                m219_PlayerHeldLogKill();
+                m219_LogMdlClose();
+                m219_phaseTimer = 0;
+                m219_phase++;
             }
             break;
         case 4:
-            if (func_80108CE0_log_jam(17)) {
-                team0 = (LogJamTeam *)func_8010C588_log_jam(D_8010E5B0_log_jam[0]);
-                team1 = (LogJamTeam *)func_8010C588_log_jam(D_8010E5B0_log_jam[1]);
+            if (m219_PlayerAllStateCheck(17)) {
+                team0 = (LogJamTeam *)m219_WorkPtrGet(m219_teamObjTbl[0]);
+                team1 = (LogJamTeam *)m219_WorkPtrGet(m219_teamObjTbl[1]);
                 if (team0->unk_12 > team1->unk_12) {
                     GMesCreate(0x1E, team0->unk_08->unk_1C, team0->unk_0C->unk_1C);
                     GwPlayer[team0->unk_08->unk_18].bonusCoin += 10;
@@ -433,7 +433,7 @@ void func_80105C10_log_jam(omObjData *object) {
                     team0->unk_08->unk_06 = team0->unk_0C->unk_06 = 0;
                     team1->unk_08->unk_06 = team1->unk_0C->unk_06 = 1;
                     HuAudSeqPlay(0x66);
-                    D_8010E5A8_log_jam = 140;
+                    m219_resultWait = 140;
                 } else if (team0->unk_12 < team1->unk_12) {
                     GMesCreate(0x1E, team1->unk_08->unk_1C, team1->unk_0C->unk_1C);
                     GwPlayer[team1->unk_08->unk_18].bonusCoin += 10;
@@ -441,67 +441,67 @@ void func_80105C10_log_jam(omObjData *object) {
                     team0->unk_08->unk_06 = team0->unk_0C->unk_06 = 1;
                     team1->unk_08->unk_06 = team1->unk_0C->unk_06 = 0;
                     HuAudSeqPlay(0x66);
-                    D_8010E5A8_log_jam = 140;
+                    m219_resultWait = 140;
                 } else {
                     GMesCreate(0x20);
                     team0->unk_08->unk_06 = team0->unk_0C->unk_06 = 1;
                     team1->unk_08->unk_06 = team1->unk_0C->unk_06 = 1;
                     HuAudSeqPlay(0x6C);
-                    D_8010E5A8_log_jam = 144;
+                    m219_resultWait = 144;
                 }
-                D_8010E59C_log_jam = 0;
-                D_8010E5A4_log_jam++;
+                m219_phaseTimer = 0;
+                m219_phase++;
             }
             break;
         case 5:
             if (GMesStatGet() == 0) {
-                D_8010E59C_log_jam = 0;
-                D_8010E5A4_log_jam++;
+                m219_phaseTimer = 0;
+                m219_phase++;
             }
             break;
         case 6:
-            if (D_8010E59C_log_jam >= 16) {
+            if (m219_phaseTimer >= 16) {
                 WipeCreateOut(WIPE_TYPE_NORMAL, 16);
                 HuAudSeqFadeOut(16);
                 HuAudFXAllFadeOut(16);
-                D_8010E59C_log_jam = 0;
-                D_8010E5A4_log_jam++;
+                m219_phaseTimer = 0;
+                m219_phase++;
             }
             break;
         default:
             if (WipeStatGet() == 0) {
-                object->func = func_801060C4_log_jam;
+                object->func = m219_ExitObjMain;
             }
             break;
     }
-    func_801060E8_log_jam(object);
-    D_8010E598_log_jam++;
-    D_8010E59C_log_jam++;
+    m219_ExitCheck(object);
+    m219_frameCnt++;
+    m219_phaseTimer++;
 }
 
-void func_801060C4_log_jam(omObjData *object) {
+void m219_ExitObjMain(omObjData *object) {
     HuAudSeqStop();
     omOvlReturnEx(1);
 }
 
-void func_801060E8_log_jam(omObjData *object) {
-    if (D_8010DF90_log_jam != 0) {
-        if (D_8010DF90_log_jam == 1) {
-            object->func = func_801060C4_log_jam;
+void m219_ExitCheck(omObjData *object) {
+    if (m219_exitTimer != 0) {
+        if (m219_exitTimer == 1) {
+            object->func = m219_ExitObjMain;
         }
-        D_8010DF90_log_jam--;
+        m219_exitTimer--;
     } else if (omSysExitReq == 1 && WipeStatGet() == 0) {
-        D_8010DF90_log_jam = 16;
-        WipeCreateOut(WIPE_TYPE_NORMAL, D_8010DF90_log_jam);
-        HuAudSeqFadeOut(D_8010DF90_log_jam);
-        HuAudFXAllFadeOut((s16)D_8010DF90_log_jam);
+        m219_exitTimer = 16;
+        WipeCreateOut(WIPE_TYPE_NORMAL, m219_exitTimer);
+        HuAudSeqFadeOut(m219_exitTimer);
+        HuAudFXAllFadeOut((s16)m219_exitTimer);
     }
 }
 
-void func_80106190_log_jam(void) {
+void m219_TeamInit(void) {
     s32 playerIds[2][2];
     LogJamTeam *team;
-    LogJamLogWork *work;
+    LogJamPlayerWork *work;
     omObjData *obj;
     s32 i;
     s32 j;
@@ -512,23 +512,23 @@ void func_80106190_log_jam(void) {
     s32 group3Count;
     s32 group;
 
-    D_8010E5AC_log_jam = HuMemAllocTag(sizeof(LogJamTeam) * 2, TAG_OVERLAY);
-    team = D_8010E5AC_log_jam;
+    m219_teamTbl = HuMemAllocTag(sizeof(LogJamTeam) * 2, TAG_OVERLAY);
+    team = m219_teamTbl;
     memset(team, 0, sizeof(LogJamTeam) * 2);
-    D_8010E5B8_log_jam = HuMemAllocTag(sizeof(LogJamLogWork) * 4, TAG_OVERLAY);
-    memset(D_8010E5B8_log_jam, 0, sizeof(LogJamLogWork) * 4);
+    m219_playerWorkTbl = HuMemAllocTag(sizeof(LogJamPlayerWork) * 4, TAG_OVERLAY);
+    memset(m219_playerWorkTbl, 0, sizeof(LogJamPlayerWork) * 4);
     invalid = FALSE;
     group3Count = 0;
     group2Count = 0;
     group1Count = 0;
     group0Count = 0;
     for (i = 0; i < 4; i++) {
-        switch (group = GwPlayer[D_8010DF94_log_jam[i]].group) {
+        switch (group = GwPlayer[m219_playerOrderTbl[i]].group) {
             case 0:
                 if (group0Count > 0) {
                     invalid = TRUE;
                 } else {
-                    playerIds[0][1] = D_8010DF94_log_jam[i];
+                    playerIds[0][1] = m219_playerOrderTbl[i];
                     group0Count++;
                 }
                 break;
@@ -536,7 +536,7 @@ void func_80106190_log_jam(void) {
                 if (group1Count > 0) {
                     invalid = TRUE;
                 } else {
-                    playerIds[0][0] = D_8010DF94_log_jam[i];
+                    playerIds[0][0] = m219_playerOrderTbl[i];
                     group1Count++;
                 }
                 break;
@@ -544,7 +544,7 @@ void func_80106190_log_jam(void) {
                 if (group2Count > 0) {
                     invalid = TRUE;
                 } else {
-                    playerIds[1][0] = D_8010DF94_log_jam[i];
+                    playerIds[1][0] = m219_playerOrderTbl[i];
                     group2Count++;
                 }
                 break;
@@ -552,7 +552,7 @@ void func_80106190_log_jam(void) {
                 if (group3Count > 0) {
                     invalid = TRUE;
                 } else {
-                    playerIds[1][1] = D_8010DF94_log_jam[i];
+                    playerIds[1][1] = m219_playerOrderTbl[i];
                     group3Count++;
                 }
                 break;
@@ -568,7 +568,7 @@ void func_80106190_log_jam(void) {
         group = rand8() & 3;
         for (i = 0; i < 2; i++) {
             for (j = 0; j < 2; j++) {
-                playerIds[i][j] = D_8010DFA4_log_jam[group][i][j];
+                playerIds[i][j] = m219_teamPlayerAltTbl[group][i][j];
             }
         }
     }
@@ -588,21 +588,21 @@ void func_80106190_log_jam(void) {
         team->unk_30 = team->unk_34 = team->unk_38 = 0.0f;
         team->unk_3C = 0.0f;
         team->unk_40 = team->unk_44 = 0.0f;
-        D_8010E5B0_log_jam[i] = omAddObj(i + 16, 0, 0, -1, func_801065E8_log_jam);
-        func_8010C55C_log_jam(D_8010E5B0_log_jam[i], (u32)team);
+        m219_teamObjTbl[i] = omAddObj(i + 16, 0, 0, -1, m219_TeamObjMain);
+        m219_WorkPtrSet(m219_teamObjTbl[i], (u32)team);
         for (j = 0; j < 2; j++) {
-            work = &D_8010E5B8_log_jam[i * 2 + j];
+            work = &m219_playerWorkTbl[i * 2 + j];
             work->unk_00 = i * 2 + j;
             work->unk_04 = i;
-            work->unk_02 = D_8010DFC4_log_jam[work->unk_00];
+            work->unk_02 = m219_roleTbl[work->unk_00];
             work->unk_18 = playerIds[i][j];
             obj = mgPlayerObjTbl[mgPlayerObjNum] =
-                omAddObj(D_8010DFCC_log_jam[work->unk_00], 8, 11, -1, func_80106968_log_jam);
+                omAddObj(m219_playerPrioTbl[work->unk_00], 8, 11, -1, m219_PlayerObjInit);
             mgPlayerObjNum++;
-            obj->trans.x = D_8010DE90_log_jam[work->unk_00].x;
-            obj->trans.z = D_8010DE90_log_jam[work->unk_00].z;
-            obj->rot.y = D_8010DF20_log_jam[work->unk_00];
-            func_8010C55C_log_jam(obj, (u32)work);
+            obj->trans.x = m219_playerPosTbl[work->unk_00].x;
+            obj->trans.z = m219_playerPosTbl[work->unk_00].z;
+            obj->rot.y = m219_playerRotTbl[work->unk_00];
+            m219_WorkPtrSet(obj, (u32)work);
             if (work->unk_02 == 0) {
                 team->unk_00 = obj;
                 team->unk_08 = work;
@@ -614,27 +614,27 @@ void func_80106190_log_jam(void) {
     }
 }
 
-void func_801065E8_log_jam(omObjData *object) {
+void m219_TeamObjMain(omObjData *object) {
     Vec pos;
     Vec scale = { 0.7f, 0.7f, 0.7f };
     LogJamTeam *team;
-    LogJamPlayerWork *player;
+    LogJamLogWork *player;
     s16 done = FALSE;
 
-    team = (LogJamTeam *)func_8010C588_log_jam(object);
-    func_80107080_log_jam(team->unk_00, team);
-    func_80107C84_log_jam(team->unk_04, team);
+    team = (LogJamTeam *)m219_WorkPtrGet(object);
+    m219_SetterUpdate(team->unk_00, team);
+    m219_ChopperUpdate(team->unk_04, team);
     if (team->unk_12 >= 30) {
         team->unk_12 = 29;
     }
-    func_8010A6FC_log_jam(team->unk_10, team->unk_12);
+    m219_ScoreSet(team->unk_10, team->unk_12);
     if (MgFlowStatGet() == MG_STATE_FINISH && team->unk_16 != -1) {
-        player = func_8010910C_log_jam(team->unk_16);
+        player = m219_LogGet(team->unk_16);
         pos.x = player->unk_10;
         pos.z = player->unk_18;
         pos.y = player->unk_14 + 40.0000005960464478;
-        func_8010A9D4_log_jam(&pos, NULL, &scale, 1.0f, D_8010DF4C_log_jam.rgba);
-        func_8010925C_log_jam(team->unk_16);
+        m219_SmokeCreate(&pos, NULL, &scale, 1.0f, m219_whiteColor.rgba);
+        m219_LogKill(team->unk_16);
         team->unk_16 = team->unk_18 = -1;
     }
     if (team->unk_1C != -1) {
@@ -642,8 +642,8 @@ void func_801065E8_log_jam(omObjData *object) {
         team->unk_34 += team->unk_44;
         team->unk_28 += team->unk_3C;
         team->unk_3C -= 1.6333001f;
-        team->unk_24 = func_8010C514_log_jam(D_8010DF30_log_jam[team->unk_10 ^ 1].x, team->unk_24, 7.0f);
-        team->unk_2C = func_8010C514_log_jam(D_8010DF30_log_jam[team->unk_10 ^ 1].z, team->unk_2C, 7.0f);
+        team->unk_24 = m219_StepCalc(m219_stumpPosTbl[team->unk_10 ^ 1].x, team->unk_24, 7.0f);
+        team->unk_2C = m219_StepCalc(m219_stumpPosTbl[team->unk_10 ^ 1].z, team->unk_2C, 7.0f);
         if (team->unk_28 < 184.0000033378601 && team->unk_3C <= 0.0f) {
             done = TRUE;
             team->unk_30 = -225.0f;
@@ -655,7 +655,7 @@ void func_801065E8_log_jam(omObjData *object) {
             pos.x = team->unk_24;
             pos.z = team->unk_2C;
             pos.y = team->unk_28 - 50.0;
-            func_8010A9D4_log_jam(&pos, NULL, &scale, 1.0f, D_8010DF4C_log_jam.rgba);
+            m219_SmokeCreate(&pos, NULL, &scale, 1.0f, m219_whiteColor.rgba);
             Hu3DModelAttrSet(team->unk_1C, 4, 4);
             done = TRUE;
         }
@@ -670,8 +670,8 @@ void func_801065E8_log_jam(omObjData *object) {
     team->unk_1A++;
 }
 
-void func_80106968_log_jam(omObjData *object) {
-    LogJamLogWork *work;
+void m219_PlayerObjInit(omObjData *object) {
+    LogJamPlayerWork *work;
     MgPlayerWork *data;
     s16 player;
     s16 chr;
@@ -680,7 +680,7 @@ void func_80106968_log_jam(omObjData *object) {
     s16 i;
     s32 index;
 
-    work = (LogJamLogWork *)func_8010C588_log_jam(object);
+    work = (LogJamPlayerWork *)m219_WorkPtrGet(object);
     player = work->unk_18;
     chr = GwPlayer[player].chr;
     work->unk_1C = chr;
@@ -698,14 +698,14 @@ void func_80106968_log_jam(omObjData *object) {
         Hu3DModelAttrSet(object->model[2], 0x4000, 0x4000);
         Hu3DModelHookSet(object->model[2], object->model[0], "item_hook");
         for (i = 0; i < 3; i++) {
-            object->model[i + 3] = func_80109A7C_log_jam(i, 0);
+            object->model[i + 3] = m219_LogMdlLink(i, 0);
             Hu3DModelAttrSet(object->model[i + 3], 4, 4);
             Hu3DModelAttrSet(object->model[i + 3], 0x4000, 0x4000);
             Hu3DModelHookSet(object->model[i + 3], object->model[2], "m219-item-f");
         }
     } else {
         for (i = 0; i < 3; i++) {
-            object->model[i + 3] = func_80109A7C_log_jam(i, 0);
+            object->model[i + 3] = m219_LogMdlLink(i, 0);
             Hu3DModelAttrSet(object->model[i + 3], 4, 4);
             Hu3DModelAttrSet(object->model[i + 3], 0x4000, 0x4000);
             Hu3DModelHookSet(object->model[i + 3], object->model[0], "item_hook");
@@ -727,16 +727,16 @@ void func_80106968_log_jam(omObjData *object) {
     }
     if (chr == 5) {
         MgPlayerMotLoad(object, 9, CharMotionDataNumGet(5, 0x31), 1, 120);
-        work->unk_14 = D_8010DFD4_log_jam[5] | 0x31;
+        work->unk_14 = m219_voiceChrTbl[5] | 0x31;
     } else if (chr == 1 || chr == 6) {
-        MgPlayerMotLoad(object, 9, CharMotionDataNumGet(chr, D_8010DFF4_log_jam[0]), 1, 120);
-        work->unk_14 = D_8010DFD4_log_jam[chr] | D_8010DFF4_log_jam[0];
+        MgPlayerMotLoad(object, 9, CharMotionDataNumGet(chr, m219_voiceNoTbl[0]), 1, 120);
+        work->unk_14 = m219_voiceChrTbl[chr] | m219_voiceNoTbl[0];
     } else {
         index = rand8() & 1;
-        MgPlayerMotLoad(object, 9, CharMotionDataNumGet(chr, D_8010DFF4_log_jam[index]), 1, 120);
-        work->unk_14 = D_8010DFD4_log_jam[chr] | D_8010DFF4_log_jam[index];
+        MgPlayerMotLoad(object, 9, CharMotionDataNumGet(chr, m219_voiceNoTbl[index]), 1, 120);
+        work->unk_14 = m219_voiceChrTbl[chr] | m219_voiceNoTbl[index];
     }
-    MgPlayerMotLoad(object, 10, CharMotionDataNumGet(chr, D_8010DFF4_log_jam[2]), 1, 120);
+    MgPlayerMotLoad(object, 10, CharMotionDataNumGet(chr, m219_voiceNoTbl[2]), 1, 120);
     work->unk_06 = -1;
     work->unk_0C = 0;
     work->unk_0A = 0;
@@ -752,67 +752,67 @@ void func_80106968_log_jam(omObjData *object) {
     work->unk_30 = 4 - work->unk_20;
     if (work->unk_02 == 0) {
         work->unk_08 = 0;
-        func_8010C5DC_log_jam(object, 0, 5);
+        m219_MotShiftSet(object, 0, 5);
         work->unk_32 = 0;
     } else {
         work->unk_08 = 5;
-        func_8010C714_log_jam(object, 4, 7);
+        m219_MotSet(object, 4, 7);
         work->unk_32 = 4;
     }
     work->unk_34 = 0;
-    object->func = func_80106F48_log_jam;
+    object->func = m219_PlayerObjMain;
 }
 
-void func_80106F48_log_jam(omObjData *object) {
-    LogJamLogWork *work = (LogJamLogWork *)func_8010C588_log_jam(object);
+void m219_PlayerObjMain(omObjData *object) {
+    LogJamPlayerWork *work = (LogJamPlayerWork *)m219_WorkPtrGet(object);
 
     Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
     work->unk_0C++;
-    func_8010C7F8_log_jam(object);
-    func_8010C8B0_log_jam(object);
+    m219_MotShiftUpdate(object);
+    m219_EffMdlUpdate(object);
 }
 
-void func_80106FAC_log_jam(void) {
+void m219_PlayerHeldLogKill(void) {
     s32 i;
     s32 j;
 
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 3; j++) {
-            if (mgPlayerObjTbl[i]->model[D_8010E004_log_jam[j]] != -1) {
-                Hu3DModelKill(mgPlayerObjTbl[i]->model[D_8010E004_log_jam[j]]);
-                mgPlayerObjTbl[i]->model[D_8010E004_log_jam[j]] = -1;
+            if (mgPlayerObjTbl[i]->model[m219_heldLogMdlIdxTbl[j]] != -1) {
+                Hu3DModelKill(mgPlayerObjTbl[i]->model[m219_heldLogMdlIdxTbl[j]]);
+                mgPlayerObjTbl[i]->model[m219_heldLogMdlIdxTbl[j]] = -1;
             }
         }
     }
 }
 
-void func_80107080_log_jam(omObjData *object, LogJamTeam *team) {
+void m219_SetterUpdate(omObjData *object, LogJamTeam *team) {
     HuMtx4F mtx;
     Vec scale = { 0.7f, 0.7f, 0.7f };
     Vec pos;
-    LogJamLogWork *work;
-    LogJamLogWork *partner;
+    LogJamPlayerWork *work;
+    LogJamPlayerWork *partner;
     HmfModel *model;
     s32 dir;
     f32 t = 0.0f;
 
-    work = (LogJamLogWork *)func_8010C588_log_jam(object);
+    work = (LogJamPlayerWork *)m219_WorkPtrGet(object);
     model = &Hu3DData[object->model[0]];
     partner = team->unk_0C;
     if (work->unk_1E != 0) {
-        func_80108840_log_jam(object, team);
+        m219_SetterComInput(object, team);
     }
     if (MgFlowStatGet() == MG_STATE_FINISH && work->unk_08 < 13) {
         work->unk_08 = 13;
         work->unk_0C = 0;
     }
     if (!(work->unk_08 == 1 && work->unk_0A == 0) && work->unk_08 < 13) {
-        object->rot.y = func_8010C2DC_log_jam(D_8010DF20_log_jam[work->unk_00], object->rot.y, 10.0f);
+        object->rot.y = m219_AngleStepCalc(m219_playerRotTbl[work->unk_00], object->rot.y, 10.0f);
     }
     switch (work->unk_08) {
         case 0:
             if (work->unk_0C >= 3.0f && MgFlowStatGet() == MG_STATE_PLAY) {
-                func_8010C5DC_log_jam(object, 7, 5);
+                m219_MotShiftSet(object, 7, 5);
                 HuAudPlayerFXPlay(0x38A, work->unk_18);
                 work->unk_08 = 1;
                 work->unk_0A = 0;
@@ -827,7 +827,7 @@ void func_80107080_log_jam(omObjData *object, LogJamTeam *team) {
                 } else if (t > 1.0f) {
                     t = 1.0f;
                 }
-                object->rot.y = func_8010C4B4_log_jam(D_8010DF20_log_jam[work->unk_00], 0.0f, t);
+                object->rot.y = m219_AngleInterpCalc(m219_playerRotTbl[work->unk_00], 0.0f, t);
                 if (model->motIdShift == 0xFF && model->motTime >= 14.0f && model->motId == object->motion[7]) {
                     work->unk_24 = (u8)(rand8() % 3);
                     Hu3DModelAttrSet(object->model[work->unk_24 + 3], 4, 0);
@@ -860,10 +860,10 @@ void func_80107080_log_jam(omObjData *object, LogJamTeam *team) {
                         break;
                 }
                 if (dir == work->unk_24) {
-                    func_8010C5DC_log_jam(object, 8, 5);
+                    m219_MotShiftSet(object, 8, 5);
                     work->unk_08 = 3;
                 } else {
-                    func_8010C714_log_jam(object, 8, 0);
+                    m219_MotSet(object, 8, 0);
                     model->motTime = 0.0f;
                     model->motSpeed = 0.0f;
                     omVibrate(work->unk_18, 2, 3, 10);
@@ -878,9 +878,9 @@ void func_80107080_log_jam(omObjData *object, LogJamTeam *team) {
                 model->motTime += 2.0f;
                 if (model->motTime >= 10.0f) {
                     pos.x = object->trans.x;
-                    pos.y = object->trans.y + D_8010E010_log_jam[work->unk_1C];
+                    pos.y = object->trans.y + m219_chrHeightTbl[work->unk_1C];
                     pos.z = object->trans.z;
-                    func_8010AE58_log_jam(&pos, NULL, NULL, 1.0f, NULL);
+                    m219_MissCreate(&pos, NULL, NULL, 1.0f, NULL);
                     work->unk_0A++;
                 }
             } else if (!(work->unk_0A & 1)) {
@@ -893,15 +893,15 @@ void func_80107080_log_jam(omObjData *object, LogJamTeam *team) {
                 if (model->motTime <= 0.0f) {
                     if (work->unk_0A == 1 || work->unk_0A == 5 || work->unk_0A == 9) {
                         pos.x = object->trans.x;
-                        pos.y = object->trans.y + D_8010E010_log_jam[work->unk_1C];
+                        pos.y = object->trans.y + m219_chrHeightTbl[work->unk_1C];
                         pos.z = object->trans.z;
-                        func_8010AE58_log_jam(&pos, NULL, NULL, 1.0f, NULL);
+                        m219_MissCreate(&pos, NULL, NULL, 1.0f, NULL);
                     }
                     work->unk_0A++;
                 }
             }
             if (work->unk_0A >= 9) {
-                func_8010C7D0_log_jam(object);
+                m219_MotStop(object);
                 model->motTime = 0.0f;
                 work->unk_08 = 2;
                 work->unk_0A = 0;
@@ -919,15 +919,15 @@ void func_80107080_log_jam(omObjData *object, LogJamTeam *team) {
                     t = 1.0f;
                 }
                 object->trans.x =
-                    func_8010C49C_log_jam(t, D_8010DE90_log_jam[work->unk_00].x, D_8010DEC0_log_jam[work->unk_00].x);
+                    m219_InterpCalc(t, m219_playerPosTbl[work->unk_00].x, m219_playerSetPosTbl[work->unk_00].x);
                 object->trans.z =
-                    func_8010C49C_log_jam(t, D_8010DE90_log_jam[work->unk_00].z, D_8010DEC0_log_jam[work->unk_00].z);
+                    m219_InterpCalc(t, m219_playerPosTbl[work->unk_00].z, m219_playerSetPosTbl[work->unk_00].z);
                 if (model->motIdShift == 0xFF && model->motTime >= 19.0f && model->motId == object->motion[8]) {
                     Hu3DModelAttrSet(object->model[work->unk_24 + 3], 4, 4);
-                    work->unk_22 = func_80109044_log_jam(work->unk_24, 0);
-                    func_80109140_log_jam(work->unk_22, D_8010DF30_log_jam[team->unk_10].x,
-                                          D_8010DF30_log_jam[team->unk_10].y, D_8010DF30_log_jam[team->unk_10].z);
-                    func_80109190_log_jam(work->unk_22, 0.0f, 0.0f, 0.0f);
+                    work->unk_22 = m219_LogCreate(work->unk_24, 0);
+                    m219_LogPosSet(work->unk_22, m219_stumpPosTbl[team->unk_10].x,
+                                          m219_stumpPosTbl[team->unk_10].y, m219_stumpPosTbl[team->unk_10].z);
+                    m219_LogRotSet(work->unk_22, 0.0f, 0.0f, 0.0f);
                     team->unk_16 = work->unk_22;
                     team->unk_18 = work->unk_24;
                     team->unk_1A = 0;
@@ -946,11 +946,11 @@ void func_80107080_log_jam(omObjData *object, LogJamTeam *team) {
                     t = 1.0f;
                 }
                 object->trans.x =
-                    func_8010C49C_log_jam(t, D_8010DEC0_log_jam[work->unk_00].x, D_8010DE90_log_jam[work->unk_00].x);
+                    m219_InterpCalc(t, m219_playerSetPosTbl[work->unk_00].x, m219_playerPosTbl[work->unk_00].x);
                 object->trans.z =
-                    func_8010C49C_log_jam(t, D_8010DEC0_log_jam[work->unk_00].z, D_8010DE90_log_jam[work->unk_00].z);
+                    m219_InterpCalc(t, m219_playerSetPosTbl[work->unk_00].z, m219_playerPosTbl[work->unk_00].z);
                 if (model->motIdShift == 0xFF && model->motTime >= 39.0f && model->motId == object->motion[8]) {
-                    func_8010C5DC_log_jam(object, 0, 5);
+                    m219_MotShiftSet(object, 0, 5);
                     work->unk_08 = 0;
                     work->unk_0A = 0;
                     work->unk_0C = 0;
@@ -960,21 +960,21 @@ void func_80107080_log_jam(omObjData *object, LogJamTeam *team) {
         case 13:
             if (work->unk_24 != -1) {
                 Hu3DModelAttrSet(object->model[work->unk_24 + 3], 4, 4);
-                func_8010CAC0_log_jam(object, "item_hook", mtx);
-                func_8010A9D4_log_jam((Vec *)mtx[3], NULL, &scale, 1.0f, D_8010DF4C_log_jam.rgba);
+                m219_NodeWorldMtxCalc(object, "item_hook", mtx);
+                m219_SmokeCreate((Vec *)mtx[3], NULL, &scale, 1.0f, m219_whiteColor.rgba);
                 work->unk_22 = work->unk_24 = -1;
             }
-            func_8010C5DC_log_jam(object, 0, 5);
+            m219_MotShiftSet(object, 0, 5);
             work->unk_08 = 14;
             // fallthrough
         case 14:
-            object->rot.y = func_8010C2DC_log_jam(0.0f, object->rot.y, 10.0f);
-            object->trans.x = func_8010C514_log_jam(D_8010DE90_log_jam[work->unk_00].x, object->trans.x, 10.0f);
-            object->trans.z = func_8010C514_log_jam(D_8010DE90_log_jam[work->unk_00].z, object->trans.z, 10.0f);
+            object->rot.y = m219_AngleStepCalc(0.0f, object->rot.y, 10.0f);
+            object->trans.x = m219_StepCalc(m219_playerPosTbl[work->unk_00].x, object->trans.x, 10.0f);
+            object->trans.z = m219_StepCalc(m219_playerPosTbl[work->unk_00].z, object->trans.z, 10.0f);
             if (MgFlowStatGet() == MG_STATE_RESULT) {
-                func_8010C5DC_log_jam(object, 1, 5);
+                m219_MotShiftSet(object, 1, 5);
                 work->unk_10 = 32.0f;
-                work->unk_0E = func_80108D1C_log_jam(32.0f, 1.6333001f);
+                work->unk_0E = m219_JumpTimeCalc(32.0f, 1.6333001f);
                 work->unk_08 = 15;
                 work->unk_0C = 0;
             }
@@ -987,18 +987,18 @@ void func_80107080_log_jam(omObjData *object, LogJamTeam *team) {
                 t = 0.0f;
             }
             if (work->unk_0C == 6) {
-                func_8010C5DC_log_jam(object, 2, 6);
+                m219_MotShiftSet(object, 2, 6);
             } else if (work->unk_0C == work->unk_0E - 10) {
-                func_8010C5DC_log_jam(object, 1, 7);
+                m219_MotShiftSet(object, 1, 7);
             }
             object->trans.x =
-                func_8010C49C_log_jam(t, D_8010DE90_log_jam[work->unk_00].x, D_8010DEF0_log_jam[work->unk_00].x);
+                m219_InterpCalc(t, m219_playerPosTbl[work->unk_00].x, m219_playerWinPosTbl[work->unk_00].x);
             object->trans.z =
-                func_8010C49C_log_jam(t, D_8010DE90_log_jam[work->unk_00].z, D_8010DEF0_log_jam[work->unk_00].z);
+                m219_InterpCalc(t, m219_playerPosTbl[work->unk_00].z, m219_playerWinPosTbl[work->unk_00].z);
             object->trans.y += work->unk_10;
             work->unk_10 -= 1.6333001f;
             if (object->trans.y <= 0.0f) {
-                func_8010C5DC_log_jam(object, 0, 5);
+                m219_MotShiftSet(object, 0, 5);
                 object->trans.y = 0.0f;
                 work->unk_08 = 16;
                 work->unk_0C = 0;
@@ -1012,13 +1012,13 @@ void func_80107080_log_jam(omObjData *object, LogJamTeam *team) {
             if (work->unk_06 != -1) {
                 switch (work->unk_06) {
                     case 0:
-                        func_8010C5DC_log_jam(object, 9, 5);
-                        CharAnimCreate(object->model[0], 2, work->unk_1C, D_8010DF50_log_jam[work->unk_1C]);
+                        m219_MotShiftSet(object, 9, 5);
+                        CharAnimCreate(object->model[0], 2, work->unk_1C, m219_winAnimTbl[work->unk_1C]);
                         HuAudCharVoicePlayPlayer(work->unk_14, -1, work->unk_18);
                         break;
                     case 1:
-                        func_8010C5DC_log_jam(object, 10, 5);
-                        CharAnimCreate(object->model[0], 2, work->unk_1C, D_8010DF70_log_jam[work->unk_1C]);
+                        m219_MotShiftSet(object, 10, 5);
+                        CharAnimCreate(object->model[0], 2, work->unk_1C, m219_loseAnimTbl[work->unk_1C]);
                         break;
                 }
                 work->unk_06 = -1;
@@ -1027,21 +1027,21 @@ void func_80107080_log_jam(omObjData *object, LogJamTeam *team) {
     }
 }
 
-void func_80107C84_log_jam(omObjData *object, LogJamTeam *team) {
+void m219_ChopperUpdate(omObjData *object, LogJamTeam *team) {
     HuMtx4F mtx;
     Vec scale = { 0.7f, 0.7f, 0.7f };
-    LogJamLogWork *work;
-    LogJamLogWork *partner;
+    LogJamPlayerWork *work;
+    LogJamPlayerWork *partner;
     HmfModel *model;
     s32 dir;
     f32 time;
     f32 t;
 
-    work = (LogJamLogWork *)func_8010C588_log_jam(object);
+    work = (LogJamPlayerWork *)m219_WorkPtrGet(object);
     model = &Hu3DData[object->model[0]];
     partner = team->unk_08;
     if (work->unk_1E != 0) {
-        func_80108A80_log_jam(object, team);
+        m219_ChopperComInput(object, team);
     }
     if (MgFlowStatGet() == MG_STATE_FINISH && work->unk_08 < 13) {
         work->unk_08 = 13;
@@ -1050,7 +1050,7 @@ void func_80107C84_log_jam(omObjData *object, LogJamTeam *team) {
     switch (work->unk_08) {
         case 5:
             if (MgFlowStatGet() == MG_STATE_PLAY) {
-                func_8010C5DC_log_jam(object, 3, 7);
+                m219_MotShiftSet(object, 3, 7);
                 work->unk_08 = 6;
                 work->unk_0A = 0;
                 work->unk_0C = 0;
@@ -1081,12 +1081,12 @@ void func_80107C84_log_jam(omObjData *object, LogJamTeam *team) {
                 }
                 HuAudPlayerFXPlay(0x38D, work->unk_18);
                 if (dir == -1 || dir == work->unk_26) {
-                    func_8010C5DC_log_jam(object, 4, 2);
+                    m219_MotShiftSet(object, 4, 2);
                     work->unk_08 = 8;
                     work->unk_0A = 0;
                     work->unk_0C = 0;
                 } else {
-                    func_8010C5DC_log_jam(object, 5, 2);
+                    m219_MotShiftSet(object, 5, 2);
                     work->unk_08 = 9;
                     work->unk_0A = 0;
                     work->unk_0C = 0;
@@ -1106,9 +1106,9 @@ void func_80107C84_log_jam(omObjData *object, LogJamTeam *team) {
                     work->unk_08 = 12;
                     work->unk_0A = 0;
                     work->unk_0C = 0;
-                    func_8010C5DC_log_jam(object, 6, 5);
-                    MgPlayerEffSet(object, 6, D_8010DF30_log_jam[team->unk_10].x,
-                                           D_8010DF30_log_jam[team->unk_10].y, D_8010DF30_log_jam[team->unk_10].z, 0.0f,
+                    m219_MotShiftSet(object, 6, 5);
+                    MgPlayerEffSet(object, 6, m219_stumpPosTbl[team->unk_10].x,
+                                           m219_stumpPosTbl[team->unk_10].y, m219_stumpPosTbl[team->unk_10].z, 0.0f,
                                            0.0f);
                 } else {
                     HuAudPlayerFXPlay(0x38B, work->unk_18);
@@ -1123,13 +1123,13 @@ void func_80107C84_log_jam(omObjData *object, LogJamTeam *team) {
                     } else {
                         Hu3DModelAttrSet(object->model[work->unk_24 + 3], 4, 4);
                         work->unk_24 = work->unk_22 = -1;
-                        work->unk_22 = func_80109044_log_jam(dir, 0);
-                        func_80109140_log_jam(work->unk_22, D_8010DF30_log_jam[team->unk_10].x,
-                                              D_8010DF30_log_jam[team->unk_10].y, D_8010DF30_log_jam[team->unk_10].z);
-                        func_80109190_log_jam(work->unk_22, 0.0f, 0.0f, 0.0f);
+                        work->unk_22 = m219_LogCreate(dir, 0);
+                        m219_LogPosSet(work->unk_22, m219_stumpPosTbl[team->unk_10].x,
+                                              m219_stumpPosTbl[team->unk_10].y, m219_stumpPosTbl[team->unk_10].z);
+                        m219_LogRotSet(work->unk_22, 0.0f, 0.0f, 0.0f);
                     }
                     if (work->unk_22 != -1) {
-                        func_80109350_log_jam(work->unk_22);
+                        m219_LogSplit(work->unk_22);
                         work->unk_22 = work->unk_24 = -1;
                     }
                     if (MgFlowStatGet() == MG_STATE_PLAY) {
@@ -1148,19 +1148,19 @@ void func_80107C84_log_jam(omObjData *object, LogJamTeam *team) {
                     work->unk_22 = 0x20;
                     work->unk_24 = team->unk_18;
                     Hu3DModelAttrSet(object->model[work->unk_24 + 3], 4, 0);
-                    func_8010925C_log_jam(team->unk_16);
+                    m219_LogKill(team->unk_16);
                     team->unk_16 = team->unk_18 = -1;
                     team->unk_1A = 0;
-                    MgPlayerEffSet(object, 6, D_8010DF30_log_jam[team->unk_10].x,
-                                           D_8010DF30_log_jam[team->unk_10].y + 50.0,
-                                           D_8010DF30_log_jam[team->unk_10].z, 0.0f, 0.0f);
+                    MgPlayerEffSet(object, 6, m219_stumpPosTbl[team->unk_10].x,
+                                           m219_stumpPosTbl[team->unk_10].y + 50.0,
+                                           m219_stumpPosTbl[team->unk_10].z, 0.0f, 0.0f);
                 } else {
-                    MgPlayerEffSet(object, 6, D_8010DF30_log_jam[team->unk_10].x,
-                                           D_8010DF30_log_jam[team->unk_10].y, D_8010DF30_log_jam[team->unk_10].z, 0.0f,
+                    MgPlayerEffSet(object, 6, m219_stumpPosTbl[team->unk_10].x,
+                                           m219_stumpPosTbl[team->unk_10].y, m219_stumpPosTbl[team->unk_10].z, 0.0f,
                                            0.0f);
                 }
                 omVibrate(work->unk_18, 2, 2, 20);
-                func_8010C7D0_log_jam(object);
+                m219_MotStop(object);
             }
             break;
         case 10:
@@ -1168,7 +1168,7 @@ void func_80107C84_log_jam(omObjData *object, LogJamTeam *team) {
                 work->unk_08 = 5;
                 work->unk_0A = 0;
                 work->unk_0C = 0;
-                func_8010C5DC_log_jam(object, 3, 5);
+                m219_MotShiftSet(object, 3, 5);
             }
             break;
         case 11:
@@ -1176,19 +1176,19 @@ void func_80107C84_log_jam(omObjData *object, LogJamTeam *team) {
                 work->unk_08 = 6;
                 work->unk_0A = 0;
                 work->unk_0C = 0;
-                func_8010C6A4_log_jam(object, 3, 12);
+                m219_MotShiftTimeSet(object, 3, 12);
             }
             break;
         case 12:
             if (work->unk_0C >= 90.0f) {
-                func_8010C5DC_log_jam(object, 3, 7);
+                m219_MotShiftSet(object, 3, 7);
                 work->unk_08 = 5;
                 work->unk_0A = 0;
                 work->unk_0C = 0;
             }
             break;
         case 13:
-            func_8010CAC0_log_jam(object, "item_hook", mtx);
+            m219_NodeWorldMtxCalc(object, "item_hook", mtx);
             team->unk_1C = object->model[2];
             if (team->unk_1C != -1) {
                 func_8008A070_main(Hu3DData[team->unk_1C].mtx);
@@ -1204,20 +1204,20 @@ void func_80107C84_log_jam(omObjData *object, LogJamTeam *team) {
             }
             if (work->unk_24 != -1) {
                 Hu3DModelAttrSet(object->model[work->unk_24 + 3], 4, 4);
-                func_8010A9D4_log_jam((Vec *)mtx[3], NULL, &scale, 1.0f, D_8010DF4C_log_jam.rgba);
+                m219_SmokeCreate((Vec *)mtx[3], NULL, &scale, 1.0f, m219_whiteColor.rgba);
                 work->unk_22 = work->unk_24 = -1;
             }
-            func_8010C5DC_log_jam(object, 0, 5);
+            m219_MotShiftSet(object, 0, 5);
             work->unk_08 = 14;
             // fallthrough
         case 14:
-            object->rot.y = func_8010C2DC_log_jam(0.0f, object->rot.y, 10.0f);
-            object->trans.x = func_8010C514_log_jam(D_8010DE90_log_jam[work->unk_00].x, object->trans.x, 10.0f);
-            object->trans.z = func_8010C514_log_jam(D_8010DE90_log_jam[work->unk_00].z, object->trans.z, 10.0f);
+            object->rot.y = m219_AngleStepCalc(0.0f, object->rot.y, 10.0f);
+            object->trans.x = m219_StepCalc(m219_playerPosTbl[work->unk_00].x, object->trans.x, 10.0f);
+            object->trans.z = m219_StepCalc(m219_playerPosTbl[work->unk_00].z, object->trans.z, 10.0f);
             if (MgFlowStatGet() == MG_STATE_RESULT) {
-                func_8010C5DC_log_jam(object, 1, 5);
+                m219_MotShiftSet(object, 1, 5);
                 work->unk_10 = 25.0f;
-                work->unk_0E = func_80108D1C_log_jam(25.0f, 1.6333001f);
+                work->unk_0E = m219_JumpTimeCalc(25.0f, 1.6333001f);
                 work->unk_08 = 15;
                 work->unk_0C = 0;
             }
@@ -1230,18 +1230,18 @@ void func_80107C84_log_jam(omObjData *object, LogJamTeam *team) {
                 t = 0.0f;
             }
             if (work->unk_0C == 6) {
-                func_8010C5DC_log_jam(object, 2, 6);
+                m219_MotShiftSet(object, 2, 6);
             } else if (work->unk_0C == work->unk_0E - 6) {
-                func_8010C5DC_log_jam(object, 1, 6);
+                m219_MotShiftSet(object, 1, 6);
             }
             object->trans.x =
-                func_8010C49C_log_jam(t, D_8010DE90_log_jam[work->unk_00].x, D_8010DEF0_log_jam[work->unk_00].x);
+                m219_InterpCalc(t, m219_playerPosTbl[work->unk_00].x, m219_playerWinPosTbl[work->unk_00].x);
             object->trans.z =
-                func_8010C49C_log_jam(t, D_8010DE90_log_jam[work->unk_00].z, D_8010DEF0_log_jam[work->unk_00].z);
+                m219_InterpCalc(t, m219_playerPosTbl[work->unk_00].z, m219_playerWinPosTbl[work->unk_00].z);
             object->trans.y += work->unk_10;
             work->unk_10 -= 1.6333001f;
             if (object->trans.y <= 0.0f) {
-                func_8010C5DC_log_jam(object, 0, 5);
+                m219_MotShiftSet(object, 0, 5);
                 object->trans.y = 0.0f;
                 work->unk_08 = 16;
                 work->unk_0C = 0;
@@ -1255,13 +1255,13 @@ void func_80107C84_log_jam(omObjData *object, LogJamTeam *team) {
             if (work->unk_06 != -1) {
                 switch (work->unk_06) {
                     case 0:
-                        func_8010C5DC_log_jam(object, 9, 5);
-                        CharAnimCreate(object->model[0], 2, work->unk_1C, D_8010DF50_log_jam[work->unk_1C]);
+                        m219_MotShiftSet(object, 9, 5);
+                        CharAnimCreate(object->model[0], 2, work->unk_1C, m219_winAnimTbl[work->unk_1C]);
                         HuAudCharVoicePlayPlayer(work->unk_14, -1, work->unk_18);
                         break;
                     case 1:
-                        func_8010C5DC_log_jam(object, 10, 5);
-                        CharAnimCreate(object->model[0], 2, work->unk_1C, D_8010DF70_log_jam[work->unk_1C]);
+                        m219_MotShiftSet(object, 10, 5);
+                        CharAnimCreate(object->model[0], 2, work->unk_1C, m219_loseAnimTbl[work->unk_1C]);
                         break;
                 }
                 work->unk_06 = -1;
@@ -1270,9 +1270,9 @@ void func_80107C84_log_jam(omObjData *object, LogJamTeam *team) {
     }
 }
 
-void func_80108840_log_jam(omObjData *object, LogJamTeam *team) {
-    LogJamLogWork *work = (LogJamLogWork *)func_8010C588_log_jam(object);
-    LogJamLogWork *partner = team->unk_0C;
+void m219_SetterComInput(omObjData *object, LogJamTeam *team) {
+    LogJamPlayerWork *work = (LogJamPlayerWork *)m219_WorkPtrGet(object);
+    LogJamPlayerWork *partner = team->unk_0C;
 
     HuPadBtnDown[work->unk_1A] = 0;
     switch (work->unk_08) {
@@ -1321,9 +1321,9 @@ void func_80108840_log_jam(omObjData *object, LogJamTeam *team) {
     work->unk_28++;
 }
 
-void func_80108A80_log_jam(omObjData *object, LogJamTeam *team) {
-    LogJamLogWork *work = (LogJamLogWork *)func_8010C588_log_jam(object);
-    LogJamLogWork *partner = team->unk_08;
+void m219_ChopperComInput(omObjData *object, LogJamTeam *team) {
+    LogJamPlayerWork *work = (LogJamPlayerWork *)m219_WorkPtrGet(object);
+    LogJamPlayerWork *partner = team->unk_08;
     s16 dir;
 
     HuPadBtnDown[work->unk_1A] = 0;
@@ -1377,9 +1377,9 @@ void func_80108A80_log_jam(omObjData *object, LogJamTeam *team) {
     work->unk_28++;
 }
 
-s16 func_80108CE0_log_jam(s16 arg0) {
+s16 m219_PlayerAllStateCheck(s16 arg0) {
     s32 i = 0;
-    LogJamLogWork *work = D_8010E5B8_log_jam;
+    LogJamPlayerWork *work = m219_playerWorkTbl;
 
     do {
         if (work->unk_08 != arg0) {
@@ -1391,7 +1391,7 @@ s16 func_80108CE0_log_jam(s16 arg0) {
     return 1;
 }
 
-s16 func_80108D1C_log_jam(f32 arg0, f32 arg1) {
+s16 m219_JumpTimeCalc(f32 arg0, f32 arg1) {
     f32 total = 0.0f;
     s16 frames = 0;
     f32 speed = arg0;
@@ -1405,12 +1405,12 @@ s16 func_80108D1C_log_jam(f32 arg0, f32 arg1) {
     return frames;
 }
 
-void func_80108D50_log_jam(void) {
+void m219_LogInit(void) {
     s32 i;
-    LogJamPlayerWork *work;
+    LogJamLogWork *work;
 
-    D_8010E5C4_log_jam = HuMemAllocTag(0xF00, TAG_OVERLAY);
-    work = D_8010E5C4_log_jam;
+    m219_logTbl = HuMemAllocTag(0xF00, TAG_OVERLAY);
+    work = m219_logTbl;
     for (i = 0; i < 0x20; i++) {
         work->unk_00 = i;
         work->unk_02[0] = -1;
@@ -1428,16 +1428,16 @@ void func_80108D50_log_jam(void) {
         work->unk_74 = NULL;
         work++;
     }
-    D_8010E5C0_log_jam = omAddObj(0x18, 0, 0, -1, func_80108E54_log_jam);
-    omSetStatBit(D_8010E5C0_log_jam, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    m219_logObj = omAddObj(0x18, 0, 0, -1, m219_LogObjMain);
+    omSetStatBit(m219_logObj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
-void func_80108E54_log_jam(omObjData *object) {
-    LogJamPlayerWork *work;
+void m219_LogObjMain(omObjData *object) {
+    LogJamLogWork *work;
     s32 i;
     s32 j;
 
-    for (i = 0, work = D_8010E5C4_log_jam; i < 0x20; i++, work++) {
+    for (i = 0, work = m219_logTbl; i < 0x20; i++, work++) {
         if (work->unk_08 == 0) {
             continue;
         }
@@ -1464,7 +1464,7 @@ void func_80108E54_log_jam(omObjData *object) {
                 }
                 break;
             default:
-                func_8010925C_log_jam(work->unk_00);
+                m219_LogKill(work->unk_00);
                 continue;
         }
         if (work->unk_74 != NULL && omPauseChk() + omAllPauseF == 0) {
@@ -1483,16 +1483,16 @@ void func_80108E54_log_jam(omObjData *object) {
     }
 }
 
-s16 func_80109044_log_jam(s16 arg0, s16 arg1) {
+s16 m219_LogCreate(s16 arg0, s16 arg1) {
     s32 i;
-    LogJamPlayerWork *work;
+    LogJamLogWork *work;
 
-    if (D_8010E5C4_log_jam == NULL) {
+    if (m219_logTbl == NULL) {
         return -1;
     }
-    for (i = 0, work = D_8010E5C4_log_jam; i < 0x20; i++, work++) {
+    for (i = 0, work = m219_logTbl; i < 0x20; i++, work++) {
         if (work->unk_08 == 0) {
-            work->unk_02[0] = func_80109A7C_log_jam(arg0, arg1);
+            work->unk_02[0] = m219_LogMdlLink(arg0, arg1);
             if (work->unk_02[0] != -1) {
                 Hu3DModelAttrSet(work->unk_02[0], 4, 0);
             }
@@ -1506,17 +1506,17 @@ s16 func_80109044_log_jam(s16 arg0, s16 arg1) {
     return -1;
 }
 
-LogJamPlayerWork *func_8010910C_log_jam(s16 arg0) {
-    if (D_8010E5C4_log_jam == NULL) {
+LogJamLogWork *m219_LogGet(s16 arg0) {
+    if (m219_logTbl == NULL) {
         return NULL;
     }
 
-    return &D_8010E5C4_log_jam[arg0];
+    return &m219_logTbl[arg0];
 }
 
-void func_80109140_log_jam(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
-    if (D_8010E5C4_log_jam != NULL) {
-        LogJamPlayerWork *work = &D_8010E5C4_log_jam[arg0];
+void m219_LogPosSet(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    if (m219_logTbl != NULL) {
+        LogJamLogWork *work = &m219_logTbl[arg0];
 
         if (work->unk_08 != 0) {
             work->unk_10 = arg1;
@@ -1526,9 +1526,9 @@ void func_80109140_log_jam(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
     }
 }
 
-void func_80109190_log_jam(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
-    if (D_8010E5C4_log_jam != NULL) {
-        LogJamPlayerWork *work = &D_8010E5C4_log_jam[arg0];
+void m219_LogRotSet(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    if (m219_logTbl != NULL) {
+        LogJamLogWork *work = &m219_logTbl[arg0];
 
         if (work->unk_08 != 0) {
             work->unk_1C = arg1;
@@ -1538,28 +1538,28 @@ void func_80109190_log_jam(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
     }
 }
 
-void func_801091DC_log_jam(void) {
+void m219_LogClose(void) {
     s32 i;
-    LogJamPlayerWork *work;
+    LogJamLogWork *work;
 
-    if (D_8010E5C4_log_jam != NULL) {
-        for (i = 0, work = D_8010E5C4_log_jam; i < 0x20; i++, work++) {
+    if (m219_logTbl != NULL) {
+        for (i = 0, work = m219_logTbl; i < 0x20; i++, work++) {
             if (work->unk_08 != 0) {
-                func_8010925C_log_jam(i);
+                m219_LogKill(i);
             }
         }
-        HuMemFree(D_8010E5C4_log_jam);
-        D_8010E5C4_log_jam = NULL;
-        D_8010E5C0_log_jam->func = NULL;
+        HuMemFree(m219_logTbl);
+        m219_logTbl = NULL;
+        m219_logObj->func = NULL;
     }
 }
 
-void func_8010925C_log_jam(s16 arg0) {
+void m219_LogKill(s16 arg0) {
     s32 i;
-    LogJamPlayerWork *work;
+    LogJamLogWork *work;
 
-    if (D_8010E5C4_log_jam != NULL) {
-        work = &D_8010E5C4_log_jam[arg0];
+    if (m219_logTbl != NULL) {
+        work = &m219_logTbl[arg0];
         if (work->unk_08 != 0) {
             for (i = 0; i < 3; i++) {
                 if (work->unk_02[i] != -1) {
@@ -1579,10 +1579,10 @@ void func_8010925C_log_jam(s16 arg0) {
     }
 }
 
-void func_80109350_log_jam(s16 arg0) {
+void m219_LogSplit(s16 arg0) {
     Vec pos = { 0.0f, 0.0f, 0.0f };
     Vec scale = { 0.5f, 0.5f, 0.5f };
-    LogJamPlayerWork *work;
+    LogJamLogWork *work;
     f32 x;
     f32 y;
     f32 z;
@@ -1590,10 +1590,10 @@ void func_80109350_log_jam(s16 arg0) {
     s32 i;
     s16 id;
 
-    if (D_8010E5C4_log_jam == NULL) {
+    if (m219_logTbl == NULL) {
         return;
     }
-    work = &D_8010E5C4_log_jam[arg0];
+    work = &m219_logTbl[arg0];
     if (work->unk_08 == 0) {
         return;
     }
@@ -1604,24 +1604,24 @@ void func_80109350_log_jam(s16 arg0) {
     pos.x = work->unk_10;
     pos.y = work->unk_14;
     pos.z = work->unk_18;
-    func_8010A9D4_log_jam(&pos, NULL, &scale, 1.0f, D_8010DF48_log_jam.rgba);
-    func_8010925C_log_jam(arg0);
+    m219_SmokeCreate(&pos, NULL, &scale, 1.0f, m219_chipColor.rgba);
+    m219_LogKill(arg0);
     for (i = 0; i < 2; i++) {
-        id = func_80109044_log_jam(type, i + 1);
+        id = m219_LogCreate(type, i + 1);
         if (id != -1) {
-            work = &D_8010E5C4_log_jam[id];
+            work = &m219_logTbl[id];
             work->unk_10 = x;
             work->unk_14 = y;
             work->unk_18 = z;
             work->unk_34[0] = i;
             work->unk_52 = 0;
-            work->unk_74 = func_801094E4_log_jam;
+            work->unk_74 = m219_LogHalfMove;
             work->unk_74(work);
         }
     }
 }
 
-void func_801094E4_log_jam(LogJamPlayerWork *work) {
+void m219_LogHalfMove(LogJamLogWork *work) {
     Vec pos = { 0.0f, 0.0f, 0.0f };
     Vec scale = { 0.5f, 0.5f, 0.5f };
     f32 amplitude;
@@ -1655,7 +1655,7 @@ void func_801094E4_log_jam(LogJamPlayerWork *work) {
                 pos.x = work->unk_10;
                 pos.y = work->unk_14;
                 pos.z = work->unk_18;
-                func_8010A9D4_log_jam(&pos, NULL, &scale, 1.0f, D_8010DF48_log_jam.rgba);
+                m219_SmokeCreate(&pos, NULL, &scale, 1.0f, m219_chipColor.rgba);
             }
             break;
         case 2:
@@ -1680,44 +1680,44 @@ void func_801094E4_log_jam(LogJamPlayerWork *work) {
     work->unk_18 += work->unk_30;
 }
 
-void func_80109A00_log_jam(void) {
+void m219_LogMdlInit(void) {
     s32 i;
 
-    D_8010E5C8_log_jam = HuMemAllocTag(0x12, TAG_OVERLAY);
+    m219_logMdlTbl = HuMemAllocTag(0x12, TAG_OVERLAY);
 
     for (i = 0; i < 9; i++) {
-        D_8010E5C8_log_jam[i] = Hu3DModelRead(D_8010E030_log_jam[i], 0xBD);
+        m219_logMdlTbl[i] = Hu3DModelRead(m219_logMdlFileTbl[i], 0xBD);
     }
 }
 
-s16 func_80109A7C_log_jam(s16 arg0, s16 arg1) {
-    if (D_8010E5C8_log_jam == NULL) {
+s16 m219_LogMdlLink(s16 arg0, s16 arg1) {
+    if (m219_logMdlTbl == NULL) {
         return -1;
     }
 
-    return Hu3DModelLink(D_8010E5C8_log_jam[arg0 * 3 + arg1]);
+    return Hu3DModelLink(m219_logMdlTbl[arg0 * 3 + arg1]);
 }
 
-void func_80109AD8_log_jam(void) {
+void m219_LogMdlClose(void) {
     s32 i;
 
     for (i = 0; i < 9; i++) {
-        Hu3DModelKill(D_8010E5C8_log_jam[i]);
+        Hu3DModelKill(m219_logMdlTbl[i]);
     }
-    HuMemFree(D_8010E5C8_log_jam);
-    D_8010E5C8_log_jam = NULL;
+    HuMemFree(m219_logMdlTbl);
+    m219_logMdlTbl = NULL;
 }
 
 // Appends a new object to the shared minigame object list.
-void func_80109B34_log_jam(void) {
-    omObjData *obj = omAddObj(1, 0x10, 0, -1, func_80109B8C_log_jam);
+void m219_StageObjCreate(void) {
+    omObjData *obj = omAddObj(1, 0x10, 0, -1, m219_StageObjInit);
     u16 index = mgMapObjNum;
 
     mgMapObjNum = index + 1;
     mgMapObjTbl[index] = obj;
 }
 
-void func_80109B8C_log_jam(omObjData *object) {
+void m219_StageObjInit(omObjData *object) {
     s16 model;
     s16 group;
     LogJamCloud *cloud;
@@ -1731,49 +1731,49 @@ void func_80109B8C_log_jam(omObjData *object) {
     Hu3DModelPosSet(model, -230.0f, 0.0f, 195.0f);
     Hu3DModelPosSet(object->model[4] = Hu3DModelLink(model), 230.0f, 0.0f, 195.0f);
 
-    D_8010E5CC_log_jam[0] = func_8010A300_log_jam(0x34000C);
+    m219_sprTbl[0] = m219_SprAnimRead(0x34000C);
     group = HuSprGrpCreate(3, 0);
-    HuSprGrpMemberSet(group, 0, D_8010E5CC_log_jam[0], 0);
+    HuSprGrpMemberSet(group, 0, m219_sprTbl[0], 0);
     HuSprPosSet(group, 0, 160, 120);
     HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_STOP);
     HuSprPatNoSet(group, 0, 0);
     HuSprAttrSet(group, 0, 0x4000580C);
     HuSprPriSet(group, 0, 0xFF00);
-    D_8010E5CC_log_jam[4] = func_8010A300_log_jam(0x340010);
-    HuSprGrpMemberSet(group, 1, D_8010E5CC_log_jam[4], 0);
+    m219_sprTbl[4] = m219_SprAnimRead(0x340010);
+    HuSprGrpMemberSet(group, 1, m219_sprTbl[4], 0);
     HuSprPosSet(group, 1, 0, 40);
     HuSprAnimModeSet(group, 1, HUSPR_ANIM_MODE_STOP);
     HuSprPatNoSet(group, 1, 0);
     HuSprAttrSet(group, 1, 0x4000580C);
     HuSprPriSet(group, 1, 0xFF01);
     HuSprTPLvlSet(group, 1, 200);
-    D_8010E5CC_log_jam[1] = func_8010A300_log_jam(0x34000D);
-    HuSprGrpMemberSet(group, 2, D_8010E5CC_log_jam[1], 0);
+    m219_sprTbl[1] = m219_SprAnimRead(0x34000D);
+    HuSprGrpMemberSet(group, 2, m219_sprTbl[1], 0);
     HuSprPosSet(group, 2, 0, 0);
     HuSprAnimModeSet(group, 2, HUSPR_ANIM_MODE_STOP);
     HuSprPatNoSet(group, 2, 0);
     HuSprAttrSet(group, 2, 0x403C);
     HuSprPriSet(group, 2, 0xFFFF);
 
-    D_8010E5CC_log_jam[2] = func_8010A300_log_jam(0x34000E);
-    D_8010E5CC_log_jam[5] = func_8010A300_log_jam(0x340011);
-    D_8010E5D4_log_jam = HuMemAllocTag(sizeof(LogJamCloud) * 5, TAG_OVERLAY);
-    cloud = D_8010E5D4_log_jam;
+    m219_sprTbl[2] = m219_SprAnimRead(0x34000E);
+    m219_sprTbl[5] = m219_SprAnimRead(0x340011);
+    m219_cloudTbl = HuMemAllocTag(sizeof(LogJamCloud) * 5, TAG_OVERLAY);
+    cloud = m219_cloudTbl;
     for (i = 0; i < 5; i++, cloud++) {
         cloud->index = i;
         cloud->group = HuSprGrpCreate(2, 0);
         cloud->angle = rand8() % 360;
-        cloud->base = D_8010E07C_log_jam[i];
-        cloud->pos.x = D_8010E054_log_jam[i].x;
-        cloud->pos.y = D_8010E054_log_jam[i].y;
+        cloud->base = m219_cloudScaleTbl[i];
+        cloud->pos.x = m219_cloudPosTbl[i].x;
+        cloud->pos.y = m219_cloudPosTbl[i].y;
         cloud->scale.x = cloud->scale.y = 1.0f;
         cloud->speed = -0.5f;
         cloud->unk_20 = 0;
         for (j = 0; j < 2; j++) {
             if (j == 0) {
-                HuSprGrpMemberSet(cloud->group, 0, D_8010E5CC_log_jam[2], 0);
+                HuSprGrpMemberSet(cloud->group, 0, m219_sprTbl[2], 0);
             } else {
-                HuSprGrpMemberSet(cloud->group, j, D_8010E5CC_log_jam[5], 0);
+                HuSprGrpMemberSet(cloud->group, j, m219_sprTbl[5], 0);
                 HuSprTPLvlSet(cloud->group, j, 190);
             }
             HuSprAnimModeSet(cloud->group, j, HUSPR_ANIM_MODE_STOP);
@@ -1784,16 +1784,16 @@ void func_80109B8C_log_jam(omObjData *object) {
             HuSprPriSet(cloud->group, j, j + i * 2 - 241);
         }
     }
-    object->func = func_8010A0B0_log_jam;
+    object->func = m219_StageObjMain;
 }
 
-void func_8010A0B0_log_jam(omObjData *object) {
+void m219_StageObjMain(omObjData *object) {
     LogJamCloud *cloud;
     HuSprite *sprite;
     f32 wobble;
     s16 i;
 
-    for (i = 0, cloud = D_8010E5D4_log_jam; i < 5; i++, cloud++) {
+    for (i = 0, cloud = m219_cloudTbl; i < 5; i++, cloud++) {
         wobble = sindf(cloud->angle);
         cloud->pos.x += cloud->speed * ((f32)(u8)(rand8() % 100) * 0.01 * 0.4f + 0.6f);
         cloud->scale.x = cloud->base + 0.075f + wobble * 0.075f;
@@ -1818,7 +1818,7 @@ void func_8010A0B0_log_jam(omObjData *object) {
     }
 }
 
-u16 func_8010A300_log_jam(s32 file) {
+u16 m219_SprAnimRead(s32 file) {
     void *data = DataRead(file);
     u16 sprite = HuSprAnimRead(data);
 
@@ -1826,22 +1826,22 @@ u16 func_8010A300_log_jam(s32 file) {
     return sprite;
 }
 
-void func_8010A344_log_jam(void) {
-    UnkLogJamSprites *sprites;
+void m219_ScoreInit(void) {
+    LogJamScore *sprites;
     s32 i;
     s32 j;
     s32 x;
 
-    D_8010E5CC_log_jam[3] = func_8010A300_log_jam(0x34000F);
-    D_8010E5D0_log_jam = HuMemAllocTag(sizeof(UnkLogJamSprites) * 2, TAG_OVERLAY);
-    sprites = D_8010E5D0_log_jam;
+    m219_sprTbl[3] = m219_SprAnimRead(0x34000F);
+    m219_scoreTbl = HuMemAllocTag(sizeof(LogJamScore) * 2, TAG_OVERLAY);
+    sprites = m219_scoreTbl;
     for (i = 0; i < 2; i++, sprites++) {
-        x = D_8010E090_log_jam[i];
-        memset(sprites, 0, sizeof(UnkLogJamSprites));
+        x = m219_scoreXTbl[i];
+        memset(sprites, 0, sizeof(LogJamScore));
         sprites->unk_00 = i;
         sprites->unk_02 = HuSprGrpCreate(10, 0);
         for (j = 0; j < 10; j++) {
-            HuSprGrpMemberSet(sprites->unk_02, j, D_8010E5CC_log_jam[3], 0);
+            HuSprGrpMemberSet(sprites->unk_02, j, m219_sprTbl[3], 0);
             HuSprAnimModeSet(sprites->unk_02, j, HUSPR_ANIM_MODE_STOP);
             HuSprPatNoSet(sprites->unk_02, j, 0);
             HuSprTPLvlSet(sprites->unk_02, j, 0x100);
@@ -1854,18 +1854,18 @@ void func_8010A344_log_jam(void) {
             }
         }
     }
-    omAddObj(30, 0, 0, -1, func_8010A4C0_log_jam);
+    omAddObj(30, 0, 0, -1, m219_ScoreObjMain);
 }
 
-void func_8010A4C0_log_jam(omObjData *object) {
-    UnkLogJamSprites *sprites;
+void m219_ScoreObjMain(omObjData *object) {
+    LogJamScore *sprites;
     s32 i;
     s32 j;
     s32 fives;
     s32 count;
     f32 t;
 
-    for (i = 0, sprites = D_8010E5D0_log_jam; i < 2; i++, sprites++) {
+    for (i = 0, sprites = m219_scoreTbl; i < 2; i++, sprites++) {
         fives = (s16)(sprites->unk_08 / 5);
         count = fives + (s16)(sprites->unk_08 % 5);
         if (sprites->unk_0A != sprites->unk_08) {
@@ -1904,30 +1904,30 @@ void func_8010A4C0_log_jam(omObjData *object) {
     }
 }
 
-void func_8010A6FC_log_jam(s16 arg0, s16 arg1) {
-    UnkLogJamSprites *sprites = &D_8010E5D0_log_jam[arg0];
+void m219_ScoreSet(s16 arg0, s16 arg1) {
+    LogJamScore *sprites = &m219_scoreTbl[arg0];
 
     sprites->unk_08 = arg1;
 }
 
-void func_8010A724_log_jam(void) {
+void m219_SmokeInit(void) {
     HuSprAnimData *sprite;
     LogJamEffect *effect;
     HmfModel *model;
     s32 i;
 
-    D_8010E5CC_log_jam[6] = func_8010A300_log_jam(11);
-    sprite = HuSprAnimDataGet(D_8010E5CC_log_jam[6]);
-    D_8010E5D8_log_jam = omAddObj(30, 0, 0, -1, func_8010A880_log_jam);
-    D_8010E5DC_log_jam = effect = HuMemAllocTag(sizeof(LogJamEffect) * 8, TAG_OVERLAY);
+    m219_sprTbl[6] = m219_SprAnimRead(11);
+    sprite = HuSprAnimDataGet(m219_sprTbl[6]);
+    m219_smokeObj = omAddObj(30, 0, 0, -1, m219_SmokeObjMain);
+    m219_smokeTbl = effect = HuMemAllocTag(sizeof(LogJamEffect) * 8, TAG_OVERLAY);
     for (i = 0; i < 8; i++, effect++) {
         if (i == 0) {
-            effect->model = func_8010CB64_log_jam(sprite, D_8010DF48_log_jam.rgba);
+            effect->model = m219_BillboardColorMdlCreate(sprite, m219_chipColor.rgba);
         } else {
-            effect->model = func_8010D74C_log_jam(sprite, D_8010E5DC_log_jam[0].model, D_8010DF48_log_jam.rgba);
+            effect->model = m219_BillboardColorMdlLink(sprite, m219_smokeTbl[0].model, m219_chipColor.rgba);
         }
         effect->active = 0;
-        effect->color = D_8010DF48_log_jam;
+        effect->color = m219_chipColor;
         effect->frame = effect->speed = 0.0f;
         effect->pos.x = effect->pos.y = effect->pos.z = 0.0f;
         effect->vel.x = effect->vel.y = effect->vel.z = 0.0f;
@@ -1938,13 +1938,13 @@ void func_8010A724_log_jam(void) {
     }
 }
 
-void func_8010A880_log_jam(omObjData *object) {
-    HuSprAnimData *sprite = HuSprAnimDataGet(D_8010E5CC_log_jam[6]);
+void m219_SmokeObjMain(omObjData *object) {
+    HuSprAnimData *sprite = HuSprAnimDataGet(m219_sprTbl[6]);
     LogJamEffect *effect;
     HmfModel *model;
     s32 i;
 
-    for (i = 0, effect = D_8010E5DC_log_jam; i < 8; i++, effect++) {
+    for (i = 0, effect = m219_smokeTbl; i < 8; i++, effect++) {
         if (effect->active == 0) {
             continue;
         }
@@ -1961,7 +1961,7 @@ void func_8010A880_log_jam(omObjData *object) {
         model->scale.x = effect->scale.x;
         model->scale.y = effect->scale.y;
         model->scale.z = effect->scale.z;
-        func_8010D950_log_jam(effect->model, sprite, (s32)effect->frame, effect->color.rgba);
+        m219_BillboardColorPatSet(effect->model, sprite, (s32)effect->frame, effect->color.rgba);
         effect->frame += effect->speed;
         if ((s32)effect->frame >= sprite->patNum) {
             effect->active = 0;
@@ -1971,13 +1971,13 @@ void func_8010A880_log_jam(omObjData *object) {
     }
 }
 
-s32 func_8010A9D4_log_jam(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) {
-    HuSprAnimData *sprite = HuSprAnimDataGet(D_8010E5CC_log_jam[6]);
+s32 m219_SmokeCreate(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) {
+    HuSprAnimData *sprite = HuSprAnimDataGet(m219_sprTbl[6]);
     LogJamEffect *effect;
     HmfModel *model;
     s32 i;
 
-    for (i = 0, effect = D_8010E5DC_log_jam; i < 8; i++, effect++) {
+    for (i = 0, effect = m219_smokeTbl; i < 8; i++, effect++) {
         if (effect->active != 0) {
             continue;
         }
@@ -2007,7 +2007,7 @@ s32 func_8010A9D4_log_jam(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) 
         memcpy(effect->color.rgba, color, sizeof(LogJamColor));
         effect->speed = speed;
         effect->frame = 0.0f;
-        func_8010D950_log_jam(effect->model, sprite, 0, effect->color.rgba);
+        m219_BillboardColorPatSet(effect->model, sprite, 0, effect->color.rgba);
         Hu3DModelAttrSet(effect->model, 4, 0);
         model->motTime = 0.0f;
         model->pos.x = effect->pos.x;
@@ -2021,24 +2021,24 @@ s32 func_8010A9D4_log_jam(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) 
     return -1;
 }
 
-void func_8010ABA4_log_jam(void) {
+void m219_MissInit(void) {
     HuSprAnimData *sprite;
     LogJamEffect *effect;
     HmfModel *model;
     s32 i;
 
-    D_8010E5CC_log_jam[7] = func_8010A300_log_jam(0x340012);
-    sprite = HuSprAnimDataGet(D_8010E5CC_log_jam[7]);
-    D_8010E5E0_log_jam = omAddObj(30, 0, 0, -1, func_8010AD04_log_jam);
-    D_8010E5E4_log_jam = effect = HuMemAllocTag(sizeof(LogJamEffect) * 8, TAG_OVERLAY);
+    m219_sprTbl[7] = m219_SprAnimRead(0x340012);
+    sprite = HuSprAnimDataGet(m219_sprTbl[7]);
+    m219_missObj = omAddObj(30, 0, 0, -1, m219_MissObjMain);
+    m219_missTbl = effect = HuMemAllocTag(sizeof(LogJamEffect) * 8, TAG_OVERLAY);
     for (i = 0; i < 8; i++, effect++) {
         if (i == 0) {
-            effect->model = func_8010CB64_log_jam(sprite, D_8010DF48_log_jam.rgba);
+            effect->model = m219_BillboardColorMdlCreate(sprite, m219_chipColor.rgba);
         } else {
-            effect->model = func_8010D74C_log_jam(sprite, D_8010E5E4_log_jam[0].model, D_8010DF48_log_jam.rgba);
+            effect->model = m219_BillboardColorMdlLink(sprite, m219_missTbl[0].model, m219_chipColor.rgba);
         }
         effect->active = 0;
-        effect->color = D_8010DF48_log_jam;
+        effect->color = m219_chipColor;
         effect->frame = effect->speed = 0.0f;
         effect->pos.x = effect->pos.y = effect->pos.z = 0.0f;
         effect->vel.x = effect->vel.y = effect->vel.z = 0.0f;
@@ -2049,13 +2049,13 @@ void func_8010ABA4_log_jam(void) {
     }
 }
 
-void func_8010AD04_log_jam(omObjData *object) {
-    HuSprAnimData *sprite = HuSprAnimDataGet(D_8010E5CC_log_jam[7]);
+void m219_MissObjMain(omObjData *object) {
+    HuSprAnimData *sprite = HuSprAnimDataGet(m219_sprTbl[7]);
     LogJamEffect *effect;
     HmfModel *model;
     s32 i;
 
-    for (i = 0, effect = D_8010E5E4_log_jam; i < 8; i++, effect++) {
+    for (i = 0, effect = m219_missTbl; i < 8; i++, effect++) {
         if (effect->active == 0) {
             continue;
         }
@@ -2072,7 +2072,7 @@ void func_8010AD04_log_jam(omObjData *object) {
         model->scale.x = effect->scale.x;
         model->scale.y = effect->scale.y;
         model->scale.z = effect->scale.z;
-        func_8010D950_log_jam(effect->model, sprite, (s32)effect->frame, effect->color.rgba);
+        m219_BillboardColorPatSet(effect->model, sprite, (s32)effect->frame, effect->color.rgba);
         effect->frame += effect->speed;
         if ((s32)effect->frame >= sprite->patNum) {
             effect->active = 0;
@@ -2082,13 +2082,13 @@ void func_8010AD04_log_jam(omObjData *object) {
     }
 }
 
-s32 func_8010AE58_log_jam(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) {
-    HuSprAnimData *sprite = HuSprAnimDataGet(D_8010E5CC_log_jam[7]);
+s32 m219_MissCreate(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) {
+    HuSprAnimData *sprite = HuSprAnimDataGet(m219_sprTbl[7]);
     LogJamEffect *effect;
     HmfModel *model;
     s32 i;
 
-    for (i = 0, effect = D_8010E5E4_log_jam; i < 8; i++, effect++) {
+    for (i = 0, effect = m219_missTbl; i < 8; i++, effect++) {
         if (effect->active != 0) {
             continue;
         }
@@ -2122,7 +2122,7 @@ s32 func_8010AE58_log_jam(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) 
         }
         effect->speed = speed;
         effect->frame = 0.0f;
-        func_8010D950_log_jam(effect->model, sprite, 0, effect->color.rgba);
+        m219_BillboardColorPatSet(effect->model, sprite, 0, effect->color.rgba);
         Hu3DModelAttrSet(effect->model, 4, 0);
         model->motTime = 0.0f;
         model->pos.x = effect->pos.x;
@@ -2136,7 +2136,7 @@ s32 func_8010AE58_log_jam(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) 
     return -1;
 }
 
-void func_8010B04C_log_jam(void) {
+void m219_CameraInit(void) {
     HuCamera *camera;
     s32 i;
 
@@ -2147,12 +2147,12 @@ void func_8010B04C_log_jam(void) {
     CRot.y = 0.0f;
     CRot.z = 0.0f;
     CZoom = 1062.0f;
-    func_8010BCA8_log_jam(0);
-    func_8010BCA8_log_jam(1);
-    D_8010E638_log_jam = 0;
-    D_8010E634_log_jam = 0;
-    D_8010E630_log_jam = 0;
-    omAddObj(31, 0, 0, -1, func_8010B86C_log_jam);
+    m219_CameraKeyStore(0);
+    m219_CameraKeyStore(1);
+    m219_cameraMoveF = 0;
+    m219_cameraMoveTime = 0;
+    m219_cameraMoveTimer = 0;
+    omAddObj(31, 0, 0, -1, m219_CameraMoveObjMain);
     camera = gCameraList;
     for (i = 1; i < Hu3DBufNum; i++) {
         camera->viewports[i].vp.vscale[0] = camera->viewports[0].vp.vscale[0];
@@ -2164,12 +2164,12 @@ void func_8010B04C_log_jam(void) {
     }
 }
 
-void func_8010B17C_log_jam(void) {
+void m219_CameraDebugPad(void) {
     MgCameraKey delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
     f32 speed;
 
     speed = 1.0f;
-    switch (D_8010E094_log_jam) {
+    switch (m219_cameraDebugMode) {
         case 1:
             if ((u16)HuPadBtn[0] & A_BUTTON) {
                 speed = 8.0f;
@@ -2219,82 +2219,82 @@ void func_8010B17C_log_jam(void) {
                 delta.rot.y += CRot.y;
                 delta.rot.z += CRot.z;
                 delta.zoom += CZoom;
-                func_8010BE94_log_jam(delta.center.x, delta.center.y, delta.center.z, delta.rot.x,
+                m219_CameraMoveStart(delta.center.x, delta.center.y, delta.center.z, delta.rot.x,
                                       delta.rot.y, delta.rot.z, delta.zoom, 1);
             }
             sprintf(omDBGStrBuf, "CAMERA TEST_MODE");
-            print8((s16)D_8010E098_log_jam + 20, (s16)D_8010E09C_log_jam + 80,
+            print8((s16)m219_cameraDebugX + 20, (s16)m219_cameraDebugY + 80,
                    omDBGStrBuf);
             sprintf(omDBGStrBuf, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
-            print8((s16)D_8010E098_log_jam + 20, (s16)D_8010E09C_log_jam + 88,
+            print8((s16)m219_cameraDebugX + 20, (s16)m219_cameraDebugY + 88,
                    omDBGStrBuf);
             sprintf(omDBGStrBuf, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
-            print8((s16)D_8010E098_log_jam + 20, (s16)D_8010E09C_log_jam + 96,
+            print8((s16)m219_cameraDebugX + 20, (s16)m219_cameraDebugY + 96,
                    omDBGStrBuf);
             sprintf(omDBGStrBuf, " ZOOM   %3.3f ", CZoom);
-            print8((s16)D_8010E098_log_jam + 20, (s16)D_8010E09C_log_jam + 104,
+            print8((s16)m219_cameraDebugX + 20, (s16)m219_cameraDebugY + 104,
                    omDBGStrBuf);
             break;
         case 2:
             if ((HuPadBtn[0] & R_JPAD) || (HuPadBtn[0] & R_CBUTTONS)) {
-                D_8010E098_log_jam++;
+                m219_cameraDebugX++;
             }
             if (HuPadBtn[0] & (L_JPAD | L_CBUTTONS)) {
-                D_8010E098_log_jam--;
+                m219_cameraDebugX--;
             }
             if (HuPadBtn[0] & (D_JPAD | D_CBUTTONS)) {
-                D_8010E09C_log_jam++;
+                m219_cameraDebugY++;
             }
             if (HuPadBtn[0] & (U_JPAD | U_CBUTTONS)) {
-                D_8010E09C_log_jam--;
+                m219_cameraDebugY--;
             }
             fontcolor = 8;
             sprintf(omDBGStrBuf, "CAMERA TEST_MODE ");
-            print8((s16)D_8010E098_log_jam + 20, (s16)D_8010E09C_log_jam + 80,
+            print8((s16)m219_cameraDebugX + 20, (s16)m219_cameraDebugY + 80,
                    omDBGStrBuf);
             sprintf(omDBGStrBuf, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
-            print8((s16)D_8010E098_log_jam + 20, (s16)D_8010E09C_log_jam + 88,
+            print8((s16)m219_cameraDebugX + 20, (s16)m219_cameraDebugY + 88,
                    omDBGStrBuf);
             sprintf(omDBGStrBuf, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
-            print8((s16)D_8010E098_log_jam + 20, (s16)D_8010E09C_log_jam + 96,
+            print8((s16)m219_cameraDebugX + 20, (s16)m219_cameraDebugY + 96,
                    omDBGStrBuf);
             sprintf(omDBGStrBuf, " ZOOM   %3.3f ", CZoom);
-            print8((s16)D_8010E098_log_jam + 20, (s16)D_8010E09C_log_jam + 104,
+            print8((s16)m219_cameraDebugX + 20, (s16)m219_cameraDebugY + 104,
                    omDBGStrBuf);
             break;
         case 3:
-            D_8010E094_log_jam = 0;
+            m219_cameraDebugMode = 0;
             break;
     }
     if (HuPadBtnDown[0] & R_TRIG) {
-        if (D_8010E094_log_jam == 1) {
+        if (m219_cameraDebugMode == 1) {
             osSyncPrintf("CAMERA TEST_MODE \n");
             osSyncPrintf(" CENTER X>%3.3f Y>%3.3f Z>%3.3f \n", Center.x, Center.y, Center.z);
             osSyncPrintf(" ROT    X>%3.3f Y>%3.3f Z>%3.3f \n", CRot.x, CRot.y, CRot.z);
             osSyncPrintf(" ZOOM   %3.3f \n\n", CZoom);
         }
-        if (D_8010E094_log_jam++ >= 4) {
-            D_8010E094_log_jam = 0;
+        if (m219_cameraDebugMode++ >= 4) {
+            m219_cameraDebugMode = 0;
         }
     }
 }
 
-void func_8010B86C_log_jam(omObjData *object) {
+void m219_CameraMoveObjMain(omObjData *object) {
     f32 t;
 
-    if (D_8010E634_log_jam <= 0) {
-        func_8010C084_log_jam(0);
-        D_8010E638_log_jam = 0;
+    if (m219_cameraMoveTime <= 0) {
+        m219_CameraPosUpdate(0);
+        m219_cameraMoveF = 0;
         return;
     }
-    if (D_8010E630_log_jam == 0) {
-        Center.x = D_8010E5E8_log_jam[0].center.x;
-        Center.y = D_8010E5E8_log_jam[0].center.y;
-        Center.z = D_8010E5E8_log_jam[0].center.z;
-        CRot.x = D_8010E5E8_log_jam[0].rot.x;
-        CRot.y = D_8010E5E8_log_jam[0].rot.y;
-        CRot.z = D_8010E5E8_log_jam[0].rot.z;
-        CZoom = D_8010E5E8_log_jam[0].zoom;
+    if (m219_cameraMoveTimer == 0) {
+        Center.x = m219_cameraKeyTbl[0].center.x;
+        Center.y = m219_cameraKeyTbl[0].center.y;
+        Center.z = m219_cameraKeyTbl[0].center.z;
+        CRot.x = m219_cameraKeyTbl[0].rot.x;
+        CRot.y = m219_cameraKeyTbl[0].rot.y;
+        CRot.z = m219_cameraKeyTbl[0].rot.z;
+        CZoom = m219_cameraKeyTbl[0].zoom;
         if (CRot.x >= 360.0) {
             CRot.x -= 360.0;
         } else if (CRot.x < 0.0) {
@@ -2310,23 +2310,23 @@ void func_8010B86C_log_jam(omObjData *object) {
         } else if (CRot.z < 0.0) {
             CRot.z += 360.0;
         }
-        D_8010E634_log_jam = 0;
+        m219_cameraMoveTime = 0;
     } else {
-        t = (f32)D_8010E630_log_jam / (f32)D_8010E634_log_jam;
-        Center.x = func_8010C49C_log_jam(t, D_8010E5E8_log_jam[0].center.x,
-                                         D_8010E5E8_log_jam[1].center.x);
-        Center.y = func_8010C49C_log_jam(t, D_8010E5E8_log_jam[0].center.y,
-                                         D_8010E5E8_log_jam[1].center.y);
-        Center.z = func_8010C49C_log_jam(t, D_8010E5E8_log_jam[0].center.z,
-                                         D_8010E5E8_log_jam[1].center.z);
-        CRot.x = func_8010C4B4_log_jam(t, D_8010E5E8_log_jam[0].rot.x,
-                                       D_8010E5E8_log_jam[1].rot.x);
-        CRot.y = func_8010C4B4_log_jam(t, D_8010E5E8_log_jam[0].rot.y,
-                                       D_8010E5E8_log_jam[1].rot.y);
-        CRot.z = func_8010C4B4_log_jam(t, D_8010E5E8_log_jam[0].rot.z,
-                                       D_8010E5E8_log_jam[1].rot.z);
-        CZoom = func_8010C49C_log_jam(t, D_8010E5E8_log_jam[0].zoom,
-                                      D_8010E5E8_log_jam[1].zoom);
+        t = (f32)m219_cameraMoveTimer / (f32)m219_cameraMoveTime;
+        Center.x = m219_InterpCalc(t, m219_cameraKeyTbl[0].center.x,
+                                         m219_cameraKeyTbl[1].center.x);
+        Center.y = m219_InterpCalc(t, m219_cameraKeyTbl[0].center.y,
+                                         m219_cameraKeyTbl[1].center.y);
+        Center.z = m219_InterpCalc(t, m219_cameraKeyTbl[0].center.z,
+                                         m219_cameraKeyTbl[1].center.z);
+        CRot.x = m219_AngleInterpCalc(t, m219_cameraKeyTbl[0].rot.x,
+                                       m219_cameraKeyTbl[1].rot.x);
+        CRot.y = m219_AngleInterpCalc(t, m219_cameraKeyTbl[0].rot.y,
+                                       m219_cameraKeyTbl[1].rot.y);
+        CRot.z = m219_AngleInterpCalc(t, m219_cameraKeyTbl[0].rot.z,
+                                       m219_cameraKeyTbl[1].rot.z);
+        CZoom = m219_InterpCalc(t, m219_cameraKeyTbl[0].zoom,
+                                      m219_cameraKeyTbl[1].zoom);
         if (CRot.x >= 360.0) {
             CRot.x -= 360.0;
         } else if (CRot.x < 0.0) {
@@ -2342,17 +2342,17 @@ void func_8010B86C_log_jam(omObjData *object) {
         } else if (CRot.z < 0.0) {
             CRot.z += 360.0;
         }
-        if (D_8010E630_log_jam > 0) {
-            D_8010E630_log_jam--;
+        if (m219_cameraMoveTimer > 0) {
+            m219_cameraMoveTimer--;
         } else {
-            D_8010E630_log_jam++;
+            m219_cameraMoveTimer++;
         }
     }
-    D_8010E638_log_jam = 1;
-    func_8010C084_log_jam(0);
+    m219_cameraMoveF = 1;
+    m219_CameraPosUpdate(0);
 }
 
-void func_8010BCA8_log_jam(s32 arg0) {
+void m219_CameraKeyStore(s32 arg0) {
     if (CRot.x >= 360.0) {
         CRot.x -= 360.0;
     } else if (CRot.x < 0.0) {
@@ -2368,61 +2368,61 @@ void func_8010BCA8_log_jam(s32 arg0) {
     } else if (CRot.z < 0.0) {
         CRot.z += 360.0;
     }
-    D_8010E5E8_log_jam[arg0].center.x = Center.x;
-    D_8010E5E8_log_jam[arg0].center.y = Center.y;
-    D_8010E5E8_log_jam[arg0].center.z = Center.z;
-    D_8010E5E8_log_jam[arg0].rot.x = CRot.x;
-    D_8010E5E8_log_jam[arg0].rot.y = CRot.y;
-    D_8010E5E8_log_jam[arg0].rot.z = CRot.z;
-    D_8010E5E8_log_jam[arg0].zoom = CZoom;
-    D_8010E5E8_log_jam[arg0].unk_1C = D_8010E5E8_log_jam[arg0].unk_20 = 0.0f;
+    m219_cameraKeyTbl[arg0].center.x = Center.x;
+    m219_cameraKeyTbl[arg0].center.y = Center.y;
+    m219_cameraKeyTbl[arg0].center.z = Center.z;
+    m219_cameraKeyTbl[arg0].rot.x = CRot.x;
+    m219_cameraKeyTbl[arg0].rot.y = CRot.y;
+    m219_cameraKeyTbl[arg0].rot.z = CRot.z;
+    m219_cameraKeyTbl[arg0].zoom = CZoom;
+    m219_cameraKeyTbl[arg0].unk_1C = m219_cameraKeyTbl[arg0].unk_20 = 0.0f;
 }
 
 // Passing CAMERA_KEEP for a component keeps its current value.
-void func_8010BE94_log_jam(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames) {
+void m219_CameraMoveStart(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames) {
     if (frames > 0) {
-        D_8010E630_log_jam = frames - 1;
-        D_8010E634_log_jam = frames;
+        m219_cameraMoveTimer = frames - 1;
+        m219_cameraMoveTime = frames;
         if (x != CAMERA_KEEP) {
-            D_8010E5E8_log_jam[0].center.x = x;
+            m219_cameraKeyTbl[0].center.x = x;
         } else {
-            D_8010E5E8_log_jam[0].center.x = Center.x;
+            m219_cameraKeyTbl[0].center.x = Center.x;
         }
         if (y != CAMERA_KEEP) {
-            D_8010E5E8_log_jam[0].center.y = y;
+            m219_cameraKeyTbl[0].center.y = y;
         } else {
-            D_8010E5E8_log_jam[0].center.y = Center.y;
+            m219_cameraKeyTbl[0].center.y = Center.y;
         }
         if (z != CAMERA_KEEP) {
-            D_8010E5E8_log_jam[0].center.z = z;
+            m219_cameraKeyTbl[0].center.z = z;
         } else {
-            D_8010E5E8_log_jam[0].center.z = Center.z;
+            m219_cameraKeyTbl[0].center.z = Center.z;
         }
         if (rotX != CAMERA_KEEP) {
-            D_8010E5E8_log_jam[0].rot.x = rotX;
+            m219_cameraKeyTbl[0].rot.x = rotX;
         } else {
-            D_8010E5E8_log_jam[0].rot.x = CRot.x;
+            m219_cameraKeyTbl[0].rot.x = CRot.x;
         }
         if (rotY != CAMERA_KEEP) {
-            D_8010E5E8_log_jam[0].rot.y = rotY;
+            m219_cameraKeyTbl[0].rot.y = rotY;
         } else {
-            D_8010E5E8_log_jam[0].rot.y = CRot.y;
+            m219_cameraKeyTbl[0].rot.y = CRot.y;
         }
         if (rotZ != CAMERA_KEEP) {
-            D_8010E5E8_log_jam[0].rot.z = rotZ;
+            m219_cameraKeyTbl[0].rot.z = rotZ;
         } else {
-            D_8010E5E8_log_jam[0].rot.z = CRot.z;
+            m219_cameraKeyTbl[0].rot.z = CRot.z;
         }
         if (zoom != CAMERA_KEEP) {
-            D_8010E5E8_log_jam[0].zoom = zoom;
+            m219_cameraKeyTbl[0].zoom = zoom;
         } else {
-            D_8010E5E8_log_jam[0].zoom = CZoom;
+            m219_cameraKeyTbl[0].zoom = CZoom;
         }
-        func_8010BCA8_log_jam(1);
+        m219_CameraKeyStore(1);
     }
 }
 
-void func_8010C084_log_jam(s32 camIndex) {
+void m219_CameraPosUpdate(s32 camIndex) {
     HuCamera *camera = &gCameraList[camIndex];
     f32 rotX = CRot.x;
     f32 rotY = CRot.y;
@@ -2438,7 +2438,7 @@ void func_8010C084_log_jam(s32 camIndex) {
     camera->up.z = cosdf(rotY) * sindf(rotX);
 }
 
-f32 func_8010C1D8_log_jam(f32 arg0, f32 arg1) {
+f32 m219_AngleDiffCalc(f32 arg0, f32 arg1) {
     if (arg0 >= 360.0f) {
         arg0 -= 360.0f;
     } else if (arg0 < 0.0f) {
@@ -2458,7 +2458,7 @@ f32 func_8010C1D8_log_jam(f32 arg0, f32 arg1) {
     return arg0;
 }
 
-f32 func_8010C2DC_log_jam(f32 target, f32 current, f32 step) {
+f32 m219_AngleStepCalc(f32 target, f32 current, f32 step) {
     f32 diff;
     f32 delta;
 
@@ -2493,15 +2493,15 @@ f32 func_8010C2DC_log_jam(f32 target, f32 current, f32 step) {
     return delta;
 }
 
-f32 func_8010C49C_log_jam(f32 t, f32 start, f32 end) {
+f32 m219_InterpCalc(f32 t, f32 start, f32 end) {
     return start + t * (end - start);
 }
 
-f32 func_8010C4B4_log_jam(f32 arg0, f32 arg1, f32 arg2) {
-    return func_8010C2DC_log_jam(arg2, arg1, fabsf(func_8010C1D8_log_jam(arg2, arg1) * arg0));
+f32 m219_AngleInterpCalc(f32 arg0, f32 arg1, f32 arg2) {
+    return m219_AngleStepCalc(arg2, arg1, fabsf(m219_AngleDiffCalc(arg2, arg1) * arg0));
 }
 
-f32 func_8010C514_log_jam(f32 arg0, f32 arg1, f32 arg2) {
+f32 m219_StepCalc(f32 arg0, f32 arg1, f32 arg2) {
     if (__builtin_fabs((f64)(arg0 - arg1)) < arg2) {
         return arg0;
     }
@@ -2513,14 +2513,14 @@ f32 func_8010C514_log_jam(f32 arg0, f32 arg1, f32 arg2) {
     return arg1 + arg2;
 }
 
-void func_8010C55C_log_jam(omObjData *object, u32 arg1) {
+void m219_WorkPtrSet(omObjData *object, u32 arg1) {
     object->work[0] = arg1 >> 24;
     object->work[1] = (arg1 >> 16) & 0xFF;
     object->work[2] = (arg1 >> 8) & 0xFF;
     object->work[3] = arg1 & 0xFF;
 }
 
-u32 func_8010C588_log_jam(omObjData *object) {
+u32 m219_WorkPtrGet(omObjData *object) {
     LogJamWorkBytes packed;
 
     packed.bytes.byte3 = (u8)object->work[0];
@@ -2530,7 +2530,7 @@ u32 func_8010C588_log_jam(omObjData *object) {
     return packed.word;
 }
 
-void func_8010C5DC_log_jam(omObjData *object, s16 motion, s16 shift) {
+void m219_MotShiftSet(omObjData *object, s16 motion, s16 shift) {
     HmfModel *model = &Hu3DData[object->model[0]];
     MgMotAttr *anim;
 
@@ -2544,14 +2544,14 @@ void func_8010C5DC_log_jam(omObjData *object, s16 motion, s16 shift) {
     model->unk54 = (u16)anim->unk02;
 }
 
-void func_8010C6A4_log_jam(omObjData *object, s16 motion, s16 time) {
+void m219_MotShiftTimeSet(omObjData *object, s16 motion, s16 time) {
     HmfModel *model = &Hu3DData[object->model[0]];
 
-    func_8010C5DC_log_jam(object, motion, 5);
+    m219_MotShiftSet(object, motion, 5);
     model->motShiftTime = time;
 }
 
-void func_8010C714_log_jam(omObjData *object, s16 motion, s16 time) {
+void m219_MotSet(omObjData *object, s16 motion, s16 time) {
     HmfModel *model = &Hu3DData[object->model[0]];
     MgMotAttr *anim;
 
@@ -2568,13 +2568,13 @@ void func_8010C714_log_jam(omObjData *object, s16 motion, s16 time) {
     model->unk48 = (u16)anim->unk02;
 }
 
-void func_8010C7D0_log_jam(omObjData *object) {
+void m219_MotStop(omObjData *object) {
     HmfModel *model = &Hu3DData[object->model[0]];
 
     model->motSpeed = 0.0f;
 }
 
-void func_8010C7F8_log_jam(omObjData *object) {
+void m219_MotShiftUpdate(omObjData *object) {
     f32 frame = 0.0f;
     HmfModel *model = &Hu3DData[object->model[0]];
 
@@ -2593,13 +2593,13 @@ void func_8010C7F8_log_jam(omObjData *object) {
     }
 }
 
-void func_8010C8B0_log_jam(omObjData *object) {
+void m219_EffMdlUpdate(omObjData *object) {
     if (object->model[6] != -1) {
         MgEffMdlUpdate((u8)object->model[6]);
     }
 }
 
-void func_8010C8E0_log_jam(s16 model, const char *name, HuMtx4F *out) {
+void m219_NodeMtxCalc(s16 model, const char *name, HuMtx4F *out) {
     s16 nodeMap[4];
     HmfModel *mdl = &Hu3DData[model];
     HmfData *hmf = mdl->hmf;
@@ -2637,7 +2637,7 @@ void func_8010C8E0_log_jam(s16 model, const char *name, HuMtx4F *out) {
     }
 }
 
-void func_8010CAC0_log_jam(omObjData *object, const char *name, HuMtx4F out) {
+void m219_NodeWorldMtxCalc(omObjData *object, const char *name, HuMtx4F out) {
     HuMtx4F mtx;
     HuMtx4F local;
 
@@ -2645,11 +2645,11 @@ void func_8010CAC0_log_jam(omObjData *object, const char *name, HuMtx4F out) {
     mtxTransCat(mtx, object->trans.x, object->trans.y, object->trans.z);
     mtxRotCat(mtx, object->rot.x, object->rot.y, object->rot.z);
     mtxScaleCat(mtx, object->scale.x, object->scale.y, object->scale.z);
-    func_8010C8E0_log_jam(object->model[0], name, &local);
+    m219_NodeMtxCalc(object->model[0], name, &local);
     mtxCat(local, mtx, out);
 }
 
-s32 func_8010CB64_log_jam(HuSprAnimData *sprite, u8 *color) {
+s32 m219_BillboardColorMdlCreate(HuSprAnimData *sprite, u8 *color) {
     u8 *buffer;
     Gfx *gfx;
     Gfx *header;
@@ -2668,8 +2668,8 @@ s32 func_8010CB64_log_jam(HuSprAnimData *sprite, u8 *color) {
     gfx++;
     HuMemFree(data->unk3C);
     data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), Hu3DModelTag);
-    func_8010DA84_log_jam(sprite, data, 1.0f, 0, 0);
-    gSPDisplayList(header, osVirtualToPhysical(D_8010E190_log_jam));
+    m219_BillboardVtxCreate(sprite, data, 1.0f, 0, 0);
+    gSPDisplayList(header, osVirtualToPhysical(m219_gfxBillboardInit));
     gDPPipeSync(gfx++);
     gDPSetCycleType(gfx++, G_CYC_1CYCLE);
     gDPPipeSync(gfx++);
@@ -2759,7 +2759,7 @@ s32 func_8010CB64_log_jam(HuSprAnimData *sprite, u8 *color) {
     return model;
 }
 
-s32 func_8010D74C_log_jam(HuSprAnimData *sprite, u16 model, u8 *color) {
+s32 m219_BillboardColorMdlLink(HuSprAnimData *sprite, u16 model, u8 *color) {
     HmfModel *srcModel = Hu3DData + model;
     HmfData *srcData = srcModel->hmf;
     HmfData *data;
@@ -2789,7 +2789,7 @@ s32 func_8010D74C_log_jam(HuSprAnimData *sprite, u16 model, u8 *color) {
     return newModel;
 }
 
-void func_8010D950_log_jam(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
+void m219_BillboardColorPatSet(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
     Gfx *gfx = data->unk3C->unk00[Hu3DBufNo + 1];
@@ -2805,7 +2805,7 @@ void func_8010D950_log_jam(u16 model, HuSprAnimData *sprite, u16 frame, u8 *colo
     gSPEndDisplayList(gfx + 7);
 }
 
-s32 func_8010DA84_log_jam(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset) {
+s32 m219_BillboardVtxCreate(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset) {
     s32 capacity = 0x1000;
     s32 width, height, scaledWidth, scaledHeight;
     s32 size, slices, textureHeight, sliceHeight, vertexCount;

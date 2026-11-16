@@ -2,8 +2,8 @@
 #include "game/mallocblock.h"
 #include "game/overlays/minigame.h"
 
-// Per-object work block for D_80109B2C_bobbing_bow_loons, allocated in
-// func_80106CC0_bobbing_bow_loons. Holds five parallel per-item arrays.
+// Per-object work block for m261_balloonObj, allocated in
+// m261_BalloonObjCreate. Holds five parallel per-item arrays.
 typedef struct BobbingBowLoonsWork {
     /* 0x00 */ s32 state[5];
     /* 0x14 */ f32 pos_x[5];
@@ -15,15 +15,15 @@ typedef struct BobbingBowLoonsWork {
 } BobbingBowLoonsWork; // Size 0x7C
 
 // Per-loon positions tracked for the five chained bow loons of the player object
-// held in D_80109B60_bobbing_bow_loons. Each axis is a parallel array of five.
+// held in m261_burstObj. Each axis is a parallel array of five.
 typedef struct BobbingBowLoonsLoon {
     /* 0x00 */ f32 x[5];
     /* 0x14 */ f32 y[5];
     /* 0x28 */ f32 z[5];
 } BobbingBowLoonsLoon; // Size 0x3C
 
-// Object data for the player object held in D_80109B1C_bobbing_bow_loons,
-// created in func_80105D04_bobbing_bow_loons.
+// Object data for the player object held in m261_playerObj,
+// created in m261_PlayerObjCreate.
 typedef struct BobbingBowLoonsPlayer {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ Vec pos;
@@ -31,7 +31,7 @@ typedef struct BobbingBowLoonsPlayer {
     /* 0x14 */ f32 unk_14;
 } BobbingBowLoonsPlayer; // Size 0x18
 
-// Object data for the stage object created in func_801065C8_bobbing_bow_loons.
+// Object data for the stage object created in m261_StageObjCreate.
 // Holds the positions of its eight models.
 typedef struct BobbingBowLoonsStage {
     /* 0x00 */ f32 x[8];
@@ -39,8 +39,8 @@ typedef struct BobbingBowLoonsStage {
     /* 0x40 */ f32 z[8];
 } BobbingBowLoonsStage; // Size 0x60
 
-// Object data for the hook object held in D_80109B30_bobbing_bow_loons,
-// created in func_8010805C_bobbing_bow_loons.
+// Object data for the hook object held in m261_dartObj,
+// created in m261_DartObjCreate.
 typedef struct BobbingBowLoonsHook {
     /* 0x00 */ s32 flags;
     /* 0x04 */ f32 x;
@@ -49,16 +49,16 @@ typedef struct BobbingBowLoonsHook {
     /* 0x10 */ f32 rotZ;
 } BobbingBowLoonsHook; // Size 0x14
 
-// Object data for the string object held in D_80109B34_bobbing_bow_loons,
-// created in func_8010728C_bobbing_bow_loons. Holds the positions of its seven models.
+// Object data for the string object held in m261_stringObj,
+// created in m261_StringObjCreate. Holds the positions of its seven models.
 typedef struct BobbingBowLoonsStrings {
     /* 0x00 */ f32 x[7];
     /* 0x1C */ f32 y[7];
     /* 0x38 */ f32 z[7];
 } BobbingBowLoonsStrings; // Size 0x54
 
-// Object data for the effect object held in D_80109B5C_bobbing_bow_loons,
-// created in func_80108C18_bobbing_bow_loons.
+// Object data for the effect object held in m261_popObj,
+// created in m261_PopObjCreate.
 typedef struct BobbingBowLoonsEffect {
     /* 0x00 */ f32 x;
     /* 0x04 */ f32 y;
@@ -69,15 +69,15 @@ typedef struct BobbingBowLoonsEffect {
     /* 0x18 */ s32 unk_18;
 } BobbingBowLoonsEffect; // Size 0x1C
 
-// Object data for the host object held in D_80109B64_bobbing_bow_loons,
-// created in func_801093DC_bobbing_bow_loons.
+// Object data for the host object held in m261_koopaObj,
+// created in m261_KoopaObjCreate.
 typedef struct BobbingBowLoonsHost {
     /* 0x00 */ f32 y;
     /* 0x04 */ f32 headRot;
 } BobbingBowLoonsHost; // Size 0x8
 
-// Object data for the item object held in D_80109B38_bobbing_bow_loons,
-// created in func_801074CC_bobbing_bow_loons. One item hangs from each loon.
+// Object data for the item object held in m261_itemObj,
+// created in m261_ItemObjCreate. One item hangs from each loon.
 typedef struct BobbingBowLoonsItems {
     /* 0x00 */ f32 x[5];
     /* 0x14 */ f32 y[5];
@@ -91,15 +91,15 @@ typedef struct BobbingBowLoonsItems {
 extern u16 mgInstColumnTbl[];
 extern u16 mgInstSlotTbl[];
 
-MinigameFlow D_80109720_bobbing_bow_loons = {
+MinigameFlow m261_mgFlow = {
     MG_STATE_OPENING, MINIGAME_ITEM, MG_TIMER_NONE, MG_TIME_DISP_NONE, FALSE, MG_GAUGE_NONE, MG_RESULT_GOT_ITEM, 0,
     { 0.0f, 0.0f, 0.0f, 0.0f },
     { 0, 0, 0, 0 },
     30, 300, -1, 90, 135
 };
-f32 D_80109748_bobbing_bow_loons[8] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
-s32 D_80109768_bobbing_bow_loons[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
-char *D_80109788_bobbing_bow_loons[8] = {
+f32 m261_chrBalloonOfsTbl[8] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+s32 m261_chrDirTbl[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+char *m261_chrHandNameTbl[8] = {
     "migi-te3_2_1",
     "c001_000-migi-te2_3",
     "C002_000b-bmerge16",
@@ -109,113 +109,113 @@ char *D_80109788_bobbing_bow_loons[8] = {
     "c001_000-migi-te2_3",
     "C002_000b-bmerge16",
 };
-s32 D_801097A8_bobbing_bow_loons[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+s32 m261_chrAnimNoTbl[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
 
-u8 D_80109B00_bobbing_bow_loons[4] BSS; /* Unreferenced. */
-u8 D_80109B04_bobbing_bow_loons BSS;
-s16 D_80109B06_bobbing_bow_loons BSS;
-s16 D_80109B08_bobbing_bow_loons BSS;
-s16 D_80109B0A_bobbing_bow_loons BSS; /* Unreferenced. */
-s32 D_80109B0C_bobbing_bow_loons BSS;
-s32 D_80109B10_bobbing_bow_loons BSS;
-s32 D_80109B14_bobbing_bow_loons BSS;
-s16 D_80109B18_bobbing_bow_loons BSS;
-s16 D_80109B1A_bobbing_bow_loons BSS; /* Unreferenced. */
-omObjData *D_80109B1C_bobbing_bow_loons BSS;
-s16 D_80109B20_bobbing_bow_loons[2] BSS;
-u8 D_80109B24_bobbing_bow_loons[4] BSS; /* Unreferenced. */
-omObjData *D_80109B28_bobbing_bow_loons BSS;
-omObjData *D_80109B2C_bobbing_bow_loons BSS;
-omObjData *D_80109B30_bobbing_bow_loons BSS;
-omObjData *D_80109B34_bobbing_bow_loons BSS;
-omObjData *D_80109B38_bobbing_bow_loons BSS;
-u8 D_80109B3C_bobbing_bow_loons[4] BSS; /* Unreferenced. */
-s32 D_80109B40_bobbing_bow_loons[5] BSS;
-s32 D_80109B54_bobbing_bow_loons BSS;
-omObjData *D_80109B58_bobbing_bow_loons BSS;
-omObjData *D_80109B5C_bobbing_bow_loons BSS;
-omObjData *D_80109B60_bobbing_bow_loons BSS;
-omObjData *D_80109B64_bobbing_bow_loons BSS;
+u8 m261_bssPad[4] BSS; /* Unreferenced. */
+u8 m261_seqNo BSS;
+s16 m261_unusedNo BSS;
+s16 m261_itemEffNo BSS;
+s16 m261_itemEffNoPad BSS; /* Unreferenced. */
+s32 m261_playerNo BSS;
+s32 m261_prizeItem BSS;
+s32 m261_comTargetNo BSS;
+s16 m261_cameraNo BSS;
+s16 m261_cameraNoPad BSS; /* Unreferenced. */
+omObjData *m261_playerObj BSS;
+s16 m261_playerAnimTbl[2] BSS;
+u8 m261_playerAnimTblPad[4] BSS; /* Unreferenced. */
+omObjData *m261_stageObj BSS;
+omObjData *m261_balloonObj BSS;
+omObjData *m261_dartObj BSS;
+omObjData *m261_stringObj BSS;
+omObjData *m261_itemObj BSS;
+u8 m261_itemObjPad[4] BSS; /* Unreferenced. */
+s32 m261_balloonItemTbl[5] BSS;
+s32 m261_hitBalloonNo BSS;
+omObjData *m261_hitEffObj BSS;
+omObjData *m261_popObj BSS;
+omObjData *m261_burstObj BSS;
+omObjData *m261_koopaObj BSS;
 
 void omCameraViewSprDraw(struct CameraViewData *data);
-void func_80105AE8_bobbing_bow_loons(void);
-void func_80105B64_bobbing_bow_loons(void);
-void func_80105D04_bobbing_bow_loons(void);
-void func_80106F44_bobbing_bow_loons(omObjData *obj);
-void func_80107C48_bobbing_bow_loons(void);
-void func_80107F68_bobbing_bow_loons(void);
-void func_8010829C_bobbing_bow_loons(void);
-void func_80108894_bobbing_bow_loons(void);
-void func_801091FC_bobbing_bow_loons(void);
-void func_8010934C_bobbing_bow_loons(void);
-void func_801068B0_bobbing_bow_loons(omObjData *obj);
-void func_80106260_bobbing_bow_loons(omObjData *obj);
-void func_801065C8_bobbing_bow_loons(void);
-void func_80106A34_bobbing_bow_loons(omObjData *obj);
-void func_80106CC0_bobbing_bow_loons(void);
-void func_801074CC_bobbing_bow_loons(void);
-void func_8010728C_bobbing_bow_loons(void);
-void func_8010805C_bobbing_bow_loons(void);
-void func_80109044_bobbing_bow_loons(void);
-void func_801093DC_bobbing_bow_loons(void);
-void func_80109680_bobbing_bow_loons(void);
-void func_80107C74_bobbing_bow_loons(void);
-void func_80107D78_bobbing_bow_loons(void);
-void func_80107E94_bobbing_bow_loons(void);
-void func_80107F94_bobbing_bow_loons(void);
-void func_80108354_bobbing_bow_loons(void);
-void func_801088C0_bobbing_bow_loons(void);
-void func_80109594_bobbing_bow_loons(void);
-void func_80107368_bobbing_bow_loons(omObjData *obj);
-void func_80107830_bobbing_bow_loons(omObjData *obj);
-void func_80107A7C_bobbing_bow_loons(void);
-void func_80107D4C_bobbing_bow_loons(void);
-void func_80108F2C_bobbing_bow_loons(f32 x, f32 y);
-void func_80108E5C_bobbing_bow_loons(omObjData *obj);
-void func_801090EC_bobbing_bow_loons(omObjData *obj);
-void func_801094B0_bobbing_bow_loons(omObjData *obj);
-void func_8010817C_bobbing_bow_loons(omObjData *obj);
-void func_80108328_bobbing_bow_loons(void);
-void func_80109568_bobbing_bow_loons(void);
-void func_801096E8_bobbing_bow_loons(void);
+void m261_CameraInit(void);
+void m261_BackCreate(void);
+void m261_PlayerObjCreate(void);
+void m261_BalloonObjMain(omObjData *obj);
+void m261_CameraZoomOutStart(void);
+void m261_TimerStart(void);
+void m261_DartThrow(void);
+void m261_ThrowInputStart(void);
+void m261_BalloonPopAll(void);
+void m261_PlayerBurstStart(void);
+void m261_StageObjMain(omObjData *obj);
+void m261_PlayerObjMain(omObjData *obj);
+void m261_StageObjCreate(void);
+void m261_MainObjMain(omObjData *obj);
+void m261_BalloonObjCreate(void);
+void m261_ItemObjCreate(void);
+void m261_StringObjCreate(void);
+void m261_DartObjCreate(void);
+void m261_BurstObjCreate(void);
+void m261_KoopaObjCreate(void);
+void m261_HitEffObjCreate(void);
+void m261_CameraZoomOutProc(void);
+void m261_CameraZoomInProc(void);
+void m261_CameraLoseProc(void);
+void m261_TimerProc(void);
+void m261_DartMissProc(void);
+void m261_ThrowInputProc(void);
+void m261_KoopaLaughProc(void);
+void m261_StringObjMain(omObjData *obj);
+void m261_ItemObjMain(omObjData *obj);
+void m261_ItemGetProc(void);
+void m261_CameraZoomInStart(void);
+void m261_PopStart(f32 x, f32 y);
+void m261_PopObjMain(omObjData *obj);
+void m261_BurstObjMain(omObjData *obj);
+void m261_KoopaObjMain(omObjData *obj);
+void m261_DartObjMain(omObjData *obj);
+void m261_DartMissStart(void);
+void m261_KoopaLaughStart(void);
+void m261_HitEffDispOn(void);
 
-void func_801059A0_bobbing_bow_loons(void) {
+void m261_ObjectSetup(void) {
     omInitObjMan(30, 10);
     MapCollInit(16);
     Hu3DQuadPoolInit(&mgQuadPool, 64);
     Hu3DSprModelInit(64);
-    func_80105AE8_bobbing_bow_loons();
+    m261_CameraInit();
     omGameSysInit();
     Hu3DBGColorSet(0, 0, 0);
-    MgFlowInit(&D_80109720_bobbing_bow_loons);
+    MgFlowInit(&m261_mgFlow);
     WipeCreateIn(0xFF, 16);
-    func_80105B64_bobbing_bow_loons();
-    func_80105D04_bobbing_bow_loons();
-    func_801065C8_bobbing_bow_loons();
-    func_80106CC0_bobbing_bow_loons();
-    func_801074CC_bobbing_bow_loons();
-    func_801093DC_bobbing_bow_loons();
-    D_80109B06_bobbing_bow_loons = 0;
+    m261_BackCreate();
+    m261_PlayerObjCreate();
+    m261_StageObjCreate();
+    m261_BalloonObjCreate();
+    m261_ItemObjCreate();
+    m261_KoopaObjCreate();
+    m261_unusedNo = 0;
     mgFieldStat = 0;
-    D_80109B04_bobbing_bow_loons = 0;
-    D_80109B10_bobbing_bow_loons = -1;
-    omAddObj(0x50, 0, 0, -1, func_80106A34_bobbing_bow_loons);
-    func_8010728C_bobbing_bow_loons();
-    func_8010805C_bobbing_bow_loons();
-    func_80109044_bobbing_bow_loons();
-    func_80109680_bobbing_bow_loons();
+    m261_seqNo = 0;
+    m261_prizeItem = -1;
+    omAddObj(0x50, 0, 0, -1, m261_MainObjMain);
+    m261_StringObjCreate();
+    m261_DartObjCreate();
+    m261_BurstObjCreate();
+    m261_HitEffObjCreate();
     CZoom = 1000.0f;
     Center.x = 200.0f;
     Center.y = 80.0f;
     Center.z = 0.0f;
 }
 
-void func_80105AE8_bobbing_bow_loons(void) {
+void m261_CameraInit(void) {
     s16 camIndex;
 
     CamSetupInit(1);
     camIndex = CamSetupMapCullAdd();
-    D_80109B18_bobbing_bow_loons = camIndex;
+    m261_cameraNo = camIndex;
     Hu3DCameraPerspectiveSet(camIndex, 30.0f, 80.0f, 8000.0f);
     CZoom = 500.0f;
     CRot.x = 0.0f;
@@ -226,7 +226,7 @@ void func_80105AE8_bobbing_bow_loons(void) {
     Center.z = 0.0f;
 }
 
-void func_80105B64_bobbing_bow_loons(void) {
+void m261_BackCreate(void) {
     omObjData *obj;
     Vec pos;
     Vec target;
@@ -252,7 +252,7 @@ void func_80105B64_bobbing_bow_loons(void) {
     Hu3DModelScaleSet(obj->model[2], 1.0f, 2.0f, 1.0f);
 }
 
-void func_80105D04_bobbing_bow_loons(void) {
+void m261_PlayerObjCreate(void) {
     // Copied onto the stack but never read.
     s32 unused[8] = { 0xA2, 0xA2, 0xA2, 0xA2, 0xA2, 0xA2, 0xA2, 3 };
     s32 modelFiles[8] = { 0xA0, 0xA0, 0xA0, 0xA0, 0xA0, 0xA0, 0xA0, 0 };
@@ -279,19 +279,19 @@ void func_80105D04_bobbing_bow_loons(void) {
 
     for (i = 0; i < 4; i++) {
         if (GwPlayer[i].group == 0) {
-            D_80109B0C_bobbing_bow_loons = i;
+            m261_playerNo = i;
             break;
         }
     }
-    obj = omAddObj(0x50, 4, 10, -1, func_80106260_bobbing_bow_loons);
+    obj = omAddObj(0x50, 4, 10, -1, m261_PlayerObjMain);
     obj->data = HuMemAllocTag(sizeof(BobbingBowLoonsPlayer), 0x7918);
-    D_80109B1C_bobbing_bow_loons = obj;
+    m261_playerObj = obj;
     player = obj->data;
     player->unk_00 = 1;
     player->scale = 1.0f;
     player->unk_00 = 1;
-    chr = GwPlayer[D_80109B0C_bobbing_bow_loons].chr;
-    dir = D_80109768_bobbing_bow_loons[chr] << 16;
+    chr = GwPlayer[m261_playerNo].chr;
+    dir = m261_chrDirTbl[chr] << 16;
     file = dir | modelFiles[chr];
     obj->model[0] = Hu3DModelRead(file, 0x6A9);
     obj->model[2] = Hu3DModelRead(handFiles[chr] | 0x5E0000, 0x6BD);
@@ -304,31 +304,31 @@ void func_80105D04_bobbing_bow_loons(void) {
     omSetRot(obj, 0.0f, 270.0f, 0.0f);
     omSetSca(obj, 1.0f, 1.0f, 1.0f);
     Hu3DModelRotSet(obj->model[3], 0.0f, 270.0f, 0.0f);
-    D_80109B20_bobbing_bow_loons[0] =
-        CharAnimCreate(obj->model[0], 1, D_801097A8_bobbing_bow_loons[chr], dir | spriteFiles[chr]);
-    D_80109B20_bobbing_bow_loons[1] = Hu3DAnimDataRead(dir | spriteFiles2[chr]);
+    m261_playerAnimTbl[0] =
+        CharAnimCreate(obj->model[0], 1, m261_chrAnimNoTbl[chr], dir | spriteFiles[chr]);
+    m261_playerAnimTbl[1] = Hu3DAnimDataRead(dir | spriteFiles2[chr]);
     Hu3DModelDynamicFree(obj->model[0]);
     for (i = 0; i < 4; i++) {
         omObjMotionRead(obj, i, CharMotionDataNumGet(chr, motions[chr][i]));
     }
     Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
-    Hu3DModelObjCopy(obj->model[2], D_80109788_bobbing_bow_loons[chr], obj->model[0],
-                       D_80109788_bobbing_bow_loons[chr]);
+    Hu3DModelObjCopy(obj->model[2], m261_chrHandNameTbl[chr], obj->model[0],
+                       m261_chrHandNameTbl[chr]);
     obj->model[1] = Hu3DModelRead(markerFiles[chr] | 0x5E0000, 0x6B9);
     Hu3DModelPosSet(obj->model[1],
-                    player->pos.x + D_80109748_bobbing_bow_loons[GwPlayer[D_80109B0C_bobbing_bow_loons].chr],
+                    player->pos.x + m261_chrBalloonOfsTbl[GwPlayer[m261_playerNo].chr],
                     player->pos.y + 150.0f, player->pos.z + 0.0f);
     Hu3DModelScaleSet(obj->model[1], 1.5f, 1.5f, 1.5f);
 }
 
-void func_80106260_bobbing_bow_loons(omObjData *obj) {
+void m261_PlayerObjMain(omObjData *obj) {
     BobbingBowLoonsPlayer *player = obj->data;
     f32 scale;
 
     omSetSca(obj, player->scale, player->scale, player->scale);
     omSetTra(obj, player->pos.x, player->pos.y - 50.0f, player->pos.z);
     Hu3DModelPosSet(obj->model[1],
-                    player->pos.x + D_80109748_bobbing_bow_loons[GwPlayer[D_80109B0C_bobbing_bow_loons].chr],
+                    player->pos.x + m261_chrBalloonOfsTbl[GwPlayer[m261_playerNo].chr],
                     player->pos.y + 150.0f, player->pos.z + 0.0f);
     Hu3DModelPosSet(obj->model[3], player->pos.x, player->pos.y - 50.0f, player->pos.z + 2.0f);
     scale = player->scale * 1.5f;
@@ -342,30 +342,30 @@ void func_80106260_bobbing_bow_loons(omObjData *obj) {
     }
 }
 
-void func_801063F8_bobbing_bow_loons(void) {
-    s16 chr = GwPlayer[D_80109B0C_bobbing_bow_loons].chr;
+void m261_PlayerWinMotSet(void) {
+    s16 chr = GwPlayer[m261_playerNo].chr;
 
-    Hu3DMotionShiftSet(D_80109B1C_bobbing_bow_loons->model[0], Hu3DData[D_80109B1C_bobbing_bow_loons->motion[1]].motId,
+    Hu3DMotionShiftSet(m261_playerObj->model[0], Hu3DData[m261_playerObj->motion[1]].motId,
                        0, 10, 0);
-    CharAnimSet(D_80109B1C_bobbing_bow_loons->model[0], 1, D_801097A8_bobbing_bow_loons[chr],
-                       D_80109B20_bobbing_bow_loons[1]);
-    HuAudCharVoicePlay((D_80109768_bobbing_bow_loons[chr] << 16) | 0x6F);
+    CharAnimSet(m261_playerObj->model[0], 1, m261_chrAnimNoTbl[chr],
+                       m261_playerAnimTbl[1]);
+    HuAudCharVoicePlay((m261_chrDirTbl[chr] << 16) | 0x6F);
 }
 
-void func_801064C0_bobbing_bow_loons(void) {
-    s16 chr = GwPlayer[D_80109B0C_bobbing_bow_loons].chr;
+void m261_PlayerFallStart(void) {
+    s16 chr = GwPlayer[m261_playerNo].chr;
 
-    Hu3DModelAttrSet(D_80109B1C_bobbing_bow_loons->model[0], 4, 4);
-    Hu3DModelAttrSet(D_80109B1C_bobbing_bow_loons->model[3], 4, 0);
-    Hu3DMotionShiftSet(D_80109B1C_bobbing_bow_loons->model[3], Hu3DData[D_80109B1C_bobbing_bow_loons->motion[2]].motId,
+    Hu3DModelAttrSet(m261_playerObj->model[0], 4, 4);
+    Hu3DModelAttrSet(m261_playerObj->model[3], 4, 0);
+    Hu3DMotionShiftSet(m261_playerObj->model[3], Hu3DData[m261_playerObj->motion[2]].motId,
                        0, 10, 0);
-    Hu3DMotionAttrSet(D_80109B1C_bobbing_bow_loons->model[3], 2, 2);
-    Hu3DModelObjCopy(D_80109B1C_bobbing_bow_loons->model[3], D_80109788_bobbing_bow_loons[chr],
-                       D_80109B1C_bobbing_bow_loons->model[0], D_80109788_bobbing_bow_loons[chr]);
-    func_8010934C_bobbing_bow_loons();
+    Hu3DMotionAttrSet(m261_playerObj->model[3], 2, 2);
+    Hu3DModelObjCopy(m261_playerObj->model[3], m261_chrHandNameTbl[chr],
+                       m261_playerObj->model[0], m261_chrHandNameTbl[chr]);
+    m261_PlayerBurstStart();
 }
 
-void func_801065C8_bobbing_bow_loons(void) {
+void m261_StageObjCreate(void) {
     s32 attrs[2];
     s32 files[2] = { 0x13, 0x14 };
     s32 alphas[2] = { 0x40, 0xB3 };
@@ -377,8 +377,8 @@ void func_801065C8_bobbing_bow_loons(void) {
     attrs[0] = 0xAC9;
     attrs[1] = 0x2C9;
 
-    obj = omAddObj(0xFF, 8, 0, -1, func_801068B0_bobbing_bow_loons);
-    D_80109B28_bobbing_bow_loons = obj;
+    obj = omAddObj(0xFF, 8, 0, -1, m261_StageObjMain);
+    m261_stageObj = obj;
     stage = obj->data = HuMemAllocTag(sizeof(BobbingBowLoonsStage), 0x7918);
     stage->x[0] = 0.0f;
     stage->x[1] = 1000.0f;
@@ -424,7 +424,7 @@ void func_801065C8_bobbing_bow_loons(void) {
     }
 }
 
-void func_801068B0_bobbing_bow_loons(omObjData *obj) {
+void m261_StageObjMain(omObjData *obj) {
     BobbingBowLoonsStage *stage = obj->data;
     s32 i;
 
@@ -450,14 +450,14 @@ void func_801068B0_bobbing_bow_loons(omObjData *obj) {
     }
 }
 
-void func_80106A00_bobbing_bow_loons(omObjData *obj) {
+void m261_ExitObjMain(omObjData *obj) {
     if (WipeStatGet() == 0) {
         HuWinAllKill();
         omOvlReturnEx(1);
     }
 }
 
-void func_80106A34_bobbing_bow_loons(omObjData *obj) {
+void m261_MainObjMain(omObjData *obj) {
     f32 cueFrames[8] = { 40.0f, 40.0f, 40.0f, 40.0f, 40.0f, 40.0f, 40.0f, 40.0f };
 
     if (omSysExitReq != 0) {
@@ -470,12 +470,12 @@ void func_80106A34_bobbing_bow_loons(omObjData *obj) {
             if (MgFlowStatTimeGet() == 1) {
                 HuAudSeqPlay(0x44);
             }
-            if (Hu3DData[D_80109B1C_bobbing_bow_loons->model[0]].motTime ==
-                cueFrames[GwPlayer[D_80109B0C_bobbing_bow_loons].chr]) {
+            if (Hu3DData[m261_playerObj->model[0]].motTime ==
+                cueFrames[GwPlayer[m261_playerNo].chr]) {
                 HuAudFXPlay(0x4DA);
             }
             if (MgFlowStatTimeGet() == 15) {
-                func_80107C48_bobbing_bow_loons();
+                m261_CameraZoomOutStart();
                 HuAudFXPlay(0x4E0);
             }
             break;
@@ -483,49 +483,49 @@ void func_80106A34_bobbing_bow_loons(omObjData *obj) {
             break;
         case 2:
             if (MgFlowStatTimeGet() == 0) {
-                func_80107F68_bobbing_bow_loons();
-                func_80108894_bobbing_bow_loons();
+                m261_TimerStart();
+                m261_ThrowInputStart();
             }
-            if (D_80109B04_bobbing_bow_loons == 2 || D_80109B04_bobbing_bow_loons == 3) {
-                if (D_80109B04_bobbing_bow_loons == 2) {
-                    func_801091FC_bobbing_bow_loons();
+            if (m261_seqNo == 2 || m261_seqNo == 3) {
+                if (m261_seqNo == 2) {
+                    m261_BalloonPopAll();
                 }
-                func_8010829C_bobbing_bow_loons();
-                D_80109B04_bobbing_bow_loons = 4;
+                m261_DartThrow();
+                m261_seqNo = 4;
             }
             break;
         case 3:
             break;
         case 4:
-            if (D_80109B10_bobbing_bow_loons != -1) {
-                D_80109720_bobbing_bow_loons.resultType = MG_RESULT_GOT_ITEM;
+            if (m261_prizeItem != -1) {
+                m261_mgFlow.resultType = MG_RESULT_GOT_ITEM;
             } else {
-                D_80109720_bobbing_bow_loons.resultType = MG_RESULT_GAME_OVER;
+                m261_mgFlow.resultType = MG_RESULT_GAME_OVER;
             }
             break;
         case 5:
-            if (D_80109B10_bobbing_bow_loons != -1) {
-                GwPlayer[D_80109B0C_bobbing_bow_loons].bonusCoin = D_80109B10_bobbing_bow_loons;
+            if (m261_prizeItem != -1) {
+                GwPlayer[m261_playerNo].bonusCoin = m261_prizeItem;
             } else {
-                GwPlayer[D_80109B0C_bobbing_bow_loons].bonusCoin = -1;
+                GwPlayer[m261_playerNo].bonusCoin = -1;
             }
             WipeCreateOut(0, 20);
-            obj->func = func_80106A00_bobbing_bow_loons;
+            obj->func = m261_ExitObjMain;
             break;
     }
 }
 
-void func_80106CC0_bobbing_bow_loons(void) {
+void m261_BalloonObjCreate(void) {
     s32 attr = 0x699;
     BobbingBowLoonsWork *work;
     BobbingBowLoonsPlayer *player;
     omObjData *obj;
     s32 i;
 
-    obj = omAddObj(0xFF, 10, 0, -1, func_80106F44_bobbing_bow_loons);
-    D_80109B2C_bobbing_bow_loons = obj;
+    obj = omAddObj(0xFF, 10, 0, -1, m261_BalloonObjMain);
+    m261_balloonObj = obj;
     work = obj->data = HuMemAllocTag(sizeof(BobbingBowLoonsWork), 0x7918);
-    player = D_80109B1C_bobbing_bow_loons->data;
+    player = m261_playerObj->data;
     for (i = 0; i < 5; i++) {
         work->state[i] = 1;
         work->pos_x[i] = i * 120.0f - 280.0f;
@@ -558,7 +558,7 @@ void func_80106CC0_bobbing_bow_loons(void) {
     work->rise = 0.0f;
 }
 
-void func_80106F44_bobbing_bow_loons(omObjData *obj) {
+void m261_BalloonObjMain(omObjData *obj) {
     BobbingBowLoonsWork *work = obj->data;
     s32 i;
 
@@ -589,8 +589,8 @@ void func_80106F44_bobbing_bow_loons(omObjData *obj) {
     }
 }
 
-void func_80107130_bobbing_bow_loons(void) {
-    BobbingBowLoonsWork *work = D_80109B2C_bobbing_bow_loons->data;
+void m261_BalloonRiseStart(void) {
+    BobbingBowLoonsWork *work = m261_balloonObj->data;
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(work->state); i++) {
@@ -599,10 +599,10 @@ void func_80107130_bobbing_bow_loons(void) {
     work->rise = 0;
 }
 
-s32 func_80107174_bobbing_bow_loons(void) {
+s32 m261_BalloonHitCheck(void) {
     s32 hit = -1;
-    BobbingBowLoonsWork *work = D_80109B2C_bobbing_bow_loons->data;
-    BobbingBowLoonsHook *hook = D_80109B30_bobbing_bow_loons->data;
+    BobbingBowLoonsWork *work = m261_balloonObj->data;
+    BobbingBowLoonsHook *hook = m261_dartObj->data;
     f32 x = hook->x - 25.0f;
     f32 y = hook->y - 100.0f;
     f32 loonX;
@@ -625,13 +625,13 @@ s32 func_80107174_bobbing_bow_loons(void) {
     return hit;
 }
 
-void func_8010728C_bobbing_bow_loons(void) {
+void m261_StringObjCreate(void) {
     omObjData *obj;
     s32 i;
 
-    obj = omAddObj(0x50, 7, 0, -1, func_80107368_bobbing_bow_loons);
+    obj = omAddObj(0x50, 7, 0, -1, m261_StringObjMain);
     obj->data = HuMemAllocTag(sizeof(BobbingBowLoonsStrings), 0x7918);
-    D_80109B34_bobbing_bow_loons = obj;
+    m261_stringObj = obj;
     obj->model[0] = Hu3DModelRead(0x5E0006, 0x4B9);
     for (i = 1; i < 7; i++) {
         obj->model[i] = Hu3DModelLink(obj->model[0]);
@@ -639,10 +639,10 @@ void func_8010728C_bobbing_bow_loons(void) {
     Hu3DData[obj->model[5]].scale.y = 1.2f;
 }
 
-void func_80107368_bobbing_bow_loons(omObjData *obj) {
+void m261_StringObjMain(omObjData *obj) {
     BobbingBowLoonsStrings *strings = obj->data;
-    BobbingBowLoonsWork *work = D_80109B2C_bobbing_bow_loons->data;
-    BobbingBowLoonsPlayer *player = D_80109B1C_bobbing_bow_loons->data;
+    BobbingBowLoonsWork *work = m261_balloonObj->data;
+    BobbingBowLoonsPlayer *player = m261_playerObj->data;
     s32 i;
 
     for (i = 0; i < 5; i++) {
@@ -650,7 +650,7 @@ void func_80107368_bobbing_bow_loons(omObjData *obj) {
         strings->y[i] = work->pos_y[i] - 100.0f;
         strings->z[i] = work->pos_z[i] - 2.0f;
     }
-    strings->x[5] = player->pos.x + D_80109748_bobbing_bow_loons[GwPlayer[D_80109B0C_bobbing_bow_loons].chr];
+    strings->x[5] = player->pos.x + m261_chrBalloonOfsTbl[GwPlayer[m261_playerNo].chr];
     strings->y[5] = player->pos.y + 42.0f;
     strings->z[5] = player->pos.z - 2.0f;
     omSetTra(obj, strings->x[0], strings->y[0], strings->z[0]);
@@ -660,7 +660,7 @@ void func_80107368_bobbing_bow_loons(omObjData *obj) {
     Hu3DModelAttrSet(obj->model[6], 4, 4);
 }
 
-void func_801074CC_bobbing_bow_loons(void) {
+void m261_ItemObjCreate(void) {
     s32 counts[16];
     s32 itemFiles[16] = { 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 };
     BobbingBowLoonsItems *items;
@@ -673,18 +673,18 @@ void func_801074CC_bobbing_bow_loons(void) {
     s32 i;
     s32 j;
 
-    obj = omAddObj(0xFE, 5, 0, -1, func_80107830_bobbing_bow_loons);
+    obj = omAddObj(0xFE, 5, 0, -1, m261_ItemObjMain);
     obj->data = HuMemAllocTag(sizeof(BobbingBowLoonsItems), 0x7918);
-    D_80109B38_bobbing_bow_loons = obj;
+    m261_itemObj = obj;
     items = obj->data;
-    work = D_80109B2C_bobbing_bow_loons->data;
+    work = m261_balloonObj->data;
     for (i = 0; i < 16; i++) {
         counts[i] = 0;
     }
     for (i = 0; i < 5; i++) {
         value = mgInstColumnTbl[4 - i];
         counts[value]++;
-        D_80109B40_bobbing_bow_loons[i] = value;
+        m261_balloonItemTbl[i] = value;
         spriteData = DataRead(itemFiles[value] | 0x210000);
         sprite = Hu3DSprModelCreate(spriteData, 0x699, 8);
         DataClose(spriteData);
@@ -704,7 +704,7 @@ void func_801074CC_bobbing_bow_loons(void) {
     items->angle = 0.0f;
     items->heldX = 0.0f;
     items->heldY = 0.0f;
-    if (GwPlayer[D_80109B0C_bobbing_bow_loons].stat & 1) {
+    if (GwPlayer[m261_playerNo].stat & 1) {
         value = (u8)(rand8() % 100);
         for (j = 0, total = 0; j < 5; j++) {
             if (value >= total && value < total + mgInstSlotTbl[j]) {
@@ -715,14 +715,14 @@ void func_801074CC_bobbing_bow_loons(void) {
         if (j == 5) {
             j = 4;
         }
-        D_80109B14_bobbing_bow_loons = j;
+        m261_comTargetNo = j;
     }
 }
 
-void func_80107830_bobbing_bow_loons(omObjData *obj) {
+void m261_ItemObjMain(omObjData *obj) {
     BobbingBowLoonsItems *items = obj->data;
-    BobbingBowLoonsWork *work = D_80109B2C_bobbing_bow_loons->data;
-    BobbingBowLoonsPlayer *player = D_80109B1C_bobbing_bow_loons->data;
+    BobbingBowLoonsWork *work = m261_balloonObj->data;
+    BobbingBowLoonsPlayer *player = m261_playerObj->data;
     s32 i;
 
     for (i = 0; i < 5; i++) {
@@ -737,7 +737,7 @@ void func_80107830_bobbing_bow_loons(omObjData *obj) {
             if (items->angle >= 360.0f) {
                 items->angle -= 360.0f;
             }
-            EffectPosSet(D_80109B08_bobbing_bow_loons, items->x[i], items->y[i], items->z[i]);
+            EffectPosSet(m261_itemEffNo, items->x[i], items->y[i], items->z[i]);
         }
         if (i == 0) {
             omSetTra(obj, items->x[0], items->y[0], items->z[0]);
@@ -747,53 +747,53 @@ void func_80107830_bobbing_bow_loons(omObjData *obj) {
     }
 }
 
-void func_801079E8_bobbing_bow_loons(s32 idx) {
-    BobbingBowLoonsItems *items = D_80109B38_bobbing_bow_loons->data;
+void m261_ItemGetStart(s32 idx) {
+    BobbingBowLoonsItems *items = m261_itemObj->data;
 
     items->state[idx] |= 2;
     items->angle = 0.0f;
     items->heldX = 0.0f;
     items->heldY = 0.0f;
-    D_80109B54_bobbing_bow_loons = idx;
-    D_80109B10_bobbing_bow_loons = D_80109B40_bobbing_bow_loons[idx];
-    D_80109B08_bobbing_bow_loons = EffectCreate(0xB0004, 0x6A9);
-    omAddPrcObj(func_80107A7C_bobbing_bow_loons, 0x50, 0, 0);
+    m261_hitBalloonNo = idx;
+    m261_prizeItem = m261_balloonItemTbl[idx];
+    m261_itemEffNo = EffectCreate(0xB0004, 0x6A9);
+    omAddPrcObj(m261_ItemGetProc, 0x50, 0, 0);
     HuAudFXPlay(0x4DD);
 }
 
-void func_80107A7C_bobbing_bow_loons(void) {
-    BobbingBowLoonsWork *work = D_80109B2C_bobbing_bow_loons->data;
-    BobbingBowLoonsItems *items = D_80109B38_bobbing_bow_loons->data;
-    BobbingBowLoonsPlayer *player = D_80109B1C_bobbing_bow_loons->data;
+void m261_ItemGetProc(void) {
+    BobbingBowLoonsWork *work = m261_balloonObj->data;
+    BobbingBowLoonsItems *items = m261_itemObj->data;
+    BobbingBowLoonsPlayer *player = m261_playerObj->data;
     f32 dx;
     f32 dy;
     s32 i;
 
-    func_80107130_bobbing_bow_loons();
-    Hu3DModelAttrSet(D_80109B2C_bobbing_bow_loons->model[D_80109B54_bobbing_bow_loons], 4, 4);
-    Hu3DModelAttrSet(D_80109B2C_bobbing_bow_loons->model[D_80109B54_bobbing_bow_loons + 5], 4, 4);
-    Hu3DModelAttrSet(D_80109B34_bobbing_bow_loons->model[D_80109B54_bobbing_bow_loons], 4, 4);
-    Hu3DModelAttrSet(D_80109B30_bobbing_bow_loons->model[0], 4, 4);
-    func_80108F2C_bobbing_bow_loons(work->pos_x[D_80109B54_bobbing_bow_loons],
-                                    work->pos_y[D_80109B54_bobbing_bow_loons] + 50.0f);
-    items->heldX = items->x[D_80109B54_bobbing_bow_loons];
-    items->heldY = items->y[D_80109B54_bobbing_bow_loons] + 50.0f;
-    dx = (player->pos.x - items->x[D_80109B54_bobbing_bow_loons]) / 30.0f;
-    dy = (player->pos.y + 150.0f - items->y[D_80109B54_bobbing_bow_loons]) / 30.0f;
+    m261_BalloonRiseStart();
+    Hu3DModelAttrSet(m261_balloonObj->model[m261_hitBalloonNo], 4, 4);
+    Hu3DModelAttrSet(m261_balloonObj->model[m261_hitBalloonNo + 5], 4, 4);
+    Hu3DModelAttrSet(m261_stringObj->model[m261_hitBalloonNo], 4, 4);
+    Hu3DModelAttrSet(m261_dartObj->model[0], 4, 4);
+    m261_PopStart(work->pos_x[m261_hitBalloonNo],
+                                    work->pos_y[m261_hitBalloonNo] + 50.0f);
+    items->heldX = items->x[m261_hitBalloonNo];
+    items->heldY = items->y[m261_hitBalloonNo] + 50.0f;
+    dx = (player->pos.x - items->x[m261_hitBalloonNo]) / 30.0f;
+    dy = (player->pos.y + 150.0f - items->y[m261_hitBalloonNo]) / 30.0f;
     for (i = 0; i < 30; i++) {
         items->heldX += dx;
         items->heldY += dy;
         HuPrcVSleep();
     }
-    func_80107D4C_bobbing_bow_loons();
+    m261_CameraZoomInStart();
     omDelPrcObj(NULL);
 }
 
-void func_80107C48_bobbing_bow_loons(void) {
-    omAddPrcObj(func_80107C74_bobbing_bow_loons, 0x50, 0, 0);
+void m261_CameraZoomOutStart(void) {
+    omAddPrcObj(m261_CameraZoomOutProc, 0x50, 0, 0);
 }
 
-void func_80107C74_bobbing_bow_loons(void) {
+void m261_CameraZoomOutProc(void) {
     s32 i;
 
     for (i = 0; i < 30; i++) {
@@ -808,11 +808,11 @@ void func_80107C74_bobbing_bow_loons(void) {
     omDelPrcObj(NULL);
 }
 
-void func_80107D4C_bobbing_bow_loons(void) {
-    omAddPrcObj(func_80107D78_bobbing_bow_loons, 0x50, 0, 0);
+void m261_CameraZoomInStart(void) {
+    omAddPrcObj(m261_CameraZoomInProc, 0x50, 0, 0);
 }
 
-void func_80107D78_bobbing_bow_loons(void) {
+void m261_CameraZoomInProc(void) {
     s32 i;
 
     for (i = 0; i < 30; i++) {
@@ -824,15 +824,15 @@ void func_80107D78_bobbing_bow_loons(void) {
     CZoom = 1000.0f;
     Center.x = 200.0f;
     Center.y = 80.0f;
-    func_801063F8_bobbing_bow_loons();
+    m261_PlayerWinMotSet();
     omDelPrcObj(NULL);
 }
 
-void func_80107E68_bobbing_bow_loons(void) {
-    omAddPrcObj(func_80107E94_bobbing_bow_loons, 0x50, 0, 0);
+void m261_CameraLoseStart(void) {
+    omAddPrcObj(m261_CameraLoseProc, 0x50, 0, 0);
 }
 
-void func_80107E94_bobbing_bow_loons(void) {
+void m261_CameraLoseProc(void) {
     s32 i;
 
     for (i = 0; i < 20; i++) {
@@ -847,11 +847,11 @@ void func_80107E94_bobbing_bow_loons(void) {
     omDelPrcObj(NULL);
 }
 
-void func_80107F68_bobbing_bow_loons(void) {
-    omAddPrcObj(func_80107F94_bobbing_bow_loons, 0x50, 0, 0);
+void m261_TimerStart(void) {
+    omAddPrcObj(m261_TimerProc, 0x50, 0, 0);
 }
 
-void func_80107F94_bobbing_bow_loons(void) {
+void m261_TimerProc(void) {
     s32 seconds = 10;
     s32 frames = 30;
 
@@ -864,27 +864,27 @@ void func_80107F94_bobbing_bow_loons(void) {
         }
         GMesTimerValueSet(seconds);
         HuPrcVSleep();
-        if (D_80109B04_bobbing_bow_loons == 4) {
+        if (m261_seqNo == 4) {
             break;
         }
     } while (seconds > 0);
-    if (D_80109B04_bobbing_bow_loons == 0) {
-        D_80109B04_bobbing_bow_loons = 2;
+    if (m261_seqNo == 0) {
+        m261_seqNo = 2;
     }
     GMesTimerEnd();
     omDelPrcObj(NULL);
 }
 
-void func_8010805C_bobbing_bow_loons(void) {
+void m261_DartObjCreate(void) {
     BobbingBowLoonsHook *hook;
     BobbingBowLoonsPlayer *player;
     omObjData *obj;
 
-    obj = omAddObj(0xFF, 1, 0, -1, func_8010817C_bobbing_bow_loons);
-    D_80109B30_bobbing_bow_loons = obj;
+    obj = omAddObj(0xFF, 1, 0, -1, m261_DartObjMain);
+    m261_dartObj = obj;
     hook = HuMemAllocTag(sizeof(BobbingBowLoonsHook), 0x7918);
     obj->data = hook;
-    player = D_80109B1C_bobbing_bow_loons->data;
+    player = m261_playerObj->data;
     obj->model[0] = Hu3DModelRead(0x5E0005, 0x699);
     hook->flags = 0;
     hook->x = 0.0f;
@@ -893,11 +893,11 @@ void func_8010805C_bobbing_bow_loons(void) {
     hook->rotZ = 270.0f;
     omSetTra(obj, hook->x, hook->y, hook->z);
     omSetRot(obj, 0.0f, 0.0f, hook->rotZ);
-    Hu3DModelHookSet(obj->model[0], D_80109B1C_bobbing_bow_loons->model[0], "item_hook");
+    Hu3DModelHookSet(obj->model[0], m261_playerObj->model[0], "item_hook");
     Hu3DModelAttrSet(obj->model[0], 0x4000, 0x4000);
 }
 
-void func_8010817C_bobbing_bow_loons(omObjData *obj) {
+void m261_DartObjMain(omObjData *obj) {
     BobbingBowLoonsHook *hook = obj->data;
     s32 hit;
 
@@ -905,55 +905,55 @@ void func_8010817C_bobbing_bow_loons(omObjData *obj) {
     omSetRot(obj, 0.0f, 0.0f, hook->rotZ);
     if (hook->flags & 1) {
         hook->x -= 23.0f;
-        hit = func_80107174_bobbing_bow_loons();
+        hit = m261_BalloonHitCheck();
         if (hit != -1) {
             MgFlowStatSet(MG_STATE_FINISH);
-            func_801079E8_bobbing_bow_loons(hit);
+            m261_ItemGetStart(hit);
             hook->flags &= ~1;
-            omVibrate(D_80109B0C_bobbing_bow_loons, 2, 2, 20);
+            omVibrate(m261_playerNo, 2, 2, 20);
         } else if (hook->x <= -290.0f) {
-            D_80109B04_bobbing_bow_loons = 0;
+            m261_seqNo = 0;
             MgFlowStatSet(MG_STATE_FINISH);
-            func_80108328_bobbing_bow_loons();
+            m261_DartMissStart();
             hook->flags &= ~1;
-            omVibrate(D_80109B0C_bobbing_bow_loons, 20, 0, 20);
+            omVibrate(m261_playerNo, 20, 0, 20);
         }
     }
 }
 
-void func_8010829C_bobbing_bow_loons(void) {
-    BobbingBowLoonsHook *hook = D_80109B30_bobbing_bow_loons->data;
+void m261_DartThrow(void) {
+    BobbingBowLoonsHook *hook = m261_dartObj->data;
 
-    hook->x = D_80109B1C_bobbing_bow_loons->trans.x;
-    hook->y = D_80109B1C_bobbing_bow_loons->trans.y + 100.0f;
+    hook->x = m261_playerObj->trans.x;
+    hook->y = m261_playerObj->trans.y + 100.0f;
     hook->flags |= 1;
-    Hu3DModelAttrSet(D_80109B30_bobbing_bow_loons->model[0], 4, 0);
-    Hu3DModelAttrSet(D_80109B30_bobbing_bow_loons->model[0], 0x4000, 0);
+    Hu3DModelAttrSet(m261_dartObj->model[0], 4, 0);
+    Hu3DModelAttrSet(m261_dartObj->model[0], 0x4000, 0);
     HuAudFXPlay(0x4DB);
 }
 
-void func_80108328_bobbing_bow_loons(void) {
-    omAddPrcObj(func_80108354_bobbing_bow_loons, 0x50, 0, 0);
+void m261_DartMissStart(void) {
+    omAddPrcObj(m261_DartMissProc, 0x50, 0, 0);
 }
 
-void func_80108354_bobbing_bow_loons(void) {
+void m261_DartMissProc(void) {
     f32 offsetX[8] = { -20.0f, 0.0f, -15.0f, 31.5f, 5.0f, 19.2f, -15.0f, 0.0f };
     f32 offsetY[8] = { 100.0f, -19.0f, 70.0f, -106.2f, -18.0f, -107.1f, 70.0f, -16.0f };
     f32 offsetZ[8] = { 15.0f, -2.5f, 0.0f, 20.5f, 0.0f, 36.2f, 0.0f, 3.0f };
-    BobbingBowLoonsHook *hook = D_80109B30_bobbing_bow_loons->data;
-    BobbingBowLoonsPlayer *player = D_80109B1C_bobbing_bow_loons->data;
-    BobbingBowLoonsWork *work = D_80109B2C_bobbing_bow_loons->data;
+    BobbingBowLoonsHook *hook = m261_dartObj->data;
+    BobbingBowLoonsPlayer *player = m261_playerObj->data;
+    BobbingBowLoonsWork *work = m261_balloonObj->data;
     f32 speed;
     s32 i;
 
-    if (D_80109B04_bobbing_bow_loons != 2) {
-        func_801091FC_bobbing_bow_loons();
+    if (m261_seqNo != 2) {
+        m261_BalloonPopAll();
     }
     for (i = 0; i < 5; i++) {
         work->state[i] &= ~1;
     }
-    omSetTra(D_80109B58_bobbing_bow_loons, hook->x + 30.0f, hook->y - 30.0f, hook->z);
-    func_801096E8_bobbing_bow_loons();
+    omSetTra(m261_hitEffObj, hook->x + 30.0f, hook->y - 30.0f, hook->z);
+    m261_HitEffDispOn();
     HuAudFXPlay(0x4DE);
     hook->rotZ = 150.0f;
     while (hook->y < 400.0f) {
@@ -963,44 +963,44 @@ void func_80108354_bobbing_bow_loons(void) {
     }
     HuPrcSleep(15);
     hook->rotZ = 180.0f;
-    hook->x = D_80109B1C_bobbing_bow_loons->trans.x;
-    while (D_80109B1C_bobbing_bow_loons->trans.y + 300.0f <= hook->y) {
+    hook->x = m261_playerObj->trans.x;
+    while (m261_playerObj->trans.y + 300.0f <= hook->y) {
         hook->y -= 23.0f;
         HuPrcVSleep();
     }
-    hook->y = D_80109B1C_bobbing_bow_loons->trans.y - 200.0f;
-    Hu3DModelAttrSet(D_80109B30_bobbing_bow_loons->model[0], 4, 4);
-    Hu3DModelAttrSet(D_80109B34_bobbing_bow_loons->model[5], 4, 4);
-    Hu3DModelAttrSet(D_80109B1C_bobbing_bow_loons->model[1], 4, 4);
-    func_80108F2C_bobbing_bow_loons(
-        player->pos.x + D_80109748_bobbing_bow_loons[GwPlayer[D_80109B0C_bobbing_bow_loons].chr],
+    hook->y = m261_playerObj->trans.y - 200.0f;
+    Hu3DModelAttrSet(m261_dartObj->model[0], 4, 4);
+    Hu3DModelAttrSet(m261_stringObj->model[5], 4, 4);
+    Hu3DModelAttrSet(m261_playerObj->model[1], 4, 4);
+    m261_PopStart(
+        player->pos.x + m261_chrBalloonOfsTbl[GwPlayer[m261_playerNo].chr],
         player->pos.y + 230.0f);
     HuAudFXPlay(0x4DF);
-    HuAudFXPlay(GwPlayer[D_80109B0C_bobbing_bow_loons].chr + 0x2AC);
+    HuAudFXPlay(GwPlayer[m261_playerNo].chr + 0x2AC);
     player->unk_00 &= ~1;
-    player->pos.x -= offsetX[GwPlayer[D_80109B0C_bobbing_bow_loons].chr];
-    player->pos.y -= offsetY[GwPlayer[D_80109B0C_bobbing_bow_loons].chr];
-    player->pos.z -= offsetZ[GwPlayer[D_80109B0C_bobbing_bow_loons].chr];
-    func_801064C0_bobbing_bow_loons();
+    player->pos.x -= offsetX[GwPlayer[m261_playerNo].chr];
+    player->pos.y -= offsetY[GwPlayer[m261_playerNo].chr];
+    player->pos.z -= offsetZ[GwPlayer[m261_playerNo].chr];
+    m261_PlayerFallStart();
     HuPrcSleep(30);
-    HuAudPlayerFXPlay(GwPlayer[D_80109B0C_bobbing_bow_loons].chr + 0x287, D_80109B0C_bobbing_bow_loons);
-    Hu3DMotionAttrSet(D_80109B1C_bobbing_bow_loons->model[3], 1, 1);
+    HuAudPlayerFXPlay(GwPlayer[m261_playerNo].chr + 0x287, m261_playerNo);
+    Hu3DMotionAttrSet(m261_playerObj->model[3], 1, 1);
     speed = -20.0f;
     while (player->pos.y >= -500.0f) {
         player->pos.y = speed + player->pos.y;
         speed -= 5.0f;
         HuPrcVSleep();
     }
-    func_80109568_bobbing_bow_loons();
+    m261_KoopaLaughStart();
     MgFlowStatSet(MG_STATE_FINISH);
     omDelPrcObj(NULL);
 }
 
-void func_80108894_bobbing_bow_loons(void) {
-    omAddPrcObj(func_801088C0_bobbing_bow_loons, 0x50, 0, 0);
+void m261_ThrowInputStart(void) {
+    omAddPrcObj(m261_ThrowInputProc, 0x50, 0, 0);
 }
 
-void func_801088C0_bobbing_bow_loons(void) {
+void m261_ThrowInputProc(void) {
     f32 angles[5];
     f32 minAngles[5] = { 120.0f, 300.0f, 120.0f, 320.0f, 160.0f };
     f32 maxAngles[5] = { 140.0f, 320.0f, 140.0f, 340.0f, 180.0f };
@@ -1012,42 +1012,42 @@ void func_801088C0_bobbing_bow_loons(void) {
     s32 i;
     f32 y;
 
-    work = D_80109B2C_bobbing_bow_loons->data;
+    work = m261_balloonObj->data;
     do {
-        if (GwPlayer[D_80109B0C_bobbing_bow_loons].stat & 1) {
-            range = (4 - GwPlayer[D_80109B0C_bobbing_bow_loons].cpu_difficulty) * 5;
+        if (GwPlayer[m261_playerNo].stat & 1) {
+            range = (4 - GwPlayer[m261_playerNo].cpu_difficulty) * 5;
             for (i = 0; i < 5; i++) {
                 targetAngles[i] = (rand8() % (range * 2) - range) + minAngles[i];
             }
-            angles[D_80109B14_bobbing_bow_loons] = work->unk_50[D_80109B14_bobbing_bow_loons];
+            angles[m261_comTargetNo] = work->unk_50[m261_comTargetNo];
             hit = 0;
-            if (maxAngles[D_80109B14_bobbing_bow_loons] < 360.0f) {
-                if (targetAngles[D_80109B14_bobbing_bow_loons] <= angles[D_80109B14_bobbing_bow_loons] &&
-                    angles[D_80109B14_bobbing_bow_loons] < maxAngles[D_80109B14_bobbing_bow_loons]) {
+            if (maxAngles[m261_comTargetNo] < 360.0f) {
+                if (targetAngles[m261_comTargetNo] <= angles[m261_comTargetNo] &&
+                    angles[m261_comTargetNo] < maxAngles[m261_comTargetNo]) {
                     hit++;
                 }
-            } else if ((angles[D_80109B14_bobbing_bow_loons] >= 0.0f &&
-                        angles[D_80109B14_bobbing_bow_loons] < maxAngles[D_80109B14_bobbing_bow_loons] - 360.0f) ||
-                       (angles[D_80109B14_bobbing_bow_loons] >= minAngles[D_80109B14_bobbing_bow_loons] &&
-                        angles[D_80109B14_bobbing_bow_loons] < 360.0f)) {
+            } else if ((angles[m261_comTargetNo] >= 0.0f &&
+                        angles[m261_comTargetNo] < maxAngles[m261_comTargetNo] - 360.0f) ||
+                       (angles[m261_comTargetNo] >= minAngles[m261_comTargetNo] &&
+                        angles[m261_comTargetNo] < 360.0f)) {
                 hit++;
             }
             if (hit != 0) {
                 hit = 0;
-                y = work->pos_y[D_80109B14_bobbing_bow_loons];
-                for (i = D_80109B14_bobbing_bow_loons + 1; i < 5; i++) {
+                y = work->pos_y[m261_comTargetNo];
+                for (i = m261_comTargetNo + 1; i < 5; i++) {
                     if (work->pos_y[i] >= y - 20.0f && work->pos_y[i] < y + 20.0f) {
                         hit++;
                         break;
                     }
                 }
                 if (hit == 0) {
-                    D_80109B04_bobbing_bow_loons = 3;
+                    m261_seqNo = 3;
                     break;
                 }
             }
-        } else if (HuPadBtnDown[GwPlayer[D_80109B0C_bobbing_bow_loons].pad] & 0x8000) {
-            D_80109B04_bobbing_bow_loons = 3;
+        } else if (HuPadBtnDown[GwPlayer[m261_playerNo].pad] & 0x8000) {
+            m261_seqNo = 3;
             break;
         }
         HuPrcVSleep();
@@ -1055,19 +1055,19 @@ void func_801088C0_bobbing_bow_loons(void) {
     omDelPrcObj(NULL);
 }
 
-void func_80108C18_bobbing_bow_loons(s32 recolor) {
+void m261_PopObjCreate(s32 recolor) {
     BobbingBowLoonsEffect *effect;
     omObjData *obj;
 
-    obj = omAddObj(0xFF, 2, 0, -1, func_80108E5C_bobbing_bow_loons);
-    D_80109B5C_bobbing_bow_loons = obj;
+    obj = omAddObj(0xFF, 2, 0, -1, m261_PopObjMain);
+    m261_popObj = obj;
     effect = obj->data = HuMemAllocTag(sizeof(BobbingBowLoonsEffect), 0x7918);
     obj->model[0] = Hu3DModelRead(0x5E0011, 0x6CD);
     Hu3DModelObjAttrSet(obj->model[0], 0x20000, 0x20000);
     Hu3DModelVtxBufMake(obj->model[0]);
     obj->model[1] = Hu3DModelRead(0x5E0012, 0x6DD);
     if (recolor) {
-        switch (GwPlayer[D_80109B0C_bobbing_bow_loons].chr) {
+        switch (GwPlayer[m261_playerNo].chr) {
             case 0:
                 Hu3DModelTexAnimChange(obj->model[0], "c0_DEF", "c1_DEF");
                 break;
@@ -1106,7 +1106,7 @@ void func_80108C18_bobbing_bow_loons(s32 recolor) {
     effect->scale = 0.1f;
 }
 
-void func_80108E5C_bobbing_bow_loons(omObjData *obj) {
+void m261_PopObjMain(omObjData *obj) {
     BobbingBowLoonsEffect *effect = obj->data;
 
     omSetTra(obj, effect->x, effect->y, effect->z);
@@ -1114,41 +1114,41 @@ void func_80108E5C_bobbing_bow_loons(omObjData *obj) {
         effect->scale += 0.03f;
         Hu3DModelVtxWave(obj->model[0], effect->scale, effect->scale * 25.0f, 2);
         if (++effect->timer == 30) {
-            Hu3DModelAttrSet(D_80109B5C_bobbing_bow_loons->model[0], 4, 4);
+            Hu3DModelAttrSet(m261_popObj->model[0], 4, 4);
             effect->flags &= ~1;
         }
     }
 }
 
-void func_80108F2C_bobbing_bow_loons(f32 x, f32 y) {
-    BobbingBowLoonsPlayer *player = D_80109B1C_bobbing_bow_loons->data;
+void m261_PopStart(f32 x, f32 y) {
+    BobbingBowLoonsPlayer *player = m261_playerObj->data;
     BobbingBowLoonsEffect *effect;
     s32 recolor;
     f32 scale;
 
-    if (x == player->pos.x + D_80109748_bobbing_bow_loons[GwPlayer[D_80109B0C_bobbing_bow_loons].chr]) {
+    if (x == player->pos.x + m261_chrBalloonOfsTbl[GwPlayer[m261_playerNo].chr]) {
         scale = 1.5f;
         recolor = TRUE;
     } else {
         recolor = FALSE;
         scale = 1.0f;
     }
-    func_80108C18_bobbing_bow_loons(recolor);
-    effect = D_80109B5C_bobbing_bow_loons->data;
+    m261_PopObjCreate(recolor);
+    effect = m261_popObj->data;
     effect->flags |= 1;
-    Hu3DModelAttrSet(D_80109B5C_bobbing_bow_loons->model[0], 4, 0);
+    Hu3DModelAttrSet(m261_popObj->model[0], 4, 0);
     effect->x = x;
     effect->y = y;
     effect->z = 16.0f;
-    omSetSca(D_80109B5C_bobbing_bow_loons, scale, scale, scale);
+    omSetSca(m261_popObj, scale, scale, scale);
 }
 
-void func_80109044_bobbing_bow_loons(void) {
+void m261_BurstObjCreate(void) {
     omObjData *obj;
     s32 i;
 
-    obj = omAddObj(0xFF, 2, 0, -1, func_801090EC_bobbing_bow_loons);
-    D_80109B60_bobbing_bow_loons = obj;
+    obj = omAddObj(0xFF, 2, 0, -1, m261_BurstObjMain);
+    m261_burstObj = obj;
     obj->data = HuMemAllocTag(sizeof(BobbingBowLoonsLoon), 0x7918);
     obj->model[0] = Hu3DModelRead(0x5D0008, 0xA3D);
     for (i = 1; i < 5; i++) {
@@ -1156,7 +1156,7 @@ void func_80109044_bobbing_bow_loons(void) {
     }
 }
 
-void func_801090EC_bobbing_bow_loons(omObjData *obj) {
+void m261_BurstObjMain(omObjData *obj) {
     BobbingBowLoonsLoon *loons = obj->data;
     s32 i;
 
@@ -1171,41 +1171,41 @@ void func_801090EC_bobbing_bow_loons(omObjData *obj) {
     }
 }
 
-void func_801091FC_bobbing_bow_loons(void) {
-    BobbingBowLoonsLoon *loons = D_80109B60_bobbing_bow_loons->data;
-    BobbingBowLoonsWork *work = D_80109B2C_bobbing_bow_loons->data;
+void m261_BalloonPopAll(void) {
+    BobbingBowLoonsLoon *loons = m261_burstObj->data;
+    BobbingBowLoonsWork *work = m261_balloonObj->data;
     s32 i;
 
     for (i = 0; i < 5; i++) {
-        Hu3DModelAttrSet(D_80109B2C_bobbing_bow_loons->model[i], 4, 4);
-        Hu3DModelAttrSet(D_80109B34_bobbing_bow_loons->model[i], 4, 4);
-        Hu3DModelAttrSet(D_80109B38_bobbing_bow_loons->model[i], 4, 4);
+        Hu3DModelAttrSet(m261_balloonObj->model[i], 4, 4);
+        Hu3DModelAttrSet(m261_stringObj->model[i], 4, 4);
+        Hu3DModelAttrSet(m261_itemObj->model[i], 4, 4);
         loons->x[i] = work->pos_x[i];
         loons->y[i] = work->pos_y[i] + 50.0f;
         loons->z[i] = work->pos_z[i] + 2.0f;
         work->state[i] &= ~1;
         work->pos_y[i] = -1000.0f;
-        Hu3DModelAttrSet(D_80109B60_bobbing_bow_loons->model[i], 4, 0);
+        Hu3DModelAttrSet(m261_burstObj->model[i], 4, 0);
     }
 }
 
-void func_8010934C_bobbing_bow_loons(void) {
-    BobbingBowLoonsLoon *loons = OM_GET_DATA_PTR(D_80109B60_bobbing_bow_loons, BobbingBowLoonsLoon);
-    BobbingBowLoonsPlayer *player = OM_GET_DATA_PTR(D_80109B1C_bobbing_bow_loons, BobbingBowLoonsPlayer);
+void m261_PlayerBurstStart(void) {
+    BobbingBowLoonsLoon *loons = OM_GET_DATA_PTR(m261_burstObj, BobbingBowLoonsLoon);
+    BobbingBowLoonsPlayer *player = OM_GET_DATA_PTR(m261_playerObj, BobbingBowLoonsPlayer);
 
     loons->x[0] = player->pos.x;
     loons->y[0] = player->pos.y + 50.0f;
     loons->z[0] = player->pos.z + 2.0f;
-    Hu3DModelAttrSet(D_80109B60_bobbing_bow_loons->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    Hu3DMotionTimeSet(D_80109B60_bobbing_bow_loons->model[0], 0.0f);
+    Hu3DModelAttrSet(m261_burstObj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DMotionTimeSet(m261_burstObj->model[0], 0.0f);
 }
 
-void func_801093DC_bobbing_bow_loons(void) {
+void m261_KoopaObjCreate(void) {
     BobbingBowLoonsHost *host;
     omObjData *obj;
 
-    obj = omAddObj(0xFF, 2, 0, -1, func_801094B0_bobbing_bow_loons);
-    D_80109B64_bobbing_bow_loons = obj;
+    obj = omAddObj(0xFF, 2, 0, -1, m261_KoopaObjMain);
+    m261_koopaObj = obj;
     host = HuMemAllocTag(sizeof(BobbingBowLoonsHost), 0x7918);
     obj->data = host;
     obj->model[0] = Hu3DModelRead(0xA00EE, 0x6D9);
@@ -1216,7 +1216,7 @@ void func_801093DC_bobbing_bow_loons(void) {
     host->headRot = 0.0f;
 }
 
-void func_801094B0_bobbing_bow_loons(omObjData *obj) {
+void m261_KoopaObjMain(omObjData *obj) {
     BobbingBowLoonsHost *host = obj->data;
     HmfMotionNode *node;
     s16 model;
@@ -1230,12 +1230,12 @@ void func_801094B0_bobbing_bow_loons(omObjData *obj) {
     Hu3DMotionAttrSet(obj->model[0], 1, 1);
 }
 
-void func_80109568_bobbing_bow_loons(void) {
-    omAddPrcObj(func_80109594_bobbing_bow_loons, 0x50, 0, 0);
+void m261_KoopaLaughStart(void) {
+    omAddPrcObj(m261_KoopaLaughProc, 0x50, 0, 0);
 }
 
-void func_80109594_bobbing_bow_loons(void) {
-    BobbingBowLoonsHost *host = D_80109B64_bobbing_bow_loons->data;
+void m261_KoopaLaughProc(void) {
+    BobbingBowLoonsHost *host = m261_koopaObj->data;
     s32 i;
     s32 j;
 
@@ -1243,7 +1243,7 @@ void func_80109594_bobbing_bow_loons(void) {
         host->y += 10.0f;
         HuPrcVSleep();
     }
-    func_80107E68_bobbing_bow_loons();
+    m261_CameraLoseStart();
     HuPrcSleep(20);
     HuAudFXPlay(0x2A0);
     for (i = 0; i < 30; i++) {
@@ -1259,14 +1259,14 @@ void func_80109594_bobbing_bow_loons(void) {
     omDelPrcObj(NULL);
 }
 
-void func_80109680_bobbing_bow_loons(void) {
+void m261_HitEffObjCreate(void) {
     omObjData *object = omAddObj(0xFF, 1, 0, -1, NULL);
 
-    D_80109B58_bobbing_bow_loons = object;
+    m261_hitEffObj = object;
     object->data = HuMemAllocTag(8, TAG_OVERLAY);
     object->model[0] = Hu3DModelRead(0xB0003, 0x6DD);
 }
 
-void func_801096E8_bobbing_bow_loons(void) {
-    Hu3DModelAttrSet(D_80109B58_bobbing_bow_loons->model[0], 4, 0);
+void m261_HitEffDispOn(void) {
+    Hu3DModelAttrSet(m261_hitEffObj->model[0], 4, 0);
 }

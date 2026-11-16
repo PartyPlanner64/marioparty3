@@ -63,82 +63,82 @@ typedef struct HandLineSinkerFollowWork {
     /* 0x10 */ Vec unk10;
 } HandLineSinkerFollowWork; // sizeof 0x1C
 
-extern omObjData *D_8010C190_hand_line_sinker;
-extern const s16 D_8010BFB0_hand_line_sinker[];
+extern omObjData *m201_cameraMoveObj;
+extern const s16 m201_fontMesTbl[];
 
-MinigameFlow D_8010BF00_hand_line_sinker = {
+MinigameFlow m201_mgFlow = {
     MG_STATE_OPENING, MINIGAME_2V2, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
     { 0.0f, 0.0f, 0.0f, 0.0f },
     { 0, 0, 0, 0 },
     -1, 1800, -1, -1, 150
 };
-MgCameraPreset D_8010BF28_hand_line_sinker = { { 0.0f, 0.0f, 270.0f }, { 306.0f, 0.0f, 0.0f }, 2190.0f };
-MgCameraPreset D_8010BF44_hand_line_sinker = { { 0.0f, 0.0f, 405.0f }, { 326.0f, 0.0f, 0.0f }, 1250.0f };
-u16 D_8010BF60_hand_line_sinker = 0;
-s32 D_8010BF64_hand_line_sinker[] = { 12, 13, 14, 15, 16, 17, 18, 19 };
-s32 D_8010BF84_hand_line_sinker = 0; /* Unreferenced. */
+MgCameraPreset m201_cameraPlayPreset = { { 0.0f, 0.0f, 270.0f }, { 306.0f, 0.0f, 0.0f }, 2190.0f };
+MgCameraPreset m201_cameraFisherWinPreset = { { 0.0f, 0.0f, 405.0f }, { 326.0f, 0.0f, 0.0f }, 1250.0f };
+u16 m201_exitF = 0;
+s32 m201_fishMdlTbl[] = { 12, 13, 14, 15, 16, 17, 18, 19 };
+s32 m201_fishMdlPad = 0; /* Unreferenced. */
 
-omObjData *D_8010C0E0_hand_line_sinker BSS;
-f32 D_8010C0E4_hand_line_sinker BSS;
-u16 D_8010C0E8_hand_line_sinker BSS;
-u16 D_8010C0EA_hand_line_sinker BSS;
-s16 D_8010C0EC_hand_line_sinker BSS;
-u16 D_8010C0EE_hand_line_sinker BSS;
-s16 D_8010C0F0_hand_line_sinker BSS;
-omObjData *D_8010C0F4_hand_line_sinker BSS;
-omObjData *D_8010C0F8_hand_line_sinker BSS;
-omObjData *D_8010C0FC_hand_line_sinker BSS;
-omObjData **D_8010C100_hand_line_sinker BSS;
-u16 D_8010C104_hand_line_sinker[2] BSS;
-f32 D_8010C108_hand_line_sinker BSS;
-u16 D_8010C10C_hand_line_sinker BSS;
-MgCameraPreset D_8010C110_hand_line_sinker BSS;
-s16 D_8010C12C_hand_line_sinker BSS;
-f32 D_8010C130_hand_line_sinker BSS;
-f32 D_8010C134_hand_line_sinker BSS;
-f32 D_8010C138_hand_line_sinker BSS;
-f32 D_8010C13C_hand_line_sinker BSS;
-f32 D_8010C140_hand_line_sinker BSS;
-u8 D_8010C144_hand_line_sinker[4] BSS; /* Unreferenced. */
-s16 D_8010C148_hand_line_sinker[2][6] BSS;
-omObjData *D_8010C160_hand_line_sinker[8] BSS;
+omObjData *m201_introFishObj BSS;
+f32 m201_fisherRotDiff BSS;
+u16 m201_fishInRangeNum BSS;
+u16 m201_fisherPlayerNo BSS;
+s16 m201_mainState BSS;
+u16 m201_introState BSS;
+s16 m201_mainTimer BSS;
+omObjData *m201_introObj BSS;
+omObjData *m201_finishObj BSS;
+omObjData *m201_fisherObj BSS;
+omObjData **m201_fishObjTbl BSS;
+u16 m201_waterTexSize[2] BSS;
+f32 m201_waterScroll BSS;
+u16 m201_fishCatchNum BSS;
+MgCameraPreset m201_cameraTempPreset BSS;
+s16 m201_stageAnim BSS;
+f32 m201_lineSolveLen BSS;
+f32 m201_lineSolveZ0 BSS;
+f32 m201_lineSolveY0 BSS;
+f32 m201_lineSolveZ1 BSS;
+f32 m201_lineSolveY1 BSS;
+u8 m201_lineSolvePad[4] BSS; /* Unreferenced. */
+s16 m201_effMdlTbl[2][6] BSS;
+omObjData *m201_effObjTbl[8] BSS;
 extern u8 omAllPauseF;
 extern s32 omCharModelNoTbl[][6];
 
-void func_80105D28_hand_line_sinker(omObjData *);
-void func_80105CF0_hand_line_sinker(omObjData *arg0);
-void func_80105EE8_hand_line_sinker(omObjData *obj);
-void func_80106040_hand_line_sinker(omObjData *obj);
-void func_80106070_hand_line_sinker(omObjData *obj);
-void func_801060A0_hand_line_sinker(omObjData *obj);
-void func_801060D0_hand_line_sinker(omObjData *obj);
-void func_8010B5B0_hand_line_sinker(void);
-void func_8010A5F0_hand_line_sinker(void);
-void func_80105FA4_hand_line_sinker(omObjData *obj);
-void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo);
-f32 func_8010ABD4_hand_line_sinker(f32 a);
-void func_801081D0_hand_line_sinker(omObjData *obj);
-void func_8010A6D0_hand_line_sinker(omObjData *parent, u16 type, Vec *offset, Vec *rot);
-omObjData *func_8010A554_hand_line_sinker(void);
-void func_80109584_hand_line_sinker(omObjData *obj);
-void func_80109B9C_hand_line_sinker(omObjData *obj);
-void func_8010689C_hand_line_sinker(omObjData *obj);
-void func_80107B24_hand_line_sinker(omObjData *obj);
-void func_80107420_hand_line_sinker(omObjData *obj, s8 *stickX, s8 *stickY, u16 *btn);
-void func_80108880_hand_line_sinker(omObjData *obj, s8 *stickX, s8 *stickY, u16 *btn);
-f32 func_801092B8_hand_line_sinker(s8 stickX, s8 stickY);
-void func_801093A4_hand_line_sinker(omObjData *obj);
-void func_8010BA64_hand_line_sinker(void);
-omObjData *func_80107A3C_hand_line_sinker(void);
-omObjData *func_801080F0_hand_line_sinker(omObjData *arg0);
-void func_8010AD7C_hand_line_sinker(omObjData *obj, f32 length, f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1);
-void func_8010B0FC_hand_line_sinker(omObjData *arg0, f32 arg1);
-void func_8010BB58_hand_line_sinker(FishingLine *line, Vec *points, u16 count);
-void func_8010B1E4_hand_line_sinker(omObjData *obj);
-void func_8010A904_hand_line_sinker(omObjData *obj);
-void func_8010A9F8_hand_line_sinker(omObjData *obj);
+void m201_MainObjMain(omObjData *);
+void m201_MainObjInit(omObjData *arg0);
+void m201_StageObjInit(omObjData *obj);
+void m201_Player0ObjInit(omObjData *obj);
+void m201_Player1ObjInit(omObjData *obj);
+void m201_Player2ObjInit(omObjData *obj);
+void m201_Player3ObjInit(omObjData *obj);
+void m201_CameraInit(void);
+void m201_EffInit(void);
+void m201_StageObjMain(omObjData *obj);
+void m201_PlayerInit(omObjData *obj, u16 playerNo);
+f32 m201_LineCurveLenDiff(f32 a);
+void m201_FishObjMain(omObjData *obj);
+void m201_EffCreate(omObjData *parent, u16 type, Vec *offset, Vec *rot);
+omObjData *m201_FishNearestGet(void);
+void m201_FisherWinObjMain(omObjData *obj);
+void m201_FishWinObjMain(omObjData *obj);
+void m201_FisherObjMain(omObjData *obj);
+void m201_LureObjMain(omObjData *obj);
+void m201_FisherComInputGet(omObjData *obj, s8 *stickX, s8 *stickY, u16 *btn);
+void m201_FishComInputGet(omObjData *obj, s8 *stickX, s8 *stickY, u16 *btn);
+f32 m201_StickMagGet(s8 stickX, s8 stickY);
+void m201_IntroObjMain(omObjData *obj);
+void m201_OvlReturn(void);
+omObjData *m201_FisherComTargetGet(void);
+omObjData *m201_LureFishHitGet(omObjData *arg0);
+void m201_LinePointsCalc(omObjData *obj, f32 length, f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1);
+void m201_LureSeVolSet(omObjData *arg0, f32 arg1);
+void m201_LineDraw(FishingLine *line, Vec *points, u16 count);
+void m201_FishMove(omObjData *obj);
+void m201_SplashEffObjMain(omObjData *obj);
+void m201_WakeEffObjMain(omObjData *obj);
 
-void func_801059A0_hand_line_sinker(void) {
+void m201_ObjectSetup(void) {
     omObjData *players[4];
     void *data;
     s32 i;
@@ -146,13 +146,13 @@ void func_801059A0_hand_line_sinker(void) {
     omInitObjMan(26, 0);
     omGameSysInit();
     data = DataRead(0x220015);
-    D_8010C12C_hand_line_sinker = Hu3DAnimDataCreate(data);
+    m201_stageAnim = Hu3DAnimDataCreate(data);
     HuMemMemoryFreePerm(data);
     Hu3DSprModelInit(9);
     Hu3DBGColorSet(0, 40, 120);
     Hu3DScreenClearF = 1;
-    func_8010B5B0_hand_line_sinker();
-    func_8010A5F0_hand_line_sinker();
+    m201_CameraInit();
+    m201_EffInit();
     HuAudCharVoiceInit();
     ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
@@ -165,74 +165,74 @@ void func_801059A0_hand_line_sinker(void) {
     Hu3DGLightStatSet(2, 1, 1);
     for (i = 0; i < 4; i++) {
         if (GwPlayer[i].group == 0) {
-            D_8010C0EA_hand_line_sinker = i;
+            m201_fisherPlayerNo = i;
             break;
         }
     }
-    omAddObj(0, 0, 0, -1, func_80105CF0_hand_line_sinker);
-    omAddObj(6, 6, 0, -1, func_80105EE8_hand_line_sinker);
+    omAddObj(0, 0, 0, -1, m201_MainObjInit);
+    omAddObj(6, 6, 0, -1, m201_StageObjInit);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    players[0] = omAddObj(20, 6, 18, -1, func_80106040_hand_line_sinker);
-    players[1] = omAddObj(20, 6, 18, -1, func_80106070_hand_line_sinker);
-    players[2] = omAddObj(20, 6, 18, -1, func_801060A0_hand_line_sinker);
-    players[3] = omAddObj(20, 6, 18, -1, func_801060D0_hand_line_sinker);
+    players[0] = omAddObj(20, 6, 18, -1, m201_Player0ObjInit);
+    players[1] = omAddObj(20, 6, 18, -1, m201_Player1ObjInit);
+    players[2] = omAddObj(20, 6, 18, -1, m201_Player2ObjInit);
+    players[3] = omAddObj(20, 6, 18, -1, m201_Player3ObjInit);
     omMakeGroup(0, 4);
     for (i = 0; i < 4; i++) {
-        if (i == D_8010C0EA_hand_line_sinker) {
-            D_8010C0FC_hand_line_sinker = players[i];
+        if (i == m201_fisherPlayerNo) {
+            m201_fisherObj = players[i];
         } else {
             omAddMember(0, players[i]);
         }
     }
-    D_8010C100_hand_line_sinker = omGetGroupMemberList(0);
-    GMesFontMesCreate(D_8010BFB0_hand_line_sinker, 1);
-    MgFlowInit(&D_8010BF00_hand_line_sinker);
+    m201_fishObjTbl = omGetGroupMemberList(0);
+    GMesFontMesCreate(m201_fontMesTbl, 1);
+    MgFlowInit(&m201_mgFlow);
     mgFlowSeqNo = 45;
     CharAnimInit();
 }
 
-void func_80105CF0_hand_line_sinker(omObjData *arg0) {
-    D_8010C0EC_hand_line_sinker = 0;
-    D_8010C0F8_hand_line_sinker = 0;
-    D_8010C0F4_hand_line_sinker = 0;
-    D_8010C0F0_hand_line_sinker = 0;
-    D_8010C10C_hand_line_sinker = 0;
-    arg0->func = func_80105D28_hand_line_sinker;
+void m201_MainObjInit(omObjData *arg0) {
+    m201_mainState = 0;
+    m201_finishObj = 0;
+    m201_introObj = 0;
+    m201_mainTimer = 0;
+    m201_fishCatchNum = 0;
+    arg0->func = m201_MainObjMain;
 }
 
-const s16 D_8010BFB0_hand_line_sinker[] = { 0x8260, 0x8261, 0x8262, 0 };
+const s16 m201_fontMesTbl[] = { 0x8260, 0x8261, 0x8262, 0 };
 
-void func_80105D28_hand_line_sinker(omObjData *obj) {
+void m201_MainObjMain(omObjData *obj) {
     HandLineSinkerPlayerWork *work;
 
-    if (D_8010BF60_hand_line_sinker == 0) {
+    if (m201_exitF == 0) {
         switch (MgFlowMain()) {
             case 0:
-                if (D_8010C0F4_hand_line_sinker == NULL) {
-                    D_8010C0EE_hand_line_sinker = 0;
-                    D_8010C0F4_hand_line_sinker = omAddObj(4, 0, 0, -1, func_801093A4_hand_line_sinker);
+                if (m201_introObj == NULL) {
+                    m201_introState = 0;
+                    m201_introObj = omAddObj(4, 0, 0, -1, m201_IntroObjMain);
                     HuAudSeqPlay(0);
                 }
                 break;
             case 1:
                 break;
             case 2:
-                if (D_8010C10C_hand_line_sinker == 3) {
+                if (m201_fishCatchNum == 3) {
                     MgFlowStatSet(MG_STATE_FINISH);
                 }
                 break;
             case 3:
-                if (D_8010C0F8_hand_line_sinker == NULL) {
-                    if (D_8010C10C_hand_line_sinker == 3) {
-                        D_8010C0F8_hand_line_sinker = omAddObj(4, 0, 0, -1, func_80109584_hand_line_sinker);
-                        D_8010C0F8_hand_line_sinker->work[1] = 0;
+                if (m201_finishObj == NULL) {
+                    if (m201_fishCatchNum == 3) {
+                        m201_finishObj = omAddObj(4, 0, 0, -1, m201_FisherWinObjMain);
+                        m201_finishObj->work[1] = 0;
                     } else {
-                        D_8010C0F8_hand_line_sinker = omAddObj(4, 0, 0, -1, func_80109B9C_hand_line_sinker);
-                        D_8010C0F8_hand_line_sinker->work[1] = 0;
+                        m201_finishObj = omAddObj(4, 0, 0, -1, m201_FishWinObjMain);
+                        m201_finishObj->work[1] = 0;
                     }
-                    D_8010C0F8_hand_line_sinker->work[0] = 0;
-                } else if (D_8010C0F8_hand_line_sinker->work[0] == 1) {
-                    omDelObj(D_8010C0F8_hand_line_sinker);
+                    m201_finishObj->work[0] = 0;
+                } else if (m201_finishObj->work[0] == 1) {
+                    omDelObj(m201_finishObj);
                     MgFlowStatSet(MG_STATE_RESULT);
                 }
                 break;
@@ -240,65 +240,65 @@ void func_80105D28_hand_line_sinker(omObjData *obj) {
                 break;
             case 5:
                 WipeCreateOut(WIPE_TYPE_NORMAL, 20);
-                D_8010BF60_hand_line_sinker = 1;
+                m201_exitF = 1;
                 break;
         }
     } else if (WipeStatGet() == 0) {
-        work = D_8010C0FC_hand_line_sinker->data;
-        func_8010BE6C_hand_line_sinker(work->line);
+        work = m201_fisherObj->data;
+        m201_LineKill(work->line);
         work->line = NULL;
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
-        func_8010BA64_hand_line_sinker();
+        m201_OvlReturn();
     }
 }
 
-void func_80105EE8_hand_line_sinker(omObjData *obj) {
+void m201_StageObjInit(omObjData *obj) {
     obj->data = HuMemAllocTag(0x24, TAG_OVERLAY);
     obj->model[0] = Hu3DModelRead(0x220000, 0x699);
     obj->model[1] = Hu3DModelRead(0x220001, 0x1A99);
     obj->model[2] = Hu3DModelRead(0x220003, 0x699);
     Hu3DMotionAttrSet(obj->model[2], 2, 2);
-    Hu3DTexSizeGet("m201_3mizu_DEF", D_8010C104_hand_line_sinker);
+    Hu3DTexSizeGet("m201_3mizu_DEF", m201_waterTexSize);
     Hu3DModelVtxBufMake(obj->model[1]);
-    D_8010C108_hand_line_sinker = 0.0f;
-    obj->func = func_80105FA4_hand_line_sinker;
+    m201_waterScroll = 0.0f;
+    obj->func = m201_StageObjMain;
 }
 
-void func_80105FA4_hand_line_sinker(omObjData *obj) {
+void m201_StageObjMain(omObjData *obj) {
     if (omPauseChk() + omAllPauseF == 0) {
-        D_8010C108_hand_line_sinker += 0.1f;
+        m201_waterScroll += 0.1f;
     }
-    Hu3DModelObjTexScroll(obj->model[1], D_8010C108_hand_line_sinker, 0.0f, D_8010C104_hand_line_sinker[0],
-                       D_8010C104_hand_line_sinker[1], "m201_00-grid6", 0);
+    Hu3DModelObjTexScroll(obj->model[1], m201_waterScroll, 0.0f, m201_waterTexSize[0],
+                       m201_waterTexSize[1], "m201_00-grid6", 0);
 }
 
-void func_80106040_hand_line_sinker(omObjData *obj) {
+void m201_Player0ObjInit(omObjData *obj) {
     obj->trans.z = 5000.0f;
-    func_80106100_hand_line_sinker(obj, 0);
+    m201_PlayerInit(obj, 0);
 }
 
-void func_80106070_hand_line_sinker(omObjData *obj) {
+void m201_Player1ObjInit(omObjData *obj) {
     obj->trans.z = 5000.0f;
-    func_80106100_hand_line_sinker(obj, 1);
+    m201_PlayerInit(obj, 1);
 }
 
-void func_801060A0_hand_line_sinker(omObjData *obj) {
+void m201_Player2ObjInit(omObjData *obj) {
     obj->trans.z = 5000.0f;
-    func_80106100_hand_line_sinker(obj, 2);
+    m201_PlayerInit(obj, 2);
 }
 
-void func_801060D0_hand_line_sinker(omObjData *obj) {
+void m201_Player3ObjInit(omObjData *obj) {
     obj->trans.z = 5000.0f;
-    func_80106100_hand_line_sinker(obj, 3);
+    m201_PlayerInit(obj, 3);
 }
 
-char *D_8010BF88_hand_line_sinker[] = { "Lure-Line_2", "c000_049_long-Lure-Line", NULL, NULL, NULL };
-u16 D_8010BF9C_hand_line_sinker = 0;
-s32 D_8010BFA0_hand_line_sinker[] = { 0x220004, 0x220005 };
-omObjFunc D_8010BFA8_hand_line_sinker[] = { func_8010A904_hand_line_sinker, func_8010A9F8_hand_line_sinker };
+char *m201_lureHookTbl[] = { "Lure-Line_2", "c000_049_long-Lure-Line", NULL, NULL, NULL };
+u16 m201_fishPlaceNum = 0;
+s32 m201_effFileTbl[] = { 0x220004, 0x220005 };
+omObjFunc m201_effFuncTbl[] = { m201_SplashEffObjMain, m201_WakeEffObjMain };
 
-void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo) {
+void m201_PlayerInit(omObjData *obj, u16 playerNo) {
     HandLineSinkerPlayerWork *work;
     s8 chr;
     f32 x;
@@ -320,14 +320,14 @@ void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo) {
     work->unk10 = 0;
     work->pressTimer = 0;
     work->speed = 0.0f;
-    if (playerNo == D_8010C0EA_hand_line_sinker) {
+    if (playerNo == m201_fisherPlayerNo) {
         obj->model[0] = Hu3DModelRead(model | motion, 0x20689);
         CharAnimCreate(obj->model[0], 2, chr, CharMotionDataNumGetTbl(chr, 2, 0));
         Hu3DModelDynamicFree(obj->model[0]);
         obj->model[5] = Hu3DAnimDataRead(CharMotionDataNumGetTbl(chr, 2, 1));
         obj->work[0] = 0;
         work->unk8 = 0.0f;
-        work->line = func_8010BA80_hand_line_sinker(0xFF, 0xFF, 0xFF);
+        work->line = m201_LineCreate(0xFF, 0xFF, 0xFF);
         work->lineObj = NULL;
         work->aiTarget = NULL;
         obj->model[1] = Hu3DModelRead(0x220006, 0x20499);
@@ -351,7 +351,7 @@ void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo) {
         Hu3DMotionModelSet(obj->model[0], obj->motion[4]);
         Hu3DMotionAttrSet(obj->model[0], 2, 2);
         Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        Hu3DModelHookSet(obj->model[3], obj->model[1], D_8010BF88_hand_line_sinker[0]);
+        Hu3DModelHookSet(obj->model[3], obj->model[1], m201_lureHookTbl[0]);
         Hu3DModelAttrSet(obj->model[3], 0x4000, 0x4000);
         Hu3DModelAttrSet(obj->model[1], 0x4000, 0x4000);
         omSetTra(obj, 0.0f, 100.0f, 900.0f);
@@ -361,10 +361,10 @@ void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo) {
         Hu3DModelRotSet(obj->model[1], obj->rot.x, obj->rot.y, obj->rot.z);
         Hu3DModelPosSet(obj->model[2], obj->trans.x, obj->trans.y, obj->trans.z);
         Hu3DModelRotSet(obj->model[2], obj->rot.x, obj->rot.y, obj->rot.z);
-        obj->func = func_8010689C_hand_line_sinker;
+        obj->func = m201_FisherObjMain;
     } else {
-        obj->model[0] = Hu3DModelRead(D_8010BF64_hand_line_sinker[chr] | 0x220000, 0x1A99);
-        omObjMotionRead(obj, 0, D_8010BF64_hand_line_sinker[chr] | 0x220000);
+        obj->model[0] = Hu3DModelRead(m201_fishMdlTbl[chr] | 0x220000, 0x1A99);
+        omObjMotionRead(obj, 0, m201_fishMdlTbl[chr] | 0x220000);
         omObjMotionRead(obj, 1, 0x220014);
         Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
         Hu3DMotionAttrSet(obj->model[0], 2, 2);
@@ -375,27 +375,27 @@ void func_80106100_hand_line_sinker(omObjData *obj, u16 playerNo) {
             dist = (rand8() * rand8()) % 595;
             x = sindf(rot) * dist;
             z = cosdf(rot) * dist;
-            for (i = 0; i < D_8010BF9C_hand_line_sinker; i++) {
-                dist = HuSqrtf((D_8010C100_hand_line_sinker[i]->trans.x - x) *
-                                   (D_8010C100_hand_line_sinker[i]->trans.x - x) +
-                               (D_8010C100_hand_line_sinker[i]->trans.z - z) *
-                                   (D_8010C100_hand_line_sinker[i]->trans.z - z));
+            for (i = 0; i < m201_fishPlaceNum; i++) {
+                dist = HuSqrtf((m201_fishObjTbl[i]->trans.x - x) *
+                                   (m201_fishObjTbl[i]->trans.x - x) +
+                               (m201_fishObjTbl[i]->trans.z - z) *
+                                   (m201_fishObjTbl[i]->trans.z - z));
                 if (dist < 405.0f) {
                     break;
                 }
             }
-        } while (i != D_8010BF9C_hand_line_sinker);
+        } while (i != m201_fishPlaceNum);
         omSetTra(obj, x, -240.0f, z);
-        D_8010BF9C_hand_line_sinker++;
+        m201_fishPlaceNum++;
         obj->rot.y = (rand8() * rand8()) % 360;
         work->aiPrevRot = work->aiTargetRot = (rand8() * rand8()) % 360;
         work->aiTimer = 0;
         obj->work[0] = 0;
-        obj->func = func_801081D0_hand_line_sinker;
+        obj->func = m201_FishObjMain;
     }
 }
 
-void func_8010689C_hand_line_sinker(omObjData *obj) {
+void m201_FisherObjMain(omObjData *obj) {
     HandLineSinkerPlayerWork *work;
     HandLineSinkerObjWork *lineWork;
     Vec pos;
@@ -414,7 +414,7 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
     work = obj->data;
     pad = GwPlayer[work->playerNo].pad;
     if (GwPlayer[work->playerNo].stat & 1) {
-        func_80107420_hand_line_sinker(obj, &stickX, &stickY, &btn);
+        m201_FisherComInputGet(obj, &stickX, &stickY, &btn);
     } else {
         stickX = HuPadStkX[pad];
         stickY = HuPadStkY[pad];
@@ -442,7 +442,7 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
                 }
                 Hu3DModelRotSet(obj->model[2], 0.0f, obj->rot.y, 0.0f);
                 Hu3DModelRotSet(obj->model[3], 0.0f, obj->rot.y, 0.0f);
-                work->unk8 = func_801092B8_hand_line_sinker(x, y);
+                work->unk8 = m201_StickMagGet(x, y);
                 if (MgFlowStatGet() != MG_STATE_PLAY) {
                     obj->work[0] = 0;
                 } else {
@@ -464,7 +464,7 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
                 }
                 Hu3DModelRotSet(obj->model[2], 0.0f, obj->rot.y, 0.0f);
                 Hu3DModelRotSet(obj->model[3], 0.0f, obj->rot.y, 0.0f);
-                work->unk8 = func_801092B8_hand_line_sinker(x, y);
+                work->unk8 = m201_StickMagGet(x, y);
             }
             if (MgFlowStatGet() != MG_STATE_PLAY) {
                 obj->work[0] = 0;
@@ -506,7 +506,7 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
             if (work->lineObj != NULL) {
                 omDelObj(work->lineObj);
             }
-            work->lineObj = omAddObj(20, 1, 0, -1, func_80107B24_hand_line_sinker);
+            work->lineObj = omAddObj(20, 1, 0, -1, m201_LureObjMain);
             work->lineObj->model[0] = obj->model[3];
             work->lineObj->data = HuMemAllocTag(sizeof(HandLineSinkerObjWork), TAG_OVERLAY);
             lineWork = work->lineObj->data;
@@ -546,8 +546,8 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
         case 4:
             if (stat & 1) {
                 obj->mode &= ~1;
-                Hu3DMotionShiftSet(D_8010C0FC_hand_line_sinker->model[0],
-                                   Hu3DData[D_8010C0FC_hand_line_sinker->motion[5]].motId, 0, 6, 2);
+                Hu3DMotionShiftSet(m201_fisherObj->model[0],
+                                   Hu3DData[m201_fisherObj->motion[5]].motId, 0, 6, 2);
                 obj->work[0] = 3;
             }
             break;
@@ -620,7 +620,7 @@ void func_8010689C_hand_line_sinker(omObjData *obj) {
     }
 }
 
-void func_80107420_hand_line_sinker(omObjData *obj, s8 *stickX, s8 *stickY, u16 *btn) {
+void m201_FisherComInputGet(omObjData *obj, s8 *stickX, s8 *stickY, u16 *btn) {
     HandLineSinkerPlayerWork *work;
     omObjData *target;
     f32 offset;
@@ -665,7 +665,7 @@ void func_80107420_hand_line_sinker(omObjData *obj, s8 *stickX, s8 *stickY, u16 
         case 0:
             target = work->aiTarget;
             if (target == NULL) {
-                work->aiTarget = func_80107A3C_hand_line_sinker();
+                work->aiTarget = m201_FisherComTargetGet();
                 work->aiAimOffset = offset;
                 break;
             }
@@ -682,7 +682,7 @@ void func_80107420_hand_line_sinker(omObjData *obj, s8 *stickX, s8 *stickY, u16 
         case 1:
             target = work->aiTarget;
             if (target == NULL) {
-                work->aiTarget = func_80107A3C_hand_line_sinker();
+                work->aiTarget = m201_FisherComTargetGet();
                 work->aiAimOffset = offset;
                 break;
             }
@@ -719,7 +719,7 @@ void func_80107420_hand_line_sinker(omObjData *obj, s8 *stickX, s8 *stickY, u16 
     }
 }
 
-omObjData *func_80107A3C_hand_line_sinker(void) {
+omObjData *m201_FisherComTargetGet(void) {
     omObjData *candidates[3];
     omObjData *obj;
     s32 count;
@@ -727,7 +727,7 @@ omObjData *func_80107A3C_hand_line_sinker(void) {
 
     count = 0;
     for (i = 0; i < 3; i++) {
-        obj = D_8010C100_hand_line_sinker[i];
+        obj = m201_fishObjTbl[i];
         if (obj->work[0] == 2 || obj->work[0] == 4) {
             continue;
         }
@@ -744,7 +744,7 @@ omObjData *func_80107A3C_hand_line_sinker(void) {
     return candidates[rand8() % count];
 }
 
-void func_80107B24_hand_line_sinker(omObjData *obj) {
+void m201_LureObjMain(omObjData *obj) {
     HandLineSinkerObjWork *work;
     HandLineSinkerPlayerWork *targetWork;
     omObjData *target;
@@ -774,7 +774,7 @@ void func_80107B24_hand_line_sinker(omObjData *obj) {
                 offset.y = -50.0f;
                 offset.z = obj->trans.z;
                 rot.x = rot.y = rot.z = 0.0f;
-                func_8010A6D0_hand_line_sinker(NULL, 0, &offset, &rot);
+                m201_EffCreate(NULL, 0, &offset, &rot);
                 work->seNo = HuAudPlayerFXPlay(0x300, work->unk1C8);
                 HuAudFXStop(work->unk1CA);
                 omVibrate(work->unk1C8, 2, 3, 10);
@@ -783,7 +783,7 @@ void func_80107B24_hand_line_sinker(omObjData *obj) {
                 y = -210.0f;
                 work->unk1D0 = 0;
                 obj->work[0] = 1;
-                omObjModeSet(D_8010C0FC_hand_line_sinker, 1);
+                omObjModeSet(m201_fisherObj, 1);
                 work->unk1C4 = 0.0f;
                 work->unk1CA = HuAudFXPlay(0x303);
             }
@@ -796,13 +796,13 @@ void func_80107B24_hand_line_sinker(omObjData *obj) {
             } else {
                 work->unk1B4 = work->unk1B0 + 3.0f;
             }
-            func_8010AD7C_hand_line_sinker(obj, work->unk1B0, work->pos.x, work->pos.y, work->pos.z, obj->trans.x,
+            m201_LinePointsCalc(obj, work->unk1B0, work->pos.x, work->pos.y, work->pos.z, obj->trans.x,
                                            obj->trans.y, obj->trans.z);
-            func_8010B0FC_hand_line_sinker(obj, 111.0f);
+            m201_LureSeVolSet(obj, 111.0f);
             break;
         case 1:
             work->unk1B4 -= 21.0f - work->unk1BC * 21.0f;
-            if (work->unk1D0 == 0 && (target = func_801080F0_hand_line_sinker(obj)) != NULL && obj->work[1] == 0) {
+            if (work->unk1D0 == 0 && (target = m201_LureFishHitGet(obj)) != NULL && obj->work[1] == 0) {
                 obj->work[1] = 1;
                 omObjModeSet(target, 1);
                 work->unk1B8 = target;
@@ -832,9 +832,9 @@ void func_80107B24_hand_line_sinker(omObjData *obj) {
                         HuAudPlayerFXPlay(0x304, work->unk1C8);
                     }
                     work->unk1C4 = 0.0f;
-                    obj->rot.y = D_8010C0FC_hand_line_sinker->rot.y;
+                    obj->rot.y = m201_fisherObj->rot.y;
                     if (work->unk1B0 < 0.0f) {
-                        omObjModeSet(D_8010C0FC_hand_line_sinker, 2);
+                        omObjModeSet(m201_fisherObj, 2);
                         omSetTra(obj, work->pos.x, work->pos.y, work->pos.z);
                         HuAudFXStop(work->unk1CA);
                     } else {
@@ -843,15 +843,15 @@ void func_80107B24_hand_line_sinker(omObjData *obj) {
                     }
                 }
             }
-            func_8010AD7C_hand_line_sinker(obj, work->unk1B4 + work->unk1C4, work->pos.x, work->pos.y, work->pos.z,
+            m201_LinePointsCalc(obj, work->unk1B4 + work->unk1C4, work->pos.x, work->pos.y, work->pos.z,
                                            obj->trans.x, obj->trans.y, obj->trans.z);
-            func_8010B0FC_hand_line_sinker(obj, 104.0f);
+            m201_LureSeVolSet(obj, 104.0f);
             break;
     }
-    func_8010BB58_hand_line_sinker(work->line, work->points, work->numPoints);
+    m201_LineDraw(work->line, work->points, work->numPoints);
 }
 
-omObjData *func_801080F0_hand_line_sinker(omObjData *arg0) {
+omObjData *m201_LureFishHitGet(omObjData *arg0) {
     omObjData *obj;
     s32 i;
 
@@ -859,7 +859,7 @@ omObjData *func_801080F0_hand_line_sinker(omObjData *arg0) {
         return NULL;
     }
     for (i = 0; i < 3; i++) {
-        obj = D_8010C100_hand_line_sinker[i];
+        obj = m201_fishObjTbl[i];
         if (obj->work[0] < 2) {
             if (HuSqrtf((arg0->trans.x - obj->trans.x) * (arg0->trans.x - obj->trans.x) +
                         (arg0->trans.z - obj->trans.z) * (arg0->trans.z - obj->trans.z)) < HuSqrtf(8725.0f)) {
@@ -870,7 +870,7 @@ omObjData *func_801080F0_hand_line_sinker(omObjData *arg0) {
     return NULL;
 }
 
-void func_801081D0_hand_line_sinker(omObjData *obj) {
+void m201_FishObjMain(omObjData *obj) {
     HandLineSinkerPlayerWork *work = obj->data;
     HandLineSinkerObjWork *lineWork;
     omObjData *lineObj;
@@ -886,7 +886,7 @@ void func_801081D0_hand_line_sinker(omObjData *obj) {
 
     pad = GwPlayer[work->playerNo].pad;
     if (GwPlayer[work->playerNo].stat & 1) {
-        func_80108880_hand_line_sinker(obj, &stickX, &stickY, &btn);
+        m201_FishComInputGet(obj, &stickX, &stickY, &btn);
     } else {
         stickX = HuPadStkX[pad];
         stickY = HuPadStkY[pad];
@@ -938,7 +938,7 @@ void func_801081D0_hand_line_sinker(omObjData *obj) {
                     }
                 }
             }
-            func_8010B1E4_hand_line_sinker(obj);
+            m201_FishMove(obj);
             if (btn & A_BUTTON) {
                 obj->work[0] = 1;
                 work->speed = 20.0f;
@@ -948,13 +948,13 @@ void func_801081D0_hand_line_sinker(omObjData *obj) {
                 offset.z = cosdf(angle) * 80.0f;
                 rot.x = rot.z = 0.0f;
                 rot.y = obj->rot.y + 180.0f;
-                func_8010A6D0_hand_line_sinker(obj, 1, &offset, &rot);
+                m201_EffCreate(obj, 1, &offset, &rot);
                 PlayerFXPlay(0x306, work->playerNo);
             }
             work->pressTimer = 1000;
             break;
         case 1:
-            func_8010B1E4_hand_line_sinker(obj);
+            m201_FishMove(obj);
             work->speed *= 0.85f;
             if (work->speed < 2.0f) {
                 obj->work[0] = 0;
@@ -967,16 +967,16 @@ void func_801081D0_hand_line_sinker(omObjData *obj) {
             if (stat & 2) {
                 obj->mode &= ~2;
                 obj->work[0] = 4;
-                D_8010C10C_hand_line_sinker++;
-                work->flyRot = atan2df(obj->trans.x - D_8010C0FC_hand_line_sinker->trans.x,
-                                       obj->trans.z - D_8010C0FC_hand_line_sinker->trans.z) +
+                m201_fishCatchNum++;
+                work->flyRot = atan2df(obj->trans.x - m201_fisherObj->trans.x,
+                                       obj->trans.z - m201_fisherObj->trans.z) +
                                180.0f;
                 work->flyVelY = 50.0f;
                 HuAudFXPlay(GwPlayer[work->playerNo].chr + 0x287);
                 omVibrate(work->playerNo, 10, 0, 10);
                 break;
             }
-            lineObj = ((HandLineSinkerPlayerWork *)D_8010C0FC_hand_line_sinker->data)->lineObj;
+            lineObj = ((HandLineSinkerPlayerWork *)m201_fisherObj->data)->lineObj;
             lineWork = lineObj->data;
             if (lineWork != NULL) {
                 if (btn & A_BUTTON) {
@@ -1014,7 +1014,7 @@ void func_801081D0_hand_line_sinker(omObjData *obj) {
     }
 }
 
-void func_80108880_hand_line_sinker(omObjData *obj, s8 *stickX, s8 *stickY, u16 *btn) {
+void m201_FishComInputGet(omObjData *obj, s8 *stickX, s8 *stickY, u16 *btn) {
     HandLineSinkerPlayerWork *work;
     u8 difficulty;
 
@@ -1089,7 +1089,7 @@ void func_80108880_hand_line_sinker(omObjData *obj, s8 *stickX, s8 *stickY, u16 
     }
 }
 
-void func_80108C5C_hand_line_sinker(omObjData *obj) {
+void m201_FishJumpObjMain(omObjData *obj) {
     HandLineSinkerPlayerWork *work = obj->data;
     Vec pos;
     Vec rot;
@@ -1109,7 +1109,7 @@ void func_80108C5C_hand_line_sinker(omObjData *obj) {
                 pos.y = -50.0f;
                 pos.z = obj->trans.z;
                 rot.x = rot.y = rot.z = 0.0f;
-                func_8010A6D0_hand_line_sinker(NULL, 0, &pos, &rot);
+                m201_EffCreate(NULL, 0, &pos, &rot);
                 HuAudFXPlay(0x30F);
                 work->splashed = 1;
             }
@@ -1130,7 +1130,7 @@ void func_80108C5C_hand_line_sinker(omObjData *obj) {
                 pos.y = -50.0f;
                 pos.z = obj->trans.z;
                 rot.x = rot.y = rot.z = 0.0f;
-                func_8010A6D0_hand_line_sinker(NULL, 0, &pos, &rot);
+                m201_EffCreate(NULL, 0, &pos, &rot);
                 HuAudFXPlay(0x30F);
             }
             break;
@@ -1145,13 +1145,13 @@ void func_80108C5C_hand_line_sinker(omObjData *obj) {
                 obj->trans.y = -240.0f;
                 obj->work[0] = 0;
                 obj->rot.x = 0.0f;
-                obj->func = func_801081D0_hand_line_sinker;
+                obj->func = m201_FishObjMain;
             }
             break;
     }
 }
 
-void func_80108F44_hand_line_sinker(omObjData *obj) {
+void m201_FishGatherObjMain(omObjData *obj) {
     omObjData *other;
     f32 angle;
     f32 diff;
@@ -1206,7 +1206,7 @@ void func_80108F44_hand_line_sinker(omObjData *obj) {
     z = dz + obj->trans.z;
     hit = 0;
     for (i = 0; i < 3; i++) {
-        other = D_8010C100_hand_line_sinker[i];
+        other = m201_fishObjTbl[i];
         if (obj == other || obj->work[0] == 2) {
             continue;
         }
@@ -1214,7 +1214,7 @@ void func_80108F44_hand_line_sinker(omObjData *obj) {
         if (dist < 270.0f) {
             x -= sindf(obj->rot.y) * (270.0f - dist);
             z -= cosdf(obj->rot.y) * (270.0f - dist);
-            if (D_8010C100_hand_line_sinker[i]->work[3] == 1) {
+            if (m201_fishObjTbl[i]->work[3] == 1) {
                 hit = 1;
             }
             break;
@@ -1228,7 +1228,7 @@ void func_80108F44_hand_line_sinker(omObjData *obj) {
     }
 }
 
-f32 func_801092B8_hand_line_sinker(s8 stickX, s8 stickY) {
+f32 m201_StickMagGet(s8 stickX, s8 stickY) {
     f32 angle;
     f32 mag;
 
@@ -1243,51 +1243,51 @@ f32 func_801092B8_hand_line_sinker(s8 stickX, s8 stickY) {
     return mag;
 }
 
-void func_801093A4_hand_line_sinker(omObjData *obj) {
+void m201_IntroObjMain(omObjData *obj) {
     HandLineSinkerPlayerWork *work;
 
-    switch (D_8010C0EE_hand_line_sinker) {
+    switch (m201_introState) {
         case 0:
             WipeCreateIn(WIPE_TYPE_PREV, 0x10);
-            D_8010C0E0_hand_line_sinker = func_8010A554_hand_line_sinker();
-            D_8010C110_hand_line_sinker.center.x = D_8010C0E0_hand_line_sinker->trans.x;
-            D_8010C110_hand_line_sinker.center.y = D_8010C0E0_hand_line_sinker->trans.y;
-            D_8010C110_hand_line_sinker.center.z = D_8010C0E0_hand_line_sinker->trans.z;
-            D_8010C110_hand_line_sinker.rot = D_8010BF28_hand_line_sinker.rot;
-            D_8010C110_hand_line_sinker.rot.x = 328.0f;
-            D_8010C110_hand_line_sinker.zoom = 1250.0f;
-            func_8010B5EC_hand_line_sinker(&D_8010C110_hand_line_sinker, &D_8010BF28_hand_line_sinker, 37);
-            D_8010C0EE_hand_line_sinker = 1;
+            m201_introFishObj = m201_FishNearestGet();
+            m201_cameraTempPreset.center.x = m201_introFishObj->trans.x;
+            m201_cameraTempPreset.center.y = m201_introFishObj->trans.y;
+            m201_cameraTempPreset.center.z = m201_introFishObj->trans.z;
+            m201_cameraTempPreset.rot = m201_cameraPlayPreset.rot;
+            m201_cameraTempPreset.rot.x = 328.0f;
+            m201_cameraTempPreset.zoom = 1250.0f;
+            m201_CameraMoveStart(&m201_cameraTempPreset, &m201_cameraPlayPreset, 37);
+            m201_introState = 1;
             break;
         case 1:
             if (WipeStatGet() == 0) {
-                work = D_8010C0E0_hand_line_sinker->data;
+                work = m201_introFishObj->data;
                 work->velY = 60.0f;
                 work->splashed = 0;
-                D_8010C0EE_hand_line_sinker = 3;
+                m201_introState = 3;
                 HuAudFXPlay(0x305);
             }
             break;
         case 2:
-            if (D_8010C0E0_hand_line_sinker->work[0] == 0) {
-                D_8010C0EE_hand_line_sinker = 3;
+            if (m201_introFishObj->work[0] == 0) {
+                m201_introState = 3;
             }
             break;
         case 3:
-            D_8010C190_hand_line_sinker->work[1] = 1;
-            if (D_8010C190_hand_line_sinker->work[0] == 0) {
-                Hu3DMotionShiftSet(D_8010C0FC_hand_line_sinker->model[0],
-                                   Hu3DData[D_8010C0FC_hand_line_sinker->motion[8]].motId, 0, 30, 3);
-                omDelObj(D_8010C190_hand_line_sinker);
-                D_8010C190_hand_line_sinker = NULL;
-                omDelObj(D_8010C0F4_hand_line_sinker);
+            m201_cameraMoveObj->work[1] = 1;
+            if (m201_cameraMoveObj->work[0] == 0) {
+                Hu3DMotionShiftSet(m201_fisherObj->model[0],
+                                   Hu3DData[m201_fisherObj->motion[8]].motId, 0, 30, 3);
+                omDelObj(m201_cameraMoveObj);
+                m201_cameraMoveObj = NULL;
+                omDelObj(m201_introObj);
                 MgFlowStatSet(MG_STATE_START);
             }
             break;
     }
 }
 
-void func_80109584_hand_line_sinker(omObjData *obj) {
+void m201_FisherWinObjMain(omObjData *obj) {
     HandLineSinkerPlayerWork *work;
     Vec pos;
     f32 dist;
@@ -1296,78 +1296,78 @@ void func_80109584_hand_line_sinker(omObjData *obj) {
 
     switch (obj->work[1]) {
         case 0:
-            if (D_8010C0FC_hand_line_sinker->work[0] == 0) {
+            if (m201_fisherObj->work[0] == 0) {
                 obj->work[1] = 1;
             }
             break;
         case 1:
-            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[1], 0x4000, 0);
-            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[3], 0x4000, 0);
-            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[2], 0x4000, 0);
-            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(m201_fisherObj->model[1], 0x4000, 0);
+            Hu3DModelAttrSet(m201_fisherObj->model[3], 0x4000, 0);
+            Hu3DModelAttrSet(m201_fisherObj->model[2], 0x4000, 0);
+            Hu3DModelAttrSet(m201_fisherObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(m201_fisherObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             for (i = 0; i < 6; i++) {
                 dist = i * 17.0f;
                 pos.y = 240.0f - dist;
-                pos.x = sindf(D_8010C0FC_hand_line_sinker->rot.y - 6.0f + rand8() % 13 - 6.0f) * (140.0f - dist) +
-                        D_8010C0FC_hand_line_sinker->trans.x;
-                pos.z = cosdf(D_8010C0FC_hand_line_sinker->rot.y - 6.0f + rand8() % 13 - 6.0f) * (140.0f - dist) +
-                        D_8010C0FC_hand_line_sinker->trans.z;
+                pos.x = sindf(m201_fisherObj->rot.y - 6.0f + rand8() % 13 - 6.0f) * (140.0f - dist) +
+                        m201_fisherObj->trans.x;
+                pos.z = cosdf(m201_fisherObj->rot.y - 6.0f + rand8() % 13 - 6.0f) * (140.0f - dist) +
+                        m201_fisherObj->trans.z;
                 effect = EffectCreate(0x85, 0x2A9);
                 EffectPosSet(effect, pos.x, pos.y, pos.z);
                 EffectTimeSet(effect, 16);
             }
             obj->work[1] = 2;
-            Hu3DMotionShiftSet(D_8010C0FC_hand_line_sinker->model[0],
-                               Hu3DData[D_8010C0FC_hand_line_sinker->motion[10]].motId, 0, 6, 2);
+            Hu3DMotionShiftSet(m201_fisherObj->model[0],
+                               Hu3DData[m201_fisherObj->motion[10]].motId, 0, 6, 2);
             break;
         case 2:
-            D_8010C0E4_hand_line_sinker = -D_8010C0FC_hand_line_sinker->rot.y;
-            if (D_8010C0E4_hand_line_sinker < 0.0f) {
-                D_8010C0E4_hand_line_sinker += 360.0f;
+            m201_fisherRotDiff = -m201_fisherObj->rot.y;
+            if (m201_fisherRotDiff < 0.0f) {
+                m201_fisherRotDiff += 360.0f;
             }
-            if (D_8010C0E4_hand_line_sinker < 180.0f) {
-                if (D_8010C0E4_hand_line_sinker > 5.0f) {
-                    D_8010C0FC_hand_line_sinker->rot.y += 5.0f;
+            if (m201_fisherRotDiff < 180.0f) {
+                if (m201_fisherRotDiff > 5.0f) {
+                    m201_fisherObj->rot.y += 5.0f;
                 } else {
-                    D_8010C0FC_hand_line_sinker->rot.y += D_8010C0E4_hand_line_sinker;
+                    m201_fisherObj->rot.y += m201_fisherRotDiff;
                 }
             } else {
-                if (360.0f - D_8010C0E4_hand_line_sinker > 5.0f) {
-                    D_8010C0FC_hand_line_sinker->rot.y -= 5.0f;
+                if (360.0f - m201_fisherRotDiff > 5.0f) {
+                    m201_fisherObj->rot.y -= 5.0f;
                 } else {
-                    D_8010C0FC_hand_line_sinker->rot.y -= 360.0f - D_8010C0E4_hand_line_sinker;
+                    m201_fisherObj->rot.y -= 360.0f - m201_fisherRotDiff;
                 }
             }
-            if (D_8010C0FC_hand_line_sinker->rot.y >= 360.0f) {
-                D_8010C0FC_hand_line_sinker->rot.y -= 360.0f;
+            if (m201_fisherObj->rot.y >= 360.0f) {
+                m201_fisherObj->rot.y -= 360.0f;
             }
-            if (D_8010C0FC_hand_line_sinker->rot.y < 0.0f) {
-                D_8010C0FC_hand_line_sinker->rot.y += 360.0f;
+            if (m201_fisherObj->rot.y < 0.0f) {
+                m201_fisherObj->rot.y += 360.0f;
             }
-            if (fabs(D_8010C0FC_hand_line_sinker->rot.y) < 0.0001f) {
-                D_8010C0FC_hand_line_sinker->rot.y = 0.0f;
-                Hu3DMotionShiftSet(D_8010C0FC_hand_line_sinker->model[0],
-                                   Hu3DData[D_8010C0FC_hand_line_sinker->motion[11]].motId, 0, 6, 2);
+            if (fabs(m201_fisherObj->rot.y) < 0.0001f) {
+                m201_fisherObj->rot.y = 0.0f;
+                Hu3DMotionShiftSet(m201_fisherObj->model[0],
+                                   Hu3DData[m201_fisherObj->motion[11]].motId, 0, 6, 2);
                 obj->work[1] = 3;
             }
             break;
         case 3:
-            func_8010B5EC_hand_line_sinker(&D_8010BF28_hand_line_sinker, &D_8010BF44_hand_line_sinker, 16);
-            D_8010C190_hand_line_sinker->work[1] = 1;
-            D_8010C190_hand_line_sinker->work[2] = 0;
+            m201_CameraMoveStart(&m201_cameraPlayPreset, &m201_cameraFisherWinPreset, 16);
+            m201_cameraMoveObj->work[1] = 1;
+            m201_cameraMoveObj->work[2] = 0;
             obj->work[1] = 4;
             break;
         case 4:
-            if (D_8010C190_hand_line_sinker->work[0] == 0) {
-                work = D_8010C0FC_hand_line_sinker->data;
-                CharAnimSet(D_8010C0FC_hand_line_sinker->model[0], 2, GwPlayer[work->playerNo].chr,
-                                   D_8010C0FC_hand_line_sinker->model[5]);
-                Hu3DMotionShiftSet(D_8010C0FC_hand_line_sinker->model[0],
-                                   Hu3DData[D_8010C0FC_hand_line_sinker->motion[12]].motId, 0, 8, 0);
+            if (m201_cameraMoveObj->work[0] == 0) {
+                work = m201_fisherObj->data;
+                CharAnimSet(m201_fisherObj->model[0], 2, GwPlayer[work->playerNo].chr,
+                                   m201_fisherObj->model[5]);
+                Hu3DMotionShiftSet(m201_fisherObj->model[0],
+                                   Hu3DData[m201_fisherObj->motion[12]].motId, 0, 8, 0);
                 HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[work->playerNo].chr][0] | 0x2F);
-                omDelObj(D_8010C190_hand_line_sinker);
-                D_8010BF00_hand_line_sinker.winners[0] = work->playerNo;
+                omDelObj(m201_cameraMoveObj);
+                m201_mgFlow.winners[0] = work->playerNo;
                 obj->work[0] = 1;
                 GwPlayer[work->playerNo].bonusCoin = 10;
             }
@@ -1375,7 +1375,7 @@ void func_80109584_hand_line_sinker(omObjData *obj) {
     }
 }
 
-void func_80109B9C_hand_line_sinker(omObjData *obj) {
+void m201_FishWinObjMain(omObjData *obj) {
     HandLineSinkerPlayerWork *work;
     HandLineSinkerObjWork *lineWork;
     omObjData *lineObj;
@@ -1389,7 +1389,7 @@ void func_80109B9C_hand_line_sinker(omObjData *obj) {
     s32 count;
     s32 i;
 
-    work = D_8010C0FC_hand_line_sinker->data;
+    work = m201_fisherObj->data;
     lineObj = work->lineObj;
     lineWork = NULL;
     if (lineObj != NULL) {
@@ -1407,19 +1407,19 @@ void func_80109B9C_hand_line_sinker(omObjData *obj) {
             }
             break;
         case 1:
-            if (D_8010C0FC_hand_line_sinker->work[0] == 0) {
+            if (m201_fisherObj->work[0] == 0) {
                 count = 0;
                 for (i = 0; i < 3; i++) {
-                    player = D_8010C100_hand_line_sinker[i];
+                    player = m201_fishObjTbl[i];
                     if (player->work[0] == 0 || player->work[0] == 4 || player->work[0] == 2) {
                         count++;
                     }
                 }
                 if (count == 3) {
-                    if (D_8010C10C_hand_line_sinker == 3) {
+                    if (m201_fishCatchNum == 3) {
                         omDelObj(obj);
-                        D_8010C0F8_hand_line_sinker = omAddObj(4, 0, 0, -1, func_80109584_hand_line_sinker);
-                        D_8010C0F8_hand_line_sinker->work[1] = 0;
+                        m201_finishObj = omAddObj(4, 0, 0, -1, m201_FisherWinObjMain);
+                        m201_finishObj->work[1] = 0;
                     } else {
                         obj->work[1] = 2;
                     }
@@ -1427,9 +1427,9 @@ void func_80109B9C_hand_line_sinker(omObjData *obj) {
             }
             break;
         case 2:
-            D_8010C0E8_hand_line_sinker = 3;
+            m201_fishInRangeNum = 3;
             for (i = 0; i < 3; i++) {
-                player = D_8010C100_hand_line_sinker[i];
+                player = m201_fishObjTbl[i];
                 player->work[3] = 1;
                 if (player->work[0] == 2 || player->work[0] == 4) {
                     continue;
@@ -1438,14 +1438,14 @@ void func_80109B9C_hand_line_sinker(omObjData *obj) {
                     continue;
                 }
                 player->work[3] = 0;
-                D_8010C0E8_hand_line_sinker--;
+                m201_fishInRangeNum--;
             }
-            if (D_8010C0E8_hand_line_sinker < 3) {
+            if (m201_fishInRangeNum < 3) {
                 obj->work[1] = 3;
                 for (i = 0; i < 3; i++) {
-                    player = D_8010C100_hand_line_sinker[i];
+                    player = m201_fishObjTbl[i];
                     if ((player->work[0] == 2 || player->work[0] == 4) == FALSE) {
-                        player->func = func_80108F44_hand_line_sinker;
+                        player->func = m201_FishGatherObjMain;
                     }
                 }
             } else {
@@ -1455,7 +1455,7 @@ void func_80109B9C_hand_line_sinker(omObjData *obj) {
         case 3:
             count = 3;
             for (i = 0; i < 3; i++) {
-                player = D_8010C100_hand_line_sinker[i];
+                player = m201_fishObjTbl[i];
                 player->work[3] = 1;
             }
             if (count == 3) {
@@ -1463,66 +1463,66 @@ void func_80109B9C_hand_line_sinker(omObjData *obj) {
             }
             break;
         case 4:
-            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[1], 0x4000, 0);
-            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[3], 0x4000, 0);
-            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[2], 0x4000, 0);
-            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            Hu3DModelAttrSet(D_8010C0FC_hand_line_sinker->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(m201_fisherObj->model[1], 0x4000, 0);
+            Hu3DModelAttrSet(m201_fisherObj->model[3], 0x4000, 0);
+            Hu3DModelAttrSet(m201_fisherObj->model[2], 0x4000, 0);
+            Hu3DModelAttrSet(m201_fisherObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(m201_fisherObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             for (i = 0; i < 6; i++) {
                 dist = i * 17.0f;
                 pos.y = 240.0f - dist;
-                pos.x = sindf(D_8010C0FC_hand_line_sinker->rot.y - 6.0f + rand8() % 13 - 6.0f) * (140.0f - dist) +
-                        D_8010C0FC_hand_line_sinker->trans.x;
-                pos.z = cosdf(D_8010C0FC_hand_line_sinker->rot.y - 6.0f + rand8() % 13 - 6.0f) * (140.0f - dist) +
-                        D_8010C0FC_hand_line_sinker->trans.z;
+                pos.x = sindf(m201_fisherObj->rot.y - 6.0f + rand8() % 13 - 6.0f) * (140.0f - dist) +
+                        m201_fisherObj->trans.x;
+                pos.z = cosdf(m201_fisherObj->rot.y - 6.0f + rand8() % 13 - 6.0f) * (140.0f - dist) +
+                        m201_fisherObj->trans.z;
                 effect = EffectCreate(0x85, 0x2A9);
                 EffectPosSet(effect, pos.x, pos.y, pos.z);
                 EffectTimeSet(effect, 16);
             }
             obj->work[1] = 5;
-            Hu3DMotionShiftSet(D_8010C0FC_hand_line_sinker->model[0],
-                               Hu3DData[D_8010C0FC_hand_line_sinker->motion[10]].motId, 0, 6, 2);
+            Hu3DMotionShiftSet(m201_fisherObj->model[0],
+                               Hu3DData[m201_fisherObj->motion[10]].motId, 0, 6, 2);
             break;
         case 5:
-            rot = -D_8010C0FC_hand_line_sinker->rot.y;
+            rot = -m201_fisherObj->rot.y;
             if (rot < 0.0f) {
                 rot += 360.0f;
             }
             if (rot < 180.0f) {
                 if (rot > 5.0f) {
-                    D_8010C0FC_hand_line_sinker->rot.y += 5.0f;
+                    m201_fisherObj->rot.y += 5.0f;
                 } else {
-                    D_8010C0FC_hand_line_sinker->rot.y += rot;
+                    m201_fisherObj->rot.y += rot;
                 }
             } else {
                 if (360.0f - rot > 5.0f) {
-                    D_8010C0FC_hand_line_sinker->rot.y -= 5.0f;
+                    m201_fisherObj->rot.y -= 5.0f;
                 } else {
-                    D_8010C0FC_hand_line_sinker->rot.y -= 360.0f - rot;
+                    m201_fisherObj->rot.y -= 360.0f - rot;
                 }
             }
-            if (D_8010C0FC_hand_line_sinker->rot.y >= 360.0f) {
-                D_8010C0FC_hand_line_sinker->rot.y -= 360.0f;
+            if (m201_fisherObj->rot.y >= 360.0f) {
+                m201_fisherObj->rot.y -= 360.0f;
             }
-            if (D_8010C0FC_hand_line_sinker->rot.y < 0.0f) {
-                D_8010C0FC_hand_line_sinker->rot.y += 360.0f;
+            if (m201_fisherObj->rot.y < 0.0f) {
+                m201_fisherObj->rot.y += 360.0f;
             }
-            if (fabs(D_8010C0FC_hand_line_sinker->rot.y) < 0.0001f) {
+            if (fabs(m201_fisherObj->rot.y) < 0.0001f) {
                 HuAudFXPlay(GwPlayer[work->playerNo].chr + 0x287);
-                Hu3DMotionShiftSet(D_8010C0FC_hand_line_sinker->model[0],
-                                   Hu3DData[D_8010C0FC_hand_line_sinker->motion[13]].motId, 0, 6, 0);
+                Hu3DMotionShiftSet(m201_fisherObj->model[0],
+                                   Hu3DData[m201_fisherObj->motion[13]].motId, 0, 6, 0);
                 obj->work[1] = 6;
             }
             break;
         case 6:
-            if (Hu3DData[D_8010C0FC_hand_line_sinker->model[0]].motTime >=
-                Hu3DMotion[Hu3DData[D_8010C0FC_hand_line_sinker->model[0]].motId].unk02) {
+            if (Hu3DData[m201_fisherObj->model[0]].motTime >=
+                Hu3DMotion[Hu3DData[m201_fisherObj->model[0]].motId].unk02) {
                 min[1] = min[0] = 10000.0f;
                 max[1] = max[0] = -10000.0f;
                 for (i = 0; i < 3; i++) {
-                    player = D_8010C100_hand_line_sinker[i];
+                    player = m201_fishObjTbl[i];
                     work = player->data;
-                    D_8010BF00_hand_line_sinker.winners[i] = work->playerNo;
+                    m201_mgFlow.winners[i] = work->playerNo;
                     GwPlayer[work->playerNo].bonusCoin = 10;
                     if (player->work[0] == 2 || player->work[0] == 4) {
                         continue;
@@ -1530,7 +1530,7 @@ void func_80109B9C_hand_line_sinker(omObjData *obj) {
                     work->velY = 60.0f;
                     work->splashed = 0;
                     PlayerFXPlay(0x28F, work->playerNo);
-                    player->func = func_80108C5C_hand_line_sinker;
+                    player->func = m201_FishJumpObjMain;
                     player->work[0] = 5;
                     if (player->trans.x < min[0]) {
                         min[0] = player->trans.x;
@@ -1545,24 +1545,24 @@ void func_80109B9C_hand_line_sinker(omObjData *obj) {
                         max[1] = player->trans.z;
                     }
                 }
-                D_8010C110_hand_line_sinker.center.x = (min[0] + max[0]) / 2.0f;
-                D_8010C110_hand_line_sinker.center.z = (min[1] + max[1]) / 2.0f;
-                D_8010C110_hand_line_sinker.rot.x = 318.0f;
-                if (D_8010C110_hand_line_sinker.center.z > 0.0f) {
-                    D_8010C110_hand_line_sinker.rot.x = 318.0f - D_8010C110_hand_line_sinker.center.z / 730.0f * 20.0f;
+                m201_cameraTempPreset.center.x = (min[0] + max[0]) / 2.0f;
+                m201_cameraTempPreset.center.z = (min[1] + max[1]) / 2.0f;
+                m201_cameraTempPreset.rot.x = 318.0f;
+                if (m201_cameraTempPreset.center.z > 0.0f) {
+                    m201_cameraTempPreset.rot.x = 318.0f - m201_cameraTempPreset.center.z / 730.0f * 20.0f;
                 }
-                D_8010C110_hand_line_sinker.zoom = 1700.0f;
-                func_8010B5EC_hand_line_sinker(&D_8010BF28_hand_line_sinker, &D_8010C110_hand_line_sinker, 16);
-                D_8010C190_hand_line_sinker->work[1] = 1;
-                D_8010C190_hand_line_sinker->work[2] = 1;
-                D_8010BF00_hand_line_sinker.resultType = MG_RESULT_WIN_3;
+                m201_cameraTempPreset.zoom = 1700.0f;
+                m201_CameraMoveStart(&m201_cameraPlayPreset, &m201_cameraTempPreset, 16);
+                m201_cameraMoveObj->work[1] = 1;
+                m201_cameraMoveObj->work[2] = 1;
+                m201_mgFlow.resultType = MG_RESULT_WIN_3;
                 obj->work[0] = 1;
             }
             break;
     }
 }
 
-omObjData *func_8010A554_hand_line_sinker(void) {
+omObjData *m201_FishNearestGet(void) {
     omObjData *closest;
     omObjData *obj;
     f32 minDist;
@@ -1572,7 +1572,7 @@ omObjData *func_8010A554_hand_line_sinker(void) {
     minDist = 100000.0f;
     closest = NULL;
     for (i = 0; i < 3; i++) {
-        obj = D_8010C100_hand_line_sinker[i];
+        obj = m201_fishObjTbl[i];
         dist = HuSqrtf(obj->trans.x * obj->trans.x + obj->trans.z * obj->trans.z);
         if (dist < minDist) {
             minDist = dist;
@@ -1582,57 +1582,57 @@ omObjData *func_8010A554_hand_line_sinker(void) {
     return closest;
 }
 
-void func_8010A5F0_hand_line_sinker(void) {
+void m201_EffInit(void) {
     s32 i;
     s32 j;
 
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 6; j++) {
-            D_8010C148_hand_line_sinker[i][j] = Hu3DModelRead(D_8010BFA0_hand_line_sinker[i], 0x1A9D);
+            m201_effMdlTbl[i][j] = Hu3DModelRead(m201_effFileTbl[i], 0x1A9D);
             if (i == 0) {
-                Hu3DModelObjAttrSet(D_8010C148_hand_line_sinker[0][j], 0x20000000, 0x20000000);
+                Hu3DModelObjAttrSet(m201_effMdlTbl[0][j], 0x20000000, 0x20000000);
             }
-            D_8010C160_hand_line_sinker[j] = 0;
+            m201_effObjTbl[j] = 0;
         }
     }
 }
 
-void func_8010A6D0_hand_line_sinker(omObjData *parent, u16 type, Vec *offset, Vec *rot) {
+void m201_EffCreate(omObjData *parent, u16 type, Vec *offset, Vec *rot) {
     HandLineSinkerFollowWork *work;
     s32 i;
 
     for (i = 0; i < 6; i++) {
-        if (D_8010C160_hand_line_sinker[i] == NULL) {
+        if (m201_effObjTbl[i] == NULL) {
             break;
         }
     }
     if (i == 6) {
         return;
     }
-    D_8010C160_hand_line_sinker[i] = omAddObj(0x28, 1, 0, -1, D_8010BFA8_hand_line_sinker[type]);
-    D_8010C160_hand_line_sinker[i]->data = HuMemAllocTag(sizeof(HandLineSinkerFollowWork), TAG_OVERLAY);
-    work = D_8010C160_hand_line_sinker[i]->data;
-    D_8010C160_hand_line_sinker[i]->work[0] = i;
-    Hu3DModelAttrSet(D_8010C148_hand_line_sinker[type][i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    D_8010C160_hand_line_sinker[i]->model[0] = D_8010C148_hand_line_sinker[type][i];
-    Hu3DMotionTimeSet(D_8010C160_hand_line_sinker[i]->model[0], 0);
+    m201_effObjTbl[i] = omAddObj(0x28, 1, 0, -1, m201_effFuncTbl[type]);
+    m201_effObjTbl[i]->data = HuMemAllocTag(sizeof(HandLineSinkerFollowWork), TAG_OVERLAY);
+    work = m201_effObjTbl[i]->data;
+    m201_effObjTbl[i]->work[0] = i;
+    Hu3DModelAttrSet(m201_effMdlTbl[type][i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    m201_effObjTbl[i]->model[0] = m201_effMdlTbl[type][i];
+    Hu3DMotionTimeSet(m201_effObjTbl[i]->model[0], 0);
     work->parent = parent;
     work->offset = *offset;
     work->unk10 = *rot;
     if (parent == NULL) {
-        omSetTra(D_8010C160_hand_line_sinker[i], offset->x, offset->y, offset->z);
+        omSetTra(m201_effObjTbl[i], offset->x, offset->y, offset->z);
     } else {
-        omSetTra(D_8010C160_hand_line_sinker[i], parent->trans.x + offset->x, parent->trans.y + offset->y,
+        omSetTra(m201_effObjTbl[i], parent->trans.x + offset->x, parent->trans.y + offset->y,
                  parent->trans.z + offset->z);
     }
-    omSetRot(D_8010C160_hand_line_sinker[i], rot->x, rot->y, rot->z);
-    Hu3DModelPosSet(D_8010C160_hand_line_sinker[i]->model[0], D_8010C160_hand_line_sinker[i]->trans.x,
-                    D_8010C160_hand_line_sinker[i]->trans.y, D_8010C160_hand_line_sinker[i]->trans.z);
-    Hu3DModelRotSet(D_8010C160_hand_line_sinker[i]->model[0], D_8010C160_hand_line_sinker[i]->rot.x,
-                    D_8010C160_hand_line_sinker[i]->rot.y, D_8010C160_hand_line_sinker[i]->rot.z);
+    omSetRot(m201_effObjTbl[i], rot->x, rot->y, rot->z);
+    Hu3DModelPosSet(m201_effObjTbl[i]->model[0], m201_effObjTbl[i]->trans.x,
+                    m201_effObjTbl[i]->trans.y, m201_effObjTbl[i]->trans.z);
+    Hu3DModelRotSet(m201_effObjTbl[i]->model[0], m201_effObjTbl[i]->rot.x,
+                    m201_effObjTbl[i]->rot.y, m201_effObjTbl[i]->rot.z);
 }
 
-void func_8010A904_hand_line_sinker(omObjData *obj) {
+void m201_SplashEffObjMain(omObjData *obj) {
     HandLineSinkerFollowWork *work = obj->data;
 
     if (work->parent != NULL) {
@@ -1641,12 +1641,12 @@ void func_8010A904_hand_line_sinker(omObjData *obj) {
     }
     if (Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 <= Hu3DData[obj->model[0]].motTime) {
         Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        D_8010C160_hand_line_sinker[obj->work[0]] = 0;
+        m201_effObjTbl[obj->work[0]] = 0;
         omDelObj(obj);
     }
 }
 
-void func_8010A9F8_hand_line_sinker(omObjData *obj) {
+void m201_WakeEffObjMain(omObjData *obj) {
     HandLineSinkerFollowWork *work = obj->data;
 
     if (work->parent != NULL) {
@@ -1655,23 +1655,23 @@ void func_8010A9F8_hand_line_sinker(omObjData *obj) {
     }
     if (Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 <= Hu3DData[obj->model[0]].motTime) {
         Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        D_8010C160_hand_line_sinker[obj->work[0]] = 0;
+        m201_effObjTbl[obj->work[0]] = 0;
         omDelObj(obj);
     }
 }
 
-f32 func_8010AAEC_hand_line_sinker(f32 x) {
+f32 m201_LineCurveSolve(f32 x) {
     f32 fx;
     f32 slope;
     f32 prev;
     s32 i;
 
     for (i = 0; i < 64; i++) {
-        fx = func_8010ABD4_hand_line_sinker(x);
+        fx = m201_LineCurveLenDiff(x);
         if (fx == 0.0f) {
             break;
         }
-        slope = (func_8010ABD4_hand_line_sinker(x + fx) - fx) / fx;
+        slope = (m201_LineCurveLenDiff(x + fx) - fx) / fx;
         if (slope < 1e-10f) {
             break;
         }
@@ -1700,18 +1700,18 @@ f32 func_8010AAEC_hand_line_sinker(f32 x) {
  * split temporaries, u = logf() / -1.0f joins, `p = t * s` hoisting, repeated condition tests,
  * goto/break/while/do-while(0) wrappers, early-return tails, and static inline helpers for the
  * whole block or for logf. */
-f32 func_8010ABD4_hand_line_sinker(f32 a) {
+f32 m201_LineCurveLenDiff(f32 a) {
     f32 b;
     f32 t;
     f32 s;
     f32 start;
     f32 end;
 
-    b = (D_8010C140_hand_line_sinker - D_8010C138_hand_line_sinker) /
-            (D_8010C13C_hand_line_sinker - D_8010C134_hand_line_sinker) -
-        a * (D_8010C134_hand_line_sinker + D_8010C13C_hand_line_sinker);
+    b = (m201_lineSolveY1 - m201_lineSolveY0) /
+            (m201_lineSolveZ1 - m201_lineSolveZ0) -
+        a * (m201_lineSolveZ0 + m201_lineSolveZ1);
 
-    t = 2.0f * a * D_8010C134_hand_line_sinker + b;
+    t = 2.0f * a * m201_lineSolveZ0 + b;
     s = HuSqrtf(t * t + 1.0f);
     if (t + s > 0.0f) {
         start = t * s + logf(t + s);
@@ -1719,7 +1719,7 @@ f32 func_8010ABD4_hand_line_sinker(f32 a) {
         start = t * s - 1.0f;
     }
 
-    t = 2.0f * a * D_8010C13C_hand_line_sinker + b;
+    t = 2.0f * a * m201_lineSolveZ1 + b;
     s = HuSqrtf(t * t + 1.0f);
     if (t + s > 0.0f) {
         end = t * s + logf(t + s);
@@ -1728,17 +1728,17 @@ f32 func_8010ABD4_hand_line_sinker(f32 a) {
     }
 
     if (a != 0.0f) {
-        end = (end - start) / (a * 4.0f) - D_8010C130_hand_line_sinker;
+        end = (end - start) / (a * 4.0f) - m201_lineSolveLen;
     } else {
-        end = -D_8010C130_hand_line_sinker;
+        end = -m201_lineSolveLen;
     }
     return end;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/game/overlays/minigames/01_hand_line_sinker/main", func_8010ABD4_hand_line_sinker);
+INCLUDE_ASM("asm/nonmatchings/game/overlays/minigames/01_hand_line_sinker/main", m201_LineCurveLenDiff);
 #endif
 
-void func_8010AD7C_hand_line_sinker(omObjData *obj, f32 length, f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1) {
+void m201_LinePointsCalc(omObjData *obj, f32 length, f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1) {
     HandLineSinkerObjWork *work;
     f32 temp;
     f32 dx;
@@ -1783,12 +1783,12 @@ void func_8010AD7C_hand_line_sinker(omObjData *obj, f32 length, f32 x0, f32 y0, 
     end = dx * sin + dz * cos + z0;
     slope = (y0 - y1) / (z0 - end);
     intercept = (z0 * y1 - end * y0) / (z0 - end);
-    D_8010C130_hand_line_sinker = length * 0.00041666668f;
-    D_8010C138_hand_line_sinker = y0 * 0.00041666668f;
-    D_8010C140_hand_line_sinker = y1 * 0.00041666668f;
-    D_8010C134_hand_line_sinker = z0 * 0.00041666668f;
-    D_8010C13C_hand_line_sinker = end * 0.00041666668f;
-    a = func_8010AAEC_hand_line_sinker(20000.0f);
+    m201_lineSolveLen = length * 0.00041666668f;
+    m201_lineSolveY0 = y0 * 0.00041666668f;
+    m201_lineSolveY1 = y1 * 0.00041666668f;
+    m201_lineSolveZ0 = z0 * 0.00041666668f;
+    m201_lineSolveZ1 = end * 0.00041666668f;
+    a = m201_LineCurveSolve(20000.0f);
     if (a < 0.0f) {
         a = -a;
     }
@@ -1808,7 +1808,7 @@ void func_8010AD7C_hand_line_sinker(omObjData *obj, f32 length, f32 x0, f32 y0, 
     work->numPoints = 24;
 }
 
-void func_8010B0FC_hand_line_sinker(omObjData *arg0, f32 arg1) {
+void m201_LureSeVolSet(omObjData *arg0, f32 arg1) {
     HandLineSinkerObjWork *work;
     f32 ratio;
     f32 volume;
@@ -1830,7 +1830,7 @@ void func_8010B0FC_hand_line_sinker(omObjData *arg0, f32 arg1) {
     }
 }
 
-void func_8010B1E4_hand_line_sinker(omObjData *obj) {
+void m201_FishMove(omObjData *obj) {
     HandLineSinkerObjWork *work;
     f32 px;
     f32 pz;
@@ -1850,18 +1850,18 @@ void func_8010B1E4_hand_line_sinker(omObjData *obj) {
         px = x + sindf(i * 180.0f + obj->rot.y) * 67.5f;
         pz = z + cosdf(i * 180.0f + obj->rot.y) * 67.5f;
         for (j = 0; j < 3; j++) {
-            if (obj == D_8010C100_hand_line_sinker[j]) {
+            if (obj == m201_fishObjTbl[j]) {
                 continue;
             }
-            if (D_8010C100_hand_line_sinker[j]->work[0] == 2 || D_8010C100_hand_line_sinker[j]->work[0] == 3 ||
-                D_8010C100_hand_line_sinker[j]->work[0] == 4) {
+            if (m201_fishObjTbl[j]->work[0] == 2 || m201_fishObjTbl[j]->work[0] == 3 ||
+                m201_fishObjTbl[j]->work[0] == 4) {
                 continue;
             }
             for (k = 0; k < 2; k++) {
-                ox = D_8010C100_hand_line_sinker[j]->trans.x +
-                     sindf(D_8010C100_hand_line_sinker[j]->rot.y + k * 180.0f) * 67.5f;
-                oz = D_8010C100_hand_line_sinker[j]->trans.z +
-                     cosdf(D_8010C100_hand_line_sinker[j]->rot.y + k * 180.0f) * 67.5f;
+                ox = m201_fishObjTbl[j]->trans.x +
+                     sindf(m201_fishObjTbl[j]->rot.y + k * 180.0f) * 67.5f;
+                oz = m201_fishObjTbl[j]->trans.z +
+                     cosdf(m201_fishObjTbl[j]->rot.y + k * 180.0f) * 67.5f;
                 dist = HuSqrtf((ox - px) * (ox - px) + (oz - pz) * (oz - pz));
                 if (dist < 135.0f) {
                     x -= sindf(i * 180.0f + obj->rot.y) * (135.0f - dist);

@@ -19,8 +19,8 @@
 // Several distances are written as a float fraction of 200 units (e.g. 0.1f * 200.0), which folds into
 // a double constant slightly off from the round value.
 
-// Table of 2 rows (RockinRacewaySnapshotRow) of 4 of these allocated in func_80106B28_rockin_raceway, stored in
-// D_80111B3C_rockin_raceway. func_80107E78_rockin_raceway records each racer object's transform.
+// Table of 2 rows (RockinRacewaySnapshotRow) of 4 of these allocated in m244_PlayerObjCreateAll, stored in
+// m244_ghostTbl. m244_GhostStore records each racer object's transform.
 typedef struct RockinRacewaySnapshot {
     /* 0x00 */ s16 unk00;
     /* 0x02 */ s16 active;
@@ -33,12 +33,12 @@ typedef struct RockinRacewaySnapshotRow {
     /* 0x00 */ RockinRacewaySnapshot racers[4];
 } RockinRacewaySnapshotRow; // Size 0xA0
 
-// Vertex quad copied into each of a model's vertex buffers by func_8010FFB8_rockin_raceway.
+// Vertex quad copied into each of a model's vertex buffers by m244_QuadMdlCreate.
 typedef struct RockinRacewayQuad {
     /* 0x00 */ Vtx_t vtx[4];
 } RockinRacewayQuad; // Size 0x40
 
-// Saved model state, see func_80109044_rockin_raceway and func_80109134_rockin_raceway.
+// Saved model state, see m244_SparkStateSave and m244_SparkStateRestore.
 typedef struct RockinRacewayModelState {
     /* 0x00 */ s32 attr;
     /* 0x04 */ f32 motTime;
@@ -48,8 +48,8 @@ typedef struct RockinRacewayModelState {
     /* 0x24 */ Vec scale;
 } RockinRacewayModelState; // Size 0x30
 
-// Pool of 16 of these allocated in func_80109208_rockin_raceway, stored in D_80111B5C_rockin_raceway.
-// func_801094EC_rockin_raceway claims a free entry, and func_80109384_rockin_raceway animates the
+// Pool of 16 of these allocated in m244_SmokeInit, stored in m244_smokeTbl.
+// m244_SmokeCreate claims a free entry, and m244_SmokeObjMain animates the
 // sprite effect each frame until its animation finishes.
 typedef struct RockinRacewayEffect {
     /* 0x00 */ u16 active;
@@ -62,7 +62,7 @@ typedef struct RockinRacewayEffect {
 } RockinRacewayEffect; // Size 0x30
 
 // Per-racer state; a pointer to it is packed into the work bytes of each racer object
-// (see func_8010EC0C_rockin_raceway / func_8010EC38_rockin_raceway).
+// (see m244_WorkPtrSet / m244_WorkPtrGet).
 typedef struct RockinRacewayRacer {
     /* 0x00 */ u16 unk00;
     /* 0x02 */ u16 unk02;
@@ -101,7 +101,7 @@ typedef struct RockinRacewayRacer {
     /* 0x64 */ Vec rot;
 } RockinRacewayRacer; // Size 0x70
 
-// Saved sprite effect state, see func_801097A0_rockin_raceway and func_801098D8_rockin_raceway.
+// Saved sprite effect state, see m244_SmokeStateSave and m244_SmokeStateRestore.
 typedef struct RockinRacewayEffectState {
     /* 0x00 */ u16 active;
     /* 0x02 */ u16 motTime;
@@ -121,7 +121,7 @@ typedef struct RockinRacewayReplayRacer {
     /* 0x28 */ f32 unk28;   // RockinRacewayRacer unk24
 } RockinRacewayReplayRacer; // Size 0x2C
 
-// A recorded frame of the race state, see func_8010D600_rockin_raceway.
+// A recorded frame of the race state, see m244_ReplayRecord.
 typedef struct RockinRacewayReplayFrame {
     /* 0x000 */ s32 unk00;
     /* 0x004 */ s32 unk04[4];
@@ -131,13 +131,13 @@ typedef struct RockinRacewayReplayFrame {
 } RockinRacewayReplayFrame; // Size 0x644
 
 // Walks the model states and then the effect states of the previous replay frame in
-// func_8010D9C4_rockin_raceway.
+// m244_ReplayPlay.
 typedef union RockinRacewayReplayStatePtr {
     RockinRacewayModelState *model;
     RockinRacewayEffectState *effect;
 } RockinRacewayReplayStatePtr;
 
-// Array of 4 of these allocated in func_80109DA8_rockin_raceway, stored in D_80111B40_rockin_raceway
+// Array of 4 of these allocated in m244_TrackInit, stored in m244_trackTbl
 typedef struct {
     /* 0x00 */ s16 unk00;
     /* 0x02 */ u16 numNodes;
@@ -149,33 +149,33 @@ typedef struct {
     /* 0x18 */ f32 *unk18;
     /* 0x1C */ f32 (*unk1C)[3];
     /* 0x20 */ u16 *unk20;
-} Track; // Size 0x24
+} RockinRacewayTrack; // Size 0x24
 
-// Pool of 16 of these allocated in func_8010E2E4_rockin_raceway, stored in D_80111BD0_rockin_raceway.
-// func_8010E344_rockin_raceway claims a free entry for a request, and func_8010E39C_rockin_raceway
+// Pool of 16 of these allocated in m244_SeQueueInit, stored in m244_seQueue.
+// m244_SeQueueAdd claims a free entry for a request, and m244_SeQueueUpdate
 // consumes requests until they expire, setting soundId back to -1 when done.
 typedef struct {
     /* 0x00 */ s16 soundId; // -1 marks a free entry
     /* 0x02 */ s16 frames;  // counted down once per frame
-    /* 0x04 */ s16 unk04;   // switched on as a type by func_8010E39C_rockin_raceway
+    /* 0x04 */ s16 unk04;   // switched on as a type by m244_SeQueueUpdate
     /* 0x06 */ s16 playerIndex;
 } RockinRacewaySfx; // Size 0x8
 
-// Pool of 16 of these allocated in func_8010CA1C_rockin_raceway, stored in D_80111C4C_rockin_raceway.
-// func_8010CADC_rockin_raceway appends entries, and func_8010CC10_rockin_raceway centers the camera
-// focus D_80111C38_rockin_raceway on the bounding box of the entries, accumulating their weights.
+// Pool of 16 of these allocated in m244_CameraFocusInit, stored in m244_cameraFocusTbl.
+// m244_CameraFocusAdd appends entries, and m244_CameraFocusCalc centers the camera
+// focus m244_cameraFocus on the bounding box of the entries, accumulating their weights.
 typedef struct {
     /* 0x00 */ f32 pos[3];
     /* 0x0C */ f32 weight;
 } RockinRacewayVec; // Size 0x10
 
-// Camera target computed from the RockinRacewayVec entries by func_8010CC10_rockin_raceway.
+// Camera target computed from the RockinRacewayVec entries by m244_CameraFocusCalc.
 typedef struct {
     /* 0x00 */ f32 pos[4]; // x, y, z, and the accumulated weight of the entries
     /* 0x10 */ f32 zoom;
 } RockinRacewayFocus; // Size 0x14
 
-// Per-track lap meter sprite layout, built in func_8010A5E4_rockin_raceway.
+// Per-track lap meter sprite layout, built in m244_GaugeCreate.
 typedef struct {
     /* 0x00 */ s16 track;
     /* 0x02 */ s16 unk02;
@@ -190,13 +190,13 @@ typedef struct {
     /* 0x02 */ s16 y;
 } RockinRacewayPos16; // Size 0x4
 
-// Values shown by the HUD built in func_80109A04_rockin_raceway.
+// Values shown by the HUD built in m244_StageObjInit.
 typedef struct {
     /* 0x00 */ s32 players[4];
     /* 0x10 */ s32 times[2]; // current and record time, in frames
 } RockinRacewayHudValues;    // Size 0x18
 
-// Racer standing used to sort the racers in func_8010803C_rockin_raceway.
+// Racer standing used to sort the racers in m244_RankCalc.
 typedef struct {
     /* 0x00 */ s32 index;
     /* 0x04 */ s32 node;
@@ -216,9 +216,9 @@ typedef union RockinRacewayWorkBytes { // packs the top byte of each work word
     } bytes;
 } RockinRacewayWorkBytes;
 
-// Pool of 8 of these allocated in func_80108578_rockin_raceway, stored in D_80111B48_rockin_raceway.
-// func_80108760_rockin_raceway claims a free entry for a pair of blinking marker models, and
-// func_80108864_rockin_raceway animates the entries each frame, alternating the visible model every
+// Pool of 8 of these allocated in m244_PanelCreateAll, stored in m244_panelTbl.
+// m244_PanelCreate claims a free entry for a pair of blinking marker models, and
+// m244_PanelObjMain animates the entries each frame, alternating the visible model every
 // duration frames and drifting position by the velocity vector.
 typedef struct {
     /* 0x00 */ u16 active; // 0 marks a free entry
@@ -239,14 +239,14 @@ typedef struct {
     /* 0x00 */ s16 unk00;
     /* 0x02 */ s16 unk02[2];
     /* 0x06 */ s16 unk06;
-} RockinRacewayBssB74; // Size 0x8
+} RockinRacewayHudGrp; // Size 0x8
 
 extern GAMEMES gMesData[];
 extern s16 Hu3DModelTag;
 extern s16 Hu3DCamMtxNo;
 extern u8 omAllPauseF;
 extern u8 Hu3DBufNo;
-f32 D_80110EE0_rockin_raceway[20][3] = {
+f32 m244_track0NodeTbl[20][3] = {
     { 704.785f, 0.0f, -699.55f },
     { 201.485f, 0.0f, -705.05f },
     { -294.435f, 0.0f, -705.05f },
@@ -268,7 +268,7 @@ f32 D_80110EE0_rockin_raceway[20][3] = {
     { 1143.355f, 0.0f, 515.55f },
     { 1268.58f, 0.0f, 364.75f }
 };
-f32 D_80110FD0_rockin_raceway[20][3] = {
+f32 m244_track1NodeTbl[20][3] = {
     { 698.385f, 0.0f, -607.55f },
     { 202.65f, 0.0f, -613.3f },
     { -292.17f, 0.0f, -624.85f },
@@ -290,7 +290,7 @@ f32 D_80110FD0_rockin_raceway[20][3] = {
     { 1069.645f, 0.0f, 447.45f },
     { 1180.59f, 0.0f, 316.0f }
 };
-f32 D_801110C0_rockin_raceway[20][3] = {
+f32 m244_track2NodeTbl[20][3] = {
     { 699.23f, 0.0f, -517.35f },
     { 203.075f, 0.0f, -525.15f },
     { -299.32f, 0.0f, -530.1f },
@@ -312,7 +312,7 @@ f32 D_801110C0_rockin_raceway[20][3] = {
     { 992.225f, 0.0f, 376.9f },
     { 1088.745f, 0.0f, 269.6f }
 };
-f32 D_801111B0_rockin_raceway[20][3] = {
+f32 m244_track3NodeTbl[20][3] = {
     { 701.125f, 0.0f, -421.1f },
     { 202.54f, 0.0f, -419.7f },
     { -303.185f, 0.0f, -424.85f },
@@ -335,30 +335,30 @@ f32 D_801111B0_rockin_raceway[20][3] = {
     { 1000.045f, 0.0f, 220.2f }
 };
 // Node positions of each track.
-f32 (*D_801112A0_rockin_raceway[4])[3] = {
-    D_80110EE0_rockin_raceway,
-    D_80110FD0_rockin_raceway,
-    D_801110C0_rockin_raceway,
-    D_801111B0_rockin_raceway
+f32 (*m244_trackNodeTbl[4])[3] = {
+    m244_track0NodeTbl,
+    m244_track1NodeTbl,
+    m244_track2NodeTbl,
+    m244_track3NodeTbl
 };
 // Node count per track is [i][1].
-u16 D_801112B0_rockin_raceway[4][2] = { { 0, 20 }, { 0, 20 }, { 0, 20 }, { 0, 20 } };
-s32 D_801112C0_rockin_raceway[4] = { 15, 15, 15, 15 };
+u16 m244_trackNodeNumTbl[4][2] = { { 0, 20 }, { 0, 20 }, { 0, 20 }, { 0, 20 } };
+s32 m244_goalNodeTbl[4] = { 15, 15, 15, 15 };
 // Pairs of track node indices per racer; [i][1] is used.
-u16 D_801112D0_rockin_raceway[4][2] = { { 8, 14 }, { 8, 14 }, { 8, 14 }, { 8, 14 } };
-f32 D_801112E0_rockin_raceway[4] = { 1.0f, 1.1f, 1.2f, 1.4f };
-f32 D_801112F0_rockin_raceway[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+u16 m244_panelNodeTbl[4][2] = { { 8, 14 }, { 8, 14 }, { 8, 14 }, { 8, 14 } };
+f32 m244_rankAccelTbl[4] = { 1.0f, 1.1f, 1.2f, 1.4f };
+f32 m244_rankSpeedTbl[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 // Per CPU difficulty.
-f32 D_80111300_rockin_raceway[4][2] = {
+f32 m244_comSpeedTbl[4][2] = {
     { 0.6f, 0.7f },
     { 0.7f, 0.8f },
     { 0.8f, 0.9f },
     { 0.9f, 0.99f }
 };
-s32 D_80111320_rockin_raceway[4] = { 5, 4, 3, 2 }; // per CPU difficulty
-RockinRacewayPos16 D_80111330_rockin_raceway[4] = { { 30, 30 }, { 270, 30 }, { 30, 211 }, { 270, 211 } };
-s16 D_80111340_rockin_raceway[8] = { 118, 130, 138, 150, 162, 172, 184, 196 };
-MgCameraPreset D_80111350_rockin_raceway[7] = {
+s32 m244_comMashWaitTbl[4] = { 5, 4, 3, 2 }; // per CPU difficulty
+RockinRacewayPos16 m244_gaugePosTbl[4] = { { 30, 30 }, { 270, 30 }, { 30, 211 }, { 270, 211 } };
+s16 m244_timeDigitXTbl[8] = { 118, 130, 138, 150, 162, 172, 184, 196 };
+MgCameraPreset m244_cameraPresetTbl[7] = {
     { { 0.0f, -288.8f, -65.0f }, { 326.0f, 0.0f, 0.0f }, 4278.0f },
     { { 0.0f, 200.8f, -65.0f }, { 326.0f, 0.0f, 0.0f }, 4278.0f },
     { { 136.0f, -94.8f, -1001.8f }, { 341.0f, 305.5f, 0.0f }, 952.0f },
@@ -367,13 +367,13 @@ MgCameraPreset D_80111350_rockin_raceway[7] = {
     { { 0.0f, 200.8f, -65.0f }, { 326.0f, 0.0f, 0.0f }, 3278.0f },
     { { 340.0f, -200.0f, 165.0f }, { 326.0f, 0.0f, 0.0f }, 1678.0f }
 };
-Vec D_80111414_rockin_raceway[4] = {
+Vec m244_boardFacePosTbl[4] = {
     { -384.5f, 56.6f, -88.4f },
     { -387.95f, 39.8f, 85.75f },
     { -129.3f, 56.6f, -88.4f },
     { -129.3f, 39.8f, 85.75f }
 };
-Vec D_80111444_rockin_raceway[12] = {
+Vec m244_boardDigitPosTbl[12] = {
     { 58.4f, 58.75f, -92.85f },
     { 126.8f, 58.75f, -92.85f },
     { 222.3f, 58.75f, -92.85f },
@@ -387,34 +387,34 @@ Vec D_80111444_rockin_raceway[12] = {
     { 397.8f, 43.75f, 82.0f },
     { 466.15f, 43.75f, 82.0f }
 };
-u8 D_801114D4_rockin_raceway[4] = { 0xE9, 0xDD, 0xA1, 0xFF };
-RockinRacewayQuad D_801114D8_rockin_raceway = { { { { 67, -67, 0 }, 0, { 0x7C0, 0 }, { 0, 0, 0, 255 } },
+u8 m244_smokeColor[4] = { 0xE9, 0xDD, 0xA1, 0xFF };
+RockinRacewayQuad m244_boardFaceQuad = { { { { 67, -67, 0 }, 0, { 0x7C0, 0 }, { 0, 0, 0, 255 } },
                                                   { { 67, 67, 0 }, 0, { 0x7C0, 0x7C0 }, { 0, 0, 0, 255 } },
                                                   { { -65, -67, 0 }, 0, { 0, 0 }, { 0, 0, 0, 255 } },
                                                   { { -67, 67, 0 }, 0, { 0, 0x7C0 }, { 0, 0, 0, 255 } } } };
-RockinRacewayQuad D_80111518_rockin_raceway = { { { { 29, -62, 0 }, 0, { 0x3C0, 0 }, { 0, 0, 0, 255 } },
+RockinRacewayQuad m244_boardDigitQuad = { { { { 29, -62, 0 }, 0, { 0x3C0, 0 }, { 0, 0, 0, 255 } },
                                                   { { 29, 62, 0 }, 0, { 0x3C0, 0x7C0 }, { 0, 0, 0, 255 } },
                                                   { { -29, -62, 0 }, 0, { 0, 0 }, { 0, 0, 0, 255 } },
                                                   { { -29, 62, 0 }, 0, { 0, 0x7C0 }, { 0, 0, 0, 255 } } } };
-s32 D_80111558_rockin_raceway = -1; // state on the previous frame
-s32 D_8011155C_rockin_raceway = 0;
+s32 m244_prevPhase = -1; // state on the previous frame
+s32 m244_exitTimer = 0;
 // Racer slot per racer is [i][1].
-u16 D_80111560_rockin_raceway[4][2] = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 } };
-s32 D_80111570_rockin_raceway[4] = { -1, -1, -1, -1 };           // racer slot occupying each track, or -1
-u16 D_80111580_rockin_raceway[8] = { 1, 2, 3, 4, 5, 6, 12, 13 }; // model file per character
-s32 D_80111590_rockin_raceway[3] = { 0, 0x400, 0x800 };
-RockinRacewayHudValues D_8011159C_rockin_raceway = { { -1, -1, -1, -1 }, { 0, 0 } };
-u8 D_801115B4_rockin_raceway[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
+u16 m244_racerPlayerTbl[4][2] = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 } };
+s32 m244_trackRacerTbl[4] = { -1, -1, -1, -1 };           // racer slot occupying each track, or -1
+u16 m244_carMdlTbl[8] = { 1, 2, 3, 4, 5, 6, 12, 13 }; // model file per character
+s32 m244_ghostLayerTbl[3] = { 0, 0x400, 0x800 };
+RockinRacewayHudValues m244_boardDisp = { { -1, -1, -1, -1 }, { 0, 0 } };
+u8 m244_boardColor[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
 // Sprite file per character.
-s32 D_801115B8_rockin_raceway[8] = {
+s32 m244_gaugeFaceSprTbl[8] = {
     0x00210008, 0x00210009, 0x0021000A, 0x0021000B, 0x0021000C, 0x0021000D, 0x0021000E, 0x0021000F
 };
-s32 D_801115D8_rockin_raceway[6] = { 0, 1, 3, 4, 6, 7 }; // sprite member of each time digit
-s32 D_801115F0_rockin_raceway = 0;                       // camera debug mode
-s32 D_801115F4_rockin_raceway = 0;                       // camera debug text x
-s32 D_801115F8_rockin_raceway = 0;                       // camera debug text y
-s32 D_801115FC_rockin_raceway = -1;                      // replay frame last played back
-Gfx D_80111600_rockin_raceway[] = {
+s32 m244_timeDigitMemberTbl[6] = { 0, 1, 3, 4, 6, 7 }; // sprite member of each time digit
+s32 m244_cameraDebugMode = 0;                       // camera debug mode
+s32 m244_cameraDebugX = 0;                       // camera debug text x
+s32 m244_cameraDebugY = 0;                       // camera debug text y
+s32 m244_replayPrevNo = -1;                      // replay frame last played back
+Gfx m244_gfxRdpInit[] = {
     gsSPSegment(0x00, 0x00000000),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
@@ -441,20 +441,20 @@ Gfx D_80111600_rockin_raceway[] = {
     gsDPPipeSync(),
     gsSPEndDisplayList(),
 };
-Gfx D_801116B8_rockin_raceway[] = {
+Gfx m244_gfxRspInit[] = {
     gsSPClearGeometryMode(0xFFFFFFFF),
     gsSPTexture(0, 0, 0, G_TX_RENDERTILE, G_OFF),
     gsSPSetGeometryMode(G_SHADE | G_SHADING_SMOOTH),
     gsSPEndDisplayList(),
 };
-Gfx D_801116D8_rockin_raceway[] = {
-    gsSPDisplayList(D_801116B8_rockin_raceway),
-    gsSPDisplayList(D_80111600_rockin_raceway),
+Gfx m244_gfxInit[] = {
+    gsSPDisplayList(m244_gfxRspInit),
+    gsSPDisplayList(m244_gfxRdpInit),
     gsSPEndDisplayList(),
 };
-Gfx D_801116F0_rockin_raceway[] = {
+Gfx m244_gfxBillboardInit[] = {
     gsDPPipeSync(),
-    gsSPDisplayList(D_801116D8_rockin_raceway),
+    gsSPDisplayList(m244_gfxInit),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPSetGeometryMode(G_ZBUFFER | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH),
     gsDPSetBlendColor(0x00, 0x00, 0x00, 0x00),
@@ -462,157 +462,157 @@ Gfx D_801116F0_rockin_raceway[] = {
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsSPEndDisplayList(),
 };
-u8 D_80111730_rockin_raceway[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
-u8 D_80111734_rockin_raceway[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
+u8 m244_faceColor[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
+u8 m244_digitColor[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
 
-s32 D_80111AC0_rockin_raceway BSS; // frames spent on the current replay frame
-omObjData *D_80111AC4_rockin_raceway BSS;
-s32 D_80111AC8_rockin_raceway BSS;
-s32 D_80111ACC_rockin_raceway BSS;
-s32 D_80111AD0_rockin_raceway BSS;
-s32 D_80111AD4_rockin_raceway BSS;
-s32 D_80111AD8_rockin_raceway BSS;
-s32 D_80111ADC_rockin_raceway BSS;
-s16 D_80111AE0_rockin_raceway BSS;
-s32 D_80111AE4_rockin_raceway BSS;
-s32 D_80111AE8_rockin_raceway BSS;
-s32 D_80111AEC_rockin_raceway BSS;
-s32 D_80111AF0_rockin_raceway[4] BSS;
-s32 D_80111B00_rockin_raceway[2][6] BSS;
-RockinRacewayRacer *D_80111B30_rockin_raceway BSS;
-s16 D_80111B34_rockin_raceway BSS;
-s16 D_80111B36_rockin_raceway BSS;
-s16 D_80111B38_rockin_raceway BSS;
-s16 D_80111B3A_rockin_raceway BSS;
-RockinRacewaySnapshotRow *D_80111B3C_rockin_raceway BSS;
-Track *D_80111B40_rockin_raceway BSS;
-f32 D_80111B44_rockin_raceway BSS;
-RockinRacewayFx *D_80111B48_rockin_raceway BSS;
-omObjData *D_80111B4C_rockin_raceway BSS;
-RockinRacewayModelState *D_80111B50_rockin_raceway BSS;
-s16 D_80111B54_rockin_raceway BSS;
-omObjData *D_80111B58_rockin_raceway BSS;
-RockinRacewayEffect *D_80111B5C_rockin_raceway BSS;
-RockinRacewayEffectState *D_80111B60_rockin_raceway BSS;
-s16 D_80111B64_rockin_raceway BSS;
-s16 *D_80111B68_rockin_raceway BSS;
-s16 D_80111B6C_rockin_raceway[4] BSS;
-RockinRacewayBssB74 rockinRacewayBssB74 BSS;
-u8 D_80111B7C_rockin_raceway[4] BSS; /* Unreferenced. */
-RockinRacewayMeter D_80111B80_rockin_raceway[4] BSS;
-RockinRacewaySfx *D_80111BD0_rockin_raceway BSS;
-s16 D_80111BD4_rockin_raceway BSS;
-s16 D_80111BD6_rockin_raceway BSS;
-omObjData *D_80111BD8_rockin_raceway BSS;
-u8 D_80111BDC_rockin_raceway[4] BSS;                  /* Unreferenced. */
-MgCameraKey D_80111BE0_rockin_raceway[2] BSS;         // target, origin
-s16 D_80111C28_rockin_raceway BSS;
-s16 D_80111C2A_rockin_raceway BSS;
-s16 D_80111C2C_rockin_raceway BSS;
-s16 D_80111C2E_rockin_raceway BSS;
-omObjData *D_80111C30_rockin_raceway BSS;
-s16 D_80111C34_rockin_raceway BSS;
-RockinRacewayFocus D_80111C38_rockin_raceway BSS;
-RockinRacewayVec *D_80111C4C_rockin_raceway BSS;
-// Ring buffer of 30 replay frames, see func_8010D600_rockin_raceway and func_8010D944_rockin_raceway.
-// D_80111C54_rockin_raceway counts recorded frames and D_80111C58_rockin_raceway is the next slot.
-RockinRacewayReplayFrame *D_80111C50_rockin_raceway BSS;
-s32 D_80111C54_rockin_raceway BSS;
-s32 D_80111C58_rockin_raceway BSS;
+s32 m244_replayFrameTime BSS; // frames spent on the current replay frame
+omObjData *m244_mainObj BSS;
+s32 m244_flag10F BSS;
+s32 m244_frameCnt BSS;
+s32 m244_phaseTimer BSS;
+s32 m244_resultWait BSS;
+s32 m244_phase BSS;
+s32 m244_phaseStep BSS;
+s16 m244_raceStartF BSS;
+s32 m244_raceTime BSS;
+s32 m244_recordTime BSS;
+s32 m244_timer BSS;
+s32 m244_rankOrderTbl[4] BSS;
+s32 m244_timeDigitTbl[2][6] BSS;
+RockinRacewayRacer *m244_racerTbl BSS;
+s16 m244_winnerNo BSS;
+s16 m244_newRecordF BSS;
+s16 m244_photoMode BSS;
+s16 m244_ghostDispF BSS;
+RockinRacewaySnapshotRow *m244_ghostTbl BSS;
+RockinRacewayTrack *m244_trackTbl BSS;
+f32 m244_trackLenMin BSS;
+RockinRacewayFx *m244_panelTbl BSS;
+omObjData *m244_sparkObj BSS;
+RockinRacewayModelState *m244_sparkStateTbl BSS;
+s16 m244_sparkPauseF BSS;
+omObjData *m244_smokeObj BSS;
+RockinRacewayEffect *m244_smokeTbl BSS;
+RockinRacewayEffectState *m244_smokeStateTbl BSS;
+s16 m244_smokePauseF BSS;
+s16 *m244_sprTbl BSS;
+s16 m244_gaugeGrpTbl[4] BSS;
+RockinRacewayHudGrp m244_hudGrp BSS;
+u8 m244_hudGrpPad[4] BSS; /* Unreferenced. */
+RockinRacewayMeter m244_gaugeTbl[4] BSS;
+RockinRacewaySfx *m244_seQueue BSS;
+s16 m244_cheerSeNo BSS;
+s16 m244_cheerSeDelay BSS;
+omObjData *m244_cameraMoveObj BSS;
+u8 m244_cameraMoveObjPad[4] BSS;                  /* Unreferenced. */
+MgCameraKey m244_cameraKeyTbl[2] BSS;         // target, origin
+s16 m244_cameraMoveTimer BSS;
+s16 m244_cameraMoveTime BSS;
+s16 m244_cameraMoveF BSS;
+s16 m244_cameraMoveMode BSS;
+omObjData *m244_cameraFocusObj BSS;
+s16 m244_cameraFocusNum BSS;
+RockinRacewayFocus m244_cameraFocus BSS;
+RockinRacewayVec *m244_cameraFocusTbl BSS;
+// Ring buffer of 30 replay frames, see m244_ReplayRecord and m244_ReplayFrameGet.
+// m244_replayCnt counts recorded frames and m244_replayNo is the next slot.
+RockinRacewayReplayFrame *m244_replayTbl BSS;
+s32 m244_replayCnt BSS;
+s32 m244_replayNo BSS;
 
-/* Fields of rockinRacewayBssB74, aliased in undefined_syms.txt. */
-extern s16 D_80111B74_rockin_raceway;
-extern s16 D_80111B76_rockin_raceway[2];
-extern s16 D_80111B7A_rockin_raceway;
+/* Fields of m244_hudGrp, aliased in undefined_syms.txt. */
+extern s16 m244_replayGrp;
+extern s16 m244_timeGrpTbl[2];
+extern s16 m244_recordPulse;
 
-const s16 D_80111740_rockin_raceway[] = { 0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0x0000 };
-const s16 D_8011174C_rockin_raceway[] = { 0x8265, 0x8268, 0x826D, 0x8268, 0x8272, 0x8267, 0x0000 };
+const s16 m244_startMesTbl[] = { 0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0x0000 };
+const s16 m244_finishMesTbl[] = { 0x8265, 0x8268, 0x826D, 0x8268, 0x8272, 0x8267, 0x0000 };
 
-void func_80105C24_rockin_raceway(omObjData *object);
-void func_80105CB0_rockin_raceway(omObjData *object);
-void func_80106A5C_rockin_raceway(omObjData *object);
-void func_80106A80_rockin_raceway(omObjData *object);
-void func_80107E78_rockin_raceway(s32 row, s16 arg1);
-void func_8010803C_rockin_raceway(s32 *order);
-s32 func_80108464_rockin_raceway(void);
-void func_80109044_rockin_raceway(void);
-void func_80109134_rockin_raceway(void);
-void func_801097A0_rockin_raceway(void);
-void func_801098D8_rockin_raceway(void);
-void func_80109D00_rockin_raceway(s32 *players);
-void func_80109D54_rockin_raceway(s32 *values);
-void func_8010B2B8_rockin_raceway(void);
-void func_8010C9BC_rockin_raceway(void);
-void func_8010C9CC_rockin_raceway(void);
-void func_8010CA1C_rockin_raceway(void);
-void func_8010D104_rockin_raceway(void);
-void func_8010D114_rockin_raceway(void);
-void func_8010D600_rockin_raceway(void);
-void func_8010D9C4_rockin_raceway(s32 index);
-void func_8010E08C_rockin_raceway(s32 winner);
-void func_8010E39C_rockin_raceway(void);
-void func_80106B28_rockin_raceway(void);
-void func_80106DC8_rockin_raceway(omObjData *object);
-void func_801071D8_rockin_raceway(omObjData *object);
-void func_8010769C_rockin_raceway(omObjData *object);
-void func_80107958_rockin_raceway(RockinRacewayRacer *racer);
-void func_80107A38_rockin_raceway(RockinRacewayRacer *racer);
-void func_80107BFC_rockin_raceway(RockinRacewayRacer *racer);
-void func_80107D04_rockin_raceway(omObjData *object);
-void func_8010CB5C_rockin_raceway(RockinRacewayRacer *racer, f32 arg1);
-void func_8010A5E4_rockin_raceway(s16 track, s16 character);
-void func_8010EC0C_rockin_raceway(omObjData *arg0, u32 arg1);
-void func_80108578_rockin_raceway(void);
-void func_80108864_rockin_raceway(omObjData *object);
-s32 func_80108760_rockin_raceway(Vec *arg0, s32 arg1, u16 arg2);
-void func_80108BAC_rockin_raceway(void);
-void func_80108D84_rockin_raceway(void);
-void func_80108ED4_rockin_raceway(omObjData *object);
-void func_80109208_rockin_raceway(void);
-void func_80109384_rockin_raceway(omObjData *object);
-void func_801099AC_rockin_raceway(void);
-void func_80109A04_rockin_raceway(omObjData *object);
-void func_80108F8C_rockin_raceway(f32 x, f32 y, f32 z);
-s32 func_8010E344_rockin_raceway(s16 soundId, s16 frames, s16 unk04, s16 playerIndex);
-void func_801096A0_rockin_raceway(RockinRacewayRacer *racer);
-f32 func_8010E504_rockin_raceway(f32 arg0, f32 arg1);
-f32 func_8010E608_rockin_raceway(f32 target, f32 current, f32 step);
-u32 func_8010EC38_rockin_raceway(omObjData *object);
-u16 func_8010A4C0_rockin_raceway(s32 dirAndFile);
-s32 func_8010EC8C_rockin_raceway(HuSprAnimData *sprite, u8 *color);
-s32 func_8010FFB8_rockin_raceway(HuSprAnimData *sprite, RockinRacewayQuad *quad);
-void func_8010B5DC_rockin_raceway(s32 *frames);
-void func_80109CF8_rockin_raceway(omObjData *object);
-s32 func_8010F874_rockin_raceway(HuSprAnimData *sprite, u16 model, u8 *color);
-void func_8010FA78_rockin_raceway(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color);
-void func_80109DA8_rockin_raceway(void);
-void func_8010A504_rockin_raceway(void);
-s32 func_8010A48C_rockin_raceway(u16 arg0, u16 arg1);
-f32 func_8010E7E0_rockin_raceway(f32 arg0, f32 arg1, f32 arg2);
-f32 func_8010E840_rockin_raceway(f32 arg0, f32 arg1, f32 arg2, f32 arg3);
-void func_8010E8A0_rockin_raceway(f32 arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *out);
-void func_8010E994_rockin_raceway(f32 arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *out);
-void func_8010EB84_rockin_raceway(Vec *dir, f32 *rot);
-f32 func_8010A258_rockin_raceway(u16 track, f32 arg1, f32 distance, f32 speed, u16 *node, f32 *fraction, Vec *pos, Vec *rot);
-void func_8010B124_rockin_raceway(void);
-void func_8010B774_rockin_raceway(void);
-void func_8010A990_rockin_raceway(omObjData *object);
-void func_8010AAAC_rockin_raceway(s16 track, s16 progress, u16 state);
-void func_8010C0D8_rockin_raceway(omObjData *object);
-void func_8010C5E0_rockin_raceway(s32 arg0);
-void func_8010C7CC_rockin_raceway(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames);
-void func_8010CE90_rockin_raceway(omObjData *object);
-void func_8010D134_rockin_raceway(s32 camIndex);
-void func_8010D288_rockin_raceway(s32 camIndex, f32 *pos, f32 *screen, f32 *normalized);
+void m244_MainObjInit(omObjData *object);
+void m244_MainObjMain(omObjData *object);
+void m244_ExitObjMain(omObjData *object);
+void m244_ExitCheck(omObjData *object);
+void m244_GhostStore(s32 row, s16 arg1);
+void m244_RankCalc(s32 *order);
+s32 m244_WinnerGet(void);
+void m244_SparkStateSave(void);
+void m244_SparkStateRestore(void);
+void m244_SmokeStateSave(void);
+void m244_SmokeStateRestore(void);
+void m244_BoardFaceSet(s32 *players);
+void m244_BoardTimeSet(s32 *values);
+void m244_TimeUpdate(void);
+void m244_CameraMoveStop(void);
+void m244_CameraMoveResume(void);
+void m244_CameraFocusInit(void);
+void m244_CameraFocusStop(void);
+void m244_CameraFocusStart(void);
+void m244_ReplayRecord(void);
+void m244_ReplayPlay(s32 index);
+void m244_ReplayWinnerAdjust(s32 winner);
+void m244_SeQueueUpdate(void);
+void m244_PlayerObjCreateAll(void);
+void m244_PlayerObjInit(omObjData *object);
+void m244_PlayerObjMain(omObjData *object);
+void m244_PlayerComInput(omObjData *object);
+void m244_RacerAccelUpdate(RockinRacewayRacer *racer);
+void m244_RacerGaugeUpdate(RockinRacewayRacer *racer);
+void m244_RacerSpinUpdate(RockinRacewayRacer *racer);
+void m244_RacerMove(omObjData *object);
+void m244_RacerFocusAdd(RockinRacewayRacer *racer, f32 arg1);
+void m244_GaugeCreate(s16 track, s16 character);
+void m244_WorkPtrSet(omObjData *arg0, u32 arg1);
+void m244_PanelCreateAll(void);
+void m244_PanelObjMain(omObjData *object);
+s32 m244_PanelCreate(Vec *arg0, s32 arg1, u16 arg2);
+void m244_PanelHitUpdate(void);
+void m244_SparkInit(void);
+void m244_SparkObjMain(omObjData *object);
+void m244_SmokeInit(void);
+void m244_SmokeObjMain(omObjData *object);
+void m244_StageObjCreate(void);
+void m244_StageObjInit(omObjData *object);
+void m244_SparkCreate(f32 x, f32 y, f32 z);
+s32 m244_SeQueueAdd(s16 soundId, s16 frames, s16 unk04, s16 playerIndex);
+void m244_RacerSmokeCreate(RockinRacewayRacer *racer);
+f32 m244_AngleDiffCalc(f32 arg0, f32 arg1);
+f32 m244_AngleStepCalc(f32 target, f32 current, f32 step);
+u32 m244_WorkPtrGet(omObjData *object);
+u16 m244_SprAnimRead(s32 dirAndFile);
+s32 m244_BillboardColorMdlCreate(HuSprAnimData *sprite, u8 *color);
+s32 m244_QuadMdlCreate(HuSprAnimData *sprite, RockinRacewayQuad *quad);
+void m244_TimeDigitCalc(s32 *frames);
+void m244_StageObjMain(omObjData *object);
+s32 m244_BillboardColorMdlLink(HuSprAnimData *sprite, u16 model, u8 *color);
+void m244_BillboardColorPatSet(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color);
+void m244_TrackInit(void);
+void m244_ReplaySprInit(void);
+s32 m244_TrackNodeTypeGet(u16 arg0, u16 arg1);
+f32 m244_AngleInterpCalc(f32 arg0, f32 arg1, f32 arg2);
+f32 m244_BezierCalc(f32 arg0, f32 arg1, f32 arg2, f32 arg3);
+void m244_BezierVecCalc(f32 arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *out);
+void m244_BezierTangentVecCalc(f32 arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *out);
+void m244_DirRotCalc(Vec *dir, f32 *rot);
+f32 m244_TrackPosCalc(u16 track, f32 arg1, f32 distance, f32 speed, u16 *node, f32 *fraction, Vec *pos, Vec *rot);
+void m244_TimeInit(void);
+void m244_CameraInit(void);
+void m244_GaugeObjMain(omObjData *object);
+void m244_GaugeUpdate(s16 track, s16 progress, u16 state);
+void m244_CameraMoveObjMain(omObjData *object);
+void m244_CameraKeyStore(s32 arg0);
+void m244_CameraMoveStart(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames);
+void m244_CameraFocusObjMain(omObjData *object);
+void m244_CameraPosUpdate(s32 camIndex);
+void m244_ScreenPosCalc(s32 camIndex, f32 *pos, f32 *screen, f32 *normalized);
 void func_8007E040_main(Mtx *m, Mtx *n, Mtx *res);
-f32 func_8010E7C8_rockin_raceway(f32 arg0, f32 arg1, f32 arg2);
-void func_8010D5B8_rockin_raceway(void);
-void func_8010E2E4_rockin_raceway(void);
-void func_80110C38_rockin_raceway(s16 *models, HuSprAnimData *sprite, s32 *players);
-void func_80110D90_rockin_raceway(s16 *models, HuSprAnimData *sprite, s32 *values);
-s32 func_8010FBAC_rockin_raceway(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset);
+f32 m244_InterpCalc(f32 arg0, f32 arg1, f32 arg2);
+void m244_ReplayInit(void);
+void m244_SeQueueInit(void);
+void m244_BoardFaceUpdate(s16 *models, HuSprAnimData *sprite, s32 *players);
+void m244_BoardDigitUpdate(s16 *models, HuSprAnimData *sprite, s32 *values);
+s32 m244_BillboardVtxCreate(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset);
 
-void func_801059A0_rockin_raceway(void) {
+void m244_ObjectSetup(void) {
     u8 camIndex;
 
     MapCollInit(50);
@@ -634,49 +634,49 @@ void func_801059A0_rockin_raceway(void) {
     mgPlayerObjNum = 0;
     mgMapObjNum = 0;
     mgItemObjNum = 0;
-    D_80111ACC_rockin_raceway = 0;
-    D_80111AD0_rockin_raceway = 0;
-    D_80111AD4_rockin_raceway = 0;
-    D_80111AD8_rockin_raceway = 0;
-    D_80111ADC_rockin_raceway = 0;
-    D_80111AE0_rockin_raceway = 0;
-    D_80111BD4_rockin_raceway = -1;
-    D_80111BD6_rockin_raceway = -1;
-    D_80111B36_rockin_raceway = 0;
-    D_80111B38_rockin_raceway = 0;
-    D_80111AE4_rockin_raceway = 0;
-    D_80111AEC_rockin_raceway = 5400;
-    D_80111AE8_rockin_raceway = GWMgRecordGet(3);
-    if (D_80111AE8_rockin_raceway == 0) {
-        D_80111AE8_rockin_raceway = 9000;
+    m244_frameCnt = 0;
+    m244_phaseTimer = 0;
+    m244_resultWait = 0;
+    m244_phase = 0;
+    m244_phaseStep = 0;
+    m244_raceStartF = 0;
+    m244_cheerSeNo = -1;
+    m244_cheerSeDelay = -1;
+    m244_newRecordF = 0;
+    m244_photoMode = 0;
+    m244_raceTime = 0;
+    m244_timer = 5400;
+    m244_recordTime = GWMgRecordGet(3);
+    if (m244_recordTime == 0) {
+        m244_recordTime = 9000;
     }
-    D_80111BD8_rockin_raceway = NULL;
-    D_80111C30_rockin_raceway = NULL;
-    D_80111B68_rockin_raceway = HuMemAllocTag(0x40, TAG_OVERLAY);
-    D_80111AC4_rockin_raceway = omAddObj(0x20, 0, 0, -1, func_80105C24_rockin_raceway);
-    GMesFontMesCreate(D_80111740_rockin_raceway, 1);
-    GMesFontMesCreate(D_8011174C_rockin_raceway, 1);
+    m244_cameraMoveObj = NULL;
+    m244_cameraFocusObj = NULL;
+    m244_sprTbl = HuMemAllocTag(0x40, TAG_OVERLAY);
+    m244_mainObj = omAddObj(0x20, 0, 0, -1, m244_MainObjInit);
+    GMesFontMesCreate(m244_startMesTbl, 1);
+    GMesFontMesCreate(m244_finishMesTbl, 1);
 }
 
-void func_80105C24_rockin_raceway(omObjData *object) {
-    object->func = func_80105CB0_rockin_raceway;
-    func_80109DA8_rockin_raceway();
-    func_801099AC_rockin_raceway();
-    func_80108D84_rockin_raceway();
-    func_80109208_rockin_raceway();
-    func_8010A504_rockin_raceway();
-    func_8010B124_rockin_raceway();
-    func_80106B28_rockin_raceway();
-    func_80108578_rockin_raceway();
-    func_8010E2E4_rockin_raceway();
-    func_8010B774_rockin_raceway();
-    func_8010D5B8_rockin_raceway();
+void m244_MainObjInit(omObjData *object) {
+    object->func = m244_MainObjMain;
+    m244_TrackInit();
+    m244_StageObjCreate();
+    m244_SparkInit();
+    m244_SmokeInit();
+    m244_ReplaySprInit();
+    m244_TimeInit();
+    m244_PlayerObjCreateAll();
+    m244_PanelCreateAll();
+    m244_SeQueueInit();
+    m244_CameraInit();
+    m244_ReplayInit();
     if (_CheckFlag(10)) {
-        D_80111AC8_rockin_raceway = 1;
+        m244_flag10F = 1;
     }
 }
 
-void func_80105CB0_rockin_raceway(omObjData *object) {
+void m244_MainObjMain(omObjData *object) {
     s32 times[2];
     RockinRacewayRacer *racer;
     RockinRacewayRacer *other;
@@ -688,152 +688,152 @@ void func_80105CB0_rockin_raceway(omObjData *object) {
 
     times[0] = 0;
     times[1] = 0;
-    func_80106A80_rockin_raceway(object);
-    func_8010E39C_rockin_raceway();
-    if (D_80111BD6_rockin_raceway >= 0) {
-        if (--D_80111BD6_rockin_raceway == 0) {
-            D_80111BD4_rockin_raceway = HuAudFXPlay(0x470);
-            HuAudFXVolSet(D_80111BD4_rockin_raceway, 64);
-            HuAudFXPitchSet(D_80111BD4_rockin_raceway, 0);
-            D_80111BD6_rockin_raceway = -1;
+    m244_ExitCheck(object);
+    m244_SeQueueUpdate();
+    if (m244_cheerSeDelay >= 0) {
+        if (--m244_cheerSeDelay == 0) {
+            m244_cheerSeNo = HuAudFXPlay(0x470);
+            HuAudFXVolSet(m244_cheerSeNo, 64);
+            HuAudFXPitchSet(m244_cheerSeNo, 0);
+            m244_cheerSeDelay = -1;
         }
     }
-    switch (D_80111AD8_rockin_raceway) {
+    switch (m244_phase) {
         case 0:
-            D_80111AD8_rockin_raceway = 1;
-            D_80111ADC_rockin_raceway = 0;
+            m244_phase = 1;
+            m244_phaseStep = 0;
             break;
         case 1:
-            switch (D_80111ADC_rockin_raceway) {
+            switch (m244_phaseStep) {
                 case 0:
                     HuAudFXPlay(0x46F);
-                    func_8010C7CC_rockin_raceway(D_80111350_rockin_raceway[1].center.x, D_80111350_rockin_raceway[1].center.y,
-                                                 D_80111350_rockin_raceway[1].center.z, D_80111350_rockin_raceway[1].rot.x,
-                                                 D_80111350_rockin_raceway[1].rot.y, D_80111350_rockin_raceway[1].rot.z,
-                                                 D_80111350_rockin_raceway[1].zoom, 19);
-                    D_80111C2E_rockin_raceway = 0;
-                    D_80111ADC_rockin_raceway++;
+                    m244_CameraMoveStart(m244_cameraPresetTbl[1].center.x, m244_cameraPresetTbl[1].center.y,
+                                                 m244_cameraPresetTbl[1].center.z, m244_cameraPresetTbl[1].rot.x,
+                                                 m244_cameraPresetTbl[1].rot.y, m244_cameraPresetTbl[1].rot.z,
+                                                 m244_cameraPresetTbl[1].zoom, 19);
+                    m244_cameraMoveMode = 0;
+                    m244_phaseStep++;
                     break;
                 case 2:
-                    func_8010C7CC_rockin_raceway(D_80111350_rockin_raceway[2].center.x, D_80111350_rockin_raceway[2].center.y,
-                                                 D_80111350_rockin_raceway[2].center.z, D_80111350_rockin_raceway[2].rot.x,
-                                                 D_80111350_rockin_raceway[2].rot.y, D_80111350_rockin_raceway[2].rot.z,
-                                                 D_80111350_rockin_raceway[2].zoom, 75);
-                    D_80111C2E_rockin_raceway = 0;
-                    D_80111ADC_rockin_raceway++;
+                    m244_CameraMoveStart(m244_cameraPresetTbl[2].center.x, m244_cameraPresetTbl[2].center.y,
+                                                 m244_cameraPresetTbl[2].center.z, m244_cameraPresetTbl[2].rot.x,
+                                                 m244_cameraPresetTbl[2].rot.y, m244_cameraPresetTbl[2].rot.z,
+                                                 m244_cameraPresetTbl[2].zoom, 75);
+                    m244_cameraMoveMode = 0;
+                    m244_phaseStep++;
                     break;
                 case 4:
-                    if (D_80111AD0_rockin_raceway >= 5) {
-                        D_80111ADC_rockin_raceway++;
+                    if (m244_phaseTimer >= 5) {
+                        m244_phaseStep++;
                     }
                     break;
                 case 6:
-                    func_8010C7CC_rockin_raceway(D_80111350_rockin_raceway[3].center.x, D_80111350_rockin_raceway[3].center.y,
-                                                 D_80111350_rockin_raceway[3].center.z, D_80111350_rockin_raceway[3].rot.x,
-                                                 D_80111350_rockin_raceway[3].rot.y, D_80111350_rockin_raceway[3].rot.z,
-                                                 D_80111350_rockin_raceway[3].zoom, 75);
-                    D_80111C2E_rockin_raceway = 0;
-                    D_80111AD0_rockin_raceway = 0;
-                    D_80111ADC_rockin_raceway++;
+                    m244_CameraMoveStart(m244_cameraPresetTbl[3].center.x, m244_cameraPresetTbl[3].center.y,
+                                                 m244_cameraPresetTbl[3].center.z, m244_cameraPresetTbl[3].rot.x,
+                                                 m244_cameraPresetTbl[3].rot.y, m244_cameraPresetTbl[3].rot.z,
+                                                 m244_cameraPresetTbl[3].zoom, 75);
+                    m244_cameraMoveMode = 0;
+                    m244_phaseTimer = 0;
+                    m244_phaseStep++;
                     break;
                 case 8:
-                    func_8010C7CC_rockin_raceway(D_80111350_rockin_raceway[4].center.x, D_80111350_rockin_raceway[4].center.y,
-                                                 D_80111350_rockin_raceway[4].center.z, D_80111350_rockin_raceway[4].rot.x,
-                                                 D_80111350_rockin_raceway[4].rot.y, D_80111350_rockin_raceway[4].rot.z,
-                                                 D_80111350_rockin_raceway[4].zoom, 45);
-                    D_80111C2E_rockin_raceway = 2;
-                    D_80111ADC_rockin_raceway++;
+                    m244_CameraMoveStart(m244_cameraPresetTbl[4].center.x, m244_cameraPresetTbl[4].center.y,
+                                                 m244_cameraPresetTbl[4].center.z, m244_cameraPresetTbl[4].rot.x,
+                                                 m244_cameraPresetTbl[4].rot.y, m244_cameraPresetTbl[4].rot.z,
+                                                 m244_cameraPresetTbl[4].zoom, 45);
+                    m244_cameraMoveMode = 2;
+                    m244_phaseStep++;
                     break;
                 case 10:
-                    if (D_80111AD0_rockin_raceway != 3) {
-                        if (D_80111AD0_rockin_raceway > 3) {
-                            D_80111AD8_rockin_raceway = 2;
-                            D_80111ADC_rockin_raceway = 0;
+                    if (m244_phaseTimer != 3) {
+                        if (m244_phaseTimer > 3) {
+                            m244_phase = 2;
+                            m244_phaseStep = 0;
                         }
                     }
                     break;
                 default:
-                    if (D_80111ADC_rockin_raceway == 9 && D_80111AD0_rockin_raceway == 20) {
+                    if (m244_phaseStep == 9 && m244_phaseTimer == 20) {
                         GMesCreate(GMES_MES_3);
                         HuAudSeqPlay(0x2E);
                     }
-                    if (D_80111C2C_rockin_raceway == 0) {
-                        if (D_80111ADC_rockin_raceway == 3) {
+                    if (m244_cameraMoveF == 0) {
+                        if (m244_phaseStep == 3) {
                             HuAudSeqPlay(0x6D);
                         }
-                        D_80111AD0_rockin_raceway = 0;
-                        D_80111ADC_rockin_raceway++;
+                        m244_phaseTimer = 0;
+                        m244_phaseStep++;
                     }
                     break;
             }
             break;
         case 2:
-            if (D_80111AD0_rockin_raceway == 8) {
+            if (m244_phaseTimer == 8) {
                 HuAudFXPlay(0x46C);
             }
-            if (D_80111AD0_rockin_raceway == 30) {
-                D_80111AE0_rockin_raceway = 1;
+            if (m244_phaseTimer == 30) {
+                m244_raceStartF = 1;
             }
-            if (D_80111AD0_rockin_raceway == 20) {
-                func_8010C9BC_rockin_raceway();
-                func_8010CA1C_rockin_raceway();
+            if (m244_phaseTimer == 20) {
+                m244_CameraMoveStop();
+                m244_CameraFocusInit();
             }
-            func_8010803C_rockin_raceway(D_80111AF0_rockin_raceway);
-            if (D_80111AE0_rockin_raceway != 0) {
-                times[0] = ++D_80111AE4_rockin_raceway;
-                times[1] = D_80111AE8_rockin_raceway;
-                func_8010B5DC_rockin_raceway(times);
-                func_80109D00_rockin_raceway(D_80111AF0_rockin_raceway);
-                func_80109D54_rockin_raceway(times);
-                func_8010D600_rockin_raceway();
-                D_80111AEC_rockin_raceway--;
+            m244_RankCalc(m244_rankOrderTbl);
+            if (m244_raceStartF != 0) {
+                times[0] = ++m244_raceTime;
+                times[1] = m244_recordTime;
+                m244_TimeDigitCalc(times);
+                m244_BoardFaceSet(m244_rankOrderTbl);
+                m244_BoardTimeSet(times);
+                m244_ReplayRecord();
+                m244_timer--;
             }
-            if (D_80111AEC_rockin_raceway == 900) {
+            if (m244_timer == 900) {
                 mes = GMesCreate(GMES_MES_TIMER, 30, 156, 56);
                 gMesData[mes].pos.x = 156.0f;
                 gMesData[mes].pos.y = 56.0f;
-            } else if (D_80111AEC_rockin_raceway < 900) {
-                GMesTimerValueSet((D_80111AEC_rockin_raceway + 29) / 30);
-                if (D_80111AEC_rockin_raceway == 0) {
+            } else if (m244_timer < 900) {
+                GMesTimerValueSet((m244_timer + 29) / 30);
+                if (m244_timer == 0) {
                     GMesTimerEnd();
                 }
             }
-            D_80111B34_rockin_raceway = func_80108464_rockin_raceway();
-            if (D_80111B34_rockin_raceway == -1 && D_80111AEC_rockin_raceway > 0) {
+            m244_winnerNo = m244_WinnerGet();
+            if (m244_winnerNo == -1 && m244_timer > 0) {
                 break;
             }
-            func_8010D104_rockin_raceway();
-            func_8010C9CC_rockin_raceway();
-            func_8010C7CC_rockin_raceway(D_80111350_rockin_raceway[5].center.x, D_80111350_rockin_raceway[5].center.y,
-                                         D_80111350_rockin_raceway[5].center.z, D_80111350_rockin_raceway[5].rot.x,
-                                         D_80111350_rockin_raceway[5].rot.y, D_80111350_rockin_raceway[5].rot.z,
-                                         D_80111350_rockin_raceway[5].zoom, 10);
-            D_80111C2E_rockin_raceway = 2;
-            if (D_80111B34_rockin_raceway != -1) {
-                leaderObj = mgPlayerObjTbl[D_80111AF0_rockin_raceway[0]];
-                racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(leaderObj);
+            m244_CameraFocusStop();
+            m244_CameraMoveResume();
+            m244_CameraMoveStart(m244_cameraPresetTbl[5].center.x, m244_cameraPresetTbl[5].center.y,
+                                         m244_cameraPresetTbl[5].center.z, m244_cameraPresetTbl[5].rot.x,
+                                         m244_cameraPresetTbl[5].rot.y, m244_cameraPresetTbl[5].rot.z,
+                                         m244_cameraPresetTbl[5].zoom, 10);
+            m244_cameraMoveMode = 2;
+            if (m244_winnerNo != -1) {
+                leaderObj = mgPlayerObjTbl[m244_rankOrderTbl[0]];
+                racer = (RockinRacewayRacer *)m244_WorkPtrGet(leaderObj);
                 for (i = 1; i < 4; i++) {
-                    otherObj = mgPlayerObjTbl[D_80111AF0_rockin_raceway[i]];
-                    other = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(otherObj);
+                    otherObj = mgPlayerObjTbl[m244_rankOrderTbl[i]];
+                    other = (RockinRacewayRacer *)m244_WorkPtrGet(otherObj);
                     if (other->unk02 == 1) {
                         continue;
                     }
                     if (fabs(racer->unk48 - other->unk48) < 30.0) {
-                        D_80111B38_rockin_raceway = 3;
+                        m244_photoMode = 3;
                         break;
                     }
                     if (racer->unk48 - other->unk48 < 100.0) {
                         if (fabs(leaderObj->trans.x - otherObj->trans.x) < 30.0) {
-                            D_80111B38_rockin_raceway = 3;
+                            m244_photoMode = 3;
                         } else {
-                            D_80111B38_rockin_raceway = 1;
+                            m244_photoMode = 1;
                         }
                         break;
                     }
                 }
             }
             for (i = 0; i < 4; i++) {
-                racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[i]);
+                racer = (RockinRacewayRacer *)m244_WorkPtrGet(mgPlayerObjTbl[i]);
                 if (racer->unk04 != -1) {
                     HuAudFXStop(racer->unk04);
                     racer->unk04 = -1;
@@ -845,210 +845,210 @@ void func_80105CB0_rockin_raceway(omObjData *object) {
             }
             GMesCreate(GMES_MES_14);
             HuAudSeqFadeOut(120);
-            D_80111AD8_rockin_raceway = 3;
-            D_80111ADC_rockin_raceway = 0;
+            m244_phase = 3;
+            m244_phaseStep = 0;
             break;
         case 3:
-            if (D_80111AD0_rockin_raceway == 3 && D_80111BD4_rockin_raceway != -1) {
-                HuAudFXVolSet(D_80111BD4_rockin_raceway, 110);
-                HuAudFXPitchSet(D_80111BD4_rockin_raceway, 200);
+            if (m244_phaseTimer == 3 && m244_cheerSeNo != -1) {
+                HuAudFXVolSet(m244_cheerSeNo, 110);
+                HuAudFXPitchSet(m244_cheerSeNo, 200);
             }
             if (GMesStatGet() == 0) {
-                D_80111AD8_rockin_raceway = 4;
-                D_80111ADC_rockin_raceway = 0;
+                m244_phase = 4;
+                m244_phaseStep = 0;
             }
             break;
         case 4:
-            if (D_80111AD0_rockin_raceway < 15) {
+            if (m244_phaseTimer < 15) {
                 break;
             }
-            if (D_80111B34_rockin_raceway != -1) {
-                racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[D_80111B34_rockin_raceway]);
+            if (m244_winnerNo != -1) {
+                racer = (RockinRacewayRacer *)m244_WorkPtrGet(mgPlayerObjTbl[m244_winnerNo]);
                 GwPlayer[racer->unk0A].bonusCoin += 10;
-                if (D_80111B38_rockin_raceway != 0) {
-                    func_80109044_rockin_raceway();
-                    func_801097A0_rockin_raceway();
-                    func_8010E08C_rockin_raceway(D_80111B34_rockin_raceway);
-                    D_80111AD8_rockin_raceway = 5;
-                    D_80111ADC_rockin_raceway = 0;
+                if (m244_photoMode != 0) {
+                    m244_SparkStateSave();
+                    m244_SmokeStateSave();
+                    m244_ReplayWinnerAdjust(m244_winnerNo);
+                    m244_phase = 5;
+                    m244_phaseStep = 0;
                     break;
                 }
             }
-            D_80111AD8_rockin_raceway = 6;
-            D_80111ADC_rockin_raceway = 0;
+            m244_phase = 6;
+            m244_phaseStep = 0;
             break;
         case 5:
-            D_80111B3A_rockin_raceway = 1;
-            if (D_80111ADC_rockin_raceway > 0 && D_80111ADC_rockin_raceway < 29) {
-                if (D_80111AD0_rockin_raceway >= 4.5f) {
-                    if (D_80111ADC_rockin_raceway == 10) {
-                        func_80107E78_rockin_raceway(0, 9);
+            m244_ghostDispF = 1;
+            if (m244_phaseStep > 0 && m244_phaseStep < 29) {
+                if (m244_phaseTimer >= 4.5f) {
+                    if (m244_phaseStep == 10) {
+                        m244_GhostStore(0, 9);
                     }
-                    D_80111ADC_rockin_raceway++;
-                    D_80111AD0_rockin_raceway = 0;
+                    m244_phaseStep++;
+                    m244_phaseTimer = 0;
                 }
-            } else if (D_80111ADC_rockin_raceway < 33) {
-                if (D_80111AD0_rockin_raceway >= 7.5f) {
-                    D_80111ADC_rockin_raceway++;
-                    D_80111AD0_rockin_raceway = 0;
+            } else if (m244_phaseStep < 33) {
+                if (m244_phaseTimer >= 7.5f) {
+                    m244_phaseStep++;
+                    m244_phaseTimer = 0;
                 }
-            } else if (D_80111AD0_rockin_raceway >= 30.0f) {
-                D_80111ADC_rockin_raceway++;
-                D_80111AD0_rockin_raceway = 0;
+            } else if (m244_phaseTimer >= 30.0f) {
+                m244_phaseStep++;
+                m244_phaseTimer = 0;
             }
-            if (D_80111ADC_rockin_raceway < 30) {
-                func_8010D9C4_rockin_raceway(D_80111ADC_rockin_raceway);
-                if (D_80111BD4_rockin_raceway != -1) {
-                    t = D_80111ADC_rockin_raceway / 30.0f;
-                    HuAudFXVolSet(D_80111BD4_rockin_raceway, func_8010E7C8_rockin_raceway(t, 64.0f, 110.0f));
-                    HuAudFXPitchSet(D_80111BD4_rockin_raceway, (s16)func_8010E7C8_rockin_raceway(t, 0.0f, 200.0f));
+            if (m244_phaseStep < 30) {
+                m244_ReplayPlay(m244_phaseStep);
+                if (m244_cheerSeNo != -1) {
+                    t = m244_phaseStep / 30.0f;
+                    HuAudFXVolSet(m244_cheerSeNo, m244_InterpCalc(t, 64.0f, 110.0f));
+                    HuAudFXPitchSet(m244_cheerSeNo, (s16)m244_InterpCalc(t, 0.0f, 200.0f));
                 }
-                func_8010C7CC_rockin_raceway(D_80111350_rockin_raceway[6].center.x, D_80111350_rockin_raceway[6].center.y,
-                                             D_80111350_rockin_raceway[6].center.z, D_80111350_rockin_raceway[6].rot.x,
-                                             D_80111350_rockin_raceway[6].rot.y, D_80111350_rockin_raceway[6].rot.z,
-                                             D_80111350_rockin_raceway[6].zoom, 1);
-            } else if (D_80111ADC_rockin_raceway < 34) {
-                if (D_80111BD4_rockin_raceway != -1) {
-                    HuAudFXVolSet(D_80111BD4_rockin_raceway, 110);
-                    HuAudFXPitchSet(D_80111BD4_rockin_raceway, 200);
+                m244_CameraMoveStart(m244_cameraPresetTbl[6].center.x, m244_cameraPresetTbl[6].center.y,
+                                             m244_cameraPresetTbl[6].center.z, m244_cameraPresetTbl[6].rot.x,
+                                             m244_cameraPresetTbl[6].rot.y, m244_cameraPresetTbl[6].rot.z,
+                                             m244_cameraPresetTbl[6].zoom, 1);
+            } else if (m244_phaseStep < 34) {
+                if (m244_cheerSeNo != -1) {
+                    HuAudFXVolSet(m244_cheerSeNo, 110);
+                    HuAudFXPitchSet(m244_cheerSeNo, 200);
                 }
-                func_8010D9C4_rockin_raceway(29);
-                func_8010C7CC_rockin_raceway(CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP,
-                                             D_80111350_rockin_raceway[6].zoom - (D_80111ADC_rockin_raceway - 29) * 100, 1);
+                m244_ReplayPlay(29);
+                m244_CameraMoveStart(CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP,
+                                             m244_cameraPresetTbl[6].zoom - (m244_phaseStep - 29) * 100, 1);
             } else {
-                func_8010C7CC_rockin_raceway(D_80111350_rockin_raceway[5].center.x, D_80111350_rockin_raceway[5].center.y,
-                                             D_80111350_rockin_raceway[5].center.z, D_80111350_rockin_raceway[5].rot.x,
-                                             D_80111350_rockin_raceway[5].rot.y, D_80111350_rockin_raceway[5].rot.z,
-                                             D_80111350_rockin_raceway[5].zoom, 1);
-                func_80109134_rockin_raceway();
-                func_801098D8_rockin_raceway();
-                D_80111B3A_rockin_raceway = 0;
-                D_80111AD8_rockin_raceway = 6;
-                D_80111ADC_rockin_raceway = 0;
+                m244_CameraMoveStart(m244_cameraPresetTbl[5].center.x, m244_cameraPresetTbl[5].center.y,
+                                             m244_cameraPresetTbl[5].center.z, m244_cameraPresetTbl[5].rot.x,
+                                             m244_cameraPresetTbl[5].rot.y, m244_cameraPresetTbl[5].rot.z,
+                                             m244_cameraPresetTbl[5].zoom, 1);
+                m244_SparkStateRestore();
+                m244_SmokeStateRestore();
+                m244_ghostDispF = 0;
+                m244_phase = 6;
+                m244_phaseStep = 0;
             }
             break;
         case 6:
-            switch (D_80111ADC_rockin_raceway) {
+            switch (m244_phaseStep) {
                 case 0:
-                    if (!(D_80111AD0_rockin_raceway >= 15.0f) && D_80111B38_rockin_raceway != 0) {
+                    if (!(m244_phaseTimer >= 15.0f) && m244_photoMode != 0) {
                         break;
                     }
-                    if (D_80111B34_rockin_raceway != -1 && D_80111AE4_rockin_raceway < D_80111AE8_rockin_raceway) {
-                        D_80111AE8_rockin_raceway = D_80111AE4_rockin_raceway;
-                        GWMgRecordSet(3, (u16)D_80111AE8_rockin_raceway);
+                    if (m244_winnerNo != -1 && m244_raceTime < m244_recordTime) {
+                        m244_recordTime = m244_raceTime;
+                        GWMgRecordSet(3, (u16)m244_recordTime);
                         GMesCreate(GMES_MES_MG_RECORD);
-                        D_80111B7A_rockin_raceway = 15;
-                        D_80111AD4_rockin_raceway = 99;
-                        D_80111B36_rockin_raceway = 1;
-                        D_80111ADC_rockin_raceway++;
+                        m244_recordPulse = 15;
+                        m244_resultWait = 99;
+                        m244_newRecordF = 1;
+                        m244_phaseStep++;
                     } else {
-                        D_80111ADC_rockin_raceway = 2;
+                        m244_phaseStep = 2;
                     }
-                    times[0] = D_80111AE4_rockin_raceway;
-                    times[1] = D_80111AE8_rockin_raceway;
-                    func_8010B5DC_rockin_raceway(times);
-                    D_80111AD0_rockin_raceway = 0;
+                    times[0] = m244_raceTime;
+                    times[1] = m244_recordTime;
+                    m244_TimeDigitCalc(times);
+                    m244_phaseTimer = 0;
                     break;
                 case 1:
-                    if (D_80111AD0_rockin_raceway >= 75.0f) {
-                        D_80111ADC_rockin_raceway++;
-                        D_80111AD0_rockin_raceway = 0;
+                    if (m244_phaseTimer >= 75.0f) {
+                        m244_phaseStep++;
+                        m244_phaseTimer = 0;
                     }
                     break;
                 case 2:
-                    if (D_80111B34_rockin_raceway != -1) {
-                        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[D_80111B34_rockin_raceway]);
+                    if (m244_winnerNo != -1) {
+                        racer = (RockinRacewayRacer *)m244_WorkPtrGet(mgPlayerObjTbl[m244_winnerNo]);
                         GMesCreate(GMES_MES_MG_WINNER, racer->unk0E);
-                        if (D_80111B36_rockin_raceway == 0) {
+                        if (m244_newRecordF == 0) {
                             HuAudSeqPlay(0x65);
-                            D_80111AD4_rockin_raceway = 138;
+                            m244_resultWait = 138;
                         } else {
                             HuAudSeqPlay(0x6A);
                         }
                         PlayerFXPlay(0x28F, racer->unk0A);
-                        func_8010C9BC_rockin_raceway();
-                        func_8010D114_rockin_raceway();
+                        m244_CameraMoveStop();
+                        m244_CameraFocusStart();
                     } else {
-                        if (D_80111B36_rockin_raceway == 0) {
+                        if (m244_newRecordF == 0) {
                             HuAudSeqPlay(0x6C);
-                            D_80111AD4_rockin_raceway = 144;
+                            m244_resultWait = 144;
                         }
                         GMesCreate(GMES_MES_MG_DRAW);
                     }
-                    D_80111ADC_rockin_raceway++;
-                    D_80111AD0_rockin_raceway = 0;
+                    m244_phaseStep++;
+                    m244_phaseTimer = 0;
                     break;
                 case 3:
                     if (GMesStatGet() == 0) {
-                        D_80111ADC_rockin_raceway++;
-                        D_80111AD0_rockin_raceway = 0;
+                        m244_phaseStep++;
+                        m244_phaseTimer = 0;
                     }
                     break;
                 case 4:
-                    if (D_80111AD0_rockin_raceway >= 15) {
+                    if (m244_phaseTimer >= 15) {
                         WipeCreateOut(WIPE_TYPE_NORMAL, 16);
                         HuAudSeqFadeOut(16);
                         HuAudFXAllFadeOut(16);
-                        D_80111AD0_rockin_raceway = 0;
-                        D_80111ADC_rockin_raceway++;
+                        m244_phaseTimer = 0;
+                        m244_phaseStep++;
                     }
                     break;
                 default:
                     if (WipeStatGet() == 0) {
-                        object->func = func_80106A5C_rockin_raceway;
+                        object->func = m244_ExitObjMain;
                     }
                     break;
             }
             break;
     }
-    func_8010B2B8_rockin_raceway();
-    D_80111ACC_rockin_raceway++;
-    if (D_80111558_rockin_raceway == D_80111AD8_rockin_raceway) {
-        D_80111AD0_rockin_raceway++;
+    m244_TimeUpdate();
+    m244_frameCnt++;
+    if (m244_prevPhase == m244_phase) {
+        m244_phaseTimer++;
     } else {
-        D_80111AD0_rockin_raceway = 0;
-        D_80111558_rockin_raceway = D_80111AD8_rockin_raceway;
+        m244_phaseTimer = 0;
+        m244_prevPhase = m244_phase;
     }
 }
 
-void func_80106A5C_rockin_raceway(omObjData *object) {
+void m244_ExitObjMain(omObjData *object) {
     HuAudSeqStop();
     omOvlReturnEx(1);
 }
 
-void func_80106A80_rockin_raceway(omObjData *object) {
-    if (D_8011155C_rockin_raceway != 0) {
-        if (D_8011155C_rockin_raceway == 1) {
-            object->func = func_80106A5C_rockin_raceway;
+void m244_ExitCheck(omObjData *object) {
+    if (m244_exitTimer != 0) {
+        if (m244_exitTimer == 1) {
+            object->func = m244_ExitObjMain;
         }
-        D_8011155C_rockin_raceway--;
+        m244_exitTimer--;
         return;
     }
     if (omSysExitReq == 1 && WipeStatGet() == 0) {
-        D_8011155C_rockin_raceway = 16;
-        WipeCreateOut(WIPE_TYPE_NORMAL, (s16)D_8011155C_rockin_raceway);
-        HuAudSeqFadeOut((s16)D_8011155C_rockin_raceway);
-        HuAudFXAllFadeOut((s16)D_8011155C_rockin_raceway);
+        m244_exitTimer = 16;
+        WipeCreateOut(WIPE_TYPE_NORMAL, (s16)m244_exitTimer);
+        HuAudSeqFadeOut((s16)m244_exitTimer);
+        HuAudFXAllFadeOut((s16)m244_exitTimer);
     }
 }
 
-void func_80106B28_rockin_raceway(void) {
+void m244_PlayerObjCreateAll(void) {
     RockinRacewayRacer *racer;
     omObjData *object;
-    Track *track;
+    RockinRacewayTrack *track;
     u16 prev;
     s32 i;
     s32 j;
 
-    D_80111B30_rockin_raceway = HuMemAllocTag(4 * sizeof(RockinRacewayRacer), TAG_OVERLAY);
-    D_80111B34_rockin_raceway = -1;
-    D_80111B3A_rockin_raceway = 0;
-    D_80111B3C_rockin_raceway = HuMemAllocTag(2 * sizeof(RockinRacewaySnapshotRow), TAG_OVERLAY);
-    memset(D_80111B3C_rockin_raceway, 0, 2 * sizeof(RockinRacewaySnapshotRow));
-    for (i = 0, racer = D_80111B30_rockin_raceway; i < 4; i++, racer++) {
+    m244_racerTbl = HuMemAllocTag(4 * sizeof(RockinRacewayRacer), TAG_OVERLAY);
+    m244_winnerNo = -1;
+    m244_ghostDispF = 0;
+    m244_ghostTbl = HuMemAllocTag(2 * sizeof(RockinRacewaySnapshotRow), TAG_OVERLAY);
+    memset(m244_ghostTbl, 0, 2 * sizeof(RockinRacewaySnapshotRow));
+    for (i = 0, racer = m244_racerTbl; i < 4; i++, racer++) {
         memset(racer, 0, sizeof(RockinRacewayRacer));
         racer->unk00 = i;
-        racer->unk0A = D_80111560_rockin_raceway[i][1];
+        racer->unk0A = m244_racerPlayerTbl[i][1];
         racer->unk0C = GwPlayer[racer->unk0A].pad;
         racer->unk0E = GwPlayer[racer->unk0A].chr;
         if (GwPlayer[racer->unk0A].stat & 1) {
@@ -1059,8 +1059,8 @@ void func_80106B28_rockin_raceway(void) {
         racer->unk12 = GwPlayer[racer->unk0A].cpu_difficulty;
         racer->unk2E = GwPlayer[racer->unk0A].group;
         for (j = 0; j < 4; j++) {
-            if (D_80111570_rockin_raceway[racer->unk2E] == -1) {
-                D_80111570_rockin_raceway[racer->unk2E] = racer->unk2E;
+            if (m244_trackRacerTbl[racer->unk2E] == -1) {
+                m244_trackRacerTbl[racer->unk2E] = racer->unk2E;
                 break;
             }
             prev = racer->unk2E;
@@ -1069,40 +1069,40 @@ void func_80106B28_rockin_raceway(void) {
                 racer->unk2E = prev - 3;
             }
         }
-        track = &D_80111B40_rockin_raceway[racer->unk2E];
-        racer->unk30 = track->unk08 - D_80111B44_rockin_raceway;
+        track = &m244_trackTbl[racer->unk2E];
+        racer->unk30 = track->unk08 - m244_trackLenMin;
         if (racer->unk30 < 0.0f) {
             racer->unk30 = 0.0f;
         }
-        func_8010A5E4_rockin_raceway(racer->unk2E, racer->unk0E);
-        object = omAddObj(i + 16, 10, 60, -1, func_80106DC8_rockin_raceway);
+        m244_GaugeCreate(racer->unk2E, racer->unk0E);
+        object = omAddObj(i + 16, 10, 60, -1, m244_PlayerObjInit);
         mgPlayerObjTbl[mgPlayerObjNum] = object;
-        func_8010EC0C_rockin_raceway(object, (u32)&D_80111B30_rockin_raceway[i]);
+        m244_WorkPtrSet(object, (u32)&m244_racerTbl[i]);
         mgPlayerObjNum++;
     }
 }
 
-void func_80106DC8_rockin_raceway(omObjData *object) {
-    RockinRacewayRacer *racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(object);
+void m244_PlayerObjInit(omObjData *object) {
+    RockinRacewayRacer *racer = (RockinRacewayRacer *)m244_WorkPtrGet(object);
     u16 character;
     s32 model;
     s32 level;
     s32 i;
 
-    object->func = func_801071D8_rockin_raceway;
+    object->func = m244_PlayerObjMain;
     character = racer->unk0E;
-    object->model[0] = Hu3DModelRead(0x4D0000 | D_80111580_rockin_raceway[character], 0x299);
+    object->model[0] = Hu3DModelRead(0x4D0000 | m244_carMdlTbl[character], 0x299);
     object->model[1] = Hu3DModelRead(9, 0x299);
     for (i = 0; i < 2; i++) {
         if (i == 0) {
-            object->model[3] = Hu3DModelRead(0x4D0000 | D_80111580_rockin_raceway[character], 0x28D);
+            object->model[3] = Hu3DModelRead(0x4D0000 | m244_carMdlTbl[character], 0x28D);
             Hu3DModelTPLvlInit(object->model[3]);
             Hu3DModelTPLvlSet(object->model[3], 64);
             Hu3DModelDynamicFree(object->model[3]);
         } else {
             object->model[3 + i] = Hu3DModelLink(object->model[3]);
         }
-        Hu3DModelLayerSet(object->model[3 + i], D_80111590_rockin_raceway[i % 3]);
+        Hu3DModelLayerSet(object->model[3 + i], m244_ghostLayerTbl[i % 3]);
     }
     switch (racer->unk12) {
         case 0:
@@ -1139,7 +1139,7 @@ void func_80106DC8_rockin_raceway(omObjData *object) {
     racer->unk3C = racer->unk40 = racer->unk44 = racer->unk48 = racer->unk54 = 0.0f;
     racer->pos.x = racer->pos.y = racer->pos.z = 0.0f;
     racer->rot.x = racer->rot.y = racer->rot.z = 0.0f;
-    racer->unk44 = func_8010A258_rockin_raceway(racer->unk2E, racer->unk30, racer->unk44, 0.0f, &racer->unk4C,
+    racer->unk44 = m244_TrackPosCalc(racer->unk2E, racer->unk30, racer->unk44, 0.0f, &racer->unk4C,
                                                 &racer->unk50, &racer->pos, &racer->rot);
     object->model[2] = model = Hu3DModelRead(0x4D0009, 0x99);
     Hu3DModelPosSet(model, racer->pos.x - 0.35f * 200.0, racer->pos.y, racer->pos.z);
@@ -1153,15 +1153,15 @@ void func_80106DC8_rockin_raceway(omObjData *object) {
     object->scale.x = object->scale.y = object->scale.z = 1.0f;
 }
 
-void func_801071D8_rockin_raceway(omObjData *object) {
-    RockinRacewayRacer *racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(object);
+void m244_PlayerObjMain(omObjData *object) {
+    RockinRacewayRacer *racer = (RockinRacewayRacer *)m244_WorkPtrGet(object);
     HmfModel *src;
     HmfModel *dst;
     s32 i;
 
-    if (D_80111B3A_rockin_raceway != 0) {
+    if (m244_ghostDispF != 0) {
         for (i = 0; i < 2; i++) {
-            if (D_80111B3C_rockin_raceway[i].racers[racer->unk0A].active != 0) {
+            if (m244_ghostTbl[i].racers[racer->unk0A].active != 0) {
                 Hu3DModelAttrSet(object->model[3 + i], 4, 0);
             } else {
                 Hu3DModelAttrSet(object->model[3 + i], 4, 4);
@@ -1185,13 +1185,13 @@ void func_801071D8_rockin_raceway(omObjData *object) {
         dst->scale.y = src->scale.y;
         dst->scale.z = src->scale.z;
     }
-    switch (D_80111AD8_rockin_raceway) {
+    switch (m244_phase) {
         case 2:
             Hu3DMotionSpeedSet(object->model[2], 1.0f);
             if (racer->unk10) {
-                func_8010769C_rockin_raceway(object);
+                m244_PlayerComInput(object);
             }
-            if (D_80111AE0_rockin_raceway == 0) {
+            if (m244_raceStartF == 0) {
                 racer->unk38 = 0.0f;
                 racer->unk24 = 0.0f;
                 racer->unk28 = 1.0f;
@@ -1213,20 +1213,20 @@ void func_801071D8_rockin_raceway(omObjData *object) {
             switch (racer->unk02) {
                 case 0:
                 case 2:
-                    func_80107958_rockin_raceway(racer);
-                    if (D_80111AE0_rockin_raceway == 0) {
+                    m244_RacerAccelUpdate(racer);
+                    if (m244_raceStartF == 0) {
                         racer->unk38 = 0.0f;
                         racer->unk24 = 0.0f;
                         racer->unk28 = 1.0f;
                     }
-                    func_80107A38_rockin_raceway(racer);
+                    m244_RacerGaugeUpdate(racer);
                     break;
                 case 1:
-                    func_80107BFC_rockin_raceway(racer);
+                    m244_RacerSpinUpdate(racer);
                     break;
             }
-            func_8010CB5C_rockin_raceway(racer, 0.03f);
-            func_80107D04_rockin_raceway(object);
+            m244_RacerFocusAdd(racer, 0.03f);
+            m244_RacerMove(object);
             break;
         case 3:
         case 4:
@@ -1234,28 +1234,28 @@ void func_801071D8_rockin_raceway(omObjData *object) {
             switch (racer->unk02) {
                 case 0:
                 case 2:
-                    racer->unk38 = func_8010E7C8_rockin_raceway(0.1f, racer->unk38, 0.65f);
-                    func_80107A38_rockin_raceway(racer);
+                    racer->unk38 = m244_InterpCalc(0.1f, racer->unk38, 0.65f);
+                    m244_RacerGaugeUpdate(racer);
                     racer->unk24 += 20.0f;
                     if (racer->unk24 >= 360.0f) {
                         racer->unk24 -= 360.0f;
                     }
                     break;
                 case 1:
-                    if (racer->unk00 == D_80111B34_rockin_raceway) {
+                    if (racer->unk00 == m244_winnerNo) {
                         racer->unk02 = 0;
                         racer->unk28 = 1.0f;
                         racer->unk24 = 0.0f;
                         racer->unk40 = 0.0f;
                     } else {
-                        func_80107BFC_rockin_raceway(racer);
+                        m244_RacerSpinUpdate(racer);
                     }
                     break;
             }
-            if (D_80111AD8_rockin_raceway == 6 && racer->unk00 == D_80111B34_rockin_raceway) {
-                func_8010CB5C_rockin_raceway(racer, 0.1f);
+            if (m244_phase == 6 && racer->unk00 == m244_winnerNo) {
+                m244_RacerFocusAdd(racer, 0.1f);
             }
-            func_80107D04_rockin_raceway(object);
+            m244_RacerMove(object);
             break;
         case 5:
             break;
@@ -1266,13 +1266,13 @@ void func_801071D8_rockin_raceway(omObjData *object) {
 }
 
 // CPU input: mashes the buttons the racer needs next.
-void func_8010769C_rockin_raceway(omObjData *object) {
+void m244_PlayerComInput(omObjData *object) {
     RockinRacewayRacer *racer;
     s32 press;
     s32 level;
 
     press = FALSE;
-    racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(object);
+    racer = (RockinRacewayRacer *)m244_WorkPtrGet(object);
     switch (racer->unk12) {
         case 0:
             level = 0;
@@ -1287,7 +1287,7 @@ void func_8010769C_rockin_raceway(omObjData *object) {
             level = 3;
             break;
     }
-    switch (func_8010A48C_rockin_raceway(racer->unk2E, racer->unk4C)) {
+    switch (m244_TrackNodeTypeGet(racer->unk2E, racer->unk4C)) {
         case 1:
             if (racer->unk28 >= 0.5f) {
                 racer->unk1A = 1;
@@ -1306,24 +1306,24 @@ void func_8010769C_rockin_raceway(omObjData *object) {
                 return;
             }
         } else {
-            if (D_80111AD0_rockin_raceway > 60) {
+            if (m244_phaseTimer > 60) {
                 racer->unk16 += (rand8() & 3) + 2;
             }
             if (racer->unk16 >= racer->unk14) {
                 racer->unk16 = -(rand16() % 30 + 30);
             }
         }
-        if (racer->unk38 < D_80111300_rockin_raceway[level][0]) {
+        if (racer->unk38 < m244_comSpeedTbl[level][0]) {
             racer->unk1A = 1;
         } else if (racer->unk02 == 2) {
             racer->unk1A = 1;
-        } else if (racer->unk38 < D_80111300_rockin_raceway[level][1] && (rand8() & 0x3F) == 0) {
+        } else if (racer->unk38 < m244_comSpeedTbl[level][1] && (rand8() & 0x3F) == 0) {
             racer->unk1A = 1;
         }
     }
     if (racer->unk1A != 0) {
         racer->unk18++;
-        if (racer->unk18 > D_80111320_rockin_raceway[level]) {
+        if (racer->unk18 > m244_comMashWaitTbl[level]) {
             racer->unk18 = 0;
             racer->unk1A = 0;
             press = TRUE;
@@ -1338,9 +1338,9 @@ void func_8010769C_rockin_raceway(omObjData *object) {
     }
 }
 
-void func_80107958_rockin_raceway(RockinRacewayRacer *racer) {
+void m244_RacerAccelUpdate(RockinRacewayRacer *racer) {
     if (HuPadBtnDown[racer->unk0C] & racer->unk1E) {
-        racer->unk38 += D_801112E0_rockin_raceway[racer->unk1C] * 0.1f;
+        racer->unk38 += m244_rankAccelTbl[racer->unk1C] * 0.1f;
         if (racer->unk38 >= 1.0f) {
             racer->unk38 = 1.0f;
         }
@@ -1356,13 +1356,13 @@ void func_80107958_rockin_raceway(RockinRacewayRacer *racer) {
     }
 }
 
-void func_80107A38_rockin_raceway(RockinRacewayRacer *racer) {
-    if (racer->unk28 <= 0.0f && D_80111AD8_rockin_raceway == 2) {
+void m244_RacerGaugeUpdate(RockinRacewayRacer *racer) {
+    if (racer->unk28 <= 0.0f && m244_phase == 2) {
         racer->unk02 = 1;
         HuAudPlayerFXPlay(0x458, racer->unk0A);
         HuAudPlayerFXPlay(0x459, racer->unk0A);
-        func_8010E344_rockin_raceway(0x286, 3, 3, racer->unk0A);
-        if (D_80111AD8_rockin_raceway == 2) {
+        m244_SeQueueAdd(0x286, 3, 3, racer->unk0A);
+        if (m244_phase == 2) {
             omVibrate(racer->unk0A, 2, 2, 20);
         }
     } else {
@@ -1373,11 +1373,11 @@ void func_80107A38_rockin_raceway(RockinRacewayRacer *racer) {
     }
     if (racer->unk02 == 2) {
         if (!(racer->unk34 & 0x1F)) {
-            func_80108F8C_rockin_raceway(racer->pos.x + 0.1f * 200.0, racer->pos.y + 0.7f * 200.0, racer->pos.z);
+            m244_SparkCreate(racer->pos.x + 0.1f * 200.0, racer->pos.y + 0.7f * 200.0, racer->pos.z);
         }
         racer->unk28 = 1.0f;
         if (--racer->unk20 == 0) {
-            if (D_80111AD8_rockin_raceway == 2) {
+            if (m244_phase == 2) {
                 if (racer->unk04 != -1) {
                     HuAudFXStop(racer->unk04);
                     racer->unk04 = -1;
@@ -1393,11 +1393,11 @@ void func_80107A38_rockin_raceway(RockinRacewayRacer *racer) {
     }
 }
 
-void func_80107BFC_rockin_raceway(RockinRacewayRacer *racer) {
+void m244_RacerSpinUpdate(RockinRacewayRacer *racer) {
     racer->unk38 = 0.0f;
     if (racer->unk28 >= 0.975f) {
-        racer->unk40 = func_8010E608_rockin_raceway(racer->unk38, racer->unk40, 30.0f);
-        if (func_8010E504_rockin_raceway(0.0f, racer->unk40) < 0.5f) {
+        racer->unk40 = m244_AngleStepCalc(racer->unk38, racer->unk40, 30.0f);
+        if (m244_AngleDiffCalc(0.0f, racer->unk40) < 0.5f) {
             racer->unk24 = 0;
             racer->unk40 = 0.0f;
             racer->unk02 = 0;
@@ -1408,20 +1408,20 @@ void func_80107BFC_rockin_raceway(RockinRacewayRacer *racer) {
             racer->unk40 -= 360.0f;
         }
         if (racer->unk34 & 3) {
-            func_801096A0_rockin_raceway(racer);
+            m244_RacerSmokeCreate(racer);
         }
         racer->unk28 += 0.025f;
     }
 }
 
-void func_80107D04_rockin_raceway(omObjData *object) {
-    RockinRacewayRacer *racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(object);
+void m244_RacerMove(omObjData *object) {
+    RockinRacewayRacer *racer = (RockinRacewayRacer *)m244_WorkPtrGet(object);
     HuMtx4F mtx;
     f32 speed;
 
-    speed = racer->unk38 * D_801112F0_rockin_raceway[racer->unk1C] * 3.0f;
+    speed = racer->unk38 * m244_rankSpeedTbl[racer->unk1C] * 3.0f;
     racer->unk3C = sindf(racer->unk24) * racer->unk38 * 30.0f;
-    racer->unk44 = func_8010A258_rockin_raceway(racer->unk2E, racer->unk30, racer->unk44, speed, &racer->unk4C,
+    racer->unk44 = m244_TrackPosCalc(racer->unk2E, racer->unk30, racer->unk44, speed, &racer->unk4C,
                                                 &racer->unk50, &racer->pos, &racer->rot);
     if (racer->unk3C > 0.0f) {
         func_8008A070_main(mtx);
@@ -1440,34 +1440,34 @@ void func_80107D04_rockin_raceway(omObjData *object) {
 }
 
 // Records the transform of each racer object into the given row of the snapshot table, once per racer.
-void func_80107E78_rockin_raceway(s32 row, s16 arg1) {
+void m244_GhostStore(s32 row, s16 arg1) {
     RockinRacewayRacer *racer;
     omObjData *object;
     s32 i;
 
     for (i = 0; i < 4; i++) {
         object = mgPlayerObjTbl[i];
-        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(object);
-        if (D_80111B3C_rockin_raceway[row].racers[racer->unk0A].active != 0) {
+        racer = (RockinRacewayRacer *)m244_WorkPtrGet(object);
+        if (m244_ghostTbl[row].racers[racer->unk0A].active != 0) {
             continue;
         }
-        D_80111B3C_rockin_raceway[row].racers[racer->unk0A].active = 1;
-        D_80111B3C_rockin_raceway[row].racers[racer->unk0A].unk00 = arg1;
-        D_80111B3C_rockin_raceway[row].racers[racer->unk0A].trans.x = object->trans.x;
-        D_80111B3C_rockin_raceway[row].racers[racer->unk0A].trans.y = object->trans.y;
-        D_80111B3C_rockin_raceway[row].racers[racer->unk0A].trans.z = object->trans.z;
-        D_80111B3C_rockin_raceway[row].racers[racer->unk0A].rot.x = object->rot.x;
-        D_80111B3C_rockin_raceway[row].racers[racer->unk0A].rot.y = object->rot.y;
-        D_80111B3C_rockin_raceway[row].racers[racer->unk0A].rot.z = object->rot.z;
-        D_80111B3C_rockin_raceway[row].racers[racer->unk0A].scale.x = object->scale.x;
-        D_80111B3C_rockin_raceway[row].racers[racer->unk0A].scale.y = object->scale.y;
-        D_80111B3C_rockin_raceway[row].racers[racer->unk0A].scale.z = object->scale.z;
+        m244_ghostTbl[row].racers[racer->unk0A].active = 1;
+        m244_ghostTbl[row].racers[racer->unk0A].unk00 = arg1;
+        m244_ghostTbl[row].racers[racer->unk0A].trans.x = object->trans.x;
+        m244_ghostTbl[row].racers[racer->unk0A].trans.y = object->trans.y;
+        m244_ghostTbl[row].racers[racer->unk0A].trans.z = object->trans.z;
+        m244_ghostTbl[row].racers[racer->unk0A].rot.x = object->rot.x;
+        m244_ghostTbl[row].racers[racer->unk0A].rot.y = object->rot.y;
+        m244_ghostTbl[row].racers[racer->unk0A].rot.z = object->rot.z;
+        m244_ghostTbl[row].racers[racer->unk0A].scale.x = object->scale.x;
+        m244_ghostTbl[row].racers[racer->unk0A].scale.y = object->scale.y;
+        m244_ghostTbl[row].racers[racer->unk0A].scale.z = object->scale.z;
     }
 }
 
 // Ranks the racers by track progress, writing each racer's rank to unk1C and the racer slots in rank
 // order to order. Ties are broken randomly.
-void func_8010803C_rockin_raceway(s32 *order) {
+void m244_RankCalc(s32 *order) {
     RockinRacewayStanding standings[4];
     RockinRacewayStanding temp;
     RockinRacewayRacer *racer;
@@ -1477,7 +1477,7 @@ void func_8010803C_rockin_raceway(s32 *order) {
     s32 j;
 
     for (i = 0; i < 4; i++) {
-        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[i]);
+        racer = (RockinRacewayRacer *)m244_WorkPtrGet(mgPlayerObjTbl[i]);
         standings[i].index = i;
         standings[i].node = racer->unk4C;
         standings[i].track = racer->unk2E;
@@ -1495,8 +1495,8 @@ void func_8010803C_rockin_raceway(s32 *order) {
     for (i = 0; i < 3; i++) {
         for (j = i + 1; j < 4; j++) {
             swap = FALSE;
-            if (standings[i].node >= D_801112C0_rockin_raceway[standings[i].track] - 1 &&
-                standings[j].node >= D_801112C0_rockin_raceway[standings[j].track] - 1 &&
+            if (standings[i].node >= m244_goalNodeTbl[standings[i].track] - 1 &&
+                standings[j].node >= m244_goalNodeTbl[standings[j].track] - 1 &&
                 standings[i].x < standings[j].x) {
                 swap = TRUE;
             } else if (standings[i].node < standings[j].node) {
@@ -1512,7 +1512,7 @@ void func_8010803C_rockin_raceway(s32 *order) {
         }
     }
     for (i = 0; i < 4; i++) {
-        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[i]);
+        racer = (RockinRacewayRacer *)m244_WorkPtrGet(mgPlayerObjTbl[i]);
         for (j = 0; j < 4; j++) {
             if (standings[j].index == i) {
                 break;
@@ -1524,24 +1524,24 @@ void func_8010803C_rockin_raceway(s32 *order) {
         racer->unk1C = j;
     }
     for (i = 0; i < 4; i++) {
-        order[i] = ((RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[standings[i].index]))->unk0A;
+        order[i] = ((RockinRacewayRacer *)m244_WorkPtrGet(mgPlayerObjTbl[standings[i].index]))->unk0A;
     }
 }
 
-s32 func_80108464_rockin_raceway(void) {
+s32 m244_WinnerGet(void) {
     RockinRacewayRacer *racer;
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[i]);
-        if (racer->unk4C >= D_801112C0_rockin_raceway[racer->unk2E] - 1 &&
+        racer = (RockinRacewayRacer *)m244_WorkPtrGet(mgPlayerObjTbl[i]);
+        if (racer->unk4C >= m244_goalNodeTbl[racer->unk2E] - 1 &&
             mgPlayerObjTbl[i]->trans.x + racer->unk54 >= 1.7f * 200.0) {
             break;
         }
     }
     if (i < 4) {
         for (i = 0; i < 4; i++) {
-            racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[i]);
+            racer = (RockinRacewayRacer *)m244_WorkPtrGet(mgPlayerObjTbl[i]);
             if (racer->unk1C == 0) {
                 return i;
             }
@@ -1550,22 +1550,22 @@ s32 func_80108464_rockin_raceway(void) {
     return -1;
 }
 
-void func_80108578_rockin_raceway(void) {
+void m244_PanelCreateAll(void) {
     RockinRacewayFx *entry;
     RockinRacewayRacer *racer;
     Vec rot;
     Vec pos;
     s32 i;
 
-    D_80111B48_rockin_raceway = entry = HuMemAllocTag(8 * sizeof(RockinRacewayFx), TAG_OVERLAY);
+    m244_panelTbl = entry = HuMemAllocTag(8 * sizeof(RockinRacewayFx), TAG_OVERLAY);
     for (i = 0; i < 8; i++, entry++) {
         memset(entry, 0, sizeof(RockinRacewayFx));
         if (i == 0) {
             entry->modelA = Hu3DModelRead(0x4D0007, 0x99);
             entry->modelB = Hu3DModelRead(0x4D0008, 0x99);
         } else {
-            entry->modelA = Hu3DModelLink(D_80111B48_rockin_raceway->modelA);
-            entry->modelB = Hu3DModelLink(D_80111B48_rockin_raceway->modelB);
+            entry->modelA = Hu3DModelLink(m244_panelTbl->modelA);
+            entry->modelB = Hu3DModelLink(m244_panelTbl->modelB);
         }
         Hu3DModelAttrSet(entry->modelA, 4, 4);
         Hu3DModelAttrSet(entry->modelB, 4, 4);
@@ -1575,22 +1575,22 @@ void func_80108578_rockin_raceway(void) {
         entry->posX = entry->posY = entry->posZ = 0.0f;
         entry->velX = entry->velY = entry->velZ = 0.0f;
     }
-    for (i = 0, racer = D_80111B30_rockin_raceway; i < 4; i++, racer++) {
-        func_8010A258_rockin_raceway(racer->unk2E, racer->unk30, 1500.0f, 0.0f, NULL, NULL, &pos, &rot);
-        func_80108760_rockin_raceway(&pos, 0, 90);
-        func_80108760_rockin_raceway((Vec *)D_80111B40_rockin_raceway[i].unk0C[D_801112D0_rockin_raceway[i][1]], 0,
+    for (i = 0, racer = m244_racerTbl; i < 4; i++, racer++) {
+        m244_TrackPosCalc(racer->unk2E, racer->unk30, 1500.0f, 0.0f, NULL, NULL, &pos, &rot);
+        m244_PanelCreate(&pos, 0, 90);
+        m244_PanelCreate((Vec *)m244_trackTbl[i].unk0C[m244_panelNodeTbl[i][1]], 0,
                                      30);
     }
-    omSetStatBit(omAddObj(30, 0, 0, -1, func_80108864_rockin_raceway), 0xA0);
+    omSetStatBit(omAddObj(30, 0, 0, -1, m244_PanelObjMain), 0xA0);
 }
 
 // Claims a free blink-marker entry, initializes it with the duration and base position, positions
 // both models there, and returns the entry index, or -1 if the pool is full.
-s32 func_80108760_rockin_raceway(Vec *arg0, s32 arg1, u16 arg2) {
+s32 m244_PanelCreate(Vec *arg0, s32 arg1, u16 arg2) {
     RockinRacewayFx *entry;
     s32 i;
 
-    for (i = 0, entry = D_80111B48_rockin_raceway; i < 8 && entry->active != 0; i++, entry++) {
+    for (i = 0, entry = m244_panelTbl; i < 8 && entry->active != 0; i++, entry++) {
     }
     if (i >= 8) {
         return -1;
@@ -1617,20 +1617,20 @@ s32 func_80108760_rockin_raceway(Vec *arg0, s32 arg1, u16 arg2) {
     return i;
 }
 
-void func_80108864_rockin_raceway(omObjData *object) {
+void m244_PanelObjMain(omObjData *object) {
     RockinRacewayFx *entry;
     u16 shown;
     u16 hidden;
     s32 i;
 
-    if (omPauseChk() + omAllPauseF == 0 && D_80111AD8_rockin_raceway == 2) {
-        func_80108BAC_rockin_raceway();
+    if (omPauseChk() + omAllPauseF == 0 && m244_phase == 2) {
+        m244_PanelHitUpdate();
     }
-    for (i = 0, entry = D_80111B48_rockin_raceway; i < 8; i++, entry++) {
+    for (i = 0, entry = m244_panelTbl; i < 8; i++, entry++) {
         if (entry->active == 0) {
             continue;
         }
-        if (omPauseChk() + omAllPauseF == 0 && D_80111AD8_rockin_raceway == 2) {
+        if (omPauseChk() + omAllPauseF == 0 && m244_phase == 2) {
             if (++entry->timer >= entry->duration) {
                 entry->timer = 0;
                 entry->flag ^= 1;
@@ -1652,7 +1652,7 @@ void func_80108864_rockin_raceway(omObjData *object) {
         Hu3DModelPosSet(hidden, entry->posX, entry->posY, entry->posZ);
         Hu3DModelScaleSet(shown, 1.0f, 1.0f, 1.0f);
         Hu3DModelScaleSet(hidden, 1.0f, 1.0f, 1.0f);
-        if (D_80111AD8_rockin_raceway >= 3) {
+        if (m244_phase >= 3) {
             entry->active = 0;
             Hu3DModelAttrSet(shown, 4, 4);
             Hu3DModelAttrSet(hidden, 4, 4);
@@ -1661,14 +1661,14 @@ void func_80108864_rockin_raceway(omObjData *object) {
 }
 
 // Collects the first active blink marker within range of pos, returning its flag, or -1 if none.
-s32 func_80108A80_rockin_raceway(Vec *pos) {
+s32 m244_PanelHitCheck(Vec *pos) {
     RockinRacewayFx *entry;
     f32 dx;
     f32 dy;
     f32 dz;
     s32 i;
 
-    for (i = 0, entry = D_80111B48_rockin_raceway; i < 8; i++, entry++) {
+    for (i = 0, entry = m244_panelTbl; i < 8; i++, entry++) {
         if (entry->active == 0) {
             continue;
         }
@@ -1679,8 +1679,8 @@ s32 func_80108A80_rockin_raceway(Vec *pos) {
             Hu3DModelAttrSet(entry->modelA, 4, 4);
             Hu3DModelAttrSet(entry->modelB, 4, 4);
             entry->active = 0;
-            if (D_80111BD4_rockin_raceway == -1 && D_80111BD6_rockin_raceway == -1 && entry->duration == 30) {
-                D_80111BD6_rockin_raceway = 4;
+            if (m244_cheerSeNo == -1 && m244_cheerSeDelay == -1 && entry->duration == 30) {
+                m244_cheerSeDelay = 4;
             }
             break;
         }
@@ -1691,22 +1691,22 @@ s32 func_80108A80_rockin_raceway(Vec *pos) {
     return -1;
 }
 
-void func_80108BAC_rockin_raceway(void) {
+void m244_PanelHitUpdate(void) {
     RockinRacewayRacer *racer;
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[i]);
-        switch (func_80108A80_rockin_raceway(&racer->pos)) {
+        racer = (RockinRacewayRacer *)m244_WorkPtrGet(mgPlayerObjTbl[i]);
+        switch (m244_PanelHitCheck(&racer->pos)) {
             case 0:
                 racer->unk02 = 2;
                 racer->unk28 = 1.0f;
                 racer->unk20 = 300;
                 racer->unk34 |= 0xE;
-                if (D_80111AD8_rockin_raceway == 2) {
+                if (m244_phase == 2) {
                     omVibrate(racer->unk0A, 10, 0, 10);
                 }
-                if (D_80111AD8_rockin_raceway == 2) {
+                if (m244_phase == 2) {
                     if (racer->unk04 != -1) {
                         HuAudFXStop(racer->unk04);
                         racer->unk04 = -1;
@@ -1722,7 +1722,7 @@ void func_80108BAC_rockin_raceway(void) {
             case 1:
                 racer->unk02 = 1;
                 racer->unk28 = 0.0f;
-                if (D_80111AD8_rockin_raceway == 2) {
+                if (m244_phase == 2) {
                     if (racer->unk04 != -1) {
                         HuAudFXStop(racer->unk04);
                         racer->unk04 = -1;
@@ -1734,8 +1734,8 @@ void func_80108BAC_rockin_raceway(void) {
                 }
                 HuAudPlayerFXPlay(0x458, racer->unk0A);
                 HuAudPlayerFXPlay(0x459, racer->unk0A);
-                func_8010E344_rockin_raceway(0x286, 3, 3, racer->unk0A);
-                if (D_80111AD8_rockin_raceway == 2) {
+                m244_SeQueueAdd(0x286, 3, 3, racer->unk0A);
+                if (m244_phase == 2) {
                     omVibrate(racer->unk0A, 2, 2, 20);
                 }
                 break;
@@ -1743,12 +1743,12 @@ void func_80108BAC_rockin_raceway(void) {
     }
 }
 
-void func_80108D84_rockin_raceway(void) {
+void m244_SparkInit(void) {
     omObjData *object;
     HmfModel *model;
     s32 i;
 
-    D_80111B4C_rockin_raceway = object = omAddObj(29, 13, 0, -1, func_80108ED4_rockin_raceway);
+    m244_sparkObj = object = omAddObj(29, 13, 0, -1, m244_SparkObjMain);
     object->model[0] = -1;
     for (i = 1; i < 13; i++) {
         object->model[i] = Hu3DModelRead(0x1001F, 0x899);
@@ -1759,17 +1759,17 @@ void func_80108D84_rockin_raceway(void) {
         model->motSpeed = 1.0f;
         Hu3DModelAttrSet(object->model[i], 4, 4);
     }
-    D_80111B50_rockin_raceway = HuMemAllocTag(12 * sizeof(RockinRacewayModelState), TAG_OVERLAY);
-    memset(D_80111B50_rockin_raceway, 0, 12 * sizeof(RockinRacewayModelState));
-    D_80111B54_rockin_raceway = 0;
+    m244_sparkStateTbl = HuMemAllocTag(12 * sizeof(RockinRacewayModelState), TAG_OVERLAY);
+    memset(m244_sparkStateTbl, 0, 12 * sizeof(RockinRacewayModelState));
+    m244_sparkPauseF = 0;
 }
 
 // Hides each spark model once its motion has finished playing.
-void func_80108ED4_rockin_raceway(omObjData *object) {
+void m244_SparkObjMain(omObjData *object) {
     HmfModel *model;
     s32 i;
 
-    if (D_80111B54_rockin_raceway != 0) {
+    if (m244_sparkPauseF != 0) {
         return;
     }
     for (i = 1; i < 13; i++) {
@@ -1788,8 +1788,8 @@ void func_80108ED4_rockin_raceway(omObjData *object) {
 }
 
 // Shows the first hidden spark model at the given position, facing the camera.
-void func_80108F8C_rockin_raceway(f32 x, f32 y, f32 z) {
-    omObjData *object = D_80111B4C_rockin_raceway;
+void m244_SparkCreate(f32 x, f32 y, f32 z) {
+    omObjData *object = m244_sparkObj;
     HmfModel *model;
     s32 i;
 
@@ -1815,13 +1815,13 @@ void func_80108F8C_rockin_raceway(f32 x, f32 y, f32 z) {
 }
 
 // Saves the state of each spark model and pauses it.
-void func_80109044_rockin_raceway(void) {
-    omObjData *object = D_80111B4C_rockin_raceway;
-    RockinRacewayModelState *state = D_80111B50_rockin_raceway;
+void m244_SparkStateSave(void) {
+    omObjData *object = m244_sparkObj;
+    RockinRacewayModelState *state = m244_sparkStateTbl;
     HmfModel *model;
     s32 i;
 
-    if (D_80111B54_rockin_raceway != 0) {
+    if (m244_sparkPauseF != 0) {
         return;
     }
     for (i = 1; i < 13; i++, state++) {
@@ -1844,17 +1844,17 @@ void func_80109044_rockin_raceway(void) {
         model->attr |= 4;
         model->motTime = model->motSpeed = 0.0f;
     }
-    D_80111B54_rockin_raceway = 1;
+    m244_sparkPauseF = 1;
 }
 
-// Restores the state of each spark model saved by func_80109044_rockin_raceway.
-void func_80109134_rockin_raceway(void) {
-    omObjData *object = D_80111B4C_rockin_raceway;
-    RockinRacewayModelState *state = D_80111B50_rockin_raceway;
+// Restores the state of each spark model saved by m244_SparkStateSave.
+void m244_SparkStateRestore(void) {
+    omObjData *object = m244_sparkObj;
+    RockinRacewayModelState *state = m244_sparkStateTbl;
     HmfModel *model;
     s32 i;
 
-    if (D_80111B54_rockin_raceway == 0) {
+    if (m244_sparkPauseF == 0) {
         return;
     }
     for (i = 1; i < 13; i++, state++) {
@@ -1875,25 +1875,25 @@ void func_80109134_rockin_raceway(void) {
         model->scale.y = state->scale.y;
         model->scale.z = state->scale.z;
     }
-    D_80111B54_rockin_raceway = 0;
+    m244_sparkPauseF = 0;
 }
 
-void func_80109208_rockin_raceway(void) {
+void m244_SmokeInit(void) {
     HuSprAnimData *sprite;
     RockinRacewayEffect *effect;
     HmfModel *model;
     s32 i;
 
-    D_80111B68_rockin_raceway[2] = func_8010A4C0_rockin_raceway(11);
-    sprite = HuSprAnimDataGet(D_80111B68_rockin_raceway[2]);
-    D_80111B58_rockin_raceway = omAddObj(28, 0, 0, -1, func_80109384_rockin_raceway);
-    D_80111B5C_rockin_raceway = effect = HuMemAllocTag(sizeof(RockinRacewayEffect) * 16, TAG_OVERLAY);
+    m244_sprTbl[2] = m244_SprAnimRead(11);
+    sprite = HuSprAnimDataGet(m244_sprTbl[2]);
+    m244_smokeObj = omAddObj(28, 0, 0, -1, m244_SmokeObjMain);
+    m244_smokeTbl = effect = HuMemAllocTag(sizeof(RockinRacewayEffect) * 16, TAG_OVERLAY);
     for (i = 0; i < 16; i++, effect++) {
         if (i == 0) {
-            effect->model = func_8010EC8C_rockin_raceway(sprite, D_801114D4_rockin_raceway);
+            effect->model = m244_BillboardColorMdlCreate(sprite, m244_smokeColor);
         } else {
             effect->model =
-                func_8010F874_rockin_raceway(sprite, D_80111B5C_rockin_raceway[0].model, D_801114D4_rockin_raceway);
+                m244_BillboardColorMdlLink(sprite, m244_smokeTbl[0].model, m244_smokeColor);
         }
         effect->active = 0;
         effect->frame = effect->speed = 0.0f;
@@ -1904,22 +1904,22 @@ void func_80109208_rockin_raceway(void) {
         model = &Hu3DData[effect->model];
         model->motTime = 0.0f;
     }
-    D_80111B60_rockin_raceway = HuMemAllocTag(16 * sizeof(RockinRacewayEffectState), TAG_OVERLAY);
-    memset(D_80111B60_rockin_raceway, 0, 16 * sizeof(RockinRacewayEffectState));
-    D_80111B64_rockin_raceway = 0;
+    m244_smokeStateTbl = HuMemAllocTag(16 * sizeof(RockinRacewayEffectState), TAG_OVERLAY);
+    memset(m244_smokeStateTbl, 0, 16 * sizeof(RockinRacewayEffectState));
+    m244_smokePauseF = 0;
 }
 
-void func_80109384_rockin_raceway(omObjData *object) {
+void m244_SmokeObjMain(omObjData *object) {
     HuSprAnimData *sprite;
     RockinRacewayEffect *effect;
     HmfModel *model;
     s32 i;
 
-    if (D_80111B64_rockin_raceway != 0) {
+    if (m244_smokePauseF != 0) {
         return;
     }
-    sprite = HuSprAnimDataGet(D_80111B68_rockin_raceway[2]);
-    for (i = 0, effect = D_80111B5C_rockin_raceway; i < 16; i++, effect++) {
+    sprite = HuSprAnimDataGet(m244_sprTbl[2]);
+    for (i = 0, effect = m244_smokeTbl; i < 16; i++, effect++) {
         if (effect->active == 0) {
             continue;
         }
@@ -1936,7 +1936,7 @@ void func_80109384_rockin_raceway(omObjData *object) {
         model->scale.x = effect->scale.x;
         model->scale.y = effect->scale.y;
         model->scale.z = effect->scale.z;
-        func_8010FA78_rockin_raceway(effect->model, sprite, (s32)effect->frame, D_801114D4_rockin_raceway);
+        m244_BillboardColorPatSet(effect->model, sprite, (s32)effect->frame, m244_smokeColor);
         effect->frame += effect->speed;
         if ((s32)effect->frame >= sprite->patNum) {
             effect->active = 0;
@@ -1946,13 +1946,13 @@ void func_80109384_rockin_raceway(omObjData *object) {
     }
 }
 
-s32 func_801094EC_rockin_raceway(Vec *pos, Vec *vel, Vec *scale, f32 speed) {
-    HuSprAnimData *sprite = HuSprAnimDataGet(D_80111B68_rockin_raceway[2]);
+s32 m244_SmokeCreate(Vec *pos, Vec *vel, Vec *scale, f32 speed) {
+    HuSprAnimData *sprite = HuSprAnimDataGet(m244_sprTbl[2]);
     RockinRacewayEffect *effect;
     HmfModel *model;
     s32 i;
 
-    for (i = 0, effect = D_80111B5C_rockin_raceway; i < 16; i++, effect++) {
+    for (i = 0, effect = m244_smokeTbl; i < 16; i++, effect++) {
         if (effect->active != 0) {
             continue;
         }
@@ -1981,7 +1981,7 @@ s32 func_801094EC_rockin_raceway(Vec *pos, Vec *vel, Vec *scale, f32 speed) {
         }
         effect->speed = speed;
         effect->frame = 0.0f;
-        func_8010FA78_rockin_raceway(effect->model, sprite, 0, D_801114D4_rockin_raceway);
+        m244_BillboardColorPatSet(effect->model, sprite, 0, m244_smokeColor);
         Hu3DModelAttrSet(effect->model, 4, 0);
         model->motTime = 0.0f;
         model->pos.x = effect->pos.x;
@@ -1996,7 +1996,7 @@ s32 func_801094EC_rockin_raceway(Vec *pos, Vec *vel, Vec *scale, f32 speed) {
 }
 
 // Spawns a small effect above the racer, drifting backward from its heading.
-void func_801096A0_rockin_raceway(RockinRacewayRacer *racer) {
+void m244_RacerSmokeCreate(RockinRacewayRacer *racer) {
     Vec pos;
     Vec vel;
     Vec scale;
@@ -2008,20 +2008,20 @@ void func_801096A0_rockin_raceway(RockinRacewayRacer *racer) {
     vel.z = -(cosdf(racer->rot.y + racer->unk40) * 100.0 * 0.1f);
     vel.y = 1.0f;
     scale.x = scale.y = scale.z = 0.25f;
-    func_801094EC_rockin_raceway(&pos, &vel, &scale, 1.0f);
+    m244_SmokeCreate(&pos, &vel, &scale, 1.0f);
 }
 
 // Saves the state of each sprite effect and hides it.
-void func_801097A0_rockin_raceway(void) {
+void m244_SmokeStateSave(void) {
     RockinRacewayEffectState *state;
     RockinRacewayEffect *effect;
     HmfModel *model;
     s32 i;
 
-    if (D_80111B64_rockin_raceway != 0) {
+    if (m244_smokePauseF != 0) {
         return;
     }
-    for (state = D_80111B60_rockin_raceway, effect = D_80111B5C_rockin_raceway, i = 0; i < 16;
+    for (state = m244_smokeStateTbl, effect = m244_smokeTbl, i = 0; i < 16;
          i++, effect++, state++) {
         if (effect->model == -1) {
             continue;
@@ -2045,20 +2045,20 @@ void func_801097A0_rockin_raceway(void) {
         model->attr |= 4;
         model->motTime = 0.0f;
     }
-    D_80111B64_rockin_raceway = 1;
+    m244_smokePauseF = 1;
 }
 
-// Restores the state of each sprite effect saved by func_801097A0_rockin_raceway.
-void func_801098D8_rockin_raceway(void) {
+// Restores the state of each sprite effect saved by m244_SmokeStateSave.
+void m244_SmokeStateRestore(void) {
     RockinRacewayEffectState *state;
     RockinRacewayEffect *effect;
     HmfModel *model;
     s32 i;
 
-    if (D_80111B64_rockin_raceway == 0) {
+    if (m244_smokePauseF == 0) {
         return;
     }
-    for (state = D_80111B60_rockin_raceway, effect = D_80111B5C_rockin_raceway, i = 0; i < 16;
+    for (state = m244_smokeStateTbl, effect = m244_smokeTbl, i = 0; i < 16;
          i++, effect++, state++) {
         if (effect->model == -1) {
             continue;
@@ -2078,58 +2078,58 @@ void func_801098D8_rockin_raceway(void) {
         model->scale.y = state->scale.y;
         model->scale.z = state->scale.z;
     }
-    D_80111B64_rockin_raceway = 0;
+    m244_smokePauseF = 0;
 }
 
 // Appends a new object to the shared minigame object list.
-void func_801099AC_rockin_raceway(void) {
-    omObjData *obj = omAddObj(1, 0x18, 0, -1, func_80109A04_rockin_raceway);
+void m244_StageObjCreate(void) {
+    omObjData *obj = omAddObj(1, 0x18, 0, -1, m244_StageObjInit);
     u16 index = mgMapObjNum;
 
     mgMapObjNum = index + 1;
     mgMapObjTbl[index] = obj;
 }
 
-void func_80109A04_rockin_raceway(omObjData *object) {
+void m244_StageObjInit(omObjData *object) {
     s16 group;
     s32 i;
 
-    object->func = func_80109CF8_rockin_raceway;
+    object->func = m244_StageObjMain;
     object->trans.x = object->trans.y = object->trans.z = 0.0f;
     object->rot.x = object->rot.y = object->rot.z = 0.0f;
     object->scale.x = object->scale.y = object->scale.z = 1.0f;
     object->model[0] = Hu3DModelRead2(0x4D0000, 0x99);
     object->model[1] = Hu3DModelRead2(0x4D000A, 0xB9);
     object->model[2] = Hu3DModelRead2(0x4D000B, 0xB9);
-    D_80111B68_rockin_raceway[3] = func_8010A4C0_rockin_raceway(0x4D0010);
-    D_80111B68_rockin_raceway[4] = func_8010A4C0_rockin_raceway(0x4D0011);
+    m244_sprTbl[3] = m244_SprAnimRead(0x4D0010);
+    m244_sprTbl[4] = m244_SprAnimRead(0x4D0011);
     for (i = 0; i < 4; i++) {
         if (i == 0) {
             object->model[3] =
-                func_8010FFB8_rockin_raceway(HuSprAnimDataGet(D_80111B68_rockin_raceway[3]), &D_801114D8_rockin_raceway);
+                m244_QuadMdlCreate(HuSprAnimDataGet(m244_sprTbl[3]), &m244_boardFaceQuad);
         } else {
-            object->model[3 + i] = func_8010F874_rockin_raceway(HuSprAnimDataGet(D_80111B68_rockin_raceway[3]),
-                                                                object->model[3], D_801115B4_rockin_raceway);
+            object->model[3 + i] = m244_BillboardColorMdlLink(HuSprAnimDataGet(m244_sprTbl[3]),
+                                                                object->model[3], m244_boardColor);
         }
     }
     for (i = 0; i < 12; i++) {
         if (i == 0) {
             object->model[7] =
-                func_8010FFB8_rockin_raceway(HuSprAnimDataGet(D_80111B68_rockin_raceway[4]), &D_80111518_rockin_raceway);
+                m244_QuadMdlCreate(HuSprAnimDataGet(m244_sprTbl[4]), &m244_boardDigitQuad);
         } else {
-            object->model[7 + i] = func_8010F874_rockin_raceway(HuSprAnimDataGet(D_80111B68_rockin_raceway[4]),
-                                                                object->model[7], D_801115B4_rockin_raceway);
+            object->model[7 + i] = m244_BillboardColorMdlLink(HuSprAnimDataGet(m244_sprTbl[4]),
+                                                                object->model[7], m244_boardColor);
         }
     }
-    func_80110C38_rockin_raceway(&object->model[3], HuSprAnimDataGet(D_80111B68_rockin_raceway[3]),
-                                 D_8011159C_rockin_raceway.players);
-    D_8011159C_rockin_raceway.times[1] = D_80111AE8_rockin_raceway;
-    func_8010B5DC_rockin_raceway(D_8011159C_rockin_raceway.times);
-    func_80110D90_rockin_raceway(&object->model[7], HuSprAnimDataGet(D_80111B68_rockin_raceway[4]),
-                                 D_8011159C_rockin_raceway.times);
-    D_80111B68_rockin_raceway[0] = func_8010A4C0_rockin_raceway(0x4D000E);
+    m244_BoardFaceUpdate(&object->model[3], HuSprAnimDataGet(m244_sprTbl[3]),
+                                 m244_boardDisp.players);
+    m244_boardDisp.times[1] = m244_recordTime;
+    m244_TimeDigitCalc(m244_boardDisp.times);
+    m244_BoardDigitUpdate(&object->model[7], HuSprAnimDataGet(m244_sprTbl[4]),
+                                 m244_boardDisp.times);
+    m244_sprTbl[0] = m244_SprAnimRead(0x4D000E);
     group = HuSprGrpCreate(1, 0);
-    HuSprGrpMemberSet(group, 0, D_80111B68_rockin_raceway[0], 0);
+    HuSprGrpMemberSet(group, 0, m244_sprTbl[0], 0);
     HuSprAttrSet(group, 0, 0x4000);
     HuSprScaleSet(group, 0, 1.0f, 1.0f);
     HuSprPosSet(group, 0, 160, 120);
@@ -2138,23 +2138,23 @@ void func_80109A04_rockin_raceway(omObjData *object) {
     WipeCreateIn(WIPE_TYPE_PREV, 16);
 }
 
-void func_80109CF8_rockin_raceway(omObjData *object) {
+void m244_StageObjMain(omObjData *object) {
 }
 
-void func_80109D00_rockin_raceway(s32 *players) {
+void m244_BoardFaceSet(s32 *players) {
     omObjData *object = mgMapObjTbl[0];
 
-    func_80110C38_rockin_raceway(&object->model[3], HuSprAnimDataGet(D_80111B68_rockin_raceway[3]), players);
+    m244_BoardFaceUpdate(&object->model[3], HuSprAnimDataGet(m244_sprTbl[3]), players);
 }
 
-void func_80109D54_rockin_raceway(s32 *values) {
+void m244_BoardTimeSet(s32 *values) {
     omObjData *object = mgMapObjTbl[0];
 
-    func_80110D90_rockin_raceway(&object->model[7], HuSprAnimDataGet(D_80111B68_rockin_raceway[4]), values);
+    m244_BoardDigitUpdate(&object->model[7], HuSprAnimDataGet(m244_sprTbl[4]), values);
 }
 
-void func_80109DA8_rockin_raceway(void) {
-    Track *track;
+void m244_TrackInit(void) {
+    RockinRacewayTrack *track;
     Vec dir;
     f32 dx, dy, dz;
     f32 distance;
@@ -2162,13 +2162,13 @@ void func_80109DA8_rockin_raceway(void) {
     s32 i;
     s32 j;
 
-    D_80111B40_rockin_raceway = HuMemAllocTag(4 * sizeof(Track), TAG_OVERLAY);
-    for (i = 0, track = D_80111B40_rockin_raceway; i < 4; i++, track++) {
+    m244_trackTbl = HuMemAllocTag(4 * sizeof(RockinRacewayTrack), TAG_OVERLAY);
+    for (i = 0, track = m244_trackTbl; i < 4; i++, track++) {
         track->unk00 = i;
         track->unk04 = track->unk08 = 0.0f;
-        track->unk0C = D_801112A0_rockin_raceway[i];
-        track->numNodes = D_801112B0_rockin_raceway[i][1];
-        track->unk0C[D_801112C0_rockin_raceway[i]][0] = 340.0f;
+        track->unk0C = m244_trackNodeTbl[i];
+        track->numNodes = m244_trackNodeNumTbl[i][1];
+        track->unk0C[m244_goalNodeTbl[i]][0] = 340.0f;
         track->unk10 = HuMemAllocTag(track->numNodes * sizeof(*track->unk10), TAG_OVERLAY);
         track->unk14 = HuMemAllocTag(track->numNodes * sizeof(f32), TAG_OVERLAY);
         track->unk18 = HuMemAllocTag((track->numNodes + 1) * sizeof(f32), TAG_OVERLAY);
@@ -2176,11 +2176,11 @@ void func_80109DA8_rockin_raceway(void) {
         track->unk20 = HuMemAllocTag(track->numNodes * sizeof(u16), TAG_OVERLAY);
         memset(track->unk20, 0, 4);
         for (j = 0; j < 5; j++) {
-            next = rand8() % D_801112C0_rockin_raceway[i];
+            next = rand8() % m244_goalNodeTbl[i];
             track->unk20[next] = 1;
         }
         for (j = 0; j < 3; j++) {
-            next = rand8() % D_801112C0_rockin_raceway[i];
+            next = rand8() % m244_goalNodeTbl[i];
             track->unk20[next] = 2;
         }
         distance = 0.0f;
@@ -2192,34 +2192,34 @@ void func_80109DA8_rockin_raceway(void) {
             track->unk14[j] = sqrtf(dx * dx + dy * dy + dz * dz);
             track->unk18[j] = distance;
             distance += track->unk14[j];
-            if (j < D_801112C0_rockin_raceway[i]) {
+            if (j < m244_goalNodeTbl[i]) {
                 track->unk08 = distance;
             }
             track->unk10[j][0] = track->unk0C[j][0] + dx * 0.5f;
             track->unk10[j][1] = track->unk0C[j][1] + dy * 0.5f;
             track->unk10[j][2] = track->unk0C[j][2] + dz * 0.5f;
-            func_8010E994_rockin_raceway(0.0f, track->unk0C[j], track->unk10[j], track->unk0C[next], &dir.x);
-            func_8010EB84_rockin_raceway(&dir, track->unk1C[j]);
+            m244_BezierTangentVecCalc(0.0f, track->unk0C[j], track->unk10[j], track->unk0C[next], &dir.x);
+            m244_DirRotCalc(&dir, track->unk1C[j]);
         }
         track->unk18[j] = distance;
         track->unk04 = distance - track->unk14[j - 1];
     }
-    D_80111B44_rockin_raceway = D_80111B40_rockin_raceway[0].unk08;
-    for (i = 1, track = &D_80111B40_rockin_raceway[1]; i < 4; i++, track++) {
-        if (D_80111B44_rockin_raceway > track->unk08) {
-            D_80111B44_rockin_raceway = track->unk08;
+    m244_trackLenMin = m244_trackTbl[0].unk08;
+    for (i = 1, track = &m244_trackTbl[1]; i < 4; i++, track++) {
+        if (m244_trackLenMin > track->unk08) {
+            m244_trackLenMin = track->unk08;
         }
     }
 }
 
 // Advances distance along the track by speed, and evaluates the position and rotation at the
 // resulting point (offset by arg1).
-f32 func_8010A258_rockin_raceway(u16 trackIndex, f32 arg1, f32 distance, f32 speed, u16 *node, f32 *fraction, Vec *pos,
+f32 m244_TrackPosCalc(u16 trackIndex, f32 arg1, f32 distance, f32 speed, u16 *node, f32 *fraction, Vec *pos,
                                  Vec *rot) {
     s32 i;
     s32 cur;
     s32 next;
-    Track *track = &D_80111B40_rockin_raceway[trackIndex];
+    RockinRacewayTrack *track = &m244_trackTbl[trackIndex];
     f32 newDistance;
     f32 offset;
     f32 remainder;
@@ -2262,18 +2262,18 @@ f32 func_8010A258_rockin_raceway(u16 trackIndex, f32 arg1, f32 distance, f32 spe
         next = 0;
         cur = i;
     }
-    func_8010E8A0_rockin_raceway(t, track->unk0C[cur], track->unk10[cur], track->unk0C[next], &pos->x);
-    rot->x = func_8010E7E0_rockin_raceway(t, track->unk1C[cur][0], track->unk1C[next][0]);
-    rot->y = func_8010E7E0_rockin_raceway(t, track->unk1C[cur][1], track->unk1C[next][1]);
+    m244_BezierVecCalc(t, track->unk0C[cur], track->unk10[cur], track->unk0C[next], &pos->x);
+    rot->x = m244_AngleInterpCalc(t, track->unk1C[cur][0], track->unk1C[next][0]);
+    rot->y = m244_AngleInterpCalc(t, track->unk1C[cur][1], track->unk1C[next][1]);
     return newDistance;
 }
 
-s32 func_8010A48C_rockin_raceway(u16 arg0, u16 arg1) {
-    Track *track = &D_80111B40_rockin_raceway[arg0];
+s32 m244_TrackNodeTypeGet(u16 arg0, u16 arg1) {
+    RockinRacewayTrack *track = &m244_trackTbl[arg0];
     return track->unk20[arg1];
 }
 
-u16 func_8010A4C0_rockin_raceway(s32 dirAndFile) {
+u16 m244_SprAnimRead(s32 dirAndFile) {
     void *data = DataRead(dirAndFile);
     s16 anim = HuSprAnimRead(data);
 
@@ -2281,47 +2281,47 @@ u16 func_8010A4C0_rockin_raceway(s32 dirAndFile) {
     return anim;
 }
 
-void func_8010A504_rockin_raceway(void) {
+void m244_ReplaySprInit(void) {
     s32 group;
 
-    D_80111B68_rockin_raceway[1] = func_8010A4C0_rockin_raceway(0x4D000F);
-    D_80111B68_rockin_raceway[5] = func_8010A4C0_rockin_raceway(0x4D0012);
-    D_80111B68_rockin_raceway[8] = func_8010A4C0_rockin_raceway(0x4D0013);
+    m244_sprTbl[1] = m244_SprAnimRead(0x4D000F);
+    m244_sprTbl[5] = m244_SprAnimRead(0x4D0012);
+    m244_sprTbl[8] = m244_SprAnimRead(0x4D0013);
     group = HuSprGrpCreate(1, 0);
-    D_80111B74_rockin_raceway = group;
+    m244_replayGrp = group;
     HuSprPosSet(group, 0, 160, 60);
-    HuSprGrpMemberSet(group, 0, D_80111B68_rockin_raceway[5], 0);
+    HuSprGrpMemberSet(group, 0, m244_sprTbl[5], 0);
     HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_STOP);
     HuSprPatNoSet(group, 0, 0);
     HuSprAttrSet(group, 0, HUSPR_ATTR_DISPOFF | 0x1000);
 }
 
 // Creates the lap meter sprites for a track, mirrored for odd tracks.
-void func_8010A5E4_rockin_raceway(s16 track, s16 character) {
+void m244_GaugeCreate(s16 track, s16 character) {
     s32 anim;
     s32 x;
     s32 y;
     s32 group;
     s32 i;
 
-    anim = func_8010A4C0_rockin_raceway(D_801115B8_rockin_raceway[character]);
-    x = D_80111330_rockin_raceway[track].x;
-    y = D_80111330_rockin_raceway[track].y;
-    D_80111B6C_rockin_raceway[track] = group = HuSprGrpCreate(7, 0);
-    D_80111B80_rockin_raceway[track].track = track;
-    D_80111B80_rockin_raceway[track].y = y;
-    D_80111B80_rockin_raceway[track].unk04 = 0;
-    D_80111B80_rockin_raceway[track].unk02 = 0;
+    anim = m244_SprAnimRead(m244_gaugeFaceSprTbl[character]);
+    x = m244_gaugePosTbl[track].x;
+    y = m244_gaugePosTbl[track].y;
+    m244_gaugeGrpTbl[track] = group = HuSprGrpCreate(7, 0);
+    m244_gaugeTbl[track].track = track;
+    m244_gaugeTbl[track].y = y;
+    m244_gaugeTbl[track].unk04 = 0;
+    m244_gaugeTbl[track].unk02 = 0;
     if (track & 1) {
-        D_80111B80_rockin_raceway[track].x = x - 4;
+        m244_gaugeTbl[track].x = x - 4;
     } else {
-        D_80111B80_rockin_raceway[track].x = x + 46;
+        m244_gaugeTbl[track].x = x + 46;
     }
     for (i = 0; i < 5; i++) {
         if (track & 1) {
-            D_80111B80_rockin_raceway[track].offsets[i] = x + (i * 8 - 20) - D_80111B80_rockin_raceway[track].x;
+            m244_gaugeTbl[track].offsets[i] = x + (i * 8 - 20) - m244_gaugeTbl[track].x;
         } else {
-            D_80111B80_rockin_raceway[track].offsets[i] = x + (i * 8 + 30) - D_80111B80_rockin_raceway[track].x;
+            m244_gaugeTbl[track].offsets[i] = x + (i * 8 + 30) - m244_gaugeTbl[track].x;
         }
     }
     for (i = 0; i < 7; i++) {
@@ -2338,7 +2338,7 @@ void func_8010A5E4_rockin_raceway(s16 track, s16 character) {
             } else {
                 HuSprPosSet(group, i, x - 5, y);
             }
-            HuSprGrpMemberSet(group, i, D_80111B68_rockin_raceway[8], 0);
+            HuSprGrpMemberSet(group, i, m244_sprTbl[8], 0);
             HuSprColorTPLvlSet(group, i, 0, 0, 0, 160);
         } else {
             if (track & 1) {
@@ -2346,7 +2346,7 @@ void func_8010A5E4_rockin_raceway(s16 track, s16 character) {
             } else {
                 HuSprPosSet(group, i, x + 30, y);
             }
-            HuSprGrpMemberSet(group, i, D_80111B68_rockin_raceway[1], 0);
+            HuSprGrpMemberSet(group, i, m244_sprTbl[1], 0);
             x += 8;
         }
         HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_STOP);
@@ -2358,69 +2358,69 @@ void func_8010A5E4_rockin_raceway(s16 track, s16 character) {
             HuSprPriSet(group, i, 0xFFFF);
         }
     }
-    omSetStatBit(omAddObj(20, 0, 0, -1, func_8010A990_rockin_raceway), 0xA0);
+    omSetStatBit(omAddObj(20, 0, 0, -1, m244_GaugeObjMain), 0xA0);
 }
 
-void func_8010A990_rockin_raceway(omObjData *object) {
+void m244_GaugeObjMain(omObjData *object) {
     RockinRacewayRacer *racer;
     s32 i;
 
-    if (D_80111AD8_rockin_raceway == 5 && (D_80111ADC_rockin_raceway > 0 || D_80111AD0_rockin_raceway >= 2)) {
-        HuSprAttrReset(D_80111B74_rockin_raceway, 0, HUSPR_ATTR_DISPOFF);
+    if (m244_phase == 5 && (m244_phaseStep > 0 || m244_phaseTimer >= 2)) {
+        HuSprAttrReset(m244_replayGrp, 0, HUSPR_ATTR_DISPOFF);
     } else {
-        HuSprAttrSet(D_80111B74_rockin_raceway, 0, HUSPR_ATTR_DISPOFF);
+        HuSprAttrSet(m244_replayGrp, 0, HUSPR_ATTR_DISPOFF);
     }
-    if (D_80111AD8_rockin_raceway < 3) {
-        racer = D_80111B30_rockin_raceway;
+    if (m244_phase < 3) {
+        racer = m244_racerTbl;
         for (i = 0; i < 4; i++, racer++) {
-            func_8010AAAC_rockin_raceway(racer->unk2E, racer->unk28 * 100.0f, racer->unk02);
+            m244_GaugeUpdate(racer->unk2E, racer->unk28 * 100.0f, racer->unk02);
         }
     } else {
         for (i = 0; i < 4; i++) {
-            func_8010AAAC_rockin_raceway(i, 0, 0xFFFF);
+            m244_GaugeUpdate(i, 0, 0xFFFF);
         }
     }
 }
 
 // Updates the lap meter sprites for a track, scaling the meter up while state is 2.
-void func_8010AAAC_rockin_raceway(s16 track, s16 progress, u16 state) {
+void m244_GaugeUpdate(s16 track, s16 progress, u16 state) {
     s16 group;
     f32 scale;
     f32 x;
     s16 remainder;
     s32 i;
 
-    group = D_80111B6C_rockin_raceway[track];
+    group = m244_gaugeGrpTbl[track];
     if (state == 2) {
-        if (D_80111B80_rockin_raceway[track].unk02++ > 30.0f) {
-            D_80111B80_rockin_raceway[track].unk02 = 30;
+        if (m244_gaugeTbl[track].unk02++ > 30.0f) {
+            m244_gaugeTbl[track].unk02 = 30;
         }
-        scale = D_80111B80_rockin_raceway[track].unk02;
-        scale = func_8010E840_rockin_raceway(scale / 30.0f, 0.0f, 1.0f, 0.4f) + 1.0;
+        scale = m244_gaugeTbl[track].unk02;
+        scale = m244_BezierCalc(scale / 30.0f, 0.0f, 1.0f, 0.4f) + 1.0;
     } else {
-        if (D_80111B80_rockin_raceway[track].unk02-- < 0) {
-            D_80111B80_rockin_raceway[track].unk02 = 0;
+        if (m244_gaugeTbl[track].unk02-- < 0) {
+            m244_gaugeTbl[track].unk02 = 0;
         }
-        scale = D_80111B80_rockin_raceway[track].unk02;
+        scale = m244_gaugeTbl[track].unk02;
         scale /= 30.0f;
         scale = scale * 0.4f + 1.0;
     }
-    if (D_80111B80_rockin_raceway[track].unk02 != D_80111B80_rockin_raceway[track].unk04) {
+    if (m244_gaugeTbl[track].unk02 != m244_gaugeTbl[track].unk04) {
         for (i = 0; i < 5; i++) {
-            x = (s16)D_80111B80_rockin_raceway[track].x + D_80111B80_rockin_raceway[track].offsets[i] * scale;
+            x = (s16)m244_gaugeTbl[track].x + m244_gaugeTbl[track].offsets[i] * scale;
             HuSprScaleSet(group, i + 1, scale, scale);
-            HuSprPosSet(group, i + 1, x, D_80111B80_rockin_raceway[track].y);
+            HuSprPosSet(group, i + 1, x, m244_gaugeTbl[track].y);
             if (state == 2) {
                 HuSprAttrSet(group, i + 1, 0x838);
             } else {
                 HuSprAttrReset(group, i + 1, 0x838);
             }
         }
-        D_80111B80_rockin_raceway[track].unk04 = D_80111B80_rockin_raceway[track].unk02;
+        m244_gaugeTbl[track].unk04 = m244_gaugeTbl[track].unk02;
     }
     switch (state) {
         case 1:
-            if ((D_80111AD0_rockin_raceway & 1) && omPauseChk() + omAllPauseF == 0) {
+            if ((m244_phaseTimer & 1) && omPauseChk() + omAllPauseF == 0) {
                 HuSprAttrSet(group, 0, HUSPR_ATTR_DISPOFF);
             } else {
                 HuSprAttrReset(group, 0, HUSPR_ATTR_DISPOFF);
@@ -2428,7 +2428,7 @@ void func_8010AAAC_rockin_raceway(s16 track, s16 progress, u16 state) {
             break;
         case 2:
             HuSprAttrReset(group, 0, HUSPR_ATTR_DISPOFF);
-            if (!(D_80111AD0_rockin_raceway & 3)) {
+            if (!(m244_phaseTimer & 3)) {
                 for (i = 0; i < 5; i++) {
                     HuSprAttrReset(group, i + 1, HUSPR_ATTR_DISPOFF);
                     HuSprPatNoSet(group, i + 1, 1);
@@ -2468,19 +2468,19 @@ void func_8010AAAC_rockin_raceway(s16 track, s16 progress, u16 state) {
     }
 }
 
-void func_8010B124_rockin_raceway(void) {
+void m244_TimeInit(void) {
     s32 group;
     s32 i;
     s32 j;
 
-    D_80111B68_rockin_raceway[6] = func_8010A4C0_rockin_raceway(0x31);
-    D_80111B68_rockin_raceway[7] = func_8010A4C0_rockin_raceway(0x32);
-    D_80111B7A_rockin_raceway = 0;
+    m244_sprTbl[6] = m244_SprAnimRead(0x31);
+    m244_sprTbl[7] = m244_SprAnimRead(0x32);
+    m244_recordPulse = 0;
     for (i = 0; i < 2; i++) {
-        D_80111B76_rockin_raceway[i] = group = HuSprGrpCreate(8, 0);
+        m244_timeGrpTbl[i] = group = HuSprGrpCreate(8, 0);
         for (j = 0; j < 8; j++) {
-            HuSprPosSet(group, j, D_80111340_rockin_raceway[j], i * 12 + 28);
-            HuSprGrpMemberSet(group, j, D_80111B68_rockin_raceway[6 + i], 0);
+            HuSprPosSet(group, j, m244_timeDigitXTbl[j], i * 12 + 28);
+            HuSprGrpMemberSet(group, j, m244_sprTbl[6 + i], 0);
             HuSprPatNoSet(group, j, 0);
             HuSprAttrSet(group, j, 0x1000);
             HuSprAnimModeSet(group, j, HUSPR_ANIM_MODE_STOP);
@@ -2491,47 +2491,47 @@ void func_8010B124_rockin_raceway(void) {
 }
 
 // Updates the current and record time digits, pulsing the record time when it is beaten.
-void func_8010B2B8_rockin_raceway(void) {
+void m244_TimeUpdate(void) {
     s32 *digits;
     f32 scale = 1.0f;
     u16 group;
     s32 i;
     s32 j;
 
-    if (D_80111AD8_rockin_raceway == 5) {
+    if (m244_phase == 5) {
         for (i = 0; i < 2; i++) {
-            group = D_80111B76_rockin_raceway[i];
+            group = m244_timeGrpTbl[i];
             for (j = 0; j < 8; j++) {
                 HuSprAttrSet(group, j, HUSPR_ATTR_DISPOFF);
             }
         }
     } else {
-        digits = D_80111B00_rockin_raceway[0];
+        digits = m244_timeDigitTbl[0];
         for (i = 0; i < 2; i++) {
-            group = D_80111B76_rockin_raceway[i];
+            group = m244_timeGrpTbl[i];
             for (j = 0; j < 8; j++) {
                 HuSprAttrReset(group, j, HUSPR_ATTR_DISPOFF);
             }
         }
-        if (D_80111B7A_rockin_raceway != 0) {
-            scale = sindf(D_80111B7A_rockin_raceway / 15.0f * 180.0f) + 1.0f;
-            if (--D_80111B7A_rockin_raceway == 1) {
+        if (m244_recordPulse != 0) {
+            scale = sindf(m244_recordPulse / 15.0f * 180.0f) + 1.0f;
+            if (--m244_recordPulse == 1) {
                 scale = 1.0f;
             }
         }
         for (i = 0; i < 2; i++) {
-            group = D_80111B76_rockin_raceway[i];
+            group = m244_timeGrpTbl[i];
             for (j = 0; j < 6; j++) {
                 if (digits[i * 6 + j] >= 10) {
                     digits[i * 6 + j] = 9;
                 } else if (digits[i * 6 + j] < 0) {
                     digits[i * 6 + j] = 0;
                 }
-                HuSprPatNoSet(group, D_801115D8_rockin_raceway[j], (s16)digits[i * 6 + j]);
+                HuSprPatNoSet(group, m244_timeDigitMemberTbl[j], (s16)digits[i * 6 + j]);
             }
-            if (D_80111B7A_rockin_raceway != 0 && i == 1) {
+            if (m244_recordPulse != 0 && i == 1) {
                 for (j = 0; j < 8; j++) {
-                    HuSprPosSet(group, j, (D_80111340_rockin_raceway[j] - 156) * scale + 156.0f, i * 12 + 28);
+                    HuSprPosSet(group, j, (m244_timeDigitXTbl[j] - 156) * scale + 156.0f, i * 12 + 28);
                     HuSprScaleSet(group, j, scale, scale);
                 }
             }
@@ -2539,10 +2539,10 @@ void func_8010B2B8_rockin_raceway(void) {
     }
 }
 
-// Converts the two frame counts into minute, second and hundredth digits in D_80111B00_rockin_raceway.
-void func_8010B5DC_rockin_raceway(s32 *frames) {
+// Converts the two frame counts into minute, second and hundredth digits in m244_timeDigitTbl.
+void m244_TimeDigitCalc(s32 *frames) {
     s32 time[3];
-    s32(*digits)[6] = D_80111B00_rockin_raceway;
+    s32(*digits)[6] = m244_timeDigitTbl;
     s32 i;
 
     for (i = 0; i < 2; i++) {
@@ -2560,24 +2560,24 @@ void func_8010B5DC_rockin_raceway(s32 *frames) {
     }
 }
 
-void func_8010B774_rockin_raceway(void) {
+void m244_CameraInit(void) {
     HuCamera *camera;
     s32 i;
 
-    Center.x = D_80111350_rockin_raceway[0].center.x;
-    Center.y = D_80111350_rockin_raceway[0].center.y;
-    Center.z = D_80111350_rockin_raceway[0].center.z;
-    CRot.x = D_80111350_rockin_raceway[0].rot.x;
-    CRot.y = D_80111350_rockin_raceway[0].rot.y;
-    CRot.z = D_80111350_rockin_raceway[0].rot.z;
-    CZoom = D_80111350_rockin_raceway[0].zoom;
-    func_8010C5E0_rockin_raceway(0);
-    func_8010C5E0_rockin_raceway(1);
-    D_80111C2E_rockin_raceway = 0;
-    D_80111C2C_rockin_raceway = 0;
-    D_80111C2A_rockin_raceway = 0;
-    D_80111C28_rockin_raceway = 0;
-    D_80111BD8_rockin_raceway = omAddObj(31, 0, 0, -1, func_8010C0D8_rockin_raceway);
+    Center.x = m244_cameraPresetTbl[0].center.x;
+    Center.y = m244_cameraPresetTbl[0].center.y;
+    Center.z = m244_cameraPresetTbl[0].center.z;
+    CRot.x = m244_cameraPresetTbl[0].rot.x;
+    CRot.y = m244_cameraPresetTbl[0].rot.y;
+    CRot.z = m244_cameraPresetTbl[0].rot.z;
+    CZoom = m244_cameraPresetTbl[0].zoom;
+    m244_CameraKeyStore(0);
+    m244_CameraKeyStore(1);
+    m244_cameraMoveMode = 0;
+    m244_cameraMoveF = 0;
+    m244_cameraMoveTime = 0;
+    m244_cameraMoveTimer = 0;
+    m244_cameraMoveObj = omAddObj(31, 0, 0, -1, m244_CameraMoveObjMain);
     camera = gCameraList;
     for (i = 1; i < Hu3DBufNum; i++) {
         camera->viewports[i].vp.vscale[0] = camera->viewports[0].vp.vscale[0];
@@ -2590,12 +2590,12 @@ void func_8010B774_rockin_raceway(void) {
 }
 
 // Camera debug mode: R cycles between free camera control and moving the camera info text.
-void func_8010B89C_rockin_raceway(void) {
+void m244_CameraDebugPad(void) {
     MgCameraKey delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
     f32 speed;
 
     speed = 1.0f;
-    switch (D_801115F0_rockin_raceway) {
+    switch (m244_cameraDebugMode) {
         case 1:
             if ((u16)HuPadBtn[0] & A_BUTTON) {
                 speed = 8.0f;
@@ -2645,76 +2645,76 @@ void func_8010B89C_rockin_raceway(void) {
                 delta.rot.y += CRot.y;
                 delta.rot.z += CRot.z;
                 delta.zoom += CZoom;
-                func_8010C7CC_rockin_raceway(delta.center.x, delta.center.y, delta.center.z, delta.rot.x, delta.rot.y,
+                m244_CameraMoveStart(delta.center.x, delta.center.y, delta.center.z, delta.rot.x, delta.rot.y,
                                              delta.rot.z, delta.zoom, 1);
             }
             sprintf(omDBGStrBuf, "CAMERA TEST_MODE");
-            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 80, omDBGStrBuf);
+            print8(m244_cameraDebugX + 20, m244_cameraDebugY + 80, omDBGStrBuf);
             sprintf(omDBGStrBuf, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
-            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 88, omDBGStrBuf);
+            print8(m244_cameraDebugX + 20, m244_cameraDebugY + 88, omDBGStrBuf);
             sprintf(omDBGStrBuf, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
-            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 96, omDBGStrBuf);
+            print8(m244_cameraDebugX + 20, m244_cameraDebugY + 96, omDBGStrBuf);
             sprintf(omDBGStrBuf, " ZOOM   %3.3f ", CZoom);
-            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 104, omDBGStrBuf);
+            print8(m244_cameraDebugX + 20, m244_cameraDebugY + 104, omDBGStrBuf);
             mgFieldStat = 0;
             break;
         case 2:
             if ((HuPadBtn[0] & R_JPAD) || (HuPadBtn[0] & R_CBUTTONS)) {
-                D_801115F4_rockin_raceway++;
+                m244_cameraDebugX++;
             }
             if (HuPadBtn[0] & (L_JPAD | L_CBUTTONS)) {
-                D_801115F4_rockin_raceway--;
+                m244_cameraDebugX--;
             }
             if (HuPadBtn[0] & (D_JPAD | D_CBUTTONS)) {
-                D_801115F8_rockin_raceway++;
+                m244_cameraDebugY++;
             }
             if (HuPadBtn[0] & (U_JPAD | U_CBUTTONS)) {
-                D_801115F8_rockin_raceway--;
+                m244_cameraDebugY--;
             }
             fontcolor = 8;
             sprintf(omDBGStrBuf, "CAMERA TEST_MODE ");
-            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 80, omDBGStrBuf);
+            print8(m244_cameraDebugX + 20, m244_cameraDebugY + 80, omDBGStrBuf);
             sprintf(omDBGStrBuf, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
-            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 88, omDBGStrBuf);
+            print8(m244_cameraDebugX + 20, m244_cameraDebugY + 88, omDBGStrBuf);
             sprintf(omDBGStrBuf, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
-            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 96, omDBGStrBuf);
+            print8(m244_cameraDebugX + 20, m244_cameraDebugY + 96, omDBGStrBuf);
             sprintf(omDBGStrBuf, " ZOOM   %3.3f ", CZoom);
-            print8(D_801115F4_rockin_raceway + 20, D_801115F8_rockin_raceway + 104, omDBGStrBuf);
+            print8(m244_cameraDebugX + 20, m244_cameraDebugY + 104, omDBGStrBuf);
             break;
         default:
             mgFieldStat = 1;
             break;
     }
     if (HuPadBtnDown[0] & R_TRIG) {
-        if (D_801115F0_rockin_raceway & 1) {
+        if (m244_cameraDebugMode & 1) {
             osSyncPrintf("CAMERA TEST_MODE \n");
             osSyncPrintf(" CENTER X>%3.3f Y>%3.3f Z>%3.3f \n", Center.x, Center.y, Center.z);
             osSyncPrintf(" ROT    X>%3.3f Y>%3.3f Z>%3.3f \n", CRot.x, CRot.y, CRot.z);
             osSyncPrintf(" ZOOM   %3.3f \n\n", CZoom);
         }
-        if (++D_801115F0_rockin_raceway >= 3) {
-            D_801115F0_rockin_raceway = 0;
+        if (++m244_cameraDebugMode >= 3) {
+            m244_cameraDebugMode = 0;
         }
     }
 }
 
-// Interpolates the camera from the origin preset to the target preset over D_80111C2A_rockin_raceway frames.
-void func_8010C0D8_rockin_raceway(omObjData *object) {
+// Interpolates the camera from the origin preset to the target preset over m244_cameraMoveTime frames.
+void m244_CameraMoveObjMain(omObjData *object) {
     f32 t;
 
-    if (D_80111C2A_rockin_raceway <= 0) {
-        func_8010D134_rockin_raceway(0);
-        D_80111C2C_rockin_raceway = 0;
+    if (m244_cameraMoveTime <= 0) {
+        m244_CameraPosUpdate(0);
+        m244_cameraMoveF = 0;
         return;
     }
-    if (D_80111C28_rockin_raceway == 0) {
-        Center.x = D_80111BE0_rockin_raceway[0].center.x;
-        Center.y = D_80111BE0_rockin_raceway[0].center.y;
-        Center.z = D_80111BE0_rockin_raceway[0].center.z;
-        CRot.x = D_80111BE0_rockin_raceway[0].rot.x;
-        CRot.y = D_80111BE0_rockin_raceway[0].rot.y;
-        CRot.z = D_80111BE0_rockin_raceway[0].rot.z;
-        CZoom = D_80111BE0_rockin_raceway[0].zoom;
+    if (m244_cameraMoveTimer == 0) {
+        Center.x = m244_cameraKeyTbl[0].center.x;
+        Center.y = m244_cameraKeyTbl[0].center.y;
+        Center.z = m244_cameraKeyTbl[0].center.z;
+        CRot.x = m244_cameraKeyTbl[0].rot.x;
+        CRot.y = m244_cameraKeyTbl[0].rot.y;
+        CRot.z = m244_cameraKeyTbl[0].rot.z;
+        CZoom = m244_cameraKeyTbl[0].zoom;
         if (CRot.x >= 360.0) {
             CRot.x -= 360.0;
         } else if (CRot.x < 0.0) {
@@ -2730,32 +2730,32 @@ void func_8010C0D8_rockin_raceway(omObjData *object) {
         } else if (CRot.z < 0.0) {
             CRot.z += 360.0;
         }
-        D_80111C2A_rockin_raceway = 0;
+        m244_cameraMoveTime = 0;
     } else {
-        switch (D_80111C2E_rockin_raceway) {
+        switch (m244_cameraMoveMode) {
             case 0:
-                t = (f32)D_80111C28_rockin_raceway / (f32)D_80111C2A_rockin_raceway;
+                t = (f32)m244_cameraMoveTimer / (f32)m244_cameraMoveTime;
                 break;
             case 1:
-                t = (f32)D_80111C28_rockin_raceway / (f32)D_80111C2A_rockin_raceway;
+                t = (f32)m244_cameraMoveTimer / (f32)m244_cameraMoveTime;
                 t = sindf(t * 90.0f);
                 break;
             default:
-                t = (f32)D_80111C28_rockin_raceway / (f32)D_80111C2A_rockin_raceway;
+                t = (f32)m244_cameraMoveTimer / (f32)m244_cameraMoveTime;
                 t = sindf(t * 90.0f);
                 t = t * t;
                 break;
         }
-        Center.x = func_8010E7C8_rockin_raceway(t, D_80111BE0_rockin_raceway[0].center.x,
-                                                D_80111BE0_rockin_raceway[1].center.x);
-        Center.y = func_8010E7C8_rockin_raceway(t, D_80111BE0_rockin_raceway[0].center.y,
-                                                D_80111BE0_rockin_raceway[1].center.y);
-        Center.z = func_8010E7C8_rockin_raceway(t, D_80111BE0_rockin_raceway[0].center.z,
-                                                D_80111BE0_rockin_raceway[1].center.z);
-        CRot.x = func_8010E7E0_rockin_raceway(t, D_80111BE0_rockin_raceway[0].rot.x, D_80111BE0_rockin_raceway[1].rot.x);
-        CRot.y = func_8010E7E0_rockin_raceway(t, D_80111BE0_rockin_raceway[0].rot.y, D_80111BE0_rockin_raceway[1].rot.y);
-        CRot.z = func_8010E7E0_rockin_raceway(t, D_80111BE0_rockin_raceway[0].rot.z, D_80111BE0_rockin_raceway[1].rot.z);
-        CZoom = func_8010E7C8_rockin_raceway(t, D_80111BE0_rockin_raceway[0].zoom, D_80111BE0_rockin_raceway[1].zoom);
+        Center.x = m244_InterpCalc(t, m244_cameraKeyTbl[0].center.x,
+                                                m244_cameraKeyTbl[1].center.x);
+        Center.y = m244_InterpCalc(t, m244_cameraKeyTbl[0].center.y,
+                                                m244_cameraKeyTbl[1].center.y);
+        Center.z = m244_InterpCalc(t, m244_cameraKeyTbl[0].center.z,
+                                                m244_cameraKeyTbl[1].center.z);
+        CRot.x = m244_AngleInterpCalc(t, m244_cameraKeyTbl[0].rot.x, m244_cameraKeyTbl[1].rot.x);
+        CRot.y = m244_AngleInterpCalc(t, m244_cameraKeyTbl[0].rot.y, m244_cameraKeyTbl[1].rot.y);
+        CRot.z = m244_AngleInterpCalc(t, m244_cameraKeyTbl[0].rot.z, m244_cameraKeyTbl[1].rot.z);
+        CZoom = m244_InterpCalc(t, m244_cameraKeyTbl[0].zoom, m244_cameraKeyTbl[1].zoom);
         if (CRot.x >= 360.0) {
             CRot.x -= 360.0;
         } else if (CRot.x < 0.0) {
@@ -2771,17 +2771,17 @@ void func_8010C0D8_rockin_raceway(omObjData *object) {
         } else if (CRot.z < 0.0) {
             CRot.z += 360.0;
         }
-        if (D_80111C28_rockin_raceway > 0) {
-            D_80111C28_rockin_raceway--;
+        if (m244_cameraMoveTimer > 0) {
+            m244_cameraMoveTimer--;
         } else {
-            D_80111C28_rockin_raceway++;
+            m244_cameraMoveTimer++;
         }
     }
-    D_80111C2C_rockin_raceway = 1;
-    func_8010D134_rockin_raceway(0);
+    m244_cameraMoveF = 1;
+    m244_CameraPosUpdate(0);
 }
 
-void func_8010C5E0_rockin_raceway(s32 arg0) {
+void m244_CameraKeyStore(s32 arg0) {
     if (CRot.x >= 360.0) {
         CRot.x -= 360.0;
     } else if (CRot.x < 0.0) {
@@ -2797,80 +2797,80 @@ void func_8010C5E0_rockin_raceway(s32 arg0) {
     } else if (CRot.z < 0.0) {
         CRot.z += 360.0;
     }
-    D_80111BE0_rockin_raceway[arg0].center.x = Center.x;
-    D_80111BE0_rockin_raceway[arg0].center.y = Center.y;
-    D_80111BE0_rockin_raceway[arg0].center.z = Center.z;
-    D_80111BE0_rockin_raceway[arg0].rot.x = CRot.x;
-    D_80111BE0_rockin_raceway[arg0].rot.y = CRot.y;
-    D_80111BE0_rockin_raceway[arg0].rot.z = CRot.z;
-    D_80111BE0_rockin_raceway[arg0].zoom = CZoom;
-    D_80111BE0_rockin_raceway[arg0].unk_1C = D_80111BE0_rockin_raceway[arg0].unk_20 = 0.0f;
+    m244_cameraKeyTbl[arg0].center.x = Center.x;
+    m244_cameraKeyTbl[arg0].center.y = Center.y;
+    m244_cameraKeyTbl[arg0].center.z = Center.z;
+    m244_cameraKeyTbl[arg0].rot.x = CRot.x;
+    m244_cameraKeyTbl[arg0].rot.y = CRot.y;
+    m244_cameraKeyTbl[arg0].rot.z = CRot.z;
+    m244_cameraKeyTbl[arg0].zoom = CZoom;
+    m244_cameraKeyTbl[arg0].unk_1C = m244_cameraKeyTbl[arg0].unk_20 = 0.0f;
 }
 
 // Passing CAMERA_KEEP for a component keeps its current value.
-void func_8010C7CC_rockin_raceway(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames) {
+void m244_CameraMoveStart(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames) {
     if (frames > 0) {
-        D_80111C28_rockin_raceway = frames - 1;
-        D_80111C2A_rockin_raceway = frames;
+        m244_cameraMoveTimer = frames - 1;
+        m244_cameraMoveTime = frames;
         if (x != CAMERA_KEEP) {
-            D_80111BE0_rockin_raceway[0].center.x = x;
+            m244_cameraKeyTbl[0].center.x = x;
         } else {
-            D_80111BE0_rockin_raceway[0].center.x = Center.x;
+            m244_cameraKeyTbl[0].center.x = Center.x;
         }
         if (y != CAMERA_KEEP) {
-            D_80111BE0_rockin_raceway[0].center.y = y;
+            m244_cameraKeyTbl[0].center.y = y;
         } else {
-            D_80111BE0_rockin_raceway[0].center.y = Center.y;
+            m244_cameraKeyTbl[0].center.y = Center.y;
         }
         if (z != CAMERA_KEEP) {
-            D_80111BE0_rockin_raceway[0].center.z = z;
+            m244_cameraKeyTbl[0].center.z = z;
         } else {
-            D_80111BE0_rockin_raceway[0].center.z = Center.z;
+            m244_cameraKeyTbl[0].center.z = Center.z;
         }
         if (rotX != CAMERA_KEEP) {
-            D_80111BE0_rockin_raceway[0].rot.x = rotX;
+            m244_cameraKeyTbl[0].rot.x = rotX;
         } else {
-            D_80111BE0_rockin_raceway[0].rot.x = CRot.x;
+            m244_cameraKeyTbl[0].rot.x = CRot.x;
         }
         if (rotY != CAMERA_KEEP) {
-            D_80111BE0_rockin_raceway[0].rot.y = rotY;
+            m244_cameraKeyTbl[0].rot.y = rotY;
         } else {
-            D_80111BE0_rockin_raceway[0].rot.y = CRot.y;
+            m244_cameraKeyTbl[0].rot.y = CRot.y;
         }
         if (rotZ != CAMERA_KEEP) {
-            D_80111BE0_rockin_raceway[0].rot.z = rotZ;
+            m244_cameraKeyTbl[0].rot.z = rotZ;
         } else {
-            D_80111BE0_rockin_raceway[0].rot.z = CRot.z;
+            m244_cameraKeyTbl[0].rot.z = CRot.z;
         }
         if (zoom != CAMERA_KEEP) {
-            D_80111BE0_rockin_raceway[0].zoom = zoom;
+            m244_cameraKeyTbl[0].zoom = zoom;
         } else {
-            D_80111BE0_rockin_raceway[0].zoom = CZoom;
+            m244_cameraKeyTbl[0].zoom = CZoom;
         }
-        func_8010C5E0_rockin_raceway(1);
+        m244_CameraKeyStore(1);
     }
 }
 
-void func_8010C9BC_rockin_raceway(void) {
-    D_80111BD8_rockin_raceway->func = NULL;
+void m244_CameraMoveStop(void) {
+    m244_cameraMoveObj->func = NULL;
 }
 
-void func_8010C9CC_rockin_raceway(void) {
-    func_8010C5E0_rockin_raceway(0);
-    func_8010C5E0_rockin_raceway(1);
-    D_80111C2C_rockin_raceway = 0;
-    D_80111C2A_rockin_raceway = 0;
-    D_80111C28_rockin_raceway = 0;
-    D_80111BD8_rockin_raceway->func = func_8010C0D8_rockin_raceway;
+void m244_CameraMoveResume(void) {
+    m244_CameraKeyStore(0);
+    m244_CameraKeyStore(1);
+    m244_cameraMoveF = 0;
+    m244_cameraMoveTime = 0;
+    m244_cameraMoveTimer = 0;
+    m244_cameraMoveObj->func = m244_CameraMoveObjMain;
 }
 
-void func_8010CA1C_rockin_raceway(void) {
+void m244_CameraFocusInit(void) {
     HuCamera *camera;
     s32 i;
 
-    D_80111C34_rockin_raceway = 0;
-    D_80111C4C_rockin_raceway = HuMemAllocTag(16 * sizeof(RockinRacewayVec), TAG_OVERLAY);
-    D_80111C30_rockin_raceway = omAddObj(31, 0, 0, -1, func_8010CE90_rockin_raceway);
+    m244_cameraFocusNum = 0;
+    m244_cameraFocusTbl = HuMemAllocTag(16 * sizeof(RockinRacewayVec), TAG_OVERLAY);
+    m244_cameraFocusObj = omAddObj(31, 0, 0, -1, m244_CameraFocusObjMain);
     camera = gCameraList;
     for (i = 1; i < Hu3DBufNum; i++) {
         camera->viewports[i].vp.vscale[0] = camera->viewports[0].vp.vscale[0];
@@ -2882,61 +2882,61 @@ void func_8010CA1C_rockin_raceway(void) {
     }
 }
 
-void func_8010CADC_rockin_raceway(Vec *arg0, f32 arg1) {
-    if (D_80111C30_rockin_raceway != NULL && D_80111C34_rockin_raceway < 16) {
-        D_80111C4C_rockin_raceway[D_80111C34_rockin_raceway].pos[0] = arg0->x;
+void m244_CameraFocusAdd(Vec *arg0, f32 arg1) {
+    if (m244_cameraFocusObj != NULL && m244_cameraFocusNum < 16) {
+        m244_cameraFocusTbl[m244_cameraFocusNum].pos[0] = arg0->x;
         do {
         } while (0); // splits the basic block so the entry address is recomputed
-        D_80111C4C_rockin_raceway[D_80111C34_rockin_raceway].pos[1] = arg0->y;
-        D_80111C4C_rockin_raceway[D_80111C34_rockin_raceway].pos[2] = arg0->z;
-        D_80111C4C_rockin_raceway[D_80111C34_rockin_raceway].weight = arg1;
-        D_80111C34_rockin_raceway++;
+        m244_cameraFocusTbl[m244_cameraFocusNum].pos[1] = arg0->y;
+        m244_cameraFocusTbl[m244_cameraFocusNum].pos[2] = arg0->z;
+        m244_cameraFocusTbl[m244_cameraFocusNum].weight = arg1;
+        m244_cameraFocusNum++;
     }
 }
 
-void func_8010CB5C_rockin_raceway(RockinRacewayRacer *racer, f32 arg1) {
+void m244_RacerFocusAdd(RockinRacewayRacer *racer, f32 arg1) {
     Vec pos;
 
     pos.x = racer->pos.x + 100.0;
     pos.y = racer->pos.y + 100.0;
     pos.z = racer->pos.z;
-    func_8010CADC_rockin_raceway(&pos, arg1);
+    m244_CameraFocusAdd(&pos, arg1);
     pos.x = racer->pos.x - 100.0;
     pos.y = racer->pos.y - 100.0;
     pos.z = racer->pos.z;
-    func_8010CADC_rockin_raceway(&pos, arg1);
+    m244_CameraFocusAdd(&pos, arg1);
 }
 
-void func_8010CC10_rockin_raceway(void) {
+void m244_CameraFocusCalc(void) {
     RockinRacewayVec *entry;
     f32 max[3];
     f32 min[3];
     s32 j;
     s32 i;
 
-    if (D_80111C34_rockin_raceway > 0) {
+    if (m244_cameraFocusNum > 0) {
         for (i = 0; i < 4; i++) {
-            D_80111C38_rockin_raceway.pos[i] = 0.0f;
+            m244_cameraFocus.pos[i] = 0.0f;
         }
-        for (i = 0; i < D_80111C34_rockin_raceway; i++) {
-            D_80111C38_rockin_raceway.pos[3] += D_80111C4C_rockin_raceway[i].weight;
-        }
-        for (i = 0; i < 3; i++) {
-            max[i] = D_80111C4C_rockin_raceway[0].pos[i];
+        for (i = 0; i < m244_cameraFocusNum; i++) {
+            m244_cameraFocus.pos[3] += m244_cameraFocusTbl[i].weight;
         }
         for (i = 0; i < 3; i++) {
-            min[i] = D_80111C4C_rockin_raceway[0].pos[i];
+            max[i] = m244_cameraFocusTbl[0].pos[i];
         }
-        for (i = 1; i < D_80111C34_rockin_raceway; i++) {
-            entry = &D_80111C4C_rockin_raceway[i];
+        for (i = 0; i < 3; i++) {
+            min[i] = m244_cameraFocusTbl[0].pos[i];
+        }
+        for (i = 1; i < m244_cameraFocusNum; i++) {
+            entry = &m244_cameraFocusTbl[i];
             for (j = 0; j < 3; j++) {
                 if (max[j] < entry->pos[j]) {
                     max[j] = entry->pos[j];
                 }
             }
         }
-        for (i = 1; i < D_80111C34_rockin_raceway; i++) {
-            entry = &D_80111C4C_rockin_raceway[i];
+        for (i = 1; i < m244_cameraFocusNum; i++) {
+            entry = &m244_cameraFocusTbl[i];
             for (j = 0; j < 3; j++) {
                 if (min[j] > entry->pos[j]) {
                     min[j] = entry->pos[j];
@@ -2944,34 +2944,34 @@ void func_8010CC10_rockin_raceway(void) {
             }
         }
         for (i = 0; i < 3; i++) {
-            D_80111C38_rockin_raceway.pos[i] = (max[i] + min[i]) * 0.5f;
+            m244_cameraFocus.pos[i] = (max[i] + min[i]) * 0.5f;
         }
-        if (D_80111C38_rockin_raceway.pos[3] >= 1.0f) {
-            D_80111C38_rockin_raceway.pos[3] = 1.0f;
+        if (m244_cameraFocus.pos[3] >= 1.0f) {
+            m244_cameraFocus.pos[3] = 1.0f;
         }
     } else {
-        D_80111C38_rockin_raceway.pos[0] = Center.x;
-        D_80111C38_rockin_raceway.pos[1] = Center.y;
-        D_80111C38_rockin_raceway.pos[2] = Center.z;
-        D_80111C38_rockin_raceway.pos[3] = 0.0f;
+        m244_cameraFocus.pos[0] = Center.x;
+        m244_cameraFocus.pos[1] = Center.y;
+        m244_cameraFocus.pos[2] = Center.z;
+        m244_cameraFocus.pos[3] = 0.0f;
     }
 }
 
 // Moves the camera to keep all of the registered focus points in view.
-void func_8010CE90_rockin_raceway(omObjData *object) {
+void m244_CameraFocusObjMain(omObjData *object) {
     f32 screen[2];
     f32 extent;
     f32 scale;
     s32 i;
 
     extent = 0.0f;
-    func_8010CC10_rockin_raceway();
-    Center.x = func_8010E7C8_rockin_raceway(D_80111C38_rockin_raceway.pos[3], Center.x, D_80111C38_rockin_raceway.pos[0]);
-    Center.y = func_8010E7C8_rockin_raceway(D_80111C38_rockin_raceway.pos[3], Center.y, D_80111C38_rockin_raceway.pos[1]);
-    Center.z = func_8010E7C8_rockin_raceway(D_80111C38_rockin_raceway.pos[3], Center.z, D_80111C38_rockin_raceway.pos[2]);
-    func_8010D134_rockin_raceway(0);
-    for (i = 0; i < D_80111C34_rockin_raceway; i++) {
-        func_8010D288_rockin_raceway(0, D_80111C4C_rockin_raceway[i].pos, NULL, screen);
+    m244_CameraFocusCalc();
+    Center.x = m244_InterpCalc(m244_cameraFocus.pos[3], Center.x, m244_cameraFocus.pos[0]);
+    Center.y = m244_InterpCalc(m244_cameraFocus.pos[3], Center.y, m244_cameraFocus.pos[1]);
+    Center.z = m244_InterpCalc(m244_cameraFocus.pos[3], Center.z, m244_cameraFocus.pos[2]);
+    m244_CameraPosUpdate(0);
+    for (i = 0; i < m244_cameraFocusNum; i++) {
+        m244_ScreenPosCalc(0, m244_cameraFocusTbl[i].pos, NULL, screen);
         if (fabs(screen[0]) > extent) {
             extent = fabs(screen[0]);
         }
@@ -2984,34 +2984,34 @@ void func_8010CE90_rockin_raceway(omObjData *object) {
     } else {
         scale = 1.0f;
     }
-    D_80111C38_rockin_raceway.zoom = scale * CZoom;
-    if (D_80111AD8_rockin_raceway == 2) {
-        if (D_80111C38_rockin_raceway.zoom < 1500.0f) {
-            D_80111C38_rockin_raceway.zoom = 1500.0f;
-        } else if (D_80111C38_rockin_raceway.zoom >= 5000.0f) {
-            D_80111C38_rockin_raceway.zoom = 5000.0f;
+    m244_cameraFocus.zoom = scale * CZoom;
+    if (m244_phase == 2) {
+        if (m244_cameraFocus.zoom < 1500.0f) {
+            m244_cameraFocus.zoom = 1500.0f;
+        } else if (m244_cameraFocus.zoom >= 5000.0f) {
+            m244_cameraFocus.zoom = 5000.0f;
         }
-    } else if (D_80111C38_rockin_raceway.zoom < 1000.0f) {
-        D_80111C38_rockin_raceway.zoom = 1000.0f;
-    } else if (D_80111C38_rockin_raceway.zoom >= 5000.0f) {
-        D_80111C38_rockin_raceway.zoom = 5000.0f;
+    } else if (m244_cameraFocus.zoom < 1000.0f) {
+        m244_cameraFocus.zoom = 1000.0f;
+    } else if (m244_cameraFocus.zoom >= 5000.0f) {
+        m244_cameraFocus.zoom = 5000.0f;
     }
-    CZoom = func_8010E7C8_rockin_raceway(D_80111C38_rockin_raceway.pos[3] * 0.5f, CZoom, D_80111C38_rockin_raceway.zoom);
-    CRot.x = func_8010E608_rockin_raceway(318.38f, CRot.x, 10.0f);
-    CRot.y = func_8010E608_rockin_raceway(0.0f, CRot.y, 10.0f);
-    D_80111C34_rockin_raceway = 0;
+    CZoom = m244_InterpCalc(m244_cameraFocus.pos[3] * 0.5f, CZoom, m244_cameraFocus.zoom);
+    CRot.x = m244_AngleStepCalc(318.38f, CRot.x, 10.0f);
+    CRot.y = m244_AngleStepCalc(0.0f, CRot.y, 10.0f);
+    m244_cameraFocusNum = 0;
 }
 
-void func_8010D104_rockin_raceway(void) {
-    D_80111C30_rockin_raceway->func = NULL;
+void m244_CameraFocusStop(void) {
+    m244_cameraFocusObj->func = NULL;
 }
 
-void func_8010D114_rockin_raceway(void) {
-    D_80111C34_rockin_raceway = 0;
-    D_80111C30_rockin_raceway->func = func_8010CE90_rockin_raceway;
+void m244_CameraFocusStart(void) {
+    m244_cameraFocusNum = 0;
+    m244_cameraFocusObj->func = m244_CameraFocusObjMain;
 }
 
-void func_8010D134_rockin_raceway(s32 camIndex) {
+void m244_CameraPosUpdate(s32 camIndex) {
     HuCamera *camera = &gCameraList[camIndex];
     f32 rotX = CRot.x;
     f32 rotY = CRot.y;
@@ -3029,7 +3029,7 @@ void func_8010D134_rockin_raceway(s32 camIndex) {
 
 // Projects pos with the camera; screen receives the pixel position and depth, and normalized the
 // position relative to the screen center.
-void func_8010D288_rockin_raceway(s32 camIndex, f32 *pos, f32 *screen, f32 *normalized) {
+void m244_ScreenPosCalc(s32 camIndex, f32 *pos, f32 *screen, f32 *normalized) {
     HuCamera *camera = &gCameraList[camIndex];
     Mtx lookAt;
     Mtx mtx;
@@ -3065,18 +3065,18 @@ void func_8010D288_rockin_raceway(s32 camIndex, f32 *pos, f32 *screen, f32 *norm
     }
 }
 
-void func_8010D5B8_rockin_raceway(void) {
+void m244_ReplayInit(void) {
     RockinRacewayReplayFrame *pool = HuMemAllocTag(30 * sizeof(RockinRacewayReplayFrame), TAG_OVERLAY);
 
-    D_80111C50_rockin_raceway = pool;
+    m244_replayTbl = pool;
     memset(pool, 0, 30 * sizeof(RockinRacewayReplayFrame));
-    D_80111C54_rockin_raceway = 0;
-    D_80111C58_rockin_raceway = 0;
+    m244_replayCnt = 0;
+    m244_replayNo = 0;
 }
 
 // Records the current race state into the next replay frame.
-void func_8010D600_rockin_raceway(void) {
-    RockinRacewayReplayFrame *frame = &D_80111C50_rockin_raceway[D_80111C58_rockin_raceway];
+void m244_ReplayRecord(void) {
+    RockinRacewayReplayFrame *frame = &m244_replayTbl[m244_replayNo];
     RockinRacewayReplayRacer *replay;
     RockinRacewayRacer *racer;
     RockinRacewayModelState *state;
@@ -3085,12 +3085,12 @@ void func_8010D600_rockin_raceway(void) {
     HmfModel *model;
     s32 i;
 
-    frame->unk00 = D_80111AE4_rockin_raceway;
+    frame->unk00 = m244_raceTime;
     for (i = 0; i < 4; i++) {
-        frame->unk04[i] = D_80111AF0_rockin_raceway[i];
+        frame->unk04[i] = m244_rankOrderTbl[i];
     }
     for (i = 0; i < 4; i++) {
-        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[i]);
+        racer = (RockinRacewayRacer *)m244_WorkPtrGet(mgPlayerObjTbl[i]);
         replay = &frame->racers[i];
         replay->trans.x = mgPlayerObjTbl[i]->trans.x;
         replay->trans.y = mgPlayerObjTbl[i]->trans.y;
@@ -3105,10 +3105,10 @@ void func_8010D600_rockin_raceway(void) {
         replay->unk28 = racer->unk24;
     }
     for (state = frame->models, i = 1; i < 13; i++, state++) {
-        if (D_80111B4C_rockin_raceway->model[i] == -1) {
+        if (m244_sparkObj->model[i] == -1) {
             continue;
         }
-        model = &Hu3DData[D_80111B4C_rockin_raceway->model[i]];
+        model = &Hu3DData[m244_sparkObj->model[i]];
         state->attr = model->attr;
         state->motTime = model->motTime;
         state->motSpeed = 0.0f;
@@ -3122,7 +3122,7 @@ void func_8010D600_rockin_raceway(void) {
         state->scale.y = model->scale.y;
         state->scale.z = model->scale.z;
     }
-    for (effectState = frame->effects, effect = D_80111B5C_rockin_raceway, i = 0; i < 16;
+    for (effectState = frame->effects, effect = m244_smokeTbl, i = 0; i < 16;
          i++, effectState++, effect++) {
         if (effect->model == -1) {
             continue;
@@ -3143,30 +3143,30 @@ void func_8010D600_rockin_raceway(void) {
         effectState->scale.y = model->scale.y;
         effectState->scale.z = model->scale.z;
     }
-    D_80111C54_rockin_raceway++;
-    D_80111C58_rockin_raceway++;
-    if (D_80111C58_rockin_raceway >= 30) {
-        D_80111C58_rockin_raceway -= 30;
+    m244_replayCnt++;
+    m244_replayNo++;
+    if (m244_replayNo >= 30) {
+        m244_replayNo -= 30;
     }
 }
 
-RockinRacewayReplayFrame *func_8010D944_rockin_raceway(s32 arg0) {
+RockinRacewayReplayFrame *m244_ReplayFrameGet(s32 arg0) {
     s32 index = arg0;
 
-    if (arg0 >= D_80111C54_rockin_raceway || arg0 >= 30) {
+    if (arg0 >= m244_replayCnt || arg0 >= 30) {
         return NULL;
     }
-    if (D_80111C54_rockin_raceway >= 30) {
-        index += D_80111C58_rockin_raceway;
+    if (m244_replayCnt >= 30) {
+        index += m244_replayNo;
     }
     if (index >= 30) {
         index -= 30;
     }
-    return &D_80111C50_rockin_raceway[index];
+    return &m244_replayTbl[index];
 }
 
 // Plays back a recorded replay frame, interpolating from the previous frame.
-void func_8010D9C4_rockin_raceway(s32 index) {
+void m244_ReplayPlay(s32 index) {
     RockinRacewayReplayFrame *frame;
     RockinRacewayReplayFrame *prevFrame;
     RockinRacewayReplayRacer *replay;
@@ -3184,58 +3184,58 @@ void func_8010D9C4_rockin_raceway(s32 index) {
     s32 i;
     s32 j;
 
-    if (D_801115FC_rockin_raceway != index) {
-        D_801115FC_rockin_raceway = index;
-        D_80111AC0_rockin_raceway = 0;
+    if (m244_replayPrevNo != index) {
+        m244_replayPrevNo = index;
+        m244_replayFrameTime = 0;
     } else {
-        D_80111AC0_rockin_raceway++;
+        m244_replayFrameTime++;
     }
-    t = D_80111AC0_rockin_raceway / 4.5f;
+    t = m244_replayFrameTime / 4.5f;
     if (1.0f <= t) {
         t = 1.0f;
     } else if (t <= 0.0f) {
         t = 0.0f;
     }
-    frame = func_8010D944_rockin_raceway(index);
+    frame = m244_ReplayFrameGet(index);
     times[0] = frame->unk00;
-    times[1] = D_80111AE8_rockin_raceway;
-    func_8010B5DC_rockin_raceway(times);
-    func_80109D00_rockin_raceway(frame->unk04);
-    func_80109D54_rockin_raceway(times);
+    times[1] = m244_recordTime;
+    m244_TimeDigitCalc(times);
+    m244_BoardFaceSet(frame->unk04);
+    m244_BoardTimeSet(times);
     for (i = 0; i < 4; i++) {
         replay = &frame->racers[i];
         object = mgPlayerObjTbl[i];
         if (index - 1 < 0) {
             prev = replay;
         } else {
-            prev = &func_8010D944_rockin_raceway(index - 1)->racers[i];
+            prev = &m244_ReplayFrameGet(index - 1)->racers[i];
         }
-        object->trans.x = func_8010E7C8_rockin_raceway(t, prev->trans.x, replay->trans.x);
-        object->trans.y = func_8010E7C8_rockin_raceway(t, prev->trans.y, replay->trans.y);
-        object->trans.z = func_8010E7C8_rockin_raceway(t, prev->trans.z, replay->trans.z);
-        object->rot.x = func_8010E7E0_rockin_raceway(t, prev->rot.x, replay->rot.x);
-        object->rot.y = func_8010E7E0_rockin_raceway(t, prev->rot.y, replay->rot.y);
-        object->rot.z = func_8010E7E0_rockin_raceway(t, prev->rot.z, replay->rot.z);
-        object->scale.x = func_8010E7C8_rockin_raceway(t, prev->scale.x, replay->scale.x);
-        object->scale.y = func_8010E7C8_rockin_raceway(t, prev->scale.y, replay->scale.y);
-        object->scale.z = func_8010E7C8_rockin_raceway(t, prev->scale.z, replay->scale.z);
+        object->trans.x = m244_InterpCalc(t, prev->trans.x, replay->trans.x);
+        object->trans.y = m244_InterpCalc(t, prev->trans.y, replay->trans.y);
+        object->trans.z = m244_InterpCalc(t, prev->trans.z, replay->trans.z);
+        object->rot.x = m244_AngleInterpCalc(t, prev->rot.x, replay->rot.x);
+        object->rot.y = m244_AngleInterpCalc(t, prev->rot.y, replay->rot.y);
+        object->rot.z = m244_AngleInterpCalc(t, prev->rot.z, replay->rot.z);
+        object->scale.x = m244_InterpCalc(t, prev->scale.x, replay->scale.x);
+        object->scale.y = m244_InterpCalc(t, prev->scale.y, replay->scale.y);
+        object->scale.z = m244_InterpCalc(t, prev->scale.z, replay->scale.z);
     }
-    if (D_80111B3A_rockin_raceway != 0) {
+    if (m244_ghostDispF != 0) {
         for (i = 0; i < 4; i++) {
             for (j = 0; j < 2; j++) {
                 if (index - (j + 1) < 0) {
                     prev = &frame->racers[i];
                 } else {
-                    prev = &func_8010D944_rockin_raceway(index - (j + 2))->racers[i];
+                    prev = &m244_ReplayFrameGet(index - (j + 2))->racers[i];
                 }
                 if (index - (j + 2) < 0) {
                     prev2 = prev;
                 } else {
-                    prev2 = &func_8010D944_rockin_raceway(index - (j + 3))->racers[i];
+                    prev2 = &m244_ReplayFrameGet(index - (j + 3))->racers[i];
                 }
                 model = &Hu3DData[mgPlayerObjTbl[i]->model[j + 3]];
-                if (D_80111B3C_rockin_raceway[j].racers[i].active != 0) {
-                    snapshot = &D_80111B3C_rockin_raceway[j].racers[i];
+                if (m244_ghostTbl[j].racers[i].active != 0) {
+                    snapshot = &m244_ghostTbl[j].racers[i];
                     if (snapshot->unk00 != 0) {
                         model->pos.x = snapshot->trans.x;
                         model->pos.y = snapshot->trans.y;
@@ -3248,15 +3248,15 @@ void func_8010D9C4_rockin_raceway(s32 index) {
                         model->scale.z = snapshot->scale.z;
                         snapshot->unk00--;
                     } else {
-                        model->pos.x = func_8010E7C8_rockin_raceway(t, prev2->trans.x, prev->trans.x);
-                        model->pos.y = func_8010E7C8_rockin_raceway(t, prev2->trans.y, prev->trans.y);
-                        model->pos.z = func_8010E7C8_rockin_raceway(t, prev2->trans.z, prev->trans.z);
-                        model->rot.x = func_8010E7E0_rockin_raceway(t, prev2->rot.x, prev->rot.x);
-                        model->rot.y = func_8010E7E0_rockin_raceway(t, prev2->rot.y, prev->rot.y);
-                        model->rot.z = func_8010E7E0_rockin_raceway(t, prev2->rot.z, prev->rot.z);
-                        model->scale.x = func_8010E7C8_rockin_raceway(t, prev2->scale.x, prev->scale.x);
-                        model->scale.y = func_8010E7C8_rockin_raceway(t, prev2->scale.y, prev->scale.y);
-                        model->scale.z = func_8010E7C8_rockin_raceway(t, prev2->scale.z, prev->scale.z);
+                        model->pos.x = m244_InterpCalc(t, prev2->trans.x, prev->trans.x);
+                        model->pos.y = m244_InterpCalc(t, prev2->trans.y, prev->trans.y);
+                        model->pos.z = m244_InterpCalc(t, prev2->trans.z, prev->trans.z);
+                        model->rot.x = m244_AngleInterpCalc(t, prev2->rot.x, prev->rot.x);
+                        model->rot.y = m244_AngleInterpCalc(t, prev2->rot.y, prev->rot.y);
+                        model->rot.z = m244_AngleInterpCalc(t, prev2->rot.z, prev->rot.z);
+                        model->scale.x = m244_InterpCalc(t, prev2->scale.x, prev->scale.x);
+                        model->scale.y = m244_InterpCalc(t, prev2->scale.y, prev->scale.y);
+                        model->scale.z = m244_InterpCalc(t, prev2->scale.z, prev->scale.z);
                     }
                 }
             }
@@ -3265,15 +3265,15 @@ void func_8010D9C4_rockin_raceway(s32 index) {
     if (index - 1 < 0) {
         prevFrame = frame;
     } else {
-        prevFrame = func_8010D944_rockin_raceway(index - 1);
+        prevFrame = m244_ReplayFrameGet(index - 1);
     }
     for (state = frame->models, prevState.model = prevFrame->models, i = 1; i < 13; i++, state++, prevState.model++) {
-        if (D_80111B4C_rockin_raceway->model[i] == -1) {
+        if (m244_sparkObj->model[i] == -1) {
             continue;
         }
-        model = &Hu3DData[D_80111B4C_rockin_raceway->model[i]];
+        model = &Hu3DData[m244_sparkObj->model[i]];
         model->attr = state->attr;
-        model->motTime = func_8010E7C8_rockin_raceway(t, prevState.model->motTime, state->motTime);
+        model->motTime = m244_InterpCalc(t, prevState.model->motTime, state->motTime);
         model->motSpeed = 0.0f;
         model->pos.x = state->pos.x;
         model->pos.y = state->pos.y;
@@ -3285,7 +3285,7 @@ void func_8010D9C4_rockin_raceway(s32 index) {
         model->scale.y = state->scale.y;
         model->scale.z = state->scale.z;
     }
-    for (effectState = frame->effects, prevState.effect = prevFrame->effects, effect = D_80111B5C_rockin_raceway, i = 0;
+    for (effectState = frame->effects, prevState.effect = prevFrame->effects, effect = m244_smokeTbl, i = 0;
          i < 16; i++, effect++, effectState++, prevState.effect++) {
         if (effect->model == -1) {
             continue;
@@ -3295,12 +3295,12 @@ void func_8010D9C4_rockin_raceway(s32 index) {
         model->attr = effectState->attr;
         effect->frame = effectState->frame;
         effect->speed = effectState->speed;
-        func_8010FA78_rockin_raceway(effect->model, HuSprAnimDataGet(D_80111B68_rockin_raceway[2]), effect->frame,
-                                     D_801114D4_rockin_raceway);
+        m244_BillboardColorPatSet(effect->model, HuSprAnimDataGet(m244_sprTbl[2]), effect->frame,
+                                     m244_smokeColor);
         if (prevState.effect->active != 0) {
-            model->pos.x = func_8010E7C8_rockin_raceway(t, prevState.effect->pos.x, effectState->pos.x);
-            model->pos.y = func_8010E7C8_rockin_raceway(t, prevState.effect->pos.y, effectState->pos.y);
-            model->pos.z = func_8010E7C8_rockin_raceway(t, prevState.effect->pos.z, effectState->pos.z);
+            model->pos.x = m244_InterpCalc(t, prevState.effect->pos.x, effectState->pos.x);
+            model->pos.y = m244_InterpCalc(t, prevState.effect->pos.y, effectState->pos.y);
+            model->pos.z = m244_InterpCalc(t, prevState.effect->pos.z, effectState->pos.z);
         } else {
             model->pos.x = effectState->pos.x;
             model->pos.y = effectState->pos.y;
@@ -3316,7 +3316,7 @@ void func_8010D9C4_rockin_raceway(s32 index) {
 }
 
 // Shifts the recorded replay frames so that the winner ends up ahead of the other racers.
-void func_8010E08C_rockin_raceway(s32 winner) {
+void m244_ReplayWinnerAdjust(s32 winner) {
     RockinRacewayReplayRacer *replay;
     RockinRacewayRacer *racer;
     s32 angle;
@@ -3325,7 +3325,7 @@ void func_8010E08C_rockin_raceway(s32 winner) {
 
     for (i = 0; i < 30; i++) {
         for (j = 0; j < 4; j++) {
-            replay = &func_8010D944_rockin_raceway(i)->racers[j];
+            replay = &m244_ReplayFrameGet(i)->racers[j];
             if (j == winner) {
                 replay->trans.x -= 0.1f * 200.0;
                 replay->trans.x += i / 30.0f * (0.2f * 200.0);
@@ -3335,17 +3335,17 @@ void func_8010E08C_rockin_raceway(s32 winner) {
         }
     }
     for (j = 0; j < 4; j++) {
-        racer = (RockinRacewayRacer *)func_8010EC38_rockin_raceway(mgPlayerObjTbl[j]);
+        racer = (RockinRacewayRacer *)m244_WorkPtrGet(mgPlayerObjTbl[j]);
         if (winner == j) {
             racer->unk44 += 0.1f * 200.0;
         } else {
             racer->unk44 -= 0.1f * 200.0;
         }
     }
-    replay = &func_8010D944_rockin_raceway(29)->racers[winner];
+    replay = &m244_ReplayFrameGet(29)->racers[winner];
     angle = 90.0f - replay->unk28;
     for (i = 0; i < 30; i++) {
-        replay = &func_8010D944_rockin_raceway(i)->racers[winner];
+        replay = &m244_ReplayFrameGet(i)->racers[winner];
         replay->unk28 += angle;
         if (replay->unk28 > 360.0f) {
             replay->unk28 -= 360.0f;
@@ -3356,12 +3356,12 @@ void func_8010E08C_rockin_raceway(s32 winner) {
     }
 }
 
-void func_8010E2E4_rockin_raceway(void) {
+void m244_SeQueueInit(void) {
     RockinRacewaySfx *sfx;
     s32 i;
 
-    D_80111BD0_rockin_raceway = HuMemAllocTag(16 * sizeof(RockinRacewaySfx), TAG_OVERLAY);
-    sfx = D_80111BD0_rockin_raceway;
+    m244_seQueue = HuMemAllocTag(16 * sizeof(RockinRacewaySfx), TAG_OVERLAY);
+    sfx = m244_seQueue;
     memset(sfx, 0, 16 * sizeof(RockinRacewaySfx));
     for (i = 0; i < 16; i++, sfx++) {
         sfx->soundId = -1;
@@ -3369,8 +3369,8 @@ void func_8010E2E4_rockin_raceway(void) {
 }
 
 // Finds a free entry in the sfx pool, fills it in, and returns its index, or -1 if the pool is full.
-s32 func_8010E344_rockin_raceway(s16 soundId, s16 frames, s16 unk04, s16 playerIndex) {
-    RockinRacewaySfx *sfx = D_80111BD0_rockin_raceway;
+s32 m244_SeQueueAdd(s16 soundId, s16 frames, s16 unk04, s16 playerIndex) {
+    RockinRacewaySfx *sfx = m244_seQueue;
     s32 i;
 
     for (i = 0; i < 16 && sfx->soundId != -1; i++, sfx++) {
@@ -3386,8 +3386,8 @@ s32 func_8010E344_rockin_raceway(s16 soundId, s16 frames, s16 unk04, s16 playerI
 }
 
 // Plays each queued sound once its delay has elapsed, then frees the entry.
-void func_8010E39C_rockin_raceway(void) {
-    RockinRacewaySfx *sfx = D_80111BD0_rockin_raceway;
+void m244_SeQueueUpdate(void) {
+    RockinRacewaySfx *sfx = m244_seQueue;
     s32 i;
 
     for (i = 0; i < 16; i++, sfx++) {
@@ -3415,7 +3415,7 @@ void func_8010E39C_rockin_raceway(void) {
     }
 }
 
-f32 func_8010E504_rockin_raceway(f32 arg0, f32 arg1) {
+f32 m244_AngleDiffCalc(f32 arg0, f32 arg1) {
     if (arg0 >= 360.0f) {
         arg0 -= 360.0f;
     } else if (arg0 < 0.0f) {
@@ -3436,7 +3436,7 @@ f32 func_8010E504_rockin_raceway(f32 arg0, f32 arg1) {
 }
 
 // Steps the angle current toward target by at most step degrees along the shorter direction.
-f32 func_8010E608_rockin_raceway(f32 target, f32 current, f32 step) {
+f32 m244_AngleStepCalc(f32 target, f32 current, f32 step) {
     f32 diff;
     f32 delta;
 
@@ -3472,43 +3472,43 @@ f32 func_8010E608_rockin_raceway(f32 target, f32 current, f32 step) {
 }
 
 // Linearly interpolates from arg1 to arg2 by arg0.
-f32 func_8010E7C8_rockin_raceway(f32 arg0, f32 arg1, f32 arg2) {
+f32 m244_InterpCalc(f32 arg0, f32 arg1, f32 arg2) {
     return arg1 + arg0 * (arg2 - arg1);
 }
 
-f32 func_8010E7E0_rockin_raceway(f32 arg0, f32 arg1, f32 arg2) {
-    return func_8010E608_rockin_raceway(arg2, arg1, fabsf(func_8010E504_rockin_raceway(arg2, arg1) * arg0));
+f32 m244_AngleInterpCalc(f32 arg0, f32 arg1, f32 arg2) {
+    return m244_AngleStepCalc(arg2, arg1, fabsf(m244_AngleDiffCalc(arg2, arg1) * arg0));
 }
 
 // Evaluates a quadratic bezier curve, blending arg1/arg2/arg3 as a function of arg0.
-f32 func_8010E840_rockin_raceway(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+f32 m244_BezierCalc(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     f32 inv = 1.0 - arg0;
 
     return inv * inv * arg1 + (inv * arg0 * arg2) * 2.0 + arg0 * arg0 * arg3;
 }
 
 // Evaluates the quadratic bezier curve per component for 3-component vectors.
-void func_8010E8A0_rockin_raceway(f32 arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *out) {
+void m244_BezierVecCalc(f32 arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *out) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
-        *out++ = func_8010E840_rockin_raceway(arg0, *arg1++, *arg2++, *arg3++);
+        *out++ = m244_BezierCalc(arg0, *arg1++, *arg2++, *arg3++);
     }
 }
 
 // Evaluates a curve, blending arg1/arg2/arg3 as a function of arg0.
-f32 func_8010E93C_rockin_raceway(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+f32 m244_BezierTangentCalc(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     return ((arg0 - 1.0) * arg1 + (1.0 - 2.0 * arg0) * arg2 + arg0 * arg3) * 2.0;
 }
 
 // Computes the normalized tangent of the curve per component for 3-component vectors.
-void func_8010E994_rockin_raceway(f32 arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *out) {
+void m244_BezierTangentVecCalc(f32 arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *out) {
     f32 tangent[3];
     f32 length;
     s32 i;
 
     for (i = 0; i < 3; i++) {
-        tangent[i] = func_8010E93C_rockin_raceway(arg0, *arg1++, *arg2++, *arg3++);
+        tangent[i] = m244_BezierTangentCalc(arg0, *arg1++, *arg2++, *arg3++);
     }
     length = sqrtf(tangent[0] * tangent[0] + tangent[1] * tangent[1] + tangent[2] * tangent[2]);
     if (length != 0.0f) {
@@ -3524,7 +3524,7 @@ void func_8010E994_rockin_raceway(f32 arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32
 }
 
 // Returns the angle of (arg0, arg1) in degrees, normalized to [0, 360).
-f32 func_8010EB04_rockin_raceway(f32 arg0, f32 arg1) {
+f32 m244_AngleCalc(f32 arg0, f32 arg1) {
     f32 angle = atan2df(arg1, arg0);
 
     if (angle < 0.0) {
@@ -3536,20 +3536,20 @@ f32 func_8010EB04_rockin_raceway(f32 arg0, f32 arg1) {
 }
 
 // Converts a direction vector into pitch and yaw angles, with zero roll.
-void func_8010EB84_rockin_raceway(Vec *dir, f32 *rot) {
-    *rot++ = func_8010EB04_rockin_raceway(sqrtf(dir->x * dir->x + dir->z * dir->z), -dir->y);
-    *rot++ = func_8010EB04_rockin_raceway(dir->z, dir->x);
+void m244_DirRotCalc(Vec *dir, f32 *rot) {
+    *rot++ = m244_AngleCalc(sqrtf(dir->x * dir->x + dir->z * dir->z), -dir->y);
+    *rot++ = m244_AngleCalc(dir->z, dir->x);
     *rot = 0.0f;
 }
 
-void func_8010EC0C_rockin_raceway(omObjData *arg0, u32 arg1) {
+void m244_WorkPtrSet(omObjData *arg0, u32 arg1) {
     arg0->work[0] = arg1 >> 24;
     arg0->work[1] = (arg1 >> 16) & 0xFF;
     arg0->work[2] = (arg1 >> 8) & 0xFF;
     arg0->work[3] = arg1 & 0xFF;
 }
 
-u32 func_8010EC38_rockin_raceway(omObjData *object) {
+u32 m244_WorkPtrGet(omObjData *object) {
     RockinRacewayWorkBytes packed;
 
     packed.bytes.byte3 = (u8)object->work[0];
@@ -3559,7 +3559,7 @@ u32 func_8010EC38_rockin_raceway(omObjData *object) {
     return packed.word;
 }
 
-s32 func_8010EC8C_rockin_raceway(HuSprAnimData *sprite, u8 *color) {
+s32 m244_BillboardColorMdlCreate(HuSprAnimData *sprite, u8 *color) {
     u8 *buffer;
     Gfx *gfx;
     Gfx *header;
@@ -3578,8 +3578,8 @@ s32 func_8010EC8C_rockin_raceway(HuSprAnimData *sprite, u8 *color) {
     gfx++;
     HuMemFree(data->unk3C);
     data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), Hu3DModelTag);
-    func_8010FBAC_rockin_raceway(sprite, data, 1.0f, 0, 0);
-    gSPDisplayList(header, osVirtualToPhysical(D_801116F0_rockin_raceway));
+    m244_BillboardVtxCreate(sprite, data, 1.0f, 0, 0);
+    gSPDisplayList(header, osVirtualToPhysical(m244_gfxBillboardInit));
     gDPPipeSync(gfx++);
     gDPSetCycleType(gfx++, G_CYC_1CYCLE);
     gDPPipeSync(gfx++);
@@ -3669,7 +3669,7 @@ s32 func_8010EC8C_rockin_raceway(HuSprAnimData *sprite, u8 *color) {
     return model;
 }
 
-s32 func_8010F874_rockin_raceway(HuSprAnimData *sprite, u16 model, u8 *color) {
+s32 m244_BillboardColorMdlLink(HuSprAnimData *sprite, u16 model, u8 *color) {
     HmfModel *srcModel = Hu3DData + model;
     HmfData *srcData = srcModel->hmf;
     HmfData *data;
@@ -3699,7 +3699,7 @@ s32 func_8010F874_rockin_raceway(HuSprAnimData *sprite, u16 model, u8 *color) {
     return newModel;
 }
 
-void func_8010FA78_rockin_raceway(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
+void m244_BillboardColorPatSet(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
     Gfx *gfx = data->unk3C->unk00[Hu3DBufNo + 1];
@@ -3715,7 +3715,7 @@ void func_8010FA78_rockin_raceway(u16 model, HuSprAnimData *sprite, u16 frame, u
     gSPEndDisplayList(gfx + 7);
 }
 
-s32 func_8010FBAC_rockin_raceway(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset) {
+s32 m244_BillboardVtxCreate(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset) {
     s32 capacity = 0x1000;
     s32 width, height, scaledWidth, scaledHeight;
     s32 size, slices, textureHeight, sliceHeight, vertexCount;
@@ -3786,7 +3786,7 @@ s32 func_8010FBAC_rockin_raceway(HuSprAnimData *sprite, HmfData *data, f32 scale
     return slices;
 }
 
-s32 func_8010FFB8_rockin_raceway(HuSprAnimData *sprite, RockinRacewayQuad *quad) {
+s32 m244_QuadMdlCreate(HuSprAnimData *sprite, RockinRacewayQuad *quad) {
     u8 *buffer;
     Gfx *gfx;
     HmfData *data;
@@ -3806,7 +3806,7 @@ s32 func_8010FFB8_rockin_raceway(HuSprAnimData *sprite, RockinRacewayQuad *quad)
         data->unk44[i] = HuMemAllocTag(sizeof(RockinRacewayQuad), data->unk0E);
         *(RockinRacewayQuad *)data->unk44[i] = *quad;
     }
-    gSPDisplayList(gfx++, osVirtualToPhysical(D_801116F0_rockin_raceway));
+    gSPDisplayList(gfx++, osVirtualToPhysical(m244_gfxBillboardInit));
     gDPPipeSync(gfx++);
     gDPSetCycleType(gfx++, G_CYC_1CYCLE);
     gDPPipeSync(gfx++);
@@ -3897,27 +3897,27 @@ s32 func_8010FFB8_rockin_raceway(HuSprAnimData *sprite, RockinRacewayQuad *quad)
 }
 
 // Shows a character face sprite above each of the 4 slots, or a blank one for a negative player.
-void func_80110C38_rockin_raceway(s16 *models, HuSprAnimData *sprite, s32 *players) {
+void m244_BoardFaceUpdate(s16 *models, HuSprAnimData *sprite, s32 *players) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
         if (players[i] < 0) {
-            func_8010FA78_rockin_raceway(models[i], sprite, 8, D_80111730_rockin_raceway);
+            m244_BillboardColorPatSet(models[i], sprite, 8, m244_faceColor);
         } else {
             if (players[i] >= 4) {
                 players[i] = 0;
             }
-            func_8010FA78_rockin_raceway(models[i], sprite, GwPlayer[players[i]].chr, D_80111730_rockin_raceway);
+            m244_BillboardColorPatSet(models[i], sprite, GwPlayer[players[i]].chr, m244_faceColor);
         }
-        Hu3DModelPosSet(models[i], D_80111414_rockin_raceway[i].x, D_80111414_rockin_raceway[i].y + 0.2f * 200.0,
-                        D_80111414_rockin_raceway[i].z);
+        Hu3DModelPosSet(models[i], m244_boardFacePosTbl[i].x, m244_boardFacePosTbl[i].y + 0.2f * 200.0,
+                        m244_boardFacePosTbl[i].z);
         Hu3DModelRotSet(models[i], 95.72f, 0.0f, 0.0f);
     }
 }
 
-// Shows a digit sprite for each of the 12 digits in D_80111B00_rockin_raceway, clamped to 0-9.
-void func_80110D90_rockin_raceway(s16 *models, HuSprAnimData *sprite, s32 *values) {
-    s32 *digits = D_80111B00_rockin_raceway[0];
+// Shows a digit sprite for each of the 12 digits in m244_timeDigitTbl, clamped to 0-9.
+void m244_BoardDigitUpdate(s16 *models, HuSprAnimData *sprite, s32 *values) {
+    s32 *digits = m244_timeDigitTbl[0];
     s32 i;
 
     for (i = 0; i < 12; i++) {
@@ -3926,9 +3926,9 @@ void func_80110D90_rockin_raceway(s16 *models, HuSprAnimData *sprite, s32 *value
         } else if (digits[i] < 0) {
             digits[i] = 0;
         }
-        func_8010FA78_rockin_raceway(models[i], sprite, digits[i], D_80111734_rockin_raceway);
-        Hu3DModelPosSet(models[i], D_80111444_rockin_raceway[i].x, D_80111444_rockin_raceway[i].y + 0.2f * 200.0,
-                        D_80111444_rockin_raceway[i].z);
+        m244_BillboardColorPatSet(models[i], sprite, digits[i], m244_digitColor);
+        Hu3DModelPosSet(models[i], m244_boardDigitPosTbl[i].x, m244_boardDigitPosTbl[i].y + 0.2f * 200.0,
+                        m244_boardDigitPosTbl[i].z);
         Hu3DModelRotSet(models[i], 95.72f, 0.0f, 0.0f);
     }
 }

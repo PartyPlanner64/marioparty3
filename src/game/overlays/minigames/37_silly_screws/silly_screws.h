@@ -23,24 +23,24 @@ typedef struct func_context {
     /* 0x40 */ void (*func)(struct func_context*);
 } FuncContext; // Size 0x44
 
-void m255_CreateSystem(void);
+void m255_SystemCreate(void);
 
-FuncContext* m255_SetFunc(s8 groupId, s8 prio, s16 param, void* data, void (*func)(FuncContext*), u8 sort, s8 execFunc);
-void m255_ResetFunc(s8 groupId, FuncContext* ctx);
-void m255_ResetFuncGroup(s8 groupId);
-void m255_UpdateFuncGroup(s8 groupId);
+FuncContext* m255_FuncSet(s8 groupId, s8 prio, s16 param, void* data, void (*func)(FuncContext*), u8 sort, s8 execFunc);
+void m255_FuncReset(s8 groupId, FuncContext* ctx);
+void m255_FuncGroupReset(s8 groupId);
+void m255_FuncGroupUpdate(s8 groupId);
 
-s16 m255_SetSprite(s32 dir, s32 file, u16 arg2, s32 attr);
-void m255_SetSpriteDispOn(s16 spriteId, s32 x, s32 y);
-void m255_SetSpriteDispOff(s16 spriteId);
-void m255_UpdateSprites(void);
+s16 m255_SprCreate(s32 dir, s32 file, u16 arg2, s32 attr);
+void m255_SprDispOn(s16 spriteId, s32 x, s32 y);
+void m255_SprDispOff(s16 spriteId);
+void m255_SprUpdate(void);
 
-s32 m255_SetAnimModel(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4);
-s32 m255_SetAnimModelDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 rotX, f32 rotY, f32 rotZ, f32 scale, f32 animStart);
-void m255_UpdateAnimModels(void);
+s32 m255_AnimMdlCreate(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4);
+s32 m255_AnimMdlDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 rotX, f32 rotY, f32 rotZ, f32 scale, f32 animStart);
+void m255_AnimMdlUpdate(void);
 
-u8 m255_CalcLerp(f32* out, u8* timer, f32 start, f32 end, f32 duration);
-f32 m255_CalcQuadraticBezier(f32 t, f32 p0, f32 p1, f32 p2);
-void m255_SyncWithModel(omObjData* object);
+u8 m255_LerpCalc(f32* out, u8* timer, f32 start, f32 end, f32 duration);
+f32 m255_BezierCalc(f32 t, f32 p0, f32 p1, f32 p2);
+void m255_MdlSync(omObjData* object);
 
 #endif

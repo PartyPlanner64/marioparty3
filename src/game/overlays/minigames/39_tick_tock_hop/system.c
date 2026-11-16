@@ -37,24 +37,24 @@ typedef struct {
     u8 a;
 } RGBA;
 
-void m257_SortFuncGroup(FuncGroup *group);
-s32 func_8010AD60_tick_tock_hop(HuSprAnimData *arg0, f32 arg1);
-s32 func_8010B4D0_tick_tock_hop(HuSprAnimData *arg0, f32 arg1);
-void func_8010CCD4_tick_tock_hop(u16 modelId, HuSprAnimData *arg1, u16 arg2);
-s16 func_8010CED8_tick_tock_hop(HuSprAnimData *arg0, HmfData *arg1, f32 arg2, u16 arg3, u16 arg4);
-void m257_UpdateColliders(FuncGroupContext *groupCtx, FuncContext *ctx);
-f32 m257_CalcSideOfEdge(QuadCollider *collider, ModelTracker *model, Vec *a, Vec *b);
+void m257_FuncGroupSort(FuncGroup *group);
+s32 m257_BillboardMdlCreate(HuSprAnimData *arg0, f32 arg1);
+s32 m257_BillboardAnimMdlCreate(HuSprAnimData *arg0, f32 arg1);
+void m257_BillboardPatSet(u16 modelId, HuSprAnimData *arg1, u16 arg2);
+s16 m257_BillboardVtxCreate(HuSprAnimData *arg0, HmfData *arg1, f32 arg2, u16 arg3, u16 arg4);
+void m257_ColliderUpdate(FuncGroupContext *groupCtx, FuncContext *ctx);
+f32 m257_EdgeSideCalc(QuadCollider *collider, ModelTracker *model, Vec *a, Vec *b);
 
-BillboardData *m257_billboards BSS;
-FuncGroup *m257_funcGroups BSS;
-SpriteData *m257_sprites BSS;
-AnimModelData *m257_animModels BSS;
-QuadCollider *m257_colliders BSS;
+BillboardData *m257_billboardTbl BSS;
+FuncGroup *m257_funcGroupTbl BSS;
+SpriteData *m257_sprTbl BSS;
+AnimModelData *m257_animMdlTbl BSS;
+QuadCollider *m257_colliderTbl BSS;
 
 // TODO: the following arrays work but trigger multiple warnings: "missing braces around initializer"
 // Ideally we should use these and remove the u32 arrays below.
 /*
-Gfx D_8010E4B0_tick_tock_hop[] = {
+Gfx m257_gfxRdpInit[] = {
     gsSPSegment(0x00, 0x00000000),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
@@ -80,22 +80,22 @@ Gfx D_8010E4B0_tick_tock_hop[] = {
     gsSPEndDisplayList()
 };
 
-Gfx D_8010E568_tick_tock_hop[] = {
+Gfx m257_gfxRspInit[] = {
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH | G_CLIPPING | 0x0040F9FA),
     gsSPTexture(0, 0, 0, G_TX_RENDERTILE, G_OFF),
     gsSPSetGeometryMode(G_SHADE | G_SHADING_SMOOTH),
     gsSPEndDisplayList()
 };
 
-Gfx D_8010E588_tick_tock_hop[] = {
-    gsSPDisplayList(D_8010E568_tick_tock_hop),
-    gsSPDisplayList(D_8010E4B0_tick_tock_hop),
+Gfx m257_gfxInit[] = {
+    gsSPDisplayList(m257_gfxRspInit),
+    gsSPDisplayList(m257_gfxRdpInit),
     gsSPEndDisplayList()
 };
 
-Gfx D_8010E5A0_tick_tock_hop[] = {
+Gfx m257_gfxBillboardInit[] = {
     gsDPPipeSync(),
-    gsSPDisplayList(D_8010E588_tick_tock_hop),
+    gsSPDisplayList(m257_gfxInit),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPSetGeometryMode(G_ZBUFFER | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH),
     gsDPSetBlendColor(0x00, 0x00, 0x00, 0x00),
@@ -105,7 +105,7 @@ Gfx D_8010E5A0_tick_tock_hop[] = {
 };
 */
 
-u32 D_8010E4B0_tick_tock_hop[] = {
+u32 m257_gfxRdpInit[] = {
     0xDB060000, 0x00000000, 0xE7000000, 0x00000000, 0xE3000A01, 0x00000000, 0xE3000800, 0x00800000,
     0xE3000F00, 0x00000000, 0xE3001001, 0x00000000, 0xE3000D01, 0x00000000, 0xE3000C00, 0x00000000,
     0xF2000000, 0x00000000, 0xF2000000, 0x01000000, 0xF5000000, 0x00000000, 0xF5000000, 0x01000000,
@@ -116,30 +116,30 @@ u32 D_8010E4B0_tick_tock_hop[] = {
     0xDE000000, 0x8010E4B0, 0xDF000000, 0x00000000
 };
 
-u32 D_8010E5A0_tick_tock_hop[] = {
+u32 m257_gfxBillboardInit[] = {
     0xE7000000, 0x00000000, 0xDE000000, 0x8010E588, 0xE3000A01, 0x00000000, 0xD9FFFFFF, 0x00220401,
     0xF9000000, 0x00000000, 0xFA000000, 0x000000FF, 0xD7000002, 0xFFFFFFFF, 0xDF000000, 0x00000000
 };
 
-u8 m257_quadEdges[][3] = { { 0, 1 }, { 1, 2 }, { 2, 3 }, { 3, 0 } };
+u8 m257_quadEdgeTbl[][3] = { { 0, 1 }, { 1, 2 }, { 2, 3 }, { 3, 0 } };
 
-void m257_CreateSystem(void) {
-    m257_sprites = HuMemAllocTag(SPRITES_MAX * sizeof(SpriteData), TAG_OVERLAY);
-    memset(m257_sprites, 0, SPRITES_MAX * sizeof(SpriteData));
-    m257_animModels = HuMemAllocTag(ANIMMDL_MAX * sizeof(AnimModelData), TAG_OVERLAY);
-    memset(m257_animModels, 0, ANIMMDL_MAX * sizeof(AnimModelData));
-    m257_billboards = HuMemAllocTag(BILLS_MAX * sizeof(BillboardData), TAG_OVERLAY);
-    memset(m257_billboards, 0, BILLS_MAX * sizeof(BillboardData));
-    m257_funcGroups = HuMemAllocTag(5 * sizeof(FuncGroup), TAG_OVERLAY);
+void m257_SystemCreate(void) {
+    m257_sprTbl = HuMemAllocTag(SPRITES_MAX * sizeof(SpriteData), TAG_OVERLAY);
+    memset(m257_sprTbl, 0, SPRITES_MAX * sizeof(SpriteData));
+    m257_animMdlTbl = HuMemAllocTag(ANIMMDL_MAX * sizeof(AnimModelData), TAG_OVERLAY);
+    memset(m257_animMdlTbl, 0, ANIMMDL_MAX * sizeof(AnimModelData));
+    m257_billboardTbl = HuMemAllocTag(BILLS_MAX * sizeof(BillboardData), TAG_OVERLAY);
+    memset(m257_billboardTbl, 0, BILLS_MAX * sizeof(BillboardData));
+    m257_funcGroupTbl = HuMemAllocTag(5 * sizeof(FuncGroup), TAG_OVERLAY);
 }
 
-FuncGroup *m257_CreateFuncGroup(omObjData *object, s8 groupId, s16 maxModels, s16 maxFuncs) {
+FuncGroup *m257_FuncGroupCreate(omObjData *object, s8 groupId, s16 maxModels, s16 maxFuncs) {
     FuncGroup *group;
 
     if (groupId >= FUNC_GRP_MAX) {
         return NULL;
     }
-    group = &m257_funcGroups[groupId];
+    group = &m257_funcGroupTbl[groupId];
     if (maxFuncs != 0) {
         group->funcCtx = HuMemAllocTag(maxFuncs * sizeof(FuncContext), TAG_OVERLAY);
         memset(group->funcCtx, 0, maxFuncs * sizeof(FuncContext));
@@ -157,8 +157,8 @@ FuncGroup *m257_CreateFuncGroup(omObjData *object, s8 groupId, s16 maxModels, s1
     return group;
 }
 
-s16 m257_SetFunc(s8 groupId, s32 prio, void *data, void (*func)(FuncGroupContext *, FuncContext *), s8 tag) {
-    FuncGroup *group = &m257_funcGroups[groupId];
+s16 m257_FuncSet(s8 groupId, s32 prio, void *data, void (*func)(FuncGroupContext *, FuncContext *), s8 tag) {
+    FuncGroup *group = &m257_funcGroupTbl[groupId];
     FuncContext *ctx = group->funcCtx;
     s16 maxFuncs = group->maxFuncs;
     s16 i;
@@ -183,38 +183,38 @@ s16 m257_SetFunc(s8 groupId, s32 prio, void *data, void (*func)(FuncGroupContext
     return i;
 }
 
-void m257_ResetFunc(s8 groupId, FuncContext *ctx) {
+void m257_FuncReset(s8 groupId, FuncContext *ctx) {
     memset(ctx, 0, sizeof(FuncContext));
-    m257_funcGroups[groupId].sort = TRUE;
+    m257_funcGroupTbl[groupId].sort = TRUE;
 }
 
-void m257_ResetFuncTag(s8 groupId, s8 tag) {
-    FuncGroup *group = &m257_funcGroups[groupId];
+void m257_FuncTagReset(s8 groupId, s8 tag) {
+    FuncGroup *group = &m257_funcGroupTbl[groupId];
     FuncContext *ctx;
     s16 i;
 
     ctx = group->funcCtx;
     for (i = 0; i < group->maxFuncs; i++, ctx++) {
         if (ctx->tag == tag) {
-            m257_ResetFunc(groupId, ctx);
+            m257_FuncReset(groupId, ctx);
         }
     }
 }
 
-void m257_ResetFuncGroup(s8 groupId) {
-    FuncGroup *group = &m257_funcGroups[groupId];
+void m257_FuncGroupReset(s8 groupId) {
+    FuncGroup *group = &m257_funcGroupTbl[groupId];
 
     memset(group->funcCtx, 0, group->maxFuncs * sizeof(FuncContext));
     group->sort = TRUE;
 }
 
-void m257_UpdateFuncGroup(s8 groupId) {
-    FuncGroup *group = &m257_funcGroups[groupId];
+void m257_FuncGroupUpdate(s8 groupId) {
+    FuncGroup *group = &m257_funcGroupTbl[groupId];
     FuncContext *ctx;
     s8 orderId;
 
     if (group->sort) {
-        m257_SortFuncGroup(group);
+        m257_FuncGroupSort(group);
     }
     orderId = 0;
     while (group->order[orderId].next != -1) {
@@ -226,7 +226,7 @@ void m257_UpdateFuncGroup(s8 groupId) {
     }
 }
 
-void m257_SortFuncGroup(FuncGroup *group) {
+void m257_FuncGroupSort(FuncGroup *group) {
     FuncOrder *order = group->order;
     FuncContext *currCtx = group->funcCtx;
     s16 orderId;
@@ -260,12 +260,12 @@ void m257_SortFuncGroup(FuncGroup *group) {
     group->sort = FALSE;
 }
 
-s16 m257_SetSprite(u16 prio, s32 dir, s32 file, u16 arg3, s32 attr) {
+s16 m257_SprCreate(u16 prio, s32 dir, s32 file, u16 arg3, s32 attr) {
     SpriteData *sprite;
     HuSprite *temp_v0_2;
     s16 i;
 
-    sprite = m257_sprites;
+    sprite = m257_sprTbl;
     for (i = 0; i < SPRITES_MAX; i++, sprite++) {
         if (sprite->state == SPRITE_STATE_NOTSET) {
             sprite->unk02 = HuSprAnimDataRead((dir << 16) | file); // esprite.
@@ -287,15 +287,15 @@ s16 m257_SetSprite(u16 prio, s32 dir, s32 file, u16 arg3, s32 attr) {
                 sprite->unk04 = temp_v0_2->data->patNum;
             }
             sprite->state = SPRITE_STATE_VISIBLE;
-            m257_SetSpriteDispOff(i);
+            m257_SprDispOff(i);
             break;
         }
     }
     return i;
 }
 
-void m257_SetSpriteDispOn(s16 spriteId, s32 posX, s32 posY) {
-    SpriteData *sprite = &m257_sprites[spriteId];
+void m257_SprDispOn(s16 spriteId, s32 posX, s32 posY) {
+    SpriteData *sprite = &m257_sprTbl[spriteId];
 
     if (sprite->state != SPRITE_STATE_NOTSET) {
         HuSprPatNoSet(sprite->groupId, 0, 0);
@@ -305,8 +305,8 @@ void m257_SetSpriteDispOn(s16 spriteId, s32 posX, s32 posY) {
     }
 }
 
-void m257_SetSpriteDispOff(s16 spriteId) {
-    SpriteData *sprite = &m257_sprites[spriteId];
+void m257_SprDispOff(s16 spriteId) {
+    SpriteData *sprite = &m257_sprTbl[spriteId];
 
     if (sprite->state != SPRITE_STATE_NOTSET) {
         HuSprDispOff(sprite->groupId, 0);
@@ -314,11 +314,11 @@ void m257_SetSpriteDispOff(s16 spriteId) {
     }
 }
 
-void m257_UpdateSprites(void) {
+void m257_SprUpdate(void) {
     SpriteData *sprite;
     s16 i;
 
-    sprite = m257_sprites;
+    sprite = m257_sprTbl;
     for (i = 0; i < SPRITES_MAX; i++, sprite++) {
         switch (sprite->state) {
             case SPRITE_STATE_VISIBLE:
@@ -331,12 +331,12 @@ void m257_UpdateSprites(void) {
     }
 }
 
-s32 m257_SetAnimModel(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4) {
+s32 m257_AnimMdlCreate(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4) {
     AnimModelData *animModel;
     HmfModel *hmfModel;
     s16 i;
 
-    animModel = m257_animModels;
+    animModel = m257_animMdlTbl;
     for (i = 0; i < ANIMMDL_MAX; i++, animModel++) {
         if (!animModel->set) {
             animModel->modelId = Hu3DModelRead((dir << 16) | file, arg4);
@@ -357,17 +357,17 @@ s32 m257_SetAnimModel(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4) {
     return i;
 }
 
-s32 m257_SetAnimModelDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 rotX, f32 rotY, f32 rotZ, f32 scale, f32 animStart) {
+s32 m257_AnimMdlDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 rotX, f32 rotY, f32 rotZ, f32 scale, f32 animStart) {
     AnimModelData *animModel;
     HmfModel *hmfModel;
 
     if (animModelId >= ANIMMDL_MAX) {
         return FALSE;
     }
-    if (!m257_animModels[animModelId].set) {
+    if (!m257_animMdlTbl[animModelId].set) {
         return FALSE;
     }
-    animModel = &m257_animModels[animModelId];
+    animModel = &m257_animMdlTbl[animModelId];
     hmfModel = &Hu3DData[animModel->modelId];
     if ((hmfModel->attr & HU3D_ATTR_DISPOFF) && animModel->state == ANIMMDL_STATE_INVISIBLE) {
         Hu3DModelPosSet(animModel->modelId, posX, posY, posZ);
@@ -389,12 +389,12 @@ s32 m257_SetAnimModelDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 r
     return FALSE;
 }
 
-void m257_UpdateAnimModels(void) {
+void m257_AnimMdlUpdate(void) {
     AnimModelData *animModel;
     HmfModel *hmfModel;
     s16 i;
 
-    animModel = m257_animModels;
+    animModel = m257_animMdlTbl;
     for (i = 0; i < ANIMMDL_MAX; i++, animModel++) {
         if (!animModel->set || animModel->state == ANIMMDL_STATE_INVISIBLE) {
             continue;
@@ -425,19 +425,19 @@ void m257_UpdateAnimModels(void) {
     }
 }
 
-s32 m257_SetBill(s32 dir, s32 file, s32 attr) {
+s32 m257_BillboardCreate(s32 dir, s32 file, s32 attr) {
     BillboardData *bill;
     s16 temp_v0_2;
     s16 i;
 
-    bill = m257_billboards;
+    bill = m257_billboardTbl;
     for (i = 0; i < BILLS_MAX; i++, bill++) {
         if (!bill->set) {
             bill->unk08 = temp_v0_2 = HuSprAnimDataRead((dir << 16) | file);
             if (attr & BILL_ATTR_01) {
-                bill->modelId = func_8010B4D0_tick_tock_hop(HuSprAnimDataGet(temp_v0_2), 1.0f);
+                bill->modelId = m257_BillboardAnimMdlCreate(HuSprAnimDataGet(temp_v0_2), 1.0f);
             } else {
-                bill->modelId = func_8010AD60_tick_tock_hop(HuSprAnimDataGet(temp_v0_2), 1.0f);
+                bill->modelId = m257_BillboardMdlCreate(HuSprAnimDataGet(temp_v0_2), 1.0f);
             }
             if (attr & BILL_ATTR_DISPOFF) {
                 Hu3DModelAttrSet(bill->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -458,63 +458,63 @@ s32 m257_SetBill(s32 dir, s32 file, s32 attr) {
     return i;
 }
 
-void m257_SetBillDispOn(s16 billId, f32 posX, f32 posY, f32 posZ) {
+void m257_BillboardDispOn(s16 billId, f32 posX, f32 posY, f32 posZ) {
     if (billId < BILLS_MAX) {
-        HmfModel *model = &Hu3DData[m257_billboards[billId].modelId];
+        HmfModel *model = &Hu3DData[m257_billboardTbl[billId].modelId];
 
         model->pos.x = posX;
         model->pos.y = posY;
         model->pos.z = posZ;
-        Hu3DModelAttrSet(m257_billboards[billId].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-        m257_billboards[billId].attr &= ~(BILL_ATTR_DISPOFF | BILL_ATTR_REF);
+        Hu3DModelAttrSet(m257_billboardTbl[billId].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        m257_billboardTbl[billId].attr &= ~(BILL_ATTR_DISPOFF | BILL_ATTR_REF);
     }
 }
 
-void m257_SetBillDispOnRef(s16 billId, f32 *posX, f32 *posY, f32 *posZ) {
+void m257_BillboardDispOnRef(s16 billId, f32 *posX, f32 *posY, f32 *posZ) {
     if (billId < BILLS_MAX) {
-        HmfModel *model = &Hu3DData[m257_billboards[billId].modelId];
+        HmfModel *model = &Hu3DData[m257_billboardTbl[billId].modelId];
 
         if (posX != NULL) {
-            m257_billboards[billId].posX = posX;
+            m257_billboardTbl[billId].posX = posX;
         } else {
-            m257_billboards[billId].posX = &model->pos.x;
+            m257_billboardTbl[billId].posX = &model->pos.x;
         }
         if (posY != NULL) {
-            m257_billboards[billId].posY = posY;
+            m257_billboardTbl[billId].posY = posY;
         } else {
-            m257_billboards[billId].posY = &model->pos.y;
+            m257_billboardTbl[billId].posY = &model->pos.y;
         }
         if (posZ != NULL) {
-            m257_billboards[billId].posZ = posZ;
+            m257_billboardTbl[billId].posZ = posZ;
         } else {
-            m257_billboards[billId].posZ = &model->pos.z;
+            m257_billboardTbl[billId].posZ = &model->pos.z;
         }
-        Hu3DModelAttrSet(m257_billboards[billId].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-        m257_billboards[billId].attr &= ~(BILL_ATTR_DISPOFF | BILL_ATTR_REF);
-        m257_billboards[billId].attr |= BILL_ATTR_REF;
+        Hu3DModelAttrSet(m257_billboardTbl[billId].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        m257_billboardTbl[billId].attr &= ~(BILL_ATTR_DISPOFF | BILL_ATTR_REF);
+        m257_billboardTbl[billId].attr |= BILL_ATTR_REF;
     }
 }
 
-BillboardData *m257_GetBill(s16 billId) {
+BillboardData *m257_BillboardGet(s16 billId) {
     if (billId >= BILLS_MAX) {
         return NULL;
     }
-    return &m257_billboards[billId];
+    return &m257_billboardTbl[billId];
 }
 
-HmfModel *m257_GetBillModel(s16 billId) {
+HmfModel *m257_BillboardMdlGet(s16 billId) {
     if (billId >= BILLS_MAX) {
         return NULL;
     }
-    return &Hu3DData[m257_billboards[billId].modelId];
+    return &Hu3DData[m257_billboardTbl[billId].modelId];
 }
 
-void m257_UpdateBills(void) {
+void m257_BillboardUpdate(void) {
     BillboardData *bill;
     HmfModel *model;
     s16 i;
 
-    bill = m257_billboards;
+    bill = m257_billboardTbl;
     for (i = 0; i < BILLS_MAX; i++, bill++) {
         if (!bill->set || (bill->attr & BILL_ATTR_DISPOFF)) {
             continue;
@@ -527,11 +527,11 @@ void m257_UpdateBills(void) {
         }
         model->rot.x = CRot.x;
         model->rot.y = CRot.y;
-        m257_MakeIdentityMtx(model->mtx[0]);
+        m257_MtxIdentSet(model->mtx[0]);
         mtxRotCat(model->mtx, 0.0f, 0.0f, CRot.z);
         if (bill->attr & BILL_ATTR_01) {
             if (bill->attr & BILL_ATTR_ANIM) {
-                func_8010CCD4_tick_tock_hop(bill->modelId, HuSprAnimDataGet(bill->unk08), bill->timer);
+                m257_BillboardPatSet(bill->modelId, HuSprAnimDataGet(bill->unk08), bill->timer);
                 bill->timer++;
                 if (bill->timer >= bill->duration) {
                     if (bill->attr & BILL_ATTR_LOOP) {
@@ -547,8 +547,8 @@ void m257_UpdateBills(void) {
     }
 }
 
-// Similar to func_8010E888_motor_rooter (ovl_36/M254)
-s32 func_8010AD60_tick_tock_hop(HuSprAnimData *arg0, f32 arg1) {
+// Similar to m254_BillboardMdlCreate (ovl_36/M254)
+s32 m257_BillboardMdlCreate(HuSprAnimData *arg0, f32 arg1) {
     HmfData *temp_s6;
     Gfx *temp_v0_0;
     Gfx *temp_v0;
@@ -562,8 +562,8 @@ s32 func_8010AD60_tick_tock_hop(HuSprAnimData *arg0, f32 arg1) {
     temp_v0_2 = Hu3DModelDLCreate(0x4C1, temp_v0_0, 4);
     temp_s6 = Hu3DData[temp_v0_2].hmf;
     temp_s6->unk60->unk50 |= 0x01010000;
-    temp_s5 = func_8010CED8_tick_tock_hop(arg0, temp_s6, 1.0f, 0, 0x64);
-    gSPDisplayList(temp_v0++, osVirtualToPhysical(D_8010E5A0_tick_tock_hop));
+    temp_s5 = m257_BillboardVtxCreate(arg0, temp_s6, 1.0f, 0, 0x64);
+    gSPDisplayList(temp_v0++, osVirtualToPhysical(m257_gfxBillboardInit));
     gDPPipeSync(temp_v0++);
     gDPSetCycleType(temp_v0++, G_CYC_1CYCLE);
     gDPPipeSync(temp_v0++);
@@ -618,8 +618,8 @@ s32 func_8010AD60_tick_tock_hop(HuSprAnimData *arg0, f32 arg1) {
     return temp_v0_2;
 }
 
-// Similar to func_8010EFF8_motor_rooter (ovl_36/M254)
-s32 func_8010B4D0_tick_tock_hop(HuSprAnimData *arg0, f32 arg1) {
+// Similar to m254_BillboardAnimMdlCreate (ovl_36/M254)
+s32 m257_BillboardAnimMdlCreate(HuSprAnimData *arg0, f32 arg1) {
     HmfData *temp_s4;
     Gfx *temp_v0_0;
     Gfx *temp_v0;
@@ -634,8 +634,8 @@ s32 func_8010B4D0_tick_tock_hop(HuSprAnimData *arg0, f32 arg1) {
     temp_s4->unk60->unk50 |= 0x01010000;
     HuMemFree(temp_s4->unk3C);
     temp_s4->unk3C = HuMemAllocTag(0x14, Hu3DModelTag);
-    func_8010CED8_tick_tock_hop(arg0, temp_s4, 1.0f, 0, 0x1E);
-    gSPDisplayList(temp_v0++, osVirtualToPhysical(D_8010E5A0_tick_tock_hop));
+    m257_BillboardVtxCreate(arg0, temp_s4, 1.0f, 0, 0x1E);
+    gSPDisplayList(temp_v0++, osVirtualToPhysical(m257_gfxBillboardInit));
     gDPPipeSync(temp_v0++);
     gDPSetCycleType(temp_v0++, G_CYC_1CYCLE);
     gDPPipeSync(temp_v0++);
@@ -721,8 +721,8 @@ s32 func_8010B4D0_tick_tock_hop(HuSprAnimData *arg0, f32 arg1) {
     return temp_v0_2;
 }
 
-// Identical to func_8010FC10_motor_rooter (ovl_36/M254)
-s16 func_8010C0E8_tick_tock_hop(HuSprAnimData *arg0, RGBA *arg1) {
+// Identical to m254_BillboardColorMdlCreate (ovl_36/M254)
+s16 m257_BillboardColorMdlCreate(HuSprAnimData *arg0, RGBA *arg1) {
     HmfData *temp_s4;
     Gfx *temp_v0_0;
     Gfx *temp_v0_2;
@@ -737,8 +737,8 @@ s16 func_8010C0E8_tick_tock_hop(HuSprAnimData *arg0, RGBA *arg1) {
     temp_s4->unk60->unk50 |= 0x01010000;
     HuMemFree(temp_s4->unk3C);
     temp_s4->unk3C = HuMemAllocTag(0x18, Hu3DModelTag);
-    func_8010CED8_tick_tock_hop(arg0, temp_s4, 1.0f, 0, 0);
-    gSPDisplayList(temp_v0_2++, osVirtualToPhysical(D_8010E5A0_tick_tock_hop));
+    m257_BillboardVtxCreate(arg0, temp_s4, 1.0f, 0, 0);
+    gSPDisplayList(temp_v0_2++, osVirtualToPhysical(m257_gfxBillboardInit));
     gDPPipeSync(temp_v0_2++);
     gDPSetCycleType(temp_v0_2++, G_CYC_1CYCLE);
     gDPPipeSync(temp_v0_2++);
@@ -828,8 +828,8 @@ s16 func_8010C0E8_tick_tock_hop(HuSprAnimData *arg0, RGBA *arg1) {
     return temp_v0;
 }
 
-// Identical to func_801107FC_motor_rooter (ovl_36/M254)
-void func_8010CCD4_tick_tock_hop(u16 modelId, HuSprAnimData *arg1, u16 arg2) {
+// Identical to m254_BillboardPatSet (ovl_36/M254)
+void m257_BillboardPatSet(u16 modelId, HuSprAnimData *arg1, u16 arg2) {
     HmfModel *model = &Hu3DData[modelId];
     HmfData *temp_s2 = model->hmf;
     Gfx *temp_s0 = temp_s2->unk3C->unk00[Hu3DBufNo + 1];
@@ -842,8 +842,8 @@ void func_8010CCD4_tick_tock_hop(u16 modelId, HuSprAnimData *arg1, u16 arg2) {
     gSPEndDisplayList(&temp_s0[4]);
 }
 
-// Identical to func_801108CC_motor_rooter (ovl_36/M254)
-void func_8010CDA4_tick_tock_hop(u16 modelId, HuSprAnimData *arg1, u16 arg2, RGBA *arg3) {
+// Identical to m254_BillboardColorPatSet (ovl_36/M254)
+void m257_BillboardColorPatSet(u16 modelId, HuSprAnimData *arg1, u16 arg2, RGBA *arg3) {
     HmfModel *model = &Hu3DData[modelId];
     HmfData *temp_s3 = model->hmf;
     HmfModelData_Unk64_Unk3C_Struct *temp_v1 = temp_s3->unk3C;
@@ -860,8 +860,8 @@ void func_8010CDA4_tick_tock_hop(u16 modelId, HuSprAnimData *arg1, u16 arg2, RGB
     gSPEndDisplayList(&temp_s0[7]);
 }
 
-// Similar to func_80110A00_motor_rooter (ovl_36/M254)
-s16 func_8010CED8_tick_tock_hop(HuSprAnimData *arg0, HmfData *arg1, f32 arg2, u16 arg3, u16 arg4) {
+// Similar to m254_BillboardVtxCreate (ovl_36/M254)
+s16 m257_BillboardVtxCreate(HuSprAnimData *arg0, HmfData *arg1, f32 arg2, u16 arg3, u16 arg4) {
     Vtx *temp_s7;
     Vtx *var_s1;
     Vtx_t *var_t0;
@@ -943,18 +943,18 @@ s16 func_8010CED8_tick_tock_hop(HuSprAnimData *arg0, HmfData *arg1, f32 arg2, u1
     return var_s2;
 }
 
-void m257_CreateColliders(FuncGroupContext *groupCtx, FuncContext *ctx) {
-    m257_colliders = HuMemAllocTag(COLLIDERS_MAX * sizeof(QuadCollider), TAG_OVERLAY);
-    memset(m257_colliders, 0, COLLIDERS_MAX * sizeof(QuadCollider));
-    ctx->func = m257_UpdateColliders;
+void m257_ColliderInit(FuncGroupContext *groupCtx, FuncContext *ctx) {
+    m257_colliderTbl = HuMemAllocTag(COLLIDERS_MAX * sizeof(QuadCollider), TAG_OVERLAY);
+    memset(m257_colliderTbl, 0, COLLIDERS_MAX * sizeof(QuadCollider));
+    ctx->func = m257_ColliderUpdate;
 }
 
-s32 m257_SetCollider(s16 modelId, Quad *baseQuad, f32 height, s16 maxTrackers, s32 attr) {
+s32 m257_ColliderCreate(s16 modelId, Quad *baseQuad, f32 height, s16 maxTrackers, s32 attr) {
     HmfModel *model = &Hu3DData[modelId];
     QuadCollider *collider;
     s16 i;
 
-    collider = m257_colliders;
+    collider = m257_colliderTbl;
     for (i = 0; i < COLLIDERS_MAX; i++, collider++) {
         if (!collider->set) {
             collider->posX = &model->pos.x;
@@ -982,44 +982,44 @@ s32 m257_SetCollider(s16 modelId, Quad *baseQuad, f32 height, s16 maxTrackers, s
     return i;
 }
 
-ModelTracker *m257_SetModelTracker(s16 colliderId, s16 modelId) {
+ModelTracker *m257_ColliderTrackerCreate(s16 colliderId, s16 modelId) {
     ModelTracker *tracker;
     HmfModel *model;
 
     if (colliderId >= COLLIDERS_MAX) {
         return NULL;
     }
-    if (!m257_colliders[colliderId].set) {
+    if (!m257_colliderTbl[colliderId].set) {
         return NULL;
     }
-    if (m257_colliders[colliderId].trackerCount >= m257_colliders[colliderId].maxTrackers) {
+    if (m257_colliderTbl[colliderId].trackerCount >= m257_colliderTbl[colliderId].maxTrackers) {
         return NULL;
     }
-    tracker = &m257_colliders[colliderId].modelTrackers[m257_colliders[colliderId].trackerCount];
+    tracker = &m257_colliderTbl[colliderId].modelTrackers[m257_colliderTbl[colliderId].trackerCount];
     model = &Hu3DData[modelId];
     tracker->posX = &model->pos.x;
     tracker->posY = &model->pos.y;
     tracker->posZ = &model->pos.z;
-    m257_colliders[colliderId].trackerCount++;
+    m257_colliderTbl[colliderId].trackerCount++;
     return tracker;
 }
 
-void m257_SetColliderBaseQuad(s16 colliderId, Quad *baseQuad, f32 height) {
-    if (colliderId < COLLIDERS_MAX && m257_colliders[colliderId].set) {
-        QuadCollider *collider = &m257_colliders[colliderId];
+void m257_ColliderVtxSet(s16 colliderId, Quad *baseQuad, f32 height) {
+    if (colliderId < COLLIDERS_MAX && m257_colliderTbl[colliderId].set) {
+        QuadCollider *collider = &m257_colliderTbl[colliderId];
 
         memcpy(&collider->baseQuad, baseQuad, collider->vertexCount * sizeof(Vec));
         collider->height = height;
     }
 }
 
-void m257_UpdateColliders(FuncGroupContext *groupCtx, FuncContext *ctx) {
+void m257_ColliderUpdate(FuncGroupContext *groupCtx, FuncContext *ctx) {
     QuadCollider *collider;
     Vec currQuad[4];
     f32 side;
     s16 i, j, k;
 
-    collider = m257_colliders;
+    collider = m257_colliderTbl;
     for (i = 0; i < COLLIDERS_MAX; i++, collider++) {
         if (!collider->set) {
             continue;
@@ -1030,8 +1030,8 @@ void m257_UpdateColliders(FuncGroupContext *groupCtx, FuncContext *ctx) {
             }
             continue;
         }
-        m257_MakeTransformMtx(*collider->posX, *collider->posY, *collider->posZ, *collider->rotX, *collider->rotY, *collider->rotZ, collider->transMtx);
-        m257_ApplyTransformMtx(collider->baseQuad.vertices, 4, collider->transMtx, currQuad);
+        m257_MtxTransformSet(*collider->posX, *collider->posY, *collider->posZ, *collider->rotX, *collider->rotY, *collider->rotZ, collider->transMtx);
+        m257_VtxTransform(collider->baseQuad.vertices, 4, collider->transMtx, currQuad);
         for (j = 0; j < collider->trackerCount; j++) {
             ModelTracker *model = &collider->modelTrackers[j];
 
@@ -1041,7 +1041,7 @@ void m257_UpdateColliders(FuncGroupContext *groupCtx, FuncContext *ctx) {
                     continue;
                 }
             }
-            side = m257_CalcSideOfEdge(collider, model, &currQuad[m257_quadEdges[0][0]], &currQuad[m257_quadEdges[0][1]]);
+            side = m257_EdgeSideCalc(collider, model, &currQuad[m257_quadEdgeTbl[0][0]], &currQuad[m257_quadEdgeTbl[0][1]]);
             if (side == 0.0f) {
                 model->colliding = FALSE;
                 continue;
@@ -1049,7 +1049,7 @@ void m257_UpdateColliders(FuncGroupContext *groupCtx, FuncContext *ctx) {
             if (side > 0.0f) {
                 model->colliding = TRUE;
                 for (k = 1; k < 4; k++) {
-                    side = m257_CalcSideOfEdge(collider, model, &currQuad[m257_quadEdges[k][0]], &currQuad[m257_quadEdges[k][1]]);
+                    side = m257_EdgeSideCalc(collider, model, &currQuad[m257_quadEdgeTbl[k][0]], &currQuad[m257_quadEdgeTbl[k][1]]);
                     if (side == 0.0f) {
                         model->colliding = TRUE;
                         break;
@@ -1062,7 +1062,7 @@ void m257_UpdateColliders(FuncGroupContext *groupCtx, FuncContext *ctx) {
             } else {
                 model->colliding = TRUE;
                 for (k = 1; k < 4; k++) {
-                    side = m257_CalcSideOfEdge(collider, model, &currQuad[m257_quadEdges[k][0]], &currQuad[m257_quadEdges[k][1]]);
+                    side = m257_EdgeSideCalc(collider, model, &currQuad[m257_quadEdgeTbl[k][0]], &currQuad[m257_quadEdgeTbl[k][1]]);
                     if (side == 0.0f) {
                         model->colliding = TRUE;
                         break;
@@ -1078,7 +1078,7 @@ void m257_UpdateColliders(FuncGroupContext *groupCtx, FuncContext *ctx) {
 }
 
 // TODO: doesn't work with -Wa,--vr4300mul-off.
-f32 m257_CalcSideOfEdge(QuadCollider *collider, ModelTracker *model, Vec *a, Vec *b) {
+f32 m257_EdgeSideCalc(QuadCollider *collider, ModelTracker *model, Vec *a, Vec *b) {
     Vec modelPos;
     Vec ma;
     Vec mb;
@@ -1092,7 +1092,7 @@ f32 m257_CalcSideOfEdge(QuadCollider *collider, ModelTracker *model, Vec *a, Vec
     return ma.z * mb.x - ma.x * mb.z;
 }
 
-u8 m257_CalcLerp(f32 *out, u8 *timer, f32 start, f32 end, f32 duration) {
+u8 m257_LerpCalc(f32 *out, u8 *timer, f32 start, f32 end, f32 duration) {
     f32 t = *timer / duration;
 
     *out = start + (end - start) * t;
@@ -1104,7 +1104,7 @@ u8 m257_CalcLerp(f32 *out, u8 *timer, f32 start, f32 end, f32 duration) {
     return FALSE;
 }
 
-f32 m257_CalcQuadraticBezier(f32 t, f32 p0, f32 p1, f32 p2) {
+f32 m257_BezierCalc(f32 t, f32 p0, f32 p1, f32 p2) {
     if (t > 1.0f) {
         t = 1.0f;
     }
@@ -1112,7 +1112,7 @@ f32 m257_CalcQuadraticBezier(f32 t, f32 p0, f32 p1, f32 p2) {
 }
 
 // Fisher-Yates shuffle on [0, n-1].
-void m257_MakeRandPermutation(s16 *out, s16 n) {
+void m257_RandPermCreate(s16 *out, s16 n) {
     s16 temp;
     s16 i;
 
@@ -1128,7 +1128,7 @@ void m257_MakeRandPermutation(s16 *out, s16 n) {
     }
 }
 
-void m257_SyncWithModel(omObjData *object) {
+void m257_MdlSync(omObjData *object) {
     HmfModel *model = &Hu3DData[object->model[0]];
 
     object->scale.x = model->scale.x;
@@ -1161,7 +1161,7 @@ void m257_SyncWithModel(omObjData *object) {
 }
 
 // TODO: doesn't work with -Wa,--vr4300mul-off.
-void m257_CalcPitchAndYaw(Vec from, Vec to, f32 *out) {
+void m257_PitchYawCalc(Vec from, Vec to, f32 *out) {
     Vec direction;
     f32 fullRot = 360.0f;
     f32 pitch;
@@ -1186,7 +1186,7 @@ void m257_CalcPitchAndYaw(Vec from, Vec to, f32 *out) {
     *(out++) = yaw;
 }
 
-void m257_MinimizeAngleDiff(f32 *a, f32 *b) {
+void m257_AngleDiffMinimize(f32 *a, f32 *b) {
     f32 diff;
 
     while (*b < 0.0f) {
@@ -1211,7 +1211,7 @@ void m257_MinimizeAngleDiff(f32 *a, f32 *b) {
     }
 }
 
-void m257_MakeIdentityMtx(f32 *out) {
+void m257_MtxIdentSet(f32 *out) {
     s16 i, j;
 
     for (i = 0; i < 4; i++) {
@@ -1222,30 +1222,30 @@ void m257_MakeIdentityMtx(f32 *out) {
     }
 }
 
-void m257_MakeTranslationMtx(f32 *out, f32 x, f32 y, f32 z) {
-    m257_MakeIdentityMtx(out);
+void m257_MtxTransSet(f32 *out, f32 x, f32 y, f32 z) {
+    m257_MtxIdentSet(out);
     M_ID(out, 3, 0) = x;
     M_ID(out, 3, 1) = y;
     M_ID(out, 3, 2) = z;
 }
 
-void m257_MakeRotXMtx(f32 *out, f32 angle) {
-    m257_MakeIdentityMtx(out);
+void m257_MtxRotXSet(f32 *out, f32 angle) {
+    m257_MtxIdentSet(out);
     M_ID(out, 1, 1) = cosdf(angle);
     M_ID(out, 1, 2) = sindf(angle);
     M_ID(out, 2, 1) = -sindf(angle);
     M_ID(out, 2, 2) = cosdf(angle);
 }
 
-void m257_MakeRotYMtx(f32 *out, f32 angle) {
-    m257_MakeIdentityMtx(out);
+void m257_MtxRotYSet(f32 *out, f32 angle) {
+    m257_MtxIdentSet(out);
     M_ID(out, 0, 0) = cosdf(angle);
     M_ID(out, 0, 2) = -sindf(angle);
     M_ID(out, 2, 0) = sindf(angle);
     M_ID(out, 2, 2) = cosdf(angle);
 }
 
-void m257_MultiplyMtx(f32 *a, f32 *b, f32 *out) {
+void m257_MtxMul(f32 *a, f32 *b, f32 *out) {
     s16 i, j;
 
     for (i = 0; i < 4; i++) {
@@ -1255,26 +1255,26 @@ void m257_MultiplyMtx(f32 *a, f32 *b, f32 *out) {
     }
 }
 
-void func_8010E214_tick_tock_hop(f32 *arg0, f32 *out) {
+void m257_MtxTransCalc(f32 *arg0, f32 *out) {
     *(out++) = M_ID(arg0, 3, 0) * M_ID(arg0, 0, 0) + M_ID(arg0, 3, 1) * M_ID(arg0, 1, 0) + M_ID(arg0, 3, 2) * M_ID(arg0, 2, 0);
     *(out++) = M_ID(arg0, 3, 0) * M_ID(arg0, 0, 1) + M_ID(arg0, 3, 1) * M_ID(arg0, 1, 1) + M_ID(arg0, 3, 2) * M_ID(arg0, 2, 1);
     *(out++) = M_ID(arg0, 3, 0) * M_ID(arg0, 0, 2) + M_ID(arg0, 3, 1) * M_ID(arg0, 1, 2) + M_ID(arg0, 3, 2) * M_ID(arg0, 2, 2);
 }
 
-void m257_MakeTransformMtx(f32 transX, f32 transY, f32 transZ, f32 rotX, f32 rotY, f32 rotZ, f32 *out) {
+void m257_MtxTransformSet(f32 transX, f32 transY, f32 transZ, f32 rotX, f32 rotY, f32 rotZ, f32 *out) {
     f32 translationMtx[16];
     f32 rotXMtx[16];
     f32 rotYMtx[16];
     f32 rotMtx[16];
 
-    m257_MakeTranslationMtx(translationMtx, transX, transY, transZ);
-    m257_MakeRotXMtx(rotXMtx, rotX);
-    m257_MakeRotYMtx(rotYMtx, rotY);
-    m257_MultiplyMtx(rotXMtx, rotYMtx, rotMtx);
-    m257_MultiplyMtx(rotMtx, translationMtx, out);
+    m257_MtxTransSet(translationMtx, transX, transY, transZ);
+    m257_MtxRotXSet(rotXMtx, rotX);
+    m257_MtxRotYSet(rotYMtx, rotY);
+    m257_MtxMul(rotXMtx, rotYMtx, rotMtx);
+    m257_MtxMul(rotMtx, translationMtx, out);
 }
 
-void m257_ApplyTransformMtx(Vec *in, s16 n, f32 *mtx, Vec *out) {
+void m257_VtxTransform(Vec *in, s16 n, f32 *mtx, Vec *out) {
     s16 i;
 
     for (i = 0; i < n; i++) {

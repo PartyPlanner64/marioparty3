@@ -3,7 +3,7 @@
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
-// Per-player work, allocated in func_801069F0_bounce_n_trounce
+// Per-player work, allocated in m224_PlayerObjInit
 typedef struct BounceNTrounceWork {
     /* 0x00 */ u16 playerId;
     /* 0x02 */ u16 state;
@@ -50,14 +50,14 @@ typedef struct BounceNTrounceWork {
     /* 0xAA */ char pad_AA[2];
 } BounceNTrounceWork; // Size 0xAC
 
-// Particle emitter work, allocated in func_801069F0_bounce_n_trounce
+// Particle emitter work, allocated in m224_PlayerObjInit
 typedef struct BounceNTrounceEmitterWork {
     /* 0x00 */ u16 interval;
     /* 0x04 */ f32 angle;
     /* 0x08 */ f32 angleStep;
 } BounceNTrounceEmitterWork; // Size 0xC
 
-// Floor tile work, allocated in func_80105E4C_bounce_n_trounce
+// Floor tile work, allocated in m224_StageObjInit
 typedef struct BounceNTrounceTileWork {
     /* 0x00 */ s16 index;
     /* 0x02 */ u16 state;
@@ -68,17 +68,17 @@ typedef struct BounceNTrounceTileWork {
 extern s32 omCharModelNoTbl[][6];
 extern f32 Hu3DMotionGlobalSpeed;
 
-MinigameFlow D_8010ABB0_bounce_n_trounce = {
+MinigameFlow m224_mgFlow = {
     MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
     { 0.0f, 0.0f, 0.0f, 0.0f },
     { 0, 0, 0, 0 },
     -1, 900, -1, -1, 135
 };
-s8 D_8010ABD8_bounce_n_trounce[4] = { 0, 0, 0, 0 };
-s8 D_8010ABDC_bounce_n_trounce[4] = { 0, 0, 0, 0 };
-u16 D_8010ABE0_bounce_n_trounce[4] = { 0, 0, 0, 0 };
-u16 D_8010ABE8_bounce_n_trounce = 0;
-Vec D_8010ABEC_bounce_n_trounce[9] = {
+s8 m224_introStickXTbl[4] = { 0, 0, 0, 0 };
+s8 m224_introStickYTbl[4] = { 0, 0, 0, 0 };
+u16 m224_introBtnTbl[4] = { 0, 0, 0, 0 };
+u16 m224_exitF = 0;
+Vec m224_tilePosTbl[9] = {
     { -300.0f, 0.0f, -300.0f },
     { 0.0f, 0.0f, -300.0f },
     { 300.0f, 0.0f, -300.0f },
@@ -89,7 +89,7 @@ Vec D_8010ABEC_bounce_n_trounce[9] = {
     { 0.0f, 0.0f, 300.0f },
     { 300.0f, 0.0f, 300.0f }
 };
-Vec D_8010AC58_bounce_n_trounce[7] = {
+Vec m224_decoPosTbl[7] = {
     { -750.0f, 100.0f, -900.0f },
     { 50.0f, 300.0f, -900.0f },
     { 1100.0f, -500.0f, -200.0f },
@@ -98,93 +98,93 @@ Vec D_8010AC58_bounce_n_trounce[7] = {
     { 950.0f, 400.0f, -900.0f },
     { -1050.0f, -350.0f, -950.0f }
 };
-s32 D_8010ACAC_bounce_n_trounce[7] = {
+s32 m224_decoMdlTbl[7] = {
     0x0039000D, 0x0039000E, 0x0039000D, 0x0039000E, 0x0039000D, 0x0039000E, 0x0039000D
 };
-s32 D_8010ACC8_bounce_n_trounce[7] = { 160, 115, 140, 94, 120, 98, 150 };
-s16 D_8010ACE4_bounce_n_trounce[9] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-u16 D_8010ACF6_bounce_n_trounce = 300;
-u16 D_8010ACF8_bounce_n_trounce = 0;
-Vec D_8010ACFC_bounce_n_trounce[4] = {
+s32 m224_decoSpeedTbl[7] = { 160, 115, 140, 94, 120, 98, 150 };
+s16 m224_tileFallTbl[9] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+u16 m224_tileFallDelay = 300;
+u16 m224_tileFallTimer = 0;
+Vec m224_playerStartPosTbl[4] = {
     { -90.0f, 0.0f, -90.0f },
     { 90.0f, 0.0f, -90.0f },
     { -90.0f, 0.0f, 90.0f },
     { 90.0f, 0.0f, 90.0f }
 };
-s32 D_8010AD2C_bounce_n_trounce[8] = {
+s32 m224_springMdlTbl[8] = {
     0x00390003, 0x00390004, 0x00390005, 0x00390006, 0x00390007, 0x00390008, 0x00390009, 0x0039000A
 };
-Vec D_8010AD4C_bounce_n_trounce[4] = {
+Vec m224_endPosTbl[4] = {
     { -150.0f, 0.0f, -150.0f },
     { 150.0f, 0.0f, -150.0f },
     { -150.0f, 0.0f, 150.0f },
     { 150.0f, 0.0f, 150.0f }
 };
-u16 D_8010AD7C_bounce_n_trounce[4] = { 0, 0, 0, 0 };
-u16 D_8010AD84_bounce_n_trounce = 0;
-u16 D_8010AD86_bounce_n_trounce = 0;
-u16 D_8010AD88_bounce_n_trounce = 0;
-u16 D_8010AD8A_bounce_n_trounce = 0;
+u16 m224_endPosUsedTbl[4] = { 0, 0, 0, 0 };
+u16 m224_introJumpF = 0;
+u16 m224_introJumpCnt = 0;
+u16 m224_finishDecideF = 0;
+u16 m224_winnerTurnF = 0;
 
-u16 D_8010AEB0_bounce_n_trounce BSS;
-u16 D_8010AEB2_bounce_n_trounce BSS;
-f32 D_8010AEB4_bounce_n_trounce BSS;
-f32 D_8010AEB8_bounce_n_trounce BSS;
-u16 D_8010AEBC_bounce_n_trounce BSS;
-u16 D_8010AEBE_bounce_n_trounce BSS;
-omObjData *D_8010AEC0_bounce_n_trounce BSS;
-omObjData *D_8010AEC4_bounce_n_trounce BSS;
-u16 D_8010AEC8_bounce_n_trounce BSS;
-u16 D_8010AECA_bounce_n_trounce BSS;
-s16 D_8010AECC_bounce_n_trounce BSS;
-omObjData *D_8010AED0_bounce_n_trounce BSS;
-omObjData *D_8010AED4_bounce_n_trounce BSS;
-omObjData **D_8010AED8_bounce_n_trounce BSS;
-omObjData **D_8010AEDC_bounce_n_trounce BSS;
-omObjData **D_8010AEE0_bounce_n_trounce BSS;
-s16 D_8010AEE4_bounce_n_trounce[4] BSS;
+u16 m224_finishTimer BSS;
+u16 m224_finishNextPhase BSS;
+f32 m224_cameraZoomSpeed BSS;
+f32 m224_cameraZoomTarget BSS;
+u16 m224_playerAliveCnt BSS;
+u16 m224_winner BSS;
+omObjData *m224_introObj BSS;
+omObjData *m224_finishObj BSS;
+u16 m224_introPhase BSS;
+u16 m224_finishPhase BSS;
+s16 m224_playF BSS;
+omObjData *m224_stageObj BSS;
+omObjData *m224_cameraObj BSS;
+omObjData **m224_tileObjTbl BSS;
+omObjData **m224_playerObjTbl BSS;
+omObjData **m224_decoObjTbl BSS;
+s16 m224_playerStartSlotTbl[4] BSS;
 
 void omCameraViewSprDraw(struct CameraViewData *data);
 
-void func_80105C84_bounce_n_trounce(omObjData *arg0);
-void func_80105CBC_bounce_n_trounce(omObjData *);
-void func_80105E4C_bounce_n_trounce(omObjData *object);
-void func_801069F0_bounce_n_trounce(omObjData *object);
-void func_8010A664_bounce_n_trounce(omObjData *object);
-void func_80106268_bounce_n_trounce(omObjData *object);
-void func_8010675C_bounce_n_trounce(omObjData *object);
-void func_801068F4_bounce_n_trounce(omObjData *object);
-void func_80106F78_bounce_n_trounce(omObjData *object);
-void func_801070CC_bounce_n_trounce(omObjData *object);
-void func_8010A740_bounce_n_trounce(s16 model);
-void func_8010A8F0_bounce_n_trounce(omObjData *object);
-void func_80108940_bounce_n_trounce(void);
-void func_80108C18_bounce_n_trounce(omObjData *object);
-void func_80109AF0_bounce_n_trounce(omObjData *object);
-void func_80109F68_bounce_n_trounce(omObjData *object);
-f32 func_8010AAE0_bounce_n_trounce(f32 arg0, f32 arg1, f32 arg2, f32 arg3);
-void func_8010AB90_bounce_n_trounce(void);
-void func_80106764_bounce_n_trounce(omObjData *object);
-void func_80106854_bounce_n_trounce(omObjData *object);
-void func_80107114_bounce_n_trounce(omObjData *object, s8 stickX, s8 stickY, u16 btn);
-void func_80107EDC_bounce_n_trounce(omObjData *object);
-void func_80108350_bounce_n_trounce(omObjData *object);
-void func_80108398_bounce_n_trounce(omObjData *object, omObjData *other);
-void func_80108454_bounce_n_trounce(omObjData *object, f32 vel);
-void func_801085EC_bounce_n_trounce(omObjData *object);
-void func_80108EFC_bounce_n_trounce(omObjData *object, f32 x, f32 y, f32 z);
-void func_80108F98_bounce_n_trounce(omObjData *object);
-void func_80109018_bounce_n_trounce(omObjData *object, s8 *stickX, s8 *stickY, u16 *btn);
-void func_80109478_bounce_n_trounce(omObjData *object);
-f32 func_80106434_bounce_n_trounce(omObjData *object);
-void func_8010846C_bounce_n_trounce(omObjData *object);
-s32 func_80109804_bounce_n_trounce(omObjData *object, s16 arg1);
-s16 func_80109A00_bounce_n_trounce(omObjData *object);
-s16 func_8010AB1C_bounce_n_trounce(f32 x, f32 z);
-void func_80108CA8_bounce_n_trounce(omObjData *);
-void func_80108D28_bounce_n_trounce(omObjData *);
+void m224_MainObjInit(omObjData *arg0);
+void m224_MainObjMain(omObjData *);
+void m224_StageObjInit(omObjData *object);
+void m224_PlayerObjInit(omObjData *object);
+void m224_CameraZoomObjMain(omObjData *object);
+void m224_StageObjMain(omObjData *object);
+void m224_TileObjMain(omObjData *object);
+void m224_DecoObjMain(omObjData *object);
+void m224_PlayerObjMain(omObjData *object);
+void m224_PlayerIntroObjMain(omObjData *object);
+void m224_SpinEffHook(s16 model);
+void m224_SpinEffObjMain(omObjData *object);
+void m224_PlayerHitClear(void);
+void m224_PlayerEndObjInit(omObjData *object);
+void m224_IntroObjMain(omObjData *object);
+void m224_FinishObjMain(omObjData *object);
+f32 m224_Dist2DCalc(f32 arg0, f32 arg1, f32 arg2, f32 arg3);
+void m224_OvlReturn(void);
+void m224_TileShakeObjMain(omObjData *object);
+void m224_TileFallObjMain(omObjData *object);
+void m224_PlayerUpdate(omObjData *object, s8 stickX, s8 stickY, u16 btn);
+void m224_PlayerOutUpdate(omObjData *object);
+void m224_PlayerSpinStop(omObjData *object);
+void m224_PlayerKnockBack(omObjData *object, omObjData *other);
+void m224_PlayerJumpSet(omObjData *object, f32 vel);
+void m224_PlayerHitCheck(omObjData *object);
+void m224_HitEffShow(omObjData *object, f32 x, f32 y, f32 z);
+void m224_LandEffShow(omObjData *object);
+void m224_PlayerComInputGet(omObjData *object, s8 *stickX, s8 *stickY, u16 *btn);
+void m224_PlayerComStateDecide(omObjData *object);
+f32 m224_PlayerFloorYGet(omObjData *object);
+void m224_PlayerMotUpdate(omObjData *object);
+s32 m224_PlayerComRouteSet(omObjData *object, s16 arg1);
+s16 m224_PlayerComTileGet(omObjData *object);
+s16 m224_TileNoGet(f32 x, f32 z);
+void m224_PlayerEndWaitObjMain(omObjData *);
+void m224_PlayerEndObjMain(omObjData *);
 
-void func_801059A0_bounce_n_trounce(void) {
+void m224_ObjectSetup(void) {
     s32 i;
     s16 slot;
 
@@ -209,84 +209,84 @@ void func_801059A0_bounce_n_trounce(void) {
     Hu3DGLightColorSet(3, 0, 0, 0);
     Hu3DGLightDirSet(3, -115.0f, 6.0f, -33.0f);
     Hu3DGLightStatSet(2, 1, 1);
-    omAddObj(0, 0, 0, -1, func_80105C84_bounce_n_trounce);
-    D_8010AED0_bounce_n_trounce = omAddObj(10, 0, 0, -1, func_80105E4C_bounce_n_trounce);
-    D_8010AED4_bounce_n_trounce = omAddObj(50, 0, 0, -1, func_8010A664_bounce_n_trounce);
-    D_8010AED4_bounce_n_trounce->work[0] = 0;
+    omAddObj(0, 0, 0, -1, m224_MainObjInit);
+    m224_stageObj = omAddObj(10, 0, 0, -1, m224_StageObjInit);
+    m224_cameraObj = omAddObj(50, 0, 0, -1, m224_CameraZoomObjMain);
+    m224_cameraObj->work[0] = 0;
     omMakeGroup(0, 4);
-    D_8010AEDC_bounce_n_trounce = omGetGroupMemberList(0);
+    m224_playerObjTbl = omGetGroupMemberList(0);
     for (i = 0; i < 4; i++) {
-        omAddObj(30, 7, 6, 0, func_801069F0_bounce_n_trounce)->work[0] = i;
+        omAddObj(30, 7, 6, 0, m224_PlayerObjInit)->work[0] = i;
     }
     for (i = 0; i < 4; i++) {
-        D_8010AEE4_bounce_n_trounce[i] = -1;
+        m224_playerStartSlotTbl[i] = -1;
     }
     for (i = 0; i < 4;) {
         slot = (u8)(rand8() & 3);
-        if (D_8010AEE4_bounce_n_trounce[slot] == -1) {
-            D_8010AEE4_bounce_n_trounce[slot] = i;
+        if (m224_playerStartSlotTbl[slot] == -1) {
+            m224_playerStartSlotTbl[slot] = i;
             i++;
         }
     }
-    MgFlowInit(&D_8010ABB0_bounce_n_trounce);
+    MgFlowInit(&m224_mgFlow);
 }
 
-void func_80105C84_bounce_n_trounce(omObjData *arg0) {
-    D_8010AEBC_bounce_n_trounce = 4;
-    D_8010AEC4_bounce_n_trounce = 0;
-    D_8010AEC0_bounce_n_trounce = 0;
-    D_8010AECC_bounce_n_trounce = 1;
-    arg0->func = func_80105CBC_bounce_n_trounce;
+void m224_MainObjInit(omObjData *arg0) {
+    m224_playerAliveCnt = 4;
+    m224_finishObj = 0;
+    m224_introObj = 0;
+    m224_playF = 1;
+    arg0->func = m224_MainObjMain;
 }
 
-void func_80105CBC_bounce_n_trounce(omObjData *object) {
-    if (D_8010ABE8_bounce_n_trounce == 0) {
+void m224_MainObjMain(omObjData *object) {
+    if (m224_exitF == 0) {
         switch (MgFlowMain()) {
             case 0:
-                if (D_8010AEC0_bounce_n_trounce == NULL) {
-                    D_8010AEC8_bounce_n_trounce = 0;
-                    D_8010AEC0_bounce_n_trounce = omAddObj(4, 0, 0, -1, func_80109AF0_bounce_n_trounce);
-                    D_8010AED4_bounce_n_trounce->work[0] = 1;
+                if (m224_introObj == NULL) {
+                    m224_introPhase = 0;
+                    m224_introObj = omAddObj(4, 0, 0, -1, m224_IntroObjMain);
+                    m224_cameraObj->work[0] = 1;
                 }
                 break;
             case 1:
                 break;
             case 2:
-                func_80108940_bounce_n_trounce();
-                if (D_8010AEBC_bounce_n_trounce == 0) {
-                    D_8010AECC_bounce_n_trounce = 0;
-                    D_8010AED0_bounce_n_trounce->work[0] = 0;
+                m224_PlayerHitClear();
+                if (m224_playerAliveCnt == 0) {
+                    m224_playF = 0;
+                    m224_stageObj->work[0] = 0;
                     MgFlowStatSet(MG_STATE_FINISH);
-                } else if (D_8010AEBC_bounce_n_trounce == 1) {
-                    D_8010AECC_bounce_n_trounce = 0;
-                    D_8010AED0_bounce_n_trounce->work[0] = 0;
+                } else if (m224_playerAliveCnt == 1) {
+                    m224_playF = 0;
+                    m224_stageObj->work[0] = 0;
                     MgFlowStatSet(MG_STATE_FINISH);
                 }
                 break;
             case 3:
-                D_8010AED0_bounce_n_trounce->work[0] = 0;
-                func_80108940_bounce_n_trounce();
-                if (D_8010AEC4_bounce_n_trounce == NULL) {
-                    D_8010AECA_bounce_n_trounce = 0;
-                    D_8010AEC4_bounce_n_trounce = omAddObj(4, 0, 0, -1, func_80109F68_bounce_n_trounce);
+                m224_stageObj->work[0] = 0;
+                m224_PlayerHitClear();
+                if (m224_finishObj == NULL) {
+                    m224_finishPhase = 0;
+                    m224_finishObj = omAddObj(4, 0, 0, -1, m224_FinishObjMain);
                 }
                 break;
             case 4:
-                func_80108940_bounce_n_trounce();
+                m224_PlayerHitClear();
                 break;
             case 5:
                 WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                 HuAudSeqFadeOut(30);
                 HuAudFXAllFadeOut(30);
-                D_8010ABE8_bounce_n_trounce = 1;
+                m224_exitF = 1;
                 break;
         }
     } else if (WipeStatGet() == 0) {
-        func_8010AB90_bounce_n_trounce();
+        m224_OvlReturn();
     }
 }
 
-void func_80105E4C_bounce_n_trounce(omObjData *object) {
+void m224_StageObjInit(omObjData *object) {
     omObjData *obj;
     omObjData *deco;
     BounceNTrounceTileWork *tileWork;
@@ -298,11 +298,11 @@ void func_80105E4C_bounce_n_trounce(omObjData *object) {
     Vec target;
 
     omMakeGroup(2, 9);
-    D_8010AED8_bounce_n_trounce = omGetGroupMemberList(2);
+    m224_tileObjTbl = omGetGroupMemberList(2);
     omMakeGroup(3, 7);
-    D_8010AEE0_bounce_n_trounce = omGetGroupMemberList(3);
+    m224_decoObjTbl = omGetGroupMemberList(3);
     for (i = 0; i < 9; i++) {
-        obj = omAddObj(20, 1, 0, 2, func_8010675C_bounce_n_trounce);
+        obj = omAddObj(20, 1, 0, 2, m224_TileObjMain);
         obj->data = HuMemAllocTag(sizeof(BounceNTrounceTileWork), TAG_OVERLAY);
         tileWork = OM_GET_DATA_PTR(obj, BounceNTrounceTileWork);
         tileWork->index = i;
@@ -310,31 +310,31 @@ void func_80105E4C_bounce_n_trounce(omObjData *object) {
             if (i == 1) {
                 obj->model[0] = Hu3DModelRead(0x390001, 0x6B9);
             } else {
-                obj->model[0] = Hu3DModelLink(D_8010AED8_bounce_n_trounce[1]->model[0]);
+                obj->model[0] = Hu3DModelLink(m224_tileObjTbl[1]->model[0]);
             }
         } else {
             if (i == 0) {
                 obj->model[0] = Hu3DModelRead(0x390000, 0x6B9);
             } else {
-                obj->model[0] = Hu3DModelLink(D_8010AED8_bounce_n_trounce[0]->model[0]);
+                obj->model[0] = Hu3DModelLink(m224_tileObjTbl[0]->model[0]);
             }
         }
-        omSetTra(obj, D_8010ABEC_bounce_n_trounce[i].x, D_8010ABEC_bounce_n_trounce[i].y,
-                 D_8010ABEC_bounce_n_trounce[i].z);
+        omSetTra(obj, m224_tilePosTbl[i].x, m224_tilePosTbl[i].y,
+                 m224_tilePosTbl[i].z);
         tileWork->state = 0;
     }
     for (i = 0; i < 7; i++) {
-        deco = omAddObj(20, 1, 0, 3, func_801068F4_bounce_n_trounce);
-        deco->model[0] = Hu3DModelRead(D_8010ACAC_bounce_n_trounce[i], 0x6B9);
-        HuSqrtf(D_8010AC58_bounce_n_trounce[i].x * D_8010AC58_bounce_n_trounce[i].x +
-                D_8010AC58_bounce_n_trounce[i].z * D_8010AC58_bounce_n_trounce[i].z);
-        x = cosdf(-45.0f) * D_8010AC58_bounce_n_trounce[i].x - sindf(-45.0f) * D_8010AC58_bounce_n_trounce[i].z;
-        z = sindf(-45.0f) * D_8010AC58_bounce_n_trounce[i].x + cosdf(-45.0f) * D_8010AC58_bounce_n_trounce[i].z;
-        omSetTra(deco, x, D_8010AC58_bounce_n_trounce[i].y, z);
+        deco = omAddObj(20, 1, 0, 3, m224_DecoObjMain);
+        deco->model[0] = Hu3DModelRead(m224_decoMdlTbl[i], 0x6B9);
+        HuSqrtf(m224_decoPosTbl[i].x * m224_decoPosTbl[i].x +
+                m224_decoPosTbl[i].z * m224_decoPosTbl[i].z);
+        x = cosdf(-45.0f) * m224_decoPosTbl[i].x - sindf(-45.0f) * m224_decoPosTbl[i].z;
+        z = sindf(-45.0f) * m224_decoPosTbl[i].x + cosdf(-45.0f) * m224_decoPosTbl[i].z;
+        omSetTra(deco, x, m224_decoPosTbl[i].y, z);
         omSetRot(deco, 0.0f, 45.0f, 0.0f);
         omSetSca(deco, 1.5f, 1.5f, 1.5f);
         deco->work[0] = 0;
-        deco->work[1] = D_8010ACC8_bounce_n_trounce[i];
+        deco->work[1] = m224_decoSpeedTbl[i];
     }
     sprite = espEntry(HuSprAnimDataRead(0x390002), 0, 1);
     espDispOff(sprite);
@@ -348,11 +348,11 @@ void func_80105E4C_bounce_n_trounce(omObjData *object) {
     Hu3DCameraPerspectiveSet(0, 45.0f, 500.0f, 4500.0f);
     CZoom = 2100.0f;
     object->work[0] = 1;
-    D_8010ACE4_bounce_n_trounce[4] = 1;
-    object->func = func_80106268_bounce_n_trounce;
+    m224_tileFallTbl[4] = 1;
+    object->func = m224_StageObjMain;
 }
 
-void func_80106268_bounce_n_trounce(omObjData *object) {
+void m224_StageObjMain(omObjData *object) {
     s16 candidates[9];
     s16 count;
     s32 i;
@@ -360,18 +360,18 @@ void func_80106268_bounce_n_trounce(omObjData *object) {
     BounceNTrounceTileWork *work;
 
     if (MgFlowStatGet() == MG_STATE_PLAY && object->work[0] != 0) {
-        if (D_8010ACF6_bounce_n_trounce != 0) {
-            D_8010ACF6_bounce_n_trounce--;
+        if (m224_tileFallDelay != 0) {
+            m224_tileFallDelay--;
             return;
         }
-        if (D_8010ACF8_bounce_n_trounce != 0) {
-            D_8010ACF8_bounce_n_trounce--;
+        if (m224_tileFallTimer != 0) {
+            m224_tileFallTimer--;
             return;
         }
-        D_8010ACF8_bounce_n_trounce = 60;
+        m224_tileFallTimer = 60;
         count = 0;
         for (i = 0; i < 9; i++) {
-            if (D_8010ACE4_bounce_n_trounce[i] == 0) {
+            if (m224_tileFallTbl[i] == 0) {
                 candidates[count++] = i;
             }
         }
@@ -383,17 +383,17 @@ void func_80106268_bounce_n_trounce(omObjData *object) {
         } else {
             choice = candidates[rand8() % count];
         }
-        D_8010ACE4_bounce_n_trounce[choice] = 1;
-        work = OM_GET_DATA_PTR(D_8010AED8_bounce_n_trounce[choice], BounceNTrounceTileWork);
+        m224_tileFallTbl[choice] = 1;
+        work = OM_GET_DATA_PTR(m224_tileObjTbl[choice], BounceNTrounceTileWork);
         work->state = 1;
         work->velY = -15.0f;
         work->timer = 40;
         HuAudFXPlay(0x3D1);
-        D_8010AED8_bounce_n_trounce[choice]->func = func_80106764_bounce_n_trounce;
+        m224_tileObjTbl[choice]->func = m224_TileShakeObjMain;
     }
 }
 
-f32 func_80106434_bounce_n_trounce(omObjData *object) {
+f32 m224_PlayerFloorYGet(omObjData *object) {
     BounceNTrounceWork *work;
     f32 radius;
     f32 maxY = -100000.0f;
@@ -410,7 +410,7 @@ f32 func_80106434_bounce_n_trounce(omObjData *object) {
     radius = work->floorRadius;
     work->floorTile = NULL;
     for (i = 0; i < 9; i++) {
-        tile = D_8010AED8_bounce_n_trounce[i];
+        tile = m224_tileObjTbl[i];
         if (OM_GET_DATA_PTR(tile, BounceNTrounceTileWork)->state == 3) {
             continue;
         }
@@ -431,9 +431,9 @@ f32 func_80106434_bounce_n_trounce(omObjData *object) {
             if (x0 <= object->trans.x && object->trans.x <= x1) {
                 dist = HuSqrtf((object->trans.z - z0) * (object->trans.z - z0));
             } else if (object->trans.x < x0) {
-                dist = func_8010AAE0_bounce_n_trounce(object->trans.x, object->trans.z, x0, z0);
+                dist = m224_Dist2DCalc(object->trans.x, object->trans.z, x0, z0);
             } else if (x1 < object->trans.x) {
-                dist = func_8010AAE0_bounce_n_trounce(object->trans.x, object->trans.z, x1, z0);
+                dist = m224_Dist2DCalc(object->trans.x, object->trans.z, x1, z0);
             }
             if (dist <= radius && maxY < tile->trans.y) {
                 maxY = tile->trans.y;
@@ -447,10 +447,10 @@ f32 func_80106434_bounce_n_trounce(omObjData *object) {
             if (z0 <= object->trans.z && object->trans.z <= z1) {
                 dist = HuSqrtf((object->trans.x - x0) * (object->trans.x - x0));
             } else if (object->trans.z < z0) {
-                dist = func_8010AAE0_bounce_n_trounce(object->trans.x, object->trans.z, x0, z0);
+                dist = m224_Dist2DCalc(object->trans.x, object->trans.z, x0, z0);
             } else if (z1 < object->trans.z) {
                 // Uses x1 from the previous loop rather than x0.
-                dist = func_8010AAE0_bounce_n_trounce(object->trans.x, object->trans.z, x1, z0);
+                dist = m224_Dist2DCalc(object->trans.x, object->trans.z, x1, z0);
             }
             if (dist <= radius && maxY < tile->trans.y) {
                 maxY = tile->trans.y;
@@ -461,13 +461,13 @@ f32 func_80106434_bounce_n_trounce(omObjData *object) {
     return maxY;
 }
 
-void func_8010675C_bounce_n_trounce(omObjData *object) {
+void m224_TileObjMain(omObjData *object) {
 }
 
-void func_80106764_bounce_n_trounce(omObjData *object) {
+void m224_TileShakeObjMain(omObjData *object) {
     BounceNTrounceTileWork *work = OM_GET_DATA_PTR(object, BounceNTrounceTileWork);
 
-    if (D_8010AED0_bounce_n_trounce->work[0] == 0) {
+    if (m224_stageObj->work[0] == 0) {
         omSetTra(object, object->trans.x, 0.0f, object->trans.z);
         object->func = NULL;
         return;
@@ -482,11 +482,11 @@ void func_80106764_bounce_n_trounce(omObjData *object) {
     if (--work->timer == 0) {
         work->velY = -4.4f;
         work->state = 2;
-        object->func = func_80106854_bounce_n_trounce;
+        object->func = m224_TileFallObjMain;
     }
 }
 
-void func_80106854_bounce_n_trounce(omObjData *object) {
+void m224_TileFallObjMain(omObjData *object) {
     BounceNTrounceTileWork *work = OM_GET_DATA_PTR(object, BounceNTrounceTileWork);
 
     object->trans.y += work->velY;
@@ -499,7 +499,7 @@ void func_80106854_bounce_n_trounce(omObjData *object) {
     }
 }
 
-void func_801068F4_bounce_n_trounce(omObjData *object) {
+void m224_DecoObjMain(omObjData *object) {
     f32 angle = object->work[0];
 
     angle /= 10.0f;
@@ -510,7 +510,7 @@ void func_801068F4_bounce_n_trounce(omObjData *object) {
     omSetSca(object, 1.5f - sindf(angle) * 0.5f, 1.5f - sindf(angle) * 0.5f, 1.5f - sindf(angle) * 0.5f);
 }
 
-void func_801069F0_bounce_n_trounce(omObjData *object) {
+void m224_PlayerObjInit(omObjData *object) {
     BounceNTrounceWork *work;
     omObjData *emitter;
     HmfData *hmf;
@@ -556,10 +556,10 @@ void func_801069F0_bounce_n_trounce(omObjData *object) {
     chr = GwPlayer[playerId].chr;
     mdlId = omCharModelNoTbl[chr][0];
     mdlAttr = omCharModelNoTbl[chr][1];
-    object->model[0] = Hu3DModelRead(D_8010AD2C_bounce_n_trounce[chr], 0x6D9);
-    omSetTra(object, D_8010ACFC_bounce_n_trounce[D_8010AEE4_bounce_n_trounce[playerId]].x,
-             D_8010ACFC_bounce_n_trounce[D_8010AEE4_bounce_n_trounce[playerId]].y,
-             D_8010ACFC_bounce_n_trounce[D_8010AEE4_bounce_n_trounce[playerId]].z);
+    object->model[0] = Hu3DModelRead(m224_springMdlTbl[chr], 0x6D9);
+    omSetTra(object, m224_playerStartPosTbl[m224_playerStartSlotTbl[playerId]].x,
+             m224_playerStartPosTbl[m224_playerStartSlotTbl[playerId]].y,
+             m224_playerStartPosTbl[m224_playerStartSlotTbl[playerId]].z);
     object->model[1] = Hu3DModelRead(mdlId | mdlAttr, 0x206B9);
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
     object->model[2] = Hu3DModelRead3(0, 0xA89);
@@ -587,7 +587,7 @@ void func_801069F0_bounce_n_trounce(omObjData *object) {
     Hu3DModelRemakeStatic(object->model[5]);
     Hu3DModelVtxBufMake(object->model[5]);
     Hu3DModelDynamicFree(object->model[5]);
-    Hu3DParticleCreate(object->model[5], -1, NULL, func_8010A740_bounce_n_trounce);
+    Hu3DParticleCreate(object->model[5], -1, NULL, m224_SpinEffHook);
     hmf = Hu3DData[object->model[5]].hmf;
     modelData = Hu3DData[object->model[5]].unkBC;
     particle = modelData->unk58;
@@ -600,7 +600,7 @@ void func_801069F0_bounce_n_trounce(omObjData *object) {
         particle->unk18 = particle->unk1C = particle->unk20 = 0.0f;
         particle->unk04 = particle->unk08 = 0.0f;
     }
-    emitter = omAddObj(60, 0, 0, -1, func_8010A8F0_bounce_n_trounce);
+    emitter = omAddObj(60, 0, 0, -1, m224_SpinEffObjMain);
     work->emitter = emitter;
     emitter->data = HuMemAllocTag(sizeof(BounceNTrounceEmitterWork), TAG_OVERLAY);
     emitter->work[0] = 0;
@@ -609,10 +609,10 @@ void func_801069F0_bounce_n_trounce(omObjData *object) {
     work->prevPos.x = object->trans.x;
     work->prevPos.y = object->trans.y;
     work->prevPos.z = object->trans.z;
-    object->func = func_801070CC_bounce_n_trounce;
+    object->func = m224_PlayerIntroObjMain;
 }
 
-void func_80106F78_bounce_n_trounce(omObjData *object) {
+void m224_PlayerObjMain(omObjData *object) {
     BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
     u16 port = GwPlayer[work->playerId].pad;
     s8 stickX;
@@ -623,7 +623,7 @@ void func_80106F78_bounce_n_trounce(omObjData *object) {
         return;
     }
     if (GwPlayer[work->playerId].stat & 1) {
-        func_80109018_bounce_n_trounce(object, &stickX, &stickY, &btn);
+        m224_PlayerComInputGet(object, &stickX, &stickY, &btn);
     } else {
         stickX = HuPadStkX[port];
         stickY = HuPadStkY[port];
@@ -638,21 +638,21 @@ void func_80106F78_bounce_n_trounce(omObjData *object) {
         stickY = 0;
         stickX = 0;
         btn = 0;
-        func_80107EDC_bounce_n_trounce(object);
+        m224_PlayerOutUpdate(object);
     } else {
-        func_80107114_bounce_n_trounce(object, stickX, stickY, btn);
+        m224_PlayerUpdate(object, stickX, stickY, btn);
     }
 }
 
-void func_801070CC_bounce_n_trounce(omObjData *object) {
+void m224_PlayerIntroObjMain(omObjData *object) {
     BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
 
-    func_80107114_bounce_n_trounce(object, D_8010ABD8_bounce_n_trounce[work->playerId],
-                                   D_8010ABDC_bounce_n_trounce[work->playerId],
-                                   D_8010ABE0_bounce_n_trounce[work->playerId]);
+    m224_PlayerUpdate(object, m224_introStickXTbl[work->playerId],
+                                   m224_introStickYTbl[work->playerId],
+                                   m224_introBtnTbl[work->playerId]);
 }
 
-void func_80107114_bounce_n_trounce(omObjData *object, s8 stickX, s8 stickY, u16 btn) {
+void m224_PlayerUpdate(omObjData *object, s8 stickX, s8 stickY, u16 btn) {
     BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
     BounceNTrounceWork *otherWork;
     BounceNTrounceEmitterWork *emitterWork;
@@ -660,7 +660,7 @@ void func_80107114_bounce_n_trounce(omObjData *object, s8 stickX, s8 stickY, u16
     f32 angle = atan2df(stickX, -stickY) + CRot.y;
     f32 speed = HuSqrtf(stickX * stickX + stickY * stickY) * 0.1f;
     f32 rotY = object->rot.y;
-    f32 floorY = func_80106434_bounce_n_trounce(object);
+    f32 floorY = m224_PlayerFloorYGet(object);
     f32 jumpVel;
     s16 fx;
     s32 i;
@@ -704,7 +704,7 @@ void func_80107114_bounce_n_trounce(omObjData *object, s8 stickX, s8 stickY, u16
                     HuAudFXVolSet(fx, 0x75);
                 }
             }
-            func_80108454_bounce_n_trounce(object, jumpVel);
+            m224_PlayerJumpSet(object, jumpVel);
             work->unk_08 = 1;
             work->motState = 3;
             // fallthrough
@@ -772,20 +772,20 @@ void func_80107114_bounce_n_trounce(omObjData *object, s8 stickX, s8 stickY, u16
         }
         object->trans.x += work->unk_34;
         object->trans.z += work->unk_38;
-        func_801085EC_bounce_n_trounce(object);
+        m224_PlayerHitCheck(object);
         for (i = 0; i < 4; i++) {
             if (i == work->playerId) {
                 continue;
             }
-            other = D_8010AEDC_bounce_n_trounce[i];
+            other = m224_playerObjTbl[i];
             otherWork = OM_GET_DATA_PTR(other, BounceNTrounceWork);
             if (work->state != 1) {
                 if (work->unk_0E[i] & 1) {
                     if (otherWork->state == 1) {
                         work->unk_16 = 1;
                         atan2df(object->trans.x - other->trans.x, -(object->trans.z - other->trans.z));
-                        func_80108398_bounce_n_trounce(other, object);
-                        func_80108EFC_bounce_n_trounce(object, object->trans.x, object->trans.y + 120.0f,
+                        m224_PlayerKnockBack(other, object);
+                        m224_HitEffShow(object, object->trans.x, object->trans.y + 120.0f,
                                                        object->trans.z);
                     } else {
                         work->jumpVel = 0.0f;
@@ -796,8 +796,8 @@ void func_80107114_bounce_n_trounce(omObjData *object, s8 stickX, s8 stickY, u16
                     if (otherWork->state == 1) {
                         work->unk_16 = 1;
                         atan2df(object->trans.x - other->trans.x, -(object->trans.z - other->trans.z));
-                        func_80108398_bounce_n_trounce(other, object);
-                        func_80108EFC_bounce_n_trounce(object, object->trans.x, object->trans.y + 70.0f,
+                        m224_PlayerKnockBack(other, object);
+                        m224_HitEffShow(object, object->trans.x, object->trans.y + 70.0f,
                                                        object->trans.z);
                     } else {
                         work->unk_38 = -work->unk_38;
@@ -808,8 +808,8 @@ void func_80107114_bounce_n_trounce(omObjData *object, s8 stickX, s8 stickY, u16
                     if (otherWork->state == 1) {
                         work->unk_16 = 1;
                         atan2df(object->trans.x - other->trans.x, -(object->trans.z - other->trans.z));
-                        func_80108398_bounce_n_trounce(other, object);
-                        func_80108EFC_bounce_n_trounce(object, object->trans.x, object->trans.y, object->trans.z);
+                        m224_PlayerKnockBack(other, object);
+                        m224_HitEffShow(object, object->trans.x, object->trans.y, object->trans.z);
                     } else {
                         work->jumpVel = 50.0f;
                         work->jumpTime = 0.0f;
@@ -819,73 +819,73 @@ void func_80107114_bounce_n_trounce(omObjData *object, s8 stickX, s8 stickY, u16
             } else {
                 work->unk_A2 = 1;
                 if (work->unk_0E[i] & 1) {
-                    func_80108EFC_bounce_n_trounce(object, object->trans.x, object->trans.y + 120.0f, object->trans.z);
+                    m224_HitEffShow(object, object->trans.x, object->trans.y + 120.0f, object->trans.z);
                     omVibrate(work->playerId, 2, 2, 20);
                     if (otherWork->state == 1) {
                         if (otherWork->unk_44 == work->unk_44) {
-                            func_80108350_bounce_n_trounce(object);
-                            func_80108350_bounce_n_trounce(other);
+                            m224_PlayerSpinStop(object);
+                            m224_PlayerSpinStop(other);
                         } else if (otherWork->unk_44 > work->unk_44) {
                             work->unk_16 = 1;
                             atan2df(object->trans.x - other->trans.x, -(object->trans.z - other->trans.z));
-                            func_80108398_bounce_n_trounce(other, object);
-                            func_80108350_bounce_n_trounce(object);
+                            m224_PlayerKnockBack(other, object);
+                            m224_PlayerSpinStop(object);
                         } else {
                             otherWork->unk_16 = 1;
                             atan2df(other->trans.x - object->trans.x, -(other->trans.z - object->trans.z));
-                            func_80108398_bounce_n_trounce(object, other);
-                            func_80108350_bounce_n_trounce(other);
+                            m224_PlayerKnockBack(object, other);
+                            m224_PlayerSpinStop(other);
                         }
                     } else {
                         otherWork->unk_16 = 1;
                         atan2df(other->trans.x - object->trans.x, -(other->trans.z - object->trans.z));
-                        func_80108398_bounce_n_trounce(object, other);
+                        m224_PlayerKnockBack(object, other);
                     }
                 } else if (work->unk_0E[i] & 2) {
-                    func_80108EFC_bounce_n_trounce(object, object->trans.x, object->trans.y + 70.0f, object->trans.z);
+                    m224_HitEffShow(object, object->trans.x, object->trans.y + 70.0f, object->trans.z);
                     omVibrate(work->playerId, 2, 2, 20);
                     if (otherWork->state == 1) {
                         if (otherWork->unk_44 == work->unk_44) {
-                            func_80108350_bounce_n_trounce(object);
-                            func_80108350_bounce_n_trounce(other);
+                            m224_PlayerSpinStop(object);
+                            m224_PlayerSpinStop(other);
                         } else if (otherWork->unk_44 > work->unk_44) {
                             work->unk_16 = 1;
                             atan2df(object->trans.x - other->trans.x, -(object->trans.z - other->trans.z));
-                            func_80108398_bounce_n_trounce(other, object);
-                            func_80108350_bounce_n_trounce(object);
+                            m224_PlayerKnockBack(other, object);
+                            m224_PlayerSpinStop(object);
                         } else {
                             otherWork->unk_16 = 1;
                             atan2df(other->trans.x - object->trans.x, -(other->trans.z - object->trans.z));
-                            func_80108398_bounce_n_trounce(object, other);
-                            func_80108350_bounce_n_trounce(other);
+                            m224_PlayerKnockBack(object, other);
+                            m224_PlayerSpinStop(other);
                         }
                     } else {
                         otherWork->unk_16 = 1;
                         atan2df(other->trans.x - object->trans.x, -(other->trans.z - object->trans.z));
-                        func_80108398_bounce_n_trounce(object, other);
+                        m224_PlayerKnockBack(object, other);
                     }
                 } else if (work->unk_0E[i] & 4) {
-                    func_80108EFC_bounce_n_trounce(object, object->trans.x, object->trans.y, object->trans.z);
+                    m224_HitEffShow(object, object->trans.x, object->trans.y, object->trans.z);
                     omVibrate(work->playerId, 2, 2, 20);
                     if (otherWork->state == 1) {
                         if (otherWork->unk_44 == work->unk_44) {
-                            func_80108350_bounce_n_trounce(object);
-                            func_80108350_bounce_n_trounce(other);
+                            m224_PlayerSpinStop(object);
+                            m224_PlayerSpinStop(other);
                         } else if (otherWork->unk_44 > work->unk_44) {
                             work->unk_16 = 1;
                             atan2df(object->trans.x - other->trans.x, -(object->trans.z - other->trans.z));
-                            func_80108398_bounce_n_trounce(other, object);
-                            func_80108350_bounce_n_trounce(object);
+                            m224_PlayerKnockBack(other, object);
+                            m224_PlayerSpinStop(object);
                         } else {
                             otherWork->unk_16 = 1;
                             atan2df(other->trans.x - object->trans.x, -(other->trans.z - object->trans.z));
-                            func_80108398_bounce_n_trounce(object, other);
-                            func_80108350_bounce_n_trounce(other);
+                            m224_PlayerKnockBack(object, other);
+                            m224_PlayerSpinStop(other);
                         }
                     } else {
                         otherWork->unk_16 = 1;
                         atan2df(other->trans.x - object->trans.x, -(other->trans.z - object->trans.z));
-                        func_80108398_bounce_n_trounce(object, other);
+                        m224_PlayerKnockBack(object, other);
                     }
                 }
             }
@@ -897,13 +897,13 @@ void func_80107114_bounce_n_trounce(omObjData *object, s8 stickX, s8 stickY, u16
             work->motState = 2;
             work->unk_34 = work->unk_38 = 0.0f;
             work->unk_0C = 0;
-            func_80108350_bounce_n_trounce(object);
+            m224_PlayerSpinStop(object);
             work->emitter->work[0] = 0;
             work->unk_06 = 0;
             work->unk_08 = 0;
             work->unk_64 = work->unk_68 = 0.0f;
             work->radius = 55.0f;
-            func_80108F98_bounce_n_trounce(object);
+            m224_LandEffShow(object);
         }
     }
     work->unk_64 *= work->unk_6C;
@@ -940,22 +940,22 @@ void func_80107114_bounce_n_trounce(omObjData *object, s8 stickX, s8 stickY, u16
     if (work->unk_06 == 1) {
         Hu3DModelPosSet(object->model[3], object->trans.x, object->trans.y + 60.0f, object->trans.z);
     }
-    func_8010846C_bounce_n_trounce(object);
+    m224_PlayerMotUpdate(object);
     if (object->trans.y < -45.0f && work->unk_08 == 1 && work->state != 2) {
         HuAudPlayerFXPlay(0x3D0, work->playerId);
         work->state = 2;
         work->unk_34 = work->unk_38 = work->unk_64 = work->unk_68 = 0.0f;
-        D_8010AEBC_bounce_n_trounce--;
+        m224_playerAliveCnt--;
     }
     work->prevPos.x = object->trans.x;
     work->prevPos.y = object->trans.y;
     work->prevPos.z = object->trans.z;
 }
 
-void func_80107EDC_bounce_n_trounce(omObjData *object) {
+void m224_PlayerOutUpdate(omObjData *object) {
     BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
     f32 rotY = object->rot.y;
-    f32 floorY = func_80106434_bounce_n_trounce(object);
+    f32 floorY = m224_PlayerFloorYGet(object);
     Vec pos;
     Vec2f screenPos;
 
@@ -1007,7 +1007,7 @@ void func_80107EDC_bounce_n_trounce(omObjData *object) {
     if (work->unk_06 == 1) {
         Hu3DModelPosSet(object->model[3], object->trans.x, object->trans.y + 60.0f, object->trans.z);
     }
-    func_8010846C_bounce_n_trounce(object);
+    m224_PlayerMotUpdate(object);
     if (object->trans.y < -5000.0f) {
         work->state = 3;
         Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -1030,7 +1030,7 @@ void func_80107EDC_bounce_n_trounce(omObjData *object) {
     work->prevPos.z = object->trans.z;
 }
 
-void func_80108350_bounce_n_trounce(omObjData *object) {
+void m224_PlayerSpinStop(omObjData *object) {
     BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
 
     if (work->state != 2 && work->state != 3) {
@@ -1041,7 +1041,7 @@ void func_80108350_bounce_n_trounce(omObjData *object) {
     Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
-void func_80108398_bounce_n_trounce(omObjData *object, omObjData *other) {
+void m224_PlayerKnockBack(omObjData *object, omObjData *other) {
     BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
     BounceNTrounceWork *otherWork = OM_GET_DATA_PTR(other, BounceNTrounceWork);
     f32 speed;
@@ -1054,7 +1054,7 @@ void func_80108398_bounce_n_trounce(omObjData *object, omObjData *other) {
     otherWork->unk_6C = 0.8f;
 }
 
-void func_80108454_bounce_n_trounce(omObjData *object, f32 vel) {
+void m224_PlayerJumpSet(omObjData *object, f32 vel) {
     BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
 
     work->jumpVel = vel;
@@ -1062,7 +1062,7 @@ void func_80108454_bounce_n_trounce(omObjData *object, f32 vel) {
     work->jumpBaseY = object->trans.y;
 }
 
-void func_8010846C_bounce_n_trounce(omObjData *object) {
+void m224_PlayerMotUpdate(omObjData *object) {
     BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
     f32 dir = work->motDir;
     f32 rate = Hu3DMotionGlobalSpeed;
@@ -1086,7 +1086,7 @@ void func_8010846C_bounce_n_trounce(omObjData *object) {
     Hu3DMotionTimeSet(object->model[1], time);
 }
 
-void func_801085EC_bounce_n_trounce(omObjData *object) {
+void m224_PlayerHitCheck(omObjData *object) {
     BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
     BounceNTrounceWork *otherWork;
     omObjData *other;
@@ -1096,12 +1096,12 @@ void func_801085EC_bounce_n_trounce(omObjData *object) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        other = D_8010AEDC_bounce_n_trounce[i];
+        other = m224_playerObjTbl[i];
         if (object == other) {
             continue;
         }
         otherWork = OM_GET_DATA_PTR(other, BounceNTrounceWork);
-        dist = func_8010AAE0_bounce_n_trounce(other->trans.x, other->trans.z, object->trans.x, object->trans.z);
+        dist = m224_Dist2DCalc(other->trans.x, other->trans.z, object->trans.x, object->trans.z);
         minDist = HuSqrtf((work->radius + otherWork->radius) * (work->radius + otherWork->radius));
         if (!(dist < minDist)) {
             continue;
@@ -1141,11 +1141,11 @@ void func_801085EC_bounce_n_trounce(omObjData *object) {
     }
 }
 
-void func_80108940_bounce_n_trounce(void) {
+void m224_PlayerHitClear(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        BounceNTrounceWork *work = OM_GET_DATA_PTR(D_8010AEDC_bounce_n_trounce[i], BounceNTrounceWork);
+        BounceNTrounceWork *work = OM_GET_DATA_PTR(m224_playerObjTbl[i], BounceNTrounceWork);
         s32 j;
 
         for (j = 0; j < 4; j++) {
@@ -1154,7 +1154,7 @@ void func_80108940_bounce_n_trounce(void) {
     }
 }
 
-u16 func_80108994_bounce_n_trounce(void) {
+u16 m224_PlayerEndCheck(void) {
     f32 dists[4];
     u16 order[4];
     s32 count = 0;
@@ -1166,15 +1166,15 @@ u16 func_80108994_bounce_n_trounce(void) {
     u16 temp;
 
     for (i = 0; i < 4; i++) {
-        work = OM_GET_DATA_PTR(D_8010AEDC_bounce_n_trounce[i], BounceNTrounceWork);
+        work = OM_GET_DATA_PTR(m224_playerObjTbl[i], BounceNTrounceWork);
         count += (work->state == 3);
         if (work->motState == 2 || work->motState == 4) {
             if (work->state != 4) {
-                D_8010AEDC_bounce_n_trounce[i]->func = func_80108C18_bounce_n_trounce;
+                m224_playerObjTbl[i]->func = m224_PlayerEndObjInit;
                 for (j = 0; j < 4; j++) {
-                    dists[j] = func_8010AAE0_bounce_n_trounce(
-                        D_8010AD4C_bounce_n_trounce[j].x, D_8010AD4C_bounce_n_trounce[j].z,
-                        D_8010AEDC_bounce_n_trounce[i]->trans.x, D_8010AEDC_bounce_n_trounce[i]->trans.z);
+                    dists[j] = m224_Dist2DCalc(
+                        m224_endPosTbl[j].x, m224_endPosTbl[j].z,
+                        m224_playerObjTbl[i]->trans.x, m224_playerObjTbl[i]->trans.z);
                     order[j] = j;
                 }
                 for (j = 0; j < 3; j++) {
@@ -1190,40 +1190,40 @@ u16 func_80108994_bounce_n_trounce(void) {
                     }
                 }
                 for (j = 0; j < 4; j++) {
-                    if (D_8010AD7C_bounce_n_trounce[order[j]] != 1) {
-                        work->unk_58 = D_8010AD4C_bounce_n_trounce[order[j]];
-                        D_8010AD7C_bounce_n_trounce[order[j]] = 1;
+                    if (m224_endPosUsedTbl[order[j]] != 1) {
+                        work->unk_58 = m224_endPosTbl[order[j]];
+                        m224_endPosUsedTbl[order[j]] = 1;
                         break;
                     }
                 }
             } else {
-                count += (D_8010AEDC_bounce_n_trounce[i]->work[0] == 0);
+                count += (m224_playerObjTbl[i]->work[0] == 0);
             }
         }
     }
     return count == 4;
 }
 
-void func_80108C18_bounce_n_trounce(omObjData *object) {
+void m224_PlayerEndObjInit(omObjData *object) {
     BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
 
     work->state = 4;
     Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[3]].motId, 0, 6, 0);
     object->work[0] = 8;
-    object->func = func_80108CA8_bounce_n_trounce;
+    object->func = m224_PlayerEndWaitObjMain;
 }
 
-void func_80108CA8_bounce_n_trounce(omObjData *object) {
+void m224_PlayerEndWaitObjMain(omObjData *object) {
     if (object->work[0] != 0) {
         object->work[0]--;
     } else {
         Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[1]].motId, 0, 6, 2);
-        object->func = func_80108D28_bounce_n_trounce;
+        object->func = m224_PlayerEndObjMain;
     }
 }
 
-void func_80108D28_bounce_n_trounce(omObjData *object) {
+void m224_PlayerEndObjMain(omObjData *object) {
     BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
     BounceNTrounceWork *otherWork;
     f32 angle;
@@ -1232,16 +1232,16 @@ void func_80108D28_bounce_n_trounce(omObjData *object) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        otherWork = OM_GET_DATA_PTR(D_8010AEDC_bounce_n_trounce[i], BounceNTrounceWork);
+        otherWork = OM_GET_DATA_PTR(m224_playerObjTbl[i], BounceNTrounceWork);
         if (otherWork->state == 4) {
             continue;
         }
         if (work->unk_0E[i] & 1 || work->unk_0E[i] & 2) {
-            angle = atan2df(-D_8010AEDC_bounce_n_trounce[i]->trans.x, -D_8010AEDC_bounce_n_trounce[i]->trans.z);
+            angle = atan2df(-m224_playerObjTbl[i]->trans.x, -m224_playerObjTbl[i]->trans.z);
             otherWork->unk_64 = sindf(angle) * 6.0f;
             otherWork->unk_68 = cosdf(angle) * 6.0f;
             otherWork->unk_6C = 0.9f;
-            dist = func_8010AAE0_bounce_n_trounce(work->unk_58.x, work->unk_58.z, object->trans.x, object->trans.z);
+            dist = m224_Dist2DCalc(work->unk_58.x, work->unk_58.z, object->trans.x, object->trans.z);
             step = (dist < 50.0f) ? dist : 50.0f;
             angle = atan2df(work->unk_58.x - object->trans.x, work->unk_58.z - object->trans.z);
             object->trans.x += sindf(angle) * step;
@@ -1252,7 +1252,7 @@ void func_80108D28_bounce_n_trounce(omObjData *object) {
     }
 }
 
-void func_80108EFC_bounce_n_trounce(omObjData *object, f32 x, f32 y, f32 z) {
+void m224_HitEffShow(omObjData *object, f32 x, f32 y, f32 z) {
     Hu3DModelAttrSet(object->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelPosSet(object->model[4], object->trans.x, object->trans.y + 200.0f, object->trans.z);
     Hu3DModelRotSet(object->model[4], 0.0f, CRot.y, 0.0f);
@@ -1260,14 +1260,14 @@ void func_80108EFC_bounce_n_trounce(omObjData *object, f32 x, f32 y, f32 z) {
     Hu3DMotionTimeSet(object->model[4], 0.0f);
 }
 
-void func_80108F98_bounce_n_trounce(omObjData *object) {
+void m224_LandEffShow(omObjData *object) {
     Hu3DModelAttrSet(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelPosSet(object->model[6], object->trans.x, object->trans.y + 5.0f, object->trans.z);
     Hu3DMotionAttrSet(object->model[6], 3, 0);
     Hu3DMotionTimeSet(object->model[6], 0.0f);
 }
 
-void func_80109018_bounce_n_trounce(omObjData *object, s8 *stickX, s8 *stickY, u16 *btn) {
+void m224_PlayerComInputGet(omObjData *object, s8 *stickX, s8 *stickY, u16 *btn) {
     BounceNTrounceWork *work = OM_GET_DATA_PTR(object, BounceNTrounceWork);
     BounceNTrounceWork *targetWork;
     u16 tile;
@@ -1282,20 +1282,20 @@ void func_80109018_bounce_n_trounce(omObjData *object, s8 *stickX, s8 *stickY, u
         u16 state = OM_GET_DATA_PTR(work->floorTile, BounceNTrounceTileWork)->state;
 
         if ((state == 1 || state == 2) && work->unk_7E == 0) {
-            tile = func_80109A00_bounce_n_trounce(object);
+            tile = m224_PlayerComTileGet(object);
             work->unk_7E = 1;
             work->aiState = 1;
-            work->aiTargetPos.x = D_8010ABEC_bounce_n_trounce[tile].x;
-            work->aiTargetPos.y = D_8010ABEC_bounce_n_trounce[tile].y;
-            work->aiTargetPos.z = D_8010ABEC_bounce_n_trounce[tile].z;
+            work->aiTargetPos.x = m224_tilePosTbl[tile].x;
+            work->aiTargetPos.y = m224_tilePosTbl[tile].y;
+            work->aiTargetPos.z = m224_tilePosTbl[tile].z;
         }
     }
     if (work->aiState == 0) {
-        func_80109478_bounce_n_trounce(object);
+        m224_PlayerComStateDecide(object);
     }
     switch (work->aiState) {
         case 1:
-            if (func_8010AAE0_bounce_n_trounce(object->trans.x, object->trans.z, work->aiTargetPos.x,
+            if (m224_Dist2DCalc(object->trans.x, object->trans.z, work->aiTargetPos.x,
                                                work->aiTargetPos.z) < 60.0f) {
                 work->aiState = 0;
                 work->unk_7E = 0;
@@ -1341,7 +1341,7 @@ void func_80109018_bounce_n_trounce(omObjData *object, s8 *stickX, s8 *stickY, u
                 work->aiState = 0;
                 return;
             }
-            dist = func_8010AAE0_bounce_n_trounce(work->aiTarget->trans.x, work->aiTarget->trans.z,
+            dist = m224_Dist2DCalc(work->aiTarget->trans.x, work->aiTarget->trans.z,
                                                   object->trans.x, object->trans.z);
             if (dist < 80.0f && work->state != 1) {
                 work->aiState = 0;
@@ -1357,7 +1357,7 @@ void func_80109018_bounce_n_trounce(omObjData *object, s8 *stickX, s8 *stickY, u
             *stickY = -sindf(angle) * 80.0f;
             break;
         case 5:
-            if (func_8010AAE0_bounce_n_trounce(object->trans.x, object->trans.z, work->aiTargetPos.x,
+            if (m224_Dist2DCalc(object->trans.x, object->trans.z, work->aiTargetPos.x,
                                                work->aiTargetPos.z) < 100.0f) {
                 work->aiState = work->unk_A4;
                 return;
@@ -1367,11 +1367,11 @@ void func_80109018_bounce_n_trounce(omObjData *object, s8 *stickX, s8 *stickY, u
             *stickY = -sindf(angle) * 80.0f;
             break;
         case 4:
-            if (OM_GET_DATA_PTR(D_8010AED8_bounce_n_trounce[work->aiTile], BounceNTrounceTileWork)->state != 0) {
+            if (OM_GET_DATA_PTR(m224_tileObjTbl[work->aiTile], BounceNTrounceTileWork)->state != 0) {
                 work->aiState = 0;
                 return;
             }
-            if (func_8010AAE0_bounce_n_trounce(object->trans.x, object->trans.z, work->aiTilePos.x,
+            if (m224_Dist2DCalc(object->trans.x, object->trans.z, work->aiTilePos.x,
                                                work->aiTilePos.z) < 100.0f) {
                 work->aiState = 0;
                 return;
@@ -1383,7 +1383,7 @@ void func_80109018_bounce_n_trounce(omObjData *object, s8 *stickX, s8 *stickY, u
     }
 }
 
-void func_80109478_bounce_n_trounce(omObjData *object) {
+void m224_PlayerComStateDecide(omObjData *object) {
     omObjData *targets[4];
     s16 tiles[9];
     u16 aiStates[4][8] = {
@@ -1409,8 +1409,8 @@ void func_80109478_bounce_n_trounce(omObjData *object) {
                 count = 0;
                 for (i = 0; i < 4; i++) {
                     if (i != work->playerId &&
-                        OM_GET_DATA_PTR(D_8010AEDC_bounce_n_trounce[i], BounceNTrounceWork)->state < 2) {
-                        targets[count++] = D_8010AEDC_bounce_n_trounce[i];
+                        OM_GET_DATA_PTR(m224_playerObjTbl[i], BounceNTrounceWork)->state < 2) {
+                        targets[count++] = m224_playerObjTbl[i];
                     }
                 }
                 if (count == 0) {
@@ -1422,12 +1422,12 @@ void func_80109478_bounce_n_trounce(omObjData *object) {
                 } else {
                     work->aiTarget = targets[rand8() % count];
                 }
-                func_80109804_bounce_n_trounce(object, 3);
+                m224_PlayerComRouteSet(object, 3);
                 return;
             case 4:
                 tileCount = 0;
                 for (i = 0; i < 9; i++) {
-                    if (OM_GET_DATA_PTR(D_8010AED8_bounce_n_trounce[i], BounceNTrounceTileWork)->state == 0) {
+                    if (OM_GET_DATA_PTR(m224_tileObjTbl[i], BounceNTrounceTileWork)->state == 0) {
                         tiles[tileCount++] = i;
                     }
                 }
@@ -1436,25 +1436,25 @@ void func_80109478_bounce_n_trounce(omObjData *object) {
                 } else {
                     tile = tiles[rand8() % tileCount];
                 }
-                work->aiTarget = D_8010AED8_bounce_n_trounce[tile];
-                work->aiTilePos.x = D_8010ABEC_bounce_n_trounce[tile].x;
-                work->aiTilePos.y = D_8010ABEC_bounce_n_trounce[tile].y;
-                work->aiTilePos.z = D_8010ABEC_bounce_n_trounce[tile].z;
+                work->aiTarget = m224_tileObjTbl[tile];
+                work->aiTilePos.x = m224_tilePosTbl[tile].x;
+                work->aiTilePos.y = m224_tilePosTbl[tile].y;
+                work->aiTilePos.z = m224_tilePosTbl[tile].z;
                 work->aiTile = tile;
                 return;
         }
     }
 }
 
-s32 func_80109804_bounce_n_trounce(omObjData *object, s16 arg1) {
+s32 m224_PlayerComRouteSet(omObjData *object, s16 arg1) {
     BounceNTrounceWork *objWork = OM_GET_DATA_PTR(object, BounceNTrounceWork);
     BounceNTrounceWork *work;
     s16 tile;
     s16 targetTile;
     s16 nextTile;
 
-    tile = func_8010AB1C_bounce_n_trounce(object->trans.x, object->trans.z);
-    targetTile = func_8010AB1C_bounce_n_trounce(objWork->aiTarget->trans.x, objWork->aiTarget->trans.z);
+    tile = m224_TileNoGet(object->trans.x, object->trans.z);
+    targetTile = m224_TileNoGet(objWork->aiTarget->trans.x, objWork->aiTarget->trans.z);
     work = objWork; // Second pointer copy is needed for register allocation to match.
     if (abs(tile - targetTile) == 1 || abs(tile - targetTile) == 3) {
         return 0;
@@ -1474,30 +1474,30 @@ s32 func_80109804_bounce_n_trounce(omObjData *object, s16 arg1) {
         } else {
             goto end;
         }
-        if (OM_GET_DATA_PTR(D_8010AED8_bounce_n_trounce[nextTile], BounceNTrounceTileWork)->state != 1) {
+        if (OM_GET_DATA_PTR(m224_tileObjTbl[nextTile], BounceNTrounceTileWork)->state != 1) {
             work->aiState = 5;
             work->unk_A4 = arg1;
-            work->aiTargetPos.x = D_8010ABEC_bounce_n_trounce[nextTile].x;
-            work->aiTargetPos.y = D_8010ABEC_bounce_n_trounce[nextTile].y;
-            work->aiTargetPos.z = D_8010ABEC_bounce_n_trounce[nextTile].z;
+            work->aiTargetPos.x = m224_tilePosTbl[nextTile].x;
+            work->aiTargetPos.y = m224_tilePosTbl[nextTile].y;
+            work->aiTargetPos.z = m224_tilePosTbl[nextTile].z;
         }
     }
 end:
     // The original has no return value here.
 }
 
-s16 func_80109A00_bounce_n_trounce(omObjData *object) {
+s16 m224_PlayerComTileGet(omObjData *object) {
     f32 dists[9]; // Unused stack space retained from the original function.
     f32 minDist = 1000000.0f;
     s32 result = 0;
     u16 i;
 
     for (i = 0; i < 9; i++) {
-        if (OM_GET_DATA_PTR(D_8010AED8_bounce_n_trounce[i], BounceNTrounceTileWork)->state == 0) {
-            if (HuSqrtf((object->trans.x - D_8010ABEC_bounce_n_trounce[i].x) *
-                            (object->trans.x - D_8010ABEC_bounce_n_trounce[i].x) +
-                        (object->trans.z - D_8010ABEC_bounce_n_trounce[i].z) *
-                            (object->trans.z - D_8010ABEC_bounce_n_trounce[i].z)) < minDist) {
+        if (OM_GET_DATA_PTR(m224_tileObjTbl[i], BounceNTrounceTileWork)->state == 0) {
+            if (HuSqrtf((object->trans.x - m224_tilePosTbl[i].x) *
+                            (object->trans.x - m224_tilePosTbl[i].x) +
+                        (object->trans.z - m224_tilePosTbl[i].z) *
+                            (object->trans.z - m224_tilePosTbl[i].z)) < minDist) {
                 result = i;
             }
         }
@@ -1505,55 +1505,55 @@ s16 func_80109A00_bounce_n_trounce(omObjData *object) {
     return result;
 }
 
-void func_80109AF0_bounce_n_trounce(omObjData *object) {
+void m224_IntroObjMain(omObjData *object) {
     omObjData *player;
     BounceNTrounceWork *work;
     f32 angle;
     s32 i;
 
-    switch (D_8010AEC8_bounce_n_trounce) {
+    switch (m224_introPhase) {
         case 0:
             WipeCreateIn(0xFF, 16);
-            D_8010AEC8_bounce_n_trounce = 1;
+            m224_introPhase = 1;
             break;
         case 1:
             if (WipeStatGet() == 0) {
-                D_8010AEC8_bounce_n_trounce = 2;
+                m224_introPhase = 2;
             }
             break;
         case 2:
-            player = D_8010AEDC_bounce_n_trounce[0];
+            player = m224_playerObjTbl[0];
             work = OM_GET_DATA_PTR(player, BounceNTrounceWork);
             if (work->motState == 2) {
-                if (++D_8010AD86_bounce_n_trounce == 6) {
-                    D_8010AD84_bounce_n_trounce = 1;
+                if (++m224_introJumpCnt == 6) {
+                    m224_introJumpF = 1;
                 }
             }
             for (i = 0; i < 4; i++) {
-                player = D_8010AEDC_bounce_n_trounce[i];
+                player = m224_playerObjTbl[i];
                 work = OM_GET_DATA_PTR(player, BounceNTrounceWork);
-                if (work->motState == 2 && D_8010AD84_bounce_n_trounce == 1) {
-                    D_8010ABE0_bounce_n_trounce[i] |= 0x8000;
+                if (work->motState == 2 && m224_introJumpF == 1) {
+                    m224_introBtnTbl[i] |= 0x8000;
                 }
             }
-            if (D_8010AD84_bounce_n_trounce == 1) {
-                D_8010AEC8_bounce_n_trounce = 3;
+            if (m224_introJumpF == 1) {
+                m224_introPhase = 3;
             }
             break;
         case 3:
-            if (D_8010AEDC_bounce_n_trounce[0]->trans.y > 500.0f) {
+            if (m224_playerObjTbl[0]->trans.y > 500.0f) {
                 for (i = 0; i < 4; i++) {
-                    D_8010ABE0_bounce_n_trounce[i] |= 0x2000;
+                    m224_introBtnTbl[i] |= 0x2000;
                 }
-                D_8010AEC8_bounce_n_trounce = 4;
+                m224_introPhase = 4;
             }
             break;
         case 4:
-            player = D_8010AEDC_bounce_n_trounce[0];
+            player = m224_playerObjTbl[0];
             work = OM_GET_DATA_PTR(player, BounceNTrounceWork);
             if (work->motState == 2) {
                 for (i = 0; i < 4; i++) {
-                    player = D_8010AEDC_bounce_n_trounce[i];
+                    player = m224_playerObjTbl[i];
                     work = OM_GET_DATA_PTR(player, BounceNTrounceWork);
                     angle = atan2df(-player->trans.x, -player->trans.z);
                     player->rot.y = angle;
@@ -1566,12 +1566,12 @@ void func_80109AF0_bounce_n_trounce(omObjData *object) {
                     player->func = NULL;
                     omVibrate(work->playerId, 2, 2, 20);
                 }
-                D_8010AEC8_bounce_n_trounce = 5;
+                m224_introPhase = 5;
             }
             break;
         case 5:
             for (i = 0; i < 4; i++) {
-                player = D_8010AEDC_bounce_n_trounce[i];
+                player = m224_playerObjTbl[i];
                 work = OM_GET_DATA_PTR(player, BounceNTrounceWork);
                 player->trans.x += work->unk_64;
                 player->trans.z += work->unk_68;
@@ -1587,105 +1587,105 @@ void func_80109AF0_bounce_n_trounce(omObjData *object) {
                     work->unk_68 = 0.0f;
                 }
                 if (work->unk_64 == 0.0f && work->unk_68 == 0.0f) {
-                    D_8010AEC8_bounce_n_trounce = 6;
+                    m224_introPhase = 6;
                     HuAudSeqPlay(0x37);
                 }
             }
             break;
         case 6:
             for (i = 0; i < 4; i++) {
-                D_8010AEDC_bounce_n_trounce[i]->func = func_80106F78_bounce_n_trounce;
+                m224_playerObjTbl[i]->func = m224_PlayerObjMain;
             }
             omDelObj(object);
-            D_8010AEC0_bounce_n_trounce = NULL;
+            m224_introObj = NULL;
             MgFlowStatSet(MG_STATE_START);
             break;
     }
 }
 
-void func_80109F68_bounce_n_trounce(omObjData *object) {
+void m224_FinishObjMain(omObjData *object) {
     omObjData *player;
     BounceNTrounceWork *work;
     f32 dist;
     f32 diff;
     s32 i;
 
-    switch (D_8010AECA_bounce_n_trounce) {
+    switch (m224_finishPhase) {
         case 0:
-            D_8010AED4_bounce_n_trounce->work[0] = 0;
-            D_8010AEB0_bounce_n_trounce = 45;
-            D_8010AECA_bounce_n_trounce = 1;
+            m224_cameraObj->work[0] = 0;
+            m224_finishTimer = 45;
+            m224_finishPhase = 1;
             for (i = 0; i < 4; i++) {
-                work = OM_GET_DATA_PTR(D_8010AEDC_bounce_n_trounce[i], BounceNTrounceWork);
+                work = OM_GET_DATA_PTR(m224_playerObjTbl[i], BounceNTrounceWork);
                 work->radius = 50.0f;
             }
             break;
         case 1:
-            if (D_8010AEB0_bounce_n_trounce == 0) {
-                if (D_8010AD88_bounce_n_trounce == 1) {
-                    D_8010AECA_bounce_n_trounce = D_8010AEB2_bounce_n_trounce;
+            if (m224_finishTimer == 0) {
+                if (m224_finishDecideF == 1) {
+                    m224_finishPhase = m224_finishNextPhase;
                 }
             } else {
-                D_8010AEB0_bounce_n_trounce--;
+                m224_finishTimer--;
             }
-            if (D_8010AD88_bounce_n_trounce != 0) {
+            if (m224_finishDecideF != 0) {
                 break;
             }
-            if (D_8010AEBC_bounce_n_trounce != 0) {
-                if (func_80108994_bounce_n_trounce() != 1) {
+            if (m224_playerAliveCnt != 0) {
+                if (m224_PlayerEndCheck() != 1) {
                     break;
                 }
-                if (D_8010AEBC_bounce_n_trounce == 1) {
+                if (m224_playerAliveCnt == 1) {
                     for (i = 0; i < 4; i++) {
-                        work = OM_GET_DATA_PTR(D_8010AEDC_bounce_n_trounce[i], BounceNTrounceWork);
+                        work = OM_GET_DATA_PTR(m224_playerObjTbl[i], BounceNTrounceWork);
                         if (work->state == 4) {
-                            D_8010AEBE_bounce_n_trounce = i;
-                            D_8010ABB0_bounce_n_trounce.winners[0] = D_8010AEBE_bounce_n_trounce;
-                            D_8010AEB2_bounce_n_trounce = 3;
-                            D_8010AD88_bounce_n_trounce = 1;
+                            m224_winner = i;
+                            m224_mgFlow.winners[0] = m224_winner;
+                            m224_finishNextPhase = 3;
+                            m224_finishDecideF = 1;
                         }
                     }
                     break;
                 }
             }
-            D_8010ABB0_bounce_n_trounce.resultType = MG_RESULT_DRAW;
-            D_8010AEB2_bounce_n_trounce = 2;
-            D_8010AD88_bounce_n_trounce = 1;
+            m224_mgFlow.resultType = MG_RESULT_DRAW;
+            m224_finishNextPhase = 2;
+            m224_finishDecideF = 1;
             break;
         case 2:
             MgFlowStatSet(MG_STATE_RESULT);
             for (i = 0; i < 4; i++) {
-                work = OM_GET_DATA_PTR(D_8010AEDC_bounce_n_trounce[i], BounceNTrounceWork);
+                work = OM_GET_DATA_PTR(m224_playerObjTbl[i], BounceNTrounceWork);
                 if (work->state == 4) {
-                    Hu3DMotionShiftSet(D_8010AEDC_bounce_n_trounce[i]->model[1],
-                                       Hu3DData[D_8010AEDC_bounce_n_trounce[i]->motion[5]].motId, 0, 6, 0);
+                    Hu3DMotionShiftSet(m224_playerObjTbl[i]->model[1],
+                                       Hu3DData[m224_playerObjTbl[i]->motion[5]].motId, 0, 6, 0);
                 }
             }
-            D_8010AECA_bounce_n_trounce = 6;
+            m224_finishPhase = 6;
             break;
         case 3:
-            player = D_8010AEDC_bounce_n_trounce[D_8010AEBE_bounce_n_trounce];
-            D_8010AEB8_bounce_n_trounce = 1350.0f;
+            player = m224_playerObjTbl[m224_winner];
+            m224_cameraZoomTarget = 1350.0f;
             dist = HuSqrtf(player->trans.x * player->trans.x + player->trans.z * player->trans.z);
             if (dist > 560.0f && (player->trans.z > 0.0f || player->trans.x > 0.0f)) {
-                D_8010AEB8_bounce_n_trounce += (dist - 560.0f) / 113.0f * 400.0f;
+                m224_cameraZoomTarget += (dist - 560.0f) / 113.0f * 400.0f;
             }
-            D_8010AEB4_bounce_n_trounce = (D_8010AEB8_bounce_n_trounce - CZoom) / 30.0f;
-            Hu3DMotionShiftSet(D_8010AEDC_bounce_n_trounce[D_8010AEBE_bounce_n_trounce]->model[1],
-                               Hu3DData[D_8010AEDC_bounce_n_trounce[D_8010AEBE_bounce_n_trounce]->motion[2]].motId, 0,
+            m224_cameraZoomSpeed = (m224_cameraZoomTarget - CZoom) / 30.0f;
+            Hu3DMotionShiftSet(m224_playerObjTbl[m224_winner]->model[1],
+                               Hu3DData[m224_playerObjTbl[m224_winner]->motion[2]].motId, 0,
                                6, 0);
-            D_8010AECA_bounce_n_trounce = 4;
+            m224_finishPhase = 4;
             break;
         case 4:
-            CZoom += D_8010AEB4_bounce_n_trounce;
-            if (CZoom < D_8010AEB8_bounce_n_trounce) {
-                CZoom = D_8010AEB8_bounce_n_trounce;
-                D_8010AECA_bounce_n_trounce = 5;
+            CZoom += m224_cameraZoomSpeed;
+            if (CZoom < m224_cameraZoomTarget) {
+                CZoom = m224_cameraZoomTarget;
+                m224_finishPhase = 5;
             }
-            if (D_8010AD8A_bounce_n_trounce != 0) {
+            if (m224_winnerTurnF != 0) {
                 break;
             }
-            player = D_8010AEDC_bounce_n_trounce[D_8010AEBE_bounce_n_trounce];
+            player = m224_playerObjTbl[m224_winner];
             if (player->rot.y >= 360.0f) {
                 player->rot.y -= 360.0f;
             }
@@ -1710,34 +1710,34 @@ void func_80109F68_bounce_n_trounce(omObjData *object) {
             Hu3DModelRotSet(player->model[1], player->rot.x, player->rot.y, player->rot.z);
             if (fabs(player->rot.y - (CRot.y + 0.0f)) < 0.1f) {
                 Hu3DMotionShiftSet(player->model[1], Hu3DData[player->motion[1]].motId, 0, 6, 0);
-                D_8010AD8A_bounce_n_trounce = 1;
+                m224_winnerTurnF = 1;
             }
             break;
         case 5:
-            Hu3DMotionShiftSet(D_8010AEDC_bounce_n_trounce[D_8010AEBE_bounce_n_trounce]->model[1],
-                               Hu3DData[D_8010AEDC_bounce_n_trounce[D_8010AEBE_bounce_n_trounce]->motion[4]].motId, 0,
+            Hu3DMotionShiftSet(m224_playerObjTbl[m224_winner]->model[1],
+                               Hu3DData[m224_playerObjTbl[m224_winner]->motion[4]].motId, 0,
                                6, 0);
             MgFlowStatSet(MG_STATE_RESULT);
-            HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[D_8010AEBE_bounce_n_trounce].chr][0] | 0x2F);
-            GwPlayer[D_8010AEBE_bounce_n_trounce].bonusCoin = 10;
-            D_8010AECA_bounce_n_trounce = 6;
+            HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[m224_winner].chr][0] | 0x2F);
+            GwPlayer[m224_winner].bonusCoin = 10;
+            m224_finishPhase = 6;
             break;
         case 6:
             omDelObj(object);
-            D_8010AEC4_bounce_n_trounce = NULL;
+            m224_finishObj = NULL;
             break;
     }
 }
 
-void func_8010A664_bounce_n_trounce(omObjData *object) {
+void m224_CameraZoomObjMain(omObjData *object) {
     f32 maxY;
     s32 i;
 
     if (object->work[0] != 0) {
         maxY = 0.0f;
         for (i = 0; i < 4; i++) {
-            if (maxY < D_8010AEDC_bounce_n_trounce[i]->trans.y) {
-                maxY = D_8010AEDC_bounce_n_trounce[i]->trans.y;
+            if (maxY < m224_playerObjTbl[i]->trans.y) {
+                maxY = m224_playerObjTbl[i]->trans.y;
             }
         }
         if (maxY > 300.0f) {
@@ -1752,7 +1752,7 @@ void func_8010A664_bounce_n_trounce(omObjData *object) {
     }
 }
 
-void func_8010A740_bounce_n_trounce(s16 model) {
+void m224_SpinEffHook(s16 model) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_UnkBC_Struct *modelData = Hu3DData[model].unkBC;
     HmfModelData_UnkBC_Unk58_Struct *particle = modelData->unk58;
@@ -1772,9 +1772,9 @@ void func_8010A740_bounce_n_trounce(s16 model) {
             if (particle->unk08 < 0.0f) {
                 particle->unk08 = 0.0f;
             }
-            tile = func_8010AB1C_bounce_n_trounce(particle->unk0C, particle->unk14);
+            tile = m224_TileNoGet(particle->unk0C, particle->unk14);
             if (tile >= 0 && tile < 9) {
-                floorY = D_8010AED8_bounce_n_trounce[tile]->trans.y;
+                floorY = m224_tileObjTbl[tile]->trans.y;
                 if (particle->unk10 < floorY && particle->unk10 > floorY - 300.0f) {
                     particle->unk08 = 0.0f;
                 }
@@ -1784,7 +1784,7 @@ void func_8010A740_bounce_n_trounce(s16 model) {
     modelData->unk02++;
 }
 
-void func_8010A8F0_bounce_n_trounce(omObjData *object) {
+void m224_SpinEffObjMain(omObjData *object) {
     omObjData *player = (omObjData *)object->work[1];
     BounceNTrounceWork *playerWork = OM_GET_DATA_PTR(player, BounceNTrounceWork);
     BounceNTrounceEmitterWork *work;
@@ -1836,11 +1836,11 @@ void func_8010A8F0_bounce_n_trounce(omObjData *object) {
     particle->unk08 = 10.0f;
 }
 
-f32 func_8010AAE0_bounce_n_trounce(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+f32 m224_Dist2DCalc(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     return HuSqrtf((arg0 - arg2) * (arg0 - arg2) + (arg1 - arg3) * (arg1 - arg3));
 }
 
-s16 func_8010AB1C_bounce_n_trounce(f32 arg0, f32 arg1) {
+s16 m224_TileNoGet(f32 arg0, f32 arg1) {
     s32 x;
     s32 y;
     s16 index;

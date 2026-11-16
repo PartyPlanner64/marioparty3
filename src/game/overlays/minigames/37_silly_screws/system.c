@@ -50,26 +50,26 @@ typedef struct {
     /* 0x14 */ f32 animStart;
 } AnimModelData; // Size 0x18
 
-void m255_InitFuncGroup(FuncGroup *group, s16 maxFuncs);
-void m255_SortFuncGroup(FuncGroup *group);
+void m255_FuncGroupCreate(FuncGroup *group, s16 maxFuncs);
+void m255_FuncGroupSort(FuncGroup *group);
 
-static SpriteData *m255_sprites;
-static FuncGroup *m255_funcGroups;
-static AnimModelData *m255_animModels;
+static SpriteData *m255_sprTbl;
+static FuncGroup *m255_funcGroupTbl;
+static AnimModelData *m255_animMdlTbl;
 
-void m255_CreateSystem(void) {
+void m255_SystemCreate(void) {
     s8 maxFuncs[FUNC_GRP_MAX] = { 6, 4, 3, 3, 8, 8 };
     s16 i;
 
-    m255_sprites = HuMemAllocTag(SPRITES_MAX * sizeof(SpriteData), TAG_OVERLAY);
-    memset(m255_sprites, 0, SPRITES_MAX * sizeof(SpriteData));
-    m255_funcGroups = HuMemAllocTag(FUNC_GRP_MAX * sizeof(FuncGroup), TAG_OVERLAY);
+    m255_sprTbl = HuMemAllocTag(SPRITES_MAX * sizeof(SpriteData), TAG_OVERLAY);
+    memset(m255_sprTbl, 0, SPRITES_MAX * sizeof(SpriteData));
+    m255_funcGroupTbl = HuMemAllocTag(FUNC_GRP_MAX * sizeof(FuncGroup), TAG_OVERLAY);
     for (i = 0; i < FUNC_GRP_MAX; i++) {
-        m255_InitFuncGroup(&m255_funcGroups[i], maxFuncs[i]);
+        m255_FuncGroupCreate(&m255_funcGroupTbl[i], maxFuncs[i]);
     }
 }
 
-void m255_InitFuncGroup(FuncGroup *group, s16 maxFuncs) {
+void m255_FuncGroupCreate(FuncGroup *group, s16 maxFuncs) {
     s16 i;
 
     group->funcCtx = HuMemAllocTag(maxFuncs * sizeof(FuncContext), TAG_OVERLAY);
@@ -82,8 +82,8 @@ void m255_InitFuncGroup(FuncGroup *group, s16 maxFuncs) {
     group->maxFuncs = maxFuncs;
 }
 
-FuncContext *m255_SetFunc(s8 groupId, s8 prio, s16 param, void *data, void (*func)(FuncContext *), u8 sort, s8 execFunc) {
-    FuncGroup *group = &m255_funcGroups[groupId];
+FuncContext *m255_FuncSet(s8 groupId, s8 prio, s16 param, void *data, void (*func)(FuncContext *), u8 sort, s8 execFunc) {
+    FuncGroup *group = &m255_funcGroupTbl[groupId];
     FuncContext *ctx = group->funcCtx;
     s16 i = 0;
     s16 maxFuncs = group->maxFuncs;
@@ -110,7 +110,7 @@ FuncContext *m255_SetFunc(s8 groupId, s8 prio, s16 param, void *data, void (*fun
         ctx->func(ctx);
     }
     if (sort) {
-        m255_SortFuncGroup(group);
+        m255_FuncGroupSort(group);
         group->sort = FALSE;
     } else {
         group->sort = TRUE;
@@ -118,16 +118,16 @@ FuncContext *m255_SetFunc(s8 groupId, s8 prio, s16 param, void *data, void (*fun
     return ctx;
 }
 
-void m255_ResetFunc(s8 groupId, FuncContext *ctx) {
+void m255_FuncReset(s8 groupId, FuncContext *ctx) {
     s8 next = ctx->next;
 
     memset(ctx, 0, sizeof(FuncContext));
     ctx->next = next;
-    m255_funcGroups[groupId].sort = TRUE;
+    m255_funcGroupTbl[groupId].sort = TRUE;
 }
 
-void m255_ResetFuncGroup(s8 groupId) {
-    FuncGroup *group = &m255_funcGroups[groupId];
+void m255_FuncGroupReset(s8 groupId) {
+    FuncGroup *group = &m255_funcGroupTbl[groupId];
     s8 i = 0;
 
     memset(group->funcCtx, 0, group->maxFuncs * sizeof(FuncContext));
@@ -137,13 +137,13 @@ void m255_ResetFuncGroup(s8 groupId) {
     }
 }
 
-void m255_UpdateFuncGroup(s8 groupId) {
-    FuncGroup *group = &m255_funcGroups[groupId];
+void m255_FuncGroupUpdate(s8 groupId) {
+    FuncGroup *group = &m255_funcGroupTbl[groupId];
     FuncContext *ctx = group->funcCtx;
     s8 i;
 
     if (group->sort) {
-        m255_SortFuncGroup(group);
+        m255_FuncGroupSort(group);
     }
     for (i = 0; i < FUNC_PRIO_MAX; i++) {
         s8 funcId = group->order[i];
@@ -155,7 +155,7 @@ void m255_UpdateFuncGroup(s8 groupId) {
     }
 }
 
-void m255_SortFuncGroup(FuncGroup *group) {
+void m255_FuncGroupSort(FuncGroup *group) {
     FuncContext *currCtx = group->funcCtx;
     s8 prio;
     s8 i;
@@ -174,12 +174,12 @@ void m255_SortFuncGroup(FuncGroup *group) {
     group->sort = FALSE;
 }
 
-s16 m255_SetSprite(s32 dir, s32 file, u16 arg2, s32 attr) {
+s16 m255_SprCreate(s32 dir, s32 file, u16 arg2, s32 attr) {
     SpriteData *sprite;
     HuSprite *temp_v0_2;
     s16 i;
 
-    sprite = m255_sprites;
+    sprite = m255_sprTbl;
     for (i = 0; i < SPRITES_MAX; i++, sprite++) {
         if (sprite->state == SPRITE_STATE_NOTSET) {
             sprite->unk02 = HuSprAnimDataRead((dir << 16) | file);
@@ -206,8 +206,8 @@ s16 m255_SetSprite(s32 dir, s32 file, u16 arg2, s32 attr) {
     return i;
 }
 
-void m255_SetSpriteDispOn(s16 spriteId, s32 posX, s32 posY) {
-    SpriteData *sprite = &m255_sprites[spriteId];
+void m255_SprDispOn(s16 spriteId, s32 posX, s32 posY) {
+    SpriteData *sprite = &m255_sprTbl[spriteId];
 
     if (sprite->state != SPRITE_STATE_NOTSET) {
         HuSprPatNoSet(sprite->groupId, 0, 0);
@@ -217,8 +217,8 @@ void m255_SetSpriteDispOn(s16 spriteId, s32 posX, s32 posY) {
     }
 }
 
-void m255_SetSpriteDispOff(s16 spriteId) {
-    SpriteData *sprite = &m255_sprites[spriteId];
+void m255_SprDispOff(s16 spriteId) {
+    SpriteData *sprite = &m255_sprTbl[spriteId];
 
     if (sprite->state != SPRITE_STATE_NOTSET) {
         HuSprDispOff(sprite->groupId, 0);
@@ -226,11 +226,11 @@ void m255_SetSpriteDispOff(s16 spriteId) {
     }
 }
 
-void m255_UpdateSprites(void) {
+void m255_SprUpdate(void) {
     SpriteData *sprite;
     s16 i;
 
-    sprite = m255_sprites;
+    sprite = m255_sprTbl;
     for (i = 0; i < SPRITES_MAX; i++, sprite++) {
         switch (sprite->state) {
             case SPRITE_STATE_VISIBLE:
@@ -243,12 +243,12 @@ void m255_UpdateSprites(void) {
     }
 }
 
-s32 m255_SetAnimModel(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4) {
+s32 m255_AnimMdlCreate(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4) {
     AnimModelData *animModel;
     HmfModel *hmfModel;
     s16 i;
 
-    animModel = m255_animModels;
+    animModel = m255_animMdlTbl;
     for (i = 0; i < ANIMMDL_MAX; i++, animModel++) {
         if (!animModel->set) {
             animModel->modelId = Hu3DModelRead((dir << 16) | file, arg4);
@@ -269,17 +269,17 @@ s32 m255_SetAnimModel(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4) {
     return i;
 }
 
-s32 m255_SetAnimModelDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 rotX, f32 rotY, f32 rotZ, f32 scale, f32 animStart) {
+s32 m255_AnimMdlDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 rotX, f32 rotY, f32 rotZ, f32 scale, f32 animStart) {
     AnimModelData *animModel;
     HmfModel *HmfModel;
 
     if (animModelId >= ANIMMDL_MAX) {
         return FALSE;
     }
-    if (!m255_animModels[animModelId].set) {
+    if (!m255_animMdlTbl[animModelId].set) {
         return FALSE;
     }
-    animModel = &m255_animModels[animModelId];
+    animModel = &m255_animMdlTbl[animModelId];
     HmfModel = &Hu3DData[animModel->modelId];
     if ((HmfModel->attr & 4) && animModel->state == ANIMMDL_STATE_INVISIBLE) {
         Hu3DModelPosSet(animModel->modelId, posX, posY, posZ);
@@ -301,12 +301,12 @@ s32 m255_SetAnimModelDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 r
     return FALSE;
 }
 
-void m255_UpdateAnimModels(void) {
+void m255_AnimMdlUpdate(void) {
     AnimModelData *animModel;
     HmfModel *hmfModel;
     s16 i;
 
-    animModel = m255_animModels;
+    animModel = m255_animMdlTbl;
     for (i = 0; i < ANIMMDL_MAX; i++, animModel++) {
         if (!animModel->set || animModel->state == ANIMMDL_STATE_INVISIBLE) {
             continue;
@@ -337,7 +337,7 @@ void m255_UpdateAnimModels(void) {
     }
 }
 
-u8 m255_CalcLerp(f32 *out, u8 *timer, f32 start, f32 end, f32 duration) {
+u8 m255_LerpCalc(f32 *out, u8 *timer, f32 start, f32 end, f32 duration) {
     f32 t = *timer / duration;
 
     *out = start + (end - start) * t;
@@ -350,7 +350,7 @@ u8 m255_CalcLerp(f32 *out, u8 *timer, f32 start, f32 end, f32 duration) {
 }
 
 // TODO: doesn't work with -Wa,--vr4300mul-off.
-f32 m255_CalcQuadraticBezier(f32 t, f32 p0, f32 p1, f32 p2) {
+f32 m255_BezierCalc(f32 t, f32 p0, f32 p1, f32 p2) {
     f32 u = 1.0f - t;
     f32 ret;
 
@@ -360,7 +360,7 @@ f32 m255_CalcQuadraticBezier(f32 t, f32 p0, f32 p1, f32 p2) {
     return ret;
 }
 
-void m255_SyncWithModel(omObjData *object) {
+void m255_MdlSync(omObjData *object) {
     object->trans.x = Hu3DData[object->model[0]].pos.x;
     object->trans.y = Hu3DData[object->model[0]].pos.y;
     object->trans.z = Hu3DData[object->model[0]].pos.z;

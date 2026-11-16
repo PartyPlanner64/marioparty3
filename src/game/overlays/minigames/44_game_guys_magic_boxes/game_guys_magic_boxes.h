@@ -3,10 +3,10 @@
 
 #include "common.h"
 
-void func_8010A8C0_game_guys_magic_boxes(s16 x, s16 y);
-void func_8010AB8C_game_guys_magic_boxes(void);
-s16 func_8010AC18_game_guys_magic_boxes(void);
-s32 func_8010B700_game_guys_magic_boxes(s32 x);
-void func_8010B8B4_game_guys_magic_boxes(void);
+void m268_SpotIntroInit(s16 x, s16 y);
+void m268_SpotBeamInit(void);
+s16 m268_SpotIntroUpdate(void);
+s32 m268_SpotBeamUpdate(s32 x);
+void m268_SpotDispOff(void);
 
 #endif

@@ -26,8 +26,8 @@
      (posY) - 5.0f <= (work)->unk44.y && (posY) + 5.0f >= (work)->unk44.y)
 
 // Generic per-object work entry. The overlay keeps a pool of 0x88 of these in
-// D_80111700_messy_memory; several sub-ranges of the pool have their own
-// symbols (e.g. D_80113A94_messy_memory is entry 69).
+// m229_objWorkTbl; several sub-ranges of the pool have their own
+// symbols (e.g. m229_dustWork is entry 69).
 typedef struct {
     /* 0x00 */ omObjData *obj;
     /* 0x04 */ s16 unk04;
@@ -81,56 +81,56 @@ typedef struct {
     /* 0x00 */ s16 unk00;   // D_80115D70
     /* 0x02 */ u8 unk02[4]; // D_80115D72
     /* 0x06 */ u8 unk06[4]; // D_80115D76
-} MessyMemoryBss5D70;       // sizeof 0xA
+} MessyMemoryPlayerStat;       // sizeof 0xA
 
-// Fields of messyMemoryBss5D70 (aliased in undefined_syms.txt).
-extern s16 D_80115D70_messy_memory;
-extern u8 D_80115D72_messy_memory[4];
-extern u8 D_80115D76_messy_memory[4];
+// Fields of m229_playerStat (aliased in undefined_syms.txt).
+extern s16 m229_dustSeF;
+extern u8 m229_handAlphaTbl[4];
+extern u8 m229_scoreTbl[4];
 
-// Sub-ranges of the D_80111700_messy_memory work pool (aliased in undefined_syms.txt).
-extern MessyMemoryWork D_80111910_messy_memory[2];
-extern MessyMemoryWork D_80111A9C_messy_memory[1];
-extern MessyMemoryWork D_801134E8_messy_memory[7];
-extern MessyMemoryWork D_80113884_messy_memory[4];
-extern MessyMemoryWork D_80113A94_messy_memory[1];
-extern MessyMemoryWork D_80113B18_messy_memory[4];
+// Sub-ranges of the m229_objWorkTbl work pool (aliased in undefined_syms.txt).
+extern MessyMemoryWork m229_coverWorkTbl[2];
+extern MessyMemoryWork m229_dividerWork[1];
+extern MessyMemoryWork m229_moverWorkTbl[7];
+extern MessyMemoryWork m229_shutterWorkTbl[4];
+extern MessyMemoryWork m229_dustWork[1];
+extern MessyMemoryWork m229_playerWorkTbl[4];
 
-extern const s16 D_801115F4_messy_memory[];
+extern const s16 m229_fontMesTbl[];
 
-void func_80105B88_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2);
-void func_8010622C_messy_memory(omObjData *obj);
-void func_801063FC_messy_memory(omObjData *obj);
-Gfx **func_80106620_messy_memory(Gfx **gfx);
-Gfx **func_80106704_messy_memory(Gfx **gfx);
-Gfx **func_801067D0_messy_memory(Gfx **gfx, u8 alpha);
-void func_80106800_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2);
-void func_80106C60_messy_memory(omObjData *obj);
-void func_80107C88_messy_memory(omObjData *obj);
-void func_8010ACE4_messy_memory(omObjData *obj);
-void func_8010AD40_messy_memory(omObjData *obj);
-void func_8010B32C_messy_memory(omObjData *obj);
-void func_8010B5C8_messy_memory(omObjData *obj);
-void func_8010C03C_messy_memory(omObjData *obj);
-void func_8010C478_messy_memory(omObjData *obj);
-void func_8010D55C_messy_memory(omObjData *obj);
-void func_8010DA64_messy_memory(omObjData *obj);
-void func_8010E29C_messy_memory(omObjData *obj);
-void func_8010E654_messy_memory(omObjData *obj);
-void func_8010EBB0_messy_memory(omObjData *obj);
-void func_8010F04C_messy_memory(omObjData *obj);
-void func_8010F19C_messy_memory(omObjData *obj);
-void func_8010F3DC_messy_memory(omObjData *obj);
-void func_8010F6E8_messy_memory(omObjData *obj);
-void func_8010FA38_messy_memory(omObjData *obj);
-void func_8010FDF0_messy_memory(omObjData *obj);
-void func_801109BC_messy_memory(omObjData *obj);
-void func_80110D50_messy_memory(void);
-void func_80110EC4_messy_memory(void);
+void m229_DividerDraw(Gfx **gfxPos, s32 arg1, s32 arg2);
+void m229_CoverObjMain(omObjData *obj);
+void m229_CoverObjInit(omObjData *obj);
+Gfx **m229_GfxRectTexInit(Gfx **gfx);
+Gfx **m229_GfxRectXluInit(Gfx **gfx);
+Gfx **m229_GfxPrimAlphaSet(Gfx **gfx, u8 alpha);
+void m229_HandDraw(Gfx **gfxPos, s32 arg1, s32 arg2);
+void m229_HandPadInput(omObjData *obj);
+void m229_HandComInputCalc(omObjData *obj);
+void m229_HandComInput(omObjData *obj);
+void m229_HandObjMain(omObjData *obj);
+void m229_HandObjInit(omObjData *obj);
+void m229_PlayerObjMain(omObjData *obj);
+void m229_PlayerObjInit(omObjData *obj);
+void m229_ItemObjMain(omObjData *obj);
+void m229_ItemObjInit(omObjData *obj);
+void m229_ItemMarkObjMain(omObjData *obj);
+void m229_ItemMarkObjInit(omObjData *obj);
+void m229_MoverObjMain(omObjData *obj);
+void m229_MoverObjInit(omObjData *obj);
+void m229_DustObjInit(omObjData *obj);
+void m229_ShutterObjMain(omObjData *obj);
+void m229_ShutterObjInit(omObjData *obj);
+void m229_ScoreObjMain(omObjData *obj);
+void m229_ScoreObjInit(omObjData *obj);
+void m229_MainObjMain(omObjData *obj);
+void m229_MainObjInit(omObjData *obj);
+void m229_CameraInit(void);
+void m229_ObjectSetup(void);
 
-s32 D_80110FC0_messy_memory[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+s32 m229_voiceChrTbl[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
 
-s16 D_80110FE0_messy_memory[5][2] = {
+s16 m229_viewOfsTbl[5][2] = {
     { 0, 0 },
     { 144, 0 },
     { 0, 112 },
@@ -138,7 +138,7 @@ s16 D_80110FE0_messy_memory[5][2] = {
     { 0, 0 },
 };
 
-s16 D_80110FF4_messy_memory[20][2] = {
+s16 m229_roomSpotPosTbl[20][2] = {
     { 46, 67 },
     { 112, 59 },
     { 160, 59 },
@@ -161,7 +161,7 @@ s16 D_80110FF4_messy_memory[20][2] = {
     { 248, 196 },
 };
 
-s16 D_80111044_messy_memory[20][2] = {
+s16 m229_viewSpotPosTbl[20][2] = {
     { 31, 38 },
     { 64, 34 },
     { 88, 34 },
@@ -184,14 +184,14 @@ s16 D_80111044_messy_memory[20][2] = {
     { 132, 102 },
 };
 
-s16 D_80111094_messy_memory[4][2] = {
+s16 m229_trayPosTbl[4][2] = {
     { 46, 107 },
     { 70, 107 },
     { 95, 107 },
     { 121, 107 },
 };
 
-f32 D_801110A4_messy_memory[20][2] = {
+f32 m229_itemScatterVelTbl[20][2] = {
     { 1.14f, 0.53f },
     { 0.48f, 0.61f },
     { 0.0f, 0.61f },
@@ -214,9 +214,9 @@ f32 D_801110A4_messy_memory[20][2] = {
     { -0.88f, -0.76f },
 };
 
-s32 D_80111144_messy_memory = 0; /* Unreferenced. */
+s32 m229_itemScatterVelTblPad = 0; /* Unreferenced. */
 
-MessyMemorySpriteEntry D_80111148_messy_memory[10] = {
+MessyMemorySpriteEntry m229_itemViewSprTbl[10] = {
     { 0, 0x3E000F },
     { 0, 0x3E0010 },
     { 0, 0x3E0011 },
@@ -229,7 +229,7 @@ MessyMemorySpriteEntry D_80111148_messy_memory[10] = {
     { 0, 0x3E0018 },
 };
 
-MessyMemorySpriteEntry D_80111198_messy_memory[10] = {
+MessyMemorySpriteEntry m229_itemRoomSprTbl[10] = {
     { 0, 0x3E0005 },
     { 0, 0x3E0006 },
     { 0, 0x3E0007 },
@@ -242,7 +242,7 @@ MessyMemorySpriteEntry D_80111198_messy_memory[10] = {
     { 0, 0x3E000E },
 };
 
-MessyMemorySpriteEntry D_801111E8_messy_memory[8] = {
+MessyMemorySpriteEntry m229_handSprTbl[8] = {
     { 0, 0x6A },
     { 0, 0x6B },
     { 0, 0x6C },
@@ -253,7 +253,7 @@ MessyMemorySpriteEntry D_801111E8_messy_memory[8] = {
     { 0, 0x71 },
 };
 
-f32 D_80111228_messy_memory[7][4] = {
+f32 m229_moverPathTbl[7][4] = {
     { -5.0f, -3.0f, -170.0f, 240.0f },
     { -5.0f, 2.5f, -170.0f, 120.0f },
     { -5.0f, -0.5f, -200.0f, 200.0f },
@@ -263,7 +263,7 @@ f32 D_80111228_messy_memory[7][4] = {
     { -5.0f, 1.5f, -70.0f, 140.0f },
 };
 
-f32 D_80111298_messy_memory[4][2] = {
+f32 m229_playerWalkTbl[4][2] = {
     { 10.0f, -300.0f },
     { -10.0f, 300.0f },
     { 10.0f, -250.0f },
@@ -271,14 +271,14 @@ f32 D_80111298_messy_memory[4][2] = {
 };
 
 // x/y pairs
-f32 D_801112B8_messy_memory[4][6] = {
+f32 m229_scorePosTbl[4][6] = {
     { 65.0f, 40.0f, 85.0f, 40.0f, 115.0f, 45.0f },
     { 210.0f, 40.0f, 230.0f, 40.0f, 260.0f, 45.0f },
     { 65.0f, 150.0f, 85.0f, 150.0f, 115.0f, 155.0f },
     { 210.0f, 150.0f, 230.0f, 150.0f, 260.0f, 155.0f },
 };
 
-char *D_80111318_messy_memory[8] = {
+char *m229_chrNameTbl[8] = {
     "\x82\x6C\x82\x60\x82\x71\x82\x68\x82\x6E",                 // ＭＡＲＩＯ
     "\x82\x6B\x82\x74\x82\x68\x82\x66\x82\x68",                 // ＬＵＩＧＩ
     "\x82\x6F\x82\x64\x82\x60\x82\x62\x82\x67",                 // ＰＥＡＣＨ
@@ -289,61 +289,61 @@ char *D_80111318_messy_memory[8] = {
     "\x82\x63\x82\x60\x82\x68\x82\x72\x82\x78",                 // ＤＡＩＳＹ
 }; /* Unreferenced. */
 
-s16 D_80111338_messy_memory = 999;
-s16 D_8011133A_messy_memory = 1000;
-s16 D_8011133C_messy_memory = 40;
+s16 m229_grabSe = 999;
+s16 m229_dropSe = 1000;
+s16 m229_walkSe = 40;
 
 // Only the first two cameras are used.
-MessyMemoryCamera D_80111340_messy_memory[4] = {
+MessyMemoryCamera m229_cameraViewTbl[4] = {
     { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 34.71f },
     { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 34.71f },
     { 0.0f, 120.0f, 160.0f, 240.0f, { 320.0f, 240.0f, 511.0f }, { 320.0f, 720.0f, 511.0f }, 45.0f },
     { 160.0f, 120.0f, 320.0f, 240.0f, { 320.0f, 240.0f, 511.0f }, { 960.0f, 720.0f, 511.0f }, 45.0f },
 };
 
-f32 D_80111600_messy_memory BSS;
-u8 D_80111604_messy_memory[4] BSS; /* Unreferenced. */
-s32 D_80111608_messy_memory[10] BSS;
-u8 D_80111630_messy_memory[4] BSS;
-s32 D_80111634_messy_memory BSS;
-u8 D_80111638_messy_memory BSS;
-u8 D_80111639_messy_memory BSS;
-u8 D_8011163A_messy_memory BSS;
-u8 D_8011163B_messy_memory BSS;
-s32 D_8011163C_messy_memory BSS;
-s32 D_80111640_messy_memory[4] BSS;
-s16 D_80111650_messy_memory BSS;
-HuSprAnimData *D_80111654_messy_memory BSS;
-u8 D_80111658_messy_memory[4] BSS;
-f32 D_8011165C_messy_memory BSS;
-HuSprAnimData *D_80111660_messy_memory[4] BSS;
-u8 D_80111670_messy_memory[4] BSS;
-u8 D_80111674_messy_memory BSS;
-u8 D_80111675_messy_memory BSS;
-u8 D_80111678_messy_memory[4][10] BSS;
-f32 D_801116A0_messy_memory BSS;
-u8 D_801116A4_messy_memory[10] BSS;
-u8 D_801116B0_messy_memory[40] BSS;
-HuSprAnimData *D_801116D8_messy_memory BSS;
-u8 D_801116DC_messy_memory[4] BSS; /* Unreferenced. */
-u8 D_801116E0_messy_memory[20] BSS;
-u8 D_801116F4_messy_memory[12] BSS; /* Unreferenced. */
-MessyMemoryWork D_80111700_messy_memory[0x88] BSS;
-f32 D_80115D20_messy_memory[10][2] BSS;
-MessyMemoryBss5D70 messyMemoryBss5D70 BSS;
-f32 D_80115D7C_messy_memory BSS;
-u8 D_80115D80_messy_memory[4] BSS;
-s16 D_80115D84_messy_memory[4] BSS;
-u8 D_80115D8C_messy_memory BSS;
-s16 D_80115D8E_messy_memory BSS;
-u8 D_80115D90_messy_memory[10] BSS;
-u8 D_80115D9A_messy_memory BSS;
+f32 m229_shutterMotEnd BSS;
+u8 m229_shutterMotEndPad[4] BSS; /* Unreferenced. */
+s32 m229_itemViewAnimTbl[10] BSS;
+u8 m229_rankTbl[4] BSS;
+s32 m229_itemMarkAnim BSS;
+u8 m229_itemPlaceCnt BSS;
+u8 m229_checkPulseF BSS;
+u8 m229_checkNo BSS;
+u8 m229_tieCnt BSS;
+s32 m229_moverMdl BSS;
+s32 m229_handPatTbl[4] BSS;
+s16 m229_messVibTimer BSS;
+HuSprAnimData *m229_dividerHAnim BSS;
+u8 m229_handDispTbl[4] BSS;
+f32 m229_zoomScale BSS;
+HuSprAnimData *m229_handAnimTbl[4] BSS;
+u8 m229_handGrabTbl[4] BSS;
+u8 m229_itemPlaceNum BSS;
+u8 m229_dustState BSS;
+u8 m229_comKnownTbl[4][10] BSS;
+f32 m229_checkScale BSS;
+u8 m229_roomItemTbl[10] BSS;
+u8 m229_itemHeldTbl[40] BSS;
+HuSprAnimData *m229_dividerVAnim BSS;
+u8 m229_dividerVAnimPad[4] BSS; /* Unreferenced. */
+u8 m229_roomSpotItemTbl[20] BSS;
+u8 m229_roomSpotItemTblPad[12] BSS; /* Unreferenced. */
+MessyMemoryWork m229_objWorkTbl[0x88] BSS;
+f32 m229_itemScatterTbl[10][2] BSS;
+MessyMemoryPlayerStat m229_playerStat BSS;
+f32 m229_scoreScale BSS;
+u8 m229_shutterStateTbl[4] BSS;
+s16 m229_walkSeTbl[4] BSS;
+u8 m229_phase BSS;
+s16 m229_timer BSS;
+u8 m229_roomSlotTbl[10] BSS;
+u8 m229_phaseDoneNo BSS;
 
-void func_801059A0_messy_memory(void) {
-    func_80110EC4_messy_memory();
+void m229_Executor(void) {
+    m229_ObjectSetup();
 }
 
-f32 func_801059BC_messy_memory(f32 arg0, f32 arg1) {
+f32 m229_AngleAdd(f32 arg0, f32 arg1) {
     f32 angle = arg0 + arg1;
 
     while (angle >= 360.0f) {
@@ -357,11 +357,11 @@ f32 func_801059BC_messy_memory(f32 arg0, f32 arg1) {
     return angle;
 }
 
-void func_80105A3C_messy_memory(void) {
+void m229_ObjWorkInit(void) {
     MessyMemoryWork *work;
     u32 i;
 
-    for (i = 0, work = D_80111700_messy_memory; i < 0x88; i++, work++) {
+    for (i = 0, work = m229_objWorkTbl; i < 0x88; i++, work++) {
         work->obj = NULL;
         work->unk04 = 0;
         work->unk06 = 0;
@@ -396,18 +396,18 @@ void func_80105A3C_messy_memory(void) {
     }
 }
 
-void func_80105B04_messy_memory(s32 playerIndex) {
+void m229_PadClear(s32 playerIndex) {
     HuPadBtn[GwPlayer[playerIndex].pad] = 0;
     HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
     HuPadStkX[GwPlayer[playerIndex].pad] = 0;
     HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
-void func_80105B7C_messy_memory(u8 arg0) {
-    D_80115D8C_messy_memory = arg0;
+void m229_PhaseSet(u8 arg0) {
+    m229_phase = arg0;
 }
 
-void func_80105B88_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2) {
+void m229_DividerDraw(Gfx **gfxPos, s32 arg1, s32 arg2) {
     Gfx *gfx = *gfxPos;
     s32 i;
     s32 x;
@@ -424,9 +424,9 @@ void func_80105B88_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2) {
     gDPSetRenderMode(gfx++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
 
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-    gDPLoadTLUT_pal16(gfx++, 0, D_80111654_messy_memory->pal);
+    gDPLoadTLUT_pal16(gfx++, 0, m229_dividerHAnim->pal);
     for (i = 0, x = 0, y = 108; i < 24; i += 6) {
-        gDPLoadTextureTile_4b(gfx++, D_80111654_messy_memory->data, G_IM_FMT_CI, 320, 24, 0, i, 320, i + 6, 0,
+        gDPLoadTextureTile_4b(gfx++, m229_dividerHAnim->data, G_IM_FMT_CI, 320, 24, 0, i, 320, i + 6, 0,
                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                               G_TX_NOLOD, G_TX_NOLOD);
         gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 320 << G_TEXTURE_IMAGE_FRAC, 6 << G_TEXTURE_IMAGE_FRAC);
@@ -435,9 +435,9 @@ void func_80105B88_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2) {
     }
 
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-    gDPLoadTLUT_pal16(gfx++, 0, D_801116D8_messy_memory->pal);
+    gDPLoadTLUT_pal16(gfx++, 0, m229_dividerVAnim->pal);
     for (i = 0, x = 148, y = 0; i < 240; i += 16) {
-        gDPLoadTextureTile_4b(gfx++, D_801116D8_messy_memory->data, G_IM_FMT_CI, 24, 240, 0, i, 24, i + 16, 0,
+        gDPLoadTextureTile_4b(gfx++, m229_dividerVAnim->data, G_IM_FMT_CI, 24, 240, 0, i, 24, i + 16, 0,
                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                               G_TX_NOLOD, G_TX_NOLOD);
         gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 24 << G_TEXTURE_IMAGE_FRAC, 16 << G_TEXTURE_IMAGE_FRAC);
@@ -447,8 +447,8 @@ void func_80105B88_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2) {
     *gfxPos = gfx;
 }
 
-void func_801060E0_messy_memory(omObjData *obj) {
-    switch (D_80115D8C_messy_memory) {
+void m229_DividerObjMain(omObjData *obj) {
+    switch (m229_phase) {
         case 8:
             Hu3DModelAttrSet(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             break;
@@ -458,63 +458,63 @@ void func_801060E0_messy_memory(omObjData *obj) {
     }
 }
 
-void func_80106140_messy_memory(omObjData *obj) {
-    *obj->model = Hu3DHookFuncCreate(0, func_80105B88_messy_memory, 2);
+void m229_DividerObjInit(omObjData *obj) {
+    *obj->model = Hu3DHookFuncCreate(0, m229_DividerDraw, 2);
     Hu3DModelCameraSet(*obj->model, HU3D_CAM1);
     Hu3DModelAttrSet(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    obj->func = func_801060E0_messy_memory;
+    obj->func = m229_DividerObjMain;
 }
 
-void func_801061AC_messy_memory(void) {
+void m229_DividerCreate(void) {
     omObjData *obj;
-    D_80111654_messy_memory = HuSprAnimDataGet(HuSprAnimDataRead(0x3E0002));
-    D_801116D8_messy_memory = HuSprAnimDataGet(HuSprAnimDataRead(0x3E0004));
-    obj = omAddObj(0xC8, 1, 0, -1, func_80106140_messy_memory);
+    m229_dividerHAnim = HuSprAnimDataGet(HuSprAnimDataRead(0x3E0002));
+    m229_dividerVAnim = HuSprAnimDataGet(HuSprAnimDataRead(0x3E0004));
+    obj = omAddObj(0xC8, 1, 0, -1, m229_DividerObjInit);
     obj->work[0] = 0;
-    D_80111A9C_messy_memory[0].obj = obj;
+    m229_dividerWork[0].obj = obj;
 }
 
-void func_8010622C_messy_memory(omObjData *obj) {
+void m229_CoverObjMain(omObjData *obj) {
     MessyMemoryWork *work;
 
-    switch (D_80115D8C_messy_memory) {
+    switch (m229_phase) {
         case 4:
             if (obj->work[0] == 0) {
-                espAttrReset(D_80111910_messy_memory[0].unk42, 0x4000);
+                espAttrReset(m229_coverWorkTbl[0].unk42, 0x4000);
             }
             break;
         case 5:
             if (obj->work[0] == 0) {
-                work = &D_80111910_messy_memory[obj->work[0]];
+                work = &m229_coverWorkTbl[obj->work[0]];
                 if (work->unk04 == 0) {
                     HuAudFXPlay(0x3F1);
                     work->unk04 = 1;
                 }
-                work->unk5C.x = work->unk5C.y = D_8011165C_messy_memory;
+                work->unk5C.x = work->unk5C.y = m229_zoomScale;
                 espScaleSet(work->unk42, work->unk5C.x, work->unk5C.y);
                 if (work->unk5C.x <= 0.01 || work->unk5C.y <= 0.01) {
-                    D_80115D9A_messy_memory = 5;
+                    m229_phaseDoneNo = 5;
                     espDispOff(work->unk42);
                 }
             }
             break;
         case 12:
             if (obj->work[0] == 0) {
-                work = &D_80111910_messy_memory[obj->work[0]];
-                work->unk5C.x = work->unk5C.y = D_8011165C_messy_memory;
+                work = &m229_coverWorkTbl[obj->work[0]];
+                work->unk5C.x = work->unk5C.y = m229_zoomScale;
                 espScaleSet(work->unk42, work->unk5C.x, work->unk5C.y);
                 espDispOn(work->unk42);
                 espAttrSet(work->unk42, 0x4000);
                 if (work->unk5C.x >= 0.23f || work->unk5C.y >= 0.23f) {
-                    D_80115D9A_messy_memory = 12;
+                    m229_phaseDoneNo = 12;
                 }
             }
             break;
     }
 }
 
-void func_801063FC_messy_memory(omObjData *obj) {
-    MessyMemoryWork *work = &D_80111910_messy_memory[obj->work[0]];
+void m229_CoverObjInit(omObjData *obj) {
+    MessyMemoryWork *work = &m229_coverWorkTbl[obj->work[0]];
 
     if (obj->work[0] == 0) {
         work->unk44.x = 160.0f;
@@ -534,23 +534,23 @@ void func_801063FC_messy_memory(omObjData *obj) {
         espPosSet(work->unk42, work->unk44.x, work->unk44.y);
         espPriSet(work->unk42, 0xFFFF);
     }
-    obj->func = func_8010622C_messy_memory;
+    obj->func = m229_CoverObjMain;
 }
 
-void func_80106588_messy_memory(void) {
+void m229_CoverObjCreateAll(void) {
     MessyMemoryWork *work;
     omObjData *obj;
     u8 i;
 
     for (i = 0; i < 2; i++) {
-        work = &D_80111910_messy_memory[i];
-        obj = omAddObj(0x3B6, 0, 0, -1, func_801063FC_messy_memory);
+        work = &m229_coverWorkTbl[i];
+        obj = omAddObj(0x3B6, 0, 0, -1, m229_CoverObjInit);
         obj->work[0] = i;
         work->obj = obj;
     }
 }
 
-Gfx **func_80106620_messy_memory(Gfx **gfx) {
+Gfx **m229_GfxRectTexInit(Gfx **gfx) {
     u32 geometryMode = G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH;
     Gfx *gdl = *gfx;
 
@@ -567,7 +567,7 @@ Gfx **func_80106620_messy_memory(Gfx **gfx) {
     return gfx;
 }
 
-Gfx **func_80106704_messy_memory(Gfx **gfx) {
+Gfx **m229_GfxRectXluInit(Gfx **gfx) {
     u32 geometryMode = G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH;
     Gfx *gdl = *gfx;
 
@@ -583,7 +583,7 @@ Gfx **func_80106704_messy_memory(Gfx **gfx) {
     return gfx;
 }
 
-Gfx **func_801067D0_messy_memory(Gfx **gfx, u8 alpha) {
+Gfx **m229_GfxPrimAlphaSet(Gfx **gfx, u8 alpha) {
     Gfx *gdl = *gfx;
 
     gDPSetPrimColor(gdl++, 0, 0, 255, 255, 255, alpha);
@@ -591,7 +591,7 @@ Gfx **func_801067D0_messy_memory(Gfx **gfx, u8 alpha) {
     return gfx;
 }
 
-void func_80106800_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2) {
+void m229_HandDraw(Gfx **gfxPos, s32 arg1, s32 arg2) {
     MessyMemoryWork *work;
     omObjData *obj;
     HuSprAnimPat *frame;
@@ -600,7 +600,7 @@ void func_80106800_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        work = &D_80111700_messy_memory[i];
+        work = &m229_objWorkTbl[i];
         obj = work->obj;
         if (obj->work[0] < 2) {
             if (work->unk44.y - 98.0f > 0.0f) {
@@ -612,19 +612,19 @@ void func_80106800_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2) {
             height = 0;
         }
         height = height * work->unk18;
-        if (D_80111658_messy_memory[obj->work[0]] == 0) {
+        if (m229_handDispTbl[obj->work[0]] == 0) {
             continue;
         }
-        if (D_80115D72_messy_memory[obj->work[0]] < 255) {
-            gfxPos = func_801067D0_messy_memory(func_80106704_messy_memory(gfxPos),
-                                                D_80115D72_messy_memory[obj->work[0]]);
+        if (m229_handAlphaTbl[obj->work[0]] < 255) {
+            gfxPos = m229_GfxPrimAlphaSet(m229_GfxRectXluInit(gfxPos),
+                                                m229_handAlphaTbl[obj->work[0]]);
         } else {
-            gfxPos = func_80106620_messy_memory(gfxPos);
+            gfxPos = m229_GfxRectTexInit(gfxPos);
         }
         gfx = *gfxPos;
         gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-        gDPLoadTLUT_pal16(gfx++, 0, D_80111660_messy_memory[obj->work[0]]->pal);
-        frame = &D_80111660_messy_memory[obj->work[0]]->pat[D_80111640_messy_memory[obj->work[0]]];
+        gDPLoadTLUT_pal16(gfx++, 0, m229_handAnimTbl[obj->work[0]]->pal);
+        frame = &m229_handAnimTbl[obj->work[0]]->pat[m229_handPatTbl[obj->work[0]]];
         gDPLoadTextureTile_4b(gfx++, frame->data, G_IM_FMT_CI, 32, 32, 0, 0, 32, 32 - height, 0, G_TX_NOMIRROR | G_TX_WRAP,
                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 32 << G_TEXTURE_IMAGE_FRAC, (32 - height) << G_TEXTURE_IMAGE_FRAC);
@@ -637,9 +637,9 @@ void func_80106800_messy_memory(Gfx **gfxPos, s32 arg1, s32 arg2) {
     }
 }
 
-void func_80106C60_messy_memory(omObjData *obj) {
+void m229_HandPadInput(omObjData *obj) {
     u16 playerNo = obj->work[0];
-    MessyMemoryWork *work = &D_80111700_messy_memory[playerNo];
+    MessyMemoryWork *work = &m229_objWorkTbl[playerNo];
     MessyMemoryWork *item;
     MessyMemoryWork *other;
     omObjData *itemObj;
@@ -650,52 +650,52 @@ void func_80106C60_messy_memory(omObjData *obj) {
     u8 k;
 
     if (HuPadBtnDown[GwPlayer[playerNo].pad] & Z_TRIG) {
-        switch (D_80115D80_messy_memory[playerNo]) {
+        switch (m229_shutterStateTbl[playerNo]) {
             case 0:
-                D_80115D80_messy_memory[playerNo] = 1;
+                m229_shutterStateTbl[playerNo] = 1;
                 break;
             case 1:
-                D_80115D80_messy_memory[playerNo] = 2;
+                m229_shutterStateTbl[playerNo] = 2;
                 break;
         }
     }
-    if (D_80115D80_messy_memory[playerNo] != 0) {
+    if (m229_shutterStateTbl[playerNo] != 0) {
         return;
     }
     outside = TRUE;
     blocked = FALSE;
-    D_80115D72_messy_memory[obj->work[0]] = 0xFF;
+    m229_handAlphaTbl[obj->work[0]] = 0xFF;
     for (i = 0; i < 10; i++) {
-        if (D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] - 7.0f <= work->unk44.x &&
-            D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] + 7.0f >= work->unk44.x &&
-            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] - 15.0f <= work->unk44.y &&
-            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] + 6.0f >= work->unk44.y) {
+        if (m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[playerNo][0] - 7.0f <= work->unk44.x &&
+            m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[playerNo][0] + 7.0f >= work->unk44.x &&
+            m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[playerNo][1] - 15.0f <= work->unk44.y &&
+            m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[playerNo][1] + 6.0f >= work->unk44.y) {
             outside = FALSE;
         }
     }
     for (i = 10; i < 20; i++) {
-        if (D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] - 7.0f <= work->unk44.x &&
-            D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] + 7.0f >= work->unk44.x &&
-            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] - 7.0f <= work->unk44.y &&
-            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] + 6.0f >= work->unk44.y) {
+        if (m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[playerNo][0] - 7.0f <= work->unk44.x &&
+            m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[playerNo][0] + 7.0f >= work->unk44.x &&
+            m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[playerNo][1] - 7.0f <= work->unk44.y &&
+            m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[playerNo][1] + 6.0f >= work->unk44.y) {
             outside = FALSE;
         }
     }
-    if (D_80111670_messy_memory[playerNo] == 1) {
+    if (m229_handGrabTbl[playerNo] == 1) {
         for (k = 0; k < 10; k++) {
             s32 base = playerNo * 10 + 8;
 
-            item = &D_80111700_messy_memory[k + base];
+            item = &m229_objWorkTbl[k + base];
             itemObj = item->obj;
             if (work->unk44.x == item->unk44.x && work->unk44.y == item->unk44.y) {
                 for (i = 0; i < 10; i++) {
-                    other = &D_80111700_messy_memory[i + base];
+                    other = &m229_objWorkTbl[i + base];
                     if (itemObj->work[1] * 10 + itemObj->work[0] == other->obj->work[1] * 10 + other->obj->work[0]) {
                         continue;
                     }
                     for (j = 0; j < 20; j++) {
-                        if (D_80111044_messy_memory[j][0] + D_80110FE0_messy_memory[playerNo][0] <= other->unk44.x &&
-                            D_80111044_messy_memory[j][0] + D_80110FE0_messy_memory[playerNo][0] >= other->unk44.x) {
+                        if (m229_viewSpotPosTbl[j][0] + m229_viewOfsTbl[playerNo][0] <= other->unk44.x &&
+                            m229_viewSpotPosTbl[j][0] + m229_viewOfsTbl[playerNo][0] >= other->unk44.x) {
                             if (j < 10) {
                                 if (other->unk44.x - 7.0f <= work->unk44.x && other->unk44.x + 7.0f >= work->unk44.x &&
                                     other->unk44.y - 15.0f <= work->unk44.y && other->unk44.y + 6.0f >= work->unk44.y) {
@@ -714,35 +714,35 @@ void func_80106C60_messy_memory(omObjData *obj) {
         }
     }
     if (outside | blocked) {
-        D_80115D72_messy_memory[obj->work[0]] = 150;
+        m229_handAlphaTbl[obj->work[0]] = 150;
     }
     if (HuPadBtnDown[GwPlayer[playerNo].pad] & A_BUTTON) {
-        switch (D_80111670_messy_memory[playerNo]) {
+        switch (m229_handGrabTbl[playerNo]) {
             case 0:
                 for (k = 0; k < 10; k++) {
                     for (i = 0; i < 4; i++) {
                         s32 base = i * 10 + 8;
 
-                        item = &D_80111700_messy_memory[k + base];
+                        item = &m229_objWorkTbl[k + base];
                         for (j = 0; j < 20; j++) {
-                            if (D_80111044_messy_memory[j][0] + D_80110FE0_messy_memory[playerNo][0] <= item->unk44.x &&
-                                D_80111044_messy_memory[j][0] + D_80110FE0_messy_memory[playerNo][0] >= item->unk44.x) {
+                            if (m229_viewSpotPosTbl[j][0] + m229_viewOfsTbl[playerNo][0] <= item->unk44.x &&
+                                m229_viewSpotPosTbl[j][0] + m229_viewOfsTbl[playerNo][0] >= item->unk44.x) {
                                 if (j < 10) {
                                     if (item->unk44.x - 7.0f <= work->unk44.x && item->unk44.x + 7.0f >= work->unk44.x &&
                                         item->unk44.y - 15.0f <= work->unk44.y && item->unk44.y + 6.0f >= work->unk44.y) {
-                                        D_801116B0_messy_memory[i * 10 + k] = 1;
-                                        D_80111640_messy_memory[obj->work[0]] = 1;
-                                        HuAudPlayerFXPlay(D_80111338_messy_memory, obj->work[0]);
-                                        D_80111670_messy_memory[playerNo] = 1;
+                                        m229_itemHeldTbl[i * 10 + k] = 1;
+                                        m229_handPatTbl[obj->work[0]] = 1;
+                                        HuAudPlayerFXPlay(m229_grabSe, obj->work[0]);
+                                        m229_handGrabTbl[playerNo] = 1;
                                         omVibrate(playerNo, 5, 0, 5);
                                     }
                                 } else {
                                     if (item->unk44.x - 7.0f <= work->unk44.x && item->unk44.x + 7.0f >= work->unk44.x &&
                                         item->unk44.y - 7.0f <= work->unk44.y && item->unk44.y + 6.0f >= work->unk44.y) {
-                                        D_801116B0_messy_memory[i * 10 + k] = 1;
-                                        D_80111640_messy_memory[obj->work[0]] = 1;
-                                        HuAudPlayerFXPlay(D_80111338_messy_memory, obj->work[0]);
-                                        D_80111670_messy_memory[playerNo] = 1;
+                                        m229_itemHeldTbl[i * 10 + k] = 1;
+                                        m229_handPatTbl[obj->work[0]] = 1;
+                                        HuAudPlayerFXPlay(m229_grabSe, obj->work[0]);
+                                        m229_handGrabTbl[playerNo] = 1;
                                         omVibrate(playerNo, 5, 0, 5);
                                     }
                                 }
@@ -756,17 +756,17 @@ void func_80106C60_messy_memory(omObjData *obj) {
                 for (k = 0; k < 10; k++) {
                     s32 base = playerNo * 10 + 8;
 
-                    item = &D_80111700_messy_memory[k + base];
+                    item = &m229_objWorkTbl[k + base];
                     itemObj = item->obj;
                     if (work->unk44.x == item->unk44.x && work->unk44.y == item->unk44.y) {
                         for (i = 0; i < 10; i++) {
-                            other = &D_80111700_messy_memory[i + base];
+                            other = &m229_objWorkTbl[i + base];
                             if (itemObj->work[1] * 10 + itemObj->work[0] == other->obj->work[1] * 10 + other->obj->work[0]) {
                                 continue;
                             }
                             for (j = 0; j < 20; j++) {
-                                if (D_80111044_messy_memory[j][0] + D_80110FE0_messy_memory[playerNo][0] <= other->unk44.x &&
-                                    D_80111044_messy_memory[j][0] + D_80110FE0_messy_memory[playerNo][0] >= other->unk44.x) {
+                                if (m229_viewSpotPosTbl[j][0] + m229_viewOfsTbl[playerNo][0] <= other->unk44.x &&
+                                    m229_viewSpotPosTbl[j][0] + m229_viewOfsTbl[playerNo][0] >= other->unk44.x) {
                                     if (j < 10) {
                                         if (other->unk44.x - 7.0f <= work->unk44.x && other->unk44.x + 7.0f >= work->unk44.x &&
                                             other->unk44.y - 15.0f <= work->unk44.y && other->unk44.y + 6.0f >= work->unk44.y) {
@@ -784,30 +784,30 @@ void func_80106C60_messy_memory(omObjData *obj) {
 
                         if (!blocked) {
                             for (i = 0; i < 10; i++) {
-                                if (D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] - 7.0f <= work->unk44.x &&
-                                    D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] + 7.0f >= work->unk44.x &&
-                                    D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] - 15.0f <= work->unk44.y &&
-                                    D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] + 6.0f >= work->unk44.y) {
-                                    D_801116B0_messy_memory[obj->work[0] * 10 + k] = 0;
-                                    item->unk44.x = D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0];
-                                    item->unk44.y = D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1];
-                                    D_80111640_messy_memory[obj->work[0]] = 0;
-                                    HuAudPlayerFXPlay(D_8011133A_messy_memory, obj->work[0]);
-                                    D_80111670_messy_memory[playerNo] = 0;
+                                if (m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[playerNo][0] - 7.0f <= work->unk44.x &&
+                                    m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[playerNo][0] + 7.0f >= work->unk44.x &&
+                                    m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[playerNo][1] - 15.0f <= work->unk44.y &&
+                                    m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[playerNo][1] + 6.0f >= work->unk44.y) {
+                                    m229_itemHeldTbl[obj->work[0] * 10 + k] = 0;
+                                    item->unk44.x = m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[playerNo][0];
+                                    item->unk44.y = m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[playerNo][1];
+                                    m229_handPatTbl[obj->work[0]] = 0;
+                                    HuAudPlayerFXPlay(m229_dropSe, obj->work[0]);
+                                    m229_handGrabTbl[playerNo] = 0;
                                     omVibrate(playerNo, 2, 3, 10);
                                 }
                             }
                             for (i = 10; i < 20; i++) {
-                                if (D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] - 7.0f <= work->unk44.x &&
-                                    D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] + 7.0f >= work->unk44.x &&
-                                    D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] - 7.0f <= work->unk44.y &&
-                                    D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] + 6.0f >= work->unk44.y) {
-                                    D_801116B0_messy_memory[obj->work[0] * 10 + k] = 0;
-                                    item->unk44.x = D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0];
-                                    item->unk44.y = D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1];
-                                    D_80111640_messy_memory[obj->work[0]] = 0;
-                                    HuAudPlayerFXPlay(D_8011133A_messy_memory, obj->work[0]);
-                                    D_80111670_messy_memory[playerNo] = 0;
+                                if (m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[playerNo][0] - 7.0f <= work->unk44.x &&
+                                    m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[playerNo][0] + 7.0f >= work->unk44.x &&
+                                    m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[playerNo][1] - 7.0f <= work->unk44.y &&
+                                    m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[playerNo][1] + 6.0f >= work->unk44.y) {
+                                    m229_itemHeldTbl[obj->work[0] * 10 + k] = 0;
+                                    item->unk44.x = m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[playerNo][0];
+                                    item->unk44.y = m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[playerNo][1];
+                                    m229_handPatTbl[obj->work[0]] = 0;
+                                    HuAudPlayerFXPlay(m229_dropSe, obj->work[0]);
+                                    m229_handGrabTbl[playerNo] = 0;
                                     omVibrate(playerNo, 2, 3, 10);
                                 }
                             }
@@ -819,33 +819,33 @@ void func_80106C60_messy_memory(omObjData *obj) {
     }
     if (HuPadStkX[GwPlayer[playerNo].pad] < -29) {
         work->unk44.x -= 2.0f;
-        if (work->unk44.x < D_80110FE0_messy_memory[playerNo][0] + 30.0f) {
-            work->unk44.x = D_80110FE0_messy_memory[playerNo][0] + 30.0f;
+        if (work->unk44.x < m229_viewOfsTbl[playerNo][0] + 30.0f) {
+            work->unk44.x = m229_viewOfsTbl[playerNo][0] + 30.0f;
         }
     }
     if (HuPadStkX[GwPlayer[playerNo].pad] >= 30) {
         work->unk44.x += 2.0f;
-        if (work->unk44.x > D_80110FE0_messy_memory[playerNo][0] + 140.0f) {
-            work->unk44.x = D_80110FE0_messy_memory[playerNo][0] + 140.0f;
+        if (work->unk44.x > m229_viewOfsTbl[playerNo][0] + 140.0f) {
+            work->unk44.x = m229_viewOfsTbl[playerNo][0] + 140.0f;
         }
     }
     if (HuPadStkY[GwPlayer[playerNo].pad] >= 30) {
         work->unk44.y -= 2.0f;
-        if (work->unk44.y < D_80110FE0_messy_memory[playerNo][1] + 20.0f) {
-            work->unk44.y = D_80110FE0_messy_memory[playerNo][1] + 20.0f;
+        if (work->unk44.y < m229_viewOfsTbl[playerNo][1] + 20.0f) {
+            work->unk44.y = m229_viewOfsTbl[playerNo][1] + 20.0f;
         }
     }
     if (HuPadStkY[GwPlayer[playerNo].pad] < -29) {
         work->unk44.y += 2.0f;
-        if (work->unk44.y > D_80110FE0_messy_memory[playerNo][1] + 108.0f) {
-            work->unk44.y = D_80110FE0_messy_memory[playerNo][1] + 108.0f;
+        if (work->unk44.y > m229_viewOfsTbl[playerNo][1] + 108.0f) {
+            work->unk44.y = m229_viewOfsTbl[playerNo][1] + 108.0f;
         }
     }
 }
 
-void func_80107C88_messy_memory(omObjData *obj) {
+void m229_HandComInputCalc(omObjData *obj) {
     u16 playerNo = obj->work[0];
-    MessyMemoryWork *work = &D_80111700_messy_memory[playerNo];
+    MessyMemoryWork *work = &m229_objWorkTbl[playerNo];
     MessyMemoryWork *item;
     MessyMemoryWork *other;
     omObjData *itemObj;
@@ -883,7 +883,7 @@ void func_80107C88_messy_memory(omObjData *obj) {
             }
         }
         if (work->unk12 == 2) {
-            if (D_80115D8E_messy_memory == 300 || D_80115D8E_messy_memory == 210) {
+            if (m229_timer == 300 || m229_timer == 210) {
                 switch (GwPlayer[playerNo].cpu_difficulty) {
                     case 0:
                         if (rand8() < 250) {
@@ -934,56 +934,56 @@ void func_80107C88_messy_memory(omObjData *obj) {
         }
     }
     if (work->unk12 == 1 || work->unk12 == 3 || work->unk12 == 6) {
-        switch (D_80115D80_messy_memory[playerNo]) {
+        switch (m229_shutterStateTbl[playerNo]) {
             case 0:
-                D_80115D80_messy_memory[playerNo] = 1;
+                m229_shutterStateTbl[playerNo] = 1;
                 work->unk12++;
                 work->unk06 = 0;
                 break;
             case 1:
-                D_80115D80_messy_memory[playerNo] = 2;
+                m229_shutterStateTbl[playerNo] = 2;
                 work->unk12++;
                 work->unk06 = 0;
                 break;
         }
     }
-    if (D_80115D80_messy_memory[playerNo] != 0) {
+    if (m229_shutterStateTbl[playerNo] != 0) {
         return;
     }
     outside = TRUE;
     blocked = FALSE;
-    D_80115D72_messy_memory[obj->work[0]] = 0xFF;
+    m229_handAlphaTbl[obj->work[0]] = 0xFF;
     for (i = 0; i < 10; i++) {
-        if (D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] - 7.0f <= work->unk44.x &&
-            D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] + 7.0f >= work->unk44.x &&
-            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] - 15.0f <= work->unk44.y &&
-            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] + 6.0f >= work->unk44.y) {
+        if (m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[playerNo][0] - 7.0f <= work->unk44.x &&
+            m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[playerNo][0] + 7.0f >= work->unk44.x &&
+            m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[playerNo][1] - 15.0f <= work->unk44.y &&
+            m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[playerNo][1] + 6.0f >= work->unk44.y) {
             outside = FALSE;
         }
     }
     for (i = 10; i < 20; i++) {
-        if (D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] - 7.0f <= work->unk44.x &&
-            D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] + 7.0f >= work->unk44.x &&
-            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] - 7.0f <= work->unk44.y &&
-            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] + 6.0f >= work->unk44.y) {
+        if (m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[playerNo][0] - 7.0f <= work->unk44.x &&
+            m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[playerNo][0] + 7.0f >= work->unk44.x &&
+            m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[playerNo][1] - 7.0f <= work->unk44.y &&
+            m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[playerNo][1] + 6.0f >= work->unk44.y) {
             outside = FALSE;
         }
     }
-    if (D_80111670_messy_memory[playerNo] == 1) {
+    if (m229_handGrabTbl[playerNo] == 1) {
         for (k = 0; k < 10; k++) {
             s32 base = playerNo * 10 + 8;
 
-            item = &D_80111700_messy_memory[k + base];
+            item = &m229_objWorkTbl[k + base];
             itemObj = item->obj;
             if (work->unk44.x == item->unk44.x && work->unk44.y == item->unk44.y) {
                 for (i = 0; i < 10; i++) {
-                    other = &D_80111700_messy_memory[i + base];
+                    other = &m229_objWorkTbl[i + base];
                     if (itemObj->work[1] * 10 + itemObj->work[0] == other->obj->work[1] * 10 + other->obj->work[0]) {
                         continue;
                     }
                     for (j = 0; j < 20; j++) {
-                        if (D_80111044_messy_memory[j][0] + D_80110FE0_messy_memory[playerNo][0] <= other->unk44.x &&
-                            D_80111044_messy_memory[j][0] + D_80110FE0_messy_memory[playerNo][0] >= other->unk44.x) {
+                        if (m229_viewSpotPosTbl[j][0] + m229_viewOfsTbl[playerNo][0] <= other->unk44.x &&
+                            m229_viewSpotPosTbl[j][0] + m229_viewOfsTbl[playerNo][0] >= other->unk44.x) {
                             if (j < 10) {
                                 if (other->unk44.x - 7.0f <= work->unk44.x && other->unk44.x + 7.0f >= work->unk44.x &&
                                     other->unk44.y - 15.0f <= work->unk44.y && other->unk44.y + 6.0f >= work->unk44.y) {
@@ -1002,22 +1002,22 @@ void func_80107C88_messy_memory(omObjData *obj) {
         }
     }
     if (outside | blocked) {
-        D_80115D72_messy_memory[obj->work[0]] = 150;
+        m229_handAlphaTbl[obj->work[0]] = 150;
     }
 
     if (work->unk12 == 0) {
         switch (work->unk06) {
             case 0:
                 slot = rand8() % 10;
-                item = &D_80111700_messy_memory[slot + 8 + playerNo * 10];
-                if (D_80110FE0_messy_memory[playerNo][1] + 80.0f < item->unk44.y) {
+                item = &m229_objWorkTbl[slot + 8 + playerNo * 10];
+                if (m229_viewOfsTbl[playerNo][1] + 80.0f < item->unk44.y) {
                     work->unk08 = slot;
                     work->unk1C = item->unk44.x;
                     work->unk20 = item->unk44.y;
                     work->unk06 = 1;
                 }
-                if (work->unk06 != 1 && D_80111678_messy_memory[playerNo][slot] == 0 &&
-                    D_80115D8E_messy_memory > 450) {
+                if (work->unk06 != 1 && m229_comKnownTbl[playerNo][slot] == 0 &&
+                    m229_timer > 450) {
                     work->unk08 = slot;
                     work->unk1C = item->unk44.x;
                     work->unk20 = item->unk44.y;
@@ -1026,7 +1026,7 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 break;
             case 10:
                 MM_CPU_STEER(work);
-                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                item = &m229_objWorkTbl[work->unk08 + 8 + playerNo * 10];
                 if (MM_CPU_NEAR(work, item->unk44.x, item->unk44.y)) {
                     work->unk06 = 0;
                 }
@@ -1034,8 +1034,8 @@ void func_80107C88_messy_memory(omObjData *obj) {
             case 9:
                 for (k = 0; k < 10; k++) {
                     if (k != work->unk08) {
-                        item = &D_80111700_messy_memory[k + 8 + playerNo * 10];
-                        if (D_80110FE0_messy_memory[playerNo][1] + 80.0f < item->unk44.y) {
+                        item = &m229_objWorkTbl[k + 8 + playerNo * 10];
+                        if (m229_viewOfsTbl[playerNo][1] + 80.0f < item->unk44.y) {
                             work->unk08 = k;
                             work->unk1C = item->unk44.x;
                             work->unk20 = item->unk44.y;
@@ -1049,13 +1049,13 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 break;
             case 1:
                 MM_CPU_STEER(work);
-                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                item = &m229_objWorkTbl[work->unk08 + 8 + playerNo * 10];
                 if (MM_CPU_NEAR(work, item->unk44.x, item->unk44.y)) {
-                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 1;
-                    D_80111640_messy_memory[obj->work[0]] = 1;
-                    HuAudPlayerFXPlay(D_80111338_messy_memory, obj->work[0]);
-                    D_80111670_messy_memory[playerNo] = 1;
-                    if (D_80111678_messy_memory[playerNo][work->unk08] == 1) {
+                    m229_itemHeldTbl[playerNo * 10 + work->unk08] = 1;
+                    m229_handPatTbl[obj->work[0]] = 1;
+                    HuAudPlayerFXPlay(m229_grabSe, obj->work[0]);
+                    m229_handGrabTbl[playerNo] = 1;
+                    if (m229_comKnownTbl[playerNo][work->unk08] == 1) {
                         work->unk06 = 2;
                     } else {
                         work->unk06 = 3;
@@ -1063,43 +1063,43 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 }
                 break;
             case 2:
-                itemObj = D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10].obj;
+                itemObj = m229_objWorkTbl[work->unk08 + 8 + playerNo * 10].obj;
                 for (k = 0; k < 10; k++) {
-                    if (D_801116A4_messy_memory[k] == itemObj->work[0]) {
-                        work->unk1C = D_80111044_messy_memory[k][0] + D_80110FE0_messy_memory[playerNo][0];
-                        work->unk20 = D_80111044_messy_memory[k][1] + D_80110FE0_messy_memory[playerNo][1];
+                    if (m229_roomItemTbl[k] == itemObj->work[0]) {
+                        work->unk1C = m229_viewSpotPosTbl[k][0] + m229_viewOfsTbl[playerNo][0];
+                        work->unk20 = m229_viewSpotPosTbl[k][1] + m229_viewOfsTbl[playerNo][1];
                         work->unk0A = k;
                         work->unk06 = 4;
                     }
                 }
                 break;
             case 3:
-                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                item = &m229_objWorkTbl[work->unk08 + 8 + playerNo * 10];
                 itemObj = item->obj;
                 slot = rand8() % 10;
                 found = FALSE;
                 for (k = 0; k < 10; k++) {
-                    other = &D_80111700_messy_memory[k + 8 + playerNo * 10];
-                    if (D_80111044_messy_memory[slot][0] + D_80110FE0_messy_memory[playerNo][0] == other->unk44.x &&
-                        D_80111044_messy_memory[slot][1] + D_80110FE0_messy_memory[playerNo][1] == other->unk44.y) {
+                    other = &m229_objWorkTbl[k + 8 + playerNo * 10];
+                    if (m229_viewSpotPosTbl[slot][0] + m229_viewOfsTbl[playerNo][0] == other->unk44.x &&
+                        m229_viewSpotPosTbl[slot][1] + m229_viewOfsTbl[playerNo][1] == other->unk44.y) {
                         found = TRUE;
                     }
                 }
                 for (k = 0; k < 10; k++) {
-                    if (D_80111678_messy_memory[playerNo][k] == 1 && D_801116A4_messy_memory[slot] == k) {
+                    if (m229_comKnownTbl[playerNo][k] == 1 && m229_roomItemTbl[slot] == k) {
                         found = TRUE;
                     }
                 }
-                if (!found && D_801116A4_messy_memory[slot] != itemObj->work[0]) {
-                    work->unk1C = D_80111044_messy_memory[slot][0] + D_80110FE0_messy_memory[playerNo][0];
-                    work->unk20 = D_80111044_messy_memory[slot][1] + D_80110FE0_messy_memory[playerNo][1];
+                if (!found && m229_roomItemTbl[slot] != itemObj->work[0]) {
+                    work->unk1C = m229_viewSpotPosTbl[slot][0] + m229_viewOfsTbl[playerNo][0];
+                    work->unk20 = m229_viewSpotPosTbl[slot][1] + m229_viewOfsTbl[playerNo][1];
                     work->unk0A = slot;
                     work->unk06 = 4;
                     work->unk0E = 0;
                 }
-                if (!found && D_801116A4_messy_memory[slot] == itemObj->work[0] && work->unk14 >= 6) {
-                    work->unk1C = D_80111044_messy_memory[10][0] + D_80110FE0_messy_memory[playerNo][0];
-                    work->unk20 = D_80111044_messy_memory[10][1] + D_80110FE0_messy_memory[playerNo][1];
+                if (!found && m229_roomItemTbl[slot] == itemObj->work[0] && work->unk14 >= 6) {
+                    work->unk1C = m229_viewSpotPosTbl[10][0] + m229_viewOfsTbl[playerNo][0];
+                    work->unk20 = m229_viewSpotPosTbl[10][1] + m229_viewOfsTbl[playerNo][1];
                     work->unk0A = slot;
                     work->unk0C = 10;
                     work->unk06 = 5;
@@ -1109,23 +1109,23 @@ void func_80107C88_messy_memory(omObjData *obj) {
                     work->unk0E = 0;
                     work->unk06 = 9;
                     for (i = 0; i < 20; i++) {
-                        if (D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] - 7.0f <= work->unk44.x &&
-                            D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0] + 7.0f >= work->unk44.x &&
-                            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] - 7.0f <= work->unk44.y &&
-                            D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1] + 6.0f >= work->unk44.y) {
-                            D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 0;
-                            item->unk44.x = D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[playerNo][0];
-                            item->unk44.y = D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[playerNo][1];
-                            D_80111640_messy_memory[obj->work[0]] = 0;
-                            HuAudPlayerFXPlay(D_8011133A_messy_memory, obj->work[0]);
-                            D_80111670_messy_memory[playerNo] = 0;
+                        if (m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[playerNo][0] - 7.0f <= work->unk44.x &&
+                            m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[playerNo][0] + 7.0f >= work->unk44.x &&
+                            m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[playerNo][1] - 7.0f <= work->unk44.y &&
+                            m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[playerNo][1] + 6.0f >= work->unk44.y) {
+                            m229_itemHeldTbl[playerNo * 10 + work->unk08] = 0;
+                            item->unk44.x = m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[playerNo][0];
+                            item->unk44.y = m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[playerNo][1];
+                            m229_handPatTbl[obj->work[0]] = 0;
+                            HuAudPlayerFXPlay(m229_dropSe, obj->work[0]);
+                            m229_handGrabTbl[playerNo] = 0;
                         }
                     }
                 }
                 break;
             case 4:
                 MM_CPU_STEER(work);
-                if (D_80115D8E_messy_memory > 150) {
+                if (m229_timer > 150) {
                     switch (GwPlayer[playerNo].cpu_difficulty) {
                         case 0:
                             if (rand8() < 30) {
@@ -1149,14 +1149,14 @@ void func_80107C88_messy_memory(omObjData *obj) {
                             break;
                     }
                 }
-                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                item = &m229_objWorkTbl[work->unk08 + 8 + playerNo * 10];
                 if (MM_CPU_NEAR(work, work->unk1C, work->unk20)) {
-                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 0;
-                    D_80111640_messy_memory[obj->work[0]] = 0;
-                    HuAudPlayerFXPlay(D_8011133A_messy_memory, obj->work[0]);
-                    D_80111670_messy_memory[playerNo] = 0;
-                    item->unk44.x = D_80111044_messy_memory[work->unk0A][0] + D_80110FE0_messy_memory[playerNo][0];
-                    item->unk44.y = D_80111044_messy_memory[work->unk0A][1] + D_80110FE0_messy_memory[playerNo][1];
+                    m229_itemHeldTbl[playerNo * 10 + work->unk08] = 0;
+                    m229_handPatTbl[obj->work[0]] = 0;
+                    HuAudPlayerFXPlay(m229_dropSe, obj->work[0]);
+                    m229_handGrabTbl[playerNo] = 0;
+                    item->unk44.x = m229_viewSpotPosTbl[work->unk0A][0] + m229_viewOfsTbl[playerNo][0];
+                    item->unk44.y = m229_viewSpotPosTbl[work->unk0A][1] + m229_viewOfsTbl[playerNo][1];
                     work->unk06 = 0;
                     work->unk14++;
                 }
@@ -1186,22 +1186,22 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 break;
             case 5:
                 MM_CPU_STEER(work);
-                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                item = &m229_objWorkTbl[work->unk08 + 8 + playerNo * 10];
                 if (MM_CPU_NEAR(work, work->unk1C, work->unk20)) {
-                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 0;
-                    D_80111640_messy_memory[obj->work[0]] = 0;
-                    HuAudPlayerFXPlay(D_8011133A_messy_memory, obj->work[0]);
-                    D_80111670_messy_memory[playerNo] = 0;
-                    item->unk44.x = D_80111044_messy_memory[work->unk0C][0] + D_80110FE0_messy_memory[playerNo][0];
-                    item->unk44.y = D_80111044_messy_memory[work->unk0C][1] + D_80110FE0_messy_memory[playerNo][1];
+                    m229_itemHeldTbl[playerNo * 10 + work->unk08] = 0;
+                    m229_handPatTbl[obj->work[0]] = 0;
+                    HuAudPlayerFXPlay(m229_dropSe, obj->work[0]);
+                    m229_handGrabTbl[playerNo] = 0;
+                    item->unk44.x = m229_viewSpotPosTbl[work->unk0C][0] + m229_viewOfsTbl[playerNo][0];
+                    item->unk44.y = m229_viewSpotPosTbl[work->unk0C][1] + m229_viewOfsTbl[playerNo][1];
                     work->unk06 = 6;
                 }
                 break;
             case 6:
                 slot = rand8() % 10;
-                item = &D_80111700_messy_memory[slot + 8 + playerNo * 10];
-                if (item->unk44.y < D_80110FE0_messy_memory[playerNo][1] + 80.0f &&
-                    D_80111678_messy_memory[playerNo][slot] != 1) {
+                item = &m229_objWorkTbl[slot + 8 + playerNo * 10];
+                if (item->unk44.y < m229_viewOfsTbl[playerNo][1] + 80.0f &&
+                    m229_comKnownTbl[playerNo][slot] != 1) {
                     work->unk08 = slot;
                     work->unk1C = item->unk44.x;
                     work->unk20 = item->unk44.y;
@@ -1210,14 +1210,14 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 break;
             case 7:
                 MM_CPU_STEER(work);
-                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                item = &m229_objWorkTbl[work->unk08 + 8 + playerNo * 10];
                 if (MM_CPU_NEAR(work, item->unk44.x, item->unk44.y)) {
-                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 1;
-                    D_80111640_messy_memory[obj->work[0]] = 1;
-                    HuAudPlayerFXPlay(D_80111338_messy_memory, obj->work[0]);
-                    D_80111670_messy_memory[playerNo] = 1;
-                    work->unk1C = D_80111044_messy_memory[work->unk0A][0] + D_80110FE0_messy_memory[playerNo][0];
-                    work->unk20 = D_80111044_messy_memory[work->unk0A][1] + D_80110FE0_messy_memory[playerNo][1];
+                    m229_itemHeldTbl[playerNo * 10 + work->unk08] = 1;
+                    m229_handPatTbl[obj->work[0]] = 1;
+                    HuAudPlayerFXPlay(m229_grabSe, obj->work[0]);
+                    m229_handGrabTbl[playerNo] = 1;
+                    work->unk1C = m229_viewSpotPosTbl[work->unk0A][0] + m229_viewOfsTbl[playerNo][0];
+                    work->unk20 = m229_viewSpotPosTbl[work->unk0A][1] + m229_viewOfsTbl[playerNo][1];
                     work->unk06 = 4;
                     work->unk14--;
                 }
@@ -1229,8 +1229,8 @@ void func_80107C88_messy_memory(omObjData *obj) {
         switch (work->unk06) {
             case 0:
                 slot = rand8() % 10;
-                item = &D_80111700_messy_memory[slot + 8 + playerNo * 10];
-                if (item->unk44.y < D_80110FE0_messy_memory[playerNo][1] + 80.0f) {
+                item = &m229_objWorkTbl[slot + 8 + playerNo * 10];
+                if (item->unk44.y < m229_viewOfsTbl[playerNo][1] + 80.0f) {
                     work->unk08 = slot;
                     work->unk38 = work->unk1C = item->unk44.x;
                     work->unk3C = work->unk20 = item->unk44.y;
@@ -1239,40 +1239,40 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 break;
             case 1:
                 MM_CPU_STEER(work);
-                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                item = &m229_objWorkTbl[work->unk08 + 8 + playerNo * 10];
                 if (MM_CPU_NEAR(work, item->unk44.x, item->unk44.y)) {
-                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 1;
-                    D_80111640_messy_memory[obj->work[0]] = 1;
-                    HuAudPlayerFXPlay(D_80111338_messy_memory, obj->work[0]);
-                    D_80111670_messy_memory[playerNo] = 1;
+                    m229_itemHeldTbl[playerNo * 10 + work->unk08] = 1;
+                    m229_handPatTbl[obj->work[0]] = 1;
+                    HuAudPlayerFXPlay(m229_grabSe, obj->work[0]);
+                    m229_handGrabTbl[playerNo] = 1;
                     work->unk14--;
                     work->unk06 = 2;
                 }
                 break;
             case 2:
                 slot = rand8() % 10;
-                work->unk1C = D_80111044_messy_memory[slot + 10][0] + D_80110FE0_messy_memory[playerNo][0];
-                work->unk20 = D_80111044_messy_memory[slot + 10][1] + D_80110FE0_messy_memory[playerNo][1];
+                work->unk1C = m229_viewSpotPosTbl[slot + 10][0] + m229_viewOfsTbl[playerNo][0];
+                work->unk20 = m229_viewSpotPosTbl[slot + 10][1] + m229_viewOfsTbl[playerNo][1];
                 work->unk0A = slot + 10;
                 work->unk06 = 3;
                 break;
             case 3:
                 MM_CPU_STEER(work);
-                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                item = &m229_objWorkTbl[work->unk08 + 8 + playerNo * 10];
                 if (MM_CPU_NEAR(work, work->unk1C, work->unk20)) {
-                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 0;
-                    D_80111640_messy_memory[obj->work[0]] = 0;
-                    HuAudPlayerFXPlay(D_8011133A_messy_memory, obj->work[0]);
-                    D_80111670_messy_memory[playerNo] = 0;
-                    item->unk44.x = D_80111044_messy_memory[work->unk0A][0] + D_80110FE0_messy_memory[playerNo][0];
-                    item->unk44.y = D_80111044_messy_memory[work->unk0A][1] + D_80110FE0_messy_memory[playerNo][1];
+                    m229_itemHeldTbl[playerNo * 10 + work->unk08] = 0;
+                    m229_handPatTbl[obj->work[0]] = 0;
+                    HuAudPlayerFXPlay(m229_dropSe, obj->work[0]);
+                    m229_handGrabTbl[playerNo] = 0;
+                    item->unk44.x = m229_viewSpotPosTbl[work->unk0A][0] + m229_viewOfsTbl[playerNo][0];
+                    item->unk44.y = m229_viewSpotPosTbl[work->unk0A][1] + m229_viewOfsTbl[playerNo][1];
                     work->unk06 = 4;
                 }
                 break;
             case 4:
                 slot = rand8() % 10;
-                item = &D_80111700_messy_memory[slot + 8 + playerNo * 10];
-                if (item->unk44.y < D_80110FE0_messy_memory[playerNo][1] + 80.0f) {
+                item = &m229_objWorkTbl[slot + 8 + playerNo * 10];
+                if (item->unk44.y < m229_viewOfsTbl[playerNo][1] + 80.0f) {
                     work->unk08 = slot;
                     work->unk1C = item->unk44.x;
                     work->unk20 = item->unk44.y;
@@ -1281,22 +1281,22 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 break;
             case 5:
                 MM_CPU_STEER(work);
-                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                item = &m229_objWorkTbl[work->unk08 + 8 + playerNo * 10];
                 if (MM_CPU_NEAR(work, item->unk44.x, item->unk44.y)) {
-                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 1;
-                    D_80111640_messy_memory[obj->work[0]] = 1;
-                    HuAudPlayerFXPlay(D_80111338_messy_memory, obj->work[0]);
-                    D_80111670_messy_memory[playerNo] = 1;
+                    m229_itemHeldTbl[playerNo * 10 + work->unk08] = 1;
+                    m229_handPatTbl[obj->work[0]] = 1;
+                    HuAudPlayerFXPlay(m229_grabSe, obj->work[0]);
+                    m229_handGrabTbl[playerNo] = 1;
                     work->unk14--;
                     work->unk06 = 6;
                 }
                 break;
             case 6:
                 for (k = 0; k < 10; k++) {
-                    if (work->unk38 == D_80111044_messy_memory[k][0] + D_80110FE0_messy_memory[playerNo][0] &&
-                        work->unk3C == D_80111044_messy_memory[k][1] + D_80110FE0_messy_memory[playerNo][1]) {
-                        work->unk1C = D_80111044_messy_memory[k][0] + D_80110FE0_messy_memory[playerNo][0];
-                        work->unk20 = D_80111044_messy_memory[k][1] + D_80110FE0_messy_memory[playerNo][1];
+                    if (work->unk38 == m229_viewSpotPosTbl[k][0] + m229_viewOfsTbl[playerNo][0] &&
+                        work->unk3C == m229_viewSpotPosTbl[k][1] + m229_viewOfsTbl[playerNo][1]) {
+                        work->unk1C = m229_viewSpotPosTbl[k][0] + m229_viewOfsTbl[playerNo][0];
+                        work->unk20 = m229_viewSpotPosTbl[k][1] + m229_viewOfsTbl[playerNo][1];
                         work->unk0A = k;
                         work->unk06 = 7;
                     }
@@ -1304,22 +1304,22 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 break;
             case 7:
                 MM_CPU_STEER(work);
-                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                item = &m229_objWorkTbl[work->unk08 + 8 + playerNo * 10];
                 if (MM_CPU_NEAR(work, work->unk1C, work->unk20)) {
-                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 0;
-                    D_80111640_messy_memory[obj->work[0]] = 0;
-                    HuAudPlayerFXPlay(D_8011133A_messy_memory, obj->work[0]);
-                    D_80111670_messy_memory[playerNo] = 0;
-                    item->unk44.x = D_80111044_messy_memory[work->unk0A][0] + D_80110FE0_messy_memory[playerNo][0];
-                    item->unk44.y = D_80111044_messy_memory[work->unk0A][1] + D_80110FE0_messy_memory[playerNo][1];
+                    m229_itemHeldTbl[playerNo * 10 + work->unk08] = 0;
+                    m229_handPatTbl[obj->work[0]] = 0;
+                    HuAudPlayerFXPlay(m229_dropSe, obj->work[0]);
+                    m229_handGrabTbl[playerNo] = 0;
+                    item->unk44.x = m229_viewSpotPosTbl[work->unk0A][0] + m229_viewOfsTbl[playerNo][0];
+                    item->unk44.y = m229_viewSpotPosTbl[work->unk0A][1] + m229_viewOfsTbl[playerNo][1];
                     work->unk06 = 8;
                     work->unk14++;
                 }
                 break;
             case 8:
                 for (k = 0; k < 10; k++) {
-                    item = &D_80111700_messy_memory[k + 8 + playerNo * 10];
-                    if (D_80110FE0_messy_memory[playerNo][1] + 80.0f < item->unk44.y) {
+                    item = &m229_objWorkTbl[k + 8 + playerNo * 10];
+                    if (m229_viewOfsTbl[playerNo][1] + 80.0f < item->unk44.y) {
                         work->unk08 = k;
                         work->unk1C = item->unk44.x;
                         work->unk20 = item->unk44.y;
@@ -1329,12 +1329,12 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 break;
             case 9:
                 MM_CPU_STEER(work);
-                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                item = &m229_objWorkTbl[work->unk08 + 8 + playerNo * 10];
                 if (MM_CPU_NEAR(work, item->unk44.x, item->unk44.y)) {
-                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 1;
-                    D_80111640_messy_memory[obj->work[0]] = 1;
-                    HuAudPlayerFXPlay(D_80111338_messy_memory, obj->work[0]);
-                    D_80111670_messy_memory[playerNo] = 1;
+                    m229_itemHeldTbl[playerNo * 10 + work->unk08] = 1;
+                    m229_handPatTbl[obj->work[0]] = 1;
+                    HuAudPlayerFXPlay(m229_grabSe, obj->work[0]);
+                    m229_handGrabTbl[playerNo] = 1;
                     work->unk06 = 10;
                 }
                 break;
@@ -1342,15 +1342,15 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 for (k = 0; k < 10; k++) {
                     found = FALSE;
                     for (i = 0; i < 10; i++) {
-                        other = &D_80111700_messy_memory[i + 8 + playerNo * 10];
-                        if (D_80111044_messy_memory[k][0] + D_80110FE0_messy_memory[playerNo][0] == other->unk44.x &&
-                            D_80111044_messy_memory[k][1] + D_80110FE0_messy_memory[playerNo][1] == other->unk44.y) {
+                        other = &m229_objWorkTbl[i + 8 + playerNo * 10];
+                        if (m229_viewSpotPosTbl[k][0] + m229_viewOfsTbl[playerNo][0] == other->unk44.x &&
+                            m229_viewSpotPosTbl[k][1] + m229_viewOfsTbl[playerNo][1] == other->unk44.y) {
                             found = TRUE;
                         }
                     }
                     if (!found) {
-                        work->unk1C = D_80111044_messy_memory[k][0] + D_80110FE0_messy_memory[playerNo][0];
-                        work->unk20 = D_80111044_messy_memory[k][1] + D_80110FE0_messy_memory[playerNo][1];
+                        work->unk1C = m229_viewSpotPosTbl[k][0] + m229_viewOfsTbl[playerNo][0];
+                        work->unk20 = m229_viewSpotPosTbl[k][1] + m229_viewOfsTbl[playerNo][1];
                         work->unk0A = k;
                         work->unk06 = 11;
                     }
@@ -1358,14 +1358,14 @@ void func_80107C88_messy_memory(omObjData *obj) {
                 break;
             case 11:
                 MM_CPU_STEER(work);
-                item = &D_80111700_messy_memory[work->unk08 + 8 + playerNo * 10];
+                item = &m229_objWorkTbl[work->unk08 + 8 + playerNo * 10];
                 if (MM_CPU_NEAR(work, work->unk1C, work->unk20)) {
-                    D_801116B0_messy_memory[playerNo * 10 + work->unk08] = 0;
-                    D_80111640_messy_memory[obj->work[0]] = 0;
-                    HuAudPlayerFXPlay(D_8011133A_messy_memory, obj->work[0]);
-                    D_80111670_messy_memory[playerNo] = 0;
-                    item->unk44.x = D_80111044_messy_memory[work->unk0A][0] + D_80110FE0_messy_memory[playerNo][0];
-                    item->unk44.y = D_80111044_messy_memory[work->unk0A][1] + D_80110FE0_messy_memory[playerNo][1];
+                    m229_itemHeldTbl[playerNo * 10 + work->unk08] = 0;
+                    m229_handPatTbl[obj->work[0]] = 0;
+                    HuAudPlayerFXPlay(m229_dropSe, obj->work[0]);
+                    m229_handGrabTbl[playerNo] = 0;
+                    item->unk44.x = m229_viewSpotPosTbl[work->unk0A][0] + m229_viewOfsTbl[playerNo][0];
+                    item->unk44.y = m229_viewSpotPosTbl[work->unk0A][1] + m229_viewOfsTbl[playerNo][1];
                     work->unk06 = 12;
                     work->unk14++;
                     work->unk12 = 5;
@@ -1376,57 +1376,57 @@ void func_80107C88_messy_memory(omObjData *obj) {
 
     if (work->unk24 == 1.0f) {
         work->unk44.x -= 2.0f;
-        if (work->unk44.x < D_80110FE0_messy_memory[playerNo][0] + 30.0f) {
-            work->unk44.x = D_80110FE0_messy_memory[playerNo][0] + 30.0f;
+        if (work->unk44.x < m229_viewOfsTbl[playerNo][0] + 30.0f) {
+            work->unk44.x = m229_viewOfsTbl[playerNo][0] + 30.0f;
         }
     }
     if (work->unk24 == 2.0f) {
         work->unk44.x += 2.0f;
-        if (work->unk44.x > D_80110FE0_messy_memory[playerNo][0] + 140.0f) {
-            work->unk44.x = D_80110FE0_messy_memory[playerNo][0] + 140.0f;
+        if (work->unk44.x > m229_viewOfsTbl[playerNo][0] + 140.0f) {
+            work->unk44.x = m229_viewOfsTbl[playerNo][0] + 140.0f;
         }
     }
     if (work->unk28 == 1.0f) {
         work->unk44.y -= 2.0f;
-        if (work->unk44.y < D_80110FE0_messy_memory[playerNo][1] + 20.0f) {
-            work->unk44.y = D_80110FE0_messy_memory[playerNo][1] + 20.0f;
+        if (work->unk44.y < m229_viewOfsTbl[playerNo][1] + 20.0f) {
+            work->unk44.y = m229_viewOfsTbl[playerNo][1] + 20.0f;
         }
     }
     if (work->unk28 == 2.0f) {
         work->unk44.y += 2.0f;
-        if (work->unk44.y > D_80110FE0_messy_memory[playerNo][1] + 108.0f) {
-            work->unk44.y = D_80110FE0_messy_memory[playerNo][1] + 108.0f;
+        if (work->unk44.y > m229_viewOfsTbl[playerNo][1] + 108.0f) {
+            work->unk44.y = m229_viewOfsTbl[playerNo][1] + 108.0f;
         }
     }
 }
 
-void func_8010ACE4_messy_memory(omObjData *obj) {
+void m229_HandComInput(omObjData *obj) {
     s32 playerIndex = (u16)obj->work[0];
 
-    if (D_80115D8C_messy_memory == 9) {
+    if (m229_phase == 9) {
         switch (GwPlayer[playerIndex].cpu_difficulty) {
             case 0:
             case 1:
             case 2:
             case 3:
-                func_80107C88_messy_memory(obj);
+                m229_HandComInputCalc(obj);
                 break;
         }
     }
 }
 
-void func_8010AD40_messy_memory(omObjData *obj) {
+void m229_HandObjMain(omObjData *obj) {
     u16 playerNo = obj->work[0];
-    MessyMemoryWork *work = &D_80111700_messy_memory[playerNo];
+    MessyMemoryWork *work = &m229_objWorkTbl[playerNo];
     s8 found;
     s8 count;
     s8 i;
     s8 j;
     s8 chance;
 
-    switch (D_80115D8C_messy_memory) {
+    switch (m229_phase) {
         case 8:
-            D_80111658_messy_memory[obj->work[0]] = 1;
+            m229_handDispTbl[obj->work[0]] = 1;
             work->unk18 += 0.05;
             if (work->unk18 > 1.0f) {
                 work->unk18 = 1.0f;
@@ -1514,8 +1514,8 @@ void func_8010AD40_messy_memory(omObjData *obj) {
                 }
                 for (i = 0; i < 10; i++) {
                     for (j = 0; j < 10; j++) {
-                        if (D_801116E0_messy_memory[j] == i) {
-                            D_80111678_messy_memory[playerNo][i] = 1;
+                        if (m229_roomSpotItemTbl[j] == i) {
+                            m229_comKnownTbl[playerNo][i] = 1;
                         }
                     }
                 }
@@ -1525,23 +1525,23 @@ void func_8010AD40_messy_memory(omObjData *obj) {
                         break;
                     }
                     for (j = 0; j < 10; j++) {
-                        if (D_801116E0_messy_memory[j] == i) {
+                        if (m229_roomSpotItemTbl[j] == i) {
                             found = TRUE;
                         }
                     }
-                    if (!found && D_80111678_messy_memory[playerNo][i] != 1) {
-                        D_80111678_messy_memory[playerNo][i] = 1;
+                    if (!found && m229_comKnownTbl[playerNo][i] != 1) {
+                        m229_comKnownTbl[playerNo][i] = 1;
                         count++;
                     }
                 }
             }
             break;
         case 9:
-            if (D_80115D8E_messy_memory > 0) {
+            if (m229_timer > 0) {
                 if (GwPlayer[playerNo].stat & 1) {
-                    func_8010ACE4_messy_memory(obj);
+                    m229_HandComInput(obj);
                 } else {
-                    func_80106C60_messy_memory(obj);
+                    m229_HandPadInput(obj);
                 }
             }
             break;
@@ -1549,35 +1549,35 @@ void func_8010AD40_messy_memory(omObjData *obj) {
             work->unk18 -= 0.03;
             if (work->unk18 <= 0.05f) {
                 work->unk18 = 0.05f;
-                D_80111658_messy_memory[obj->work[0]] = 0;
+                m229_handDispTbl[obj->work[0]] = 0;
             }
             break;
     }
 }
 
-void func_8010B32C_messy_memory(omObjData *obj) {
+void m229_HandObjInit(omObjData *obj) {
     s32 chr = GwPlayer[obj->work[0]].chr;
-    MessyMemoryWork *work = &D_80111700_messy_memory[obj->work[0]];
+    MessyMemoryWork *work = &m229_objWorkTbl[obj->work[0]];
     s16 i;
 
-    work->unk40 = HuSprAnimDataRead(D_801111E8_messy_memory[chr].fileId);
-    D_80111660_messy_memory[obj->work[0]] = HuSprAnimDataGet(work->unk40);
+    work->unk40 = HuSprAnimDataRead(m229_handSprTbl[chr].fileId);
+    m229_handAnimTbl[obj->work[0]] = HuSprAnimDataGet(work->unk40);
     for (i = 0; i < 4; i++) {
         if (obj->work[0] == i) {
-            work->unk44.x = D_80110FE0_messy_memory[obj->work[0]][0] + 88.0f;
-            work->unk44.y = D_80110FE0_messy_memory[obj->work[0]][1] + 63.0f;
+            work->unk44.x = m229_viewOfsTbl[obj->work[0]][0] + 88.0f;
+            work->unk44.y = m229_viewOfsTbl[obj->work[0]][1] + 63.0f;
         }
     }
     work->unk5C.x = work->unk5C.y = work->unk18 = 0.1f;
-    D_80115D72_messy_memory[obj->work[0]] = 0xFF;
-    D_80111658_messy_memory[obj->work[0]] = 0;
+    m229_handAlphaTbl[obj->work[0]] = 0xFF;
+    m229_handDispTbl[obj->work[0]] = 0;
     if (obj->work[0] == 3) {
-        Hu3DModelCameraSet(Hu3DHookFuncCreate(0, func_80106800_messy_memory, 2), HU3D_CAM0);
+        Hu3DModelCameraSet(Hu3DHookFuncCreate(0, m229_HandDraw, 2), HU3D_CAM0);
     }
-    obj->func = func_8010AD40_messy_memory;
+    obj->func = m229_HandObjMain;
 }
 
-void func_8010B4CC_messy_memory(void) {
+void m229_HandObjCreateAll(void) {
     s32 unused[2]; // Unreferenced, but present in the stack frame.
     MessyMemoryWork *work;
     omObjData *obj;
@@ -1602,20 +1602,20 @@ void func_8010B4CC_messy_memory(void) {
                 playerNo = 0;
                 break;
         }
-        work = &D_80111700_messy_memory[i];
-        obj = omAddObj(0x96, 4, 1, -1, func_8010B32C_messy_memory);
+        work = &m229_objWorkTbl[i];
+        obj = omAddObj(0x96, 4, 1, -1, m229_HandObjInit);
         obj->work[0] = playerNo;
         work->obj = obj;
     }
 }
 
-void func_8010B5C8_messy_memory(omObjData *obj) {
+void m229_PlayerObjMain(omObjData *obj) {
     u16 index = obj->work[0];
-    MessyMemoryWork *work = &D_80113B18_messy_memory[obj->work[0]];
+    MessyMemoryWork *work = &m229_playerWorkTbl[obj->work[0]];
     s16 near;
     s16 i;
 
-    switch (D_80115D8C_messy_memory) {
+    switch (m229_phase) {
         case 5:
             Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -1629,9 +1629,9 @@ void func_8010B5C8_messy_memory(omObjData *obj) {
                     break;
                 case 1:
                     if (index == 0 || index == 2) {
-                        obj->rot.y = func_801059BC_messy_memory(obj->rot.y, 20.0f);
+                        obj->rot.y = m229_AngleAdd(obj->rot.y, 20.0f);
                     } else {
-                        obj->rot.y = func_801059BC_messy_memory(obj->rot.y, -20.0f);
+                        obj->rot.y = m229_AngleAdd(obj->rot.y, -20.0f);
                     }
                     if ((s16)obj->rot.y == 180) {
                         work->unk04 = 2;
@@ -1656,27 +1656,27 @@ void func_8010B5C8_messy_memory(omObjData *obj) {
                     break;
                 case 4:
                     if (index == 0 || index == 2) {
-                        obj->rot.y = func_801059BC_messy_memory(obj->rot.y, 15.0f);
+                        obj->rot.y = m229_AngleAdd(obj->rot.y, 15.0f);
                     } else {
-                        obj->rot.y = func_801059BC_messy_memory(obj->rot.y, -15.0f);
+                        obj->rot.y = m229_AngleAdd(obj->rot.y, -15.0f);
                     }
                     if ((s16)obj->rot.y == 90 || (s16)obj->rot.y == 270) {
                         work->unk04 = 5;
                     }
                     break;
                 case 5:
-                    obj->trans.x -= D_80111298_messy_memory[index][0];
+                    obj->trans.x -= m229_playerWalkTbl[index][0];
                     if (obj->work[0] == 3) {
                         near = FALSE;
                         for (i = 0; i < 4; i++) {
-                            if (abs((&D_80113B18_messy_memory[i])->obj->trans.x) < 651) {
+                            if (abs((&m229_playerWorkTbl[i])->obj->trans.x) < 651) {
                                 near = TRUE;
                             }
                         }
                         if (!near) {
-                            D_80115D9A_messy_memory = 6;
+                            m229_phaseDoneNo = 6;
                             for (i = 0; i < 4; i++) {
-                                Hu3DModelAttrSet(*(&D_80113B18_messy_memory[i])->obj->model, HU3D_ATTR_DISPOFF,
+                                Hu3DModelAttrSet(*(&m229_playerWorkTbl[i])->obj->model, HU3D_ATTR_DISPOFF,
                                                    HU3D_ATTR_DISPOFF);
                             }
                         }
@@ -1720,70 +1720,70 @@ void func_8010B5C8_messy_memory(omObjData *obj) {
             Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             switch (work->unk04) {
                 case 0:
-                    obj->trans.x += D_80111298_messy_memory[index][0];
+                    obj->trans.x += m229_playerWalkTbl[index][0];
                     if (work->unk06 >= 8) {
-                        if (D_80115D84_messy_memory[obj->work[0]] != -1) {
-                            HuAudFXStop(D_80115D84_messy_memory[obj->work[0]]);
+                        if (m229_walkSeTbl[obj->work[0]] != -1) {
+                            HuAudFXStop(m229_walkSeTbl[obj->work[0]]);
                         }
-                        D_80115D84_messy_memory[obj->work[0]] = PlayerFXPlay(D_8011133C_messy_memory, obj->work[0]);
+                        m229_walkSeTbl[obj->work[0]] = PlayerFXPlay(m229_walkSe, obj->work[0]);
                         work->unk06 = 0;
                     } else {
                         work->unk06++;
                     }
-                    if (abs(obj->trans.x) <= abs(D_80111298_messy_memory[index][1])) {
-                        obj->trans.x = D_80111298_messy_memory[index][1];
+                    if (abs(obj->trans.x) <= abs(m229_playerWalkTbl[index][1])) {
+                        obj->trans.x = m229_playerWalkTbl[index][1];
                         work->unk04 = 1;
                         Hu3DMotionModelSet(*obj->model, obj->motion[1]);
                     }
                     break;
                 case 1:
                     if (obj->rot.y >= 270.0f) {
-                        obj->rot.y = func_801059BC_messy_memory(obj->rot.y, 15.0f);
+                        obj->rot.y = m229_AngleAdd(obj->rot.y, 15.0f);
                     } else if (obj->rot.y <= 90.0f) {
-                        obj->rot.y = func_801059BC_messy_memory(obj->rot.y, -15.0f);
+                        obj->rot.y = m229_AngleAdd(obj->rot.y, -15.0f);
                     }
                     if ((s16)obj->rot.y == 0) {
                         work->unk04 = 2;
                         Hu3DMotionModelSet(*obj->model, obj->motion[0]);
                         if (index == 3) {
-                            D_80115D9A_messy_memory = 14;
+                            m229_phaseDoneNo = 14;
                         }
                     }
                     break;
             }
             break;
         case 16:
-            if (D_80115D8E_messy_memory >= 0 && work->unk04 == 2) {
-                if (D_8011163B_messy_memory == 0) {
-                    if (index == D_80111630_messy_memory[0]) {
+            if (m229_timer >= 0 && work->unk04 == 2) {
+                if (m229_tieCnt == 0) {
+                    if (index == m229_rankTbl[0]) {
                         Hu3DMotionModelSet(*obj->model, obj->motion[3]);
-                        HuAudCharVoicePlay((D_80110FC0_messy_memory[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
+                        HuAudCharVoicePlay((m229_voiceChrTbl[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
                     } else {
                         Hu3DMotionModelSet(*obj->model, obj->motion[4]);
                     }
                 }
-                if (D_8011163B_messy_memory == 1) {
-                    if (index == D_80111630_messy_memory[0] || index == D_80111630_messy_memory[1]) {
+                if (m229_tieCnt == 1) {
+                    if (index == m229_rankTbl[0] || index == m229_rankTbl[1]) {
                         Hu3DMotionModelSet(*obj->model, obj->motion[3]);
-                        HuAudCharVoicePlay((D_80110FC0_messy_memory[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
+                        HuAudCharVoicePlay((m229_voiceChrTbl[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
                     } else {
                         Hu3DMotionModelSet(*obj->model, obj->motion[4]);
                     }
                 }
-                if (D_8011163B_messy_memory == 2) {
-                    if (index == D_80111630_messy_memory[0] || index == D_80111630_messy_memory[1] ||
-                        index == D_80111630_messy_memory[2]) {
+                if (m229_tieCnt == 2) {
+                    if (index == m229_rankTbl[0] || index == m229_rankTbl[1] ||
+                        index == m229_rankTbl[2]) {
                         Hu3DMotionModelSet(*obj->model, obj->motion[3]);
-                        HuAudCharVoicePlay((D_80110FC0_messy_memory[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
+                        HuAudCharVoicePlay((m229_voiceChrTbl[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
                     } else {
                         Hu3DMotionModelSet(*obj->model, obj->motion[4]);
                     }
                 }
-                if (D_8011163B_messy_memory == 3) {
+                if (m229_tieCnt == 3) {
                     Hu3DMotionModelSet(*obj->model, obj->motion[3]);
-                    HuAudCharVoicePlay((D_80110FC0_messy_memory[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
+                    HuAudCharVoicePlay((m229_voiceChrTbl[GwPlayer[obj->work[0]].chr] << 16) | 0x2F);
                 }
-                if (D_8011163B_messy_memory == 4) {
+                if (m229_tieCnt == 4) {
                     Hu3DMotionModelSet(*obj->model, obj->motion[4]);
                 }
                 work->unk04 = 3;
@@ -1797,7 +1797,7 @@ void func_8010B5C8_messy_memory(omObjData *obj) {
     }
 }
 
-void func_8010C03C_messy_memory(omObjData *obj) {
+void m229_PlayerObjInit(omObjData *obj) {
     u32 playerNo = obj->work[0];
     u16 index = obj->work[0];
     s8 chr = GwPlayer[playerNo].chr;
@@ -1822,13 +1822,13 @@ void func_8010C03C_messy_memory(omObjData *obj) {
     switch (index) {
         case 0:
         case 1:
-            obj->trans.x = D_80111298_messy_memory[index][1];
+            obj->trans.x = m229_playerWalkTbl[index][1];
             obj->trans.y = -180.0f;
             obj->trans.z = -1000.0f;
             break;
         case 2:
         case 3:
-            obj->trans.x = D_80111298_messy_memory[index][1];
+            obj->trans.x = m229_playerWalkTbl[index][1];
             obj->trans.y = -435.0f;
             obj->trans.z = -610.0f;
             break;
@@ -1844,10 +1844,10 @@ void func_8010C03C_messy_memory(omObjData *obj) {
     Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelCameraSet(obj->model[0], HU3D_CAM0);
     Hu3DModelCameraSet(obj->model[1], HU3D_CAM0);
-    obj->func = func_8010B5C8_messy_memory;
+    obj->func = m229_PlayerObjMain;
 }
 
-void func_8010C37C_messy_memory(void) {
+void m229_PlayerObjCreateAll(void) {
     s32 unused[2]; // Unreferenced, but present in the stack frame.
     MessyMemoryWork *work;
     omObjData *obj;
@@ -1872,15 +1872,15 @@ void func_8010C37C_messy_memory(void) {
                 playerNo = 0;
                 break;
         }
-        work = &D_80113B18_messy_memory[i];
-        obj = omAddObj(0x352, 9, 0x3C, -1, func_8010C03C_messy_memory);
+        work = &m229_playerWorkTbl[i];
+        obj = omAddObj(0x352, 9, 0x3C, -1, m229_PlayerObjInit);
         obj->work[0] = playerNo;
         work->obj = obj;
     }
 }
 
-void func_8010C478_messy_memory(omObjData *obj) {
-    MessyMemoryWork *work = &D_80111700_messy_memory[obj->work[0] + 8 + obj->work[1] * 10];
+void m229_ItemObjMain(omObjData *obj) {
+    MessyMemoryWork *work = &m229_objWorkTbl[obj->work[0] + 8 + obj->work[1] * 10];
     MessyMemoryWork *marker;
     MessyMemoryWork *cursor;
     u8 found;
@@ -1888,41 +1888,41 @@ void func_8010C478_messy_memory(omObjData *obj) {
     u8 i;
     u8 j;
 
-    switch (D_80115D8C_messy_memory) {
+    switch (m229_phase) {
         case 2:
-            D_80111674_messy_memory = 7;
+            m229_itemPlaceNum = 7;
             break;
         case 3:
-            if (obj->work[1] == 4 && D_80115D90_messy_memory[obj->work[0]] == 10 &&
-                D_80111638_messy_memory < D_80111674_messy_memory) {
+            if (obj->work[1] == 4 && m229_roomSlotTbl[obj->work[0]] == 10 &&
+                m229_itemPlaceCnt < m229_itemPlaceNum) {
                 slot = rand8() % 10;
-                if (slot != D_80115D90_messy_memory[0] && slot != D_80115D90_messy_memory[1] &&
-                    slot != D_80115D90_messy_memory[2] && slot != D_80115D90_messy_memory[3] &&
-                    slot != D_80115D90_messy_memory[4] && slot != D_80115D90_messy_memory[5] &&
-                    slot != D_80115D90_messy_memory[6] && slot != D_80115D90_messy_memory[7] &&
-                    slot != D_80115D90_messy_memory[8] && slot != D_80115D90_messy_memory[9]) {
-                    D_80115D90_messy_memory[obj->work[0]] = slot;
-                    D_80111638_messy_memory++;
+                if (slot != m229_roomSlotTbl[0] && slot != m229_roomSlotTbl[1] &&
+                    slot != m229_roomSlotTbl[2] && slot != m229_roomSlotTbl[3] &&
+                    slot != m229_roomSlotTbl[4] && slot != m229_roomSlotTbl[5] &&
+                    slot != m229_roomSlotTbl[6] && slot != m229_roomSlotTbl[7] &&
+                    slot != m229_roomSlotTbl[8] && slot != m229_roomSlotTbl[9]) {
+                    m229_roomSlotTbl[obj->work[0]] = slot;
+                    m229_itemPlaceCnt++;
                     for (i = 0; i < 10; i++) {
                         if (slot == i) {
-                            work->unk44.x = D_80110FF4_messy_memory[slot + 10][0];
-                            work->unk44.y = D_80110FF4_messy_memory[slot + 10][1];
+                            work->unk44.x = m229_roomSpotPosTbl[slot + 10][0];
+                            work->unk44.y = m229_roomSpotPosTbl[slot + 10][1];
                         }
                     }
                 }
             }
-            if (D_80111638_messy_memory >= D_80111674_messy_memory) {
+            if (m229_itemPlaceCnt >= m229_itemPlaceNum) {
                 if (obj->work[1] == 4) {
                     espPriSet(work->unk42, 0x1111);
                     espPosSet(work->unk42, work->unk44.x, work->unk44.y);
                 }
                 for (i = 0; i < 10; i++) {
-                    work = &D_80111700_messy_memory[i + 48];
+                    work = &m229_objWorkTbl[i + 48];
                     obj = work->obj;
                     for (j = 0; j < 20; j++) {
-                        if (work->unk44.x == D_80110FF4_messy_memory[j][0] &&
-                            work->unk44.y == D_80110FF4_messy_memory[j][1]) {
-                            D_801116E0_messy_memory[j] = obj->work[0];
+                        if (work->unk44.x == m229_roomSpotPosTbl[j][0] &&
+                            work->unk44.y == m229_roomSpotPosTbl[j][1]) {
+                            m229_roomSpotItemTbl[j] = obj->work[0];
                         }
                     }
                 }
@@ -1934,9 +1934,9 @@ void func_8010C478_messy_memory(omObjData *obj) {
             }
             if (obj->work[1] < 4) {
                 for (i = 0; i < 20; i++) {
-                    if (D_801116E0_messy_memory[i] == obj->work[0]) {
-                        work->unk44.x = D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[obj->work[1]][0];
-                        work->unk44.y = D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[obj->work[1]][1];
+                    if (m229_roomSpotItemTbl[i] == obj->work[0]) {
+                        work->unk44.x = m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[obj->work[1]][0];
+                        work->unk44.y = m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[obj->work[1]][1];
                         espPosSet(work->unk42, work->unk44.x, work->unk44.y);
                         espScaleSet(work->unk42, work->unk5C.x, work->unk5C.y);
                         if (i < 15) {
@@ -1947,7 +1947,7 @@ void func_8010C478_messy_memory(omObjData *obj) {
                     }
                 }
                 if (obj->work[1] * 10 + obj->work[0] == 39) {
-                    D_80115D9A_messy_memory = 4;
+                    m229_phaseDoneNo = 4;
                 }
             }
             break;
@@ -1955,31 +1955,31 @@ void func_8010C478_messy_memory(omObjData *obj) {
             if (obj->work[1] == 4) {
                 u32 index = obj->work[0] + 48;
 
-                work = &D_80111700_messy_memory[index];
+                work = &m229_objWorkTbl[index];
                 for (i = 0; i < 20; i++) {
-                    if (work->unk44.x == D_80110FF4_messy_memory[i][0] && work->unk44.y == D_80110FF4_messy_memory[i][1]) {
-                        D_80115D20_messy_memory[obj->work[0]][0] = D_801110A4_messy_memory[i][0] * 2.0f;
-                        D_80115D20_messy_memory[obj->work[0]][1] = D_801110A4_messy_memory[i][1] * 2.0f;
+                    if (work->unk44.x == m229_roomSpotPosTbl[i][0] && work->unk44.y == m229_roomSpotPosTbl[i][1]) {
+                        m229_itemScatterTbl[obj->work[0]][0] = m229_itemScatterVelTbl[i][0] * 2.0f;
+                        m229_itemScatterTbl[obj->work[0]][1] = m229_itemScatterVelTbl[i][1] * 2.0f;
                     }
                 }
-                work->unk44.x += D_80115D20_messy_memory[obj->work[0]][0];
-                work->unk44.y += D_80115D20_messy_memory[obj->work[0]][1];
+                work->unk44.x += m229_itemScatterTbl[obj->work[0]][0];
+                work->unk44.y += m229_itemScatterTbl[obj->work[0]][1];
                 espPosSet(work->unk42, work->unk44.x, work->unk44.y);
-                work->unk5C.x = work->unk5C.y = D_8011165C_messy_memory;
+                work->unk5C.x = work->unk5C.y = m229_zoomScale;
                 espScaleSet(work->unk42, work->unk5C.x, work->unk5C.y);
                 if (work->unk5C.x <= 0.01 || work->unk5C.y <= 0.01) {
                     espDispOff(work->unk42);
                     for (i = 0; i < 10; i++) {
-                        if (obj->work[0] == D_801116A4_messy_memory[i]) {
-                            work->unk44.x = D_80110FF4_messy_memory[i][0];
-                            work->unk44.y = D_80110FF4_messy_memory[i][1];
+                        if (obj->work[0] == m229_roomItemTbl[i]) {
+                            work->unk44.x = m229_roomSpotPosTbl[i][0];
+                            work->unk44.y = m229_roomSpotPosTbl[i][1];
                         }
                     }
                     for (i = 0; i < 20; i++) {
-                        if (work->unk44.x == D_80110FF4_messy_memory[i][0] &&
-                            work->unk44.y == D_80110FF4_messy_memory[i][1]) {
-                            D_80115D20_messy_memory[obj->work[0]][0] = -D_801110A4_messy_memory[i][0];
-                            D_80115D20_messy_memory[obj->work[0]][1] = -D_801110A4_messy_memory[i][1];
+                        if (work->unk44.x == m229_roomSpotPosTbl[i][0] &&
+                            work->unk44.y == m229_roomSpotPosTbl[i][1]) {
+                            m229_itemScatterTbl[obj->work[0]][0] = -m229_itemScatterVelTbl[i][0];
+                            m229_itemScatterTbl[obj->work[0]][1] = -m229_itemScatterVelTbl[i][1];
                             work->unk44.x = 160.0f;
                             work->unk44.y = 120.0f;
                         }
@@ -1993,20 +1993,20 @@ void func_8010C478_messy_memory(omObjData *obj) {
             break;
         case 9:
             if (obj->work[1] < 4) {
-                switch (D_801116B0_messy_memory[obj->work[1] * 10 + obj->work[0]]) {
+                switch (m229_itemHeldTbl[obj->work[1] * 10 + obj->work[0]]) {
                     case 0:
                         espPriSet(work->unk42, 0xDDDD);
                         for (i = 15; i < 21; i++) {
                             if (work->unk44.x ==
-                                    D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[obj->work[1]][0] &&
+                                    m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[obj->work[1]][0] &&
                                 work->unk44.y ==
-                                    D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[obj->work[1]][1]) {
+                                    m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[obj->work[1]][1]) {
                                 espPriSet(work->unk42, 0xBBBB);
                             }
                         }
                         break;
                     case 1:
-                        cursor = &D_80111700_messy_memory[obj->work[1]];
+                        cursor = &m229_objWorkTbl[obj->work[1]];
                         work->unk44.x = cursor->unk44.x;
                         work->unk44.y = cursor->unk44.y;
                         espPriSet(work->unk42, 0xAAAA);
@@ -2018,29 +2018,29 @@ void func_8010C478_messy_memory(omObjData *obj) {
             break;
         case 10:
             if (obj->work[1] < 4) {
-                if (D_801116B0_messy_memory[obj->work[1] * 10 + obj->work[0]] == 1) {
-                    marker = &D_80111700_messy_memory[obj->work[0] + 0x56 + obj->work[1] * 10];
-                    if (D_80110FE0_messy_memory[obj->work[1]][1] + 93.0f <= work->unk44.y) {
+                if (m229_itemHeldTbl[obj->work[1] * 10 + obj->work[0]] == 1) {
+                    marker = &m229_objWorkTbl[obj->work[0] + 0x56 + obj->work[1] * 10];
+                    if (m229_viewOfsTbl[obj->work[1]][1] + 93.0f <= work->unk44.y) {
                         for (i = 1; i < 4; i++) {
-                            if (abs(D_80110FE0_messy_memory[obj->work[1]][0] + D_80111094_messy_memory[work->unk06][0] -
+                            if (abs(m229_viewOfsTbl[obj->work[1]][0] + m229_trayPosTbl[work->unk06][0] -
                                     work->unk44.x) >
-                                abs(D_80110FE0_messy_memory[obj->work[1]][0] + D_80111094_messy_memory[i][0] -
+                                abs(m229_viewOfsTbl[obj->work[1]][0] + m229_trayPosTbl[i][0] -
                                     work->unk44.x)) {
                                 work->unk06 = i;
                             }
                         }
                         work->unk44.x =
-                            D_80110FE0_messy_memory[obj->work[1]][0] + D_80111094_messy_memory[work->unk06][0];
+                            m229_viewOfsTbl[obj->work[1]][0] + m229_trayPosTbl[work->unk06][0];
                         work->unk44.y =
-                            D_80110FE0_messy_memory[obj->work[1]][1] + D_80111094_messy_memory[work->unk06][1];
+                            m229_viewOfsTbl[obj->work[1]][1] + m229_trayPosTbl[work->unk06][1];
                         espPriSet(marker->unk42, 0xABBB);
                     }
-                    if (D_80110FE0_messy_memory[obj->work[1]][1] + 93.0f > work->unk44.y) {
-                        if (D_80110FE0_messy_memory[obj->work[1]][0] + 80.0f >= work->unk44.x && work->unk08 == 0) {
+                    if (m229_viewOfsTbl[obj->work[1]][1] + 93.0f > work->unk44.y) {
+                        if (m229_viewOfsTbl[obj->work[1]][0] + 80.0f >= work->unk44.x && work->unk08 == 0) {
                             work->unk18 = 2.0f;
                             work->unk08 = 1;
                         }
-                        if (D_80110FE0_messy_memory[obj->work[1]][0] + 80.0f < work->unk44.x && work->unk08 == 0) {
+                        if (m229_viewOfsTbl[obj->work[1]][0] + 80.0f < work->unk44.x && work->unk08 == 0) {
                             work->unk18 = -2.0f;
                             work->unk08 = 1;
                         }
@@ -2050,20 +2050,20 @@ void func_8010C478_messy_memory(omObjData *obj) {
                         espPriSet(work->unk42, 0xCDDD);
                         espPriSet(marker->unk42, 0xCDEE);
                     }
-                    if (D_80110FE0_messy_memory[obj->work[1]][1] + 93.0f <= work->unk44.y) {
-                        D_801116B0_messy_memory[obj->work[1] * 10 + obj->work[0]] = 0;
+                    if (m229_viewOfsTbl[obj->work[1]][1] + 93.0f <= work->unk44.y) {
+                        m229_itemHeldTbl[obj->work[1] * 10 + obj->work[0]] = 0;
                         espDispOn(marker->unk42);
                         espPosSet(marker->unk42, work->unk44.x, work->unk44.y + 1.0f);
                     }
                 }
                 found = FALSE;
                 for (i = 0; i < 40; i++) {
-                    if (D_801116B0_messy_memory[i] == 1) {
+                    if (m229_itemHeldTbl[i] == 1) {
                         found = TRUE;
                     }
                 }
                 if (!found) {
-                    D_80115D9A_messy_memory = 10;
+                    m229_phaseDoneNo = 10;
                 }
                 espPosSet(work->unk42, work->unk44.x, work->unk44.y);
             }
@@ -2078,33 +2078,33 @@ void func_8010C478_messy_memory(omObjData *obj) {
             if (obj->work[1] == 4) {
                 u32 index = obj->work[0] + 48;
 
-                work = &D_80111700_messy_memory[index];
-                work->unk44.x += D_80115D20_messy_memory[obj->work[0]][0];
-                work->unk44.y += D_80115D20_messy_memory[obj->work[0]][1];
+                work = &m229_objWorkTbl[index];
+                work->unk44.x += m229_itemScatterTbl[obj->work[0]][0];
+                work->unk44.y += m229_itemScatterTbl[obj->work[0]][1];
                 espPosSet(work->unk42, work->unk44.x, work->unk44.y);
-                work->unk5C.x = work->unk5C.y = D_8011165C_messy_memory;
+                work->unk5C.x = work->unk5C.y = m229_zoomScale;
                 espScaleSet(work->unk42, work->unk5C.x, work->unk5C.y);
                 espDispOn(work->unk42);
             }
             break;
         case 13:
             if (obj->work[1] < 4) {
-                if (D_80110FE0_messy_memory[obj->work[1]][1] + 80.0f > work->unk44.y) {
+                if (m229_viewOfsTbl[obj->work[1]][1] + 80.0f > work->unk44.y) {
                     espPriSet(work->unk42, 0xDDDD);
-                    if (D_801116A4_messy_memory[D_8011163A_messy_memory] == obj->work[0]) {
+                    if (m229_roomItemTbl[m229_checkNo] == obj->work[0]) {
                         for (i = 0; i < 10; i++) {
                             if (work->unk44.x ==
-                                    D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[obj->work[1]][0] &&
+                                    m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[obj->work[1]][0] &&
                                 work->unk44.y ==
-                                    D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[obj->work[1]][1]) {
-                                D_801116E0_messy_memory[i] = obj->work[0];
-                                if (D_801116A4_messy_memory[i] == D_801116E0_messy_memory[i]) {
+                                    m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[obj->work[1]][1]) {
+                                m229_roomSpotItemTbl[i] = obj->work[0];
+                                if (m229_roomItemTbl[i] == m229_roomSpotItemTbl[i]) {
                                     espPriSet(work->unk42, 0x1111);
                                     if (work->unk04 == 0) {
-                                        D_80115D76_messy_memory[obj->work[1]]++;
+                                        m229_scoreTbl[obj->work[1]]++;
                                         work->unk04 = 1;
                                     }
-                                    work->unk5C.x = work->unk5C.y = D_801116A0_messy_memory;
+                                    work->unk5C.x = work->unk5C.y = m229_checkScale;
                                     espScaleSet(work->unk42, work->unk5C.x, work->unk5C.y);
                                 }
                             }
@@ -2114,9 +2114,9 @@ void func_8010C478_messy_memory(omObjData *obj) {
             }
             if (obj->work[1] == 4) {
                 espPriSet(work->unk42, 0x3333);
-                if (D_801116A4_messy_memory[D_8011163A_messy_memory] == obj->work[0]) {
+                if (m229_roomItemTbl[m229_checkNo] == obj->work[0]) {
                     espPriSet(work->unk42, 0x1111);
-                    work->unk5C.x = work->unk5C.y = D_8011165C_messy_memory;
+                    work->unk5C.x = work->unk5C.y = m229_zoomScale;
                     espScaleSet(work->unk42, work->unk5C.x, work->unk5C.y);
                 }
             }
@@ -2124,28 +2124,28 @@ void func_8010C478_messy_memory(omObjData *obj) {
     }
 }
 
-void func_8010D55C_messy_memory(omObjData *obj) {
-    MessyMemoryWork *work = &D_80111700_messy_memory[obj->work[0] + 8 + obj->work[1] * 10];
+void m229_ItemObjInit(omObjData *obj) {
+    MessyMemoryWork *work = &m229_objWorkTbl[obj->work[0] + 8 + obj->work[1] * 10];
     s16 i;
     u8 slot;
 
     if (obj->work[1] == 0) {
         for (i = 0; i < 10; i++) {
             if (obj->work[0] == i) {
-                D_80111608_messy_memory[i] = HuSprAnimDataRead((&D_80111148_messy_memory[i])->fileId);
+                m229_itemViewAnimTbl[i] = HuSprAnimDataRead((&m229_itemViewSprTbl[i])->fileId);
             }
         }
     }
     if (obj->work[1] < 4) {
         for (i = 0; i < 11; i++) {
             if (i == obj->work[0]) {
-                work->unk42 = espEntry(D_80111608_messy_memory[i], 0, 0);
+                work->unk42 = espEntry(m229_itemViewAnimTbl[i], 0, 0);
             }
         }
     } else {
         for (i = 0; i < 10; i++) {
             if (obj->work[0] == i) {
-                work->unk40 = HuSprAnimDataRead((&D_80111198_messy_memory[i])->fileId);
+                work->unk40 = HuSprAnimDataRead((&m229_itemRoomSprTbl[i])->fileId);
                 work->unk42 = espEntry(work->unk40, 0, 0);
             }
         }
@@ -2153,12 +2153,12 @@ void func_8010D55C_messy_memory(omObjData *obj) {
     if (obj->work[1] == 4) {
         slot = rand8() % 10;
         while (TRUE) {
-            if (slot != D_80115D90_messy_memory[0] && slot != D_80115D90_messy_memory[1] &&
-                slot != D_80115D90_messy_memory[2] && slot != D_80115D90_messy_memory[3] &&
-                slot != D_80115D90_messy_memory[4] && slot != D_80115D90_messy_memory[5] &&
-                slot != D_80115D90_messy_memory[6] && slot != D_80115D90_messy_memory[7] &&
-                slot != D_80115D90_messy_memory[8]) {
-                D_80115D90_messy_memory[obj->work[0]] = slot;
+            if (slot != m229_roomSlotTbl[0] && slot != m229_roomSlotTbl[1] &&
+                slot != m229_roomSlotTbl[2] && slot != m229_roomSlotTbl[3] &&
+                slot != m229_roomSlotTbl[4] && slot != m229_roomSlotTbl[5] &&
+                slot != m229_roomSlotTbl[6] && slot != m229_roomSlotTbl[7] &&
+                slot != m229_roomSlotTbl[8]) {
+                m229_roomSlotTbl[obj->work[0]] = slot;
                 break;
             }
             slot++;
@@ -2168,9 +2168,9 @@ void func_8010D55C_messy_memory(omObjData *obj) {
         }
         for (i = 0; i < 10; i++) {
             if (slot == i) {
-                work->unk44.x = D_80110FF4_messy_memory[slot][0];
-                work->unk44.y = D_80110FF4_messy_memory[slot][1];
-                D_801116A4_messy_memory[slot] = obj->work[0];
+                work->unk44.x = m229_roomSpotPosTbl[slot][0];
+                work->unk44.y = m229_roomSpotPosTbl[slot][1];
+                m229_roomItemTbl[slot] = obj->work[0];
             }
         }
     }
@@ -2183,10 +2183,10 @@ void func_8010D55C_messy_memory(omObjData *obj) {
     if (obj->work[1] == 4) {
         espPriSet(work->unk42, 0x3333);
     }
-    obj->func = func_8010C478_messy_memory;
+    obj->func = m229_ItemObjMain;
 }
 
-void func_8010D910_messy_memory(void) {
+void m229_ItemObjCreateAll(void) {
     MessyMemoryWork *work;
     omObjData *obj;
     s16 i;
@@ -2195,8 +2195,8 @@ void func_8010D910_messy_memory(void) {
 
     for (i = 0; i < 5; i++) {
         for (j = 0; j < 10; j++) {
-            work = &D_80111700_messy_memory[j + 8 + i * 10];
-            obj = omAddObj(0x12C, 0, 0, -1, func_8010D55C_messy_memory);
+            work = &m229_objWorkTbl[j + 8 + i * 10];
+            obj = omAddObj(0x12C, 0, 0, -1, m229_ItemObjInit);
             for (k = 0; k < 10; k++) {
                 if (j % 10 == k) {
                     obj->work[0] = j;
@@ -2208,17 +2208,17 @@ void func_8010D910_messy_memory(void) {
     }
 }
 
-void func_8010DA64_messy_memory(omObjData *obj) {
-    MessyMemoryWork *work = &D_80111700_messy_memory[obj->work[0] + 0x56 + obj->work[1] * 10];
-    MessyMemoryWork *tile = &D_80111700_messy_memory[obj->work[0] + 8 + obj->work[1] * 10];
+void m229_ItemMarkObjMain(omObjData *obj) {
+    MessyMemoryWork *work = &m229_objWorkTbl[obj->work[0] + 0x56 + obj->work[1] * 10];
+    MessyMemoryWork *tile = &m229_objWorkTbl[obj->work[0] + 8 + obj->work[1] * 10];
     s16 i;
 
-    switch (D_80115D8C_messy_memory) {
+    switch (m229_phase) {
         case 3:
             if (obj->work[1] == 4) {
                 for (i = 0; i < 21; i++) {
-                    if (tile->unk44.x == D_80110FF4_messy_memory[i][0] + D_80110FE0_messy_memory[obj->work[1]][0] &&
-                        tile->unk44.y == D_80110FF4_messy_memory[i][1] + D_80110FE0_messy_memory[obj->work[1]][1]) {
+                    if (tile->unk44.x == m229_roomSpotPosTbl[i][0] + m229_viewOfsTbl[obj->work[1]][0] &&
+                        tile->unk44.y == m229_roomSpotPosTbl[i][1] + m229_viewOfsTbl[obj->work[1]][1]) {
                         work->unk44.x = tile->unk44.x;
                         work->unk44.y = tile->unk44.y;
                         espDispOn(work->unk42);
@@ -2240,15 +2240,15 @@ void func_8010DA64_messy_memory(omObjData *obj) {
         case 5:
             if (obj->work[1] == 4) {
                 for (i = 0; i < 20; i++) {
-                    if (tile->unk44.x == D_80110FF4_messy_memory[i][0] && tile->unk44.y == D_80110FF4_messy_memory[i][1]) {
-                        D_80115D20_messy_memory[obj->work[0]][0] = D_801110A4_messy_memory[i][0] * 2.0f;
-                        D_80115D20_messy_memory[obj->work[0]][1] = D_801110A4_messy_memory[i][1] * 2.0f;
+                    if (tile->unk44.x == m229_roomSpotPosTbl[i][0] && tile->unk44.y == m229_roomSpotPosTbl[i][1]) {
+                        m229_itemScatterTbl[obj->work[0]][0] = m229_itemScatterVelTbl[i][0] * 2.0f;
+                        m229_itemScatterTbl[obj->work[0]][1] = m229_itemScatterVelTbl[i][1] * 2.0f;
                     }
                 }
-                work->unk44.x += D_80115D20_messy_memory[obj->work[0]][0];
-                work->unk44.y += D_80115D20_messy_memory[obj->work[0]][1];
+                work->unk44.x += m229_itemScatterTbl[obj->work[0]][0];
+                work->unk44.y += m229_itemScatterTbl[obj->work[0]][1];
                 espPosSet(work->unk42, work->unk44.x, work->unk44.y + 2.0f);
-                work->unk5C.x = work->unk5C.y = D_8011165C_messy_memory;
+                work->unk5C.x = work->unk5C.y = m229_zoomScale;
                 espScaleSet(work->unk42, work->unk5C.x, work->unk5C.y);
                 if (work->unk5C.x <= 0.01 || work->unk5C.y <= 0.01) {
                     espDispOff(work->unk42);
@@ -2256,8 +2256,8 @@ void func_8010DA64_messy_memory(omObjData *obj) {
             }
             if (obj->work[1] < 4) {
                 for (i = 0; i < 21; i++) {
-                    if (tile->unk44.x == D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[obj->work[1]][0] &&
-                        tile->unk44.y == D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[obj->work[1]][1]) {
+                    if (tile->unk44.x == m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[obj->work[1]][0] &&
+                        tile->unk44.y == m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[obj->work[1]][1]) {
                         work->unk44.x = tile->unk44.x;
                         work->unk44.y = tile->unk44.y;
                         espDispOn(work->unk42);
@@ -2275,8 +2275,8 @@ void func_8010DA64_messy_memory(omObjData *obj) {
         case 8:
             if (obj->work[1] < 4) {
                 for (i = 0; i < 21; i++) {
-                    if (tile->unk44.x == D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[obj->work[1]][0] &&
-                        tile->unk44.y == D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[obj->work[1]][1]) {
+                    if (tile->unk44.x == m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[obj->work[1]][0] &&
+                        tile->unk44.y == m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[obj->work[1]][1]) {
                         work->unk44.x = tile->unk44.x;
                         work->unk44.y = tile->unk44.y;
                         espDispOn(work->unk42);
@@ -2296,8 +2296,8 @@ void func_8010DA64_messy_memory(omObjData *obj) {
         case 11:
             if (obj->work[1] < 4) {
                 for (i = 0; i < 21; i++) {
-                    if (tile->unk44.x == D_80111044_messy_memory[i][0] + D_80110FE0_messy_memory[obj->work[1]][0] &&
-                        tile->unk44.y == D_80111044_messy_memory[i][1] + D_80110FE0_messy_memory[obj->work[1]][1]) {
+                    if (tile->unk44.x == m229_viewSpotPosTbl[i][0] + m229_viewOfsTbl[obj->work[1]][0] &&
+                        tile->unk44.y == m229_viewSpotPosTbl[i][1] + m229_viewOfsTbl[obj->work[1]][1]) {
                         work->unk44.x = tile->unk44.x;
                         work->unk44.y = tile->unk44.y;
                         espDispOn(work->unk42);
@@ -2309,7 +2309,7 @@ void func_8010DA64_messy_memory(omObjData *obj) {
                         }
                     }
                 }
-                if (D_801116B0_messy_memory[obj->work[1] * 10 + obj->work[0]] == 1) {
+                if (m229_itemHeldTbl[obj->work[1] * 10 + obj->work[0]] == 1) {
                     espDispOff(work->unk42);
                 }
             }
@@ -2322,15 +2322,15 @@ void func_8010DA64_messy_memory(omObjData *obj) {
     }
 }
 
-void func_8010E29C_messy_memory(omObjData *obj) {
-    MessyMemoryWork *work = &D_80111700_messy_memory[obj->work[0] + 0x56 + obj->work[1] * 10];
-    MessyMemoryWork *tile = &D_80111700_messy_memory[obj->work[0] + 8 + obj->work[1] * 10];
+void m229_ItemMarkObjInit(omObjData *obj) {
+    MessyMemoryWork *work = &m229_objWorkTbl[obj->work[0] + 0x56 + obj->work[1] * 10];
+    MessyMemoryWork *tile = &m229_objWorkTbl[obj->work[0] + 8 + obj->work[1] * 10];
     s16 i;
 
     if (obj->work[0] == 0 && obj->work[1] == 0) {
-        D_80111634_messy_memory = HuSprAnimDataRead(0x3E0003);
+        m229_itemMarkAnim = HuSprAnimDataRead(0x3E0003);
     }
-    work->unk42 = espEntry(D_80111634_messy_memory, 0, 0);
+    work->unk42 = espEntry(m229_itemMarkAnim, 0, 0);
     if (obj->work[1] == 4) {
         work->unk5C.x = 1.0f;
         work->unk5C.y = 1.0f;
@@ -2342,8 +2342,8 @@ void func_8010E29C_messy_memory(omObjData *obj) {
     espPriSet(work->unk42, 0xEEEE);
     if (obj->work[1] == 4) {
         for (i = 0; i < 21; i++) {
-            if (tile->unk44.x == D_80110FF4_messy_memory[i][0] + D_80110FE0_messy_memory[obj->work[1]][0] &&
-                tile->unk44.y == D_80110FF4_messy_memory[i][1] + D_80110FE0_messy_memory[obj->work[1]][1]) {
+            if (tile->unk44.x == m229_roomSpotPosTbl[i][0] + m229_viewOfsTbl[obj->work[1]][0] &&
+                tile->unk44.y == m229_roomSpotPosTbl[i][1] + m229_viewOfsTbl[obj->work[1]][1]) {
                 work->unk44.x = tile->unk44.x;
                 work->unk44.y = tile->unk44.y;
                 espPriSet(work->unk42, 0x4444);
@@ -2354,10 +2354,10 @@ void func_8010E29C_messy_memory(omObjData *obj) {
     }
     espAttrSet(work->unk42, 0x5000);
     espScaleSet(work->unk42, work->unk5C.x, work->unk5C.y);
-    obj->func = func_8010DA64_messy_memory;
+    obj->func = m229_ItemMarkObjMain;
 }
 
-void func_8010E500_messy_memory(void) {
+void m229_ItemMarkObjCreateAll(void) {
     MessyMemoryWork *work;
     omObjData *obj;
     s16 i;
@@ -2366,8 +2366,8 @@ void func_8010E500_messy_memory(void) {
 
     for (i = 0; i < 5; i++) {
         for (j = 0; j < 10; j++) {
-            work = &D_80111700_messy_memory[j + 0x56 + i * 10];
-            obj = omAddObj(0x190, 0, 0, -1, func_8010E29C_messy_memory);
+            work = &m229_objWorkTbl[j + 0x56 + i * 10];
+            obj = omAddObj(0x190, 0, 0, -1, m229_ItemMarkObjInit);
             for (k = 0; k < 10; k++) {
                 if (j % 10 == k) {
                     obj->work[0] = j;
@@ -2379,11 +2379,11 @@ void func_8010E500_messy_memory(void) {
     }
 }
 
-void func_8010E654_messy_memory(omObjData *obj) {
-    MessyMemoryWork *work = &D_801134E8_messy_memory[obj->work[0]];
-    omObjData *mainObj = D_801134E8_messy_memory[0].obj;
+void m229_MoverObjMain(omObjData *obj) {
+    MessyMemoryWork *work = &m229_moverWorkTbl[obj->work[0]];
+    omObjData *mainObj = m229_moverWorkTbl[0].obj;
 
-    switch (D_80115D8C_messy_memory) {
+    switch (m229_phase) {
         case 1:
             if (obj->work[0] == 0) {
                 if (work->unk06 == 48) {
@@ -2400,11 +2400,11 @@ void func_8010E654_messy_memory(omObjData *obj) {
         case 3:
             switch (obj->work[1]) {
                 case 0:
-                    obj->trans.z += D_80111228_messy_memory[obj->work[0]][0];
-                    obj->trans.x += D_80111228_messy_memory[obj->work[0]][1];
-                    if (obj->trans.z <= D_80111228_messy_memory[obj->work[0]][2]) {
+                    obj->trans.z += m229_moverPathTbl[obj->work[0]][0];
+                    obj->trans.x += m229_moverPathTbl[obj->work[0]][1];
+                    if (obj->trans.z <= m229_moverPathTbl[obj->work[0]][2]) {
                         obj->work[1] = 1;
-                        D_80111650_messy_memory = 1;
+                        m229_messVibTimer = 1;
                         if (obj->work[0] == 4 || obj->work[0] == 6) {
                             Hu3DMotionModelSet(*obj->model, mainObj->motion[3]);
                         } else {
@@ -2424,11 +2424,11 @@ void func_8010E654_messy_memory(omObjData *obj) {
                         }
                     }
                     work->unk04++;
-                    if (D_80115D8C_messy_memory == 2 && obj->work[0] == 2 && work->unk04 == 5) {
-                        D_80111675_messy_memory = 1;
+                    if (m229_phase == 2 && obj->work[0] == 2 && work->unk04 == 5) {
+                        m229_dustState = 1;
                     }
-                    if (D_80115D8C_messy_memory == 2 && obj->work[0] == 6 && work->unk04 == 10) {
-                        D_80115D9A_messy_memory = 2;
+                    if (m229_phase == 2 && obj->work[0] == 6 && work->unk04 == 10) {
+                        m229_phaseDoneNo = 2;
                     }
                     if (obj->work[0] < 4) {
                         if (work->unk04 >= 70) {
@@ -2447,23 +2447,23 @@ void func_8010E654_messy_memory(omObjData *obj) {
                     }
                     break;
                 case 2:
-                    obj->rot.y = func_801059BC_messy_memory(obj->rot.y, 180.0f);
+                    obj->rot.y = m229_AngleAdd(obj->rot.y, 180.0f);
                     Hu3DMotionModelSet(*obj->model, mainObj->motion[2]);
                     Hu3DMotionAttrSet(*obj->model, 2, 2);
                     Hu3DMotionTimeSet(*obj->model, 0.0f);
                     if (obj->work[0] == 2) {
-                        D_80111675_messy_memory = 2;
+                        m229_dustState = 2;
                         HuAudFXVolSet(HuAudFXPlay(0x298), 0x73);
                     }
                     obj->work[1] = 3;
                     break;
                 case 3:
-                    obj->trans.z -= D_80111228_messy_memory[obj->work[0]][0];
-                    obj->trans.x -= D_80111228_messy_memory[obj->work[0]][1];
+                    obj->trans.z -= m229_moverPathTbl[obj->work[0]][0];
+                    obj->trans.x -= m229_moverPathTbl[obj->work[0]][1];
                     if (obj->trans.z >= 170.0f) {
                         obj->work[1] = 4;
                         if (obj->work[0] == 3) {
-                            D_80115D9A_messy_memory = 3;
+                            m229_phaseDoneNo = 3;
                         }
                     }
                     if (obj->work[0] == 3 && obj->trans.z == -50.0f) {
@@ -2480,21 +2480,21 @@ void func_8010E654_messy_memory(omObjData *obj) {
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z + 0.0f);
 }
 
-void func_8010EBB0_messy_memory(omObjData *obj) {
+void m229_MoverObjInit(omObjData *obj) {
     u32 index = obj->work[0];
-    omObjData *mainObj = D_801134E8_messy_memory[0].obj;
+    omObjData *mainObj = m229_moverWorkTbl[0].obj;
     u8 i;
 
     if (index == 0) {
         *obj->model = Hu3DModelRead(0xA0000, 0xB9);
-        D_8011163C_messy_memory = *obj->model;
+        m229_moverMdl = *obj->model;
         omObjMotionRead(obj, 0, 0xA0001);
         omObjMotionRead(obj, 1, 0xA0002);
         omObjMotionRead(obj, 2, 0xA0006);
         omObjMotionRead(obj, 3, 0xA0007);
         omObjMotionRead(obj, 4, 0xA0009);
     } else {
-        *obj->model = Hu3DModelLink(D_8011163C_messy_memory);
+        *obj->model = Hu3DModelLink(m229_moverMdl);
     }
     obj->model[1] = Hu3DModelRead2(0, 0xA9);
     Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
@@ -2512,7 +2512,7 @@ void func_8010EBB0_messy_memory(omObjData *obj) {
         }
     }
     obj->rot.x = 0.0f;
-    obj->rot.y = D_80111228_messy_memory[obj->work[0]][3];
+    obj->rot.y = m229_moverPathTbl[obj->work[0]][3];
     obj->rot.z = 0.0f;
     obj->scale.x = 0.8f;
     obj->scale.y = 0.8f;
@@ -2524,32 +2524,32 @@ void func_8010EBB0_messy_memory(omObjData *obj) {
     Hu3DModelScaleSet(obj->model[1], obj->scale.x, obj->scale.y, obj->scale.z);
     Hu3DModelCameraSet(obj->model[0], HU3D_CAM1);
     Hu3DModelCameraSet(obj->model[1], HU3D_CAM1);
-    obj->func = func_8010E654_messy_memory;
+    obj->func = m229_MoverObjMain;
 }
 
-void func_8010EE6C_messy_memory(void) {
+void m229_MoverObjCreateAll(void) {
     MessyMemoryWork *work;
     omObjData *obj;
     s16 i;
 
     for (i = 0; i < 7; i++) {
-        work = &D_801134E8_messy_memory[i];
-        obj = omAddObj(0x1F4, 1, 0xA, -1, func_8010EBB0_messy_memory);
+        work = &m229_moverWorkTbl[i];
+        obj = omAddObj(0x1F4, 1, 0xA, -1, m229_MoverObjInit);
         obj->work[0] = i;
         work->obj = obj;
     }
 }
 
-void func_8010EF10_messy_memory(omObjData *obj) {
-    MessyMemoryWork *work = &D_80113A94_messy_memory[obj->work[0]];
+void m229_DustObjMain(omObjData *obj) {
+    MessyMemoryWork *work = &m229_dustWork[obj->work[0]];
 
-    switch (D_80115D8C_messy_memory) {
+    switch (m229_phase) {
         case 2:
         case 3:
-            if (D_80111675_messy_memory == 1) {
-                if (D_80115D70_messy_memory == 0) {
+            if (m229_dustState == 1) {
+                if (m229_dustSeF == 0) {
                     HuAudFXPlay(0x3E9);
-                    D_80115D70_messy_memory = 1;
+                    m229_dustSeF = 1;
                     HuAudFXPlay(0x127);
                 }
                 Hu3DModelAttrSet(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -2559,20 +2559,20 @@ void func_8010EF10_messy_memory(omObjData *obj) {
                     work->unk06 = 255;
                 }
             }
-            if (D_80111675_messy_memory == 2) {
+            if (m229_dustState == 2) {
                 Hu3DModelTPLvlSet(*obj->model, work->unk06);
                 work->unk06 -= 10;
                 if (work->unk06 <= 0) {
                     work->unk06 = 0;
                     Hu3DModelAttrSet(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                    D_80111650_messy_memory = 0;
+                    m229_messVibTimer = 0;
                 }
             }
             break;
     }
 }
 
-void func_8010F04C_messy_memory(omObjData *obj) {
+void m229_DustObjInit(omObjData *obj) {
     *obj->model = Hu3DModelRead(0x3E001C, 0xA9);
     Hu3DMotionAttrSet(*obj->model, 2, 2);
     Hu3DModelAttrSet(*obj->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -2591,27 +2591,27 @@ void func_8010F04C_messy_memory(omObjData *obj) {
     Hu3DModelRotSet(*obj->model, obj->rot.x, obj->rot.y, obj->rot.z);
     Hu3DModelScaleSet(*obj->model, obj->scale.x, obj->scale.y, obj->scale.z);
     Hu3DModelCameraSet(*obj->model, HU3D_CAM1);
-    obj->func = func_8010EF10_messy_memory;
+    obj->func = m229_DustObjMain;
 }
 
-void func_8010F15C_messy_memory(void) {
-    omObjData *obj = omAddObj(0xFA, 1, 0xA, -1, func_8010F04C_messy_memory);
+void m229_DustObjCreate(void) {
+    omObjData *obj = omAddObj(0xFA, 1, 0xA, -1, m229_DustObjInit);
     obj->work[0] = 0;
-    D_80113A94_messy_memory[0].obj = obj;
+    m229_dustWork[0].obj = obj;
 }
 
-void func_8010F19C_messy_memory(omObjData *obj) {
-    MessyMemoryWork *work = &D_80113884_messy_memory[obj->work[0]];
+void m229_ShutterObjMain(omObjData *obj) {
+    MessyMemoryWork *work = &m229_shutterWorkTbl[obj->work[0]];
 
-    switch (D_80115D8C_messy_memory) {
+    switch (m229_phase) {
         case 9:
-            switch (D_80115D80_messy_memory[obj->work[0]]) {
+            switch (m229_shutterStateTbl[obj->work[0]]) {
                 case 2:
-                    if (Hu3DData[*obj->model].motTime == D_80111600_messy_memory) {
+                    if (Hu3DData[*obj->model].motTime == m229_shutterMotEnd) {
                         Hu3DMotionAttrSet(*obj->model, 4, 4);
                     }
                     if (Hu3DData[*obj->model].motTime == 0.0f) {
-                        D_80115D80_messy_memory[obj->work[0]] = 0;
+                        m229_shutterStateTbl[obj->work[0]] = 0;
                     }
                     break;
                 case 1:
@@ -2623,15 +2623,15 @@ void func_8010F19C_messy_memory(omObjData *obj) {
             }
             break;
         case 11:
-            if (D_80115D80_messy_memory[obj->work[0]] == 1 ||
-                Hu3DData[*obj->model].motTime == D_80111600_messy_memory) {
+            if (m229_shutterStateTbl[obj->work[0]] == 1 ||
+                Hu3DData[*obj->model].motTime == m229_shutterMotEnd) {
                 Hu3DMotionAttrSet(*obj->model, 4, 4);
-                D_80115D80_messy_memory[obj->work[0]] = 0;
+                m229_shutterStateTbl[obj->work[0]] = 0;
             }
             if (obj->work[0] == 3) {
                 work->unk04++;
                 if (work->unk04 > 50) {
-                    D_80115D9A_messy_memory = 11;
+                    m229_phaseDoneNo = 11;
                     work->unk04 = 0;
                 }
             }
@@ -2639,11 +2639,11 @@ void func_8010F19C_messy_memory(omObjData *obj) {
     }
 }
 
-void func_8010F3DC_messy_memory(omObjData *obj) {
+void m229_ShutterObjInit(omObjData *obj) {
     *obj->model = Hu3DModelRead(0x3E001A, 0xB9);
     omObjMotionRead(obj, 0, 0x3E001B);
     Hu3DMotionModelSet(*obj->model, *obj->motion);
-    D_80111600_messy_memory = Hu3DMotion[Hu3DData[*obj->model].motId].unk02;
+    m229_shutterMotEnd = Hu3DMotion[Hu3DData[*obj->model].motId].unk02;
     Hu3DMotionAttrSet(*obj->model, 2, 1);
     switch (obj->work[0]) {
         case 0:
@@ -2680,27 +2680,27 @@ void func_8010F3DC_messy_memory(omObjData *obj) {
     Hu3DModelRotSet(*obj->model, obj->rot.x, obj->rot.y, obj->rot.z);
     Hu3DModelScaleSet(*obj->model, obj->scale.x, obj->scale.y, obj->scale.z);
     Hu3DModelCameraSet(*obj->model, HU3D_CAM1);
-    obj->func = func_8010F19C_messy_memory;
+    obj->func = m229_ShutterObjMain;
 }
 
-void func_8010F644_messy_memory(void) {
+void m229_ShutterObjCreateAll(void) {
     MessyMemoryWork *work;
     omObjData *obj;
     s16 i;
 
     for (i = 0; i < 4; i++) {
-        work = &D_80113884_messy_memory[i];
-        obj = omAddObj(0x1D6, 1, 3, -1, func_8010F3DC_messy_memory);
+        work = &m229_shutterWorkTbl[i];
+        obj = omAddObj(0x1D6, 1, 3, -1, m229_ShutterObjInit);
         obj->work[0] = i;
         work->obj = obj;
     }
 }
 
-void func_8010F6E8_messy_memory(omObjData *obj) {
-    MessyMemoryWork *work = &D_80111700_messy_memory[obj->work[0] + 0x4A + obj->work[1] * 3];
+void m229_ScoreObjMain(omObjData *obj) {
+    MessyMemoryWork *work = &m229_objWorkTbl[obj->work[0] + 0x4A + obj->work[1] * 3];
     u8 i;
 
-    switch (D_80115D8C_messy_memory) {
+    switch (m229_phase) {
         case 13:
             if (obj->work[0] == 0 && obj->work[1] == 0 && work->unk06 == 0) {
                 HuAudFXPlay(0x3EC);
@@ -2708,7 +2708,7 @@ void func_8010F6E8_messy_memory(omObjData *obj) {
             }
             break;
         case 14:
-            work->unk5C.x = work->unk5C.y = D_80115D7C_messy_memory;
+            work->unk5C.x = work->unk5C.y = m229_scoreScale;
             if (obj->work[0] == 1) {
                 espDispOn(work->unk42);
                 work->unk04++;
@@ -2727,24 +2727,24 @@ void func_8010F6E8_messy_memory(omObjData *obj) {
                 work->unk06 = 2;
             }
             for (i = 0; i < 10; i++) {
-                if (D_80115D76_messy_memory[obj->work[1]] == i) {
-                    work = &D_80111700_messy_memory[obj->work[1] * 3 + 0x4B];
+                if (m229_scoreTbl[obj->work[1]] == i) {
+                    work = &m229_objWorkTbl[obj->work[1] * 3 + 0x4B];
                     espPatNoSet(work->unk42, i);
                 }
             }
-            if (D_80115D76_messy_memory[obj->work[1]] == 10) {
-                work = &D_80111700_messy_memory[obj->work[1] * 3 + 0x4A];
+            if (m229_scoreTbl[obj->work[1]] == 10) {
+                work = &m229_objWorkTbl[obj->work[1] * 3 + 0x4A];
                 espDispOn(work->unk42);
                 espPatNoSet(work->unk42, 1);
-                work = &D_80111700_messy_memory[obj->work[1] * 3 + 0x4B];
+                work = &m229_objWorkTbl[obj->work[1] * 3 + 0x4B];
                 espPatNoSet(work->unk42, 0);
             }
-            work = &D_80111700_messy_memory[obj->work[0] + 0x4A + obj->work[1] * 3];
-            work->unk5C.x = work->unk5C.y = D_80115D7C_messy_memory;
+            work = &m229_objWorkTbl[obj->work[0] + 0x4A + obj->work[1] * 3];
+            work->unk5C.x = work->unk5C.y = m229_scoreScale;
             if (work->unk5C.x < 0.01f || work->unk5C.y < 0.01f) {
                 work->unk5C.x = work->unk5C.y = 0.01f;
                 espDispOff(work->unk42);
-                D_80115D9A_messy_memory = 15;
+                m229_phaseDoneNo = 15;
             }
             break;
     }
@@ -2752,8 +2752,8 @@ void func_8010F6E8_messy_memory(omObjData *obj) {
     espPosSet(work->unk42, work->unk44.x, work->unk44.y);
 }
 
-void func_8010FA38_messy_memory(omObjData *obj) {
-    MessyMemoryWork *work = &D_80111700_messy_memory[obj->work[0] + 0x4A + obj->work[1] * 3];
+void m229_ScoreObjInit(omObjData *obj) {
+    MessyMemoryWork *work = &m229_objWorkTbl[obj->work[0] + 0x4A + obj->work[1] * 3];
     u8 i;
 
     switch (obj->work[0]) {
@@ -2773,15 +2773,15 @@ void func_8010FA38_messy_memory(omObjData *obj) {
     }
     for (i = 0; i < 3; i++) {
         if (obj->work[0] == i) {
-            work->unk44.x = D_801112B8_messy_memory[obj->work[1]][i * 2];
-            work->unk44.y = D_801112B8_messy_memory[obj->work[1]][i * 2 + 1];
+            work->unk44.x = m229_scorePosTbl[obj->work[1]][i * 2];
+            work->unk44.y = m229_scorePosTbl[obj->work[1]][i * 2 + 1];
         }
     }
     espDispOff(work->unk42);
-    obj->func = func_8010F6E8_messy_memory;
+    obj->func = m229_ScoreObjMain;
 }
 
-void func_8010FBB0_messy_memory(void) {
+void m229_ScoreObjCreateAll(void) {
     MessyMemoryWork *work;
     omObjData *obj;
     u8 i;
@@ -2789,8 +2789,8 @@ void func_8010FBB0_messy_memory(void) {
 
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 3; j++) {
-            work = &D_80111700_messy_memory[0x4A + i * 3 + j];
-            obj = omAddObj(0x384, 1, 0xA, -1, func_8010FA38_messy_memory);
+            work = &m229_objWorkTbl[0x4A + i * 3 + j];
+            obj = omAddObj(0x384, 1, 0xA, -1, m229_ScoreObjInit);
             obj->work[0] = j;
             obj->work[1] = i;
             work->obj = obj;
@@ -2798,7 +2798,7 @@ void func_8010FBB0_messy_memory(void) {
     }
 }
 
-void func_8010FC90_messy_memory(void) {
+void m229_CameraViewInit(void) {
     u32 i;
 
     for (i = 0; i < 2; i++) {
@@ -2812,231 +2812,231 @@ void func_8010FC90_messy_memory(void) {
     }
 }
 
-void func_8010FD3C_messy_memory(omObjData *obj) {
+void m229_ExitObjMain(omObjData *obj) {
     osViBlack(FALSE);
     omOvlReturnEx(1);
 }
 
-void func_8010FD60_messy_memory(omObjData *obj) {
+void m229_ExitWaitObjMain(omObjData *obj) {
     if (WipeStatGet() == 0) {
-        obj->func = func_8010FD3C_messy_memory;
+        obj->func = m229_ExitObjMain;
     }
 }
 
-void func_8010FD98_messy_memory(omObjData *obj) {
+void m229_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq == 1) {
         WipeCreateOut(0, 20);
-        obj->func = func_8010FD60_messy_memory;
+        obj->func = m229_ExitWaitObjMain;
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
     }
 }
 
-void func_8010FDF0_messy_memory(omObjData *obj) {
+void m229_MainObjMain(omObjData *obj) {
     u8 winners[4];
     u8 i;
     u8 j;
 
-    switch (D_80115D8C_messy_memory) {
+    switch (m229_phase) {
         case 0:
-            if (D_80115D8E_messy_memory > 0) {
-                D_80115D8E_messy_memory--;
+            if (m229_timer > 0) {
+                m229_timer--;
             }
-            if (D_80115D8E_messy_memory < 91) {
-                GMesCreate(GMES_MES_TIMER, D_80115D8E_messy_memory / 30, 160, 28);
-                D_80115D8E_messy_memory = 91;
-                func_80105B7C_messy_memory(1);
+            if (m229_timer < 91) {
+                GMesCreate(GMES_MES_TIMER, m229_timer / 30, 160, 28);
+                m229_timer = 91;
+                m229_PhaseSet(1);
             }
             break;
         case 1:
-            if (D_80115D8E_messy_memory > 0) {
-                D_80115D8E_messy_memory--;
-                if (D_80115D8E_messy_memory == 88) {
+            if (m229_timer > 0) {
+                m229_timer--;
+                if (m229_timer == 88) {
                     HuAudFXPlay(8);
                 }
-                GMesTimerValueSet((D_80115D8E_messy_memory + 29) / 30);
+                GMesTimerValueSet((m229_timer + 29) / 30);
             } else {
                 GMesTimerEnd();
-                D_80115D8E_messy_memory = 0;
-                func_80105B7C_messy_memory(2);
+                m229_timer = 0;
+                m229_PhaseSet(2);
             }
             break;
         case 2:
-            if (D_80115D9A_messy_memory == 2) {
+            if (m229_phaseDoneNo == 2) {
                 for (i = 0; i < 10; i++) {
-                    D_80115D90_messy_memory[i] = 10;
+                    m229_roomSlotTbl[i] = 10;
                 }
-                func_80105B7C_messy_memory(3);
+                m229_PhaseSet(3);
             }
             break;
         case 3:
-            if (D_80115D9A_messy_memory == 3) {
-                func_80105B7C_messy_memory(4);
+            if (m229_phaseDoneNo == 3) {
+                m229_PhaseSet(4);
             }
             break;
         case 4:
-            if (D_80115D9A_messy_memory == 4) {
-                func_80105B7C_messy_memory(5);
+            if (m229_phaseDoneNo == 4) {
+                m229_PhaseSet(5);
             }
             break;
         case 5:
-            D_8011165C_messy_memory -= 0.02f;
-            if (D_80115D9A_messy_memory == 5) {
-                func_80105B7C_messy_memory(6);
+            m229_zoomScale -= 0.02f;
+            if (m229_phaseDoneNo == 5) {
+                m229_PhaseSet(6);
             }
             break;
         case 6:
-            if (D_80115D9A_messy_memory == 6) {
-                func_80105B7C_messy_memory(8);
-                D_80115D8E_messy_memory = 0;
+            if (m229_phaseDoneNo == 6) {
+                m229_PhaseSet(8);
+                m229_timer = 0;
             }
             break;
         case 7:
-            D_80115D8E_messy_memory--;
-            if (D_80115D8E_messy_memory <= 0) {
-                func_80105B7C_messy_memory(8);
-                D_80115D8E_messy_memory = 0;
+            m229_timer--;
+            if (m229_timer <= 0) {
+                m229_PhaseSet(8);
+                m229_timer = 0;
             }
             break;
         case 8:
-            if (D_80115D8E_messy_memory == 0) {
+            if (m229_timer == 0) {
                 GMesCreate(GMES_MES_3);
-                D_80115D8E_messy_memory++;
-            } else if (D_80115D8E_messy_memory >= 43) {
+                m229_timer++;
+            } else if (m229_timer >= 43) {
                 HuAudSeqPlay(0x31);
             } else {
-                D_80115D8E_messy_memory++;
+                m229_timer++;
             }
             if (GMesStatGet() == 0) {
-                func_80105B7C_messy_memory(9);
+                m229_PhaseSet(9);
                 GMesCreate(GMES_MES_TIMER, 30, 160, 28);
-                D_80115D8E_messy_memory = 901;
+                m229_timer = 901;
             }
             break;
         case 9:
-            if (D_80115D8E_messy_memory > 0) {
-                D_80115D8E_messy_memory--;
-                GMesTimerValueSet((D_80115D8E_messy_memory + 29) / 30);
+            if (m229_timer > 0) {
+                m229_timer--;
+                GMesTimerValueSet((m229_timer + 29) / 30);
             } else {
                 GMesTimerEnd();
-                func_80105B7C_messy_memory(10);
-                D_8011165C_messy_memory = 0.01f;
+                m229_PhaseSet(10);
+                m229_zoomScale = 0.01f;
                 GMesCreate(GMES_MES_14);
                 HuAudSeqFadeOut(120);
             }
             break;
         case 10:
-            if (D_80115D9A_messy_memory == 10 && GMesStatGet() == 0) {
-                func_80105B7C_messy_memory(11);
+            if (m229_phaseDoneNo == 10 && GMesStatGet() == 0) {
+                m229_PhaseSet(11);
             }
             break;
         case 11:
-            if (D_80115D9A_messy_memory == 11) {
-                func_80105B7C_messy_memory(12);
+            if (m229_phaseDoneNo == 11) {
+                m229_PhaseSet(12);
             }
             break;
         case 12:
-            D_8011165C_messy_memory += 0.01f;
-            if (D_80115D9A_messy_memory == 12) {
-                func_80105B7C_messy_memory(13);
+            m229_zoomScale += 0.01f;
+            if (m229_phaseDoneNo == 12) {
+                m229_PhaseSet(13);
             }
             break;
         case 13:
-            if (D_80111639_messy_memory == 0) {
-                if (D_801116A0_messy_memory == 1.0f) {
+            if (m229_checkPulseF == 0) {
+                if (m229_checkScale == 1.0f) {
                     HuAudFXPlay(0x3EF);
                 }
-                D_8011165C_messy_memory += 0.1f;
-                D_801116A0_messy_memory += 0.05f;
-                if (D_801116A0_messy_memory >= 1.5f) {
-                    D_80111639_messy_memory = 1;
+                m229_zoomScale += 0.1f;
+                m229_checkScale += 0.05f;
+                if (m229_checkScale >= 1.5f) {
+                    m229_checkPulseF = 1;
                 }
             }
-            if (D_80111639_messy_memory == 1) {
-                D_8011165C_messy_memory -= 0.1f;
-                D_801116A0_messy_memory -= 0.05f;
-                if (D_801116A0_messy_memory <= 1.0f) {
-                    D_801116A0_messy_memory = 1.0f;
-                    D_8011163A_messy_memory++;
-                    D_80111639_messy_memory = 0;
-                    if (D_8011163A_messy_memory >= 10) {
+            if (m229_checkPulseF == 1) {
+                m229_zoomScale -= 0.1f;
+                m229_checkScale -= 0.05f;
+                if (m229_checkScale <= 1.0f) {
+                    m229_checkScale = 1.0f;
+                    m229_checkNo++;
+                    m229_checkPulseF = 0;
+                    if (m229_checkNo >= 10) {
                         for (i = 0; i < 4; i++) {
-                            D_80111630_messy_memory[i] = i;
+                            m229_rankTbl[i] = i;
                         }
                         for (i = 0; i < 4; i++) {
                             for (j = 0; j < 3; j++) {
-                                if (D_80115D76_messy_memory[D_80111630_messy_memory[j]] <
-                                    D_80115D76_messy_memory[D_80111630_messy_memory[j + 1]]) {
-                                    D_80111630_messy_memory[j] = D_80111630_messy_memory[j] ^ D_80111630_messy_memory[j + 1];
-                                    D_80111630_messy_memory[j + 1] = D_80111630_messy_memory[j] ^ D_80111630_messy_memory[j + 1];
-                                    D_80111630_messy_memory[j] = D_80111630_messy_memory[j + 1] ^ D_80111630_messy_memory[j];
+                                if (m229_scoreTbl[m229_rankTbl[j]] <
+                                    m229_scoreTbl[m229_rankTbl[j + 1]]) {
+                                    m229_rankTbl[j] = m229_rankTbl[j] ^ m229_rankTbl[j + 1];
+                                    m229_rankTbl[j + 1] = m229_rankTbl[j] ^ m229_rankTbl[j + 1];
+                                    m229_rankTbl[j] = m229_rankTbl[j + 1] ^ m229_rankTbl[j];
                                 }
                             }
                         }
                         for (i = 0; i < 3; i++) {
-                            if (D_80115D76_messy_memory[D_80111630_messy_memory[0]] ==
-                                D_80115D76_messy_memory[D_80111630_messy_memory[i + 1]]) {
-                                D_8011163B_messy_memory++;
+                            if (m229_scoreTbl[m229_rankTbl[0]] ==
+                                m229_scoreTbl[m229_rankTbl[i + 1]]) {
+                                m229_tieCnt++;
                             }
                         }
-                        if (D_80115D76_messy_memory[D_80111630_messy_memory[0]] < 4) {
-                            D_8011163B_messy_memory = 4;
+                        if (m229_scoreTbl[m229_rankTbl[0]] < 4) {
+                            m229_tieCnt = 4;
                         }
-                        D_80115D8E_messy_memory = 30;
-                        func_80105B7C_messy_memory(14);
+                        m229_timer = 30;
+                        m229_PhaseSet(14);
                     }
                 }
             }
             break;
         case 14:
-            D_80115D7C_messy_memory += 0.05f;
-            if (D_80115D7C_messy_memory >= 1.0f) {
-                D_80115D7C_messy_memory = 1.0f;
+            m229_scoreScale += 0.05f;
+            if (m229_scoreScale >= 1.0f) {
+                m229_scoreScale = 1.0f;
             }
-            if (D_80115D9A_messy_memory == 14) {
-                func_80105B7C_messy_memory(15);
+            if (m229_phaseDoneNo == 14) {
+                m229_PhaseSet(15);
             }
             break;
         case 15:
-            D_80115D8E_messy_memory--;
-            if (D_80115D8E_messy_memory < 0) {
-                D_80115D7C_messy_memory -= 0.045f;
+            m229_timer--;
+            if (m229_timer < 0) {
+                m229_scoreScale -= 0.045f;
             }
-            if (D_80115D9A_messy_memory == 15) {
-                func_80105B7C_messy_memory(16);
-                D_80115D8E_messy_memory = -15;
+            if (m229_phaseDoneNo == 15) {
+                m229_PhaseSet(16);
+                m229_timer = -15;
             }
             break;
         case 16:
-            if (GMesStatGet() == 0 && D_80115D8E_messy_memory == 0) {
-                D_80115D8E_messy_memory = 1;
-                switch (D_8011163B_messy_memory) {
+            if (GMesStatGet() == 0 && m229_timer == 0) {
+                m229_timer = 1;
+                switch (m229_tieCnt) {
                     case 0:
-                        winners[0] = GwPlayer[D_80111630_messy_memory[0]].chr;
-                        GwPlayer[D_80111630_messy_memory[0]].bonusCoin = 10;
+                        winners[0] = GwPlayer[m229_rankTbl[0]].chr;
+                        GwPlayer[m229_rankTbl[0]].bonusCoin = 10;
                         GMesCreate(GMES_MES_MG_WINNER, winners[0]);
                         HuAudSeqPlay(0x65);
                         break;
                     case 1:
                         for (i = 0; i < 2; i++) {
-                            winners[i] = GwPlayer[D_80111630_messy_memory[i]].chr;
-                            GwPlayer[D_80111630_messy_memory[i]].bonusCoin = 10;
+                            winners[i] = GwPlayer[m229_rankTbl[i]].chr;
+                            GwPlayer[m229_rankTbl[i]].bonusCoin = 10;
                         }
                         GMesCreate(GMES_MES_MG_WINNERS_2, winners[0], winners[1]);
                         HuAudSeqPlay(0x66);
                         break;
                     case 2:
                         for (i = 0; i < 3; i++) {
-                            winners[i] = GwPlayer[D_80111630_messy_memory[i]].chr;
-                            GwPlayer[D_80111630_messy_memory[i]].bonusCoin = 10;
+                            winners[i] = GwPlayer[m229_rankTbl[i]].chr;
+                            GwPlayer[m229_rankTbl[i]].bonusCoin = 10;
                         }
                         GMesCreate(GMES_MES_MG_WINNERS_3, winners[0], winners[1], winners[2]);
                         HuAudSeqPlay(0x66);
                         break;
                     case 3:
                         for (i = 0; i < 4; i++) {
-                            winners[i] = GwPlayer[D_80111630_messy_memory[i]].chr;
-                            GwPlayer[D_80111630_messy_memory[i]].bonusCoin = 10;
+                            winners[i] = GwPlayer[m229_rankTbl[i]].chr;
+                            GwPlayer[m229_rankTbl[i]].bonusCoin = 10;
                         }
                         GMesCreate(GMES_MES_MG_WINNERS_4, winners[0], winners[1], winners[2], winners[3]);
                         HuAudSeqPlay(0x66);
@@ -3047,119 +3047,119 @@ void func_8010FDF0_messy_memory(omObjData *obj) {
                         break;
                 }
             }
-            if (D_80115D8E_messy_memory > 0) {
+            if (m229_timer > 0) {
                 if (GMesStatGet() == 0) {
-                    func_80105B7C_messy_memory(17);
-                    D_80115D8E_messy_memory = 15;
+                    m229_PhaseSet(17);
+                    m229_timer = 15;
                 }
-            } else if (D_80115D8E_messy_memory < 0) {
-                D_80115D8E_messy_memory++;
+            } else if (m229_timer < 0) {
+                m229_timer++;
             }
             break;
         case 17:
-            if (D_80115D8E_messy_memory > 0) {
-                D_80115D8E_messy_memory--;
+            if (m229_timer > 0) {
+                m229_timer--;
             } else {
                 WipeCreateOut(0, 20);
-                obj->func = func_8010FD60_messy_memory;
+                obj->func = m229_ExitWaitObjMain;
             }
             break;
     }
-    if (D_80111650_messy_memory > 0) {
-        if (D_80111650_messy_memory % 5 == 1) {
+    if (m229_messVibTimer > 0) {
+        if (m229_messVibTimer % 5 == 1) {
             for (i = 0; i < 4; i++) {
                 if (!(GwPlayer[i].stat & 1)) {
                     omVibrate(i, 2, 3, 10);
                 }
             }
         }
-        D_80111650_messy_memory++;
+        m229_messVibTimer++;
     }
-    if (D_80111650_messy_memory > 30000) {
-        D_80111650_messy_memory = 1;
+    if (m229_messVibTimer > 30000) {
+        m229_messVibTimer = 1;
     }
 }
 
-void func_801109BC_messy_memory(omObjData *obj) {
+void m229_MainObjInit(omObjData *obj) {
     u8 i;
     u8 j;
 
-    D_80115D8E_messy_memory = 0x67;
-    D_80115D8C_messy_memory = 0;
-    D_80115D9A_messy_memory = 50;
-    D_80111638_messy_memory = 0;
-    D_8011165C_messy_memory = 1.0f;
-    D_801116A0_messy_memory = 1.0f;
-    D_80111639_messy_memory = 0;
+    m229_timer = 0x67;
+    m229_phase = 0;
+    m229_phaseDoneNo = 50;
+    m229_itemPlaceCnt = 0;
+    m229_zoomScale = 1.0f;
+    m229_checkScale = 1.0f;
+    m229_checkPulseF = 0;
     for (i = 0; i < 10; i++) {
         for (j = 0; j < 2; j++) {
-            D_80115D20_messy_memory[i][j] = 0.0f;
+            m229_itemScatterTbl[i][j] = 0.0f;
         }
     }
     for (i = 0; i < 10; i++) {
-        D_801116A4_messy_memory[i] = 10;
+        m229_roomItemTbl[i] = 10;
     }
     for (i = 0; i < 20; i++) {
-        D_801116E0_messy_memory[i] = 10;
+        m229_roomSpotItemTbl[i] = 10;
     }
     for (i = 0; i < 4; i++) {
-        D_80115D76_messy_memory[i] = 0;
+        m229_scoreTbl[i] = 0;
     }
     for (i = 0; i < 10; i++) {
-        D_80115D90_messy_memory[i] = 10;
+        m229_roomSlotTbl[i] = 10;
     }
     for (i = 0; i < 4; i++) {
-        D_80111670_messy_memory[i] = 0;
+        m229_handGrabTbl[i] = 0;
     }
     for (i = 0; i < 40; i++) {
-        D_801116B0_messy_memory[i] = 0;
+        m229_itemHeldTbl[i] = 0;
     }
-    D_8011163A_messy_memory = 0;
+    m229_checkNo = 0;
     for (i = 0; i < 4; i++) {
-        D_80115D80_messy_memory[i] = 0;
+        m229_shutterStateTbl[i] = 0;
     }
-    D_80111600_messy_memory = 0.0f;
+    m229_shutterMotEnd = 0.0f;
     for (i = 0; i < 4; i++) {
-        D_80111630_messy_memory[i] = 0;
+        m229_rankTbl[i] = 0;
     }
-    D_8011163B_messy_memory = 0;
-    D_80111675_messy_memory = 0;
-    D_80111674_messy_memory = 0;
+    m229_tieCnt = 0;
+    m229_dustState = 0;
+    m229_itemPlaceNum = 0;
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 10; j++) {
-            D_80111678_messy_memory[i][j] = 0;
+            m229_comKnownTbl[i][j] = 0;
         }
     }
-    D_80115D7C_messy_memory = 0.1f;
+    m229_scoreScale = 0.1f;
     for (i = 0; i < 10; i++) {
-        D_80111608_messy_memory[i] = 0;
+        m229_itemViewAnimTbl[i] = 0;
     }
-    D_80111634_messy_memory = 0;
-    D_8011163C_messy_memory = 0;
+    m229_itemMarkAnim = 0;
+    m229_moverMdl = 0;
     for (i = 0; i < 4; i++) {
-        D_80115D84_messy_memory[i] = -1;
+        m229_walkSeTbl[i] = -1;
     }
-    D_80115D70_messy_memory = 0;
-    D_80111650_messy_memory = 0;
-    func_8010FC90_messy_memory();
-    func_80106588_messy_memory();
-    func_801061AC_messy_memory();
-    func_8010B4CC_messy_memory();
-    func_8010D910_messy_memory();
-    func_8010EE6C_messy_memory();
-    func_8010F644_messy_memory();
-    func_8010F15C_messy_memory();
-    func_8010C37C_messy_memory();
-    func_8010FBB0_messy_memory();
-    func_8010E500_messy_memory();
+    m229_dustSeF = 0;
+    m229_messVibTimer = 0;
+    m229_CameraViewInit();
+    m229_CoverObjCreateAll();
+    m229_DividerCreate();
+    m229_HandObjCreateAll();
+    m229_ItemObjCreateAll();
+    m229_MoverObjCreateAll();
+    m229_ShutterObjCreateAll();
+    m229_DustObjCreate();
+    m229_PlayerObjCreateAll();
+    m229_ScoreObjCreateAll();
+    m229_ItemMarkObjCreateAll();
     WipeCreateIn(0xFF, 16);
-    obj->func = func_8010FDF0_messy_memory;
+    obj->func = m229_MainObjMain;
 }
 
-void func_80110D48_messy_memory(void) {
+void m229_Dummy(void) {
 }
 
-void func_80110D50_messy_memory(void) {
+void m229_CameraInit(void) {
     omObjData *obj;
     s32 i;
 
@@ -3169,16 +3169,16 @@ void func_80110D50_messy_memory(void) {
     CamSetupInit(2);
     CamSetupMapCullAddMulti(2);
     for (i = 0; i < 2; i++) {
-        ScissorSet(i, D_80111340_messy_memory[i].scissorX, D_80111340_messy_memory[i].scissorY,
-                   D_80111340_messy_memory[i].scissorWidth, D_80111340_messy_memory[i].scissorHeight);
-        ViewportSet(i, D_80111340_messy_memory[i].viewportScale.x, D_80111340_messy_memory[i].viewportScale.y,
-                    D_80111340_messy_memory[i].viewportScale.z, D_80111340_messy_memory[i].viewportTranslate.x,
-                    D_80111340_messy_memory[i].viewportTranslate.y, D_80111340_messy_memory[i].viewportTranslate.z);
-        Hu3DCameraPerspectiveSet(i, D_80111340_messy_memory[i].fov, 80.0f, 8000.0f);
+        ScissorSet(i, m229_cameraViewTbl[i].scissorX, m229_cameraViewTbl[i].scissorY,
+                   m229_cameraViewTbl[i].scissorWidth, m229_cameraViewTbl[i].scissorHeight);
+        ViewportSet(i, m229_cameraViewTbl[i].viewportScale.x, m229_cameraViewTbl[i].viewportScale.y,
+                    m229_cameraViewTbl[i].viewportScale.z, m229_cameraViewTbl[i].viewportTranslate.x,
+                    m229_cameraViewTbl[i].viewportTranslate.y, m229_cameraViewTbl[i].viewportTranslate.z);
+        Hu3DCameraPerspectiveSet(i, m229_cameraViewTbl[i].fov, 80.0f, 8000.0f);
     }
 }
 
-void func_80110EC4_messy_memory(void) {
+void m229_ObjectSetup(void) {
     MapCollInit(50);
     Hu3DSprModelInit(32);
     omInitObjMan(150, 0);
@@ -3186,15 +3186,15 @@ void func_80110EC4_messy_memory(void) {
     Hu3DGLightColorSet(0, 64, 64, 96);
     Hu3DGLightColorSet(1, 64, 64, 64);
     Hu3DGLightDirSet(1, 0.0f, 85.0f, 100.0f);
-    func_80110D50_messy_memory();
+    m229_CameraInit();
     mgItemObjNum = 0;
     mgPlayerObjNum = 0;
     mgMapObjNum = 0;
-    GMesFontMesCreate(D_801115F4_messy_memory, 0);
-    GMesFontMesCreate(D_801115F4_messy_memory, 1);
-    omAddObj(1000, 0, 0, -1, func_801109BC_messy_memory);
-    omAddObj(1000, 0, 0, -1, func_8010FD98_messy_memory);
-    func_80105A3C_messy_memory();
+    GMesFontMesCreate(m229_fontMesTbl, 0);
+    GMesFontMesCreate(m229_fontMesTbl, 1);
+    omAddObj(1000, 0, 0, -1, m229_MainObjInit);
+    omAddObj(1000, 0, 0, -1, m229_ExitCheckObjMain);
+    m229_ObjWorkInit();
 }
 
-const s16 D_801115F4_messy_memory[] = { 0x8260, 0x8261, 0x8262, 0 };
+const s16 m229_fontMesTbl[] = { 0x8260, 0x8261, 0x8262, 0 };

@@ -4,7 +4,7 @@
 #include "game/mallocblock.h"
 #include "gcc/memory.h"
 
-// Per-player work allocated in func_80106504_eatsa_pizza, stored at ObjData->unk158
+// Per-player work allocated in m211_PlayerCreate, stored at ObjData->unk158
 typedef struct {
     /* 0x00 */ Vec pos;
     /* 0x0C */ f32 unk0C;
@@ -33,74 +33,74 @@ extern s32 omCharModelNoTbl[][6];
 extern s32 omCharMotTbl[][6];
 
 // Aliases into the arrays below, see undefined_syms.txt.
-extern s16 D_8010913A_eatsa_pizza;
-extern s16 D_8010927A_eatsa_pizza[2];
-extern s16 D_8010927E_eatsa_pizza[2];
-extern s16 D_80109282_eatsa_pizza[1];
-extern s16 D_80109284_eatsa_pizza;
-extern s16 D_8010928A_eatsa_pizza[3];
-extern s16 D_8010928E_eatsa_pizza;
+extern s16 m211_phaseTimerLo;
+extern s16 m211_pizzaAnimTbl[2];
+extern s16 m211_pizzaHardAnimTbl[2];
+extern s16 m211_biteAnimTbl[1];
+extern s16 m211_crumbAnim;
+extern s16 m211_pizzaSprGrpTbl[3];
+extern s16 m211_crumbSprGrp;
 
-u8 D_80109100_eatsa_pizza[4][2] = {
+u8 m211_playerSlotTbl[4][2] = {
     { 0, 0 },
     { 0, 1 },
     { 0, 2 },
     { 0, 3 }
 };
-u8 D_80109108_eatsa_pizza = 0;
-u8 D_8010910C_eatsa_pizza[4] = { 0 };
-s16 D_80109110_eatsa_pizza[4][3] = {
+u8 m211_playerSlotNo = 0;
+u8 m211_groupSlotTbl[4] = { 0 };
+s16 m211_playerPosTbl[4][3] = {
     { -85, -75, -200 },
     { -85, 75, -200 },
     { 85, -75, -200 },
     { 85, 75, -200 }
 };
-f32 D_80109128_eatsa_pizza[4] = { 45.0f, 135.0f, -45.0f, -135.0f };
-s32 D_80109138_eatsa_pizza = 0;
-u16 D_8010913C_eatsa_pizza = 0;
-s32 D_80109140_eatsa_pizza = -1;
-s16 D_80109144_eatsa_pizza = 0;
-u32 D_80109148_eatsa_pizza = 0x41C64E6D;
+f32 m211_playerRotTbl[4] = { 45.0f, 135.0f, -45.0f, -135.0f };
+s32 m211_phaseTimer = 0;
+u16 m211_timer = 0;
+s32 m211_winner = -1;
+s16 m211_musicTimer = 0;
+u32 m211_randSeed = 0x41C64E6D;
 
-s32 D_80109260_eatsa_pizza[2] BSS;
-Work *D_80109268_eatsa_pizza[2][2] BSS;
-s16 D_80109278_eatsa_pizza[7] BSS; // sprite data ids
-s16 D_80109288_eatsa_pizza[4] BSS; // sprite group ids
-u8 D_80109290_eatsa_pizza[8] BSS;  /* Unreferenced. */
-s16 D_80109298_eatsa_pizza[0x10] BSS;
-u16 D_801092B8_eatsa_pizza[4] BSS;
-s16 D_801092C0_eatsa_pizza[2][5][7] BSS;
-u16 D_8010934C_eatsa_pizza[2] BSS;
-s16 D_80109350_eatsa_pizza BSS;
-u8 D_80109354_eatsa_pizza[4] BSS; /* Unreferenced. */
-f32 D_80109358_eatsa_pizza[4][4] BSS;
-f32 D_80109398_eatsa_pizza[4][4] BSS;
-f32 D_801093D8_eatsa_pizza BSS;
+s32 m211_pizzaStartCntTbl[2] BSS;
+Work *m211_groupWorkTbl[2][2] BSS;
+s16 m211_animTbl[7] BSS; // sprite data ids
+s16 m211_sprGrpTbl[4] BSS; // sprite group ids
+u8 m211_sprGrpTblPad[8] BSS;  /* Unreferenced. */
+s16 m211_crumbActiveTbl[0x10] BSS;
+u16 m211_pizzaCntTbl[4] BSS;
+s16 m211_pizzaTileCntTbl[2][5][7] BSS;
+u16 m211_pizzaHardCntTbl[2] BSS;
+s16 m211_phase BSS;
+u8 m211_phasePad[4] BSS; /* Unreferenced. */
+f32 m211_cameraMtx[4][4] BSS;
+f32 m211_cameraInvMtx[4][4] BSS;
+f32 m211_cameraFovTan BSS;
 
-s32 func_80107E6C_eatsa_pizza(omObjData *object);
-void func_801078C4_eatsa_pizza(omObjData *object);
-void func_80107A64_eatsa_pizza(omObjData *object);
-void func_80106084_eatsa_pizza(omObjData *object);
-void func_8010679C_eatsa_pizza(omObjData *object);
-void func_801083A8_eatsa_pizza(omObjData *arg0, MgPlayerWork **arg1, void **arg2);
-void *func_801090B4_eatsa_pizza(s16 arg0, s16 arg1);
-void func_801087DC_eatsa_pizza(omObjData *object);
-void func_80108C50_eatsa_pizza(omObjData *);
-s16 func_80108FA4_eatsa_pizza(s32 arg0);
-s16 func_80108FEC_eatsa_pizza(s16 arg0, s16 arg1);
-s16 func_80108E48_eatsa_pizza(u16 arg0, f32 *arg1);
-s32 func_80108F4C_eatsa_pizza(void);
-s32 func_801070E8_eatsa_pizza(omObjData *object);
+s32 m211_PizzaEat(omObjData *object);
+void m211_PlayerPushCalc(omObjData *object);
+void m211_PizzaWallHit(omObjData *object);
+void m211_PlayerObjInit(omObjData *object);
+void m211_PlayerObjMain(omObjData *object);
+void m211_PlayerWorkGet(omObjData *arg0, MgPlayerWork **arg1, void **arg2);
+void *m211_SprPatDataGet(s16 arg0, s16 arg1);
+void m211_MainObjMain(omObjData *object);
+void m211_PizzaObjMain(omObjData *);
+s16 m211_AnimDataRead(s32 arg0);
+s16 m211_SprGrpCreate(s16 arg0, s16 arg1);
+s16 m211_CrumbCreate(u16 arg0, f32 *arg1);
+s32 m211_Rand16Get(void);
+s32 m211_PlayerComInput(omObjData *object);
 
-void func_80105AF4_eatsa_pizza(omObjData *object);
-void func_801083BC_eatsa_pizza(void);
-void func_80108470_eatsa_pizza(omObjData *object);
-void func_801084F8_eatsa_pizza(omObjData *object);
-void func_80105C64_eatsa_pizza(HuMtx4F src, HuMtx4F dst);
-void func_80105FF0_eatsa_pizza(void);
-void func_80106504_eatsa_pizza(omObjData *object, s32 arg1, s32 arg2, u16 player, u16 tag);
+void m211_CameraViewInit(omObjData *object);
+void m211_MapObjCreateAll(void);
+void m211_MainObjInit(omObjData *object);
+void m211_PizzaObjInit(omObjData *object);
+void m211_MtxInvert(HuMtx4F src, HuMtx4F dst);
+void m211_PlayerObjCreateAll(void);
+void m211_PlayerCreate(omObjData *object, s32 arg1, s32 arg2, u16 player, u16 tag);
 
-void func_801059A0_eatsa_pizza(void) {
+void m211_ObjectSetup(void) {
     omObjData *obj;
     u8 camIndex;
 
@@ -116,14 +116,14 @@ void func_801059A0_eatsa_pizza(void) {
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 5.0f, 80.0f, 4000.0f);
     MgFieldStatClear();
-    func_80105AF4_eatsa_pizza(obj);
-    func_801083BC_eatsa_pizza();
-    func_80105FF0_eatsa_pizza();
+    m211_CameraViewInit(obj);
+    m211_MapObjCreateAll();
+    m211_PlayerObjCreateAll();
     Hu3DBGColorSet(0, 0, 0);
     WipeCreateIn(WIPE_TYPE_PREV, 0x10);
 }
 
-void func_80105AF4_eatsa_pizza(omObjData *object) {
+void m211_CameraViewInit(omObjData *object) {
     HuCamera *camera;
     f32 sinFov;
     f32 cosFov;
@@ -140,19 +140,19 @@ void func_80105AF4_eatsa_pizza(omObjData *object) {
     camera = gCameraList;
     sinFov = sindf(camera->fov / 2.0);
     cosFov = cosdf(camera->fov / 2.0);
-    D_801093D8_eatsa_pizza = sinFov / cosFov;
-    guMtxL2F(D_80109358_eatsa_pizza, &camera->mtxs[0].lookAtMtx);
-    guMtxL2F(D_80109398_eatsa_pizza, &camera->mtxs[0].lookAtMtx);
-    func_80105C64_eatsa_pizza(D_80109398_eatsa_pizza, D_80109398_eatsa_pizza);
+    m211_cameraFovTan = sinFov / cosFov;
+    guMtxL2F(m211_cameraMtx, &camera->mtxs[0].lookAtMtx);
+    guMtxL2F(m211_cameraInvMtx, &camera->mtxs[0].lookAtMtx);
+    m211_MtxInvert(m211_cameraInvMtx, m211_cameraInvMtx);
 }
 
-void func_80105BE4_eatsa_pizza(HuMtx4F mtx, f32 x, f32 y, f32 z, f32 *dst) {
+void m211_MtxVecMul(HuMtx4F mtx, f32 x, f32 y, f32 z, f32 *dst) {
     dst[0] = ((x * mtx[0][0]) + (y * mtx[1][0])) + (z * mtx[2][0]);
     dst[1] = ((x * mtx[0][1]) + (y * mtx[1][1])) + (z * mtx[2][1]);
     dst[2] = ((x * mtx[0][2]) + (y * mtx[1][2])) + (z * mtx[2][2]);
 }
 
-void func_80105C64_eatsa_pizza(HuMtx4F src, HuMtx4F dst) {
+void m211_MtxInvert(HuMtx4F src, HuMtx4F dst) {
     f32 mtx[4][4];
     f32 t0;
     f32 t1;
@@ -190,18 +190,18 @@ void func_80105C64_eatsa_pizza(HuMtx4F src, HuMtx4F dst) {
         dst[0][3] = 0.0f;
         dst[3][3] = 1.0f;
 
-        func_80105BE4_eatsa_pizza(dst, -mtx[3][0], -mtx[3][1], -mtx[3][2], dstRow3);
+        m211_MtxVecMul(dst, -mtx[3][0], -mtx[3][1], -mtx[3][2], dstRow3);
     }
 }
 
-void func_80105E54_eatsa_pizza(f32 *arg0, f32 *dst) {
+void m211_ScreenPosCalc(f32 *arg0, f32 *dst) {
     f32 mtx[4][4];
     f32 depth;
     f32 scale;
 
     guTranslateF(mtx, arg0[0], arg0[1], arg0[2]);
-    guMtxCatF(mtx, D_80109358_eatsa_pizza, mtx);
-    depth = mtx[3][2] * D_801093D8_eatsa_pizza;
+    guMtxCatF(mtx, m211_cameraMtx, mtx);
+    depth = mtx[3][2] * m211_cameraFovTan;
     scale = __builtin_fabsf(depth);
     if (scale == 0.0) {
         return;
@@ -210,29 +210,29 @@ void func_80105E54_eatsa_pizza(f32 *arg0, f32 *dst) {
     dst[1] = -mtx[3][1] * 120.0f / scale;
 }
 
-void func_80105F24_eatsa_pizza(f32 x, f32 y, f32 z, f32 *dst) {
-    f32 depth = z + D_80109358_eatsa_pizza[3][2];
-    f32 scale = __builtin_fabsf(depth * D_801093D8_eatsa_pizza);
+void m211_WorldPosCalc(f32 x, f32 y, f32 z, f32 *dst) {
+    f32 depth = z + m211_cameraMtx[3][2];
+    f32 scale = __builtin_fabsf(depth * m211_cameraFovTan);
     f32 mtx[4][4];
 
     guTranslateF(mtx, ((x + x) * scale * 1.3333334f) / 320.0f, -((y + y) * scale / 240.0f), depth);
-    guMtxCatF(mtx, D_80109398_eatsa_pizza, mtx);
+    guMtxCatF(mtx, m211_cameraInvMtx, mtx);
     dst[0] = mtx[3][0];
     dst[1] = mtx[3][1];
     dst[2] = mtx[3][2];
 }
 
-void func_80105FF0_eatsa_pizza(void) {
+void m211_PlayerObjCreateAll(void) {
     s32 i;
 
     MgPlayerParamReset();
     mgPlayerObjNum = 0;
     for (i = 0; i < 4; i++) {
-        mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(2, 0xB, 0x32, -1, func_80106084_eatsa_pizza);
+        mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(2, 0xB, 0x32, -1, m211_PlayerObjInit);
     }
 }
 
-void func_80106084_eatsa_pizza(omObjData *object) {
+void m211_PlayerObjInit(omObjData *object) {
     u8 player;
     u8 group;
     s8 character;
@@ -241,20 +241,20 @@ void func_80106084_eatsa_pizza(omObjData *object) {
     MgPlayerWork *data;
     Work *work;
 
-    player = D_80109100_eatsa_pizza[D_80109108_eatsa_pizza][1];
+    player = m211_playerSlotTbl[m211_playerSlotNo][1];
     group = GwPlayer[player].group;
     character = (s8)GwPlayer[player].chr;
     model = omCharModelNoTbl[character][0];
     motion = omCharMotTbl[character][0];
     MgShadowAltSet(1);
-    func_80106504_eatsa_pizza(object, model, motion, player, 0x2D9);
+    m211_PlayerCreate(object, model, motion, player, 0x2D9);
 
     data = object->data;
-    object->trans.x = D_80109110_eatsa_pizza[group * 2 + D_8010910C_eatsa_pizza[group]][0];
-    object->trans.y = D_80109110_eatsa_pizza[group * 2 + D_8010910C_eatsa_pizza[group]][1];
-    object->trans.z = D_80109110_eatsa_pizza[group * 2 + D_8010910C_eatsa_pizza[group]][2];
+    object->trans.x = m211_playerPosTbl[group * 2 + m211_groupSlotTbl[group]][0];
+    object->trans.y = m211_playerPosTbl[group * 2 + m211_groupSlotTbl[group]][1];
+    object->trans.z = m211_playerPosTbl[group * 2 + m211_groupSlotTbl[group]][2];
     object->rot.x = 90.0f;
-    object->rot.z = D_80109128_eatsa_pizza[group * 2 + D_8010910C_eatsa_pizza[group]];
+    object->rot.z = m211_playerRotTbl[group * 2 + m211_groupSlotTbl[group]];
     data->unk3C = object->rot.z + 180.0;
     object->scale.x = object->scale.y = object->scale.z = data->unkAC * 0.15;
 
@@ -266,7 +266,7 @@ void func_80106084_eatsa_pizza(omObjData *object) {
     work = data->unk158;
     work->unk30 = player;
     work->unk32 = group;
-    work->unk33 = D_8010910C_eatsa_pizza[group];
+    work->unk33 = m211_groupSlotTbl[group];
     work->unk18 = work->unk14 = data->unk3C;
     work->unk35 = GwPlayer[player].stat & 1;
     work->unk31 = GwPlayer[player].cpu_difficulty;
@@ -281,24 +281,24 @@ void func_80106084_eatsa_pizza(omObjData *object) {
     work->unk24 = -1;
     work->unk28 = 8;
     work->unk2A = 0;
-    D_80109268_eatsa_pizza[group][D_8010910C_eatsa_pizza[group]] = work;
+    m211_groupWorkTbl[group][m211_groupSlotTbl[group]] = work;
     object->model[3] = Hu3DModelRead(3, 0x2DD);
     object->model[4] = Hu3DModelRead(4, 0x2DD);
     object->model[6] = Hu3DModelRead(5, 0x2DD);
     object->model[5] = Hu3DModelRead(6, 0x2DD);
     object->model[7] = Hu3DModelRead(8, 0x2DD);
     object->model[8] = Hu3DModelRead(7, 0x2DD);
-    object->func = func_8010679C_eatsa_pizza;
+    object->func = m211_PlayerObjMain;
     MgPlayerMotLoad(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
     MgPlayerMotLoad(object, 0x10, CharMotionDataNumGet(character, 0x3E), 1, 0);
     MgPlayerMotLoad(object, 0xD, CharMotionDataNumGet(character, 0x4E), 2, 0x78);
     MgPlayerMotLoad(object, 0xE, CharMotionDataNumGet(character, 0x3A), 2, 0x3C);
     MgPlayerMotSet(object, 0);
-    D_80109108_eatsa_pizza++;
-    D_8010910C_eatsa_pizza[group]++;
+    m211_playerSlotNo++;
+    m211_groupSlotTbl[group]++;
 }
 
-void func_80106504_eatsa_pizza(omObjData *object, s32 arg1, s32 arg2, u16 player, u16 tag) {
+void m211_PlayerCreate(omObjData *object, s32 arg1, s32 arg2, u16 player, u16 tag) {
     MgPlayerWork *data;
     s32 i;
     u32 character;
@@ -359,7 +359,7 @@ void func_80106504_eatsa_pizza(omObjData *object, s32 arg1, s32 arg2, u16 player
     }
 }
 
-void func_8010679C_eatsa_pizza(omObjData *object) {
+void m211_PlayerObjMain(omObjData *object) {
     MgPlayerWork *data;
     Work *work;
     s32 mode;
@@ -388,7 +388,7 @@ void func_8010679C_eatsa_pizza(omObjData *object) {
         work->unk20 -= 5;
     }
 
-    mode = D_80109350_eatsa_pizza;
+    mode = m211_phase;
     switch (mode) {
         case 0:
         case 1:
@@ -408,7 +408,7 @@ void func_8010679C_eatsa_pizza(omObjData *object) {
                 work->unk24 = work->unk20;
                 work->unk26 = work->unk22;
             } else {
-                input = func_801070E8_eatsa_pizza(object);
+                input = m211_PlayerComInput(object);
                 dy = 0x30;
                 dx = 0x30;
             }
@@ -539,7 +539,7 @@ void func_8010679C_eatsa_pizza(omObjData *object) {
     }
 
     if (input & A_BUTTON) {
-        i = func_80107E6C_eatsa_pizza(object);
+        i = m211_PizzaEat(object);
         if ((i & 0xFFFF) != 0) {
             cutResult = i;
         }
@@ -556,8 +556,8 @@ void func_8010679C_eatsa_pizza(omObjData *object) {
     }
     if (work->unk36 != 0) {
         work->unk36--;
-        func_801078C4_eatsa_pizza(object);
-        func_80107A64_eatsa_pizza(object);
+        m211_PlayerPushCalc(object);
+        m211_PizzaWallHit(object);
     }
     if (work->unk32 == 0) {
         if (work->pos.x < -144.0f)
@@ -574,13 +574,13 @@ void func_8010679C_eatsa_pizza(omObjData *object) {
         work->pos.y = -104.0f;
     if (work->pos.y > 104.0f)
         work->pos.y = 104.0f;
-    func_80105F24_eatsa_pizza(work->pos.x, work->pos.y, work->pos.z, screenPos);
+    m211_WorldPosCalc(work->pos.x, work->pos.y, work->pos.z, screenPos);
     object->trans.x = screenPos[0];
     object->trans.y = screenPos[1];
     MgPlayerMotUpdate(object);
 }
 
-s32 func_801070E8_eatsa_pizza(omObjData *object) {
+s32 m211_PlayerComInput(omObjData *object) {
     MgPlayerWork *data;
     Work *work;
     u16 *mask;
@@ -610,14 +610,14 @@ s32 func_801070E8_eatsa_pizza(omObjData *object) {
 
     bestDistance = 65536.0f;
     input = 0;
-    func_801083A8_eatsa_pizza(object, &data, (void **)&work);
-    random = func_80108F4C_eatsa_pizza();
+    m211_PlayerWorkGet(object, &data, (void **)&work);
+    random = m211_Rand16Get();
     if (random % (9 - (work->unk31 * 2)) == 0) {
         input = A_BUTTON;
     }
 
     if (work->unk2A >= 4) {
-        random = func_80108F4C_eatsa_pizza();
+        random = m211_Rand16Get();
         angle = work->unk18 + 60.0 - (((random & 1) * 15) << 3);
         if (angle > 360.0) {
             angle -= 360.0;
@@ -626,7 +626,7 @@ s32 func_801070E8_eatsa_pizza(omObjData *object) {
             angle += 360.0;
         }
         work->unk18 = angle;
-        random = func_80108F4C_eatsa_pizza();
+        random = m211_Rand16Get();
         work->unk28 = (random & 7) + 5;
     }
 
@@ -643,7 +643,7 @@ s32 func_801070E8_eatsa_pizza(omObjData *object) {
     } else {
         xPos = work->pos.x + 160.0f;
     }
-    random = func_80108F4C_eatsa_pizza();
+    random = m211_Rand16Get();
     angle = data->unk3C + ((f32)(random - 0x8000) * 3.0517578125e-05) * 20.0;
     xPos -= sindf(angle) * 4.0;
     angle = work->pos.y + 120.0f - (cosdf(angle) * 4.0);
@@ -655,8 +655,8 @@ s32 func_801070E8_eatsa_pizza(omObjData *object) {
     selfX = work->unk24;
     selfY = work->unk26;
 
-    if (D_801092C0_eatsa_pizza[work->unk32][(s16)selfX][(s16)selfY] != 0) {
-        mask = func_801090B4_eatsa_pizza(D_8010927A_eatsa_pizza[work->unk32], 0);
+    if (m211_pizzaTileCntTbl[work->unk32][(s16)selfX][(s16)selfY] != 0) {
+        mask = m211_SprPatDataGet(m211_pizzaAnimTbl[work->unk32], 0);
         for (offsetY = 0; offsetY < 32; offsetY++) {
             y = (selfY << 5) + (s16)(offsetY + 8);
             for (offsetX = 0; offsetX < 32; offsetX++) {
@@ -669,7 +669,7 @@ s32 func_801070E8_eatsa_pizza(omObjData *object) {
                     if (bestDistance < distance) {
                         continue;
                     }
-                    random = func_80108F4C_eatsa_pizza();
+                    random = m211_Rand16Get();
                     bestDistance = distance;
                     work->unk28 = (random & 3) + 3;
                     targetPixelX = x;
@@ -678,11 +678,11 @@ s32 func_801070E8_eatsa_pizza(omObjData *object) {
             }
         }
     } else {
-        random = func_80108F4C_eatsa_pizza();
+        random = m211_Rand16Get();
         scanIndex = random & 1;
         while (++scanIndex < 7) {
-            otherX = D_80109268_eatsa_pizza[work->unk32][work->unk33 ^ 1]->unk24;
-            otherY = D_80109268_eatsa_pizza[work->unk32][work->unk33 ^ 1]->unk26;
+            otherX = m211_groupWorkTbl[work->unk32][work->unk33 ^ 1]->unk24;
+            otherY = m211_groupWorkTbl[work->unk32][work->unk33 ^ 1]->unk26;
             for (offsetX = scanIndex; offsetX >= -scanIndex; offsetX--) {
                 offsetY = scanIndex - __builtin_abs(offsetX);
                 for (sign = 0; sign < 2; sign++, offsetY = -offsetY) {
@@ -700,7 +700,7 @@ s32 func_801070E8_eatsa_pizza(omObjData *object) {
                         continue;
                     }
                     {
-                        s16 tileCount = D_801092C0_eatsa_pizza[work->unk32][x][y];
+                        s16 tileCount = m211_pizzaTileCntTbl[work->unk32][x][y];
 
                         if (tileCount != 0) {
                             bestDistance = distance;
@@ -725,7 +725,7 @@ s32 func_801070E8_eatsa_pizza(omObjData *object) {
         }
         targetPixelX = (targetX * 32) + 16;
         targetPixelY = (targetY * 32) + 24;
-        random = func_80108F4C_eatsa_pizza();
+        random = m211_Rand16Get();
         work->unk28 = (random & 7) + 5;
     }
 
@@ -740,7 +740,7 @@ s32 func_801070E8_eatsa_pizza(omObjData *object) {
     return input;
 }
 
-void func_801078C4_eatsa_pizza(omObjData *arg0) {
+void m211_PlayerPushCalc(omObjData *arg0) {
     MgPlayerWork *data;
     Work *self;
     MgPlayerWork *otherData;
@@ -754,13 +754,13 @@ void func_801078C4_eatsa_pizza(omObjData *arg0) {
     s32 j;
     s32 count = 0;
 
-    func_801083A8_eatsa_pizza(arg0, &data, (void **)&self);
+    m211_PlayerWorkGet(arg0, &data, (void **)&self);
     selfRadius = self->radius;
     for (i = 0, j = 0; i < 4; i++, j++) {
         if (data->unk59 == j) {
             continue;
         }
-        func_801083A8_eatsa_pizza(mgPlayerObjTbl[i], &otherData, (void **)&other);
+        m211_PlayerWorkGet(mgPlayerObjTbl[i], &otherData, (void **)&other);
         dx = other->pos.x - self->pos.x;
         dy = other->pos.y - self->pos.y;
         otherRadius = other->radius;
@@ -783,7 +783,7 @@ void func_801078C4_eatsa_pizza(omObjData *arg0) {
     }
 }
 
-void func_80107A64_eatsa_pizza(omObjData *object) {
+void m211_PizzaWallHit(omObjData *object) {
     MgPlayerWork *data;
     Work *work;
     u8 *map;
@@ -803,8 +803,8 @@ void func_80107A64_eatsa_pizza(omObjData *object) {
     f32 dy;
     f32 dist;
 
-    func_801083A8_eatsa_pizza(object, &data, (void **)&work);
-    map = func_801090B4_eatsa_pizza(D_8010927E_eatsa_pizza[work->unk32], 0);
+    m211_PlayerWorkGet(object, &data, (void **)&work);
+    map = m211_SprPatDataGet(m211_pizzaHardAnimTbl[work->unk32], 0);
     x = work->pos.x + 160.0f;
     y = work->pos.y + 120.0f;
     yMin = y - 16.0f;
@@ -881,7 +881,7 @@ void func_80107A64_eatsa_pizza(omObjData *object) {
 // deletes the dead store before reg_n_refs is counted. The two pseudos must
 // be live across the calls (all s-regs busy) with every reference removed by
 // combine, which only happens for a value live at entry whose read folds away.
-s32 func_80107E6C_eatsa_pizza(omObjData *object) {
+s32 m211_PizzaEat(omObjData *object) {
     MgPlayerWork *data;
     Work *work;
     u16 *mask;
@@ -907,10 +907,10 @@ s32 func_80107E6C_eatsa_pizza(omObjData *object) {
     s16 result;
 
     result = 0;
-    func_801083A8_eatsa_pizza(object, &data, (void **)&work);
-    mask = func_801090B4_eatsa_pizza(D_8010927A_eatsa_pizza[work->unk32], 0);
-    image = func_801090B4_eatsa_pizza(D_8010927E_eatsa_pizza[work->unk32], 0);
-    pattern = func_801090B4_eatsa_pizza(D_80109282_eatsa_pizza[0], 0);
+    m211_PlayerWorkGet(object, &data, (void **)&work);
+    mask = m211_SprPatDataGet(m211_pizzaAnimTbl[work->unk32], 0);
+    image = m211_SprPatDataGet(m211_pizzaHardAnimTbl[work->unk32], 0);
+    pattern = m211_SprPatDataGet(m211_biteAnimTbl[0], 0);
 
     if (work->unk32 != 0) {
         centerX = work->pos.x - sindf(data->unk3C) * 2.0;
@@ -991,49 +991,49 @@ s32 func_80107E6C_eatsa_pizza(omObjData *object) {
                     mask[maskIndex * 2 + 1] &= ~1;
                     mask[otherIndex * 2] &= ~1;
                     mask[otherIndex * 2 + 1] &= ~1;
-                    D_801092B8_eatsa_pizza[work->unk32] -= removed;
-                    D_801092C0_eatsa_pizza[work->unk32][x >> 5][(y - 8) >> 5] -= removed;
+                    m211_pizzaCntTbl[work->unk32] -= removed;
+                    m211_pizzaTileCntTbl[work->unk32][x >> 5][(y - 8) >> 5] -= removed;
                 }
             }
         }
     }
     if (result != 0) {
-        func_80108E48_eatsa_pizza(color, (f32 *)work);
+        m211_CrumbCreate(color, (f32 *)work);
         result = (result & 0x8000) ? 3 : 2;
     }
     return result;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/game/overlays/minigames/0B_eatsa_pizza/main", func_80107E6C_eatsa_pizza);
+INCLUDE_ASM("asm/nonmatchings/game/overlays/minigames/0B_eatsa_pizza/main", m211_PizzaEat);
 #endif
 
-void func_801083A8_eatsa_pizza(omObjData *arg0, MgPlayerWork **arg1, void **arg2) {
+void m211_PlayerWorkGet(omObjData *arg0, MgPlayerWork **arg1, void **arg2) {
     *arg1 = arg0->data;
     *arg2 = (*arg1)->unk158;
 }
 
-void func_801083BC_eatsa_pizza(void) {
+void m211_MapObjCreateAll(void) {
     mgMapObjNum = 0;
     MgMapBaseSet(0);
-    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 1, 0, -1, func_80108470_eatsa_pizza);
-    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 1, 0, -1, func_801084F8_eatsa_pizza);
-    D_80109350_eatsa_pizza = 0;
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 1, 0, -1, m211_MainObjInit);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 1, 0, -1, m211_PizzaObjInit);
+    m211_phase = 0;
 }
 
-void func_80108470_eatsa_pizza(omObjData *object) {
+void m211_MainObjInit(omObjData *object) {
     s16 *groupP;
-    s16 data = func_80108FA4_eatsa_pizza(0x2C0000);
+    s16 data = m211_AnimDataRead(0x2C0000);
 
-    D_80109278_eatsa_pizza[0] = data;
+    m211_animTbl[0] = data;
     // Group pointer must be captured as part of the store so the address is
     // computed after the call, matching the original.
-    *(groupP = &D_80109288_eatsa_pizza[0]) = func_80108FEC_eatsa_pizza(data, 1);
+    *(groupP = &m211_sprGrpTbl[0]) = m211_SprGrpCreate(data, 1);
     HuSprPosSet(*groupP, 0, 160, 120);
     HuSprAttrSet(*groupP, 0, 0x4000);
-    object->func = func_801087DC_eatsa_pizza;
+    object->func = m211_MainObjMain;
 }
 
-void func_801084F8_eatsa_pizza(omObjData *object) {
+void m211_PizzaObjInit(omObjData *object) {
     u16 *image16;
     u8 *image8;
     s16 group;
@@ -1042,153 +1042,153 @@ void func_801084F8_eatsa_pizza(omObjData *object) {
     s32 k;
 
     for (i = 0; i < 2; i++) {
-        D_8010927A_eatsa_pizza[i] = func_80108FA4_eatsa_pizza((i + 1) | 0x2C0000);
-        D_8010928A_eatsa_pizza[i] = func_80108FEC_eatsa_pizza(D_8010927A_eatsa_pizza[i], 1);
-        HuSprAttrSet(D_8010928A_eatsa_pizza[i], 0, 0x1008);
-        image16 = func_801090B4_eatsa_pizza(D_8010927A_eatsa_pizza[i], 0);
+        m211_pizzaAnimTbl[i] = m211_AnimDataRead((i + 1) | 0x2C0000);
+        m211_pizzaSprGrpTbl[i] = m211_SprGrpCreate(m211_pizzaAnimTbl[i], 1);
+        HuSprAttrSet(m211_pizzaSprGrpTbl[i], 0, 0x1008);
+        image16 = m211_SprPatDataGet(m211_pizzaAnimTbl[i], 0);
         for (j = 0; j < 240; j++) {
             for (k = 0; k < 160; k++) {
                 if (image16[j * 160 + k] & 1) {
-                    D_801092B8_eatsa_pizza[i]++;
-                    D_801092C0_eatsa_pizza[i][k >> 5][(j - 8) >> 5]++;
+                    m211_pizzaCntTbl[i]++;
+                    m211_pizzaTileCntTbl[i][k >> 5][(j - 8) >> 5]++;
                 }
             }
         }
 
-        D_8010927E_eatsa_pizza[i] = func_80108FA4_eatsa_pizza((i + 3) | 0x2C0000);
-        image8 = func_801090B4_eatsa_pizza(D_8010927E_eatsa_pizza[i], 0);
+        m211_pizzaHardAnimTbl[i] = m211_AnimDataRead((i + 3) | 0x2C0000);
+        image8 = m211_SprPatDataGet(m211_pizzaHardAnimTbl[i], 0);
         for (k = 0; k < 0x4B00; k++) {
             if ((image8[k] & 0x0F) != 0 && (image8[k] & 8) == 0) {
-                D_8010934C_eatsa_pizza[i]++;
+                m211_pizzaHardCntTbl[i]++;
             }
             if ((image8[k] & 0xF0) != 0 && (image8[k] & 0x80) == 0) {
-                D_8010934C_eatsa_pizza[i]++;
+                m211_pizzaHardCntTbl[i]++;
             }
         }
     }
 
-    HuSprPosSet(D_8010928A_eatsa_pizza[0], 0, 0x50, 0x78);
-    HuSprPosSet(D_8010928A_eatsa_pizza[1], 0, 0xF0, 0x78);
-    D_80109282_eatsa_pizza[0] = func_80108FA4_eatsa_pizza(0x2C0005);
-    D_80109282_eatsa_pizza[1] = func_80108FA4_eatsa_pizza(0x2C0006);
-    D_8010928A_eatsa_pizza[2] = HuSprGrpCreate(0x10, 0);
-    group = D_8010928A_eatsa_pizza[2];
+    HuSprPosSet(m211_pizzaSprGrpTbl[0], 0, 0x50, 0x78);
+    HuSprPosSet(m211_pizzaSprGrpTbl[1], 0, 0xF0, 0x78);
+    m211_biteAnimTbl[0] = m211_AnimDataRead(0x2C0005);
+    m211_biteAnimTbl[1] = m211_AnimDataRead(0x2C0006);
+    m211_pizzaSprGrpTbl[2] = HuSprGrpCreate(0x10, 0);
+    group = m211_pizzaSprGrpTbl[2];
     for (i = 0; i < 0x10; i++) {
         HuSprAttrSet(group, i, 0x9000);
-        D_80109298_eatsa_pizza[i] = 0;
+        m211_crumbActiveTbl[i] = 0;
     }
-    object->func = func_80108C50_eatsa_pizza;
+    object->func = m211_PizzaObjMain;
 }
 
-void func_801087DC_eatsa_pizza(omObjData *object) {
+void m211_MainObjMain(omObjData *object) {
     s32 i;
     s16 seq;
     s16 *wipeDuration;
 
-    switch (D_80109350_eatsa_pizza) {
+    switch (m211_phase) {
         case 0:
             GMesCreate(5);
-            D_8010913C_eatsa_pizza = 900;
-            D_80109350_eatsa_pizza++;
+            m211_timer = 900;
+            m211_phase++;
             /* fallthrough */
         case 1:
             if (WipeStatGet() == 0) {
-                D_80109144_eatsa_pizza++;
-                if (D_80109144_eatsa_pizza == 1) {
+                m211_musicTimer++;
+                if (m211_musicTimer == 1) {
                     HuAudSeqPlay(0x36);
                 }
             }
             if (GMesStatGet() != 0) {
                 break;
             }
-            D_80109350_eatsa_pizza++;
-            GMesCreate(0x1A, (D_8010913C_eatsa_pizza + 0x1D) / 30, 0xA0, 0x20);
+            m211_phase++;
+            GMesCreate(0x1A, (m211_timer + 0x1D) / 30, 0xA0, 0x20);
             HuAudFXPlay(0xE);
             for (i = 0; i < 2; i++) {
-                D_80109260_eatsa_pizza[i] = (s16)D_801092B8_eatsa_pizza[i];
+                m211_pizzaStartCntTbl[i] = (s16)m211_pizzaCntTbl[i];
             }
             break;
         case 2:
             for (i = 0; i < 2; i++) {
-                if ((s16)D_801092B8_eatsa_pizza[i] == 0) {
-                    D_80109350_eatsa_pizza = 3;
+                if ((s16)m211_pizzaCntTbl[i] == 0) {
+                    m211_phase = 3;
                 }
             }
-            D_8010913C_eatsa_pizza--;
-            GMesTimerValueSet((D_8010913C_eatsa_pizza + 0x1D) / 30);
-            if (D_8010913C_eatsa_pizza == 0) {
-                D_80109350_eatsa_pizza = 3;
+            m211_timer--;
+            GMesTimerValueSet((m211_timer + 0x1D) / 30);
+            if (m211_timer == 0) {
+                m211_phase = 3;
             }
             break;
         case 3:
             for (i = 0; i < 2; i++) {
-                HuSprAttrSet(D_8010928A_eatsa_pizza[i], 0, 0x4000);
+                HuSprAttrSet(m211_pizzaSprGrpTbl[i], 0, 0x4000);
             }
-            if (D_80109260_eatsa_pizza[0] == (s16)D_801092B8_eatsa_pizza[0] &&
-                D_80109260_eatsa_pizza[1] == (s16)D_801092B8_eatsa_pizza[1]) {
-                D_80109140_eatsa_pizza = -1;
+            if (m211_pizzaStartCntTbl[0] == (s16)m211_pizzaCntTbl[0] &&
+                m211_pizzaStartCntTbl[1] == (s16)m211_pizzaCntTbl[1]) {
+                m211_winner = -1;
             } else {
-                if ((s16)D_801092B8_eatsa_pizza[0] < (s16)D_801092B8_eatsa_pizza[1]) {
-                    D_80109268_eatsa_pizza[0][0]->unk34 = 1;
-                    D_80109268_eatsa_pizza[0][1]->unk34 = 1;
-                    D_80109140_eatsa_pizza = 0;
+                if ((s16)m211_pizzaCntTbl[0] < (s16)m211_pizzaCntTbl[1]) {
+                    m211_groupWorkTbl[0][0]->unk34 = 1;
+                    m211_groupWorkTbl[0][1]->unk34 = 1;
+                    m211_winner = 0;
                 } else {
-                    D_80109268_eatsa_pizza[1][0]->unk34 = 1;
-                    D_80109268_eatsa_pizza[1][1]->unk34 = 1;
-                    D_80109140_eatsa_pizza = 1;
+                    m211_groupWorkTbl[1][0]->unk34 = 1;
+                    m211_groupWorkTbl[1][1]->unk34 = 1;
+                    m211_winner = 1;
                 }
             }
             GMesTimerEnd();
             GMesCreate(0x10);
             HuAudSeqFadeOut(0x78);
-            D_80109138_eatsa_pizza = 0xF;
-            D_80109350_eatsa_pizza++;
+            m211_phaseTimer = 0xF;
+            m211_phase++;
             break;
         case 4:
             if (GMesStatGet() != 0) {
                 break;
             }
-            D_80109138_eatsa_pizza--;
-            if (D_80109138_eatsa_pizza != 0) {
+            m211_phaseTimer--;
+            if (m211_phaseTimer != 0) {
                 break;
             }
-            if (D_80109140_eatsa_pizza == -1) {
+            if (m211_winner == -1) {
                 GMesCreate(0x20);
                 seq = 0x6C;
             } else {
                 GMesCreate(
                     0x1E,
-                    GwPlayer[D_80109268_eatsa_pizza[D_80109140_eatsa_pizza][0]->unk30].chr,
-                    GwPlayer[D_80109268_eatsa_pizza[D_80109140_eatsa_pizza][1]->unk30].chr);
+                    GwPlayer[m211_groupWorkTbl[m211_winner][0]->unk30].chr,
+                    GwPlayer[m211_groupWorkTbl[m211_winner][1]->unk30].chr);
                 seq = 0x66;
             }
             HuAudSeqPlay(seq);
-            D_80109138_eatsa_pizza = 0xF;
-            D_80109350_eatsa_pizza++;
+            m211_phaseTimer = 0xF;
+            m211_phase++;
             break;
         case 5:
             if (GMesStatGet() != 0) {
                 break;
             }
-            D_80109138_eatsa_pizza--;
-            if (D_80109138_eatsa_pizza != 0) {
+            m211_phaseTimer--;
+            if (m211_phaseTimer != 0) {
                 break;
             }
-            D_80109350_eatsa_pizza++;
+            m211_phase++;
             break;
         case 6:
-            if (D_80109138_eatsa_pizza == 0) {
+            if (m211_phaseTimer == 0) {
                 goto wipe_timer;
             }
-            D_80109138_eatsa_pizza--;
-            if (D_80109138_eatsa_pizza != 0) {
+            m211_phaseTimer--;
+            if (m211_phaseTimer != 0) {
                 break;
             }
-            D_80109350_eatsa_pizza++;
+            m211_phase++;
             break;
         wipe_timer:
-            D_80109138_eatsa_pizza = 0x10;
-            wipeDuration = &D_8010913A_eatsa_pizza;
+            m211_phaseTimer = 0x10;
+            wipeDuration = &m211_phaseTimerLo;
             WipeCreateOut(WIPE_TYPE_NORMAL, *wipeDuration);
             HuAudSeqFadeOut(*wipeDuration);
             HuAudFXAllFadeOut(*wipeDuration);
@@ -1200,17 +1200,17 @@ void func_801087DC_eatsa_pizza(omObjData *object) {
     }
 
     if (omSysExitReq == 1 && WipeStatGet() == 0) {
-        D_80109350_eatsa_pizza = 6;
+        m211_phase = 6;
     }
 }
 
-void func_80108C50_eatsa_pizza(omObjData *object) {
-    s16 group = D_8010928E_eatsa_pizza;
+void m211_PizzaObjMain(omObjData *object) {
+    s16 group = m211_crumbSprGrp;
     HuSprite *sprite;
     s32 i;
 
     for (i = 0; i < 0x10; i++) {
-        if (D_80109298_eatsa_pizza[i] == 0) {
+        if (m211_crumbActiveTbl[i] == 0) {
             continue;
         }
         sprite = HuSprGet(group, i);
@@ -1219,11 +1219,11 @@ void func_80108C50_eatsa_pizza(omObjData *object) {
             continue;
         }
         HuSprDispOff(group, i);
-        D_80109298_eatsa_pizza[i] = 0;
+        m211_crumbActiveTbl[i] = 0;
     }
 }
 
-s16 func_80108D1C_eatsa_pizza(s16 arg0, s16 arg1, s16 arg2, f32 arg3) {
+s16 m211_EffSprCreate(s16 arg0, s16 arg1, s16 arg2, f32 arg3) {
     s32 i;
     s16 group;
 
@@ -1231,15 +1231,15 @@ s16 func_80108D1C_eatsa_pizza(s16 arg0, s16 arg1, s16 arg2, f32 arg3) {
         return -1;
     }
     for (i = 0; i < 0x10; i++) {
-        if (D_80109298_eatsa_pizza[i] == 0) {
+        if (m211_crumbActiveTbl[i] == 0) {
             break;
         }
     }
     if (i >= 0x10) {
         return -1;
     }
-    D_80109298_eatsa_pizza[i] = 1;
-    group = D_8010928E_eatsa_pizza;
+    m211_crumbActiveTbl[i] = 1;
+    group = m211_crumbSprGrp;
     HuSprGrpMemberSet(group, i, arg0, 0);
     HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_PAT_LOOP);
     HuSprPosSet(group, i, arg1, arg2);
@@ -1248,7 +1248,7 @@ s16 func_80108D1C_eatsa_pizza(s16 arg0, s16 arg1, s16 arg2, f32 arg3) {
     return i;
 }
 
-s16 func_80108E48_eatsa_pizza(u16 arg0, f32 *arg1) {
+s16 m211_CrumbCreate(u16 arg0, f32 *arg1) {
     s32 group;
     s32 spriteId;
     u32 color;
@@ -1256,8 +1256,8 @@ s16 func_80108E48_eatsa_pizza(u16 arg0, f32 *arg1) {
     u32 green;
     u32 blue;
 
-    group = D_8010928E_eatsa_pizza;
-    spriteId = func_80108D1C_eatsa_pizza(D_80109284_eatsa_pizza, (s16)(arg1[0] + 160.0), (s16)(arg1[1] + 120.0), arg1[5]);
+    group = m211_crumbSprGrp;
+    spriteId = m211_EffSprCreate(m211_crumbAnim, (s16)(arg1[0] + 160.0), (s16)(arg1[1] + 120.0), arg1[5]);
     if (spriteId == -1) {
         return -1;
     }
@@ -1270,13 +1270,13 @@ s16 func_80108E48_eatsa_pizza(u16 arg0, f32 *arg1) {
     return spriteId;
 }
 
-s32 func_80108F4C_eatsa_pizza(void) {
-    D_80109148_eatsa_pizza = D_80109148_eatsa_pizza * 0x41C64E6D + 0x3039;
-    D_80109148_eatsa_pizza += rand8();
-    return D_80109148_eatsa_pizza >> 16;
+s32 m211_Rand16Get(void) {
+    m211_randSeed = m211_randSeed * 0x41C64E6D + 0x3039;
+    m211_randSeed += rand8();
+    return m211_randSeed >> 16;
 }
 
-s16 func_80108FA4_eatsa_pizza(s32 arg0) {
+s16 m211_AnimDataRead(s32 arg0) {
     void *temp_v0;
     s16 temp_s0;
 
@@ -1286,7 +1286,7 @@ s16 func_80108FA4_eatsa_pizza(s32 arg0) {
     return temp_s0;
 }
 
-s16 func_80108FEC_eatsa_pizza(s16 arg0, s16 arg1) {
+s16 m211_SprGrpCreate(s16 arg0, s16 arg1) {
     s16 spriteId;
     s32 i;
 
@@ -1303,7 +1303,7 @@ s16 func_80108FEC_eatsa_pizza(s16 arg0, s16 arg1) {
     return spriteId;
 }
 
-void *func_801090B4_eatsa_pizza(s16 arg0, s16 arg1) {
+void *m211_SprPatDataGet(s16 arg0, s16 arg1) {
     HuSprAnimPat *entry = &HuSprAnimDataGet(arg0)->pat[arg1];
 
     return entry->data;

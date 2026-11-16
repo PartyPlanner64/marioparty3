@@ -86,121 +86,121 @@ typedef struct AceHighShot {
 } AceHighShot; // sizeof 0x38
 
 extern u8 omAllPauseF;
-MinigameFlow D_8010DB40_aces_high = {
+MinigameFlow m223_mgFlow = {
     MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
     { 0.0f, 0.0f, 0.0f, 0.0f },
     { 0, 0, 0, 0 },
     -1, 1800, -1, -1, 135
 };
-u16 D_8010DB68_aces_high[4] = { 1, 2, 4, 8 };
-f32 D_8010DB70_aces_high[4][4] = {
+u16 m223_camBitTbl[4] = { 1, 2, 4, 8 };
+f32 m223_scissorTbl[4][4] = {
     { 1.0f, 1.0f, 159.0f, 119.0f },
     { 161.0f, 1.0f, 319.0f, 119.0f },
     { 1.0f, 121.0f, 159.0f, 239.0f },
     { 161.0f, 121.0f, 319.0f, 239.0f },
 };
-f32 D_8010DBB0_aces_high[4][4] = {
+f32 m223_viewportTbl[4][4] = {
     { 640.0f, 480.0f, 320.0f, 240.0f },
     { 640.0f, 480.0f, 960.0f, 240.0f },
     { 640.0f, 480.0f, 320.0f, 720.0f },
     { 640.0f, 480.0f, 960.0f, 720.0f },
 };
-Vec D_8010DBF0_aces_high[2] = { { 20.0f, 130.0f, 255.0f }, { 255.0f, 130.0f, 20.0f } };
-u16 D_8010DC08_aces_high = 0;
-f32 D_8010DC0C_aces_high = 0.0f;
-s32 D_8010DC10_aces_high[8] = { 0x38000C, 0x38000D, 0x38000E, 0x38000F, 0x380010, 0x380011, 0x380012, 0x380013 };
-s32 D_8010DC30_aces_high[8] = { 0x380014, 0x380015, 0x380016, 0x380017, 0x380018, 0x380019, 0x38001A, 0x38001B };
-s16 D_8010DC50_aces_high[4][2][2] = {
+Vec m223_bgColorTbl[2] = { { 20.0f, 130.0f, 255.0f }, { 255.0f, 130.0f, 20.0f } };
+u16 m223_exitF = 0;
+f32 m223_skyRot = 0.0f;
+s32 m223_planeMdlTbl[8] = { 0x38000C, 0x38000D, 0x38000E, 0x38000F, 0x380010, 0x380011, 0x380012, 0x380013 };
+s32 m223_radarIconTbl[8] = { 0x380014, 0x380015, 0x380016, 0x380017, 0x380018, 0x380019, 0x38001A, 0x38001B };
+s16 m223_lifePosTbl[4][2][2] = {
     { { 28, 100 }, { 28, 92 } },
     { { 292, 100 }, { 292, 92 } },
     { { 28, 220 }, { 28, 212 } },
     { { 292, 220 }, { 292, 212 } },
 };
-s16 D_8010DC70_aces_high[4][2] = { { 32, 24 }, { 288, 24 }, { 32, 144 }, { 288, 144 } };
-f32 D_8010DC80_aces_high[4] = { 90.0f, 180.0f, 270.0f, 0.0f };
-s32 D_8010DC90_aces_high[8] = { 0x380000, 0x380001, 0x380002, 0x380003, 0x380004, 0x380005, 0x380006, 0x380007 };
-u16 D_8010DCB0_aces_high = 0;
-u16 D_8010DCB2_aces_high = 45;
-Vec2f D_8010DCB4_aces_high = { 160.0f, 120.0f };
-Vec2f D_8010DCBC_aces_high[4] = { { 319.0f, 239.0f }, { 1.0f, 239.0f }, { 319.0f, 1.0f }, { 1.0f, 1.0f } };
+s16 m223_iconPosTbl[4][2] = { { 32, 24 }, { 288, 24 }, { 32, 144 }, { 288, 144 } };
+f32 m223_startRotTbl[4] = { 90.0f, 180.0f, 270.0f, 0.0f };
+s32 m223_shotMdlFileTbl[8] = { 0x380000, 0x380001, 0x380002, 0x380003, 0x380004, 0x380005, 0x380006, 0x380007 };
+u16 m223_finishF = 0;
+u16 m223_finishWait = 45;
+Vec2f m223_viewCenter = { 160.0f, 120.0f };
+Vec2f m223_viewCornerTbl[4] = { { 319.0f, 239.0f }, { 1.0f, 239.0f }, { 319.0f, 1.0f }, { 1.0f, 1.0f } };
 
-u16 D_8010DE50_aces_high[2] BSS;
-f32 D_8010DE54_aces_high[2] BSS;
-omObjData *D_8010DE5C_aces_high BSS;
-omObjData *D_8010DE60_aces_high BSS;
-omObjData *D_8010DE64_aces_high BSS;
-omObjData **D_8010DE68_aces_high BSS;
-omObjData *D_8010DE6C_aces_high BSS;
-omObjData **D_8010DE70_aces_high[4] BSS;
-omObjData *D_8010DE80_aces_high BSS;
-omObjData *D_8010DE84_aces_high BSS;
-u16 D_8010DE88_aces_high BSS;
-u16 D_8010DE8A_aces_high BSS;
-s16 D_8010DE8C_aces_high BSS;
-s16 D_8010DE8E_aces_high BSS;
-s16 D_8010DE90_aces_high BSS;
-s16 D_8010DE92_aces_high BSS;
-s16 D_8010DE94_aces_high BSS;
-s16 D_8010DE96_aces_high BSS;
-Vec D_8010DE98_aces_high BSS;
-s16 D_8010DEA4_aces_high BSS;
-s16 D_8010DEA6_aces_high BSS;
-Vec D_8010DEA8_aces_high BSS;
-Vec D_8010DEB4_aces_high BSS;
-Vec D_8010DEC0_aces_high BSS;
-u8 D_8010DECC_aces_high[4] BSS; /* Unreferenced. */
-u16 D_8010DED0_aces_high[20] BSS;
-u16 D_8010DEF8_aces_high[20] BSS;
-s16 D_8010DF20_aces_high BSS;
+u16 m223_cloudTexSize[2] BSS;
+f32 m223_cloudTexScroll[2] BSS;
+omObjData *m223_introObj BSS;
+omObjData *m223_finishObj BSS;
+omObjData *m223_stageObj BSS;
+omObjData **m223_planeObjTbl BSS;
+omObjData *m223_shotMdlObj BSS;
+omObjData **m223_shotObjTbl[4] BSS;
+omObjData *m223_radarObj BSS;
+omObjData *m223_cameraObj BSS;
+u16 m223_introPhase BSS;
+u16 m223_finishPhase BSS;
+s16 m223_aliveNum BSS;
+s16 m223_winner BSS;
+s16 m223_resultF BSS;
+s16 m223_viewLineHSpr BSS;
+s16 m223_viewLineVSpr BSS;
+s16 m223_engineSe BSS;
+Vec m223_bgColor BSS;
+s16 m223_warnSprData BSS;
+s16 m223_lockSprData BSS;
+Vec m223_winCameraPos BSS;
+Vec m223_winCameraTarget BSS;
+Vec m223_winCameraUp BSS;
+u8 m223_winCameraUpPad[4] BSS; /* Unreferenced. */
+u16 m223_shotEffUseTbl[20] BSS;
+u16 m223_shotEffMdlTbl[20] BSS;
+s16 m223_radarSpr BSS;
 
-void func_80105E44_aces_high(omObjData *object);
-void func_80105E84_aces_high(omObjData *object);
-void func_80105FC8_aces_high(omObjData *object);
-void func_801061E0_aces_high(omObjData *object);
-void func_801062DC_aces_high(omObjData *object);
-void func_80106EC0_aces_high(omObjData *object);
-void func_801071D4_aces_high(omObjData *object);
-void func_80107654_aces_high(omObjData *object);
-void func_80107F98_aces_high(omObjData *object);
-void func_801081A8_aces_high(omObjData *object);
-void func_8010843C_aces_high(omObjData *object);
-void func_801085B0_aces_high(void);
-void func_8010862C_aces_high(omObjData *object);
-void func_801088A4_aces_high(omObjData *object, s8 *stickX, s8 *stickY, u16 *btnDown, u16 *btn);
-u16 func_8010951C_aces_high(omObjData *object, Vec *target, f32 angleTol, f32 heightTol, s8 *stickX, s8 *stickY);
-void func_80109928_aces_high(omObjData *object);
-s16 func_80109EEC_aces_high(omObjData *object, f32 fov, omObjData **list, omObjData **nearest, f32 *minDist);
-f32 func_8010A0F0_aces_high(omObjData *object);
-void func_8010A214_aces_high(omObjData *object);
-void func_8010A51C_aces_high(omObjData *object);
-void func_8010A884_aces_high(omObjData *object);
-void func_8010A9D4_aces_high(omObjData *object);
-void func_8010AADC_aces_high(omObjData *object);
-void func_8010ACE0_aces_high(omObjData *object);
-void func_8010AD4C_aces_high(omObjData *object);
-void func_8010AE30_aces_high(omObjData *object);
-void func_8010B0E8_aces_high(omObjData *object);
-void func_8010B224_aces_high(omObjData *object);
-void func_8010B26C_aces_high(omObjData *object);
-void func_8010B4BC_aces_high(omObjData *object);
-void func_8010B618_aces_high(void);
-void func_8010B760_aces_high(omObjData *object);
-void func_8010B9F4_aces_high(omObjData *object);
-void func_8010BCC4_aces_high(void);
-void func_8010BD84_aces_high(omObjData *object);
-void func_8010BF3C_aces_high(omObjData *object);
-void func_8010C288_aces_high(omObjData *object);
-void func_8010C9DC_aces_high(void);
-void func_8010CA6C_aces_high(omObjData *object);
-void func_8010CD88_aces_high(omObjData *object);
-void func_8010CE5C_aces_high(omObjData *object);
-void func_8010CFF8_aces_high(void);
-u16 func_8010D1D8_aces_high(u16 winner);
-void func_8010D6D4_aces_high(omObjData *object);
-void func_8010D994_aces_high(omObjData *object);
-void func_8010DB20_aces_high(void);
+void m223_MainObjInit(omObjData *object);
+void m223_MainObjMain(omObjData *object);
+void m223_StageObjInit(omObjData *object);
+void m223_StageObjMain(omObjData *object);
+void m223_PlaneObjInit(omObjData *object);
+void m223_PlaneIntroObjMain(omObjData *object);
+void m223_PlaneEndObjMain(omObjData *object);
+void m223_PlaneObjMain(omObjData *object);
+void m223_PlaneReturnObjMain(omObjData *object);
+void m223_PlaneCrashObjMain(omObjData *object);
+void m223_PlaneShakeUpdate(omObjData *object);
+void m223_LifeSprOffAll(void);
+void m223_PlanePushApart(omObjData *object);
+void m223_PlaneComInput(omObjData *object, s8 *stickX, s8 *stickY, u16 *btnDown, u16 *btn);
+u16 m223_PlaneComSteer(omObjData *object, Vec *target, f32 angleTol, f32 heightTol, s8 *stickX, s8 *stickY);
+void m223_PlaneComStateUpdate(omObjData *object);
+s16 m223_PlaneComTargetFind(omObjData *object, f32 fov, omObjData **list, omObjData **nearest, f32 *minDist);
+f32 m223_ShotNearDistGet(omObjData *object);
+void m223_PlaneComEvade(omObjData *object);
+void m223_CameraFollowObjMain(omObjData *object);
+void m223_CameraPosCalc(omObjData *object);
+void m223_CameraIntroObjMain(omObjData *object);
+void m223_CameraStartObjMain(omObjData *object);
+void m223_CameraOverObjMain(omObjData *object);
+void m223_CameraWinStart(omObjData *object);
+void m223_CameraWinObjMain(omObjData *object);
+void m223_CameraWinHoldObjMain(omObjData *object);
+void m223_CameraViewObjMain(omObjData *object);
+void m223_CameraViewFix(omObjData *object);
+void m223_CameraEndObjMain(omObjData *object);
+void m223_ShotInit(void);
+void m223_ShotHitObjMain(omObjData *object);
+void m223_ShotFire(omObjData *object);
+void m223_ShotKillAll(void);
+void m223_ShotObjMain(omObjData *object);
+void m223_MissileFire(omObjData *object);
+void m223_MissileObjMain(omObjData *object);
+void m223_RadarInit(void);
+void m223_RadarObjMain(omObjData *object);
+void m223_IntroObjMain(omObjData *object);
+void m223_FinishObjMain(omObjData *object);
+void m223_SurvivorCheck(void);
+u16 m223_WinViewExpand(u16 winner);
+void m223_WarnObjMain(omObjData *object);
+void m223_LockObjMain(omObjData *object);
+void m223_OvlReturn(void);
 
-void func_801059A0_aces_high(void) {
+void m223_ObjectSetup(void) {
     omObjData *obj;
     s32 i;
 
@@ -217,18 +217,18 @@ void func_801059A0_aces_high(void) {
         CenterM[i].y = 0.0f;
         CenterM[i].z = 0.0f;
         Hu3DCameraPerspectiveSet(i, 90.0f, 80.0f, 14000.0f);
-        ScissorSet(i, D_8010DB70_aces_high[i][0], D_8010DB70_aces_high[i][1], D_8010DB70_aces_high[i][2],
-                   D_8010DB70_aces_high[i][3]);
-        ViewportSet(i, D_8010DBB0_aces_high[i][0], D_8010DBB0_aces_high[i][1], 511.0f, D_8010DBB0_aces_high[i][2],
-                    D_8010DBB0_aces_high[i][3], 511.0f);
+        ScissorSet(i, m223_scissorTbl[i][0], m223_scissorTbl[i][1], m223_scissorTbl[i][2],
+                   m223_scissorTbl[i][3]);
+        ViewportSet(i, m223_viewportTbl[i][0], m223_viewportTbl[i][1], 511.0f, m223_viewportTbl[i][2],
+                    m223_viewportTbl[i][3], 511.0f);
     }
-    D_8010DE84_aces_high = obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
+    m223_cameraObj = obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     obj->work[0] = 4;
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    D_8010DE98_aces_high.x = D_8010DBF0_aces_high[0].x;
-    D_8010DE98_aces_high.y = D_8010DBF0_aces_high[0].y;
-    D_8010DE98_aces_high.z = D_8010DBF0_aces_high[0].z;
-    Hu3DBGColorSet((u8)D_8010DE98_aces_high.x, (u8)D_8010DE98_aces_high.y, (u8)D_8010DE98_aces_high.z);
+    m223_bgColor.x = m223_bgColorTbl[0].x;
+    m223_bgColor.y = m223_bgColorTbl[0].y;
+    m223_bgColor.z = m223_bgColorTbl[0].z;
+    Hu3DBGColorSet((u8)m223_bgColor.x, (u8)m223_bgColor.y, (u8)m223_bgColor.z);
     Hu3DGLightMaxSet(3);
     Hu3DGLightColorSet(1, 0x40, 0x40, 0x60);
     Hu3DGLightDirSet(1, 3.0f, 89.0f, 80.0f);
@@ -236,71 +236,71 @@ void func_801059A0_aces_high(void) {
     Hu3DGLightColorSet(3, 0, 0, 0);
     Hu3DGLightDirSet(3, -115.0f, 6.0f, -33.0f);
     Hu3DGLightStatSet(2, 1, 1);
-    omAddObj(0, 0, 0, -1, func_80105E44_aces_high);
-    D_8010DE64_aces_high = omAddObj(10, 4, 0, -1, func_80105FC8_aces_high);
-    omSetStatBit(D_8010DE64_aces_high, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    omSetStatBit(D_8010DE64_aces_high, OM_STAT_MODELPAUSE);
-    MgFlowInit(&D_8010DB40_aces_high);
+    omAddObj(0, 0, 0, -1, m223_MainObjInit);
+    m223_stageObj = omAddObj(10, 4, 0, -1, m223_StageObjInit);
+    omSetStatBit(m223_stageObj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    omSetStatBit(m223_stageObj, OM_STAT_MODELPAUSE);
+    MgFlowInit(&m223_mgFlow);
     mgFlowSeqNo = 50;
     mgFlowSeqTime = 10;
     omMakeGroup(0, 4);
-    D_8010DE68_aces_high = omGetGroupMemberList(0);
+    m223_planeObjTbl = omGetGroupMemberList(0);
     for (i = 0; i < 4; i++) {
-        omAddObj(20, 7, 0, 0, func_801062DC_aces_high)->work[0] = i;
+        omAddObj(20, 7, 0, 0, m223_PlaneObjInit)->work[0] = i;
     }
-    func_8010C9DC_aces_high();
-    func_8010B618_aces_high();
-    D_8010DEA4_aces_high = HuSprAnimDataRead(0x380027);
-    D_8010DEA6_aces_high = HuSprAnimDataRead(0x380028);
+    m223_RadarInit();
+    m223_ShotInit();
+    m223_warnSprData = HuSprAnimDataRead(0x380027);
+    m223_lockSprData = HuSprAnimDataRead(0x380028);
 }
 
-void func_80105E44_aces_high(omObjData *object) {
-    D_8010DE60_aces_high = NULL;
-    D_8010DE5C_aces_high = NULL;
-    D_8010DE8C_aces_high = 4;
-    D_8010DE8E_aces_high = -1;
-    D_8010DE90_aces_high = 0;
-    object->func = func_80105E84_aces_high;
+void m223_MainObjInit(omObjData *object) {
+    m223_finishObj = NULL;
+    m223_introObj = NULL;
+    m223_aliveNum = 4;
+    m223_winner = -1;
+    m223_resultF = 0;
+    object->func = m223_MainObjMain;
 }
 
-void func_80105E84_aces_high(omObjData *object) {
-    if (D_8010DC08_aces_high == 0) {
+void m223_MainObjMain(omObjData *object) {
+    if (m223_exitF == 0) {
         switch (MgFlowMain()) {
             case 0:
-                if (D_8010DE5C_aces_high == NULL) {
-                    D_8010DE88_aces_high = 0;
-                    D_8010DE5C_aces_high = omAddObj(4, 0, 0, -1, func_8010CD88_aces_high);
+                if (m223_introObj == NULL) {
+                    m223_introPhase = 0;
+                    m223_introObj = omAddObj(4, 0, 0, -1, m223_IntroObjMain);
                 }
                 break;
             case 1:
                 break;
             case 2:
-                if (D_8010DE8C_aces_high < 2) {
+                if (m223_aliveNum < 2) {
                     MgFlowStatSet(MG_STATE_FINISH);
                 }
                 break;
             case 3:
-                if (D_8010DE60_aces_high == NULL) {
-                    D_8010DE8A_aces_high = 0;
-                    D_8010DE60_aces_high = omAddObj(4, 0, 0, -1, func_8010CE5C_aces_high);
+                if (m223_finishObj == NULL) {
+                    m223_finishPhase = 0;
+                    m223_finishObj = omAddObj(4, 0, 0, -1, m223_FinishObjMain);
                 }
                 break;
             case 4:
                 break;
             case 5:
                 WipeCreateOut(WIPE_TYPE_NORMAL, 20);
-                HuAudFXStop(D_8010DE96_aces_high);
+                HuAudFXStop(m223_engineSe);
                 HuAudSeqFadeOut(30);
                 HuAudFXAllFadeOut(30);
-                D_8010DC08_aces_high = 1;
+                m223_exitF = 1;
                 break;
         }
     } else if (WipeStatGet() == 0) {
-        func_8010DB20_aces_high();
+        m223_OvlReturn();
     }
 }
 
-void func_80105FC8_aces_high(omObjData *object) {
+void m223_StageObjInit(omObjData *object) {
     u16 sprite;
 
     object->model[0] = Hu3DModelRead(0x38000A, 0x6D9);
@@ -315,34 +315,34 @@ void func_80105FC8_aces_high(omObjData *object) {
     Hu3DData[object->model[3]].hmf->unk84->unk0[2] = 0;
     Hu3DModelRemakeStatic(object->model[3]);
     Hu3DModelDynamicFree(object->model[3]);
-    D_8010DE92_aces_high = sprite = espEntry(HuSprAnimDataRead(0x38001E), 0, 0);
+    m223_viewLineHSpr = sprite = espEntry(HuSprAnimDataRead(0x38001E), 0, 0);
     espPosSet(sprite, 160, 120);
     espPriSet(sprite, 0x8096);
-    D_8010DE94_aces_high = sprite = espEntry(HuSprAnimDataRead(0x38001F), 0, 0);
+    m223_viewLineVSpr = sprite = espEntry(HuSprAnimDataRead(0x38001F), 0, 0);
     espPosSet(sprite, 160, 120);
     espPriSet(sprite, 0x8096);
-    D_8010DE54_aces_high[0] = D_8010DE54_aces_high[1] = 0.0f;
-    Hu3DTexSizeGet("m223_03kaze_IA88", D_8010DE50_aces_high);
+    m223_cloudTexScroll[0] = m223_cloudTexScroll[1] = 0.0f;
+    Hu3DTexSizeGet("m223_03kaze_IA88", m223_cloudTexSize);
     Hu3DModelVtxBufMake(object->model[3]);
-    object->func = func_801061E0_aces_high;
+    object->func = m223_StageObjMain;
 }
 
-void func_801061E0_aces_high(omObjData *object) {
+void m223_StageObjMain(omObjData *object) {
     if (omPauseChk() + omAllPauseF == 0) {
-        D_8010DE54_aces_high[1] += 2.0f;
-        D_8010DC0C_aces_high -= 0.0f;
-        if (D_8010DC0C_aces_high < 0.0f) {
-            D_8010DC0C_aces_high += 360.0f;
+        m223_cloudTexScroll[1] += 2.0f;
+        m223_skyRot -= 0.0f;
+        if (m223_skyRot < 0.0f) {
+            m223_skyRot += 360.0f;
         }
     }
-    Hu3DModelObjTexScroll(object->model[3], D_8010DE54_aces_high[0], D_8010DE54_aces_high[1], D_8010DE50_aces_high[0],
-                       D_8010DE50_aces_high[1], "m223_4-cyl11", 0);
-    Hu3DModelRotSet(object->model[3], 0.0f, D_8010DC0C_aces_high, 0.0f);
+    Hu3DModelObjTexScroll(object->model[3], m223_cloudTexScroll[0], m223_cloudTexScroll[1], m223_cloudTexSize[0],
+                       m223_cloudTexSize[1], "m223_4-cyl11", 0);
+    Hu3DModelRotSet(object->model[3], 0.0f, m223_skyRot, 0.0f);
 }
 
-const char D_8010DD1C_aces_high[] = "";
+const char m223_emptyStr[] = "";
 
-void func_801062DC_aces_high(omObjData *object) {
+void m223_PlaneObjInit(omObjData *object) {
     AceHighPlayer *player;
     u16 idx;
     s8 chr;
@@ -354,7 +354,7 @@ void func_801062DC_aces_high(omObjData *object) {
     player = object->data = HuMemAllocTag(sizeof(AceHighPlayer), 0x7918);
     player->camIdx = idx;
     chr = GwPlayer[idx].chr;
-    object->model[0] = Hu3DModelRead(D_8010DC10_aces_high[chr], 0x6B9);
+    object->model[0] = Hu3DModelRead(m223_planeMdlTbl[chr], 0x6B9);
     if (idx == 0) {
         object->model[1] = Hu3DModelRead(0x380008, 0x6D9);
         object->model[2] = Hu3DModelRead(0x380009, 0x6D9);
@@ -363,12 +363,12 @@ void func_801062DC_aces_high(omObjData *object) {
         object->model[5] = Hu3DModelRead(0x380023, 0x6D9);
         object->model[6] = Hu3DModelRead(0x380024, 0x6D9);
     } else {
-        object->model[1] = Hu3DModelLink(D_8010DE68_aces_high[0]->model[1]);
-        object->model[2] = Hu3DModelLink(D_8010DE68_aces_high[0]->model[2]);
-        object->model[3] = Hu3DModelLink(D_8010DE68_aces_high[0]->model[3]);
-        object->model[4] = Hu3DModelLink(D_8010DE68_aces_high[0]->model[4]);
-        object->model[5] = Hu3DModelLink(D_8010DE68_aces_high[0]->model[5]);
-        object->model[6] = Hu3DModelLink(D_8010DE68_aces_high[0]->model[6]);
+        object->model[1] = Hu3DModelLink(m223_planeObjTbl[0]->model[1]);
+        object->model[2] = Hu3DModelLink(m223_planeObjTbl[0]->model[2]);
+        object->model[3] = Hu3DModelLink(m223_planeObjTbl[0]->model[3]);
+        object->model[4] = Hu3DModelLink(m223_planeObjTbl[0]->model[4]);
+        object->model[5] = Hu3DModelLink(m223_planeObjTbl[0]->model[5]);
+        object->model[6] = Hu3DModelLink(m223_planeObjTbl[0]->model[6]);
     }
     Hu3DModelAttrSet(object->model[3], 4, 4);
     Hu3DModelObjAttrSet(object->model[3], 0x70000000, 0x70000000);
@@ -378,25 +378,25 @@ void func_801062DC_aces_high(omObjData *object) {
     Hu3DMotionAttrSet(object->model[6], 3, 2);
     Hu3DModelAttrSet(object->model[4], 4, 4);
     Hu3DModelAttrSet(object->model[6], 4, 4);
-    omSetTra(object, sindf(D_8010DC80_aces_high[idx]) * 1150.0f, -250.0f, cosdf(D_8010DC80_aces_high[idx]) * 1150.0f);
+    omSetTra(object, sindf(m223_startRotTbl[idx]) * 1150.0f, -250.0f, cosdf(m223_startRotTbl[idx]) * 1150.0f);
     omSetRot(object, 0.0f, atan2df(-object->trans.x, -object->trans.z), 0.0f);
     Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
     Hu3DModelRotSet(object->model[1], object->rot.x, object->rot.y, object->rot.z);
-    spr = HuSprAnimDataRead(D_8010DC30_aces_high[chr]);
+    spr = HuSprAnimDataRead(m223_radarIconTbl[chr]);
     player->unk_1C = espEntry(spr, 0, 0);
     player->unk_1E = espEntry(spr, 0, 0);
     espDispOff(player->unk_1E);
     spr = HuSprAnimDataRead(0x38001D);
     for (i = 0; i < 2; i++) {
         player->espriteSlots[i] = espEntry(spr, 0, 0);
-        espPosSet(player->espriteSlots[i], D_8010DC50_aces_high[idx][i][0], D_8010DC50_aces_high[idx][i][1]);
+        espPosSet(player->espriteSlots[i], m223_lifePosTbl[idx][i][0], m223_lifePosTbl[idx][i][1]);
     }
-    player->unk_2E = sprite = espEntry(D_8010DEA4_aces_high, 0, 0);
+    player->unk_2E = sprite = espEntry(m223_warnSprData, 0, 0);
     espPriSet(sprite, 0x80C8);
     espDispOff(sprite);
-    player->unk_30 = sprite = espEntry(D_8010DEA6_aces_high, 0, 0);
+    player->unk_30 = sprite = espEntry(m223_lockSprData, 0, 0);
     espPriSet(sprite, 0x80C8);
-    espPosSet(sprite, D_8010DC70_aces_high[idx][0], D_8010DC70_aces_high[idx][1]);
+    espPosSet(sprite, m223_iconPosTbl[idx][0], m223_iconPosTbl[idx][1]);
     espDispOff(sprite);
     player->unk_0C = 0;
     player->unk_3C = 0.0f;
@@ -432,21 +432,21 @@ void func_801062DC_aces_high(omObjData *object) {
     player->unk_92 = 0;
     player->unk_AE = 0;
     player->unk_70 = 0;
-    player->unk_74 = omAddObj(60, 0, 0, -1, func_8010D6D4_aces_high);
+    player->unk_74 = omAddObj(60, 0, 0, -1, m223_WarnObjMain);
     player->unk_74->work[2] = 0;
     player->unk_74->work[3] = (u32)object;
-    player->unk_78 = omAddObj(60, 0, 0, -1, func_8010D994_aces_high);
+    player->unk_78 = omAddObj(60, 0, 0, -1, m223_LockObjMain);
     player->unk_78->work[0] = (u32)object;
     player->unk_78->work[1] = 0;
     player->unk_78->scale.x = 0.0f;
     object->work[0] = 30;
-    player->camObj = omAddObj(50, 0, 0, -1, func_8010A9D4_aces_high);
+    player->camObj = omAddObj(50, 0, 0, -1, m223_CameraIntroObjMain);
     player->camObj->work[0] = 1;
     player->camObj->work[1] = (u32)object;
-    object->func = func_80106EC0_aces_high;
+    object->func = m223_PlaneIntroObjMain;
 }
 
-void func_801068F4_aces_high(omObjData *object) {
+void m223_PlaneMdlUpdate(omObjData *object) {
     AceHighPlayer *player = object->data;
 
     func_80088910_main(Hu3DData[object->model[0]].mtx, player->unk_38, 0.0f, player->unk_3C + player->unk_44);
@@ -479,7 +479,7 @@ void func_801068F4_aces_high(omObjData *object) {
     }
 }
 
-void func_80106B70_aces_high(omObjData *object) {
+void m223_PlaneSubMdlUpdate(omObjData *object) {
     AceHighPlayer *player = object->data;
     s16 model;
 
@@ -519,7 +519,7 @@ void func_80106B70_aces_high(omObjData *object) {
     }
 }
 
-void func_80106D2C_aces_high(omObjData *object) {
+void m223_PlaneDebugPad(omObjData *object) {
     AceHighPlayer *player = object->data;
 
     if (HuPadBtn[0] & L_JPAD) {
@@ -546,11 +546,11 @@ void func_80106D2C_aces_high(omObjData *object) {
     if (HuPadBtn[0] & R_CBUTTONS) {
         player->unk_3C += 2.0f;
     }
-    func_801068F4_aces_high(object);
-    func_80106B70_aces_high(object);
+    m223_PlaneMdlUpdate(object);
+    m223_PlaneSubMdlUpdate(object);
 }
 
-void func_80106EC0_aces_high(omObjData *object) {
+void m223_PlaneIntroObjMain(omObjData *object) {
     AceHighPlayer *player = object->data;
 
     if (object->work[0] != 0) {
@@ -586,7 +586,7 @@ void func_80106EC0_aces_high(omObjData *object) {
                 if (player->unk_38 <= 0.0f) {
                     player->unk_38 = 0.0f;
                     object->work[1] = 30;
-                    player->camObj->func = func_8010AADC_aces_high;
+                    player->camObj->func = m223_CameraStartObjMain;
                     player->camObj->work[2] = 0;
                     player->camObj->scale.x = CRotM[player->camIdx].x;
                     player->unk_88 = 4;
@@ -597,8 +597,8 @@ void func_80106EC0_aces_high(omObjData *object) {
                 break;
             case 4:
                 if (--object->work[1] == 0) {
-                    player->camObj->func = func_8010A51C_aces_high;
-                    object->func = func_80107654_aces_high;
+                    player->camObj->func = m223_CameraFollowObjMain;
+                    object->func = m223_PlaneObjMain;
                 }
                 break;
         }
@@ -609,11 +609,11 @@ void func_80106EC0_aces_high(omObjData *object) {
     object->trans.x += player->dir.x * player->unk_08;
     object->trans.y += player->dir.y * player->unk_08;
     object->trans.z += player->dir.z * player->unk_08;
-    func_801068F4_aces_high(object);
-    func_80106B70_aces_high(object);
+    m223_PlaneMdlUpdate(object);
+    m223_PlaneSubMdlUpdate(object);
 }
 
-void func_801071D4_aces_high(omObjData *object) {
+void m223_PlaneEndObjMain(omObjData *object) {
     AceHighPlayer *player = object->data;
     s8 stickX;
     s8 stickY;
@@ -622,7 +622,7 @@ void func_801071D4_aces_high(omObjData *object) {
     f32 target;
     f32 speed;
 
-    func_801088A4_aces_high(object, &stickX, &stickY, &btnDown, &btn);
+    m223_PlaneComInput(object, &stickX, &stickY, &btnDown, &btn);
     btn = 0;
     btnDown = 0;
     if (stickX > 70) {
@@ -714,12 +714,12 @@ void func_801071D4_aces_high(omObjData *object) {
     object->trans.x += player->dir.x * player->unk_08;
     object->trans.y += player->dir.y * player->unk_08;
     object->trans.z += player->dir.z * player->unk_08;
-    func_8010862C_aces_high(object);
-    func_801068F4_aces_high(object);
-    func_80106B70_aces_high(object);
+    m223_PlanePushApart(object);
+    m223_PlaneMdlUpdate(object);
+    m223_PlaneSubMdlUpdate(object);
 }
 
-void func_80107654_aces_high(omObjData *object) {
+void m223_PlaneObjMain(omObjData *object) {
     f32 shake[4] = { 10.0f, 0.0f, -10.0f, 0.0f };
     AceHighPlayer *player = object->data;
     u32 hit;
@@ -743,15 +743,15 @@ void func_80107654_aces_high(omObjData *object) {
             player->unk_4E = 45;
             player->unk_4C = 3;
             player->unk_58 = 0;
-            func_8010A884_aces_high(object);
+            m223_CameraPosCalc(object);
             Hu3DModelAttrSet(object->model[3], 4, 0);
             Hu3DMotionAttrSet(object->model[3], 3, 2);
             Hu3DMotionTimeSet(object->model[3], 0.0f);
             Hu3DModelPosSet(object->model[3], object->trans.x, object->trans.y, object->trans.z);
-            D_8010DE8C_aces_high--;
+            m223_aliveNum--;
             player->unk_98 = NULL;
             HuAudFXPlay(0x3B0);
-            object->func = func_801081A8_aces_high;
+            object->func = m223_PlaneCrashObjMain;
             omVibrate(player->camIdx, 30, 0, 30);
             PlayerFXPlay(0x286, player->camIdx);
             return;
@@ -771,12 +771,12 @@ void func_80107654_aces_high(omObjData *object) {
         player->unk_74->work[1] = 6;
         player->unk_74->work[2] = 1;
     }
-    func_8010843C_aces_high(object);
+    m223_PlaneShakeUpdate(object);
     mode = MgFlowStatGet();
     if (mode == MG_STATE_PLAY || mode == MG_STATE_FINISH || MgFlowStatGet() == MG_STATE_RESULT) {
         com = GwPlayer[player->camIdx].stat & 1;
         if (com || mode == MG_STATE_FINISH || mode == MG_STATE_RESULT) {
-            func_801088A4_aces_high(object, &stickX, &stickY, &btnDown, &btn);
+            m223_PlaneComInput(object, &stickX, &stickY, &btnDown, &btn);
             if (mode == MG_STATE_FINISH || mode == MG_STATE_RESULT) {
                 btn = 0;
                 btnDown = 0;
@@ -900,9 +900,9 @@ void func_80107654_aces_high(omObjData *object) {
             player->unk_44 = shake[player->unk_50 & 3];
         }
     }
-    func_8010862C_aces_high(object);
-    func_801068F4_aces_high(object);
-    func_80106B70_aces_high(object);
+    m223_PlanePushApart(object);
+    m223_PlaneMdlUpdate(object);
+    m223_PlaneSubMdlUpdate(object);
     if (btn & Z_TRIG) {
         if (player->unk_54 == 1) {
             player->unk_52++;
@@ -912,7 +912,7 @@ void func_80107654_aces_high(omObjData *object) {
         }
     } else {
         if (player->unk_52 >= 30 && player->unk_54 == 1) {
-            func_8010BF3C_aces_high(object);
+            m223_MissileFire(object);
             _HuAudPlayerFXPlay(0x3B2, player->camIdx);
         }
         player->unk_52 = 0;
@@ -920,7 +920,7 @@ void func_80107654_aces_high(omObjData *object) {
     }
     if (player->unk_20 == 0) {
         if ((btnDown & Z_TRIG) && player->unk_24 != 0) {
-            func_8010B9F4_aces_high(object);
+            m223_ShotFire(object);
             _HuAudPlayerFXPlay(0x3AD, player->camIdx);
         }
     } else {
@@ -932,11 +932,11 @@ void func_80107654_aces_high(omObjData *object) {
         player->unk_4E = 45;
         player->unk_52 = 0;
         player->unk_92 = 0;
-        object->func = func_80107F98_aces_high;
+        object->func = m223_PlaneReturnObjMain;
     }
 }
 
-void func_80107F98_aces_high(omObjData *object) {
+void m223_PlaneReturnObjMain(omObjData *object) {
     AceHighPlayer *player;
     u32 hit;
     f32 angle;
@@ -984,17 +984,17 @@ void func_80107F98_aces_high(omObjData *object) {
             if (player->unk_38 >= 0.0f) {
                 player->unk_38 = 0.0f;
                 player->unk_00 = 0;
-                object->func = func_80107654_aces_high;
+                object->func = m223_PlaneObjMain;
             }
             player->unk_90 = 1;
             break;
     }
-    func_8010843C_aces_high(object);
-    func_801068F4_aces_high(object);
-    func_80106B70_aces_high(object);
+    m223_PlaneShakeUpdate(object);
+    m223_PlaneMdlUpdate(object);
+    m223_PlaneSubMdlUpdate(object);
 }
 
-void func_801081A8_aces_high(omObjData *object) {
+void m223_PlaneCrashObjMain(omObjData *object) {
     AceHighPlayer *player = object->data;
 
     switch (player->unk_00) {
@@ -1014,10 +1014,10 @@ void func_801081A8_aces_high(omObjData *object) {
                 object->func = NULL;
                 player->unk_90 = 0;
                 Hu3DModelAttrSet(object->model[3], 4, 4);
-                player->camObj->func = func_8010ACE0_aces_high;
-                Hu3DModelCameraSet(D_8010DE64_aces_high->model[3],
-                                   Hu3DData[D_8010DE64_aces_high->model[3]].cameraBit &
-                                       ~D_8010DB68_aces_high[player->camIdx]);
+                player->camObj->func = m223_CameraOverObjMain;
+                Hu3DModelCameraSet(m223_stageObj->model[3],
+                                   Hu3DData[m223_stageObj->model[3]].cameraBit &
+                                       ~m223_camBitTbl[player->camIdx]);
             }
             break;
     }
@@ -1027,9 +1027,9 @@ void func_801081A8_aces_high(omObjData *object) {
     object->trans.x += player->dir.x * player->unk_08;
     object->trans.y += player->dir.y * player->unk_08;
     object->trans.z += player->dir.z * player->unk_08;
-    func_8010843C_aces_high(object);
-    func_801068F4_aces_high(object);
-    func_80106B70_aces_high(object);
+    m223_PlaneShakeUpdate(object);
+    m223_PlaneMdlUpdate(object);
+    m223_PlaneSubMdlUpdate(object);
     Hu3DModelPosSet(object->model[3], object->trans.x, object->trans.y, object->trans.z);
     player->unk_74->work[2] = 0;
     player->unk_78->work[1] = 0;
@@ -1041,7 +1041,7 @@ void func_801081A8_aces_high(omObjData *object) {
     }
 }
 
-void func_8010843C_aces_high(omObjData *object) {
+void m223_PlaneShakeUpdate(omObjData *object) {
     AceHighPlayer *player = object->data;
     f32 x;
     f32 y;
@@ -1064,12 +1064,12 @@ void func_8010843C_aces_high(omObjData *object) {
     }
 }
 
-void func_801085B0_aces_high(void) {
+void m223_LifeSprOffAll(void) {
     s32 i;
     s32 j;
 
     for (i = 0; i < 4; i++) {
-        AceHighPlayer *player = OM_GET_DATA_PTR(D_8010DE68_aces_high[i], AceHighPlayer);
+        AceHighPlayer *player = OM_GET_DATA_PTR(m223_planeObjTbl[i], AceHighPlayer);
 
         for (j = 0; j < 2; j++) {
             espDispOff(player->espriteSlots[j]);
@@ -1077,7 +1077,7 @@ void func_801085B0_aces_high(void) {
     }
 }
 
-void func_8010862C_aces_high(omObjData *object) {
+void m223_PlanePushApart(omObjData *object) {
     AceHighPlayer *player = object->data;
     AceHighPlayer *other;
     omObjData *otherObj;
@@ -1091,7 +1091,7 @@ void func_8010862C_aces_high(omObjData *object) {
             if (i == player->camIdx) {
                 continue;
             }
-            otherObj = D_8010DE68_aces_high[i];
+            otherObj = m223_planeObjTbl[i];
             other = otherObj->data;
             if (other->unk_00 == 6 || other->unk_00 == 1 || other->unk_00 == 3) {
                 continue;
@@ -1135,7 +1135,7 @@ void func_8010862C_aces_high(omObjData *object) {
     }
 }
 
-void func_801088A4_aces_high(omObjData *object, s8 *stickX, s8 *stickY, u16 *btnDown, u16 *btn) {
+void m223_PlaneComInput(omObjData *object, s8 *stickX, s8 *stickY, u16 *btnDown, u16 *btn) {
     omObjData *list[4];
     Vec target;
     omObjData *nearest;
@@ -1213,7 +1213,7 @@ void func_801088A4_aces_high(omObjData *object, s8 *stickX, s8 *stickY, u16 *btn
         }
     }
     if (state == 0) {
-        func_80109928_aces_high(object);
+        m223_PlaneComStateUpdate(object);
     }
     switch (state) {
         case 1:
@@ -1244,7 +1244,7 @@ void func_801088A4_aces_high(omObjData *object, s8 *stickX, s8 *stickY, u16 *btn
             dist = HuSqrtf((object->trans.x - other->trans.x) * (object->trans.x - other->trans.x) +
                            (object->trans.y - other->trans.y) * (object->trans.y - other->trans.y) +
                            (object->trans.z - other->trans.z) * (object->trans.z - other->trans.z));
-            result = func_8010951C_aces_high(object, &target, angleTol, 60.0f, stickX, stickY);
+            result = m223_PlaneComSteer(object, &target, angleTol, 60.0f, stickX, stickY);
             if (dist < 2400.0f) {
                 *btnDown |= 0x2000;
             }
@@ -1292,7 +1292,7 @@ void func_801088A4_aces_high(omObjData *object, s8 *stickX, s8 *stickY, u16 *btn
             dist = HuSqrtf((object->trans.x - other->trans.x) * (object->trans.x - other->trans.x) +
                            (object->trans.y - other->trans.y) * (object->trans.y - other->trans.y) +
                            (object->trans.z - other->trans.z) * (object->trans.z - other->trans.z));
-            result = func_8010951C_aces_high(object, &target, angleTol, 60.0f, stickX, stickY);
+            result = m223_PlaneComSteer(object, &target, angleTol, 60.0f, stickX, stickY);
             if ((farDist < dist && !(result & 0x4000)) || (result & 0x8000)) {
                 *btn |= 0x8000;
             }
@@ -1305,7 +1305,7 @@ void func_801088A4_aces_high(omObjData *object, s8 *stickX, s8 *stickY, u16 *btn
             dist = HuSqrtf((object->trans.x - player->unk_9C.x) * (object->trans.x - player->unk_9C.x) +
                            (object->trans.y - player->unk_9C.y) * (object->trans.y - player->unk_9C.y) +
                            (object->trans.z - player->unk_9C.z) * (object->trans.z - player->unk_9C.z));
-            result = func_8010951C_aces_high(object, &target, angleTol, 20.0f, stickX, stickY);
+            result = m223_PlaneComSteer(object, &target, angleTol, 20.0f, stickX, stickY);
             if ((farDist < dist && !(result & 0x4000)) || (result & 0x8000)) {
                 *btn |= 0x8000;
             }
@@ -1355,7 +1355,7 @@ void func_801088A4_aces_high(omObjData *object, s8 *stickX, s8 *stickY, u16 *btn
             dist = HuSqrtf((object->trans.x - player->unk_9C.x) * (object->trans.x - player->unk_9C.x) +
                            (object->trans.y - player->unk_9C.y) * (object->trans.y - player->unk_9C.y) +
                            (object->trans.z - player->unk_9C.z) * (object->trans.z - player->unk_9C.z));
-            result = func_8010951C_aces_high(object, &target, 3.0f, 20.0f, stickX, stickY);
+            result = m223_PlaneComSteer(object, &target, 3.0f, 20.0f, stickX, stickY);
             if ((farDist < dist && !(result & 0x4000)) || (result & 0x8000)) {
                 *btn |= 0x8000;
             }
@@ -1364,9 +1364,9 @@ void func_801088A4_aces_high(omObjData *object, s8 *stickX, s8 *stickY, u16 *btn
             }
             if (MgFlowStatGet() == MG_STATE_RESULT) {
                 player->unk_92 = 6;
-                func_8010B26C_aces_high(object);
-                player->camObj->func = func_8010B4BC_aces_high;
-                object->func = func_801071D4_aces_high;
+                m223_CameraViewFix(object);
+                player->camObj->func = m223_CameraEndObjMain;
+                object->func = m223_PlaneEndObjMain;
                 player->unk_4E = 25;
             }
             break;
@@ -1385,7 +1385,7 @@ void func_801088A4_aces_high(omObjData *object, s8 *stickX, s8 *stickY, u16 *btn
     if (state == 5 || state == 6) {
         return;
     }
-    if (func_80109EEC_aces_high(object, fov, list, &nearest, &minDist) != 0) {
+    if (m223_PlaneComTargetFind(object, fov, list, &nearest, &minDist) != 0) {
         if (minDist <= 2750.0f) {
             *btnDown |= 0x2000;
         }
@@ -1395,7 +1395,7 @@ void func_801088A4_aces_high(omObjData *object, s8 *stickX, s8 *stickY, u16 *btn
             player->unk_98 = nearest;
         }
     }
-    if (player->unk_70 != 0 && func_8010A0F0_aces_high(object) < missileDist) {
+    if (player->unk_70 != 0 && m223_ShotNearDistGet(object) < missileDist) {
         *btn = (*btn & ~0x4000) | 0x8000;
     }
     if (player->unk_AE != 0) {
@@ -1405,10 +1405,10 @@ void func_801088A4_aces_high(omObjData *object, s8 *stickX, s8 *stickY, u16 *btn
             player->unk_AE = 0;
         }
     }
-    func_8010A214_aces_high(object);
+    m223_PlaneComEvade(object);
 }
 
-u16 func_8010951C_aces_high(omObjData *object, Vec *target, f32 angleTol, f32 heightTol, s8 *stickX, s8 *stickY) {
+u16 m223_PlaneComSteer(omObjData *object, Vec *target, f32 angleTol, f32 heightTol, s8 *stickX, s8 *stickY) {
     AceHighPlayer *player = object->data;
     AceHighPlayer *other;
     f32 scale;
@@ -1493,7 +1493,7 @@ u16 func_8010951C_aces_high(omObjData *object, Vec *target, f32 angleTol, f32 he
     return btn;
 }
 
-void func_80109928_aces_high(omObjData *object) {
+void m223_PlaneComStateUpdate(omObjData *object) {
     u16 actions[4][8] = {
         { 4, 1, 4, 1, 1, 4, 1, 1 },
         { 4, 1, 1, 1, 1, 4, 1, 1 },
@@ -1524,7 +1524,7 @@ void func_80109928_aces_high(omObjData *object) {
             chance = 4;
             break;
     }
-    if (D_8010DE8C_aces_high == 2) {
+    if (m223_aliveNum == 2) {
         chance *= 2;
     }
     done = 0;
@@ -1536,7 +1536,7 @@ void func_80109928_aces_high(omObjData *object) {
                     if (i == player->camIdx) {
                         continue;
                     }
-                    otherObj = D_8010DE68_aces_high[i];
+                    otherObj = m223_planeObjTbl[i];
                     state = ((AceHighPlayer *)otherObj->data)->unk_00;
                     if (state == 6 || state == 4) {
                         continue;
@@ -1563,7 +1563,7 @@ void func_80109928_aces_high(omObjData *object) {
                 }
                 break;
             case 4:
-                if (D_8010DE8C_aces_high == 2 && rand8() % 10 < 2) {
+                if (m223_aliveNum == 2 && rand8() % 10 < 2) {
                     action = 1;
                     break;
                 }
@@ -1586,7 +1586,7 @@ void func_80109928_aces_high(omObjData *object) {
     }
 }
 
-s16 func_80109EEC_aces_high(omObjData *object, f32 fov, omObjData **list, omObjData **nearest, f32 *minDist) {
+s16 m223_PlaneComTargetFind(omObjData *object, f32 fov, omObjData **list, omObjData **nearest, f32 *minDist) {
     s16 count = 0;
     AceHighPlayer *player = object->data;
     omObjData *other;
@@ -1603,7 +1603,7 @@ s16 func_80109EEC_aces_high(omObjData *object, f32 fov, omObjData **list, omObjD
         if (player->camIdx == i) {
             continue;
         }
-        other = D_8010DE68_aces_high[i];
+        other = m223_planeObjTbl[i];
         state = ((AceHighPlayer *)other->data)->unk_00;
         if (state == 6 || state == 4) {
             continue;
@@ -1630,7 +1630,7 @@ s16 func_80109EEC_aces_high(omObjData *object, f32 fov, omObjData **list, omObjD
     return count;
 }
 
-f32 func_8010A0F0_aces_high(omObjData *object) {
+f32 m223_ShotNearDistGet(omObjData *object) {
     AceHighPlayer *player = object->data;
     omObjData **shots;
     omObjData *shot;
@@ -1644,7 +1644,7 @@ f32 func_8010A0F0_aces_high(omObjData *object) {
         if (i == player->camIdx) {
             continue;
         }
-        shots = D_8010DE70_aces_high[i];
+        shots = m223_shotObjTbl[i];
         for (j = 0; j < 5; j++) {
             shot = shots[j];
             if (shot == NULL || ((AceHighShot *)shot->data)->unk_00 != 1) {
@@ -1661,14 +1661,14 @@ f32 func_8010A0F0_aces_high(omObjData *object) {
     return minDist;
 }
 
-void func_8010A214_aces_high(omObjData *object) {
+void m223_PlaneComEvade(omObjData *object) {
     AceHighPlayer *player = object->data;
     s32 i;
     f32 angle;
     f32 dist;
 
     for (i = 0; i < 4; i++) {
-        if (((AceHighPlayer *)D_8010DE68_aces_high[i]->data)->unk_98 != object) {
+        if (((AceHighPlayer *)m223_planeObjTbl[i]->data)->unk_98 != object) {
             continue;
         }
         if (player->unk_92 == 4) {
@@ -1694,7 +1694,7 @@ void func_8010A214_aces_high(omObjData *object) {
     }
 }
 
-void func_8010A51C_aces_high(omObjData *object) {
+void m223_CameraFollowObjMain(omObjData *object) {
     omObjData *playerObj = (omObjData *)object->work[1];
     AceHighPlayer *player = playerObj->data;
     f32 rotX;
@@ -1742,7 +1742,7 @@ void func_8010A51C_aces_high(omObjData *object) {
     }
 }
 
-void func_8010A884_aces_high(omObjData *object) {
+void m223_CameraPosCalc(omObjData *object) {
     AceHighPlayer *player = object->data;
     f32 rotX = CRotM[player->camIdx].x;
     f32 rotY = CRotM[player->camIdx].y;
@@ -1752,7 +1752,7 @@ void func_8010A884_aces_high(omObjData *object) {
     player->camObj->trans.z = CenterM[player->camIdx].z + cosdf(rotY) * cosdf(rotX) * CZoomM[player->camIdx];
 }
 
-void func_8010A9D4_aces_high(omObjData *object) {
+void m223_CameraIntroObjMain(omObjData *object) {
     omObjData *camObj = (omObjData *)object->work[1];
     AceHighPlayer *camData = (AceHighPlayer *)camObj->data;
     f32 rotX = (camObj->trans.y - -250.0f) * 0.08f;
@@ -1766,7 +1766,7 @@ void func_8010A9D4_aces_high(omObjData *object) {
     CZoomM[camData->camIdx] = 650.0f;
 }
 
-void func_8010AADC_aces_high(omObjData *object) {
+void m223_CameraStartObjMain(omObjData *object) {
     omObjData *playerObj = (omObjData *)object->work[1];
     AceHighPlayer *player = playerObj->data;
 
@@ -1778,7 +1778,7 @@ void func_8010AADC_aces_high(omObjData *object) {
     CZoomM[player->camIdx] += 11.666667f;
 }
 
-void func_8010ACE0_aces_high(omObjData *object) {
+void m223_CameraOverObjMain(omObjData *object) {
     AceHighPlayer *camData = (AceHighPlayer *)((omObjData *)object->work[1])->data;
 
     CenterM[camData->camIdx].y = 0.0f;
@@ -1786,7 +1786,7 @@ void func_8010ACE0_aces_high(omObjData *object) {
     CRotM[camData->camIdx].x = 90.0f;
 }
 
-void func_8010AD4C_aces_high(omObjData *object) {
+void m223_CameraWinStart(omObjData *object) {
     AceHighPlayer *player = object->data;
     omObjData *camObj = player->camObj;
 
@@ -1797,10 +1797,10 @@ void func_8010AD4C_aces_high(omObjData *object) {
     camObj->scale.z = (750.0f - CZoomM[player->camIdx]) / 60.0f;
     camObj->trans.z = CZoomM[player->camIdx];
     camObj->work[2] = 0;
-    camObj->func = func_8010AE30_aces_high;
+    camObj->func = m223_CameraWinObjMain;
 }
 
-void func_8010AE30_aces_high(omObjData *object) {
+void m223_CameraWinObjMain(omObjData *object) {
     omObjData *playerObj = (omObjData *)object->work[1];
     AceHighPlayer *player = playerObj->data;
     f32 rotY;
@@ -1824,7 +1824,7 @@ void func_8010AE30_aces_high(omObjData *object) {
         z = playerObj->trans.z + cosdf(playerObj->rot.y) * 30.0f;
         y = playerObj->trans.y + 100.0f;
         zoom = 750.0f;
-        object->func = func_8010B0E8_aces_high;
+        object->func = m223_CameraWinHoldObjMain;
     }
     CRotM[player->camIdx].y = rotY;
     CRotM[player->camIdx].x = rotX;
@@ -1834,7 +1834,7 @@ void func_8010AE30_aces_high(omObjData *object) {
     CZoomM[player->camIdx] = zoom;
 }
 
-void func_8010B0E8_aces_high(omObjData *object) {
+void m223_CameraWinHoldObjMain(omObjData *object) {
     omObjData *playerObj = (omObjData *)object->work[1];
     AceHighPlayer *player = playerObj->data;
     f32 rotY;
@@ -1856,68 +1856,68 @@ void func_8010B0E8_aces_high(omObjData *object) {
     CZoomM[player->camIdx] = zoom;
 }
 
-void func_8010B224_aces_high(omObjData *object) {
-    Hu3DCameraPosSetV(OM_GET_WORK_PTR(object, s16)[1], &D_8010DEA8_aces_high, &D_8010DEB4_aces_high,
-                      &D_8010DEC0_aces_high);
+void m223_CameraViewObjMain(omObjData *object) {
+    Hu3DCameraPosSetV(OM_GET_WORK_PTR(object, s16)[1], &m223_winCameraPos, &m223_winCameraTarget,
+                      &m223_winCameraUp);
     Hu3DCamUpdateMtx(OM_GET_WORK_PTR(object, s16)[1]);
 }
 
-void func_8010B26C_aces_high(omObjData *object) {
+void m223_CameraViewFix(omObjData *object) {
     AceHighPlayer *player = object->data;
     f32 rotX = CRotM[player->camIdx].x;
     f32 rotY = CRotM[player->camIdx].y;
 
-    D_8010DEA8_aces_high.x = CenterM[player->camIdx].x + sindf(rotY) * cosdf(rotX) * CZoomM[player->camIdx];
-    D_8010DEA8_aces_high.y = CenterM[player->camIdx].y + -sindf(rotX) * CZoomM[player->camIdx];
-    D_8010DEA8_aces_high.z = CenterM[player->camIdx].z + cosdf(rotY) * cosdf(rotX) * CZoomM[player->camIdx];
-    D_8010DEB4_aces_high.x = CenterM[player->camIdx].x;
-    D_8010DEB4_aces_high.y = CenterM[player->camIdx].y;
-    D_8010DEB4_aces_high.z = CenterM[player->camIdx].z;
-    D_8010DEC0_aces_high.x = sindf(rotY) * sindf(rotX);
-    D_8010DEC0_aces_high.y = cosdf(rotX);
-    D_8010DEC0_aces_high.z = cosdf(rotY) * sindf(rotX);
-    omDelObj(D_8010DE84_aces_high);
-    D_8010DE84_aces_high = omAddObj(0x7FDA, 0, 0, -1, func_8010B224_aces_high);
-    D_8010DE84_aces_high->work[0] = player->camIdx;
-    omSetStatBit(D_8010DE84_aces_high, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    m223_winCameraPos.x = CenterM[player->camIdx].x + sindf(rotY) * cosdf(rotX) * CZoomM[player->camIdx];
+    m223_winCameraPos.y = CenterM[player->camIdx].y + -sindf(rotX) * CZoomM[player->camIdx];
+    m223_winCameraPos.z = CenterM[player->camIdx].z + cosdf(rotY) * cosdf(rotX) * CZoomM[player->camIdx];
+    m223_winCameraTarget.x = CenterM[player->camIdx].x;
+    m223_winCameraTarget.y = CenterM[player->camIdx].y;
+    m223_winCameraTarget.z = CenterM[player->camIdx].z;
+    m223_winCameraUp.x = sindf(rotY) * sindf(rotX);
+    m223_winCameraUp.y = cosdf(rotX);
+    m223_winCameraUp.z = cosdf(rotY) * sindf(rotX);
+    omDelObj(m223_cameraObj);
+    m223_cameraObj = omAddObj(0x7FDA, 0, 0, -1, m223_CameraViewObjMain);
+    m223_cameraObj->work[0] = player->camIdx;
+    omSetStatBit(m223_cameraObj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
-void func_8010B4BC_aces_high(omObjData *object) {
+void m223_CameraEndObjMain(omObjData *object) {
     omObjData *playerObj = (omObjData *)object->work[1];
     AceHighPlayer *player = playerObj->data;
     f32 rotX;
     f32 rotY;
 
-    D_8010DEB4_aces_high.x = sindf(playerObj->rot.y) * 30.0f + playerObj->trans.x;
-    D_8010DEB4_aces_high.z = cosdf(playerObj->rot.y) * 30.0f + playerObj->trans.z;
-    D_8010DEB4_aces_high.y = playerObj->trans.y + 100.0f;
+    m223_winCameraTarget.x = sindf(playerObj->rot.y) * 30.0f + playerObj->trans.x;
+    m223_winCameraTarget.z = cosdf(playerObj->rot.y) * 30.0f + playerObj->trans.z;
+    m223_winCameraTarget.y = playerObj->trans.y + 100.0f;
     CRotM[player->camIdx].y =
-        atan2df(playerObj->trans.x - D_8010DEA8_aces_high.x, playerObj->trans.z - D_8010DEA8_aces_high.z);
+        atan2df(playerObj->trans.x - m223_winCameraPos.x, playerObj->trans.z - m223_winCameraPos.z);
     rotX = CRotM[player->camIdx].x;
     rotY = CRotM[player->camIdx].y;
-    D_8010DEC0_aces_high.x = sindf(rotY) * sindf(rotX);
-    D_8010DEC0_aces_high.y = cosdf(rotX);
-    D_8010DEC0_aces_high.z = cosdf(rotY) * sindf(rotX);
+    m223_winCameraUp.x = sindf(rotY) * sindf(rotX);
+    m223_winCameraUp.y = cosdf(rotX);
+    m223_winCameraUp.z = cosdf(rotY) * sindf(rotX);
 }
 
-void func_8010B618_aces_high(void) {
+void m223_ShotInit(void) {
     s32 i;
 
-    D_8010DE6C_aces_high = omAddObj(28, 4, 0, -1, func_8010B760_aces_high);
+    m223_shotMdlObj = omAddObj(28, 4, 0, -1, m223_ShotHitObjMain);
     for (i = 0; i < 4; i++) {
-        D_8010DE6C_aces_high->model[i] = Hu3DModelRead(D_8010DC90_aces_high[GwPlayer[i].chr], 0xADD);
+        m223_shotMdlObj->model[i] = Hu3DModelRead(m223_shotMdlFileTbl[GwPlayer[i].chr], 0xADD);
     }
     for (i = 0; i < 20; i++) {
-        D_8010DED0_aces_high[i] = 0;
-        D_8010DEF8_aces_high[i] = Hu3DModelRead(0x380020, 0xADD);
+        m223_shotEffUseTbl[i] = 0;
+        m223_shotEffMdlTbl[i] = Hu3DModelRead(0x380020, 0xADD);
     }
     for (i = 0; i < 4; i++) {
         omMakeGroup(i + 1, 5);
-        D_8010DE70_aces_high[i] = omGetGroupMemberList(i + 1);
+        m223_shotObjTbl[i] = omGetGroupMemberList(i + 1);
     }
 }
 
-void func_8010B760_aces_high(omObjData *object) {
+void m223_ShotHitObjMain(omObjData *object) {
     omObjData **shots;
     omObjData **otherShots;
     omObjData *shot;
@@ -1934,7 +1934,7 @@ void func_8010B760_aces_high(omObjData *object) {
         return;
     }
     for (i = 0; i < 4; i++) {
-        shots = D_8010DE70_aces_high[i];
+        shots = m223_shotObjTbl[i];
         for (j = 0; j < 5; j++) {
             if (shots[j] == NULL) {
                 continue;
@@ -1948,7 +1948,7 @@ void func_8010B760_aces_high(omObjData *object) {
                 if (k == i) {
                     continue;
                 }
-                other = D_8010DE68_aces_high[k];
+                other = m223_planeObjTbl[k];
                 if (((AceHighPlayer *)other->data)->unk_00 != 0) {
                     continue;
                 }
@@ -1965,7 +1965,7 @@ void func_8010B760_aces_high(omObjData *object) {
                 if (k == i) {
                     continue;
                 }
-                otherShots = D_8010DE70_aces_high[k];
+                otherShots = m223_shotObjTbl[k];
                 for (m = 0; m < 5; m++) {
                     other = otherShots[m];
                     if (other == NULL) {
@@ -1993,7 +1993,7 @@ void func_8010B760_aces_high(omObjData *object) {
     }
 }
 
-void func_8010B9F4_aces_high(omObjData *object) {
+void m223_ShotFire(omObjData *object) {
     AceHighPlayer *player;
     omObjData *shotObj;
     AceHighShot *shot;
@@ -2010,9 +2010,9 @@ void func_8010B9F4_aces_high(omObjData *object) {
     player->unk_20 = 10;
     player->unk_24--;
     idx = player->camIdx;
-    shotObj = omAddObj(28, 1, 0, idx + 1, func_8010BD84_aces_high);
+    shotObj = omAddObj(28, 1, 0, idx + 1, m223_ShotObjMain);
     shot = shotObj->data = HuMemAllocTag(sizeof(AceHighShot), 0x7918);
-    shotObj->model[0] = Hu3DModelLink(D_8010DE6C_aces_high->model[idx]);
+    shotObj->model[0] = Hu3DModelLink(m223_shotMdlObj->model[idx]);
     Hu3DModelAttrSet(shotObj->model[0], 4, 0);
     shot->unk_00 = 0;
     shot->speed = player->unk_08 + 27.777777f;
@@ -2034,7 +2034,7 @@ void func_8010B9F4_aces_high(omObjData *object) {
     shot->radius = 30.0f;
     shot->unk_26 = 0;
     for (i = 0; i < 20; i++) {
-        if (D_8010DED0_aces_high[i] == 0) {
+        if (m223_shotEffUseTbl[i] == 0) {
             break;
         }
     }
@@ -2042,33 +2042,33 @@ void func_8010B9F4_aces_high(omObjData *object) {
         shot->effectIdx = -1;
     } else {
         shot->effectIdx = i;
-        shot->effectModel = D_8010DEF8_aces_high[i];
-        D_8010DED0_aces_high[i] = 1;
+        shot->effectModel = m223_shotEffMdlTbl[i];
+        m223_shotEffUseTbl[i] = 1;
     }
     omSetTra(shotObj, object->trans.x, object->trans.y, object->trans.z);
 }
 
-void func_8010BCC4_aces_high(void) {
+void m223_ShotKillAll(void) {
     omObjData **shots;
     AceHighPlayer *player;
     s32 i;
     s32 j;
 
     for (i = 0; i < 4; i++) {
-        shots = D_8010DE70_aces_high[i];
+        shots = m223_shotObjTbl[i];
         for (j = 0; j < 5; j++) {
             if (shots[j] != NULL) {
                 omObjModeSet(shots[j], 1);
             }
         }
-        player = D_8010DE68_aces_high[i]->data;
+        player = m223_planeObjTbl[i]->data;
         for (j = 0; j < 4; j++) {
             player->unk_74->work[2] = 0;
         }
     }
 }
 
-void func_8010BD84_aces_high(omObjData *object) {
+void m223_ShotObjMain(omObjData *object) {
     AceHighShot *shot = object->data;
     AceHighPlayer *owner;
     u32 hit;
@@ -2100,7 +2100,7 @@ void func_8010BD84_aces_high(omObjData *object) {
         case 1:
             if (shot->timer == 0) {
                 Hu3DModelAttrSet(shot->effectModel, 4, 4);
-                D_8010DED0_aces_high[shot->effectIdx] = 0;
+                m223_shotEffUseTbl[shot->effectIdx] = 0;
                 owner = shot->owner->data;
                 owner->unk_24++;
                 omDelObj(object);
@@ -2111,7 +2111,7 @@ void func_8010BD84_aces_high(omObjData *object) {
     }
 }
 
-void func_8010BF3C_aces_high(omObjData *object) {
+void m223_MissileFire(omObjData *object) {
     AceHighPlayer *player = object->data;
     AceHighPlayer *otherData;
     omObjData *shotObj;
@@ -2129,7 +2129,7 @@ void func_8010BF3C_aces_high(omObjData *object) {
     }
     player->unk_56 = 0;
     player->unk_54 = 0;
-    shotObj = player->unk_6C = omAddObj(28, 1, 0, player->camIdx + 1, func_8010C288_aces_high);
+    shotObj = player->unk_6C = omAddObj(28, 1, 0, player->camIdx + 1, m223_MissileObjMain);
     shotObj->data = HuMemAllocTag(sizeof(AceHighShot), 0x7918);
     shotObj->model[0] = object->model[1];
     shotObj->trans.x = object->trans.x;
@@ -2155,7 +2155,7 @@ void func_8010BF3C_aces_high(omObjData *object) {
     shot->unk_34 = 20;
     shot->unk_36 = 0;
     for (i = 0; i < 20; i++) {
-        if (D_8010DED0_aces_high[i] == 0) {
+        if (m223_shotEffUseTbl[i] == 0) {
             break;
         }
     }
@@ -2163,8 +2163,8 @@ void func_8010BF3C_aces_high(omObjData *object) {
         shot->effectIdx = -1;
     } else {
         shot->effectIdx = i;
-        shot->effectModel = D_8010DEF8_aces_high[i];
-        D_8010DED0_aces_high[i] = 1;
+        shot->effectModel = m223_shotEffMdlTbl[i];
+        m223_shotEffUseTbl[i] = 1;
     }
     minDist = 1000000.0f;
     shot->target = NULL;
@@ -2172,7 +2172,7 @@ void func_8010BF3C_aces_high(omObjData *object) {
         if (i == player->camIdx) {
             continue;
         }
-        other = D_8010DE68_aces_high[i];
+        other = m223_planeObjTbl[i];
         otherData = other->data;
         if (otherData->unk_00 == 4 || otherData->unk_00 == 5) {
             continue;
@@ -2197,7 +2197,7 @@ void func_8010BF3C_aces_high(omObjData *object) {
     omVibrate(player->camIdx, 10, 0, 10);
 }
 
-void func_8010C288_aces_high(omObjData *object) {
+void m223_MissileObjMain(omObjData *object) {
     AceHighShot *shot = object->data;
     AceHighPlayer *playerData;
     u32 hit;
@@ -2349,7 +2349,7 @@ void func_8010C288_aces_high(omObjData *object) {
         case 1:
             if (shot->timer == 0) {
                 Hu3DModelAttrSet(shot->effectModel, 4, 4);
-                D_8010DED0_aces_high[shot->effectIdx] = 0;
+                m223_shotEffUseTbl[shot->effectIdx] = 0;
                 omObjModeSet(shot->owner, 2);
                 omDelObj(object);
             } else {
@@ -2359,17 +2359,17 @@ void func_8010C288_aces_high(omObjData *object) {
     }
 }
 
-void func_8010C9DC_aces_high(void) {
-    omObjData *obj = omAddObj(0x1E, 0, 0, -1, func_8010CA6C_aces_high);
+void m223_RadarInit(void) {
+    omObjData *obj = omAddObj(0x1E, 0, 0, -1, m223_RadarObjMain);
 
-    D_8010DE80_aces_high = obj;
+    m223_radarObj = obj;
     obj->work[0] = 1;
-    D_8010DF20_aces_high = espEntry(HuSprAnimDataRead(0x38001C), 0, 0);
-    espPosSet(D_8010DF20_aces_high, 0xA0, 0x78);
-    espPriSet(D_8010DF20_aces_high, 0x8064);
+    m223_radarSpr = espEntry(HuSprAnimDataRead(0x38001C), 0, 0);
+    espPosSet(m223_radarSpr, 0xA0, 0x78);
+    espPriSet(m223_radarSpr, 0x8064);
 }
 
-void func_8010CA6C_aces_high(omObjData *object) {
+void m223_RadarObjMain(omObjData *object) {
     u16 order[4] = { 0, 1, 2, 3 };
     AceHighPlayer *player;
     f32 scale;
@@ -2382,17 +2382,17 @@ void func_8010CA6C_aces_high(omObjData *object) {
 
     if (object->work[0] == 0) {
         for (i = 0; i < 4; i++) {
-            player = D_8010DE68_aces_high[i]->data;
+            player = m223_planeObjTbl[i]->data;
             espDispOff(player->unk_1C);
             espDispOff(player->unk_1E);
         }
-        espDispOff(D_8010DF20_aces_high);
+        espDispOff(m223_radarSpr);
         object->func = NULL;
         return;
     }
     for (i = 0; i < 3; i++) {
         for (j = i + 1; j < 4; j++) {
-            if (D_8010DE68_aces_high[order[i]]->trans.y < D_8010DE68_aces_high[order[j]]->trans.y) {
+            if (m223_planeObjTbl[order[i]]->trans.y < m223_planeObjTbl[order[j]]->trans.y) {
                 temp = order[i];
                 order[i] = order[j];
                 order[j] = temp;
@@ -2400,7 +2400,7 @@ void func_8010CA6C_aces_high(omObjData *object) {
         }
     }
     for (i = 0; i < 4; i++) {
-        obj = D_8010DE68_aces_high[order[i]];
+        obj = m223_planeObjTbl[order[i]];
         player = obj->data;
         x = obj->trans.x * 0.005063291f + 160.0f;
         y = obj->trans.z * 0.005063291f + 120.0f;
@@ -2425,68 +2425,68 @@ void func_8010CA6C_aces_high(omObjData *object) {
     }
 }
 
-void func_8010CD88_aces_high(omObjData *object) {
-    switch (D_8010DE88_aces_high) {
+void m223_IntroObjMain(omObjData *object) {
+    switch (m223_introPhase) {
         case 0:
             WipeCreateIn(0xFF, 16);
-            D_8010DE88_aces_high = 1;
+            m223_introPhase = 1;
             break;
         case 1:
             if (WipeStatGet() == 0) {
-                D_8010DE88_aces_high = 2;
-                D_8010DE96_aces_high = HuAudFXPlay(0x3AC);
+                m223_introPhase = 2;
+                m223_engineSe = HuAudFXPlay(0x3AC);
                 HuAudFXPlay(0x3B3);
             }
             break;
         case 2:
             if (MgFlowStatGet() == MG_STATE_START) {
                 omDelObj(object);
-                D_8010DE5C_aces_high = NULL;
+                m223_introObj = NULL;
             }
             break;
     }
 }
 
-void func_8010CE5C_aces_high(omObjData *object) {
-    switch (D_8010DE8A_aces_high) {
+void m223_FinishObjMain(omObjData *object) {
+    switch (m223_finishPhase) {
         case 0:
-            if (D_8010DCB0_aces_high == 0) {
-                D_8010DCB0_aces_high = 1;
-                D_8010DE80_aces_high->work[0] = 0;
-                func_8010BCC4_aces_high();
-                func_801085B0_aces_high();
-                HuAudFXStop(D_8010DE96_aces_high);
+            if (m223_finishF == 0) {
+                m223_finishF = 1;
+                m223_radarObj->work[0] = 0;
+                m223_ShotKillAll();
+                m223_LifeSprOffAll();
+                HuAudFXStop(m223_engineSe);
             }
-            func_8010CFF8_aces_high();
-            if (D_8010DE90_aces_high != 0) {
-                if (D_8010DCB2_aces_high != 0) {
-                    D_8010DCB2_aces_high--;
-                } else if (D_8010DE8E_aces_high != -1) {
-                    D_8010DE8A_aces_high = 2;
-                    func_8010AD4C_aces_high(D_8010DE68_aces_high[D_8010DE8E_aces_high]);
+            m223_SurvivorCheck();
+            if (m223_resultF != 0) {
+                if (m223_finishWait != 0) {
+                    m223_finishWait--;
+                } else if (m223_winner != -1) {
+                    m223_finishPhase = 2;
+                    m223_CameraWinStart(m223_planeObjTbl[m223_winner]);
                     HuAudFXPlay(0x3B4);
                 } else {
                     MgFlowStatSet(MG_STATE_RESULT);
-                    D_8010DB40_aces_high.resultType = MG_RESULT_DRAW;
-                    D_8010DE8A_aces_high = 1;
+                    m223_mgFlow.resultType = MG_RESULT_DRAW;
+                    m223_finishPhase = 1;
                 }
             }
             break;
         case 1:
             break;
         case 2:
-            if (func_8010D1D8_aces_high(D_8010DE8E_aces_high) == 1) {
+            if (m223_WinViewExpand(m223_winner) == 1) {
                 MgFlowStatSet(MG_STATE_RESULT);
-                D_8010DE8A_aces_high = 3;
-                D_8010DB40_aces_high.winners[0] = D_8010DE8E_aces_high;
-                GwPlayer[D_8010DE8E_aces_high].bonusCoin = 10;
-                PlayerFXPlay(0x28F, D_8010DE8E_aces_high);
+                m223_finishPhase = 3;
+                m223_mgFlow.winners[0] = m223_winner;
+                GwPlayer[m223_winner].bonusCoin = 10;
+                PlayerFXPlay(0x28F, m223_winner);
             }
             break;
     }
 }
 
-void func_8010CFF8_aces_high(void) {
+void m223_SurvivorCheck(void) {
     s32 count = 0;
     u16 numAlive = 0;
     s16 maxLives = 0;
@@ -2495,12 +2495,12 @@ void func_8010CFF8_aces_high(void) {
     s32 i;
     omObjData *obj;
 
-    if (D_8010DE90_aces_high == 1) {
+    if (m223_resultF == 1) {
         return;
     }
-    D_8010DE90_aces_high = 0;
+    m223_resultF = 0;
     for (i = 0; i < 4; i++) {
-        obj = D_8010DE68_aces_high[i];
+        obj = m223_planeObjTbl[i];
         player = obj->data;
         count++;
         if (player->unk_00 == 4 || player->unk_00 == 5) {
@@ -2514,27 +2514,27 @@ void func_8010CFF8_aces_high(void) {
     if (count != 4) {
         return;
     }
-    D_8010DE90_aces_high = 1;
-    D_8010DE8E_aces_high = -1;
+    m223_resultF = 1;
+    m223_winner = -1;
     for (i = 0; i < numAlive; i++) {
-        player = D_8010DE68_aces_high[alive[i]]->data;
+        player = m223_planeObjTbl[alive[i]]->data;
         if (player->unk_26 > maxLives) {
             maxLives = player->unk_26;
         }
     }
     for (i = 0; i < numAlive; i++) {
-        player = D_8010DE68_aces_high[alive[i]]->data;
+        player = m223_planeObjTbl[alive[i]]->data;
         if (player->unk_26 != maxLives) {
             continue;
         }
-        if (D_8010DE8E_aces_high != -1) {
-            D_8010DE8E_aces_high = -1;
+        if (m223_winner != -1) {
+            m223_winner = -1;
             return;
         }
-        D_8010DE8E_aces_high = alive[i];
+        m223_winner = alive[i];
     }
-    if (numAlive != 0 && D_8010DE8E_aces_high != -1) {
-        obj = D_8010DE68_aces_high[D_8010DE8E_aces_high];
+    if (numAlive != 0 && m223_winner != -1) {
+        obj = m223_planeObjTbl[m223_winner];
         player = obj->data;
         player->unk_92 = 5;
         player->unk_9C.x = 0.0f;
@@ -2553,17 +2553,17 @@ void func_8010CFF8_aces_high(void) {
 // pseudo that crosses a call, yet the target shows no other use of s1 there.
 // Writing [1][0]/[3][0] through the global array (instead of rect[0]) is needed
 // so the reads after the stores reload from memory. Also tried: per-section
-// `rect = D_8010DB70_aces_high[i]`, all-global indexing, a Vec2f pointer for the
+// `rect = m223_scissorTbl[i]`, all-global indexing, a Vec2f pointer for the
 // target position, deriving the viewport pointer from rect, do-while(0) around
 // the scissor or viewport part, s32 x/y/w/h, declaration order.
 // -O1 has no insn scheduling, so the target's viewport pointer is computed
 // after ScissorSet(3) and dead before ViewportSet, i.e. it crosses no call in
 // RTL; local- and global-alloc both give such pseudos a caller-saved register,
 // so s1 is unexplained. Also tried: do-while(0) around each candidate
-// statement (no effect); `view = D_8010DBB0_aces_high[0]` before ScissorSet(3)
+// statement (no effect); `view = m223_viewportTbl[0]` before ScissorSet(3)
 // then `view += winner * 4` (gets s1, but the la stays before the call).
 #ifdef NON_MATCHING
-u16 func_8010D1D8_aces_high(u16 winner) {
+u16 m223_WinViewExpand(u16 winner) {
     f32 angle;
     f32 moveX;
     f32 moveY;
@@ -2573,58 +2573,58 @@ u16 func_8010D1D8_aces_high(u16 winner) {
     s16 h;
     f32 *rect;
 
-    angle = atan2df(D_8010DCBC_aces_high[winner].x - D_8010DCB4_aces_high.x,
-                    D_8010DCBC_aces_high[winner].y - D_8010DCB4_aces_high.y);
+    angle = atan2df(m223_viewCornerTbl[winner].x - m223_viewCenter.x,
+                    m223_viewCornerTbl[winner].y - m223_viewCenter.y);
     moveX = sindf(angle) * 2.5f;
     moveY = cosdf(angle) * 2.5f;
-    D_8010DCB4_aces_high.x += moveX;
-    D_8010DCB4_aces_high.y += moveY;
+    m223_viewCenter.x += moveX;
+    m223_viewCenter.y += moveY;
     if (moveX < 0.0f) {
-        if (D_8010DCB4_aces_high.x < D_8010DCBC_aces_high[winner].x) {
-            D_8010DCB4_aces_high.x = D_8010DCBC_aces_high[winner].x;
+        if (m223_viewCenter.x < m223_viewCornerTbl[winner].x) {
+            m223_viewCenter.x = m223_viewCornerTbl[winner].x;
         }
-    } else if (D_8010DCB4_aces_high.x > D_8010DCBC_aces_high[winner].x) {
-        D_8010DCB4_aces_high.x = D_8010DCBC_aces_high[winner].x;
+    } else if (m223_viewCenter.x > m223_viewCornerTbl[winner].x) {
+        m223_viewCenter.x = m223_viewCornerTbl[winner].x;
     }
     if (moveY < 0.0f) {
-        if (D_8010DCB4_aces_high.y < D_8010DCBC_aces_high[winner].y) {
-            D_8010DCB4_aces_high.y = D_8010DCBC_aces_high[winner].y;
+        if (m223_viewCenter.y < m223_viewCornerTbl[winner].y) {
+            m223_viewCenter.y = m223_viewCornerTbl[winner].y;
         }
-    } else if (D_8010DCB4_aces_high.y > D_8010DCBC_aces_high[winner].y) {
-        D_8010DCB4_aces_high.y = D_8010DCBC_aces_high[winner].y;
+    } else if (m223_viewCenter.y > m223_viewCornerTbl[winner].y) {
+        m223_viewCenter.y = m223_viewCornerTbl[winner].y;
     }
-    rect = D_8010DB70_aces_high[0];
-    rect[2] = D_8010DCB4_aces_high.x - 1.0f;
-    rect[3] = D_8010DCB4_aces_high.y - 1.0f;
+    rect = m223_scissorTbl[0];
+    rect[2] = m223_viewCenter.x - 1.0f;
+    rect[3] = m223_viewCenter.y - 1.0f;
     ScissorSet(0, rect[0], rect[1], rect[2], rect[3]);
     rect += 4;
-    D_8010DB70_aces_high[1][0] = D_8010DCB4_aces_high.x + 1.0f;
-    rect[3] = D_8010DCB4_aces_high.y - 1.0f;
+    m223_scissorTbl[1][0] = m223_viewCenter.x + 1.0f;
+    rect[3] = m223_viewCenter.y - 1.0f;
     ScissorSet(1, rect[0], rect[1], rect[2], rect[3]);
     rect += 4;
-    rect[2] = D_8010DCB4_aces_high.x - 1.0f;
-    rect[1] = D_8010DCB4_aces_high.y + 1.0f;
+    rect[2] = m223_viewCenter.x - 1.0f;
+    rect[1] = m223_viewCenter.y + 1.0f;
     ScissorSet(2, rect[0], rect[1], rect[2], rect[3]);
     rect += 4;
-    D_8010DB70_aces_high[3][0] = D_8010DCB4_aces_high.x + 1.0f;
-    rect[1] = D_8010DCB4_aces_high.y + 1.0f;
+    m223_scissorTbl[3][0] = m223_viewCenter.x + 1.0f;
+    rect[1] = m223_viewCenter.y + 1.0f;
     ScissorSet(3, rect[0], rect[1], rect[2], rect[3]);
-    rect = D_8010DBB0_aces_high[winner];
-    x = rect[0] + fabs(D_8010DCB4_aces_high.x - 160.0f) * 320.0 / 158.0;
-    y = rect[1] + fabs(D_8010DCB4_aces_high.y - 120.0f) * 240.0 / 118.0;
-    w = (D_8010DCB4_aces_high.x - 160.0f) * 320.0f / 158.0f + rect[2];
-    h = (D_8010DCB4_aces_high.y - 120.0f) * 240.0f / 158.0f + rect[3];
+    rect = m223_viewportTbl[winner];
+    x = rect[0] + fabs(m223_viewCenter.x - 160.0f) * 320.0 / 158.0;
+    y = rect[1] + fabs(m223_viewCenter.y - 120.0f) * 240.0 / 118.0;
+    w = (m223_viewCenter.x - 160.0f) * 320.0f / 158.0f + rect[2];
+    h = (m223_viewCenter.y - 120.0f) * 240.0f / 158.0f + rect[3];
     ViewportSet(winner, x, y, 511.0f, w, h, 511.0f);
-    espPosSet(D_8010DE92_aces_high, 160, D_8010DCB4_aces_high.y);
-    espPosSet(D_8010DE94_aces_high, D_8010DCB4_aces_high.x, 120);
-    return D_8010DCB4_aces_high.x == D_8010DCBC_aces_high[winner].x &&
-           D_8010DCB4_aces_high.y == D_8010DCBC_aces_high[winner].y;
+    espPosSet(m223_viewLineHSpr, 160, m223_viewCenter.y);
+    espPosSet(m223_viewLineVSpr, m223_viewCenter.x, 120);
+    return m223_viewCenter.x == m223_viewCornerTbl[winner].x &&
+           m223_viewCenter.y == m223_viewCornerTbl[winner].y;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/game/overlays/minigames/17_aces_high/main", func_8010D1D8_aces_high);
+INCLUDE_ASM("asm/nonmatchings/game/overlays/minigames/17_aces_high/main", m223_WinViewExpand);
 #endif
 
-void func_8010D6D4_aces_high(omObjData *object) {
+void m223_WarnObjMain(omObjData *object) {
     omObjData *playerObj = (omObjData *)object->work[3];
     AceHighPlayer *player = playerObj->data;
     Vec pos;
@@ -2692,7 +2692,7 @@ void func_8010D6D4_aces_high(omObjData *object) {
     }
 }
 
-void func_8010D994_aces_high(omObjData *object) {
+void m223_LockObjMain(omObjData *object) {
     AceHighPlayer *player = ((omObjData *)object->work[0])->data;
 
     if (object->work[1] == 0) {

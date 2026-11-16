@@ -2,31 +2,31 @@
 #include "common.h"
 #include "cosmic_coaster.h"
 
-f32 D_8010C010_cosmic_coaster[2] BSS;
-f32 D_8010C018_cosmic_coaster[2] BSS;
-s32 D_8010C020_cosmic_coaster BSS;
-omObjData *D_8010C024_cosmic_coaster BSS;
-omObjData *D_8010C028_cosmic_coaster BSS;
-f32 D_8010C02C_cosmic_coaster BSS;
-f32 D_8010C030_cosmic_coaster BSS;
-f32 D_8010C034_cosmic_coaster BSS;
-f32 D_8010C038_cosmic_coaster BSS;
-f32 D_8010C03C_cosmic_coaster BSS;
-f32 D_8010C040_cosmic_coaster BSS;
-f32 D_8010C044_cosmic_coaster BSS;
-s32 D_8010C048_cosmic_coaster BSS;
-s32 D_8010C04C_cosmic_coaster BSS;
-omObjData *D_8010C050_cosmic_coaster BSS;
-s32 D_8010C054_cosmic_coaster BSS;
-s16 D_8010C058_cosmic_coaster BSS;
-u16 D_8010C05A_cosmic_coaster BSS;
-u8 D_8010C05C_cosmic_coaster[4] BSS; /* Unreferenced. */
-CosmicCoasterSpawn D_8010C060_cosmic_coaster[51] BSS;
-u16 D_8010C390_cosmic_coaster[2] BSS;
-u16 D_8010C394_cosmic_coaster[2] BSS;
-s16 D_8010C398_cosmic_coaster[11] BSS;
-omObjData *D_8010C3B0_cosmic_coaster[2] BSS;
-omObjData *D_8010C3B8_cosmic_coaster BSS;
-s16 D_8010C3BC_cosmic_coaster BSS;
-omObjData *D_8010C3C0_cosmic_coaster BSS;
-omObjData *D_8010C3C4_cosmic_coaster BSS;
+f32 m216_winJumpVelXTbl[2] BSS;
+f32 m216_winJumpVelYTbl[2] BSS;
+s32 m216_winTimer BSS;
+omObjData *m216_winCameraObj BSS;
+omObjData *m216_loseCarObj BSS;
+f32 m216_introZoomStart BSS;
+f32 m216_introRotXStep BSS;
+f32 m216_introRotYStep BSS;
+f32 m216_introRotZStep BSS;
+f32 m216_introCenterXStep BSS;
+f32 m216_introCenterYStep BSS;
+f32 m216_introCenterZStep BSS;
+s32 m216_introKeyTimer BSS;
+s32 m216_introKeyNo BSS;
+omObjData *m216_introCameraObj BSS;
+s32 m216_mainPhase BSS;
+s16 m216_coinEffGrp BSS;
+u16 m216_introPhase BSS;
+u8 m216_introPhasePad[4] BSS; /* Unreferenced. */
+CosmicCoasterSpawn m216_asteroidSpawnTbl[51] BSS;
+u16 m216_stageSpawnIdxTbl[2] BSS;
+u16 m216_asteroidSpawnIdxTbl[2] BSS;
+s16 m216_stageMdlTbl[11] BSS;
+omObjData *m216_carObjTbl[2] BSS;
+omObjData *m216_comTargetObj BSS;
+s16 m216_winner BSS;
+omObjData *m216_hudObj BSS;
+omObjData *m216_stageObj BSS;

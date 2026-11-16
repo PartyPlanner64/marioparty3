@@ -42,14 +42,14 @@ typedef struct CosmicCoasterCarData { // 0x54 bytes
 } CosmicCoasterCarData;
 
 #ifndef NO_EXTERN_VARIABLES
-extern omObjData *D_8010C3B0_cosmic_coaster[2];
-extern s16 D_8010C3BC_cosmic_coaster;
-extern omObjData *D_8010C3C4_cosmic_coaster; // track object manager
+extern omObjData *m216_carObjTbl[2];
+extern s16 m216_winner;
+extern omObjData *m216_stageObj; // track object manager
 #endif
 
-void func_80109900_cosmic_coaster(void);
-void func_8010991C_cosmic_coaster(omObjData *object);
-u32 func_8010B644_cosmic_coaster(omObjData **found, CosmicCoasterCarData *car, f32 ahead, f32 behind, u16 notify);
-s32 func_8010B97C_cosmic_coaster(omObjData *object, s32 slot, omObjData *target);
+void m216_OvlReturn(void);
+void m216_StageObjInit(omObjData *object);
+u32 m216_StageHitCheck(omObjData **found, CosmicCoasterCarData *car, f32 ahead, f32 behind, u16 notify);
+s32 m216_ComLaneMaskGet(omObjData *object, s32 slot, omObjData *target);
 
 #endif

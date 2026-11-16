@@ -6,7 +6,7 @@
 #include "game/overlays/minigame.h"
 #include "game/overlays/mgcamera.h"
 
-typedef struct UnkBowser { // 0x64 bytes, two entries
+typedef struct BowserTossKoopa { // 0x64 bytes, two entries
     omObjData *unk_00;
     s16 unk_04;
     s16 unk_06;
@@ -34,11 +34,11 @@ typedef struct UnkBowser { // 0x64 bytes, two entries
     f32 unk_4C;
     s32 unk_50;
     char unk_54[8];
-    struct BowserTossItem *unk_5C;
+    struct BowserTossHookBake *unk_5C;
     f32 (*unk_60)[16]; // per-frame matrices
-} UnkBowser;
+} BowserTossKoopa;
 
-// Per-player slot of the array allocated in func_80106568_bowser_toss
+// Per-player slot of the array allocated in m252_PlayerObjCreateAll
 typedef struct BowserTossPlayer { // 0x5C bytes, two entries
     s16 index;                    // player index
     s16 unk_02;
@@ -74,26 +74,26 @@ typedef struct BowserTossPlayer { // 0x5C bytes, two entries
     f32 unk_58;
 } BowserTossPlayer;
 
-// Per-player slot of the array allocated in func_8010B41C_bowser_toss
-typedef struct BowserTossBowser { // 0x10 bytes, three entries
+// Per-player slot of the array allocated in m252_ScoreInit
+typedef struct BowserTossScore { // 0x10 bytes, three entries
     s16 spriteId;                 // HuSprGrpCreate handle
     s16 timer;
     s16 state; // toss state, 0x20 once the toss has finished
     char unk_06[2];
     s32 unk_08;
     s32 unk_0C;
-} BowserTossBowser;
+} BowserTossScore;
 
-// Item data block returned by func_8010D9E0_bowser_toss
-typedef struct BowserTossItem { // 0xC bytes
+// Item data block returned by m252_HookMtxBake
+typedef struct BowserTossHookBake { // 0xC bytes
     s16 frames;                 // motion length
     s16 step;                   // frames between baked matrices
     s16 *nodes;
     HuMtx4F *mtx; // baked hook matrix per sampled frame
-} BowserTossItem;
+} BowserTossHookBake;
 
-// Entry of the array allocated in func_8010A028_bowser_toss
-typedef struct BowserTossEffect { // 0x30 bytes, 32 entries
+// Entry of the array allocated in m252_SmokeInit
+typedef struct BowserTossSmoke { // 0x30 bytes, 32 entries
     u16 unk_00;                   // active
     s16 unk_02;                   // model
     f32 unk_04;
@@ -101,9 +101,9 @@ typedef struct BowserTossEffect { // 0x30 bytes, 32 entries
     Vec unk_0C;
     Vec unk_18;
     Vec unk_24;
-} BowserTossEffect;
+} BowserTossSmoke;
 
-// Per-camera interpolation state allocated in func_8010C2DC_bowser_toss
+// Per-camera interpolation state allocated in m252_CameraInit
 typedef struct BowserTossCamera { // 0x54 bytes, two entries
     MgCameraKey keys[2];          // target, origin
     s32 frame;                    // frames remaining
@@ -125,7 +125,7 @@ typedef struct BowserTossSprPos {
 
 // Background sprite frame table entry
 typedef struct BowserTossScrollFrame {
-    s16 sprite; // index into D_8010FB98_bowser_toss
+    s16 sprite; // index into m252_sprTbl
     s16 frame;
 } BowserTossScrollFrame;
 
@@ -143,8 +143,8 @@ extern s32 omCharModelNoTbl[][6];
 extern s8 HuPadStkY[];
 extern u16 HuPadBtnDown[];
 extern s16 HuPadBtn[];
-extern const s16 D_8010F530_bowser_toss[];
-extern const s16 D_8010F53C_bowser_toss[];
+extern const s16 m252_startMesTbl[];
+extern const s16 m252_finishMesTbl[];
 extern s16 Hu3DModelTag;
 extern s16 motionBakeMtxCnt;
 extern u8 Hu3DBufNo;
@@ -153,26 +153,26 @@ extern HuMtx4F *motionBakeMtx;
 extern s16 Hu3DObjMtxStackIdx;
 extern HuMtx4F Hu3DObjMtxStack[];
 
-u8 D_8010F150_bowser_toss[4] = { 0xE9, 0xDD, 0xA1, 0x80 };                                                                          // RGBA
-s32 D_8010F154_bowser_toss[8] = { 0x000200A5, 0x000300A5, 0x000700A5, 0x000400A5, 0x000500A5, 0x000600A5, 0x000800A5, 0x0009001C }; // per-character
-s32 D_8010F174_bowser_toss[8] = { 0x000200A6, 0x000300A6, 0x000700A6, 0x000400A6, 0x000500A6, 0x000600A6, 0x000800A6, 0x0009001D }; // per-character
-s32 D_8010F194_bowser_toss = 0;
-Vec D_8010F198_bowser_toss[2] = {
+u8 m252_smokeColor[4] = { 0xE9, 0xDD, 0xA1, 0x80 };                                                                          // RGBA
+s32 m252_winAnimTbl[8] = { 0x000200A5, 0x000300A5, 0x000700A5, 0x000400A5, 0x000500A5, 0x000600A5, 0x000800A5, 0x0009001C }; // per-character
+s32 m252_loseAnimTbl[8] = { 0x000200A6, 0x000300A6, 0x000700A6, 0x000400A6, 0x000500A6, 0x000600A6, 0x000800A6, 0x0009001D }; // per-character
+s32 m252_exitTimer = 0;
+Vec m252_playerPosTbl[2] = {
     { -0.0f, 100.0f, 0.0f },
     { 0.0f, 100.0f, 0.0f }
 };
-s32 D_8010F1B0_bowser_toss[4] = { 0, 1, 2, 3 };
-s32 D_8010F1C0_bowser_toss[8] = { 0x00020000, 0x00030000, 0x00070000, 0x00040000, 0x00050000, 0x00060000, 0x00080000, 0x00090000 };
-f32 D_8010F1E0_bowser_toss[8] = { 10.0f, 10.0f, 10.0f, 10.0f, 10.0f, 10.0f, 10.0f, 10.0f };
-f32 D_8010F200_bowser_toss[8] = { 23.0f, 23.0f, 23.0f, 23.0f, 23.0f, 23.0f, 23.0f, 23.0f };
-s32 D_8010F220_bowser_toss[2] = { 0x2F, 0x30 };
-s32 D_8010F228_bowser_toss[2] = { 0x36, 0x37 };
-f32 D_8010F230_bowser_toss[4] = { 0.4f, 0.55f, 0.45f, 0.5f };
-f32 D_8010F240_bowser_toss[4] = { 0.1f, 0.2f, 0.2f, 0.2f };
-f32 D_8010F250_bowser_toss[4] = { 0.5f, 0.6f, 0.7f, 0.8f };
-f32 D_8010F260_bowser_toss[4] = { 2000.0f, 4000.0f, 5500.0f, 7000.0f };
-f32 D_8010F270_bowser_toss[2] = { 0.0f, 200.0f };
-Vec D_8010F278_bowser_toss[14] = {
+s32 m252_playerOrderTbl[4] = { 0, 1, 2, 3 };
+s32 m252_voiceChrTbl[8] = { 0x00020000, 0x00030000, 0x00070000, 0x00040000, 0x00050000, 0x00060000, 0x00080000, 0x00090000 };
+f32 m252_spinSpeedMinTbl[8] = { 10.0f, 10.0f, 10.0f, 10.0f, 10.0f, 10.0f, 10.0f, 10.0f };
+f32 m252_spinSpeedMaxTbl[8] = { 23.0f, 23.0f, 23.0f, 23.0f, 23.0f, 23.0f, 23.0f, 23.0f };
+s32 m252_voiceNoTbl[2] = { 0x2F, 0x30 };
+s32 m252_loseMotNoTbl[2] = { 0x36, 0x37 };
+f32 m252_comPowerTbl[4] = { 0.4f, 0.55f, 0.45f, 0.5f };
+f32 m252_comPowerRandTbl[4] = { 0.1f, 0.2f, 0.2f, 0.2f };
+f32 m252_comScaleTbl[4] = { 0.5f, 0.6f, 0.7f, 0.8f };
+f32 m252_comDistTbl[4] = { 2000.0f, 4000.0f, 5500.0f, 7000.0f };
+f32 m252_throwStartPos[2] = { 0.0f, 200.0f };
+Vec m252_decoPosTbl[14] = {
     { 0.0f, 0.0f, 0.0f },
     { 955.69507f, 0.0f, 0.0f },
     { 1660.1975f, 0.0f, 0.0f },
@@ -188,32 +188,32 @@ Vec D_8010F278_bowser_toss[14] = {
     { 400.0f, 0.0f, 0.0f },
     { 0.0f, 0.0f, 0.0f }
 };
-u8 D_8010F320_bowser_toss[4] = { 0xFF, 0xFF, 0xFF, 0xFF }; // RGBA
-s16 D_8010F324_bowser_toss[2][5] = {
+u8 m252_decoColor[4] = { 0xFF, 0xFF, 0xFF, 0xFF }; // RGBA
+s16 m252_decoSwapTbl[2][5] = {
     { 0, 1, 2, 3, 4 },
     { 1, 2, 3, 4, 0 }
 };
-u8 D_8010F338_bowser_toss[4] = { 0xFF, 0xFF, 0xFF, 0xFF }; // RGBA
-BowserTossScissor D_8010F33C_bowser_toss[2] = {
+u8 m252_decoAnimColor[4] = { 0xFF, 0xFF, 0xFF, 0xFF }; // RGBA
+BowserTossScissor m252_backScissorTbl[2] = {
     { 0, 0, 320, 120 },
     { 0, 120, 320, 240 }
 };
-f32 D_8010F34C_bowser_toss = 10.0f;
-BowserTossScrollFrame D_8010F350_bowser_toss[10] = {
+f32 m252_backScrollScale = 10.0f;
+BowserTossScrollFrame m252_backFrameTbl[10] = {
     { 1, 1 }, { 1, 0 }, { 2, 1 }, { 2, 0 }, { 3, 1 }, { 3, 0 }, { 3, 1 }, { 3, 0 }, { 3, 1 }, { 3, 0 }
 };
-BowserTossSprPos D_8010F378_bowser_toss[3][8] = { // score sprite positions per counter
+BowserTossSprPos m252_scoreDigitPosTbl[3][8] = { // score sprite positions per counter
                                                   { { 136, 60 }, { 148, 60 }, { 168, 60 }, { 180, 60 }, { 160, 60 }, { 196, 60 }, { 160, 60 }, { 124, 60 } },
                                                   { { 136, 180 }, { 148, 180 }, { 168, 180 }, { 180, 180 }, { 160, 180 }, { 196, 180 }, { 160, 180 }, { 124, 180 } },
                                                   { { 56, 25 }, { 68, 25 }, { 88, 25 }, { 100, 25 }, { 80, 24 }, { 116, 24 }, { 80, 25 }, { 44, 25 } }
 };
-s32 D_8010F3D8_bowser_toss[5] = { 10000, 1000, 100, 10, 1 }; // decimal place divisors
-s32 D_8010F3EC_bowser_toss = 0;                              // camera test mode
-s32 D_8010F3F0_bowser_toss = 0;                              // camera test mode camera index
-s32 D_8010F3F4_bowser_toss = 0;                              // camera test mode text x offset
-s32 D_8010F3F8_bowser_toss = 0;                              // camera test mode text y offset
+s32 m252_digitDivTbl[5] = { 10000, 1000, 100, 10, 1 }; // decimal place divisors
+s32 m252_cameraDebugMode = 0;                              // camera test mode
+s32 m252_cameraDebugNo = 0;                              // camera test mode camera index
+s32 m252_cameraDebugX = 0;                              // camera test mode text x offset
+s32 m252_cameraDebugY = 0;                              // camera test mode text y offset
 
-Gfx D_8010F400_bowser_toss[] = {
+Gfx m252_gfxRdpInit[] = {
     gsSPSegment(0x00, 0x00000000),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
@@ -240,20 +240,20 @@ Gfx D_8010F400_bowser_toss[] = {
     gsDPPipeSync(),
     gsSPEndDisplayList(),
 };
-Gfx D_8010F4B8_bowser_toss[] = {
+Gfx m252_gfxRspInit[] = {
     gsSPClearGeometryMode(0xFFFFFFFF),
     gsSPTexture(0, 0, 0, G_TX_RENDERTILE, G_OFF),
     gsSPSetGeometryMode(G_SHADE | G_SHADING_SMOOTH),
     gsSPEndDisplayList(),
 };
-Gfx D_8010F4D8_bowser_toss[] = {
-    gsSPDisplayList(D_8010F4B8_bowser_toss),
-    gsSPDisplayList(D_8010F400_bowser_toss),
+Gfx m252_gfxInit[] = {
+    gsSPDisplayList(m252_gfxRspInit),
+    gsSPDisplayList(m252_gfxRdpInit),
     gsSPEndDisplayList(),
 };
-Gfx D_8010F4F0_bowser_toss[] = {
+Gfx m252_gfxBillboardInit[] = {
     gsDPPipeSync(),
-    gsSPDisplayList(D_8010F4D8_bowser_toss),
+    gsSPDisplayList(m252_gfxInit),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPSetGeometryMode(G_ZBUFFER | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH),
     gsDPSetBlendColor(0x00, 0x00, 0x00, 0x00),
@@ -262,90 +262,90 @@ Gfx D_8010F4F0_bowser_toss[] = {
     gsSPEndDisplayList(),
 };
 
-omObjData *D_8010FB50_bowser_toss BSS;
-s32 D_8010FB54_bowser_toss BSS;
-s32 D_8010FB58_bowser_toss BSS;
-s32 D_8010FB5C_bowser_toss BSS;
-s32 D_8010FB60_bowser_toss BSS;
-s32 D_8010FB64_bowser_toss BSS;
-s32 D_8010FB68_bowser_toss BSS;
-s32 D_8010FB6C_bowser_toss BSS;
-s16 D_8010FB70_bowser_toss BSS;
-s16 D_8010FB72_bowser_toss BSS;
-BowserTossPlayer *D_8010FB74_bowser_toss BSS;
-s16 D_8010FB78_bowser_toss BSS;
-s32 D_8010FB7C_bowser_toss BSS;
-s32 D_8010FB80_bowser_toss BSS;
-s32 D_8010FB84_bowser_toss BSS;
-omObjData *D_8010FB88_bowser_toss BSS;
-UnkBowser *D_8010FB8C_bowser_toss BSS;
-omObjData *D_8010FB90_bowser_toss BSS;
-BowserTossEffect *D_8010FB94_bowser_toss BSS;
-s16 *D_8010FB98_bowser_toss BSS;
-s16 D_8010FB9C_bowser_toss[2] BSS;
-BowserTossBowser *D_8010FBA0_bowser_toss BSS;
-BowserTossCamera *D_8010FBA4_bowser_toss BSS;
-Vec D_8010FBA8_bowser_toss BSS;
-u8 D_8010FBB4_bowser_toss[4] BSS; /* Unreferenced. */
-MinigameFlow D_8010FBB8_bowser_toss BSS;
+omObjData *m252_mainObj BSS;
+s32 m252_flag10F BSS;
+s32 m252_frameCnt BSS;
+s32 m252_phaseTimer BSS;
+s32 m252_timer BSS;
+s32 m252_phase BSS;
+s32 m252_resultWait BSS;
+s32 m252_unusedTimer BSS;
+s16 m252_scoreSeNo BSS;
+s16 m252_newRecordF BSS;
+BowserTossPlayer *m252_playerWorkTbl BSS;
+s16 m252_winnerNo BSS;
+s32 m252_winDist BSS;
+s32 m252_recordDist BSS;
+s32 m252_spinSeNo BSS;
+omObjData *m252_koopaObj BSS;
+BowserTossKoopa *m252_koopaTbl BSS;
+omObjData *m252_smokeObj BSS;
+BowserTossSmoke *m252_smokeTbl BSS;
+s16 *m252_sprTbl BSS;
+s16 m252_backGrpTbl[2] BSS;
+BowserTossScore *m252_scoreTbl BSS;
+BowserTossCamera *m252_cameraMoveTbl BSS;
+Vec m252_cameraCenterMin BSS;
+u8 m252_cameraCenterMinPad[4] BSS; /* Unreferenced. */
+MinigameFlow m252_mgFlow BSS;
 
-void func_80105C80_bowser_toss(omObjData *object);
-void func_80105CEC_bowser_toss(omObjData *object);
-void func_80106568_bowser_toss(void);
-void func_801084DC_bowser_toss(void);
-void func_8010A028_bowser_toss(void);
-void func_8010A4A8_bowser_toss(void);
-void func_8010AD98_bowser_toss(void);
-void func_8010B41C_bowser_toss(void);
-void func_8010C2DC_bowser_toss(void);
-void func_8010B7AC_bowser_toss(omObjData *object);
-void func_8010CDB8_bowser_toss(omObjData *object);
-void func_8010D080_bowser_toss(s32 camIndex, s32 key);
-f32 func_8010D8A0_bowser_toss(f32 t, f32 start, f32 end);
-f32 func_8010D8B8_bowser_toss(f32 t, f32 start, f32 end);
-f32 func_8010D5DC_bowser_toss(f32 arg0, f32 arg1);
-f32 func_8010D6E0_bowser_toss(f32 target, f32 current, f32 step);
-void func_8010D43C_bowser_toss(s32 camIndex);
-void func_8010A500_bowser_toss(omObjData *object);
-void func_8010649C_bowser_toss(omObjData *object);
-void func_801064C0_bowser_toss(omObjData *object);
-void func_801067B0_bowser_toss(omObjData *object);
-s16 func_8010840C_bowser_toss(void);
-s16 func_80108444_bowser_toss(void);
-void func_8010847C_bowser_toss(omObjData *object, s16 arg1, s16 arg2);
-s16 func_80109F20_bowser_toss(void);
-void func_8010C1A0_bowser_toss(s16 index, s32 score);
-s16 func_8010C23C_bowser_toss(void);
-void func_8010C274_bowser_toss(void);
-s16 func_8010C2A4_bowser_toss(void);
-void func_8010D250_bowser_toss(s32 camIndex, f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom,
+void m252_MainObjInit(omObjData *object);
+void m252_MainObjMain(omObjData *object);
+void m252_PlayerObjCreateAll(void);
+void m252_KoopaInit(void);
+void m252_SmokeInit(void);
+void m252_StageObjCreate(void);
+void m252_BackInit(void);
+void m252_ScoreInit(void);
+void m252_CameraInit(void);
+void m252_ScoreObjMain(omObjData *object);
+void m252_CameraMoveObjMain(omObjData *object);
+void m252_CameraKeyStore(s32 camIndex, s32 key);
+f32 m252_InterpCalc(f32 t, f32 start, f32 end);
+f32 m252_AngleInterpCalc(f32 t, f32 start, f32 end);
+f32 m252_AngleDiffCalc(f32 arg0, f32 arg1);
+f32 m252_AngleStepCalc(f32 target, f32 current, f32 step);
+void m252_CameraPosUpdate(s32 camIndex);
+void m252_StageObjInit(omObjData *object);
+void m252_ExitObjMain(omObjData *object);
+void m252_ExitCheck(omObjData *object);
+void m252_PlayerObjInit(omObjData *object);
+s16 m252_PlayerAllThrownCheck(void);
+s16 m252_PlayerAllEndCheck(void);
+void m252_PlayerMdlSwap(omObjData *object, s16 arg1, s16 arg2);
+s16 m252_KoopaAllLandCheck(void);
+void m252_ScoreSet(s16 index, s32 score);
+s16 m252_ScoreAllCountCheck(void);
+void m252_ScoreAllEndStart(void);
+s16 m252_ScoreAllEndCheck(void);
+void m252_CameraMoveStart(s32 camIndex, f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom,
                                s32 frames);
-void func_8010D960_bowser_toss(omObjData *obj, u32 arg1);
-void func_80106BC4_bowser_toss(omObjData *object);
-void func_8010858C_bowser_toss(s16 arg0);
-UnkBowser *func_80108800_bowser_toss(s16 arg0);
-f32 func_801080D0_bowser_toss(f32 arg0, f32 arg1, f32 arg2);
-void func_8010882C_bowser_toss(omObjData *object);
-struct BowserTossItem *func_8010D9E0_bowser_toss(s16 model, s16 step, const char *hookName, s16 shape, s16 frame);
-void func_8010DB9C_bowser_toss(s16 model, s16 step, struct BowserTossItem *item, s16 node, s16 shape, s16 frame);
-void func_8010DDC4_bowser_toss(struct BowserTossItem *item);
-void func_8010D918_bowser_toss(f32 *arg0, f32 *arg1, f32 *arg2, f32 arg3);
-void func_8010A17C_bowser_toss(omObjData *object);
-void func_8010A908_bowser_toss(omObjData *object);
-void func_8010AF38_bowser_toss(s16 camera, Vec *pos, Vec *rot);
-u16 func_8010AD54_bowser_toss(s32 dirAndFile);
-s32 func_8010DDFC_bowser_toss(HuSprAnimData *sprite, u8 *color, u8 antialias);
-s32 func_8010EA0C_bowser_toss(HuSprAnimData *sprite, u16 model, u8 *color);
-s32 func_8010ED44_bowser_toss(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset);
-void func_80107E84_bowser_toss(omObjData *object);
-void func_80109DB8_bowser_toss(omObjData *object, f32 angle, HuMtx4F mtx);
-void func_80109E4C_bowser_toss(UnkBowser *bowser, f32 *out, f32 time);
-s16 func_80109F68_bowser_toss(f32 x, f32 y, f32 velX, f32 velY);
-s32 func_8010A2D4_bowser_toss(Vec *pos, Vec *vel, Vec *scale, f32 speed, s16 camera);
-void func_8010EC10_bowser_toss(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color);
-BowserTossPlayer *func_8010D98C_bowser_toss(omObjData *object);
+void m252_WorkPtrSet(omObjData *obj, u32 arg1);
+void m252_PlayerObjMain(omObjData *object);
+void m252_KoopaCreate(s16 arg0);
+BowserTossKoopa *m252_KoopaGet(s16 arg0);
+f32 m252_ComPowerCalc(f32 arg0, f32 arg1, f32 arg2);
+void m252_KoopaObjMain(omObjData *object);
+struct BowserTossHookBake *m252_HookMtxBake(s16 model, s16 step, const char *hookName, s16 shape, s16 frame);
+void m252_HookMtxBakeNode(s16 model, s16 step, struct BowserTossHookBake *item, s16 node, s16 shape, s16 frame);
+void m252_HookMtxFree(struct BowserTossHookBake *item);
+void m252_MtxInterpCalc(f32 *arg0, f32 *arg1, f32 *arg2, f32 arg3);
+void m252_SmokeObjMain(omObjData *object);
+void m252_StageObjMain(omObjData *object);
+void m252_BackScrollSet(s16 camera, Vec *pos, Vec *rot);
+u16 m252_SprAnimRead(s32 dirAndFile);
+s32 m252_BillboardColorMdlCreate(HuSprAnimData *sprite, u8 *color, u8 antialias);
+s32 m252_BillboardColorMdlLink(HuSprAnimData *sprite, u16 model, u8 *color);
+s32 m252_BillboardVtxCreate(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset);
+void m252_PlayerComInput(omObjData *object);
+void m252_ObjMtxCalc(omObjData *object, f32 angle, HuMtx4F mtx);
+void m252_KoopaHookMtxGet(BowserTossKoopa *bowser, f32 *out, f32 time);
+s16 m252_FallTimeCalc(f32 x, f32 y, f32 velX, f32 velY);
+s32 m252_SmokeCreate(Vec *pos, Vec *vel, Vec *scale, f32 speed, s16 camera);
+void m252_BillboardColorPatSet(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color);
+BowserTossPlayer *m252_WorkPtrGet(omObjData *object);
 
-void func_801059A0_bowser_toss(void) {
+void m252_ObjectSetup(void) {
     omObjData *obj;
     s32 i;
 
@@ -371,50 +371,50 @@ void func_801059A0_bowser_toss(void) {
     mgPlayerObjNum = 0;
     mgMapObjNum = 0;
     mgItemObjNum = 0;
-    D_8010FB60_bowser_toss = 300;
-    D_8010FB5C_bowser_toss = 0;
-    D_8010FB58_bowser_toss = 0;
-    D_8010FB64_bowser_toss = 0;
-    D_8010FB68_bowser_toss = 0;
-    D_8010FB6C_bowser_toss = 0;
-    D_8010FB78_bowser_toss = -1;
-    D_8010FB7C_bowser_toss = 0;
-    D_8010FB70_bowser_toss = -1;
-    D_8010FB84_bowser_toss = -1;
-    D_8010FB80_bowser_toss = GWMgRecordGet(4);
-    D_8010FB72_bowser_toss = 0;
-    D_8010FB50_bowser_toss = omAddObj(0x40, 0, 0, -1, func_80105C80_bowser_toss);
-    memset(&D_8010FBB8_bowser_toss, 0, 0x28);
-    D_8010FBB8_bowser_toss.type = MINIGAME_BATTLE;
-    MgFlowInit(&D_8010FBB8_bowser_toss);
-    D_8010FB98_bowser_toss = HuMemAllocTag(0x20, TAG_OVERLAY);
-    memset(D_8010FB98_bowser_toss, 0, 0x20);
-    GMesFontMesCreate(D_8010F530_bowser_toss, 1);
-    GMesFontMesCreate(D_8010F53C_bowser_toss, 1);
+    m252_timer = 300;
+    m252_phaseTimer = 0;
+    m252_frameCnt = 0;
+    m252_phase = 0;
+    m252_resultWait = 0;
+    m252_unusedTimer = 0;
+    m252_winnerNo = -1;
+    m252_winDist = 0;
+    m252_scoreSeNo = -1;
+    m252_spinSeNo = -1;
+    m252_recordDist = GWMgRecordGet(4);
+    m252_newRecordF = 0;
+    m252_mainObj = omAddObj(0x40, 0, 0, -1, m252_MainObjInit);
+    memset(&m252_mgFlow, 0, 0x28);
+    m252_mgFlow.type = MINIGAME_BATTLE;
+    MgFlowInit(&m252_mgFlow);
+    m252_sprTbl = HuMemAllocTag(0x20, TAG_OVERLAY);
+    memset(m252_sprTbl, 0, 0x20);
+    GMesFontMesCreate(m252_startMesTbl, 1);
+    GMesFontMesCreate(m252_finishMesTbl, 1);
 }
 
-void func_80105C80_bowser_toss(omObjData *object) {
-    object->func = func_80105CEC_bowser_toss;
-    func_8010AD98_bowser_toss();
-    func_8010B41C_bowser_toss();
-    func_8010A028_bowser_toss();
-    func_8010A4A8_bowser_toss();
-    func_801084DC_bowser_toss();
-    func_80106568_bowser_toss();
-    func_8010C2DC_bowser_toss();
+void m252_MainObjInit(omObjData *object) {
+    object->func = m252_MainObjMain;
+    m252_BackInit();
+    m252_ScoreInit();
+    m252_SmokeInit();
+    m252_StageObjCreate();
+    m252_KoopaInit();
+    m252_PlayerObjCreateAll();
+    m252_CameraInit();
     if (_CheckFlag(10)) {
-        D_8010FB54_bowser_toss = 1;
+        m252_flag10F = 1;
     }
 }
 
-const s16 D_8010F530_bowser_toss[] = { 0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0 };
+const s16 m252_startMesTbl[] = { 0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0 };
 
-const s16 D_8010F53C_bowser_toss[] = { 0x8265, 0x8268, 0x826D, 0x8268, 0x8272, 0x8267, 0 };
+const s16 m252_finishMesTbl[] = { 0x8265, 0x8268, 0x826D, 0x8268, 0x8272, 0x8267, 0 };
 
-void func_80105CEC_bowser_toss(omObjData *object) {
+void m252_MainObjMain(omObjData *object) {
     BowserTossPlayer *player1;
     BowserTossPlayer *player2;
-    UnkBowser *bowser;
+    BowserTossKoopa *bowser;
     omObjData *obj;
     s32 score1;
     s32 score2;
@@ -422,68 +422,68 @@ void func_80105CEC_bowser_toss(omObjData *object) {
     f32 y;
     f32 zoom;
 
-    switch (D_8010FB64_bowser_toss) {
+    switch (m252_phase) {
         case 0:
-            if (D_8010FB5C_bowser_toss == 2) {
+            if (m252_phaseTimer == 2) {
                 WipeCreateIn(WIPE_TYPE_PREV, 16);
             }
-            if (D_8010FB68_bowser_toss > 0) {
-                D_8010FB68_bowser_toss = 0;
-                D_8010FB64_bowser_toss++;
+            if (m252_resultWait > 0) {
+                m252_resultWait = 0;
+                m252_phase++;
             }
             break;
         case 1:
             GMesCreate(6);
             HuAudFXPlay(0xE);
             HuAudSeqPlay(0x30);
-            D_8010FB68_bowser_toss = 0;
-            D_8010FB64_bowser_toss++;
+            m252_resultWait = 0;
+            m252_phase++;
             break;
         case 2:
             if (GMesStatGet() == 0) {
-                GMesCreate(0x1A, (D_8010FB60_bowser_toss + 29) / 30, 156, 32);
+                GMesCreate(0x1A, (m252_timer + 29) / 30, 156, 32);
                 MgFlowStatSet(MG_STATE_PLAY);
-                D_8010FB64_bowser_toss++;
+                m252_phase++;
             }
             break;
         case 3:
-            D_8010FB60_bowser_toss--;
-            GMesTimerValueSet((D_8010FB60_bowser_toss + 29) / 30);
-            if (D_8010FB60_bowser_toss <= 0) {
-                player1 = func_8010D98C_bowser_toss(mgPlayerObjTbl[0]);
-                player2 = func_8010D98C_bowser_toss(mgPlayerObjTbl[1]);
+            m252_timer--;
+            GMesTimerValueSet((m252_timer + 29) / 30);
+            if (m252_timer <= 0) {
+                player1 = m252_WorkPtrGet(mgPlayerObjTbl[0]);
+                player2 = m252_WorkPtrGet(mgPlayerObjTbl[1]);
                 player2->unk_0C = player1->unk_0C = 3;
                 GMesTimerEnd();
-                D_8010FB5C_bowser_toss = 0;
-                D_8010FB64_bowser_toss++;
+                m252_phaseTimer = 0;
+                m252_phase++;
             }
             break;
         case 4:
-            if (func_80109F20_bowser_toss() && func_8010840C_bowser_toss()) {
+            if (m252_KoopaAllLandCheck() && m252_PlayerAllThrownCheck()) {
                 GMesCreate(0x11);
                 MgFlowStatSet(MG_STATE_FINISH);
                 HuAudSeqFadeOut(120);
-                func_8010847C_bowser_toss(mgPlayerObjTbl[0], 0, 10);
-                func_8010847C_bowser_toss(mgPlayerObjTbl[1], 0, 10);
-                D_8010FB5C_bowser_toss = 0;
-                D_8010FB64_bowser_toss++;
+                m252_PlayerMdlSwap(mgPlayerObjTbl[0], 0, 10);
+                m252_PlayerMdlSwap(mgPlayerObjTbl[1], 0, 10);
+                m252_phaseTimer = 0;
+                m252_phase++;
             }
             break;
         case 5:
             if (GMesStatGet() == 0) {
-                D_8010FB5C_bowser_toss = 0;
-                D_8010FB64_bowser_toss++;
+                m252_phaseTimer = 0;
+                m252_phase++;
             }
             break;
         case 6:
-            if (D_8010FB5C_bowser_toss >= 15) {
-                player1 = func_8010D98C_bowser_toss(mgPlayerObjTbl[0]);
-                player2 = func_8010D98C_bowser_toss(mgPlayerObjTbl[1]);
+            if (m252_phaseTimer >= 15) {
+                player1 = m252_WorkPtrGet(mgPlayerObjTbl[0]);
+                player2 = m252_WorkPtrGet(mgPlayerObjTbl[1]);
                 score1 = player1->unk_04;
                 score2 = player2->unk_04;
                 if (player1->unk_04 == 0.0f && player2->unk_04 == 0.0f) {
-                    D_8010FB78_bowser_toss = -1;
-                    D_8010FB7C_bowser_toss = -1;
+                    m252_winnerNo = -1;
+                    m252_winDist = -1;
                     player2->unk_02 = 1;
                     player1->unk_02 = 1;
                 } else if (score1 == score2) {
@@ -496,63 +496,63 @@ void func_80105CEC_bowser_toss(omObjData *object) {
                     }
                 }
                 if (score1 > score2) {
-                    D_8010FB78_bowser_toss = player1->index;
+                    m252_winnerNo = player1->index;
                     GwPlayer[player1->unk_18].bonusCoin += 10;
                     player1->unk_02 = 0;
                     player2->unk_02 = 1;
-                    D_8010FB7C_bowser_toss = score1;
+                    m252_winDist = score1;
                 } else if (score2 > score1) {
-                    D_8010FB78_bowser_toss = player2->index;
+                    m252_winnerNo = player2->index;
                     GwPlayer[player2->unk_18].bonusCoin += 10;
                     player1->unk_02 = 1;
                     player2->unk_02 = 0;
-                    D_8010FB7C_bowser_toss = score2;
+                    m252_winDist = score2;
                 }
-                func_8010C1A0_bowser_toss(player1->index, score1);
-                func_8010C1A0_bowser_toss(player2->index, score2);
-                D_8010FB5C_bowser_toss = 0;
-                D_8010FB64_bowser_toss++;
+                m252_ScoreSet(player1->index, score1);
+                m252_ScoreSet(player2->index, score2);
+                m252_phaseTimer = 0;
+                m252_phase++;
             }
             break;
         case 7:
-            if (func_8010C23C_bowser_toss()) {
-                if (D_8010FB70_bowser_toss != -1) {
+            if (m252_ScoreAllCountCheck()) {
+                if (m252_scoreSeNo != -1) {
                     HuAudFXPlay(0x4AC);
-                    D_8010FB70_bowser_toss = -1;
+                    m252_scoreSeNo = -1;
                 }
-                func_8010C274_bowser_toss();
-                D_8010FB5C_bowser_toss = 0;
-                D_8010FB64_bowser_toss++;
+                m252_ScoreAllEndStart();
+                m252_phaseTimer = 0;
+                m252_phase++;
             }
             break;
         case 8:
-            if (func_80108444_bowser_toss() && func_8010C2A4_bowser_toss()) {
-                if (D_8010FB78_bowser_toss == -1) {
+            if (m252_PlayerAllEndCheck() && m252_ScoreAllEndCheck()) {
+                if (m252_winnerNo == -1) {
                     GMesCreate(0x20);
                     HuAudSeqPlay(0x6C);
-                    D_8010FB68_bowser_toss = 144;
+                    m252_resultWait = 144;
                     MgFlowStatSet(MG_STATE_RESULT);
-                    D_8010FB64_bowser_toss = 11;
+                    m252_phase = 11;
                 } else {
-                    if (D_8010FB78_bowser_toss != 0) {
-                        D_8010FB78_bowser_toss = 1;
+                    if (m252_winnerNo != 0) {
+                        m252_winnerNo = 1;
                     }
-                    if (D_8010FB80_bowser_toss < D_8010FB7C_bowser_toss) {
-                        D_8010FB80_bowser_toss = D_8010FB7C_bowser_toss;
-                        func_8010C1A0_bowser_toss(2, D_8010FB7C_bowser_toss);
-                        GWMgRecordSet(4, (u16)D_8010FB80_bowser_toss);
+                    if (m252_recordDist < m252_winDist) {
+                        m252_recordDist = m252_winDist;
+                        m252_ScoreSet(2, m252_winDist);
+                        GWMgRecordSet(4, (u16)m252_recordDist);
                         GMesCreate(0x1B);
-                        D_8010FB72_bowser_toss = 1;
-                        D_8010FB68_bowser_toss = 99;
-                        D_8010FB64_bowser_toss = 9;
+                        m252_newRecordF = 1;
+                        m252_resultWait = 99;
+                        m252_phase = 9;
                     } else {
                         HuAudSeqPlay(0x67);
-                        D_8010FB68_bowser_toss = 140;
-                        D_8010FB64_bowser_toss = 10;
+                        m252_resultWait = 140;
+                        m252_phase = 10;
                     }
-                    obj = mgPlayerObjTbl[D_8010FB78_bowser_toss];
-                    bowser = &D_8010FB8C_bowser_toss[D_8010FB78_bowser_toss];
-                    func_8010D98C_bowser_toss(obj);
+                    obj = mgPlayerObjTbl[m252_winnerNo];
+                    bowser = &m252_koopaTbl[m252_winnerNo];
+                    m252_WorkPtrGet(obj);
                     x = obj->trans.x * 0.5f + bowser->unk_30 * 0.5f;
                     if (obj->trans.x != 0.0f) {
                         y = obj->trans.y * 0.5f + 100.0;
@@ -560,76 +560,76 @@ void func_80105CEC_bowser_toss(omObjData *object) {
                         y = obj->trans.y * 0.5f + 150.0;
                     }
                     zoom = CZoom * 0.5f;
-                    if (D_8010FB78_bowser_toss == 1) {
+                    if (m252_winnerNo == 1) {
                         y -= 15.000000596046448;
                     }
-                    func_8010D250_bowser_toss(D_8010FB78_bowser_toss, x, y, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP,
+                    m252_CameraMoveStart(m252_winnerNo, x, y, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP,
                                               CAMERA_KEEP, zoom, 30);
                     MgFlowStatSet(MG_STATE_RESULT);
                 }
-                D_8010FB5C_bowser_toss = 0;
+                m252_phaseTimer = 0;
             }
             break;
         case 9:
-            if (D_8010FB5C_bowser_toss >= 75.0f) {
-                D_8010FB64_bowser_toss = 10;
-                D_8010FB5C_bowser_toss = 0;
+            if (m252_phaseTimer >= 75.0f) {
+                m252_phase = 10;
+                m252_phaseTimer = 0;
             }
             break;
         case 10:
-            GMesCreate(0x16, func_8010D98C_bowser_toss(mgPlayerObjTbl[D_8010FB78_bowser_toss])->unk_1C);
-            if (D_8010FB72_bowser_toss != 0) {
+            GMesCreate(0x16, m252_WorkPtrGet(mgPlayerObjTbl[m252_winnerNo])->unk_1C);
+            if (m252_newRecordF != 0) {
                 HuAudSeqPlay(0x6A);
             }
-            D_8010FB5C_bowser_toss = 0;
-            D_8010FB64_bowser_toss++;
+            m252_phaseTimer = 0;
+            m252_phase++;
             break;
         case 11:
             if (GMesStatGet() == 0) {
-                D_8010FB5C_bowser_toss = 0;
-                D_8010FB64_bowser_toss++;
+                m252_phaseTimer = 0;
+                m252_phase++;
             }
             break;
         case 12:
-            if (D_8010FB5C_bowser_toss >= 15) {
+            if (m252_phaseTimer >= 15) {
                 WipeCreateOut(WIPE_TYPE_NORMAL, 16);
                 HuAudSeqFadeOut(16);
                 HuAudFXAllFadeOut(16);
-                D_8010FB5C_bowser_toss = 0;
-                D_8010FB64_bowser_toss++;
+                m252_phaseTimer = 0;
+                m252_phase++;
             }
             break;
         default:
             if (WipeStatGet() == 0) {
-                object->func = func_8010649C_bowser_toss;
+                object->func = m252_ExitObjMain;
             }
             break;
     }
-    func_801064C0_bowser_toss(object);
-    D_8010FB58_bowser_toss++;
-    D_8010FB5C_bowser_toss++;
+    m252_ExitCheck(object);
+    m252_frameCnt++;
+    m252_phaseTimer++;
 }
 
-void func_8010649C_bowser_toss(omObjData *object) {
+void m252_ExitObjMain(omObjData *object) {
     HuAudSeqStop();
     omOvlReturnEx(1);
 }
 
-void func_801064C0_bowser_toss(omObjData *object) {
-    if (D_8010F194_bowser_toss != 0) {
-        if (D_8010F194_bowser_toss == 1) {
-            object->func = func_8010649C_bowser_toss;
+void m252_ExitCheck(omObjData *object) {
+    if (m252_exitTimer != 0) {
+        if (m252_exitTimer == 1) {
+            object->func = m252_ExitObjMain;
         }
-        D_8010F194_bowser_toss--;
+        m252_exitTimer--;
     } else if (omSysExitReq == 1 && WipeStatGet() == 0) {
-        D_8010F194_bowser_toss = 16;
-        WipeCreateOut(WIPE_TYPE_NORMAL, (s16)D_8010F194_bowser_toss);
-        HuAudSeqFadeOut((s16)D_8010F194_bowser_toss);
-        HuAudFXAllFadeOut((s16)D_8010F194_bowser_toss);
+        m252_exitTimer = 16;
+        WipeCreateOut(WIPE_TYPE_NORMAL, (s16)m252_exitTimer);
+        HuAudSeqFadeOut((s16)m252_exitTimer);
+        HuAudFXAllFadeOut((s16)m252_exitTimer);
     }
 }
 
-void func_80106568_bowser_toss(void) {
+void m252_PlayerObjCreateAll(void) {
     s32 used[2];
     BowserTossPlayer *player;
     s32 i;
@@ -640,38 +640,38 @@ void func_80106568_bowser_toss(void) {
 
     used[0] = -1;
     used[1] = -1;
-    player = D_8010FB74_bowser_toss = HuMemAllocTag(sizeof(BowserTossPlayer) * 2, TAG_OVERLAY);
+    player = m252_playerWorkTbl = HuMemAllocTag(sizeof(BowserTossPlayer) * 2, TAG_OVERLAY);
     memset(player, 0, sizeof(BowserTossPlayer) * 2);
     for (i = 0; i < 2; i++) {
         for (j = 0, minGroup = 99; j < 4; j++) {
             found = 0;
             for (k = 0; k < i; k++) {
-                if (used[k] == D_8010F1B0_bowser_toss[j]) {
+                if (used[k] == m252_playerOrderTbl[j]) {
                     found = 1;
                 }
             }
-            if (!found && GwPlayer[D_8010F1B0_bowser_toss[j]].group < minGroup) {
-                minGroup = GwPlayer[D_8010F1B0_bowser_toss[j]].group;
-                D_8010FB74_bowser_toss[i].unk_18 = D_8010F1B0_bowser_toss[j];
+            if (!found && GwPlayer[m252_playerOrderTbl[j]].group < minGroup) {
+                minGroup = GwPlayer[m252_playerOrderTbl[j]].group;
+                m252_playerWorkTbl[i].unk_18 = m252_playerOrderTbl[j];
             }
         }
-        used[i] = D_8010FB74_bowser_toss[i].unk_18;
+        used[i] = m252_playerWorkTbl[i].unk_18;
     }
     MgShadowAltSet(1);
     MgPlayerParamReset();
     for (i = 0; i < 2; i++, player++) {
         player->index = i;
-        mgPlayerObjTbl[mgPlayerObjNum] = omAddObj(i + 16, 11, 60, -1, func_801067B0_bowser_toss);
-        mgPlayerObjTbl[mgPlayerObjNum]->trans.x = D_8010F198_bowser_toss[i].x;
-        mgPlayerObjTbl[mgPlayerObjNum]->trans.y = D_8010F198_bowser_toss[i].y;
-        mgPlayerObjTbl[mgPlayerObjNum]->trans.z = D_8010F198_bowser_toss[i].z;
+        mgPlayerObjTbl[mgPlayerObjNum] = omAddObj(i + 16, 11, 60, -1, m252_PlayerObjInit);
+        mgPlayerObjTbl[mgPlayerObjNum]->trans.x = m252_playerPosTbl[i].x;
+        mgPlayerObjTbl[mgPlayerObjNum]->trans.y = m252_playerPosTbl[i].y;
+        mgPlayerObjTbl[mgPlayerObjNum]->trans.z = m252_playerPosTbl[i].z;
         mgPlayerObjTbl[mgPlayerObjNum]->rot.y = 90.0f;
-        func_8010D960_bowser_toss(mgPlayerObjTbl[mgPlayerObjNum], (u32)player);
+        m252_WorkPtrSet(mgPlayerObjTbl[mgPlayerObjNum], (u32)player);
         mgPlayerObjNum++;
     }
 }
 
-void func_801067B0_bowser_toss(omObjData *object) {
+void m252_PlayerObjInit(omObjData *object) {
     BowserTossPlayer *player;
     MgPlayerWork *data;
     s32 variant;
@@ -682,7 +682,7 @@ void func_801067B0_bowser_toss(omObjData *object) {
     s32 linkModel;
     f32 zero;
 
-    player = func_8010D98C_bowser_toss(object);
+    player = m252_WorkPtrGet(object);
     gwIndex = player->unk_18;
     chr = GwPlayer[gwIndex].chr;
     player->unk_1C = chr;
@@ -708,16 +708,16 @@ void func_801067B0_bowser_toss(omObjData *object) {
     MgPlayerMotLoad(object, 5, CharMotionDataNumGet(chr, 0x64), 1, 0);
     MgPlayerMotLoad(object, 6, CharMotionDataNumGet(chr, 0x65), 1, 30);
     variant = rand8() & 1;
-    MgPlayerMotLoad(object, 7, CharMotionDataNumGet(chr, D_8010F220_bowser_toss[variant]), 1, 120);
-    player->unk_14 = D_8010F1C0_bowser_toss[chr] | D_8010F220_bowser_toss[variant];
-    MgPlayerMotLoad(object, 8, CharMotionDataNumGet(chr, D_8010F228_bowser_toss[rand8() & 1]), 1, 120);
+    MgPlayerMotLoad(object, 7, CharMotionDataNumGet(chr, m252_voiceNoTbl[variant]), 1, 120);
+    player->unk_14 = m252_voiceChrTbl[chr] | m252_voiceNoTbl[variant];
+    MgPlayerMotLoad(object, 8, CharMotionDataNumGet(chr, m252_loseMotNoTbl[rand8() & 1]), 1, 120);
     MgPlayerMotSet(object, 5);
     Hu3DData[object->model[0]].motId = object->motion[5];
     Hu3DMotionShapeSet(object->model[0], object->motion[6], 1);
     Hu3DData[object->model[0]].motShapeSpeed = 0.0f;
     Hu3DData[object->model[0]].motShapeTime = 0.0f;
-    player->unk_24 = D_8010F1E0_bowser_toss[chr];
-    player->unk_28 = D_8010F200_bowser_toss[chr];
+    player->unk_24 = m252_spinSpeedMinTbl[chr];
+    player->unk_28 = m252_spinSpeedMaxTbl[chr];
     player->unk_2C = player->unk_28 - player->unk_24;
     player->unk_30 = player->unk_32 = 0;
     player->unk_3C = 1;
@@ -734,19 +734,19 @@ void func_801067B0_bowser_toss(omObjData *object) {
     player->unk_0C = 0;
     player->unk_10 = -1;
     player->unk_4C = 0;
-    func_8010858C_bowser_toss(player->index);
-    func_80108800_bowser_toss(player->index);
-    object->func = func_80106BC4_bowser_toss;
+    m252_KoopaCreate(player->index);
+    m252_KoopaGet(player->index);
+    object->func = m252_PlayerObjMain;
 }
 
-const Vec D_8010F5A0_bowser_toss = { 0.0f, 0.0f, 0.0f };
+const Vec m252_zeroVec = { 0.0f, 0.0f, 0.0f };
 
-void func_80106BC4_bowser_toss(omObjData *object) {
-    Vec pos = D_8010F5A0_bowser_toss;
-    Vec vel = D_8010F5A0_bowser_toss;
-    Vec scale = D_8010F5A0_bowser_toss;
+void m252_PlayerObjMain(omObjData *object) {
+    Vec pos = m252_zeroVec;
+    Vec vel = m252_zeroVec;
+    Vec scale = m252_zeroVec;
     BowserTossPlayer *player;
-    UnkBowser *bowser;
+    BowserTossKoopa *bowser;
     HmfModel *model;
     MgPlayerWork *data;
     s32 stickPos;
@@ -758,8 +758,8 @@ void func_80106BC4_bowser_toss(omObjData *object) {
     f32 angle;
     f32 pitch;
 
-    player = func_8010D98C_bowser_toss(object);
-    bowser = func_80108800_bowser_toss(player->index);
+    player = m252_WorkPtrGet(object);
+    bowser = m252_KoopaGet(player->index);
     data = object->data;
     model = &Hu3DData[object->model[0]];
     switch (MgFlowStatGet()) {
@@ -769,14 +769,14 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                     player->unk_08 = 0;
                     player->unk_0C = 1;
                 }
-            } else if (D_8010FB74_bowser_toss[0].unk_0C > 0 && D_8010FB74_bowser_toss[1].unk_0C > 0 &&
-                       D_8010FB68_bowser_toss <= 0) {
-                D_8010FB68_bowser_toss++;
+            } else if (m252_playerWorkTbl[0].unk_0C > 0 && m252_playerWorkTbl[1].unk_0C > 0 &&
+                       m252_resultWait <= 0) {
+                m252_resultWait++;
             }
             break;
         case MG_STATE_PLAY:
             if (player->unk_1E) {
-                func_80107E84_bowser_toss(object);
+                m252_PlayerComInput(object);
             }
             switch (player->unk_0C) {
                 case 1:
@@ -863,7 +863,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                             vel.z = cosdf(object->rot.y) * 20.0 * 0.2f;
                             vel.y = 0.0f;
                             scale.x = scale.y = scale.z = 0.5f;
-                            func_8010A2D4_bowser_toss(&pos, &vel, &scale, 1.0f, player->index);
+                            m252_SmokeCreate(&pos, &vel, &scale, 1.0f, player->index);
                         }
                     }
                     if (player->unk_44 >= 45.0f) {
@@ -1003,7 +1003,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
         case MG_STATE_FINISH:
             switch (player->unk_0C) {
                 case 5:
-                    if (D_8010FB78_bowser_toss == player->index) {
+                    if (m252_winnerNo == player->index) {
                         player->unk_0C = 6;
                     } else {
                         player->unk_0C = 9;
@@ -1031,7 +1031,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                     object->trans.x += player->unk_38;
                     object->trans.y += player->unk_34;
                     player->unk_34 -= 1.79663f;
-                    object->rot.y = func_8010D6E0_bowser_toss(90.0f, object->rot.y, 10.0f);
+                    object->rot.y = m252_AngleStepCalc(90.0f, object->rot.y, 10.0f);
                     if (object->trans.y <= 0.0f) {
                         MgPlayerMotSet(object, 0);
                         HuAudPlayerFXPlay(player->unk_1C + 0x32, player->index);
@@ -1043,12 +1043,12 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                     object->trans.x += 9.000000357627869;
                     object->trans.y += player->unk_34;
                     player->unk_34 -= 1.79663f;
-                    object->rot.y = func_8010D6E0_bowser_toss(90.0f, object->rot.y, 10.0f);
+                    object->rot.y = m252_AngleStepCalc(90.0f, object->rot.y, 10.0f);
                     if (object->trans.y <= 0.0f) {
                         MgPlayerMotSet(object, 0);
                         HuAudPlayerFXPlay(player->unk_1C + 0x32, player->index);
-                        if (D_8010FB84_bowser_toss == -1) {
-                            D_8010FB84_bowser_toss = HuAudFXPlay(0x4AA);
+                        if (m252_spinSeNo == -1) {
+                            m252_spinSeNo = HuAudFXPlay(0x4AA);
                         }
                         object->trans.y = 0.0f;
                         player->unk_0C = 9;
@@ -1061,7 +1061,7 @@ void func_80106BC4_bowser_toss(omObjData *object) {
                         bowser->unk_0A = 3;
                         player->unk_3C = 0;
                     }
-                    object->rot.y = func_8010D6E0_bowser_toss(0.0f, object->rot.y, 10.0f);
+                    object->rot.y = m252_AngleStepCalc(0.0f, object->rot.y, 10.0f);
                     if (object->rot.y < 1.0f || object->rot.y >= 359.0f) {
                         player->unk_0C = 10;
                     }
@@ -1074,14 +1074,14 @@ void func_80106BC4_bowser_toss(omObjData *object) {
             switch (player->unk_02) {
                 case 0:
                     if (MgPlayerMotSet(object, 7)) {
-                        CharAnimCreate(object->model[0], 2, player->unk_1C, D_8010F154_bowser_toss[player->unk_1C]);
+                        CharAnimCreate(object->model[0], 2, player->unk_1C, m252_winAnimTbl[player->unk_1C]);
                         HuAudCharVoicePlayPlayer(player->unk_14, -1, player->index);
                         player->unk_02 = -1;
                     }
                     break;
                 case 1:
                     if (MgPlayerMotSet(object, 8)) {
-                        CharAnimCreate(object->model[0], 2, player->unk_1C, D_8010F174_bowser_toss[player->unk_1C]);
+                        CharAnimCreate(object->model[0], 2, player->unk_1C, m252_loseAnimTbl[player->unk_1C]);
                         player->unk_02 = -1;
                     }
                     break;
@@ -1108,22 +1108,22 @@ void func_80106BC4_bowser_toss(omObjData *object) {
     Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
 }
 
-void func_80107E84_bowser_toss(omObjData *object) {
+void m252_PlayerComInput(omObjData *object) {
     BowserTossPlayer *player;
     f32 ratio;
 
-    player = func_8010D98C_bowser_toss(object);
-    func_80108800_bowser_toss(player->index);
+    player = m252_WorkPtrGet(object);
+    m252_KoopaGet(player->index);
     HuPadBtn[player->unk_1A] = HuPadBtnDown[player->unk_1A] = HuPadStkY[player->unk_1A] = 0;
     switch (player->unk_0C) {
         case 1:
-            player->unk_54 = D_8010F230_bowser_toss[player->unk_20] +
-                             D_8010F240_bowser_toss[player->unk_20] *
+            player->unk_54 = m252_comPowerTbl[player->unk_20] +
+                             m252_comPowerRandTbl[player->unk_20] *
                                  ((0.5 - (f32)(u8)(rand8() % 100) * 0.01) * 2);
-            player->unk_58 = func_801080D0_bowser_toss(
+            player->unk_58 = m252_ComPowerCalc(
                 player->unk_54,
-                D_8010F260_bowser_toss[player->unk_20] + (f32)(u8)(rand8() % 100) * 0.01 * 1500.0,
-                D_8010F250_bowser_toss[player->unk_20]);
+                m252_comDistTbl[player->unk_20] + (f32)(u8)(rand8() % 100) * 0.01 * 1500.0,
+                m252_comScaleTbl[player->unk_20]);
             HuPadBtnDown[player->unk_1A] |= A_BUTTON;
             break;
         case 2:
@@ -1136,7 +1136,7 @@ void func_80107E84_bowser_toss(omObjData *object) {
     }
 }
 
-f32 func_801080D0_bowser_toss(f32 power, f32 distance, f32 fallback) {
+f32 m252_ComPowerCalc(f32 power, f32 distance, f32 fallback) {
     f32 pos[2];
     f32 vel[2];
     f32 angle;
@@ -1144,8 +1144,8 @@ f32 func_801080D0_bowser_toss(f32 power, f32 distance, f32 fallback) {
 
     angle = 360.0f - power * 85.0f;
     for (scale = 0.5f; scale < 1.0f; scale += 0.01f) {
-        pos[0] = D_8010F270_bowser_toss[0];
-        pos[1] = D_8010F270_bowser_toss[1];
+        pos[0] = m252_throwStartPos[0];
+        pos[1] = m252_throwStartPos[1];
         vel[0] = fabs(cosdf(angle)) * scale * 75.99999904632568;
         vel[1] = fabs(sindf(angle)) * scale * 75.99999904632568;
         while (pos[1] > 0.0f) {
@@ -1161,8 +1161,8 @@ f32 func_801080D0_bowser_toss(f32 power, f32 distance, f32 fallback) {
         }
     }
     for (scale = 0.5f; scale > 0.1f; scale -= 0.01f) {
-        pos[0] = D_8010F270_bowser_toss[0];
-        pos[1] = D_8010F270_bowser_toss[1];
+        pos[0] = m252_throwStartPos[0];
+        pos[1] = m252_throwStartPos[1];
         vel[0] = fabs(cosdf(angle)) * scale * 75.99999904632568;
         vel[1] = fabs(sindf(angle)) * scale * 75.99999904632568;
         while (pos[1] > 0.0f) {
@@ -1180,11 +1180,11 @@ f32 func_801080D0_bowser_toss(f32 power, f32 distance, f32 fallback) {
     return fallback;
 }
 
-s16 func_8010840C_bowser_toss(void) {
+s16 m252_PlayerAllThrownCheck(void) {
     s32 i;
     BowserTossPlayer *p;
 
-    for (i = 0, p = D_8010FB74_bowser_toss; i < 2; i++, p++) {
+    for (i = 0, p = m252_playerWorkTbl; i < 2; i++, p++) {
         if (p->unk_0C != 5) {
             return 0;
         }
@@ -1192,11 +1192,11 @@ s16 func_8010840C_bowser_toss(void) {
     return 1;
 }
 
-s16 func_80108444_bowser_toss(void) {
+s16 m252_PlayerAllEndCheck(void) {
     s32 i;
     BowserTossPlayer *p;
 
-    for (i = 0, p = D_8010FB74_bowser_toss; i < 2; i++, p++) {
+    for (i = 0, p = m252_playerWorkTbl; i < 2; i++, p++) {
         if (p->unk_0C != 10) {
             return 0;
         }
@@ -1205,7 +1205,7 @@ s16 func_80108444_bowser_toss(void) {
 }
 
 // Swaps the shared HmfData pointer of two of the object's models.
-void func_8010847C_bowser_toss(omObjData *object, s16 arg1, s16 arg2) {
+void m252_PlayerMdlSwap(omObjData *object, s16 arg1, s16 arg2) {
     HmfModel *model1 = &Hu3DData[object->model[arg1]];
     HmfModel *model2 = &Hu3DData[object->model[arg2]];
     HmfData *hmf = model1->hmf;
@@ -1214,12 +1214,12 @@ void func_8010847C_bowser_toss(omObjData *object, s16 arg1, s16 arg2) {
     model2->hmf = hmf;
 }
 
-void func_801084DC_bowser_toss(void) {
-    UnkBowser *bowser;
+void m252_KoopaInit(void) {
+    BowserTossKoopa *bowser;
     s32 i;
 
-    bowser = D_8010FB8C_bowser_toss = HuMemAllocTag(sizeof(UnkBowser) * 2, TAG_OVERLAY);
-    memset(bowser, 0, sizeof(UnkBowser) * 2);
+    bowser = m252_koopaTbl = HuMemAllocTag(sizeof(BowserTossKoopa) * 2, TAG_OVERLAY);
+    memset(bowser, 0, sizeof(BowserTossKoopa) * 2);
     for (i = 0; i < 2; i++, bowser++) {
         bowser->unk_00 = NULL;
         bowser->unk_5C = NULL;
@@ -1231,11 +1231,11 @@ void func_801084DC_bowser_toss(void) {
         bowser->unk_22 = 0;
         bowser->unk_24 = 0;
     }
-    D_8010FB88_bowser_toss = omAddObj(0x14, 0, 0, -1, func_8010882C_bowser_toss);
+    m252_koopaObj = omAddObj(0x14, 0, 0, -1, m252_KoopaObjMain);
 }
 
-void func_8010858C_bowser_toss(s16 index) {
-    UnkBowser *bowser;
+void m252_KoopaCreate(s16 index) {
+    BowserTossKoopa *bowser;
     HmfModel *model;
     u8 motId;
     u8 motIdShape;
@@ -1244,16 +1244,16 @@ void func_8010858C_bowser_toss(s16 index) {
     s32 modelId;
     HmfModelData_Unk64_Unk8C_Struct *motData;
 
-    bowser = &D_8010FB8C_bowser_toss[index];
+    bowser = &m252_koopaTbl[index];
     bowser->unk_00 = mgPlayerObjTbl[index];
     bowser->unk_0A = 0;
-    func_8010D98C_bowser_toss(bowser->unk_00);
+    m252_WorkPtrGet(bowser->unk_00);
     model = &Hu3DData[bowser->unk_00->model[0]];
     motId = model->motId;
     motIdShape = model->motIdShape;
     model->motId = bowser->unk_00->motion[4];
     model->motIdShape = bowser->unk_00->motion[6];
-    bowser->unk_5C = func_8010D9E0_bowser_toss(bowser->unk_00->model[0], 1, "item_hook", 1, 0);
+    bowser->unk_5C = m252_HookMtxBake(bowser->unk_00->model[0], 1, "item_hook", 1, 0);
     model->motId = motId;
     model->motIdShape = motIdShape;
     motData = &Hu3DMotion[bowser->unk_00->motion[6]];
@@ -1262,16 +1262,16 @@ void func_8010858C_bowser_toss(s16 index) {
     bowser->unk_60 = HuMemAllocTag(size, TAG_OVERLAY);
     memset(bowser->unk_60, 0, size);
     memcpy(bowser->unk_60, bowser->unk_5C->mtx, size);
-    func_8010DDC4_bowser_toss(bowser->unk_5C);
+    m252_HookMtxFree(bowser->unk_5C);
     bowser->unk_5C = NULL;
     if (index == 0) {
         bowser->unk_04 = Hu3DModelRead(0x550000, 0x299);
         bowser->unk_06 = Hu3DModelRead(0x550005, 0x29D);
         modelId = bowser->unk_08 = Hu3DModelRead(0, 0x299);
     } else {
-        bowser->unk_04 = Hu3DModelLink(D_8010FB8C_bowser_toss->unk_04);
-        bowser->unk_06 = Hu3DModelLink(D_8010FB8C_bowser_toss->unk_06);
-        modelId = bowser->unk_08 = Hu3DModelLink(D_8010FB8C_bowser_toss->unk_08);
+        bowser->unk_04 = Hu3DModelLink(m252_koopaTbl->unk_04);
+        bowser->unk_06 = Hu3DModelLink(m252_koopaTbl->unk_06);
+        modelId = bowser->unk_08 = Hu3DModelLink(m252_koopaTbl->unk_08);
     }
     Hu3DModelScaleSet(modelId, 1.3f, 1.3f, 1.3f);
     Hu3DModelAttrSet(bowser->unk_04, 0x4000, 0x4000);
@@ -1281,11 +1281,11 @@ void func_8010858C_bowser_toss(s16 index) {
     Hu3DModelCameraSet(bowser->unk_08, 1 << index);
 }
 
-UnkBowser *func_80108800_bowser_toss(s16 arg0) {
-    return &D_8010FB8C_bowser_toss[arg0];
+BowserTossKoopa *m252_KoopaGet(s16 arg0) {
+    return &m252_koopaTbl[arg0];
 }
 
-void func_8010882C_bowser_toss(omObjData *object) {
+void m252_KoopaObjMain(omObjData *object) {
     HuMtx4F rotMtx;
     HuMtx4F mtx;
     HuMtx4F hookMtx;
@@ -1293,7 +1293,7 @@ void func_8010882C_bowser_toss(omObjData *object) {
     Vec vel;
     Vec scale;
     BowserTossPlayer *player;
-    UnkBowser *bowser;
+    BowserTossKoopa *bowser;
     HmfModel *model;
     f32 t;
     f32 ground;
@@ -1304,8 +1304,8 @@ void func_8010882C_bowser_toss(omObjData *object) {
     s32 i;
     s32 j;
 
-    for (i = 0, bowser = D_8010FB8C_bowser_toss; i < 2; i++, bowser++) {
-        player = func_8010D98C_bowser_toss(bowser->unk_00);
+    for (i = 0, bowser = m252_koopaTbl; i < 2; i++, bowser++) {
+        player = m252_WorkPtrGet(bowser->unk_00);
         model = &Hu3DData[bowser->unk_00->model[0]];
         object->trans.x = bowser->unk_00->trans.x;
         object->trans.y = bowser->unk_00->trans.y;
@@ -1319,8 +1319,8 @@ void func_8010882C_bowser_toss(omObjData *object) {
         switch (bowser->unk_0A) {
             case 0:
                 if (bowser->unk_60 != NULL) {
-                    func_80109DB8_bowser_toss(object, object->rot.y, rotMtx);
-                    func_80109E4C_bowser_toss(bowser, hookMtx[0], model->motShapeTime);
+                    m252_ObjMtxCalc(object, object->rot.y, rotMtx);
+                    m252_KoopaHookMtxGet(bowser, hookMtx[0], model->motShapeTime);
                     if (model->motIdShape != 0xFF) {
                         mtxCat(hookMtx, rotMtx, mtx);
                     } else {
@@ -1333,8 +1333,8 @@ void func_8010882C_bowser_toss(omObjData *object) {
                 break;
             case 1:
                 Hu3DModelAttrSet(bowser->unk_04, 0x4000, 0);
-                func_80109DB8_bowser_toss(object, 90.0f, rotMtx);
-                func_80109E4C_bowser_toss(bowser, hookMtx[0], model->motShapeTime);
+                m252_ObjMtxCalc(object, 90.0f, rotMtx);
+                m252_KoopaHookMtxGet(bowser, hookMtx[0], model->motShapeTime);
                 mtxCat(hookMtx, rotMtx, mtx);
                 mtxTransCat(mtx, 0.0f, 0.0f, 150.0f);
                 bowser->unk_30 = mtx[3][0];
@@ -1351,7 +1351,7 @@ void func_8010882C_bowser_toss(omObjData *object) {
                 bowser->unk_30 += bowser->unk_48;
                 bowser->unk_34 += bowser->unk_4C;
                 bowser->unk_22 = 0;
-                bowser->unk_24 = func_80109F68_bowser_toss(bowser->unk_30, bowser->unk_34, bowser->unk_48, bowser->unk_4C);
+                bowser->unk_24 = m252_FallTimeCalc(bowser->unk_30, bowser->unk_34, bowser->unk_48, bowser->unk_4C);
                 bowser->unk_20 = _HuAudPlayerFXPlay(0x4A7, player->index);
                 if (bowser->unk_20 != -1) {
                     HuAudFXPitchSet(bowser->unk_20, bowser->unk_22);
@@ -1368,8 +1368,8 @@ void func_8010882C_bowser_toss(omObjData *object) {
                 }
                 if (bowser->unk_0C < 20) {
                     t = bowser->unk_0C / 20.0f;
-                    CenterM[i].x = func_8010D8A0_bowser_toss(t, Center.x, bowser->unk_30);
-                    CenterM[i].y = func_8010D8A0_bowser_toss(t, Center.y, bowser->unk_34);
+                    CenterM[i].x = m252_InterpCalc(t, Center.x, bowser->unk_30);
+                    CenterM[i].y = m252_InterpCalc(t, Center.y, bowser->unk_34);
                 } else {
                     CenterM[i].x = bowser->unk_30;
                     CenterM[i].y = bowser->unk_34;
@@ -1382,8 +1382,8 @@ void func_8010882C_bowser_toss(omObjData *object) {
                         CenterM[i].y = Center.y;
                     }
                 } else {
-                    if (CenterM[i].y < D_8010FBA8_bowser_toss.y) {
-                        CenterM[i].y = D_8010FBA8_bowser_toss.y;
+                    if (CenterM[i].y < m252_cameraCenterMin.y) {
+                        CenterM[i].y = m252_cameraCenterMin.y;
                     }
                 }
                 bowser->unk_3C = atan2df(-bowser->unk_4C, bowser->unk_48);
@@ -1409,7 +1409,7 @@ void func_8010882C_bowser_toss(omObjData *object) {
                         vel.x = sindf(yaw) * cosdf(pitch) * speed;
                         vel.y = -sindf(pitch) * speed;
                         vel.z = cosdf(yaw) * cosdf(pitch) * speed;
-                        func_8010A2D4_bowser_toss(&pos, &vel, &scale, 1.0f, player->index);
+                        m252_SmokeCreate(&pos, &vel, &scale, 1.0f, player->index);
                     }
                     if (bowser->unk_20 != -1) {
                         HuAudFXStop(bowser->unk_20);
@@ -1446,8 +1446,8 @@ void func_8010882C_bowser_toss(omObjData *object) {
                 break;
             case 3:
                 Hu3DModelAttrSet(bowser->unk_04, 0x4000, 0);
-                func_80109DB8_bowser_toss(object, 90.0f, rotMtx);
-                func_80109E4C_bowser_toss(bowser, hookMtx[0], 0.0f);
+                m252_ObjMtxCalc(object, 90.0f, rotMtx);
+                m252_KoopaHookMtxGet(bowser, hookMtx[0], 0.0f);
                 mtxCat(hookMtx, rotMtx, mtx);
                 mtxTransCat(mtx, 0.0f, 0.0f, 150.0f);
                 bowser->unk_30 = mtx[3][0];
@@ -1480,14 +1480,14 @@ void func_8010882C_bowser_toss(omObjData *object) {
                         vel.x = sindf(yaw) * cosdf(pitch) * speed;
                         vel.y = -sindf(pitch) * speed;
                         vel.z = cosdf(yaw) * cosdf(pitch) * speed;
-                        func_8010A2D4_bowser_toss(&pos, &vel, &scale, 1.0f, player->index);
+                        m252_SmokeCreate(&pos, &vel, &scale, 1.0f, player->index);
                     }
                     _HuAudPlayerFXPlay(0x4A8, player->index);
                     bowser->unk_0A = 9;
                 }
                 break;
             case 5:
-                bowser->unk_3C = func_8010D6E0_bowser_toss(0.0f, bowser->unk_3C, 5.0f);
+                bowser->unk_3C = m252_AngleStepCalc(0.0f, bowser->unk_3C, 5.0f);
                 if (bowser->unk_3C <= 0.0f) {
                     bowser->unk_0A = 9;
                     bowser->unk_0C = 0;
@@ -1510,8 +1510,8 @@ void func_8010882C_bowser_toss(omObjData *object) {
                         CenterM[i].y = Center.y;
                     }
                 } else {
-                    if (CenterM[i].y < D_8010FBA8_bowser_toss.y) {
-                        CenterM[i].y = D_8010FBA8_bowser_toss.y;
+                    if (CenterM[i].y < m252_cameraCenterMin.y) {
+                        CenterM[i].y = m252_cameraCenterMin.y;
                     }
                 }
                 pos.x = bowser->unk_30;
@@ -1524,7 +1524,7 @@ void func_8010882C_bowser_toss(omObjData *object) {
                 vel.y = -sindf(pitch) * speed;
                 vel.z = cosdf(yaw) * cosdf(pitch) * speed;
                 scale.x = scale.y = scale.z = 1.0f;
-                func_8010A2D4_bowser_toss(&pos, &vel, &scale, 1.0f, player->index);
+                m252_SmokeCreate(&pos, &vel, &scale, 1.0f, player->index);
                 if (bowser->unk_48 <= 10.0) {
                     bowser->unk_0A = 9;
                     bowser->unk_0C = 0;
@@ -1544,7 +1544,7 @@ void func_8010882C_bowser_toss(omObjData *object) {
                 vel.y = -sindf(pitch) * speed;
                 vel.z = cosdf(yaw) * cosdf(pitch) * speed;
                 scale.x = scale.y = scale.z = 1.0f;
-                func_8010A2D4_bowser_toss(&pos, &vel, &scale, 1.0f, player->index);
+                m252_SmokeCreate(&pos, &vel, &scale, 1.0f, player->index);
                 if (bowser->unk_0C >= 6.0f) {
                     bowser->unk_0A = 9;
                     bowser->unk_0C = 0;
@@ -1574,7 +1574,7 @@ void func_8010882C_bowser_toss(omObjData *object) {
     }
 }
 
-void func_80109DB8_bowser_toss(omObjData *object, f32 angle, HuMtx4F mtx) {
+void m252_ObjMtxCalc(omObjData *object, f32 angle, HuMtx4F mtx) {
     fmod(object->rot.y + angle, 360.0);
     func_8008A070_main(mtx);
     mtxTransCat(mtx, object->trans.x, object->trans.y, object->trans.z);
@@ -1582,7 +1582,7 @@ void func_80109DB8_bowser_toss(omObjData *object, f32 angle, HuMtx4F mtx) {
     mtxScaleCat(mtx, object->scale.x, object->scale.y, object->scale.z);
 }
 
-void func_80109E4C_bowser_toss(UnkBowser *bowser, f32 *out, f32 time) {
+void m252_KoopaHookMtxGet(BowserTossKoopa *bowser, f32 *out, f32 time) {
     s16 frame;
     s16 next;
     f32 frac;
@@ -1598,14 +1598,14 @@ void func_80109E4C_bowser_toss(UnkBowser *bowser, f32 *out, f32 time) {
         frame = time;
         next = frame + 1;
     }
-    func_8010D918_bowser_toss(bowser->unk_60[frame], bowser->unk_60[next], out, frac);
+    m252_MtxInterpCalc(bowser->unk_60[frame], bowser->unk_60[next], out, frac);
 }
 
-s16 func_80109F20_bowser_toss(void) {
+s16 m252_KoopaAllLandCheck(void) {
     s32 i;
-    UnkBowser *pBowser;
+    BowserTossKoopa *pBowser;
 
-    for (i = 0, pBowser = D_8010FB8C_bowser_toss; i < 2; i++, pBowser++) {
+    for (i = 0, pBowser = m252_koopaTbl; i < 2; i++, pBowser++) {
         if (pBowser->unk_0A == 0 || pBowser->unk_0A == 9) {
             continue;
         }
@@ -1615,7 +1615,7 @@ s16 func_80109F20_bowser_toss(void) {
 }
 
 // Counts the frames until a projectile falls back to the ground.
-s16 func_80109F68_bowser_toss(f32 x, f32 y, f32 velX, f32 velY) {
+s16 m252_FallTimeCalc(f32 x, f32 y, f32 velX, f32 velY) {
     s16 frames;
     f32 groundOffset;
 
@@ -1633,21 +1633,21 @@ s16 func_80109F68_bowser_toss(f32 x, f32 y, f32 velX, f32 velY) {
     return frames;
 }
 
-void func_8010A028_bowser_toss(void) {
+void m252_SmokeInit(void) {
     HuSprAnimData *sprite;
-    BowserTossEffect *effect;
+    BowserTossSmoke *effect;
     HmfModel *model;
     s32 i;
 
-    D_8010FB98_bowser_toss[5] = func_8010AD54_bowser_toss(11);
-    sprite = HuSprAnimDataGet(D_8010FB98_bowser_toss[5]);
-    D_8010FB90_bowser_toss = omAddObj(0x1E, 0, 0, -1, func_8010A17C_bowser_toss);
-    D_8010FB94_bowser_toss = effect = HuMemAllocTag(sizeof(BowserTossEffect) * 32, TAG_OVERLAY);
+    m252_sprTbl[5] = m252_SprAnimRead(11);
+    sprite = HuSprAnimDataGet(m252_sprTbl[5]);
+    m252_smokeObj = omAddObj(0x1E, 0, 0, -1, m252_SmokeObjMain);
+    m252_smokeTbl = effect = HuMemAllocTag(sizeof(BowserTossSmoke) * 32, TAG_OVERLAY);
     for (i = 0; i < 32; i++, effect++) {
         if (i == 0) {
-            effect->unk_02 = func_8010DDFC_bowser_toss(sprite, D_8010F150_bowser_toss, 0);
+            effect->unk_02 = m252_BillboardColorMdlCreate(sprite, m252_smokeColor, 0);
         } else {
-            effect->unk_02 = func_8010EA0C_bowser_toss(sprite, D_8010FB94_bowser_toss->unk_02, D_8010F150_bowser_toss);
+            effect->unk_02 = m252_BillboardColorMdlLink(sprite, m252_smokeTbl->unk_02, m252_smokeColor);
         }
         effect->unk_00 = 0;
         effect->unk_04 = effect->unk_08 = 0.0f;
@@ -1660,14 +1660,14 @@ void func_8010A028_bowser_toss(void) {
     }
 }
 
-void func_8010A17C_bowser_toss(omObjData *object) {
+void m252_SmokeObjMain(omObjData *object) {
     HuSprAnimData *sprite;
-    BowserTossEffect *effect;
+    BowserTossSmoke *effect;
     HmfModel *model;
     s32 i;
 
-    sprite = HuSprAnimDataGet(D_8010FB98_bowser_toss[5]);
-    for (i = 0, effect = D_8010FB94_bowser_toss; i < 32; i++, effect++) {
+    sprite = HuSprAnimDataGet(m252_sprTbl[5]);
+    for (i = 0, effect = m252_smokeTbl; i < 32; i++, effect++) {
         if (effect->unk_00 == 0) {
             continue;
         }
@@ -1684,7 +1684,7 @@ void func_8010A17C_bowser_toss(omObjData *object) {
         model->scale.x = effect->unk_24.x;
         model->scale.y = effect->unk_24.y;
         model->scale.z = effect->unk_24.z;
-        func_8010EC10_bowser_toss(effect->unk_02, sprite, (s32)effect->unk_04, D_8010F150_bowser_toss);
+        m252_BillboardColorPatSet(effect->unk_02, sprite, (s32)effect->unk_04, m252_smokeColor);
         effect->unk_04 += effect->unk_08;
         if ((s32)effect->unk_04 >= sprite->patNum) {
             effect->unk_00 = 0;
@@ -1694,14 +1694,14 @@ void func_8010A17C_bowser_toss(omObjData *object) {
     }
 }
 
-s32 func_8010A2D4_bowser_toss(Vec *pos, Vec *vel, Vec *scale, f32 speed, s16 camera) {
+s32 m252_SmokeCreate(Vec *pos, Vec *vel, Vec *scale, f32 speed, s16 camera) {
     HuSprAnimData *sprite;
-    BowserTossEffect *effect;
+    BowserTossSmoke *effect;
     HmfModel *model;
     s32 i;
 
-    sprite = HuSprAnimDataGet(D_8010FB98_bowser_toss[5]);
-    for (i = 0, effect = D_8010FB94_bowser_toss; i < 32; i++, effect++) {
+    sprite = HuSprAnimDataGet(m252_sprTbl[5]);
+    for (i = 0, effect = m252_smokeTbl; i < 32; i++, effect++) {
         if (effect->unk_00 != 0) {
             continue;
         }
@@ -1730,7 +1730,7 @@ s32 func_8010A2D4_bowser_toss(Vec *pos, Vec *vel, Vec *scale, f32 speed, s16 cam
         }
         effect->unk_08 = speed;
         effect->unk_04 = 0.0f;
-        func_8010EC10_bowser_toss(effect->unk_02, sprite, 0, D_8010F150_bowser_toss);
+        m252_BillboardColorPatSet(effect->unk_02, sprite, 0, m252_smokeColor);
         Hu3DModelAttrSet(effect->unk_02, 4, 0);
         Hu3DModelCameraSet(effect->unk_02, 1 << (u16)camera);
         model->motTime = 0.0f;
@@ -1746,15 +1746,15 @@ s32 func_8010A2D4_bowser_toss(Vec *pos, Vec *vel, Vec *scale, f32 speed, s16 cam
 }
 
 // Appends a new object to the shared minigame object list.
-void func_8010A4A8_bowser_toss(void) {
-    omObjData *obj = omAddObj(0x20, 0x1C, 0, -1, func_8010A500_bowser_toss);
+void m252_StageObjCreate(void) {
+    omObjData *obj = omAddObj(0x20, 0x1C, 0, -1, m252_StageObjInit);
     u16 index = mgMapObjNum;
 
     mgMapObjNum = index + 1;
     mgMapObjTbl[index] = obj;
 }
 
-void func_8010A500_bowser_toss(omObjData *object) {
+void m252_StageObjInit(omObjData *object) {
     HuSprAnimData *sprite;
     s32 i;
     s32 j;
@@ -1762,8 +1762,8 @@ void func_8010A500_bowser_toss(omObjData *object) {
     s32 base;
     s16 group;
 
-    D_8010FB98_bowser_toss[0] = func_8010AD54_bowser_toss(0x550006);
-    sprite = HuSprAnimDataGet(D_8010FB98_bowser_toss[0]);
+    m252_sprTbl[0] = m252_SprAnimRead(0x550006);
+    sprite = HuSprAnimDataGet(m252_sprTbl[0]);
     for (i = 0; i < 2; i++) {
         base = i * 14;
         j = 0;
@@ -1794,30 +1794,30 @@ void func_8010A500_bowser_toss(omObjData *object) {
         }
         j += 4;
         if (i == 0) {
-            object->model[base + j] = func_8010DDFC_bowser_toss(sprite, D_8010F320_bowser_toss, 0);
+            object->model[base + j] = m252_BillboardColorMdlCreate(sprite, m252_decoColor, 0);
         } else {
-            object->model[base + j] = func_8010EA0C_bowser_toss(sprite, object->model[j], D_8010F320_bowser_toss);
+            object->model[base + j] = m252_BillboardColorMdlLink(sprite, object->model[j], m252_decoColor);
         }
         for (k = 1; k < 4; k++) {
-            object->model[base + j + k] = func_8010EA0C_bowser_toss(sprite, object->model[j], D_8010F320_bowser_toss);
+            object->model[base + j + k] = m252_BillboardColorMdlLink(sprite, object->model[j], m252_decoColor);
         }
         for (k = base; k < base + 14; k++) {
-            Hu3DModelPosSet(object->model[k], D_8010F278_bowser_toss[k - base].x, D_8010F278_bowser_toss[k - base].y,
-                            D_8010F278_bowser_toss[k - base].z);
+            Hu3DModelPosSet(object->model[k], m252_decoPosTbl[k - base].x, m252_decoPosTbl[k - base].y,
+                            m252_decoPosTbl[k - base].z);
             Hu3DModelCameraSet(object->model[k], 1 << i);
         }
     }
-    D_8010FB98_bowser_toss[4] = func_8010AD54_bowser_toss(0x55000A);
+    m252_sprTbl[4] = m252_SprAnimRead(0x55000A);
     group = HuSprGrpCreate(1, 0);
-    HuSprGrpMemberSet(group, 0, D_8010FB98_bowser_toss[4], 0);
+    HuSprGrpMemberSet(group, 0, m252_sprTbl[4], 0);
     HuSprPosSet(group, 0, 160, 120);
     HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_STOP);
     HuSprPatNoSet(group, 0, 0);
     HuSprAttrSet(group, 0, 0x1000);
-    object->func = func_8010A908_bowser_toss;
+    object->func = m252_StageObjMain;
 }
 
-void func_8010A908_bowser_toss(omObjData *object) {
+void m252_StageObjMain(omObjData *object) {
     HuSprAnimData *sprite;
     s32 i;
     s32 j;
@@ -1829,7 +1829,7 @@ void func_8010A908_bowser_toss(omObjData *object) {
     s32 index;
     s32 frame;
 
-    sprite = HuSprAnimDataGet(D_8010FB98_bowser_toss[0]);
+    sprite = HuSprAnimDataGet(m252_sprTbl[0]);
     for (i = 0; i < 2; i++) {
         base = i * 14;
         j = 0;
@@ -1847,10 +1847,10 @@ void func_8010A908_bowser_toss(omObjData *object) {
             parity = (start & 1) ? 1 : 0;
             index = start + k;
             if (CenterM[i].x == Center.x) {
-                Hu3DModelAttrSet(object->model[base + j + D_8010F324_bowser_toss[parity][k]], 4, 4);
+                Hu3DModelAttrSet(object->model[base + j + m252_decoSwapTbl[parity][k]], 4, 4);
             } else {
-                Hu3DModelAttrSet(object->model[base + j + D_8010F324_bowser_toss[parity][k]], 4, 0);
-                Hu3DModelPosSet(object->model[base + j + D_8010F324_bowser_toss[parity][k]],
+                Hu3DModelAttrSet(object->model[base + j + m252_decoSwapTbl[parity][k]], 4, 0);
+                Hu3DModelPosSet(object->model[base + j + m252_decoSwapTbl[parity][k]],
                                 (s16)index * 704.502487182617188 + 955.695037841796875, 0.0f, 0.0f);
             }
         }
@@ -1875,13 +1875,13 @@ void func_8010A908_bowser_toss(omObjData *object) {
             } else {
                 Hu3DModelAttrSet(object->model[base + j + k], 4, 0);
             }
-            func_8010EC10_bowser_toss(object->model[base + j + k], sprite, frame, D_8010F338_bowser_toss);
+            m252_BillboardColorPatSet(object->model[base + j + k], sprite, frame, m252_decoAnimColor);
         }
-        func_8010AF38_bowser_toss(i, &CenterM[i], &CRotM[i]);
+        m252_BackScrollSet(i, &CenterM[i], &CRotM[i]);
     }
 }
 
-u16 func_8010AD54_bowser_toss(s32 dirAndFile) {
+u16 m252_SprAnimRead(s32 dirAndFile) {
     void *data;
     u16 sprite;
 
@@ -1891,29 +1891,29 @@ u16 func_8010AD54_bowser_toss(s32 dirAndFile) {
     return sprite;
 }
 
-void func_8010AD98_bowser_toss(void) {
+void m252_BackInit(void) {
     s32 i;
     s32 j;
     s32 group;
 
-    D_8010FB98_bowser_toss[1] = func_8010AD54_bowser_toss(0x550007);
-    D_8010FB98_bowser_toss[2] = func_8010AD54_bowser_toss(0x550008);
-    D_8010FB98_bowser_toss[3] = func_8010AD54_bowser_toss(0x550009);
+    m252_sprTbl[1] = m252_SprAnimRead(0x550007);
+    m252_sprTbl[2] = m252_SprAnimRead(0x550008);
+    m252_sprTbl[3] = m252_SprAnimRead(0x550009);
     for (i = 0; i < 2; i++) {
-        D_8010FB9C_bowser_toss[i] = group = (s32)HuSprGrpCreate(4, 0);
+        m252_backGrpTbl[i] = group = (s32)HuSprGrpCreate(4, 0);
         for (j = 0; j < 4; j++) {
-            HuSprGrpMemberSet(group, j, D_8010FB98_bowser_toss[1], 0);
-            HuSprPosSet(group, j, D_8010F33C_bowser_toss[i].x, D_8010F33C_bowser_toss[i].y);
+            HuSprGrpMemberSet(group, j, m252_sprTbl[1], 0);
+            HuSprPosSet(group, j, m252_backScissorTbl[i].x, m252_backScissorTbl[i].y);
             HuSprAnimModeSet(group, j, HUSPR_ANIM_MODE_STOP);
             HuSprPatNoSet(group, j, 0);
             HuSprAttrSet(group, j, 0x483C);
-            HuSprScissorSet(group, j, D_8010F33C_bowser_toss[i].x, D_8010F33C_bowser_toss[i].y,
-                            D_8010F33C_bowser_toss[i].width, D_8010F33C_bowser_toss[i].height);
+            HuSprScissorSet(group, j, m252_backScissorTbl[i].x, m252_backScissorTbl[i].y,
+                            m252_backScissorTbl[i].width, m252_backScissorTbl[i].height);
         }
     }
 }
 
-void func_8010AF38_bowser_toss(s16 camera, Vec *pos, Vec *rot) {
+void m252_BackScrollSet(s16 camera, Vec *pos, Vec *rot) {
     s16 group;
     f32 x;
     f32 y;
@@ -1923,9 +1923,9 @@ void func_8010AF38_bowser_toss(s16 camera, Vec *pos, Vec *rot) {
     s16 frame;
     BowserTossScrollFrame *entry;
 
-    group = D_8010FB9C_bowser_toss[camera];
-    x = (pos->x - Center.x) / D_8010F34C_bowser_toss;
-    y = (pos->y - Center.y) / D_8010F34C_bowser_toss;
+    group = m252_backGrpTbl[camera];
+    x = (pos->x - Center.x) / m252_backScrollScale;
+    y = (pos->y - Center.y) / m252_backScrollScale;
     if (x == 0.0f) {
         HuSprDispOff(group, 1);
         HuSprDispOff(group, 3);
@@ -1956,12 +1956,12 @@ void func_8010AF38_bowser_toss(s16 camera, Vec *pos, Vec *rot) {
     } else if (frame < 0) {
         frame = 0;
     }
-    entry = &D_8010F350_bowser_toss[frame];
+    entry = &m252_backFrameTbl[frame];
     HuSprPosSet(group, 0, x, scrollY);
-    HuSprGrpMemberSet(group, 0, D_8010FB98_bowser_toss[entry->sprite], entry->frame);
+    HuSprGrpMemberSet(group, 0, m252_sprTbl[entry->sprite], entry->frame);
     HuSprPatNoSet(group, 0, entry->frame);
     HuSprPosSet(group, 1, x + signX * 320.0f, scrollY);
-    HuSprGrpMemberSet(group, 1, D_8010FB98_bowser_toss[entry->sprite], entry->frame);
+    HuSprGrpMemberSet(group, 1, m252_sprTbl[entry->sprite], entry->frame);
     HuSprPatNoSet(group, 1, entry->frame);
 
     if (signY >= 0.0f) {
@@ -1974,39 +1974,39 @@ void func_8010AF38_bowser_toss(s16 camera, Vec *pos, Vec *rot) {
     } else if (frame < 0) {
         frame = 0;
     }
-    entry = &D_8010F350_bowser_toss[frame];
+    entry = &m252_backFrameTbl[frame];
     HuSprPosSet(group, 2, x, scrollY - signY * 120.0f);
-    HuSprGrpMemberSet(group, 2, D_8010FB98_bowser_toss[entry->sprite], entry->frame);
+    HuSprGrpMemberSet(group, 2, m252_sprTbl[entry->sprite], entry->frame);
     HuSprPatNoSet(group, 2, entry->frame);
     HuSprPosSet(group, 3, x + signX * 320.0f, scrollY - signY * 120.0f);
-    HuSprGrpMemberSet(group, 3, D_8010FB98_bowser_toss[entry->sprite], entry->frame);
+    HuSprGrpMemberSet(group, 3, m252_sprTbl[entry->sprite], entry->frame);
     HuSprPatNoSet(group, 3, entry->frame);
 }
 
-void func_8010B41C_bowser_toss(void) {
+void m252_ScoreInit(void) {
     HuSprAnimData *anim;
-    BowserTossBowser *bowser;
+    BowserTossScore *bowser;
     s32 i;
     s32 j;
 
-    D_8010FB98_bowser_toss[6] = func_8010AD54_bowser_toss(0x31);
-    D_8010FB98_bowser_toss[7] = func_8010AD54_bowser_toss(0x55000B);
-    D_8010FB98_bowser_toss[8] = func_8010AD54_bowser_toss(0x55000C);
-    anim = HuSprAnimDataGet(D_8010FB98_bowser_toss[8]);
+    m252_sprTbl[6] = m252_SprAnimRead(0x31);
+    m252_sprTbl[7] = m252_SprAnimRead(0x55000B);
+    m252_sprTbl[8] = m252_SprAnimRead(0x55000C);
+    anim = HuSprAnimDataGet(m252_sprTbl[8]);
     for (i = 0; i < anim->patNum; i++) {
         anim->pat[i].centerX = 8;
         anim->pat[i].centerY = 8;
     }
-    D_8010FB98_bowser_toss[9] = func_8010AD54_bowser_toss(0x32);
-    D_8010FB98_bowser_toss[10] = func_8010AD54_bowser_toss(0x55000D);
-    anim = HuSprAnimDataGet(D_8010FB98_bowser_toss[10]);
+    m252_sprTbl[9] = m252_SprAnimRead(0x32);
+    m252_sprTbl[10] = m252_SprAnimRead(0x55000D);
+    anim = HuSprAnimDataGet(m252_sprTbl[10]);
     for (i = 0; i < anim->patNum; i++) {
         anim->pat[i].centerX = 8;
         anim->pat[i].centerY = 8;
     }
 
-    D_8010FBA0_bowser_toss = HuMemAllocTag(sizeof(BowserTossBowser) * 3, TAG_OVERLAY);
-    for (i = 0, bowser = D_8010FBA0_bowser_toss; i < 3; i++, bowser++) {
+    m252_scoreTbl = HuMemAllocTag(sizeof(BowserTossScore) * 3, TAG_OVERLAY);
+    for (i = 0, bowser = m252_scoreTbl; i < 3; i++, bowser++) {
         bowser->timer = 0;
         if (i != 2) {
             bowser->state = 0;
@@ -2014,7 +2014,7 @@ void func_8010B41C_bowser_toss(void) {
             bowser->unk_08 = 0;
         } else {
             bowser->state = 0x10;
-            bowser->unk_08 = bowser->unk_0C = D_8010FB80_bowser_toss;
+            bowser->unk_08 = bowser->unk_0C = m252_recordDist;
         }
         bowser->spriteId = HuSprGrpCreate(8, 0);
         for (j = 0; j < 8; j++) {
@@ -2025,18 +2025,18 @@ void func_8010B41C_bowser_toss(void) {
                 case 3:
                 case 7:
                     if (i != 2) {
-                        HuSprGrpMemberSet(bowser->spriteId, j, D_8010FB98_bowser_toss[6], 0);
+                        HuSprGrpMemberSet(bowser->spriteId, j, m252_sprTbl[6], 0);
                     } else {
-                        HuSprGrpMemberSet(bowser->spriteId, j, D_8010FB98_bowser_toss[9], 0);
+                        HuSprGrpMemberSet(bowser->spriteId, j, m252_sprTbl[9], 0);
                     }
                     HuSprScaleSet(bowser->spriteId, j, 1.2f, 1.2f);
                     break;
                 case 4:
                 case 5:
                     if (i != 2) {
-                        HuSprGrpMemberSet(bowser->spriteId, j, D_8010FB98_bowser_toss[8], 0);
+                        HuSprGrpMemberSet(bowser->spriteId, j, m252_sprTbl[8], 0);
                     } else {
-                        HuSprGrpMemberSet(bowser->spriteId, j, D_8010FB98_bowser_toss[10], 0);
+                        HuSprGrpMemberSet(bowser->spriteId, j, m252_sprTbl[10], 0);
                     }
                     if ((i != 2) & (j == 5)) {
                         HuSprScaleSet(bowser->spriteId, j, 0.88f, 0.88f);
@@ -2044,7 +2044,7 @@ void func_8010B41C_bowser_toss(void) {
                     break;
                 case 6:
                 default:
-                    HuSprGrpMemberSet(bowser->spriteId, j, D_8010FB98_bowser_toss[7], 0);
+                    HuSprGrpMemberSet(bowser->spriteId, j, m252_sprTbl[7], 0);
                     HuSprScaleSet(bowser->spriteId, j, 0.75f, 0.75f);
                     break;
             }
@@ -2053,13 +2053,13 @@ void func_8010B41C_bowser_toss(void) {
             HuSprAttrSet(bowser->spriteId, j, 0x903C);
         }
     }
-    omAddObj(0x3F, 0, 0, -1, func_8010B7AC_bowser_toss);
+    omAddObj(0x3F, 0, 0, -1, m252_ScoreObjMain);
 }
 
-void func_8010B7AC_bowser_toss(omObjData *object) {
+void m252_ScoreObjMain(omObjData *object) {
     s32 digits[5];
-    BowserTossBowser *bowser;
-    BowserTossBowser *other;
+    BowserTossScore *bowser;
+    BowserTossScore *other;
     s32 i;
     s32 j;
     s32 done;
@@ -2069,11 +2069,11 @@ void func_8010B7AC_bowser_toss(omObjData *object) {
     f32 dy;
     f32 dx;
 
-    for (i = 0, bowser = D_8010FBA0_bowser_toss; i < 3; i++, bowser++) {
+    for (i = 0, bowser = m252_scoreTbl; i < 3; i++, bowser++) {
         done = 0;
         switch (bowser->state) {
             case 1:
-                HuSprPosSet(bowser->spriteId, 6, D_8010F378_bowser_toss[i][6].x, D_8010F378_bowser_toss[i][6].y);
+                HuSprPosSet(bowser->spriteId, 6, m252_scoreDigitPosTbl[i][6].x, m252_scoreDigitPosTbl[i][6].y);
                 HuSprTPLvlSet(bowser->spriteId, 6, 0);
                 HuSprDispOn(bowser->spriteId, 6);
                 bowser->state = 2;
@@ -2090,10 +2090,10 @@ void func_8010B7AC_bowser_toss(omObjData *object) {
                 break;
             case 3:
                 for (j = 0; j < 6; j++) {
-                    HuSprPosSet(bowser->spriteId, j, D_8010F378_bowser_toss[i][j].x, D_8010F378_bowser_toss[i][j].y);
+                    HuSprPosSet(bowser->spriteId, j, m252_scoreDigitPosTbl[i][j].x, m252_scoreDigitPosTbl[i][j].y);
                     HuSprDispOn(bowser->spriteId, j);
                 }
-                HuSprPosSet(bowser->spriteId, 7, D_8010F378_bowser_toss[i][7].x, D_8010F378_bowser_toss[i][7].y);
+                HuSprPosSet(bowser->spriteId, 7, m252_scoreDigitPosTbl[i][7].x, m252_scoreDigitPosTbl[i][7].y);
                 HuSprPatNoSet(bowser->spriteId, 4, 1);
                 HuSprPatNoSet(bowser->spriteId, 5, 0);
                 bowser->state = 4;
@@ -2107,8 +2107,8 @@ void func_8010B7AC_bowser_toss(omObjData *object) {
                 }
                 value = bowser->unk_0C;
                 for (j = 0; j < 5; j++) {
-                    digits[j] = value / D_8010F3D8_bowser_toss[j];
-                    value -= digits[j] * D_8010F3D8_bowser_toss[j];
+                    digits[j] = value / m252_digitDivTbl[j];
+                    value -= digits[j] * m252_digitDivTbl[j];
                     if (digits[j] >= 10) {
                         digits[j] = 9;
                     } else if (digits[j] < 0) {
@@ -2124,15 +2124,15 @@ void func_8010B7AC_bowser_toss(omObjData *object) {
                     }
                 }
                 if (done) {
-                    if (D_8010FB70_bowser_toss != -1) {
+                    if (m252_scoreSeNo != -1) {
                         if (i == 0) {
-                            other = &D_8010FBA0_bowser_toss[1];
+                            other = &m252_scoreTbl[1];
                         } else {
-                            other = &D_8010FBA0_bowser_toss[0];
+                            other = &m252_scoreTbl[0];
                         }
                         if (other->state != 3 && other->state != 4) {
                             HuAudFXPlay(0x4AC);
-                            D_8010FB70_bowser_toss = -1;
+                            m252_scoreSeNo = -1;
                         }
                     }
                     bowser->state = 5;
@@ -2147,16 +2147,16 @@ void func_8010B7AC_bowser_toss(omObjData *object) {
                 break;
             case 16:
                 for (j = 0; j < 6; j++) {
-                    HuSprPosSet(bowser->spriteId, j, D_8010F378_bowser_toss[i][j].x, D_8010F378_bowser_toss[i][j].y);
+                    HuSprPosSet(bowser->spriteId, j, m252_scoreDigitPosTbl[i][j].x, m252_scoreDigitPosTbl[i][j].y);
                     HuSprDispOn(bowser->spriteId, j);
                 }
-                HuSprPosSet(bowser->spriteId, 7, D_8010F378_bowser_toss[i][7].x, D_8010F378_bowser_toss[i][7].y);
+                HuSprPosSet(bowser->spriteId, 7, m252_scoreDigitPosTbl[i][7].x, m252_scoreDigitPosTbl[i][7].y);
                 HuSprPatNoSet(bowser->spriteId, 4, 1);
                 HuSprPatNoSet(bowser->spriteId, 5, 0);
                 value = bowser->unk_0C;
                 for (j = 0; j < 5; j++) {
-                    digits[j] = value / D_8010F3D8_bowser_toss[j];
-                    value -= digits[j] * D_8010F3D8_bowser_toss[j];
+                    digits[j] = value / m252_digitDivTbl[j];
+                    value -= digits[j] * m252_digitDivTbl[j];
                     if (digits[j] >= 10) {
                         digits[j] = 9;
                     } else if (digits[j] < 0) {
@@ -2177,8 +2177,8 @@ void func_8010B7AC_bowser_toss(omObjData *object) {
             case 18:
                 value = bowser->unk_0C;
                 for (j = 0; j < 5; j++) {
-                    digits[j] = value / D_8010F3D8_bowser_toss[j];
-                    value -= digits[j] * D_8010F3D8_bowser_toss[j];
+                    digits[j] = value / m252_digitDivTbl[j];
+                    value -= digits[j] * m252_digitDivTbl[j];
                     if (digits[j] >= 10) {
                         digits[j] = 9;
                     } else if (digits[j] < 0) {
@@ -2198,9 +2198,9 @@ void func_8010B7AC_bowser_toss(omObjData *object) {
             case 19:
                 center = 0.0f;
                 for (j = 0; j < 6; j++) {
-                    center += D_8010F378_bowser_toss[i][j].x;
+                    center += m252_scoreDigitPosTbl[i][j].x;
                 }
-                center += D_8010F378_bowser_toss[i][7].x;
+                center += m252_scoreDigitPosTbl[i][7].x;
                 center /= 7.0f;
                 t = bowser->timer / 15.0f;
                 if (t < 0.0f) {
@@ -2209,12 +2209,12 @@ void func_8010B7AC_bowser_toss(omObjData *object) {
                     t = 1.0f;
                 }
                 t = sindf(t * 180.0f);
-                dx = D_8010F378_bowser_toss[i][7].x - center;
-                HuSprPosSet(bowser->spriteId, 7, center + dx * (t + 1.0f), D_8010F378_bowser_toss[i][7].y);
+                dx = m252_scoreDigitPosTbl[i][7].x - center;
+                HuSprPosSet(bowser->spriteId, 7, center + dx * (t + 1.0f), m252_scoreDigitPosTbl[i][7].y);
                 HuSprScaleSet(bowser->spriteId, j, t * 1.2f + 1.2, t * 1.2f + 1.2);
                 for (j = 0; j < 6; j++) {
-                    dx = D_8010F378_bowser_toss[i][j].x - center;
-                    HuSprPosSet(bowser->spriteId, j, center + dx * (t + 1.0f), D_8010F378_bowser_toss[i][j].y);
+                    dx = m252_scoreDigitPosTbl[i][j].x - center;
+                    HuSprPosSet(bowser->spriteId, j, center + dx * (t + 1.0f), m252_scoreDigitPosTbl[i][j].y);
                     if (j < 4) {
                         HuSprScaleSet(bowser->spriteId, j, t * 1.2f + 1.2, t * 1.2f + 1.2);
                     } else {
@@ -2228,11 +2228,11 @@ void func_8010B7AC_bowser_toss(omObjData *object) {
                 break;
             case 32:
                 t = bowser->timer / 15.0f;
-                center = func_8010D8A0_bowser_toss(t, 0.0f, 81.0f);
-                dy = func_8010D8A0_bowser_toss(t, 0.0f, -35.0f);
+                center = m252_InterpCalc(t, 0.0f, 81.0f);
+                dy = m252_InterpCalc(t, 0.0f, -35.0f);
                 for (j = 0; j < 8; j++) {
-                    HuSprPosSet(bowser->spriteId, j, D_8010F378_bowser_toss[i][j].x + (s16)center,
-                                D_8010F378_bowser_toss[i][j].y + (s16)dy);
+                    HuSprPosSet(bowser->spriteId, j, m252_scoreDigitPosTbl[i][j].x + (s16)center,
+                                m252_scoreDigitPosTbl[i][j].y + (s16)dy);
                 }
                 if (bowser->timer >= 15.0f) {
                     bowser->state = 0x40;
@@ -2246,8 +2246,8 @@ void func_8010B7AC_bowser_toss(omObjData *object) {
     }
 }
 
-void func_8010C1A0_bowser_toss(s16 index, s32 score) {
-    BowserTossBowser *bowser = &D_8010FBA0_bowser_toss[index];
+void m252_ScoreSet(s16 index, s32 score) {
+    BowserTossScore *bowser = &m252_scoreTbl[index];
 
     if (score == 0) {
         bowser->state = 1;
@@ -2256,8 +2256,8 @@ void func_8010C1A0_bowser_toss(s16 index, s32 score) {
         bowser->timer = 0;
         bowser->unk_08 = score;
         bowser->unk_0C = 0;
-        if (D_8010FB70_bowser_toss == -1) {
-            D_8010FB70_bowser_toss = HuAudFXPlay(0x4AB);
+        if (m252_scoreSeNo == -1) {
+            m252_scoreSeNo = HuAudFXPlay(0x4AB);
         }
     } else {
         bowser->state = 0x12;
@@ -2266,11 +2266,11 @@ void func_8010C1A0_bowser_toss(s16 index, s32 score) {
     }
 }
 
-s16 func_8010C23C_bowser_toss(void) {
+s16 m252_ScoreAllCountCheck(void) {
     s32 i;
-    BowserTossBowser *p;
+    BowserTossScore *p;
 
-    for (i = 0, p = D_8010FBA0_bowser_toss; i < 2; i++, p++) {
+    for (i = 0, p = m252_scoreTbl; i < 2; i++, p++) {
         if (p->state < 0x1F) {
             return 0;
         }
@@ -2278,21 +2278,21 @@ s16 func_8010C23C_bowser_toss(void) {
     return 1;
 }
 
-void func_8010C274_bowser_toss(void) {
+void m252_ScoreAllEndStart(void) {
     s32 i;
-    BowserTossBowser *bowser;
+    BowserTossScore *bowser;
 
-    for (i = 0, bowser = D_8010FBA0_bowser_toss; i < 2; i++, bowser++) {
+    for (i = 0, bowser = m252_scoreTbl; i < 2; i++, bowser++) {
         bowser->state = 0x20;
         bowser->timer = 0;
     }
 }
 
-s16 func_8010C2A4_bowser_toss(void) {
+s16 m252_ScoreAllEndCheck(void) {
     s32 i;
-    BowserTossBowser *p;
+    BowserTossScore *p;
 
-    for (i = 0, p = D_8010FBA0_bowser_toss; i < 2; i++, p++) {
+    for (i = 0, p = m252_scoreTbl; i < 2; i++, p++) {
         if (p->state < 0x40) {
             return 0;
         }
@@ -2300,14 +2300,14 @@ s16 func_8010C2A4_bowser_toss(void) {
     return 1;
 }
 
-void func_8010C2DC_bowser_toss(void) {
+void m252_CameraInit(void) {
     BowserTossCamera *cam;
     HuCamera *camera;
     s32 i;
     s32 j;
 
-    D_8010FBA4_bowser_toss = HuMemAllocTag(sizeof(BowserTossCamera) * 2, TAG_OVERLAY);
-    memset(D_8010FBA4_bowser_toss, 0, sizeof(BowserTossCamera) * 2);
+    m252_cameraMoveTbl = HuMemAllocTag(sizeof(BowserTossCamera) * 2, TAG_OVERLAY);
+    memset(m252_cameraMoveTbl, 0, sizeof(BowserTossCamera) * 2);
     Center.x = 0.0f;
     Center.y = 212.0f;
     Center.z = 0.0f;
@@ -2315,10 +2315,10 @@ void func_8010C2DC_bowser_toss(void) {
     CRot.y = 0.0f;
     CRot.z = 0.0f;
     CZoom = 1222.0f;
-    D_8010FBA8_bowser_toss.x = 0.0f;
-    D_8010FBA8_bowser_toss.y = 162.0f;
-    D_8010FBA8_bowser_toss.z = 0.0f;
-    for (i = 0, cam = D_8010FBA4_bowser_toss; i < 2; i++, cam++) {
+    m252_cameraCenterMin.x = 0.0f;
+    m252_cameraCenterMin.y = 162.0f;
+    m252_cameraCenterMin.z = 0.0f;
+    for (i = 0, cam = m252_cameraMoveTbl; i < 2; i++, cam++) {
         CenterM[i].x = Center.x;
         CenterM[i].y = Center.y;
         CenterM[i].z = Center.z;
@@ -2326,8 +2326,8 @@ void func_8010C2DC_bowser_toss(void) {
         CRotM[i].y = CRot.y;
         CRotM[i].z = CRot.z;
         CZoomM[i] = CZoom;
-        func_8010D080_bowser_toss(i, 0);
-        func_8010D080_bowser_toss(i, 1);
+        m252_CameraKeyStore(i, 0);
+        m252_CameraKeyStore(i, 1);
         cam->frame = cam->frames = cam->active = 0;
         camera = &gCameraList[i];
         for (j = 0; j < Hu3DBufNum; j++) {
@@ -2339,10 +2339,10 @@ void func_8010C2DC_bowser_toss(void) {
             camera->viewports[j].vp.vtrans[2] = camera->screenPos.z;
         }
     }
-    omAddObj(0x1F, 0, 0, -1, func_8010CDB8_bowser_toss);
+    omAddObj(0x1F, 0, 0, -1, m252_CameraMoveObjMain);
 }
 
-void func_8010C570_bowser_toss(void) {
+void m252_CameraDebugPad(void) {
     MgCameraKey delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
     f32 speed;
     s32 cam;
@@ -2353,7 +2353,7 @@ void func_8010C570_bowser_toss(void) {
 
     speed = 1.0f;
     cam = -1;
-    switch (D_8010F3EC_bowser_toss) {
+    switch (m252_cameraDebugMode) {
         case 1:
             if ((u16)HuPadBtn[0] & A_BUTTON) {
                 speed = 8.0f;
@@ -2362,13 +2362,13 @@ void func_8010C570_bowser_toss(void) {
                 speed = 0.5f;
             }
             if (HuPadBtnDown[0] & START_BUTTON) {
-                CenterM[D_8010F3F0_bowser_toss].x = Center.x;
-                CenterM[D_8010F3F0_bowser_toss].y = Center.y;
-                CenterM[D_8010F3F0_bowser_toss].z = Center.z;
-                CRotM[D_8010F3F0_bowser_toss].x = CRot.x;
-                CRotM[D_8010F3F0_bowser_toss].y = CRot.y;
-                CRotM[D_8010F3F0_bowser_toss].z = CRot.z;
-                CZoomM[D_8010F3F0_bowser_toss] = CZoom;
+                CenterM[m252_cameraDebugNo].x = Center.x;
+                CenterM[m252_cameraDebugNo].y = Center.y;
+                CenterM[m252_cameraDebugNo].z = Center.z;
+                CRotM[m252_cameraDebugNo].x = CRot.x;
+                CRotM[m252_cameraDebugNo].y = CRot.y;
+                CRotM[m252_cameraDebugNo].z = CRot.z;
+                CZoomM[m252_cameraDebugNo] = CZoom;
             } else {
                 delta.rot.x = (f32)HuPadStkY[0] * 0.125 * speed;
                 delta.rot.y = (f32)HuPadStkX[0] * 0.125 * speed;
@@ -2396,61 +2396,61 @@ void func_8010C570_bowser_toss(void) {
                 if (HuPadBtn[0] & L_CBUTTONS) {
                     delta.zoom = -(speed * 2.0);
                 }
-                delta.center.x += CenterM[D_8010F3F0_bowser_toss].x;
-                delta.center.y += CenterM[D_8010F3F0_bowser_toss].y;
-                delta.center.z += CenterM[D_8010F3F0_bowser_toss].z;
-                delta.rot.x += CRotM[D_8010F3F0_bowser_toss].x;
-                delta.rot.y += CRotM[D_8010F3F0_bowser_toss].y;
-                delta.rot.z += CRotM[D_8010F3F0_bowser_toss].z;
-                delta.zoom += CZoomM[D_8010F3F0_bowser_toss];
-                func_8010D250_bowser_toss(D_8010F3F0_bowser_toss, delta.center.x, delta.center.y, delta.center.z,
+                delta.center.x += CenterM[m252_cameraDebugNo].x;
+                delta.center.y += CenterM[m252_cameraDebugNo].y;
+                delta.center.z += CenterM[m252_cameraDebugNo].z;
+                delta.rot.x += CRotM[m252_cameraDebugNo].x;
+                delta.rot.y += CRotM[m252_cameraDebugNo].y;
+                delta.rot.z += CRotM[m252_cameraDebugNo].z;
+                delta.zoom += CZoomM[m252_cameraDebugNo];
+                m252_CameraMoveStart(m252_cameraDebugNo, delta.center.x, delta.center.y, delta.center.z,
                                           delta.rot.x, delta.rot.y, delta.rot.z, delta.zoom, 1);
             }
-            index = D_8010F3F0_bowser_toss;
+            index = m252_cameraDebugNo;
             fontcolor = 15;
             cam = index;
             if (HuPadBtnDown[0] & R_TRIG) {
-                if (++D_8010F3F0_bowser_toss >= 2) {
-                    D_8010F3F0_bowser_toss = 0;
-                    D_8010F3EC_bowser_toss++;
+                if (++m252_cameraDebugNo >= 2) {
+                    m252_cameraDebugNo = 0;
+                    m252_cameraDebugMode++;
                 }
                 HuPadBtnDown[0] &= ~R_TRIG;
             }
             break;
         case 2:
             if ((HuPadBtn[0] & R_JPAD) || (HuPadBtn[0] & R_CBUTTONS)) {
-                D_8010F3F4_bowser_toss++;
+                m252_cameraDebugX++;
             }
             if (HuPadBtn[0] & (L_JPAD | L_CBUTTONS)) {
-                D_8010F3F4_bowser_toss--;
+                m252_cameraDebugX--;
             }
             if (HuPadBtn[0] & (D_JPAD | D_CBUTTONS)) {
-                D_8010F3F8_bowser_toss++;
+                m252_cameraDebugY++;
             }
             if (HuPadBtn[0] & (U_JPAD | U_CBUTTONS)) {
-                D_8010F3F8_bowser_toss--;
+                m252_cameraDebugY--;
             }
             fontcolor = 8;
             cam = 1;
             break;
         case 3:
-            D_8010F3EC_bowser_toss = 0;
+            m252_cameraDebugMode = 0;
             break;
     }
     if (cam != -1) {
         center = &CenterM[cam];
         rot = &CRotM[cam];
         sprintf(omDBGStrBuf, "CAMERA TEST_MODE CAM_%d ", cam);
-        print8((s16)D_8010F3F4_bowser_toss + 20, (s16)D_8010F3F8_bowser_toss + 80, omDBGStrBuf);
+        print8((s16)m252_cameraDebugX + 20, (s16)m252_cameraDebugY + 80, omDBGStrBuf);
         sprintf(omDBGStrBuf, " CENTER X>%3.2f Y>%3.2f Z>%3.2f ", center->x, center->y, center->z);
-        print8((s16)D_8010F3F4_bowser_toss + 20, (s16)D_8010F3F8_bowser_toss + 88, omDBGStrBuf);
+        print8((s16)m252_cameraDebugX + 20, (s16)m252_cameraDebugY + 88, omDBGStrBuf);
         sprintf(omDBGStrBuf, " ROT    X>%3.2f Y>%3.2f Z>%3.2f ", rot->x, rot->y, rot->z);
-        print8((s16)D_8010F3F4_bowser_toss + 20, (s16)D_8010F3F8_bowser_toss + 96, omDBGStrBuf);
+        print8((s16)m252_cameraDebugX + 20, (s16)m252_cameraDebugY + 96, omDBGStrBuf);
         sprintf(omDBGStrBuf, " ZOOM   %3.2f ", CZoomM[cam]);
-        print8((s16)D_8010F3F4_bowser_toss + 20, (s16)D_8010F3F8_bowser_toss + 104, omDBGStrBuf);
+        print8((s16)m252_cameraDebugX + 20, (s16)m252_cameraDebugY + 104, omDBGStrBuf);
     }
     if (HuPadBtnDown[0] & R_TRIG) {
-        if (D_8010F3EC_bowser_toss == 1) {
+        if (m252_cameraDebugMode == 1) {
             osSyncPrintf("CAMERA TEST_MODE \n");
             for (i = 0; i < 2; i++) {
                 center = &CenterM[i];
@@ -2462,24 +2462,24 @@ void func_8010C570_bowser_toss(void) {
             }
             osSyncPrintf(" \n");
         }
-        if (D_8010F3EC_bowser_toss++ >= 4) {
-            D_8010F3EC_bowser_toss = 0;
+        if (m252_cameraDebugMode++ >= 4) {
+            m252_cameraDebugMode = 0;
         }
     }
 }
 
-void func_8010CDB8_bowser_toss(omObjData *object) {
+void m252_CameraMoveObjMain(omObjData *object) {
     BowserTossCamera *cam;
     Vec *center;
     Vec *rot;
     f32 t;
     s32 i;
 
-    for (i = 0, cam = D_8010FBA4_bowser_toss; i < 2; i++, cam++) {
+    for (i = 0, cam = m252_cameraMoveTbl; i < 2; i++, cam++) {
         center = &CenterM[i];
         rot = &CRotM[i];
         if (cam->frames <= 0) {
-            func_8010D43C_bowser_toss(i);
+            m252_CameraPosUpdate(i);
             cam->active = 0;
             continue;
         }
@@ -2494,13 +2494,13 @@ void func_8010CDB8_bowser_toss(omObjData *object) {
             cam->frames = 0;
         } else {
             t = 1.0f - (f32)cam->frame / (f32)cam->frames;
-            center->x = func_8010D8A0_bowser_toss(t, cam->keys[1].center.x, cam->keys[0].center.x);
-            center->y = func_8010D8A0_bowser_toss(t, cam->keys[1].center.y, cam->keys[0].center.y);
-            center->z = func_8010D8A0_bowser_toss(t, cam->keys[1].center.z, cam->keys[0].center.z);
-            rot->x = func_8010D8B8_bowser_toss(t, cam->keys[1].rot.x, cam->keys[0].rot.x);
-            rot->y = func_8010D8B8_bowser_toss(t, cam->keys[1].rot.y, cam->keys[0].rot.y);
-            rot->z = func_8010D8B8_bowser_toss(t, cam->keys[1].rot.z, cam->keys[0].rot.z);
-            CZoomM[i] = func_8010D8A0_bowser_toss(t, cam->keys[1].zoom, cam->keys[0].zoom);
+            center->x = m252_InterpCalc(t, cam->keys[1].center.x, cam->keys[0].center.x);
+            center->y = m252_InterpCalc(t, cam->keys[1].center.y, cam->keys[0].center.y);
+            center->z = m252_InterpCalc(t, cam->keys[1].center.z, cam->keys[0].center.z);
+            rot->x = m252_AngleInterpCalc(t, cam->keys[1].rot.x, cam->keys[0].rot.x);
+            rot->y = m252_AngleInterpCalc(t, cam->keys[1].rot.y, cam->keys[0].rot.y);
+            rot->z = m252_AngleInterpCalc(t, cam->keys[1].rot.z, cam->keys[0].rot.z);
+            CZoomM[i] = m252_InterpCalc(t, cam->keys[1].zoom, cam->keys[0].zoom);
             if (cam->frame > 0) {
                 cam->frame--;
             } else {
@@ -2523,12 +2523,12 @@ void func_8010CDB8_bowser_toss(omObjData *object) {
             rot->z += 360.0;
         }
         cam->active = 1;
-        func_8010D43C_bowser_toss(i);
+        m252_CameraPosUpdate(i);
     }
 }
 
-void func_8010D080_bowser_toss(s32 camIndex, s32 key) {
-    BowserTossCamera *cam = &D_8010FBA4_bowser_toss[camIndex];
+void m252_CameraKeyStore(s32 camIndex, s32 key) {
+    BowserTossCamera *cam = &m252_cameraMoveTbl[camIndex];
     Vec *center = &CenterM[camIndex];
     Vec *rot = &CRotM[camIndex];
 
@@ -2558,8 +2558,8 @@ void func_8010D080_bowser_toss(s32 camIndex, s32 key) {
 }
 
 // Passing CAMERA_KEEP for a component keeps its current value.
-void func_8010D250_bowser_toss(s32 camIndex, f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames) {
-    BowserTossCamera *cam = &D_8010FBA4_bowser_toss[camIndex];
+void m252_CameraMoveStart(s32 camIndex, f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames) {
+    BowserTossCamera *cam = &m252_cameraMoveTbl[camIndex];
     Vec *center = &CenterM[camIndex];
     Vec *rot = &CRotM[camIndex];
 
@@ -2601,11 +2601,11 @@ void func_8010D250_bowser_toss(s32 camIndex, f32 x, f32 y, f32 z, f32 rotX, f32 
         } else {
             cam->keys[0].zoom = CZoomM[camIndex];
         }
-        func_8010D080_bowser_toss(camIndex, 1);
+        m252_CameraKeyStore(camIndex, 1);
     }
 }
 
-void func_8010D43C_bowser_toss(s32 camIndex) {
+void m252_CameraPosUpdate(s32 camIndex) {
     HuCamera *camera = &gCameraList[camIndex];
     f32 rotX = CRotM[camIndex].x;
     f32 rotY = CRotM[camIndex].y;
@@ -2621,7 +2621,7 @@ void func_8010D43C_bowser_toss(s32 camIndex) {
     camera->up.z = cosdf(rotY) * sindf(rotX);
 }
 
-f32 func_8010D5DC_bowser_toss(f32 arg0, f32 arg1) {
+f32 m252_AngleDiffCalc(f32 arg0, f32 arg1) {
     if (arg0 >= 360.0f) {
         arg0 -= 360.0f;
     } else if (arg0 < 0.0f) {
@@ -2641,7 +2641,7 @@ f32 func_8010D5DC_bowser_toss(f32 arg0, f32 arg1) {
     return arg0;
 }
 
-f32 func_8010D6E0_bowser_toss(f32 target, f32 current, f32 step) {
+f32 m252_AngleStepCalc(f32 target, f32 current, f32 step) {
     f32 diff;
     f32 delta;
 
@@ -2676,15 +2676,15 @@ f32 func_8010D6E0_bowser_toss(f32 target, f32 current, f32 step) {
     return delta;
 }
 
-f32 func_8010D8A0_bowser_toss(f32 t, f32 start, f32 end) {
+f32 m252_InterpCalc(f32 t, f32 start, f32 end) {
     return start + t * (end - start);
 }
 
-f32 func_8010D8B8_bowser_toss(f32 t, f32 start, f32 end) {
-    return func_8010D6E0_bowser_toss(end, start, fabsf(func_8010D5DC_bowser_toss(end, start) * t));
+f32 m252_AngleInterpCalc(f32 t, f32 start, f32 end) {
+    return m252_AngleStepCalc(end, start, fabsf(m252_AngleDiffCalc(end, start) * t));
 }
 
-void func_8010D918_bowser_toss(f32 *arg0, f32 *arg1, f32 *arg2, f32 arg3) {
+void m252_MtxInterpCalc(f32 *arg0, f32 *arg1, f32 *arg2, f32 arg3) {
     s32 i;
 
     for (i = 0; i < 16; i++) {
@@ -2692,14 +2692,14 @@ void func_8010D918_bowser_toss(f32 *arg0, f32 *arg1, f32 *arg2, f32 arg3) {
     }
 }
 
-void func_8010D960_bowser_toss(omObjData *obj, u32 arg1) {
+void m252_WorkPtrSet(omObjData *obj, u32 arg1) {
     obj->work[0] = arg1 >> 24;
     obj->work[1] = (arg1 >> 16) & 0xFF;
     obj->work[2] = (arg1 >> 8) & 0xFF;
     obj->work[3] = arg1 & 0xFF;
 }
 
-BowserTossPlayer *func_8010D98C_bowser_toss(omObjData *object) {
+BowserTossPlayer *m252_WorkPtrGet(omObjData *object) {
     BowserTossWorkBytes packed;
 
     packed.bytes.byte3 = (u8)object->work[0];
@@ -2709,11 +2709,11 @@ BowserTossPlayer *func_8010D98C_bowser_toss(omObjData *object) {
     return (BowserTossPlayer *)packed.word;
 }
 
-BowserTossItem *func_8010D9E0_bowser_toss(s16 model, s16 step, const char *hookName, s16 shape, s16 frame) {
+BowserTossHookBake *m252_HookMtxBake(s16 model, s16 step, const char *hookName, s16 shape, s16 frame) {
     HmfModelData_Unk64_Unk8C_Struct *motion;
     HmfData *hmf;
     s16 node;
-    BowserTossItem *item;
+    BowserTossHookBake *item;
 
     if (shape) {
         motion = &Hu3DMotion[Hu3DData[model].motIdShape];
@@ -2722,16 +2722,16 @@ BowserTossItem *func_8010D9E0_bowser_toss(s16 model, s16 step, const char *hookN
     }
     hmf = Hu3DData[model].hmf;
     node = SearchObjectIndex(hmf, hookName);
-    item = HuMemAlloc(sizeof(BowserTossItem));
+    item = HuMemAlloc(sizeof(BowserTossHookBake));
     item->mtx = HuMemAlloc((motion->unk02 + step) / step * sizeof(HuMtx4F));
     item->nodes = HuMemAlloc(hmf->unk16 * sizeof(s16));
     item->frames = motion->unk02;
     item->step = step;
-    func_8010DB9C_bowser_toss(model, step, item, node, shape, frame);
+    m252_HookMtxBakeNode(model, step, item, node, shape, frame);
     return item;
 }
 
-void func_8010DB9C_bowser_toss(s16 model, s16 step, BowserTossItem *item, s16 node, s16 shape, s16 frame) {
+void m252_HookMtxBakeNode(s16 model, s16 step, BowserTossHookBake *item, s16 node, s16 shape, s16 frame) {
     HmfData *hmf = Hu3DData[model].hmf;
     HmfModelData_Unk64_Unk8C_Struct *motion = &Hu3DMotion[Hu3DData[model].motId];
     HmfModelData_Unk64_Unk8C_Struct *shapeMotion = &Hu3DMotion[Hu3DData[model].motIdShape];
@@ -2758,13 +2758,13 @@ void func_8010DB9C_bowser_toss(s16 model, s16 step, BowserTossItem *item, s16 no
     }
 }
 
-void func_8010DDC4_bowser_toss(BowserTossItem *item) {
+void m252_HookMtxFree(BowserTossHookBake *item) {
     HuMemFree(item->mtx);
     HuMemFree(item->nodes);
     HuMemFree(item);
 }
 
-s32 func_8010DDFC_bowser_toss(HuSprAnimData *sprite, u8 *color, u8 antialias) {
+s32 m252_BillboardColorMdlCreate(HuSprAnimData *sprite, u8 *color, u8 antialias) {
     u8 *buffer;
     Gfx *gfx;
     Gfx *header;
@@ -2783,8 +2783,8 @@ s32 func_8010DDFC_bowser_toss(HuSprAnimData *sprite, u8 *color, u8 antialias) {
     gfx++;
     HuMemFree(data->unk3C);
     data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), Hu3DModelTag);
-    func_8010ED44_bowser_toss(sprite, data, 1.0f, 0, 0);
-    gSPDisplayList(header, osVirtualToPhysical(D_8010F4F0_bowser_toss));
+    m252_BillboardVtxCreate(sprite, data, 1.0f, 0, 0);
+    gSPDisplayList(header, osVirtualToPhysical(m252_gfxBillboardInit));
     gDPPipeSync(gfx++);
     gDPSetCycleType(gfx++, G_CYC_1CYCLE);
     gDPPipeSync(gfx++);
@@ -2878,7 +2878,7 @@ s32 func_8010DDFC_bowser_toss(HuSprAnimData *sprite, u8 *color, u8 antialias) {
     return model;
 }
 
-s32 func_8010EA0C_bowser_toss(HuSprAnimData *sprite, u16 model, u8 *color) {
+s32 m252_BillboardColorMdlLink(HuSprAnimData *sprite, u16 model, u8 *color) {
     HmfModel *srcModel = Hu3DData + model;
     HmfData *srcData = srcModel->hmf;
     HmfData *data;
@@ -2908,7 +2908,7 @@ s32 func_8010EA0C_bowser_toss(HuSprAnimData *sprite, u16 model, u8 *color) {
     return newModel;
 }
 
-void func_8010EC10_bowser_toss(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
+void m252_BillboardColorPatSet(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
     Gfx *gfx = data->unk3C->unk00[Hu3DBufNo + 1];
@@ -2924,7 +2924,7 @@ void func_8010EC10_bowser_toss(u16 model, HuSprAnimData *sprite, u16 frame, u8 *
     gSPEndDisplayList(gfx + 7);
 }
 
-s32 func_8010ED44_bowser_toss(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset) {
+s32 m252_BillboardVtxCreate(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset) {
     s32 capacity = 0x1000;
     s32 width, height, scaledWidth, scaledHeight;
     s32 size, slices, textureHeight, sliceHeight, vertexCount;

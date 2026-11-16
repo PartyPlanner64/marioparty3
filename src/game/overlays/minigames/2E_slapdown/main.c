@@ -2,8 +2,8 @@
 #include "math.h"
 #include "game/overlays/minigame.h"
 
-// One entry of the 50 entry object table at D_8010AAB0_slapdown. Layout derived
-// from the table clear in func_80105A74_slapdown, which walks 50 entries of 0x84
+// One entry of the 50 entry object table at m246_objWorkTbl. Layout derived
+// from the table clear in m246_ObjWorkInit, which walks 50 entries of 0x84
 // bytes.
 typedef struct {
     /* 0x00 */ omObjData *obj;
@@ -33,7 +33,7 @@ typedef struct {
     /* 0x5C */ Vec unk_5C;
     /* 0x68 */ f32 unk_68[4];
     /* 0x78 */ Vec unk_78;
-} SlapdownEntry; // sizeof 0x84
+} SlapdownObjWork; // sizeof 0x84
 
 typedef struct {
     /* 0x00 */ f32 scissorX;
@@ -45,101 +45,101 @@ typedef struct {
     /* 0x28 */ f32 fov;
 } SlapdownCamera; // sizeof 0x2C
 
-// Sound handles; D_8010AA16_slapdown is misaligned for a standalone array.
+// Sound handles; m246_knockSeTbl is misaligned for a standalone array.
 typedef struct {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s16 unk_04;
     /* 0x06 */ s16 unk_06[5];
-} SlapdownBssAA10; // sizeof 0x10
+} SlapdownStateWork; // sizeof 0x10
 
 extern s32 omCharModelNoTbl[][6];
 
-s32 D_8010A6A0_slapdown[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
-f32 D_8010A6C0_slapdown[4] = { -380.0f, 380.0f, 380.0f, -380.0f };
-f32 D_8010A6D0_slapdown[4] = { -380.0f, -380.0f, 380.0f, 380.0f };
-f32 D_8010A6E0_slapdown[4] = { -390.0f, 390.0f, 390.0f, -390.0f };
-f32 D_8010A6F0_slapdown[4] = { -390.0f, -390.0f, 390.0f, 390.0f };
-f32 D_8010A700_slapdown[4] = { -400.0f, 400.0f, 400.0f, -400.0f };
-f32 D_8010A710_slapdown[4] = { -400.0f, -400.0f, 400.0f, 400.0f };
-f32 D_8010A720_slapdown[4] = { 45.0f, 315.0f, 225.0f, 135.0f };
-f32 D_8010A730_slapdown[4] = { 45.0f, 315.0f, 225.0f, 135.0f };
-s32 D_8010A740_slapdown[4][2] = { { 0, 0x4F0007 }, { 0, 0x4F0008 }, { 0, 0x4F0009 }, { 0, 0x4F000A } };
-s16 D_8010A760_slapdown[4][2] = { { 60, 450 }, { 45, 470 }, { 30, 480 }, { 25, 500 } };
-Vec2f D_8010A770_slapdown[4] = { { -6.5f, -6.5f }, { 6.5f, -6.5f }, { 3.5f, 3.5f }, { -3.5f, 3.5f } }; /* Unreferenced. */
-Vec2f D_8010A790_slapdown[4] = { { -4.5f, -4.5f }, { 4.5f, -4.5f }, { 1.5f, 1.5f }, { -1.5f, 1.5f } }; /* Unreferenced. */
-Vec2f D_8010A7B0_slapdown[4] = { { -1.08f, -1.08f }, { 1.08f, -1.08f }, { 1.75f, 1.75f }, { -1.75f, 1.75f } };
-Vec2f D_8010A7D0_slapdown[4] = { { -0.75f, -0.75f }, { 0.75f, -0.75f }, { 0.75f, 0.75f }, { -0.75f, 0.75f } };
-f32 D_8010A7F0_slapdown[9] = { -65.0f, 65.0f, 190.0f, 190.0f, 130.0f, 0.0f, -130.0f, -190.0f, -190.0f };
-f32 D_8010A814_slapdown[9] = { -190.0f, -190.0f, 65.0f, -65.0f, 190.0f, 190.0f, 190.0f, 65.0f, -65.0f };
-Vec2f D_8010A838_slapdown[4] = { { 50.0f, 92.0f }, { 271.0f, 92.0f }, { 239.0f, 155.0f }, { 81.0f, 155.0f } };
-Vec2f D_8010A858_slapdown[4] = { { 49.0f, 92.0f }, { 272.0f, 92.0f }, { 238.0f, 155.0f }, { 82.0f, 155.0f } };
-s32 D_8010A878_slapdown[4] = { 0x4F000D, 0x4F000E, 0x4F000F, 0x4F0010 };
-s32 D_8010A888_slapdown = 0;
-SlapdownCamera D_8010A88C_slapdown[1] = {
+s32 m246_voiceChrTbl[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+f32 m246_playerPosXTbl[4] = { -380.0f, 380.0f, 380.0f, -380.0f };
+f32 m246_playerPosZTbl[4] = { -380.0f, -380.0f, 380.0f, 380.0f };
+f32 m246_playerPosXAltTbl[4] = { -390.0f, 390.0f, 390.0f, -390.0f };
+f32 m246_playerPosZAltTbl[4] = { -390.0f, -390.0f, 390.0f, 390.0f };
+f32 m246_buttonPosXTbl[4] = { -400.0f, 400.0f, 400.0f, -400.0f };
+f32 m246_buttonPosZTbl[4] = { -400.0f, -400.0f, 400.0f, 400.0f };
+f32 m246_playerRotTbl[4] = { 45.0f, 315.0f, 225.0f, 135.0f };
+f32 m246_paddleRotTbl[4] = { 45.0f, 315.0f, 225.0f, 135.0f };
+s32 m246_paddleAnimFileTbl[4][2] = { { 0, 0x4F0007 }, { 0, 0x4F0008 }, { 0, 0x4F0009 }, { 0, 0x4F000A } };
+s16 m246_comSlapRateTbl[4][2] = { { 60, 450 }, { 45, 470 }, { 30, 480 }, { 25, 500 } };
+Vec2f m246_knockVelBigTbl[4] = { { -6.5f, -6.5f }, { 6.5f, -6.5f }, { 3.5f, 3.5f }, { -3.5f, 3.5f } }; /* Unreferenced. */
+Vec2f m246_knockVelBigAltTbl[4] = { { -4.5f, -4.5f }, { 4.5f, -4.5f }, { 1.5f, 1.5f }, { -1.5f, 1.5f } }; /* Unreferenced. */
+Vec2f m246_knockVelTbl[4] = { { -1.08f, -1.08f }, { 1.08f, -1.08f }, { 1.75f, 1.75f }, { -1.75f, 1.75f } };
+Vec2f m246_knockVelAltTbl[4] = { { -0.75f, -0.75f }, { 0.75f, -0.75f }, { 0.75f, 0.75f }, { -0.75f, 0.75f } };
+f32 m246_cardPosXTbl[9] = { -65.0f, 65.0f, 190.0f, 190.0f, 130.0f, 0.0f, -130.0f, -190.0f, -190.0f };
+f32 m246_cardPosZTbl[9] = { -190.0f, -190.0f, 65.0f, -65.0f, 190.0f, 190.0f, 190.0f, 65.0f, -65.0f };
+Vec2f m246_rankFramePosTbl[4] = { { 50.0f, 92.0f }, { 271.0f, 92.0f }, { 239.0f, 155.0f }, { 81.0f, 155.0f } };
+Vec2f m246_rankDigitPosTbl[4] = { { 49.0f, 92.0f }, { 272.0f, 92.0f }, { 238.0f, 155.0f }, { 82.0f, 155.0f } };
+s32 m246_rankSprFileTbl[4] = { 0x4F000D, 0x4F000E, 0x4F000F, 0x4F0010 };
+s32 m246_cameraSetF = 0;
+SlapdownCamera m246_cameraViewTbl[1] = {
     { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 33.0f }
 };
 
-extern const s16 D_8010AA08_slapdown[];
+extern const s16 m246_fontMesTbl[];
 
-SlapdownBssAA10 slapdownBssAA10 BSS;
-extern s16 D_8010AA10_slapdown;    // slapdownBssAA10.unk_00
-extern s16 D_8010AA12_slapdown;    // slapdownBssAA10.unk_02
-extern s16 D_8010AA14_slapdown;    // slapdownBssAA10.unk_04
-extern s16 D_8010AA16_slapdown[5]; // slapdownBssAA10.unk_06
-void *D_8010AA20_slapdown[4] BSS;
-s16 D_8010AA30_slapdown BSS;
-s16 D_8010AA32_slapdown BSS;
-u8 D_8010AA34_slapdown[4] BSS; /* Unreferenced. */
-s16 D_8010AA38_slapdown[10] BSS;
-f32 D_8010AA4C_slapdown BSS;
-u8 D_8010AA50_slapdown BSS;
-s16 D_8010AA52_slapdown BSS;
-u8 D_8010AA54_slapdown[4] BSS; /* Unreferenced. */
-void *D_8010AA58_slapdown[5] BSS;
-s16 D_8010AA6C_slapdown BSS;
-u8 D_8010AA6E_slapdown BSS;
-s16 D_8010AA70_slapdown BSS;
-s16 D_8010AA72_slapdown BSS;
-s16 D_8010AA74_slapdown BSS;
-s16 D_8010AA76_slapdown BSS;
-void *D_8010AA78_slapdown[6] BSS;
-s16 D_8010AA90_slapdown[4] BSS;
-s16 D_8010AA98_slapdown BSS;
-s16 D_8010AA9A_slapdown BSS;
-void *D_8010AA9C_slapdown BSS;
-s16 D_8010AAA0_slapdown BSS;
-u8 D_8010AAA4_slapdown[0xC] BSS; /* Unreferenced. */
-SlapdownEntry D_8010AAB0_slapdown[50] BSS;
-// Fields of the first entry of D_8010AAB0_slapdown are accessed through these
+SlapdownStateWork m246_stateWork BSS;
+extern s16 m246_slapPendingF;    // m246_stateWork.unk_00
+extern s16 m246_targetAnim;    // m246_stateWork.unk_02
+extern s16 m246_spinSeNo;    // m246_stateWork.unk_04
+extern s16 m246_knockSeTbl[5]; // m246_stateWork.unk_06
+void *m246_paddleAnimDataTbl[4] BSS;
+s16 m246_matchF BSS;
+s16 m246_resultReadyF BSS;
+u8 m246_resultReadyFPad[4] BSS; /* Unreferenced. */
+s16 m246_cardAnimTbl[10] BSS;
+f32 m246_cardSpinAngle BSS;
+u8 m246_phaseDoneNo BSS;
+s16 m246_spareAnim BSS;
+u8 m246_spareAnimPad[4] BSS; /* Unreferenced. */
+void *m246_targetAnimDataTbl[5] BSS;
+s16 m246_unusedCntA BSS;
+u8 m246_phase BSS;
+s16 m246_unusedCntB BSS;
+s16 m246_targetType BSS;
+s16 m246_timer BSS;
+s16 m246_spinSeState BSS;
+void *m246_cardAnimDataTbl[6] BSS;
+s16 m246_paddleAnimTbl[4] BSS;
+s16 m246_slapOrderNo BSS;
+s16 m246_firstFlipF BSS;
+void *m246_spareAnimData BSS;
+s16 m246_missCnt BSS;
+u8 m246_missCntPad[0xC] BSS; /* Unreferenced. */
+SlapdownObjWork m246_objWorkTbl[50] BSS;
+// Fields of the first entry of m246_objWorkTbl are accessed through these
 // separate symbols.
-extern s16 D_8010AAF0_slapdown; // [0].unk_40[0]
-extern s16 D_8010AAF2_slapdown; // [0].unk_40[1]
-extern f32 D_8010AAF4_slapdown; // [0].unk_44.x
-extern f32 D_8010AAF8_slapdown; // [0].unk_44.y
+extern s16 m246_backSprAnim; // [0].unk_40[0]
+extern s16 m246_backSprNo; // [0].unk_40[1]
+extern f32 m246_backSprX; // [0].unk_44.x
+extern f32 m246_backSprY; // [0].unk_44.y
 
-void func_80106600_slapdown(omObjData *obj);
-void func_8010924C_slapdown(omObjData *obj);
-void func_80106608_slapdown(omObjData *);
-void func_80106900_slapdown(omObjData *obj);
-void func_8010820C_slapdown(omObjData *);
-void func_80107DCC_slapdown(void);
-void func_80108BAC_slapdown(omObjData *obj);
-void func_80107858_slapdown(omObjData *obj);
-void func_801084BC_slapdown(omObjData *obj);
-void func_80108E44_slapdown(void);
-void func_801096E4_slapdown(void);
-void func_801099C0_slapdown(void);
-void func_80109EE8_slapdown(omObjData *obj);
-void func_8010A2B8_slapdown(omObjData *obj);
-void func_8010A3E0_slapdown(void);
-void func_8010A550_slapdown(void);
+void m246_BackObjMain(omObjData *obj);
+void m246_RankObjInit(omObjData *obj);
+void m246_BackObjInit(omObjData *);
+void m246_PlayerObjMain(omObjData *obj);
+void m246_TargetObjInit(omObjData *);
+void m246_PlayerObjCreateAll(void);
+void m246_CardObjInit(omObjData *obj);
+void m246_PlayerObjInit(omObjData *obj);
+void m246_CardObjMain(omObjData *obj);
+void m246_CardObjCreateAll(void);
+void m246_RankCalc(void);
+void m246_ResultSet(void);
+void m246_MainObjMain(omObjData *obj);
+void m246_MainObjInit(omObjData *obj);
+void m246_CameraInit(void);
+void m246_ObjectSetup(void);
 
-void func_801059A0_slapdown(void) {
-    func_8010A550_slapdown();
+void m246_Executor(void) {
+    m246_ObjectSetup();
 }
 
-f32 func_801059BC_slapdown(f32 arg0, f32 arg1) {
+f32 m246_AngleAdd(f32 arg0, f32 arg1) {
     f32 angle = arg0 + arg1;
 
     while (angle >= 360.0f) {
@@ -153,16 +153,16 @@ f32 func_801059BC_slapdown(f32 arg0, f32 arg1) {
     return angle;
 }
 
-u8 func_80105A3C_slapdown(s32 arg0) {
+u8 m246_RandMulGet(s32 arg0) {
     u32 ret = (rand8() & 0xFF) * arg0;
     return ret >> 8;
 }
 
-void func_80105A74_slapdown(void) {
-    SlapdownEntry *entry;
+void m246_ObjWorkInit(void) {
+    SlapdownObjWork *entry;
     u32 i;
 
-    for (i = 0, entry = D_8010AAB0_slapdown; i < 50; i++, entry++) {
+    for (i = 0, entry = m246_objWorkTbl; i < 50; i++, entry++) {
         entry->obj = NULL;
         entry->unk_04 = 0;
         entry->unk_06 = 0;
@@ -197,24 +197,24 @@ void func_80105A74_slapdown(void) {
     }
 }
 
-void func_80105B3C_slapdown(s32 playerIndex) {
+void m246_PadClear(s32 playerIndex) {
     HuPadBtn[GwPlayer[playerIndex].pad] = 0;
     HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
     HuPadStkX[GwPlayer[playerIndex].pad] = 0;
     HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
-void func_80105BB4_slapdown(f32 x0, f32 z0, f32 x1, f32 z1) {
+void m246_CameraDebugPrint(f32 x0, f32 z0, f32 x1, f32 z1) {
     f32 dx = fabs(x0 - x1) * 5.0;
     f32 dz = fabs(z0 - z1) * 5.0;
     f32 zoom = sqrtf(dx * dx + dz * dz);
-    f32 rot = func_801059BC_slapdown(atan2df(dx, dz), 0.0f);
+    f32 rot = m246_AngleAdd(atan2df(dx, dz), 0.0f);
 
     osSyncPrintf("Zoom = %f\n", zoom);
     osSyncPrintf("Rot  = %f\n", 360.0f - rot);
 }
 
-void func_80105CBC_slapdown(s16 conNo) {
+void m246_CameraDebugPad(s16 conNo) {
     s16 i;
 
     if (conNo < 0 || conNo >= 4) {
@@ -223,22 +223,22 @@ void func_80105CBC_slapdown(s16 conNo) {
     }
     if ((u16)HuPadBtn[conNo] & D_JPAD) {
         for (i = 0; i < 1; i++) {
-            CRotM[i].x = func_801059BC_slapdown(CRotM[i].x, 1.0f);
+            CRotM[i].x = m246_AngleAdd(CRotM[i].x, 1.0f);
         }
     }
     if ((u16)HuPadBtn[conNo] & U_JPAD) {
         for (i = 0; i < 1; i++) {
-            CRotM[i].x = func_801059BC_slapdown(CRotM[i].x, -1.0f);
+            CRotM[i].x = m246_AngleAdd(CRotM[i].x, -1.0f);
         }
     }
     if ((u16)HuPadBtn[conNo] & L_JPAD) {
         for (i = 0; i < 1; i++) {
-            CRotM[i].y = func_801059BC_slapdown(CRotM[i].y, 1.0f);
+            CRotM[i].y = m246_AngleAdd(CRotM[i].y, 1.0f);
         }
     }
     if ((u16)HuPadBtn[conNo] & R_JPAD) {
         for (i = 0; i < 1; i++) {
-            CRotM[i].y = func_801059BC_slapdown(CRotM[i].y, -1.0f);
+            CRotM[i].y = m246_AngleAdd(CRotM[i].y, -1.0f);
         }
     }
     if ((u16)HuPadBtn[conNo] & A_BUTTON) {
@@ -281,20 +281,20 @@ void func_80105CBC_slapdown(s16 conNo) {
     }
 }
 
-const char D_8010A95C_slapdown[] = "";
+const char m246_cameraDebugStr[] = "";
 
-void func_80106290_slapdown(u8 value) {
-    D_8010AA6E_slapdown = value;
+void m246_PhaseSet(u8 value) {
+    m246_phase = value;
 }
 
-void func_8010629C_slapdown(omObjData *obj, s16 motion, s16 start, s16 end, s16 shift, s16 *current) {
+void m246_MotShiftSet(omObjData *obj, s16 motion, s16 start, s16 end, s16 shift, s16 *current) {
     if (*current != motion) {
         Hu3DMotionShiftSet(obj->model[0], Hu3DData[obj->motion[motion]].motId, start, end, shift);
         *current = motion;
     }
 }
 
-void func_80106338_slapdown(omObjData *obj, s16 motion, s16 start, s16 end, s16 *current) {
+void m246_MotSet(omObjData *obj, s16 motion, s16 start, s16 end, s16 *current) {
     if (*current != motion) {
         Hu3DMotionModelSet(obj->model[0], obj->motion[motion]);
         Hu3DMotionAttrSet(obj->model[0], start, end);
@@ -302,7 +302,7 @@ void func_80106338_slapdown(omObjData *obj, s16 motion, s16 start, s16 end, s16 
     }
 }
 
-void func_801063D4_slapdown(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f32 *velZ, f32 speed) {
+void m246_VelCalc(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f32 *velZ, f32 speed) {
     f32 dx = x1;
     f32 dz = z1;
     f32 absDx;
@@ -353,7 +353,7 @@ void func_801063D4_slapdown(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f32 *velZ
     }
 }
 
-f32 func_80106534_slapdown(f32 current, f32 target, f32 step) {
+f32 m246_AngleTurnCalc(f32 current, f32 target, f32 step) {
     f32 diff = target - current;
 
     if (diff < 0.0f) {
@@ -364,65 +364,65 @@ f32 func_80106534_slapdown(f32 current, f32 target, f32 step) {
     }
     if (current < target) {
         if (diff > 180.0f) {
-            current = func_801059BC_slapdown(current, -step);
+            current = m246_AngleAdd(current, -step);
         } else {
-            current = func_801059BC_slapdown(current, step);
+            current = m246_AngleAdd(current, step);
         }
     } else if (target < current) {
         if (diff > 180.0f) {
-            current = func_801059BC_slapdown(current, step);
+            current = m246_AngleAdd(current, step);
         } else {
-            current = func_801059BC_slapdown(current, -step);
+            current = m246_AngleAdd(current, -step);
         }
     }
     return current;
 }
 
-void func_80106600_slapdown(omObjData *obj) {
+void m246_BackObjMain(omObjData *obj) {
 }
 
-void func_80106608_slapdown(omObjData *obj) {
-    D_8010AAF0_slapdown = HuSprAnimDataRead(0x4F0000);
-    D_8010AAF2_slapdown = espEntry(D_8010AAF0_slapdown, 0, 0);
-    espAttrSet(D_8010AAF2_slapdown, 0x4000);
-    D_8010AAF4_slapdown = 160.0f;
-    D_8010AAF8_slapdown = 120.0f;
-    espPosSet(D_8010AAF2_slapdown, 160, 120);
-    obj->func = func_80106600_slapdown;
+void m246_BackObjInit(omObjData *obj) {
+    m246_backSprAnim = HuSprAnimDataRead(0x4F0000);
+    m246_backSprNo = espEntry(m246_backSprAnim, 0, 0);
+    espAttrSet(m246_backSprNo, 0x4000);
+    m246_backSprX = 160.0f;
+    m246_backSprY = 120.0f;
+    espPosSet(m246_backSprNo, 160, 120);
+    obj->func = m246_BackObjMain;
 }
 
-void func_801066A4_slapdown(void) {
-    omObjData *obj = omAddObj(0x32, 1, 0, -1, func_80106608_slapdown);
+void m246_BackObjCreate(void) {
+    omObjData *obj = omAddObj(0x32, 1, 0, -1, m246_BackObjInit);
     obj->work[0] = 0;
-    D_8010AAB0_slapdown[0].obj = obj;
+    m246_objWorkTbl[0].obj = obj;
 }
 
-void func_801066E4_slapdown(void) {
+void m246_PaddleAnimClose(void) {
     s16 i;
 
     for (i = 0; i < 4; i++) {
-        DataClose(D_8010AA20_slapdown[i]);
+        DataClose(m246_paddleAnimDataTbl[i]);
     }
     for (i = 0; i < 4; i++) {
-        Hu3DAnimKill(D_8010AA90_slapdown[i]);
+        Hu3DAnimKill(m246_paddleAnimTbl[i]);
     }
 }
 
-void func_80106780_slapdown(omObjData *obj) {
-    if (D_8010AA30_slapdown == 1 && D_8010AA74_slapdown < 50) {
-        if (((rand8() & 0xFF) + (rand8() & 0xFF)) % D_8010A760_slapdown[GwPlayer[obj->work[0]].cpu_difficulty][0] == 0 || D_8010AA74_slapdown < 2) {
+void m246_PlayerComInput(omObjData *obj) {
+    if (m246_matchF == 1 && m246_timer < 50) {
+        if (((rand8() & 0xFF) + (rand8() & 0xFF)) % m246_comSlapRateTbl[GwPlayer[obj->work[0]].cpu_difficulty][0] == 0 || m246_timer < 2) {
             HuPadBtnDown[obj->work[3]] |= 0x8000;
         }
     } else {
-        if (((rand8() & 0xFF) + (rand8() & 0xFF)) % D_8010A760_slapdown[GwPlayer[obj->work[0]].cpu_difficulty][1] == 0) {
+        if (((rand8() & 0xFF) + (rand8() & 0xFF)) % m246_comSlapRateTbl[GwPlayer[obj->work[0]].cpu_difficulty][1] == 0) {
             HuPadBtnDown[obj->work[3]] |= 0x8000;
         }
     }
 }
 
-void func_80106900_slapdown(omObjData *obj) {
-    SlapdownEntry *entry = &D_8010AAB0_slapdown[11 + obj->work[0]];
-    SlapdownEntry *entries[4];
+void m246_PlayerObjMain(omObjData *obj) {
+    SlapdownObjWork *entry = &m246_objWorkTbl[11 + obj->work[0]];
+    SlapdownObjWork *entries[4];
     omObjData *objs[4];
     s16 i;
     s16 found;
@@ -431,21 +431,21 @@ void func_80106900_slapdown(omObjData *obj) {
     s16 pick;
 
     for (i = 0; i < 4; i++) {
-        entries[i] = &D_8010AAB0_slapdown[11 + i];
+        entries[i] = &m246_objWorkTbl[11 + i];
         objs[i] = entries[i]->obj;
     }
-    switch (D_8010AA6E_slapdown) {
+    switch (m246_phase) {
         case 3:
         case 4:
         case 5:
             if (GwPlayer[obj->work[0]].stat & 1) {
-                func_80105B3C_slapdown(obj->work[0]);
-                if (D_8010AA6E_slapdown == 5) {
-                    func_80106780_slapdown(obj);
+                m246_PadClear(obj->work[0]);
+                if (m246_phase == 5) {
+                    m246_PlayerComInput(obj);
                 }
             }
             if (obj->work[0] == 3) {
-                if (D_8010AA74_slapdown > 0) {
+                if (m246_timer > 0) {
                     for (i = 0; i < 4; i++) {
                         if (entries[i]->unk_04 == 0 && entries[i]->unk_06 == 0 && (HuPadBtnDown[objs[i]->work[3]] & 0x8000)) {
                             entries[i]->unk_06 = 1;
@@ -465,21 +465,21 @@ void func_80106900_slapdown(omObjData *obj) {
                             max = entries[i]->unk_06;
                         }
                     }
-                    if (D_8010AA74_slapdown % 3 == 0) {
+                    if (m246_timer % 3 == 0) {
                         pick = (u8)(rand8() % 4);
                         while (TRUE) {
                             if (entries[pick]->unk_06 == max) {
                                 HuAudPlayerFXPlay(0x47B, objs[pick]->work[0]);
-                                func_80106338_slapdown(objs[pick], 2, 2, 0, &entries[pick]->unk_04);
+                                m246_MotSet(objs[pick], 2, 2, 0, &entries[pick]->unk_04);
                                 Hu3DMotionSpeedSet(objs[pick]->model[4], 1.0f);
                                 entries[pick]->unk_06 = 99;
-                                entries[pick]->unk_08 = D_8010AA98_slapdown;
-                                D_8010AA98_slapdown++;
-                                if (D_8010AA30_slapdown == 1) {
-                                    entries[pick]->unk_0A = D_8010AA74_slapdown;
+                                entries[pick]->unk_08 = m246_slapOrderNo;
+                                m246_slapOrderNo++;
+                                if (m246_matchF == 1) {
+                                    entries[pick]->unk_0A = m246_timer;
                                 } else {
                                     entries[pick]->unk_0A = -1;
-                                    D_8010AAA0_slapdown++;
+                                    m246_missCnt++;
                                 }
                                 break;
                             }
@@ -504,10 +504,10 @@ void func_80106900_slapdown(omObjData *obj) {
                         }
                     }
                 }
-                D_8010AA10_slapdown = 0;
+                m246_slapPendingF = 0;
                 for (i = 0; i < 4; i++) {
                     if (entries[i]->unk_06 != 0 && entries[i]->unk_06 != 100) {
-                        D_8010AA10_slapdown = 1;
+                        m246_slapPendingF = 1;
                     }
                 }
             }
@@ -516,7 +516,7 @@ void func_80106900_slapdown(omObjData *obj) {
                     entry->unk_18 = 0.0f;
                     break;
                 case 1:
-                    entry->unk_18 = func_801059BC_slapdown(entry->unk_18, 20.0f);
+                    entry->unk_18 = m246_AngleAdd(entry->unk_18, 20.0f);
                     switch (entry->unk_08) {
                         case 0:
                             if (entry->unk_18 >= 93.0f) {
@@ -557,8 +557,8 @@ void func_80106900_slapdown(omObjData *obj) {
                     }
                     break;
                 case 50:
-                    if (D_8010AA74_slapdown < -29) {
-                        if (D_8010AA30_slapdown == 1) {
+                    if (m246_timer < -29) {
+                        if (m246_matchF == 1) {
                             entry->unk_0E = 100;
                         } else {
                             entry->unk_0E = 99;
@@ -570,7 +570,7 @@ void func_80106900_slapdown(omObjData *obj) {
                         entry->unk_18 = 0.0f;
                         entry->unk_0E = 100;
                     } else {
-                        entry->unk_18 = func_801059BC_slapdown(entry->unk_18, -15.0f);
+                        entry->unk_18 = m246_AngleAdd(entry->unk_18, -15.0f);
                     }
                     break;
                 case 100:
@@ -578,27 +578,27 @@ void func_80106900_slapdown(omObjData *obj) {
                     if (entry->unk_0A == -1) {
                         switch (entry->unk_0C) {
                             case 0:
-                                if (D_8010AA16_slapdown[obj->work[0]] == -1) {
-                                    D_8010AA16_slapdown[obj->work[0]] = HuAudPlayerFXPlay(0x47E, obj->work[0]);
+                                if (m246_knockSeTbl[obj->work[0]] == -1) {
+                                    m246_knockSeTbl[obj->work[0]] = HuAudPlayerFXPlay(0x47E, obj->work[0]);
                                     PlayerFXPlay(0x286, obj->work[0]);
                                 }
-                                obj->rot.y = func_801059BC_slapdown(obj->rot.y, 20.0f);
+                                obj->rot.y = m246_AngleAdd(obj->rot.y, 20.0f);
                                 if (GwPlayer[obj->work[0]].chr != 5) {
-                                    obj->trans.x += D_8010A7B0_slapdown[obj->work[1]].x;
-                                    obj->trans.z += D_8010A7B0_slapdown[obj->work[1]].y;
+                                    obj->trans.x += m246_knockVelTbl[obj->work[1]].x;
+                                    obj->trans.z += m246_knockVelTbl[obj->work[1]].y;
                                 } else {
-                                    obj->trans.x += D_8010A7D0_slapdown[obj->work[1]].x;
-                                    obj->trans.z += D_8010A7D0_slapdown[obj->work[1]].y;
+                                    obj->trans.x += m246_knockVelAltTbl[obj->work[1]].x;
+                                    obj->trans.z += m246_knockVelAltTbl[obj->work[1]].y;
                                 }
-                                func_8010629C_slapdown(obj, 3, 0, 5, 2, &entry->unk_04);
+                                m246_MotShiftSet(obj, 3, 0, 5, 2, &entry->unk_04);
                                 Hu3DMotionSpeedSet(obj->model[0], 1.0f);
-                                if ((s16)obj->rot.y == D_8010A720_slapdown[obj->work[1]]) {
+                                if ((s16)obj->rot.y == m246_playerRotTbl[obj->work[1]]) {
                                     entry->unk_0C = 1;
-                                    obj->rot.y = D_8010A720_slapdown[obj->work[1]];
+                                    obj->rot.y = m246_playerRotTbl[obj->work[1]];
                                 }
                                 break;
                             case 1:
-                                func_8010629C_slapdown(obj, 3, 0, 5, 1, &entry->unk_04);
+                                m246_MotShiftSet(obj, 3, 0, 5, 1, &entry->unk_04);
                                 break;
                         }
                     }
@@ -609,27 +609,27 @@ void func_80106900_slapdown(omObjData *obj) {
             if (entry->unk_0A == -1) {
                 switch (entry->unk_0C) {
                     case 0:
-                        if (D_8010AA16_slapdown[obj->work[0]] == -1) {
-                            D_8010AA16_slapdown[obj->work[0]] = HuAudPlayerFXPlay(0x47E, obj->work[0]);
+                        if (m246_knockSeTbl[obj->work[0]] == -1) {
+                            m246_knockSeTbl[obj->work[0]] = HuAudPlayerFXPlay(0x47E, obj->work[0]);
                             PlayerFXPlay(0x286, obj->work[0]);
                         }
-                        obj->rot.y = func_801059BC_slapdown(obj->rot.y, 20.0f);
+                        obj->rot.y = m246_AngleAdd(obj->rot.y, 20.0f);
                         if (GwPlayer[obj->work[0]].chr != 5) {
-                            obj->trans.x += D_8010A7B0_slapdown[obj->work[1]].x;
-                            obj->trans.z += D_8010A7B0_slapdown[obj->work[1]].y;
+                            obj->trans.x += m246_knockVelTbl[obj->work[1]].x;
+                            obj->trans.z += m246_knockVelTbl[obj->work[1]].y;
                         } else {
-                            obj->trans.x += D_8010A7D0_slapdown[obj->work[1]].x;
-                            obj->trans.z += D_8010A7D0_slapdown[obj->work[1]].y;
+                            obj->trans.x += m246_knockVelAltTbl[obj->work[1]].x;
+                            obj->trans.z += m246_knockVelAltTbl[obj->work[1]].y;
                         }
-                        func_8010629C_slapdown(obj, 3, 0, 5, 2, &entry->unk_04);
+                        m246_MotShiftSet(obj, 3, 0, 5, 2, &entry->unk_04);
                         Hu3DMotionSpeedSet(obj->model[0], 1.0f);
-                        if ((s16)obj->rot.y == D_8010A720_slapdown[obj->work[1]]) {
+                        if ((s16)obj->rot.y == m246_playerRotTbl[obj->work[1]]) {
                             entry->unk_0C = 1;
-                            obj->rot.y = D_8010A720_slapdown[obj->work[1]];
+                            obj->rot.y = m246_playerRotTbl[obj->work[1]];
                         }
                         break;
                     case 1:
-                        func_8010629C_slapdown(obj, 3, 0, 5, 1, &entry->unk_04);
+                        m246_MotShiftSet(obj, 3, 0, 5, 1, &entry->unk_04);
                         break;
                 }
             }
@@ -639,28 +639,28 @@ void func_80106900_slapdown(omObjData *obj) {
             if (entry->unk_16 == 0) {
                 switch (entry->unk_0C) {
                     case 0:
-                        obj->rot.y = func_801059BC_slapdown(obj->rot.y, 20.0f);
+                        obj->rot.y = m246_AngleAdd(obj->rot.y, 20.0f);
                         if (GwPlayer[obj->work[0]].chr != 5) {
-                            obj->trans.x += D_8010A7B0_slapdown[obj->work[1]].x;
-                            obj->trans.z += D_8010A7B0_slapdown[obj->work[1]].y;
+                            obj->trans.x += m246_knockVelTbl[obj->work[1]].x;
+                            obj->trans.z += m246_knockVelTbl[obj->work[1]].y;
                         } else {
-                            obj->trans.x += D_8010A7D0_slapdown[obj->work[1]].x;
-                            obj->trans.z += D_8010A7D0_slapdown[obj->work[1]].y;
+                            obj->trans.x += m246_knockVelAltTbl[obj->work[1]].x;
+                            obj->trans.z += m246_knockVelAltTbl[obj->work[1]].y;
                         }
-                        func_8010629C_slapdown(obj, 1, 0, 3, 2, &entry->unk_04);
+                        m246_MotShiftSet(obj, 1, 0, 3, 2, &entry->unk_04);
                         Hu3DMotionSpeedSet(obj->model[0], 1.0f);
-                        if ((s16)obj->rot.y == D_8010A720_slapdown[obj->work[1]]) {
+                        if ((s16)obj->rot.y == m246_playerRotTbl[obj->work[1]]) {
                             entry->unk_0C = 1;
-                            obj->rot.y = D_8010A720_slapdown[obj->work[1]];
+                            obj->rot.y = m246_playerRotTbl[obj->work[1]];
                         }
                         break;
                     case 1:
-                        if (D_8010AA6E_slapdown == 8 && D_8010AA74_slapdown >= 0) {
-                            func_8010629C_slapdown(obj, 4, 0, 5, 0, &entry->unk_04);
-                            HuAudCharVoicePlay((D_8010A6A0_slapdown[GwPlayer[obj->work[0]].chr] << 16) | 0x30);
+                        if (m246_phase == 8 && m246_timer >= 0) {
+                            m246_MotShiftSet(obj, 4, 0, 5, 0, &entry->unk_04);
+                            HuAudCharVoicePlay((m246_voiceChrTbl[GwPlayer[obj->work[0]].chr] << 16) | 0x30);
                             entry->unk_0C = 2;
                         } else {
-                            func_8010629C_slapdown(obj, 0, 0, 5, 1, &entry->unk_04);
+                            m246_MotShiftSet(obj, 0, 0, 5, 1, &entry->unk_04);
                         }
                         break;
                     case 2:
@@ -669,57 +669,57 @@ void func_80106900_slapdown(omObjData *obj) {
             } else {
                 switch (entry->unk_0C) {
                     case 0:
-                        obj->rot.y = func_801059BC_slapdown(obj->rot.y, 20.0f);
+                        obj->rot.y = m246_AngleAdd(obj->rot.y, 20.0f);
                         if (GwPlayer[obj->work[0]].chr != 5) {
-                            obj->trans.x += D_8010A7B0_slapdown[obj->work[1]].x;
-                            obj->trans.z += D_8010A7B0_slapdown[obj->work[1]].y;
+                            obj->trans.x += m246_knockVelTbl[obj->work[1]].x;
+                            obj->trans.z += m246_knockVelTbl[obj->work[1]].y;
                         } else {
-                            obj->trans.x += D_8010A7D0_slapdown[obj->work[1]].x;
-                            obj->trans.z += D_8010A7D0_slapdown[obj->work[1]].y;
+                            obj->trans.x += m246_knockVelAltTbl[obj->work[1]].x;
+                            obj->trans.z += m246_knockVelAltTbl[obj->work[1]].y;
                         }
-                        func_8010629C_slapdown(obj, 3, 0, 3, 2, &entry->unk_04);
+                        m246_MotShiftSet(obj, 3, 0, 3, 2, &entry->unk_04);
                         Hu3DMotionSpeedSet(obj->model[0], 1.0f);
-                        if ((s16)obj->rot.y == D_8010A720_slapdown[obj->work[1]]) {
+                        if ((s16)obj->rot.y == m246_playerRotTbl[obj->work[1]]) {
                             entry->unk_0C = 1;
-                            obj->rot.y = D_8010A720_slapdown[obj->work[1]];
+                            obj->rot.y = m246_playerRotTbl[obj->work[1]];
                         }
                         break;
                     case 1:
-                        if (D_8010AA6E_slapdown == 8 && D_8010AA32_slapdown != 0 && D_8010AA74_slapdown >= 0) {
-                            func_8010629C_slapdown(obj, 5, 0, 5, 0, &entry->unk_04);
-                            if (D_8010AA16_slapdown[obj->work[0]] != -1) {
-                                HuAudFXStop(D_8010AA16_slapdown[obj->work[0]]);
+                        if (m246_phase == 8 && m246_resultReadyF != 0 && m246_timer >= 0) {
+                            m246_MotShiftSet(obj, 5, 0, 5, 0, &entry->unk_04);
+                            if (m246_knockSeTbl[obj->work[0]] != -1) {
+                                HuAudFXStop(m246_knockSeTbl[obj->work[0]]);
                             }
                             entry->unk_0C = 2;
                         } else {
-                            func_8010629C_slapdown(obj, 3, 0, 5, 1, &entry->unk_04);
+                            m246_MotShiftSet(obj, 3, 0, 5, 1, &entry->unk_04);
                         }
                         break;
                     case 2:
                         break;
                 }
             }
-            if (obj->work[0] == 3 && D_8010AA32_slapdown == 0) {
+            if (obj->work[0] == 3 && m246_resultReadyF == 0) {
                 moving = 0;
                 for (i = 0; i < 4; i++) {
                     if (entries[i]->unk_16 != 0 &&
                         (entries[i]->unk_04 != 3 ||
-                         (s16)objs[i]->rot.y != D_8010A720_slapdown[objs[i]->work[1]])) {
+                         (s16)objs[i]->rot.y != m246_playerRotTbl[objs[i]->work[1]])) {
                         moving = 1;
                     }
                 }
                 if (moving == 0) {
-                    D_8010AA32_slapdown = 1;
+                    m246_resultReadyF = 1;
                 }
             }
             break;
     }
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
-    Hu3DModelRotSet(obj->model[2], entry->unk_18, D_8010A730_slapdown[obj->work[1]], 0.0f);
+    Hu3DModelRotSet(obj->model[2], entry->unk_18, m246_paddleRotTbl[obj->work[1]], 0.0f);
 }
 
-void func_80107858_slapdown(omObjData *obj) {
-    SlapdownEntry *entry = &D_8010AAB0_slapdown[11 + obj->work[0]];
+void m246_PlayerObjInit(omObjData *obj) {
+    SlapdownObjWork *entry = &m246_objWorkTbl[11 + obj->work[0]];
     s8 chr = GwPlayer[obj->work[0]].chr;
 
     obj->model[0] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][3], 0x2A9);
@@ -739,16 +739,16 @@ void func_80107858_slapdown(omObjData *obj) {
     Hu3DMotionAttrSet(obj->model[0], 2, 2);
     entry->unk_04 = 0;
     if (chr != 5) {
-        obj->trans.x = D_8010A6C0_slapdown[obj->work[1]];
+        obj->trans.x = m246_playerPosXTbl[obj->work[1]];
         obj->trans.y = 75.0f;
-        obj->trans.z = D_8010A6D0_slapdown[obj->work[1]];
+        obj->trans.z = m246_playerPosZTbl[obj->work[1]];
     } else {
-        obj->trans.x = D_8010A6E0_slapdown[obj->work[1]];
+        obj->trans.x = m246_playerPosXAltTbl[obj->work[1]];
         obj->trans.y = 75.0f;
-        obj->trans.z = D_8010A6F0_slapdown[obj->work[1]];
+        obj->trans.z = m246_playerPosZAltTbl[obj->work[1]];
     }
     obj->rot.x = 0.0f;
-    obj->rot.y = D_8010A720_slapdown[obj->work[1]];
+    obj->rot.y = m246_playerRotTbl[obj->work[1]];
     obj->rot.z = 0.0f;
     obj->model[1] = Hu3DModelRead2(0, 0x14C9);
     Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
@@ -756,9 +756,9 @@ void func_80107858_slapdown(omObjData *obj) {
     Hu3DModelRemakeStatic(obj->model[1]);
     Hu3DModelDynamicFree(obj->model[1]);
     obj->model[2] = Hu3DModelRead(0x4F0018, 0x2A9);
-    D_8010AA20_slapdown[obj->work[1]] = DataRead(D_8010A740_slapdown[obj->work[1]][1]);
-    D_8010AA90_slapdown[obj->work[1]] =
-        Hu3DAnimCreate(Hu3DData[obj->model[2]].hmf, D_8010AA20_slapdown[obj->work[1]], 0, "s246_07_DEF");
+    m246_paddleAnimDataTbl[obj->work[1]] = DataRead(m246_paddleAnimFileTbl[obj->work[1]][1]);
+    m246_paddleAnimTbl[obj->work[1]] =
+        Hu3DAnimCreate(Hu3DData[obj->model[2]].hmf, m246_paddleAnimDataTbl[obj->work[1]], 0, "s246_07_DEF");
     Hu3DModelRemakeStatic(obj->model[2]);
     Hu3DModelDynamicFree(obj->model[2]);
     Hu3DMotionTimeSet(obj->model[2], 0.0f);
@@ -777,22 +777,22 @@ void func_80107858_slapdown(omObjData *obj) {
             Hu3DModelPosSet(obj->model[2], -285.0f, 100.0f, 285.0f);
             break;
     }
-    Hu3DModelRotSet(obj->model[2], 0.0f, D_8010A730_slapdown[obj->work[1]], 0.0f);
+    Hu3DModelRotSet(obj->model[2], 0.0f, m246_paddleRotTbl[obj->work[1]], 0.0f);
     obj->model[3] = Hu3DModelRead(0x4F0017, 0x2A9);
-    Hu3DModelPosSet(obj->model[3], D_8010A700_slapdown[obj->work[1]], 0.0f, D_8010A710_slapdown[obj->work[1]]);
-    Hu3DModelRotSet(obj->model[3], 0.0f, D_8010A720_slapdown[obj->work[1]], 0.0f);
+    Hu3DModelPosSet(obj->model[3], m246_buttonPosXTbl[obj->work[1]], 0.0f, m246_buttonPosZTbl[obj->work[1]]);
+    Hu3DModelRotSet(obj->model[3], 0.0f, m246_playerRotTbl[obj->work[1]], 0.0f);
     obj->model[4] = Hu3DModelRead(0x4F001A, 0x2A9);
-    Hu3DModelPosSet(obj->model[4], D_8010A700_slapdown[obj->work[1]], 0.0f, D_8010A710_slapdown[obj->work[1]]);
-    Hu3DModelRotSet(obj->model[4], 0.0f, D_8010A720_slapdown[obj->work[1]], 0.0f);
+    Hu3DModelPosSet(obj->model[4], m246_buttonPosXTbl[obj->work[1]], 0.0f, m246_buttonPosZTbl[obj->work[1]]);
+    Hu3DModelRotSet(obj->model[4], 0.0f, m246_playerRotTbl[obj->work[1]], 0.0f);
     Hu3DMotionTimeSet(obj->model[4], 0.0f);
     Hu3DMotionSpeedSet(obj->model[4], 0.0f);
     entry->unk_0A = -2;
-    obj->func = func_80106900_slapdown;
+    obj->func = m246_PlayerObjMain;
 }
 
-void func_80107DCC_slapdown(void) {
+void m246_PlayerObjCreateAll(void) {
     s16 order[4];
-    SlapdownEntry *entry;
+    SlapdownObjWork *entry;
     omObjData *obj;
     s16 i;
     s16 j;
@@ -820,8 +820,8 @@ void func_80107DCC_slapdown(void) {
                 player = 0;
                 break;
         }
-        entry = &D_8010AAB0_slapdown[11 + i];
-        obj = omAddObj(0xFA, 10, 60, -1, func_80107858_slapdown);
+        entry = &m246_objWorkTbl[11 + i];
+        obj = omAddObj(0xFA, 10, 60, -1, m246_PlayerObjInit);
         obj->work[0] = player;
         obj->work[3] = GwPlayer[player].pad;
         entry->obj = obj;
@@ -837,29 +837,29 @@ void func_80107DCC_slapdown(void) {
     }
 }
 
-void func_80107FDC_slapdown(omObjData *obj, s16 anim) {
-    Hu3DAnimKill(D_8010AA12_slapdown);
-    D_8010AA12_slapdown = Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, D_8010AA58_slapdown[anim], 0, "s246_01_DEF");
+void m246_TargetAnimSet(omObjData *obj, s16 anim) {
+    Hu3DAnimKill(m246_targetAnim);
+    m246_targetAnim = Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, m246_targetAnimDataTbl[anim], 0, "s246_01_DEF");
 }
 
-void func_80108064_slapdown(void) {
+void m246_TargetAnimClose(void) {
     s16 i;
 
     for (i = 0; i < 5; i++) {
-        DataClose(D_8010AA58_slapdown[i]);
+        DataClose(m246_targetAnimDataTbl[i]);
     }
-    Hu3DAnimKill(D_8010AA12_slapdown);
+    Hu3DAnimKill(m246_targetAnim);
 }
 
-void func_801080D0_slapdown(void) {
-    DataClose(D_8010AA9C_slapdown);
-    Hu3DAnimKill(D_8010AA52_slapdown);
+void m246_SpareAnimClose(void) {
+    DataClose(m246_spareAnimData);
+    Hu3DAnimKill(m246_spareAnim);
 }
 
-void func_801080FC_slapdown(omObjData *obj) {
-    SlapdownEntry *entry = &D_8010AAB0_slapdown[1];
+void m246_TargetObjMain(omObjData *obj) {
+    SlapdownObjWork *entry = &m246_objWorkTbl[1];
 
-    switch (D_8010AA6E_slapdown) {
+    switch (m246_phase) {
         case 0:
             break;
         case 1:
@@ -869,14 +869,14 @@ void func_801080FC_slapdown(omObjData *obj) {
                     entry->unk_06 = 1;
                 }
                 entry->unk_04++;
-                func_80107FDC_slapdown(obj, entry->unk_04 % 5);
+                m246_TargetAnimSet(obj, entry->unk_04 % 5);
             } else {
                 if (entry->unk_06 == 1) {
                     HuAudFXPlay(0x47F);
                     entry->unk_06 = 2;
                 }
-                func_80107FDC_slapdown(obj, D_8010AA72_slapdown);
-                D_8010AA50_slapdown = 1;
+                m246_TargetAnimSet(obj, m246_targetType);
+                m246_phaseDoneNo = 1;
             }
             break;
         case 2:
@@ -898,85 +898,85 @@ void func_801080FC_slapdown(omObjData *obj) {
     }
 }
 
-void func_8010820C_slapdown(omObjData *obj) {
+void m246_TargetObjInit(omObjData *obj) {
     obj->model[0] = Hu3DModelRead(0x4F0019, 0x2A9);
-    D_8010AA58_slapdown[0] = DataRead(0x4F0011);
-    D_8010AA58_slapdown[1] = DataRead(0x4F0012);
-    D_8010AA58_slapdown[2] = DataRead(0x4F0013);
-    D_8010AA58_slapdown[3] = DataRead(0x4F0014);
-    D_8010AA58_slapdown[4] = DataRead(0x4F0015);
-    D_8010AA12_slapdown = Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, D_8010AA58_slapdown[0], 0, "s246_19_DEF");
+    m246_targetAnimDataTbl[0] = DataRead(0x4F0011);
+    m246_targetAnimDataTbl[1] = DataRead(0x4F0012);
+    m246_targetAnimDataTbl[2] = DataRead(0x4F0013);
+    m246_targetAnimDataTbl[3] = DataRead(0x4F0014);
+    m246_targetAnimDataTbl[4] = DataRead(0x4F0015);
+    m246_targetAnim = Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, m246_targetAnimDataTbl[0], 0, "s246_19_DEF");
     Hu3DModelRemakeStatic(obj->model[0]);
     Hu3DModelDynamicFree(obj->model[0]);
-    D_8010AA72_slapdown = (u8)(rand8() % 5);
-    obj->func = func_801080FC_slapdown;
+    m246_targetType = (u8)(rand8() % 5);
+    obj->func = m246_TargetObjMain;
 }
 
-const char D_8010A9C4_slapdown[] = "";
+const char m246_emptyStr[] = "";
 
-void func_80108340_slapdown(void) {
-    omObjData *obj = omAddObj(0x96, 1, 0, -1, func_8010820C_slapdown);
+void m246_TargetObjCreate(void) {
+    omObjData *obj = omAddObj(0x96, 1, 0, -1, m246_TargetObjInit);
     obj->work[0] = 0;
-    D_8010AAB0_slapdown[1].obj = obj;
+    m246_objWorkTbl[1].obj = obj;
 }
 
-void func_80108380_slapdown(omObjData *obj, s16 anim) {
-    Hu3DAnimKill(D_8010AA38_slapdown[obj->work[0]]);
-    D_8010AA38_slapdown[obj->work[0]] =
-        Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, D_8010AA78_slapdown[anim], 0, "s246_01_DEF");
+void m246_CardAnimSet(omObjData *obj, s16 anim) {
+    Hu3DAnimKill(m246_cardAnimTbl[obj->work[0]]);
+    m246_cardAnimTbl[obj->work[0]] =
+        Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, m246_cardAnimDataTbl[anim], 0, "s246_01_DEF");
 }
 
-void func_80108420_slapdown(void) {
+void m246_CardAnimClose(void) {
     s16 i;
 
     for (i = 0; i < 6; i++) {
-        DataClose(D_8010AA78_slapdown[i]);
+        DataClose(m246_cardAnimDataTbl[i]);
     }
     for (i = 0; i < 9; i++) {
-        Hu3DAnimKill(D_8010AA38_slapdown[i]);
+        Hu3DAnimKill(m246_cardAnimTbl[i]);
     }
 }
 
-void func_801084BC_slapdown(omObjData *obj) {
-    SlapdownEntry *entry = &D_8010AAB0_slapdown[2 + obj->work[0]];
-    SlapdownEntry *entries[9];
+void m246_CardObjMain(omObjData *obj) {
+    SlapdownObjWork *entry = &m246_objWorkTbl[2 + obj->work[0]];
+    SlapdownObjWork *entries[9];
     omObjData *objs[9];
     s16 i;
     s16 pick;
 
     for (i = 0; i < 9; i++) {
-        entries[i] = &D_8010AAB0_slapdown[2 + i];
+        entries[i] = &m246_objWorkTbl[2 + i];
         objs[i] = entries[i]->obj;
     }
     (void)objs;
     if (obj->work[0] == 0) {
-        D_8010AA4C_slapdown = func_801059BC_slapdown(D_8010AA4C_slapdown, 25.0f);
+        m246_cardSpinAngle = m246_AngleAdd(m246_cardSpinAngle, 25.0f);
     }
-    switch (D_8010AA6E_slapdown) {
+    switch (m246_phase) {
         case 2:
-            if (obj->work[0] == 8 && D_8010AA9A_slapdown == 0) {
-                D_8010AA9A_slapdown = 1;
+            if (obj->work[0] == 8 && m246_firstFlipF == 0) {
+                m246_firstFlipF = 1;
                 pick = (u8)(rand8() % 9);
-                if (entries[pick]->unk_06 == D_8010AA72_slapdown) {
+                if (entries[pick]->unk_06 == m246_targetType) {
                     pick = (u8)(rand8() % 9);
-                    if (entries[pick]->unk_06 == D_8010AA72_slapdown) {
-                        D_8010AA30_slapdown = 1;
+                    if (entries[pick]->unk_06 == m246_targetType) {
+                        m246_matchF = 1;
                     } else {
-                        D_8010AA30_slapdown = 0;
+                        m246_matchF = 0;
                     }
                 } else {
-                    D_8010AA30_slapdown = 0;
+                    m246_matchF = 0;
                 }
                 entries[pick]->unk_04 = 1;
             }
             break;
         case 3:
-            obj->rot.z = D_8010AA4C_slapdown;
-            D_8010AA76_slapdown = 1;
-            if (D_8010AA74_slapdown <= 60 && obj->work[0] == 8) {
+            obj->rot.z = m246_cardSpinAngle;
+            m246_spinSeState = 1;
+            if (m246_timer <= 60 && obj->work[0] == 8) {
                 for (i = 0; i < 9; i++) {
                     if (entries[i]->unk_04 == 1) {
-                        D_8010AA50_slapdown = 3;
+                        m246_phaseDoneNo = 3;
                     }
                 }
             }
@@ -985,66 +985,66 @@ void func_801084BC_slapdown(omObjData *obj) {
             if (entry->unk_04 == 1) {
                 switch (entry->unk_08) {
                     case 0:
-                        obj->rot.z = D_8010AA4C_slapdown;
-                        if (D_8010AA4C_slapdown >= 150.0f && D_8010AA4C_slapdown <= 180.0f) {
+                        obj->rot.z = m246_cardSpinAngle;
+                        if (m246_cardSpinAngle >= 150.0f && m246_cardSpinAngle <= 180.0f) {
                             entry->unk_08 = 1;
                         }
                         break;
                     case 1:
-                        obj->rot.z = D_8010AA4C_slapdown;
-                        if (D_8010AA4C_slapdown >= 0.0f && D_8010AA4C_slapdown <= 30.0f) {
+                        obj->rot.z = m246_cardSpinAngle;
+                        if (m246_cardSpinAngle >= 0.0f && m246_cardSpinAngle <= 30.0f) {
                             HuAudFXPlay(0x480);
-                            func_80108380_slapdown(obj, entry->unk_06);
+                            m246_CardAnimSet(obj, entry->unk_06);
                             obj->rot.z = 0.0f;
-                            D_8010AA50_slapdown = 4;
+                            m246_phaseDoneNo = 4;
                             entry->unk_08 = 0;
                         }
                         break;
                 }
             } else {
-                if (D_8010AA76_slapdown == 3) {
-                    D_8010AA76_slapdown = 1;
+                if (m246_spinSeState == 3) {
+                    m246_spinSeState = 1;
                 }
-                obj->rot.z = D_8010AA4C_slapdown;
+                obj->rot.z = m246_cardSpinAngle;
             }
             break;
         case 5:
             if (entry->unk_04 == 1) {
-                if (D_8010AA74_slapdown <= 0) {
+                if (m246_timer <= 0) {
                     obj->rot.z = 0.0f;
-                    if (D_8010AA10_slapdown == 0) {
-                        if (D_8010AA30_slapdown != 1) {
+                    if (m246_slapPendingF == 0) {
+                        if (m246_matchF != 1) {
                             entry->unk_04 = 99;
-                            if (D_8010AAA0_slapdown < 3) {
-                                func_80108380_slapdown(obj, 5);
+                            if (m246_missCnt < 3) {
+                                m246_CardAnimSet(obj, 5);
                             } else {
                                 entry->unk_04 = 100;
                             }
                         } else {
                             entry->unk_04 = 100;
                         }
-                        D_8010AA50_slapdown = 5;
+                        m246_phaseDoneNo = 5;
                     }
                 }
-            } else if (D_8010AA74_slapdown <= 0) {
+            } else if (m246_timer <= 0) {
                 switch (entry->unk_08) {
                     case 0:
-                        obj->rot.z = D_8010AA4C_slapdown;
-                        if (D_8010AA4C_slapdown >= 0.0f && D_8010AA4C_slapdown <= 30.0f) {
+                        obj->rot.z = m246_cardSpinAngle;
+                        if (m246_cardSpinAngle >= 0.0f && m246_cardSpinAngle <= 30.0f) {
                             entry->unk_08 = 1;
                         }
                         break;
                     case 1:
-                        if (D_8010AA76_slapdown == 1) {
-                            D_8010AA76_slapdown = 0;
+                        if (m246_spinSeState == 1) {
+                            m246_spinSeState = 0;
                         }
                         obj->rot.z = 0.0f;
                         break;
                 }
             } else {
-                obj->rot.z = D_8010AA4C_slapdown;
+                obj->rot.z = m246_cardSpinAngle;
             }
-            if (obj->work[0] == 8 && D_8010AA50_slapdown == 5 && D_8010AA30_slapdown != 1) {
+            if (obj->work[0] == 8 && m246_phaseDoneNo == 5 && m246_matchF != 1) {
                 pick = (u8)(rand8() % 9);
                 while (TRUE) {
                     if (entries[pick]->unk_04 == 0) {
@@ -1071,12 +1071,12 @@ void func_801084BC_slapdown(omObjData *obj) {
                         if (obj->rot.z >= 0.0f && obj->rot.z <= 30.0f) {
                             entry->unk_08 = 1;
                         } else {
-                            obj->rot.z = D_8010AA4C_slapdown;
+                            obj->rot.z = m246_cardSpinAngle;
                         }
                         break;
                     case 1:
-                        if (D_8010AA76_slapdown == 1) {
-                            D_8010AA76_slapdown = 0;
+                        if (m246_spinSeState == 1) {
+                            m246_spinSeState = 0;
                         }
                         obj->rot.z = 0.0f;
                         break;
@@ -1085,72 +1085,72 @@ void func_801084BC_slapdown(omObjData *obj) {
             break;
     }
     if (obj->work[0] == 8) {
-        switch (D_8010AA76_slapdown) {
+        switch (m246_spinSeState) {
             case 0:
-                if (D_8010AA14_slapdown != -1) {
-                    HuAudFXStop(D_8010AA14_slapdown);
-                    D_8010AA14_slapdown = -1;
-                    D_8010AA76_slapdown = 2;
+                if (m246_spinSeNo != -1) {
+                    HuAudFXStop(m246_spinSeNo);
+                    m246_spinSeNo = -1;
+                    m246_spinSeState = 2;
                 }
                 break;
             case 1:
-                if (D_8010AA14_slapdown == -1) {
-                    D_8010AA14_slapdown = HuAudFXPlay(0x47A);
+                if (m246_spinSeNo == -1) {
+                    m246_spinSeNo = HuAudFXPlay(0x47A);
                 }
                 break;
             case 2:
                 HuAudFXPlay(0x480);
-                D_8010AA76_slapdown = 3;
+                m246_spinSeState = 3;
                 break;
         }
     }
 }
 
-void func_80108BAC_slapdown(omObjData *obj) {
-    SlapdownEntry *entries[9];
+void m246_CardObjInit(omObjData *obj) {
+    SlapdownObjWork *entries[9];
     omObjData *objs[9];
     s16 i;
     s16 j;
 
     for (i = 0; i < 9; i++) {
-        entries[i] = &D_8010AAB0_slapdown[2 + i];
+        entries[i] = &m246_objWorkTbl[2 + i];
         objs[i] = entries[i]->obj;
     }
     obj->model[0] = Hu3DModelRead(0x4F0016, 0x2A9);
-    obj->trans.x = D_8010A7F0_slapdown[obj->work[1]];
+    obj->trans.x = m246_cardPosXTbl[obj->work[1]];
     obj->trans.y = 35.7455f;
-    obj->trans.z = D_8010A814_slapdown[obj->work[1]];
+    obj->trans.z = m246_cardPosZTbl[obj->work[1]];
     obj->rot.x = 0.0f;
     obj->rot.y = 0.0f;
     obj->rot.z = 0.0f;
     if (obj->work[0] == 8) {
-        D_8010AA78_slapdown[0] = DataRead(0x4F0001);
-        D_8010AA78_slapdown[1] = DataRead(0x4F0002);
-        D_8010AA78_slapdown[2] = DataRead(0x4F0003);
-        D_8010AA78_slapdown[3] = DataRead(0x4F0004);
-        D_8010AA78_slapdown[4] = DataRead(0x4F0005);
-        D_8010AA78_slapdown[5] = DataRead(0x4F0006);
-        entries[0]->unk_06 = D_8010AA72_slapdown;
+        m246_cardAnimDataTbl[0] = DataRead(0x4F0001);
+        m246_cardAnimDataTbl[1] = DataRead(0x4F0002);
+        m246_cardAnimDataTbl[2] = DataRead(0x4F0003);
+        m246_cardAnimDataTbl[3] = DataRead(0x4F0004);
+        m246_cardAnimDataTbl[4] = DataRead(0x4F0005);
+        m246_cardAnimDataTbl[5] = DataRead(0x4F0006);
+        entries[0]->unk_06 = m246_targetType;
         for (j = 1, i = 0; i < 5; i++) {
-            if (i != D_8010AA72_slapdown) {
+            if (i != m246_targetType) {
                 entries[j]->unk_06 = i;
                 entries[j + 1]->unk_06 = i;
                 j += 2;
             }
         }
         for (i = 0; i < 9; i++) {
-            D_8010AA38_slapdown[objs[i]->work[0]] =
-                Hu3DAnimCreate(Hu3DData[objs[i]->model[0]].hmf, D_8010AA78_slapdown[5], 0, "s246_01_DEF");
+            m246_cardAnimTbl[objs[i]->work[0]] =
+                Hu3DAnimCreate(Hu3DData[objs[i]->model[0]].hmf, m246_cardAnimDataTbl[5], 0, "s246_01_DEF");
             Hu3DModelRemakeStatic(objs[i]->model[0]);
             Hu3DModelDynamicFree(objs[i]->model[0]);
         }
     }
-    obj->func = func_801084BC_slapdown;
+    obj->func = m246_CardObjMain;
 }
 
-void func_80108E44_slapdown(void) {
+void m246_CardObjCreateAll(void) {
     s16 order[9];
-    SlapdownEntry *entry;
+    SlapdownObjWork *entry;
     omObjData *obj;
     s16 i;
     s16 j;
@@ -1160,8 +1160,8 @@ void func_80108E44_slapdown(void) {
         order[i] = i;
     }
     for (i = 0; i < 9; i++) {
-        entry = &D_8010AAB0_slapdown[2 + i];
-        obj = omAddObj(0xC8, 1, 0, -1, func_80108BAC_slapdown);
+        entry = &m246_objWorkTbl[2 + i];
+        obj = omAddObj(0xC8, 1, 0, -1, m246_CardObjInit);
         obj->work[0] = i;
         entry->obj = obj;
         pick = rand8() % (9 - i);
@@ -1176,17 +1176,17 @@ void func_80108E44_slapdown(void) {
     }
 }
 
-void func_80108FE4_slapdown(omObjData *obj) {
-    SlapdownEntry *entry = &D_8010AAB0_slapdown[15 + obj->work[0]];
-    SlapdownEntry *entries[4];
+void m246_RankObjMain(omObjData *obj) {
+    SlapdownObjWork *entry = &m246_objWorkTbl[15 + obj->work[0]];
+    SlapdownObjWork *entries[4];
     omObjData *objs[4];
     s16 i;
 
     for (i = 0; i < 4; i++) {
-        entries[i] = &D_8010AAB0_slapdown[11 + i];
+        entries[i] = &m246_objWorkTbl[11 + i];
         objs[i] = entries[i]->obj;
     }
-    switch (D_8010AA6E_slapdown) {
+    switch (m246_phase) {
         case 7:
         case 8:
         case 9:
@@ -1232,8 +1232,8 @@ void func_80108FE4_slapdown(omObjData *obj) {
     espScaleSet(entry->unk_0C, entry->unk_18, entry->unk_18);
 }
 
-void func_8010924C_slapdown(omObjData *obj) {
-    SlapdownEntry *entry = &D_8010AAB0_slapdown[15 + obj->work[0]];
+void m246_RankObjInit(omObjData *obj) {
+    SlapdownObjWork *entry = &m246_objWorkTbl[15 + obj->work[0]];
     s16 i;
 
     if (obj->work[0] == 0 || obj->work[0] == 3) {
@@ -1250,61 +1250,61 @@ void func_8010924C_slapdown(omObjData *obj) {
         }
     }
     espAttrSet(entry->unk_40[1], 0);
-    espPosSet(entry->unk_40[1], D_8010A838_slapdown[obj->work[0]].x, D_8010A838_slapdown[obj->work[0]].y);
+    espPosSet(entry->unk_40[1], m246_rankFramePosTbl[obj->work[0]].x, m246_rankFramePosTbl[obj->work[0]].y);
     espDispOff(entry->unk_40[1]);
     espPriSet(entry->unk_40[1], 0xEEEE);
     for (i = 0; i < 4; i++) {
-        entry->unk_40[0] = HuSprAnimDataRead(D_8010A878_slapdown[i]);
+        entry->unk_40[0] = HuSprAnimDataRead(m246_rankSprFileTbl[i]);
         switch (i) {
             case 0:
                 entry->unk_06 = espEntry(entry->unk_40[0], 0, 0);
                 espAttrSet(entry->unk_06, 0);
-                espPosSet(entry->unk_06, D_8010A858_slapdown[obj->work[0]].x, D_8010A858_slapdown[obj->work[0]].y);
+                espPosSet(entry->unk_06, m246_rankDigitPosTbl[obj->work[0]].x, m246_rankDigitPosTbl[obj->work[0]].y);
                 espDispOff(entry->unk_06);
                 espPriSet(entry->unk_06, 0xAAAA);
                 break;
             case 1:
                 entry->unk_08 = espEntry(entry->unk_40[0], 0, 0);
                 espAttrSet(entry->unk_08, 0);
-                espPosSet(entry->unk_08, D_8010A858_slapdown[obj->work[0]].x, D_8010A858_slapdown[obj->work[0]].y);
+                espPosSet(entry->unk_08, m246_rankDigitPosTbl[obj->work[0]].x, m246_rankDigitPosTbl[obj->work[0]].y);
                 espDispOff(entry->unk_08);
                 espPriSet(entry->unk_08, 0xAAAA);
                 break;
             case 2:
                 entry->unk_0A = espEntry(entry->unk_40[0], 0, 0);
                 espAttrSet(entry->unk_0A, 0);
-                espPosSet(entry->unk_0A, D_8010A858_slapdown[obj->work[0]].x, D_8010A858_slapdown[obj->work[0]].y);
+                espPosSet(entry->unk_0A, m246_rankDigitPosTbl[obj->work[0]].x, m246_rankDigitPosTbl[obj->work[0]].y);
                 espDispOff(entry->unk_0A);
                 espPriSet(entry->unk_0A, 0xAAAA);
                 break;
             case 3:
                 entry->unk_0C = espEntry(entry->unk_40[0], 0, 0);
                 espAttrSet(entry->unk_0C, 0);
-                espPosSet(entry->unk_0C, D_8010A858_slapdown[obj->work[0]].x, D_8010A858_slapdown[obj->work[0]].y);
+                espPosSet(entry->unk_0C, m246_rankDigitPosTbl[obj->work[0]].x, m246_rankDigitPosTbl[obj->work[0]].y);
                 espDispOff(entry->unk_0C);
                 espPriSet(entry->unk_0C, 0xAAAA);
                 break;
         }
     }
     entry->unk_18 = 0.1f;
-    obj->func = func_80108FE4_slapdown;
+    obj->func = m246_RankObjMain;
 }
 
-void func_80109640_slapdown(void) {
-    SlapdownEntry *entry;
+void m246_RankObjCreateAll(void) {
+    SlapdownObjWork *entry;
     omObjData *obj;
     s16 i;
 
     for (i = 0; i < 4; i++) {
-        entry = &D_8010AAB0_slapdown[15 + i];
-        obj = omAddObj(0x12C, 1, 0, -1, func_8010924C_slapdown);
+        entry = &m246_objWorkTbl[15 + i];
+        obj = omAddObj(0x12C, 1, 0, -1, m246_RankObjInit);
         obj->work[0] = i;
         entry->obj = obj;
     }
 }
 
-void func_801096E4_slapdown(void) {
-    SlapdownEntry *entries[4];
+void m246_RankCalc(void) {
+    SlapdownObjWork *entries[4];
     omObjData *objs[4];
     s16 i;
     s16 j;
@@ -1317,7 +1317,7 @@ void func_801096E4_slapdown(void) {
     active = 0;
     out = 0;
     for (i = 0; i < 4; i++) {
-        entries[i] = &D_8010AAB0_slapdown[11 + i];
+        entries[i] = &m246_objWorkTbl[11 + i];
         objs[i] = entries[i]->obj;
         // do-while(0) needed to match register allocation.
         do {
@@ -1382,8 +1382,8 @@ void func_801096E4_slapdown(void) {
     }
 }
 
-void func_801099C0_slapdown(void) {
-    SlapdownEntry *entries[4];
+void m246_ResultSet(void) {
+    SlapdownObjWork *entries[4];
     omObjData *objs[4];
     s16 ranks[4];
     s16 places[4];
@@ -1395,7 +1395,7 @@ void func_801099C0_slapdown(void) {
         places[i] = 0;
     }
     for (i = 0; i < 4; i++) {
-        entries[i] = &D_8010AAB0_slapdown[11 + i];
+        entries[i] = &m246_objWorkTbl[11 + i];
         objs[i] = entries[i]->obj;
         if (ranks[0] > entries[i]->unk_16) {
             ranks[0] = entries[i]->unk_16;
@@ -1440,7 +1440,7 @@ void func_801099C0_slapdown(void) {
         for (i = 0; i < 4; i++) {
             places[i] = 3;
         }
-        D_8010AAA0_slapdown = 4;
+        m246_missCnt = 4;
     }
     for (i = 0; i < 4; i++) {
         GwPlayer[objs[i]->work[0]].bonusCoin = places[i];
@@ -1448,11 +1448,11 @@ void func_801099C0_slapdown(void) {
     }
 }
 
-void func_80109D54_slapdown(void) {
+void m246_CameraViewInit(void) {
     u32 i;
 
-    if (D_8010A888_slapdown == 0) {
-        D_8010A888_slapdown = 1;
+    if (m246_cameraSetF == 0) {
+        m246_cameraSetF = 1;
         for (i = 0; i < 1; i++) {
             CZoomM[i] = 2037.5552f;
             CRotM[i].x = 311.9663f;
@@ -1465,192 +1465,192 @@ void func_80109D54_slapdown(void) {
     }
 }
 
-void func_80109E14_slapdown(omObjData *obj) {
-    func_80108064_slapdown();
-    func_80108420_slapdown();
-    func_801066E4_slapdown();
+void m246_ExitObjMain(omObjData *obj) {
+    m246_TargetAnimClose();
+    m246_CardAnimClose();
+    m246_PaddleAnimClose();
     HuAudFXStop(-1);
     osViBlack(FALSE);
     omOvlReturnEx(1);
 }
 
-void func_80109E58_slapdown(omObjData *obj) {
+void m246_ExitWaitObjMain(omObjData *obj) {
     if (WipeStatGet() == 0) {
-        obj->func = func_80109E14_slapdown;
+        obj->func = m246_ExitObjMain;
     }
 }
 
-void func_80109E90_slapdown(omObjData *obj) {
+void m246_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq == 1) {
         WipeCreateOut(0, 20);
-        obj->func = func_80109E58_slapdown;
+        obj->func = m246_ExitWaitObjMain;
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
     }
 }
 
-void func_80109EE8_slapdown(omObjData *obj) {
-    SlapdownEntry *entry;
+void m246_MainObjMain(omObjData *obj) {
+    SlapdownObjWork *entry;
     s16 i;
 
-    switch (D_8010AA6E_slapdown) {
+    switch (m246_phase) {
         case 0:
-            func_80106290_slapdown(1);
-            D_8010AA74_slapdown = 0;
+            m246_PhaseSet(1);
+            m246_timer = 0;
             HuAudFXPlay(0x47D);
             break;
         case 1:
-            if (D_8010AA50_slapdown == 1) {
-                func_80106290_slapdown(2);
+            if (m246_phaseDoneNo == 1) {
+                m246_PhaseSet(2);
                 GMesCreate(7);
-                D_8010AA74_slapdown = 0;
+                m246_timer = 0;
             }
             break;
         case 2:
-            if (D_8010AA74_slapdown >= 63) {
+            if (m246_timer >= 63) {
                 HuAudSeqPlay(0x38);
             } else {
-                D_8010AA74_slapdown++;
+                m246_timer++;
             }
             if (GMesStatGet() == 0) {
-                func_80106290_slapdown(3);
-                D_8010AA74_slapdown = 90;
+                m246_PhaseSet(3);
+                m246_timer = 90;
             }
             break;
         case 3:
-            D_8010AA74_slapdown--;
-            if (D_8010AA50_slapdown == 3) {
-                func_80106290_slapdown(4);
+            m246_timer--;
+            if (m246_phaseDoneNo == 3) {
+                m246_PhaseSet(4);
             }
             break;
         case 4:
-            if (D_8010AA74_slapdown >= -29) {
-                D_8010AA74_slapdown--;
+            if (m246_timer >= -29) {
+                m246_timer--;
             }
-            if (D_8010AA50_slapdown == 4) {
-                func_80106290_slapdown(5);
+            if (m246_phaseDoneNo == 4) {
+                m246_PhaseSet(5);
             }
             break;
         case 5:
-            if (D_8010AA74_slapdown >= -29) {
-                D_8010AA74_slapdown--;
+            if (m246_timer >= -29) {
+                m246_timer--;
             }
-            if (D_8010AA50_slapdown == 5) {
-                if (D_8010AA30_slapdown != 1) {
-                    if (D_8010AAA0_slapdown < 3) {
-                        func_80106290_slapdown(4);
-                        D_8010AA74_slapdown = 60;
+            if (m246_phaseDoneNo == 5) {
+                if (m246_matchF != 1) {
+                    if (m246_missCnt < 3) {
+                        m246_PhaseSet(4);
+                        m246_timer = 60;
                         for (i = 0; i < 9; i++) {
-                            entry = &D_8010AAB0_slapdown[2 + i];
+                            entry = &m246_objWorkTbl[2 + i];
                             if (entry->unk_04 == 1) {
-                                if (entry->unk_06 == D_8010AA72_slapdown) {
-                                    D_8010AA30_slapdown = 1;
+                                if (entry->unk_06 == m246_targetType) {
+                                    m246_matchF = 1;
                                 } else {
-                                    D_8010AA30_slapdown = 0;
+                                    m246_matchF = 0;
                                 }
                                 break;
                             }
                         }
                     } else {
-                        func_80106290_slapdown(6);
-                        D_8010AA74_slapdown = 15;
+                        m246_PhaseSet(6);
+                        m246_timer = 15;
                     }
                 } else {
-                    func_80106290_slapdown(6);
-                    D_8010AA74_slapdown = 15;
+                    m246_PhaseSet(6);
+                    m246_timer = 15;
                 }
             }
             break;
         case 6:
-            if (D_8010AA76_slapdown == 3) {
-                if (D_8010AA74_slapdown < 0) {
-                    func_80106290_slapdown(7);
+            if (m246_spinSeState == 3) {
+                if (m246_timer < 0) {
+                    m246_PhaseSet(7);
                     GMesCreate(0x12);
                     HuAudSeqFadeOut(120);
-                    func_801096E4_slapdown();
-                    func_801099C0_slapdown();
-                    D_8010AA74_slapdown = -15;
+                    m246_RankCalc();
+                    m246_ResultSet();
+                    m246_timer = -15;
                 } else {
-                    D_8010AA74_slapdown--;
+                    m246_timer--;
                 }
             }
             break;
         case 7:
             if (GMesStatGet() == 0) {
-                if (D_8010AA74_slapdown >= 0) {
-                    func_80106290_slapdown(8);
-                    if (D_8010AAA0_slapdown < 4) {
-                        D_8010AA74_slapdown = 98;
+                if (m246_timer >= 0) {
+                    m246_PhaseSet(8);
+                    if (m246_missCnt < 4) {
+                        m246_timer = 98;
                     } else {
-                        D_8010AA74_slapdown = 132;
+                        m246_timer = 132;
                     }
                 } else {
-                    D_8010AA74_slapdown++;
+                    m246_timer++;
                 }
             }
             break;
         case 8:
-            if (D_8010AAA0_slapdown >= 4) {
-                if (D_8010AA74_slapdown == 132) {
+            if (m246_missCnt >= 4) {
+                if (m246_timer == 132) {
                     HuAudSeqPlay(0x6B);
                 }
             } else {
-                if (D_8010AA74_slapdown == 98) {
+                if (m246_timer == 98) {
                     HuAudSeqPlay(0x65);
                 }
             }
-            if (D_8010AA74_slapdown > 0) {
-                D_8010AA74_slapdown--;
+            if (m246_timer > 0) {
+                m246_timer--;
             } else {
-                D_8010AA74_slapdown = 0;
-                func_80106290_slapdown(9);
+                m246_timer = 0;
+                m246_PhaseSet(9);
             }
             break;
         case 9:
-            if (D_8010AA74_slapdown == 0) {
+            if (m246_timer == 0) {
                 WipeCreateOut(0, 20);
-                obj->func = func_80109E58_slapdown;
-                D_8010AA74_slapdown++;
+                obj->func = m246_ExitWaitObjMain;
+                m246_timer++;
             }
             break;
     }
 }
 
-void func_8010A2B8_slapdown(omObjData *obj) {
+void m246_MainObjInit(omObjData *obj) {
     s16 i;
 
     WipeCreateIn(0xFF, 16);
-    func_80109D54_slapdown();
-    func_801066A4_slapdown();
-    func_80108340_slapdown();
-    func_80108E44_slapdown();
-    func_80107DCC_slapdown();
-    func_80109640_slapdown();
-    D_8010AA74_slapdown = 0;
-    D_8010AA6E_slapdown = 0;
-    D_8010AA50_slapdown = 0;
-    D_8010AA70_slapdown = 0;
-    D_8010AA10_slapdown = 0;
-    D_8010AA30_slapdown = 0;
-    D_8010AA72_slapdown = 0;
-    D_8010AAA0_slapdown = 0;
-    D_8010AA9A_slapdown = 0;
-    D_8010AA32_slapdown = 0;
-    D_8010AA98_slapdown = 0;
-    D_8010AA4C_slapdown = 0;
-    D_8010AA6C_slapdown = 0;
-    D_8010AA14_slapdown = -1;
+    m246_CameraViewInit();
+    m246_BackObjCreate();
+    m246_TargetObjCreate();
+    m246_CardObjCreateAll();
+    m246_PlayerObjCreateAll();
+    m246_RankObjCreateAll();
+    m246_timer = 0;
+    m246_phase = 0;
+    m246_phaseDoneNo = 0;
+    m246_unusedCntB = 0;
+    m246_slapPendingF = 0;
+    m246_matchF = 0;
+    m246_targetType = 0;
+    m246_missCnt = 0;
+    m246_firstFlipF = 0;
+    m246_resultReadyF = 0;
+    m246_slapOrderNo = 0;
+    m246_cardSpinAngle = 0;
+    m246_unusedCntA = 0;
+    m246_spinSeNo = -1;
     for (i = 0; i < 4; i++) {
-        D_8010AA16_slapdown[i] = -1;
+        m246_knockSeTbl[i] = -1;
     }
-    D_8010AA76_slapdown = 0;
-    obj->func = func_80109EE8_slapdown;
+    m246_spinSeState = 0;
+    obj->func = m246_MainObjMain;
 }
 
-void func_8010A3D8_slapdown(void) {
+void m246_Dummy(void) {
 }
 
-void func_8010A3E0_slapdown(void) {
+void m246_CameraInit(void) {
     omObjData *obj;
     s32 i;
 
@@ -1660,21 +1660,21 @@ void func_8010A3E0_slapdown(void) {
     CamSetupInit(1);
     CamSetupMapCullAddMulti(1);
     for (i = 0; i < 1; i++) {
-        ScissorSet(i, D_8010A88C_slapdown[i].scissorX, D_8010A88C_slapdown[i].scissorY,
-                   D_8010A88C_slapdown[i].scissorWidth, D_8010A88C_slapdown[i].scissorHeight);
-        ViewportSet(i, D_8010A88C_slapdown[i].viewportScale.x, D_8010A88C_slapdown[i].viewportScale.y,
-                    D_8010A88C_slapdown[i].viewportScale.z, D_8010A88C_slapdown[i].viewportTranslate.x,
-                    D_8010A88C_slapdown[i].viewportTranslate.y, D_8010A88C_slapdown[i].viewportTranslate.z);
-        Hu3DCameraPerspectiveSet(i, D_8010A88C_slapdown[i].fov, 80.0f, 8000.0f);
+        ScissorSet(i, m246_cameraViewTbl[i].scissorX, m246_cameraViewTbl[i].scissorY,
+                   m246_cameraViewTbl[i].scissorWidth, m246_cameraViewTbl[i].scissorHeight);
+        ViewportSet(i, m246_cameraViewTbl[i].viewportScale.x, m246_cameraViewTbl[i].viewportScale.y,
+                    m246_cameraViewTbl[i].viewportScale.z, m246_cameraViewTbl[i].viewportTranslate.x,
+                    m246_cameraViewTbl[i].viewportTranslate.y, m246_cameraViewTbl[i].viewportTranslate.z);
+        Hu3DCameraPerspectiveSet(i, m246_cameraViewTbl[i].fov, 80.0f, 8000.0f);
     }
 }
 
-void func_8010A550_slapdown(void) {
+void m246_ObjectSetup(void) {
     MapCollInit(50);
     Hu3DSprModelInit(50);
     omInitObjMan(60, 0);
     omGameSysInit();
-    func_8010A3E0_slapdown();
+    m246_CameraInit();
     Hu3DGLightMaxSet(1);
     Hu3DGLightMaxSet(2);
     Hu3DGLightColorSet(0, 0x90, 0x90, 0x90);
@@ -1686,11 +1686,11 @@ void func_8010A550_slapdown(void) {
     mgItemObjNum = 0;
     mgPlayerObjNum = 0;
     mgMapObjNum = 0;
-    GMesFontMesCreate(D_8010AA08_slapdown, 0);
-    GMesFontMesCreate(D_8010AA08_slapdown, 1);
-    omAddObj(1000, 0, 0, -1, func_8010A2B8_slapdown);
-    omAddObj(1000, 0, 0, -1, func_80109E90_slapdown);
-    func_80105A74_slapdown();
+    GMesFontMesCreate(m246_fontMesTbl, 0);
+    GMesFontMesCreate(m246_fontMesTbl, 1);
+    omAddObj(1000, 0, 0, -1, m246_MainObjInit);
+    omAddObj(1000, 0, 0, -1, m246_ExitCheckObjMain);
+    m246_ObjWorkInit();
 }
 
-const s16 D_8010AA08_slapdown[] = { 0x8260, 0x8261, 0x8262, 0 };
+const s16 m246_fontMesTbl[] = { 0x8260, 0x8261, 0x8262, 0 };

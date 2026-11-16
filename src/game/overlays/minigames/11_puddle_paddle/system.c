@@ -13,7 +13,7 @@ typedef struct RGBA {
     /* 0x03 */ u8 a;
 } RGBA;
 
-typedef struct UnkPuddlePaddleModel { // size = 0x28, sixteen entries
+typedef struct PuddlePaddleAnimMdl { // size = 0x28, sixteen entries
     /* 0x00 */ s8 unk_00;
     /* 0x01 */ char pad01[3];
     /* 0x04 */ s32 unk_04;
@@ -26,7 +26,7 @@ typedef struct UnkPuddlePaddleModel { // size = 0x28, sixteen entries
     /* 0x14 */ f32 unk_14;
     /* 0x18 */ f32 unk_18;
     /* 0x1C */ Vec unk_1C;
-} UnkPuddlePaddleModel; // size = 0x28
+} PuddlePaddleAnimMdl; // size = 0x28
 
 typedef struct PuddlePaddlePlane {
     /* 0x00 */ Vec normal;
@@ -35,7 +35,7 @@ typedef struct PuddlePaddlePlane {
     /* 0x11 */ char padding[3];
 } PuddlePaddlePlane; // Size 0x14
 
-typedef struct PuddlePaddleBoat { // 0xE4 bytes
+typedef struct PuddlePaddleCollider { // 0xE4 bytes
     /* 0x00 */ s32 unk_00;        // flags
     /* 0x04 */ s8 unk_04;
     /* 0x05 */ char unk_05[3];
@@ -55,9 +55,9 @@ typedef struct PuddlePaddleBoat { // 0xE4 bytes
     /* 0xDC */ f32 unk_DC;
     /* 0xE0 */ s16 source;
     /* 0xE2 */ char unk_E2[2];
-} PuddlePaddleBoat; // Size 0xE4
+} PuddlePaddleCollider; // Size 0xE4
 
-typedef struct PuddlePaddleShip { // 0x34 bytes
+typedef struct PuddlePaddleMover { // 0x34 bytes
     /* 0x00 */ s32 unk_00;        // flags
     /* 0x04 */ s16 *unk_04;
     /* 0x08 */ s16 unk_08;
@@ -71,12 +71,12 @@ typedef struct PuddlePaddleShip { // 0x34 bytes
     /* 0x2E */ s16 unk_2E;
     /* 0x30 */ s16 unk_30;
     /* 0x32 */ char unk_32[2];
-} PuddlePaddleShip; // Size 0x34
+} PuddlePaddleMover; // Size 0x34
 
 extern s16 Hu3DModelTag;
 extern u8 Hu3DBufNo;
 
-Gfx D_80111240_puddle_paddle[] = {
+Gfx m217_gfxRdpInit[] = {
     gsSPSegment(0x00, 0x00000000),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
@@ -104,22 +104,22 @@ Gfx D_80111240_puddle_paddle[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_801112F8_puddle_paddle[] = {
+Gfx m217_gfxRspInit[] = {
     gsSPClearGeometryMode(0xFFFFFFFF),
     gsSPTexture(0, 0, 0, G_TX_RENDERTILE, G_OFF),
     gsSPSetGeometryMode(G_SHADE | G_SHADING_SMOOTH),
     gsSPEndDisplayList(),
 };
 
-Gfx D_80111318_puddle_paddle[] = {
-    gsSPDisplayList(D_801112F8_puddle_paddle),
-    gsSPDisplayList(D_80111240_puddle_paddle),
+Gfx m217_gfxInit[] = {
+    gsSPDisplayList(m217_gfxRspInit),
+    gsSPDisplayList(m217_gfxRdpInit),
     gsSPEndDisplayList(),
 };
 
-Gfx D_80111330_puddle_paddle[] = {
+Gfx m217_gfxBillboardInit[] = {
     gsDPPipeSync(),
-    gsSPDisplayList(D_80111318_puddle_paddle),
+    gsSPDisplayList(m217_gfxInit),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPSetGeometryMode(G_ZBUFFER | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH),
     gsDPSetBlendColor(0x00, 0x00, 0x00, 0x00),
@@ -128,47 +128,47 @@ Gfx D_80111330_puddle_paddle[] = {
     gsSPEndDisplayList(),
 };
 
-UnkPuddlePaddleModel *D_80111660_puddle_paddle BSS;
-UnkPuddlePaddleSpr *D_80111664_puddle_paddle BSS;
-UnkPuddlePaddleEntry *D_80111668_puddle_paddle BSS;
-UnkPuddlePaddleObj *D_8011166C_puddle_paddle BSS;
-PuddlePaddleBoat *D_80111670_puddle_paddle BSS;
+PuddlePaddleAnimMdl *m217_animMdlTbl BSS;
+PuddlePaddleSprite *m217_sprTbl BSS;
+PuddlePaddleBillboard *m217_billboardTbl BSS;
+PuddlePaddleFuncGroup *m217_funcGroupTbl BSS;
+PuddlePaddleCollider *m217_colliderTbl BSS;
 
-void func_8010BD18_puddle_paddle(UnkPuddlePaddleObj *group);
-s16 func_8010CE74_puddle_paddle(HuSprAnimData *sprite, f32 alpha);
-s16 func_8010D5E4_puddle_paddle(HuSprAnimData *sprite, f32 alpha);
-s16 func_8010EFEC_puddle_paddle(HuSprAnimData *sprite, HmfData *hmf, f32 scale, u16 arg3, u16 arg4);
-void func_8010EDE8_puddle_paddle(u16 model, HuSprAnimData *sprite, u16 frame);
-s32 func_8010F80C_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship);
-s32 func_8010F9FC_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship);
-s32 func_8010FBD4_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship);
-s16 func_8010FEC0_puddle_paddle(PuddlePaddleBoat *boat, Vec *point);
-f32 func_801101E0_puddle_paddle(PuddlePaddleBoat *boat, Vec *point);
-s32 func_80110284_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship);
-f32 func_801104C8_puddle_paddle(PuddlePaddleShip *arg0, Vec *arg1, Vec *arg2);
-void func_80110888_puddle_paddle(Vec *vertices, PuddlePaddlePlane *plane);
-void func_80110D3C_puddle_paddle(f32 *mtx);
+void m217_FuncGroupSort(PuddlePaddleFuncGroup *group);
+s16 m217_BillboardMdlCreate(HuSprAnimData *sprite, f32 alpha);
+s16 m217_BillboardAnimMdlCreate(HuSprAnimData *sprite, f32 alpha);
+s16 m217_BillboardVtxCreate(HuSprAnimData *sprite, HmfData *hmf, f32 scale, u16 arg3, u16 arg4);
+void m217_BillboardPatSet(u16 model, HuSprAnimData *sprite, u16 frame);
+s32 m217_CylinderHitCheck(PuddlePaddleCollider *boat, PuddlePaddleMover *ship);
+s32 m217_SphereHitCheck(PuddlePaddleCollider *boat, PuddlePaddleMover *ship);
+s32 m217_PlaneHitCheck(PuddlePaddleCollider *boat, PuddlePaddleMover *ship);
+s16 m217_PolyInsideCheck(PuddlePaddleCollider *boat, Vec *point);
+f32 m217_PlaneDistCalc(PuddlePaddleCollider *boat, Vec *point);
+s32 m217_PrismHitCheck(PuddlePaddleCollider *boat, PuddlePaddleMover *ship);
+f32 m217_EdgeSideCalc(PuddlePaddleMover *arg0, Vec *arg1, Vec *arg2);
+void m217_PlaneCalc(Vec *vertices, PuddlePaddlePlane *plane);
+void m217_MtxIdentSet(f32 *mtx);
 
-void func_8010B820_puddle_paddle(void) {
-    D_80111664_puddle_paddle = HuMemAllocTag(20 * sizeof(UnkPuddlePaddleSpr), TAG_OVERLAY);
-    memset(D_80111664_puddle_paddle, 0, 20 * sizeof(UnkPuddlePaddleSpr));
-    D_80111660_puddle_paddle = HuMemAllocTag(16 * sizeof(UnkPuddlePaddleModel), TAG_OVERLAY);
-    memset(D_80111660_puddle_paddle, 0, 16 * sizeof(UnkPuddlePaddleModel));
-    D_80111668_puddle_paddle = HuMemAllocTag(16 * sizeof(UnkPuddlePaddleEntry), TAG_OVERLAY);
-    memset(D_80111668_puddle_paddle, 0, 16 * sizeof(UnkPuddlePaddleEntry));
-    D_8011166C_puddle_paddle = HuMemAllocTag(8 * sizeof(UnkPuddlePaddleObj), TAG_OVERLAY);
+void m217_SystemCreate(void) {
+    m217_sprTbl = HuMemAllocTag(20 * sizeof(PuddlePaddleSprite), TAG_OVERLAY);
+    memset(m217_sprTbl, 0, 20 * sizeof(PuddlePaddleSprite));
+    m217_animMdlTbl = HuMemAllocTag(16 * sizeof(PuddlePaddleAnimMdl), TAG_OVERLAY);
+    memset(m217_animMdlTbl, 0, 16 * sizeof(PuddlePaddleAnimMdl));
+    m217_billboardTbl = HuMemAllocTag(16 * sizeof(PuddlePaddleBillboard), TAG_OVERLAY);
+    memset(m217_billboardTbl, 0, 16 * sizeof(PuddlePaddleBillboard));
+    m217_funcGroupTbl = HuMemAllocTag(8 * sizeof(PuddlePaddleFuncGroup), TAG_OVERLAY);
 }
 
-UnkPuddlePaddleObj *func_8010B8B4_puddle_paddle(omObjData *object, s8 index, s16 count, s16 handlers) {
-    UnkPuddlePaddleObj *group;
+PuddlePaddleFuncGroup *m217_FuncGroupCreate(omObjData *object, s8 index, s16 count, s16 handlers) {
+    PuddlePaddleFuncGroup *group;
 
     if (index >= 8) {
         return NULL;
     }
-    group = &D_8011166C_puddle_paddle[index];
+    group = &m217_funcGroupTbl[index];
     if (handlers != 0) {
-        group->unk_04 = HuMemAllocTag(handlers * sizeof(PuddlePaddleHandler), TAG_OVERLAY);
-        memset(group->unk_04, 0, handlers * sizeof(PuddlePaddleHandler));
+        group->unk_04 = HuMemAllocTag(handlers * sizeof(PuddlePaddleFunc), TAG_OVERLAY);
+        memset(group->unk_04, 0, handlers * sizeof(PuddlePaddleFunc));
         group->unk_0C = HuMemAllocTag((handlers + 1) * sizeof(PuddlePaddleOrder), TAG_OVERLAY);
     }
     group->unk_08 = handlers;
@@ -183,9 +183,9 @@ UnkPuddlePaddleObj *func_8010B8B4_puddle_paddle(omObjData *object, s8 index, s16
     return group;
 }
 
-s16 func_8010BA04_puddle_paddle(s8 index, s32 priority, void *data, void (*callback)(), s8 tag) {
-    UnkPuddlePaddleObj *group = &D_8011166C_puddle_paddle[index];
-    PuddlePaddleHandler *handler = group->unk_04;
+s16 m217_FuncSet(s8 index, s32 priority, void *data, void (*callback)(), s8 tag) {
+    PuddlePaddleFuncGroup *group = &m217_funcGroupTbl[index];
+    PuddlePaddleFunc *handler = group->unk_04;
     s16 i;
     s16 count = group->unk_08;
 
@@ -205,37 +205,37 @@ s16 func_8010BA04_puddle_paddle(s8 index, s32 priority, void *data, void (*callb
     return i;
 }
 
-void func_8010BAA8_puddle_paddle(s8 arg0, PuddlePaddleHandler *arg1) {
-    memset(arg1, 0, sizeof(PuddlePaddleHandler));
-    D_8011166C_puddle_paddle[arg0].unk_10 = 1;
+void m217_FuncReset(s8 arg0, PuddlePaddleFunc *arg1) {
+    memset(arg1, 0, sizeof(PuddlePaddleFunc));
+    m217_funcGroupTbl[arg0].unk_10 = 1;
 }
 
-void func_8010BB00_puddle_paddle(s8 index, s8 tag) {
-    UnkPuddlePaddleObj *group = &D_8011166C_puddle_paddle[index];
-    PuddlePaddleHandler *handler = group->unk_04;
+void m217_FuncTagReset(s8 index, s8 tag) {
+    PuddlePaddleFuncGroup *group = &m217_funcGroupTbl[index];
+    PuddlePaddleFunc *handler = group->unk_04;
     s16 i;
 
     for (i = 0; i < group->unk_08; i++, handler++) {
         if (handler->unk_05 == tag) {
-            func_8010BAA8_puddle_paddle(index, handler);
+            m217_FuncReset(index, handler);
         }
     }
 }
 
-void func_8010BBB4_puddle_paddle(s8 arg0) {
-    UnkPuddlePaddleObj *obj = &D_8011166C_puddle_paddle[arg0];
+void m217_FuncGroupReset(s8 arg0) {
+    PuddlePaddleFuncGroup *obj = &m217_funcGroupTbl[arg0];
 
-    memset(obj->unk_04, 0, obj->unk_08 * sizeof(PuddlePaddleHandler));
+    memset(obj->unk_04, 0, obj->unk_08 * sizeof(PuddlePaddleFunc));
     obj->unk_10 = 1;
 }
 
-void func_8010BC14_puddle_paddle(s8 index) {
-    UnkPuddlePaddleObj *group = &D_8011166C_puddle_paddle[index];
-    PuddlePaddleHandler *handler;
+void m217_FuncGroupUpdate(s8 index) {
+    PuddlePaddleFuncGroup *group = &m217_funcGroupTbl[index];
+    PuddlePaddleFunc *handler;
     s8 i;
 
     if (group->unk_10 != 0) {
-        func_8010BD18_puddle_paddle(group);
+        m217_FuncGroupSort(group);
     }
     i = 0;
     while (group->unk_0C[i].next != -1) {
@@ -247,9 +247,9 @@ void func_8010BC14_puddle_paddle(s8 index) {
     }
 }
 
-void func_8010BD18_puddle_paddle(UnkPuddlePaddleObj *group) {
+void m217_FuncGroupSort(PuddlePaddleFuncGroup *group) {
     PuddlePaddleOrder *order = group->unk_0C;
-    PuddlePaddleHandler *handler = group->unk_04;
+    PuddlePaddleFunc *handler = group->unk_04;
     s16 entry;
     s16 tail;
     s16 i;
@@ -292,8 +292,8 @@ void func_8010BD18_puddle_paddle(UnkPuddlePaddleObj *group) {
     group->unk_10 = 0;
 }
 
-s16 func_8010BEE8_puddle_paddle(s16 priority, s32 directory, s32 file, u16 bank, s32 attr) {
-    UnkPuddlePaddleSpr *sprite = D_80111664_puddle_paddle;
+s16 m217_SprCreate(s16 priority, s32 directory, s32 file, u16 bank, s32 attr) {
+    PuddlePaddleSprite *sprite = m217_sprTbl;
     HuSprite *data;
     s16 i;
 
@@ -318,15 +318,15 @@ s16 func_8010BEE8_puddle_paddle(s16 priority, s32 directory, s32 file, u16 bank,
                 sprite->unk_04 = data->data->patNum;
             }
             sprite->unk_00 = 2;
-            func_8010C11C_puddle_paddle(i);
+            m217_SprDispOff(i);
             break;
         }
     }
     return i;
 }
 
-void func_8010C088_puddle_paddle(s16 index, s16 x, s16 y) {
-    UnkPuddlePaddleSpr *sprite = &D_80111664_puddle_paddle[index];
+void m217_SprDispOn(s16 index, s16 x, s16 y) {
+    PuddlePaddleSprite *sprite = &m217_sprTbl[index];
 
     if (sprite->unk_00 != 0) {
         HuSprPatNoSet(sprite->unk_01, 0, 0);
@@ -336,8 +336,8 @@ void func_8010C088_puddle_paddle(s16 index, s16 x, s16 y) {
     }
 }
 
-void func_8010C11C_puddle_paddle(s16 arg0) {
-    UnkPuddlePaddleSpr *spr = &D_80111664_puddle_paddle[arg0];
+void m217_SprDispOff(s16 arg0) {
+    PuddlePaddleSprite *spr = &m217_sprTbl[arg0];
 
     if (spr->unk_00 != 0) {
         HuSprDispOff(spr->unk_01, 0);
@@ -345,8 +345,8 @@ void func_8010C11C_puddle_paddle(s16 arg0) {
     }
 }
 
-void func_8010C16C_puddle_paddle(void) {
-    UnkPuddlePaddleSpr *sprite = D_80111664_puddle_paddle;
+void m217_SprUpdate(void) {
+    PuddlePaddleSprite *sprite = m217_sprTbl;
     s16 i;
 
     for (i = 0; i < 20; i++, sprite++) {
@@ -359,8 +359,8 @@ void func_8010C16C_puddle_paddle(void) {
     }
 }
 
-s16 func_8010C214_puddle_paddle(s32 directory, s32 file, f32 speed, s16 type, s32 flags, s32 attr) {
-    UnkPuddlePaddleModel *work = D_80111660_puddle_paddle;
+s16 m217_AnimMdlCreate(s32 directory, s32 file, f32 speed, s16 type, s32 flags, s32 attr) {
+    PuddlePaddleAnimMdl *work = m217_animMdlTbl;
     HmfModel *model;
     s16 i;
 
@@ -385,8 +385,8 @@ s16 func_8010C214_puddle_paddle(s32 directory, s32 file, f32 speed, s16 type, s3
     return i;
 }
 
-s16 func_8010C324_puddle_paddle(s16 arg0, f32 arg1, s16 arg2, s32 arg3) {
-    UnkPuddlePaddleModel *work = D_80111660_puddle_paddle;
+s16 m217_AnimMdlLinkCreate(s16 arg0, f32 arg1, s16 arg2, s32 arg3) {
+    PuddlePaddleAnimMdl *work = m217_animMdlTbl;
     HmfModel *model;
     s16 i;
 
@@ -411,8 +411,8 @@ s16 func_8010C324_puddle_paddle(s16 arg0, f32 arg1, s16 arg2, s32 arg3) {
     return i;
 }
 
-s16 func_8010C42C_puddle_paddle(s16 type) {
-    UnkPuddlePaddleModel *work = D_80111660_puddle_paddle;
+s16 m217_AnimMdlFreeGet(s16 type) {
+    PuddlePaddleAnimMdl *work = m217_animMdlTbl;
     HmfModel *model;
     s16 i;
 
@@ -430,17 +430,17 @@ s16 func_8010C42C_puddle_paddle(s16 type) {
     return i;
 }
 
-s32 func_8010C4D0_puddle_paddle(s16 index, f32 x, f32 y, f32 z, f32 rx, f32 ry, f32 rz, f32 scale, f32 delay) {
-    UnkPuddlePaddleModel *work;
+s32 m217_AnimMdlDispOn(s16 index, f32 x, f32 y, f32 z, f32 rx, f32 ry, f32 rz, f32 scale, f32 delay) {
+    PuddlePaddleAnimMdl *work;
     HmfModel *model;
 
     if (index >= 16) {
         return 0;
     }
-    if (D_80111660_puddle_paddle[index].unk_00 == 0) {
+    if (m217_animMdlTbl[index].unk_00 == 0) {
         return 0;
     }
-    work = &D_80111660_puddle_paddle[index];
+    work = &m217_animMdlTbl[index];
     model = &Hu3DData[work->unk_0C];
     if ((model->attr & HU3D_ATTR_DISPOFF) != 0 && work->unk_08 == -1) {
         Hu3DModelPosSet(work->unk_0C, x, y, z);
@@ -464,8 +464,8 @@ s32 func_8010C4D0_puddle_paddle(s16 index, f32 x, f32 y, f32 z, f32 rx, f32 ry, 
     return 0;
 }
 
-void func_8010C664_puddle_paddle(void) {
-    UnkPuddlePaddleModel *work = D_80111660_puddle_paddle;
+void m217_AnimMdlUpdate(void) {
+    PuddlePaddleAnimMdl *work = m217_animMdlTbl;
     HmfModel *model;
     s16 i;
 
@@ -496,8 +496,8 @@ void func_8010C664_puddle_paddle(void) {
     }
 }
 
-s16 func_8010C804_puddle_paddle(s32 directory, s32 file, s16 interval, s16 type, s32 flags) {
-    UnkPuddlePaddleEntry *work = D_80111668_puddle_paddle;
+s16 m217_BillboardCreate(s32 directory, s32 file, s16 interval, s16 type, s32 flags) {
+    PuddlePaddleBillboard *work = m217_billboardTbl;
     s16 frame;
     s16 i;
 
@@ -506,9 +506,9 @@ s16 func_8010C804_puddle_paddle(s32 directory, s32 file, s16 interval, s16 type,
             frame = HuSprAnimDataRead((directory << 16) | file);
             work->unk_0A = frame;
             if (flags & 1) {
-                work->unk_0C = func_8010D5E4_puddle_paddle(HuSprAnimDataGet(frame), 1.0f);
+                work->unk_0C = m217_BillboardAnimMdlCreate(HuSprAnimDataGet(frame), 1.0f);
             } else {
-                work->unk_0C = func_8010CE74_puddle_paddle(HuSprAnimDataGet(frame), 1.0f);
+                work->unk_0C = m217_BillboardMdlCreate(HuSprAnimDataGet(frame), 1.0f);
             }
             if (flags & 8) {
                 Hu3DModelAttrSet(work->unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -529,8 +529,8 @@ s16 func_8010C804_puddle_paddle(s32 directory, s32 file, s16 interval, s16 type,
     return i;
 }
 
-s16 func_8010C98C_puddle_paddle(s16 type) {
-    UnkPuddlePaddleEntry *work = D_80111668_puddle_paddle;
+s16 m217_BillboardFreeGet(s16 type) {
+    PuddlePaddleBillboard *work = m217_billboardTbl;
     HmfModel *model;
     s16 i;
 
@@ -548,68 +548,68 @@ s16 func_8010C98C_puddle_paddle(s16 type) {
     return i;
 }
 
-void func_8010CA30_puddle_paddle(s16 index, f32 x, f32 y, f32 z) {
+void m217_BillboardDispOn(s16 index, f32 x, f32 y, f32 z) {
     HmfModel *model;
 
     if (index < 16) {
-        model = &Hu3DData[D_80111668_puddle_paddle[index].unk_0C];
+        model = &Hu3DData[m217_billboardTbl[index].unk_0C];
         model->pos.x = x;
         model->pos.y = y;
         model->pos.z = z;
-        Hu3DModelAttrSet(D_80111668_puddle_paddle[index].unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-        D_80111668_puddle_paddle[index].unk_04 &= ~0x18;
+        Hu3DModelAttrSet(m217_billboardTbl[index].unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        m217_billboardTbl[index].unk_04 &= ~0x18;
     }
 }
 
-void func_8010CAD4_puddle_paddle(s16 index, f32 *x, f32 *y, f32 *z) {
+void m217_BillboardDispOnRef(s16 index, f32 *x, f32 *y, f32 *z) {
     HmfModel *model;
 
     if (index < 16) {
-        model = &Hu3DData[D_80111668_puddle_paddle[index].unk_0C];
+        model = &Hu3DData[m217_billboardTbl[index].unk_0C];
         if (x != NULL) {
-            D_80111668_puddle_paddle[index].unk_18 = x;
+            m217_billboardTbl[index].unk_18 = x;
         } else {
-            D_80111668_puddle_paddle[index].unk_18 = &model->pos.x;
+            m217_billboardTbl[index].unk_18 = &model->pos.x;
         }
         if (y != NULL) {
-            D_80111668_puddle_paddle[index].unk_1C = y;
+            m217_billboardTbl[index].unk_1C = y;
         } else {
-            D_80111668_puddle_paddle[index].unk_1C = &model->pos.y;
+            m217_billboardTbl[index].unk_1C = &model->pos.y;
         }
         if (z != NULL) {
-            D_80111668_puddle_paddle[index].unk_20 = z;
+            m217_billboardTbl[index].unk_20 = z;
         } else {
-            D_80111668_puddle_paddle[index].unk_20 = &model->pos.z;
+            m217_billboardTbl[index].unk_20 = &model->pos.z;
         }
-        Hu3DModelAttrSet(D_80111668_puddle_paddle[index].unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-        D_80111668_puddle_paddle[index].unk_04 = (D_80111668_puddle_paddle[index].unk_04 & ~0x18) | 0x10;
+        Hu3DModelAttrSet(m217_billboardTbl[index].unk_0C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        m217_billboardTbl[index].unk_04 = (m217_billboardTbl[index].unk_04 & ~0x18) | 0x10;
     }
 }
 
-UnkPuddlePaddleEntry *func_8010CC64_puddle_paddle(s16 arg0) {
-    UnkPuddlePaddleEntry *ret;
+PuddlePaddleBillboard *m217_BillboardGet(s16 arg0) {
+    PuddlePaddleBillboard *ret;
 
     if (arg0 < 0x10) {
-        ret = &D_80111668_puddle_paddle[arg0];
+        ret = &m217_billboardTbl[arg0];
     } else {
         ret = 0;
     }
     return ret;
 }
 
-HmfModel *func_8010CC9C_puddle_paddle(s16 arg0) {
+HmfModel *m217_BillboardMdlGet(s16 arg0) {
     HmfModel *ret;
 
     if (arg0 < 0x10) {
-        ret = &Hu3DData[D_80111668_puddle_paddle[arg0].unk_0C];
+        ret = &Hu3DData[m217_billboardTbl[arg0].unk_0C];
     } else {
         ret = 0;
     }
     return ret;
 }
 
-void func_8010CCF0_puddle_paddle(void) {
-    UnkPuddlePaddleEntry *work = D_80111668_puddle_paddle;
+void m217_BillboardUpdate(void) {
+    PuddlePaddleBillboard *work = m217_billboardTbl;
     HmfModel *model;
     s16 i;
 
@@ -627,7 +627,7 @@ void func_8010CCF0_puddle_paddle(void) {
                 if (work->unk_04 & 2) {
                     if (++work->unk_12 > work->unk_14) {
                         work->unk_12 = 0;
-                        func_8010EDE8_puddle_paddle(work->unk_0C, HuSprAnimDataGet(work->unk_0A), work->unk_10);
+                        m217_BillboardPatSet(work->unk_0C, HuSprAnimDataGet(work->unk_0A), work->unk_10);
                         if (++work->unk_10 >= work->unk_0E) {
                             if (work->unk_04 & 4) {
                                 work->unk_10 = 0;
@@ -644,7 +644,7 @@ void func_8010CCF0_puddle_paddle(void) {
     }
 }
 
-s16 func_8010CE74_puddle_paddle(HuSprAnimData *sprite, f32 alpha) {
+s16 m217_BillboardMdlCreate(HuSprAnimData *sprite, f32 alpha) {
     HmfData *hmf;
     Gfx *dlBuf;
     Gfx *gfx;
@@ -658,8 +658,8 @@ s16 func_8010CE74_puddle_paddle(HuSprAnimData *sprite, f32 alpha) {
     model = Hu3DModelDLCreate(0x4C1, dlBuf, 4);
     hmf = Hu3DData[model].hmf;
     hmf->unk60->unk50 |= 0x01010000;
-    frameCount = func_8010EFEC_puddle_paddle(sprite, hmf, 1.0f, 0, 0x64);
-    gSPDisplayList(gfx++, osVirtualToPhysical(D_80111330_puddle_paddle));
+    frameCount = m217_BillboardVtxCreate(sprite, hmf, 1.0f, 0, 0x64);
+    gSPDisplayList(gfx++, osVirtualToPhysical(m217_gfxBillboardInit));
     gDPPipeSync(gfx++);
     gDPSetCycleType(gfx++, G_CYC_1CYCLE);
     gDPPipeSync(gfx++);
@@ -714,7 +714,7 @@ s16 func_8010CE74_puddle_paddle(HuSprAnimData *sprite, f32 alpha) {
     return model;
 }
 
-s16 func_8010D5E4_puddle_paddle(HuSprAnimData *sprite, f32 alpha) {
+s16 m217_BillboardAnimMdlCreate(HuSprAnimData *sprite, f32 alpha) {
     HmfData *hmf;
     Gfx *dlBuf;
     Gfx *gfx;
@@ -729,8 +729,8 @@ s16 func_8010D5E4_puddle_paddle(HuSprAnimData *sprite, f32 alpha) {
     hmf->unk60->unk50 |= 0x01010000;
     HuMemFree(hmf->unk3C);
     hmf->unk3C = HuMemAllocTag(0x14, Hu3DModelTag);
-    func_8010EFEC_puddle_paddle(sprite, hmf, 1.0f, 0, 0x1E);
-    gSPDisplayList(gfx++, osVirtualToPhysical(D_80111330_puddle_paddle));
+    m217_BillboardVtxCreate(sprite, hmf, 1.0f, 0, 0x1E);
+    gSPDisplayList(gfx++, osVirtualToPhysical(m217_gfxBillboardInit));
     gDPPipeSync(gfx++);
     gDPSetCycleType(gfx++, G_CYC_1CYCLE);
     gDPPipeSync(gfx++);
@@ -816,7 +816,7 @@ s16 func_8010D5E4_puddle_paddle(HuSprAnimData *sprite, f32 alpha) {
     return model;
 }
 
-s16 func_8010E1FC_puddle_paddle(HuSprAnimData *sprite, RGBA *color) {
+s16 m217_BillboardColorMdlCreate(HuSprAnimData *sprite, RGBA *color) {
     HmfData *hmf;
     Gfx *dlBuf;
     Gfx *gfx;
@@ -831,8 +831,8 @@ s16 func_8010E1FC_puddle_paddle(HuSprAnimData *sprite, RGBA *color) {
     hmf->unk60->unk50 |= 0x01010000;
     HuMemFree(hmf->unk3C);
     hmf->unk3C = HuMemAllocTag(0x18, Hu3DModelTag);
-    func_8010EFEC_puddle_paddle(sprite, hmf, 1.0f, 0, 0);
-    gSPDisplayList(gfx++, osVirtualToPhysical(D_80111330_puddle_paddle));
+    m217_BillboardVtxCreate(sprite, hmf, 1.0f, 0, 0);
+    gSPDisplayList(gfx++, osVirtualToPhysical(m217_gfxBillboardInit));
     gDPPipeSync(gfx++);
     gDPSetCycleType(gfx++, G_CYC_1CYCLE);
     gDPPipeSync(gfx++);
@@ -922,7 +922,7 @@ s16 func_8010E1FC_puddle_paddle(HuSprAnimData *sprite, RGBA *color) {
     return model;
 }
 
-void func_8010EDE8_puddle_paddle(u16 model, HuSprAnimData *sprite, u16 frame) {
+void m217_BillboardPatSet(u16 model, HuSprAnimData *sprite, u16 frame) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
     Gfx *gfx = data->unk3C->unk00[Hu3DBufNo + 1];
@@ -935,7 +935,7 @@ void func_8010EDE8_puddle_paddle(u16 model, HuSprAnimData *sprite, u16 frame) {
     gSPEndDisplayList(gfx + 4);
 }
 
-void func_8010EEB8_puddle_paddle(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
+void m217_BillboardColorPatSet(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
     Gfx *gfx = data->unk3C->unk00[Hu3DBufNo + 1];
@@ -951,7 +951,7 @@ void func_8010EEB8_puddle_paddle(u16 model, HuSprAnimData *sprite, u16 frame, u8
     gSPEndDisplayList(gfx + 7);
 }
 
-s16 func_8010EFEC_puddle_paddle(HuSprAnimData *arg0, HmfData *arg1, f32 arg2, u16 arg3, u16 arg4) {
+s16 m217_BillboardVtxCreate(HuSprAnimData *arg0, HmfData *arg1, f32 arg2, u16 arg3, u16 arg4) {
     Vtx *temp_s7;
     Vtx *var_s1;
     Vtx_t *var_t0;
@@ -1033,44 +1033,44 @@ s16 func_8010EFEC_puddle_paddle(HuSprAnimData *arg0, HmfData *arg1, f32 arg2, u1
     return var_s2;
 }
 
-void func_8010F410_puddle_paddle(PuddlePaddleSlot *slot, PuddlePaddleHandler *handler) {
-    func_8010BAA8_puddle_paddle(handler->unk_05, handler);
+void m217_ColliderInit(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
+    m217_FuncReset(handler->unk_05, handler);
 }
 
-s32 func_8010F42C_puddle_paddle(void) {
+s32 m217_ColliderCreate(void) {
     s32 unused[6]; // Unreferenced, but present in the stack frame.
 
     return 0;
 }
 
-s32 func_8010F43C_puddle_paddle(void) {
+s32 m217_ColliderLinkCreate(void) {
     s32 unused[6]; // Unreferenced, but present in the stack frame.
 
     return 0;
 }
 
-void func_8010F44C_puddle_paddle(s16 index, Vec *vertices, f32 arg2) {
-    PuddlePaddleBoat *boat;
+void m217_ColliderVtxSet(s16 index, Vec *vertices, f32 arg2) {
+    PuddlePaddleCollider *boat;
     Vec *destination;
 
     if (index >= 0) {
         return;
     }
-    if (D_80111670_puddle_paddle[index].unk_04 == 0) {
+    if (m217_colliderTbl[index].unk_04 == 0) {
         return;
     }
-    boat = &D_80111670_puddle_paddle[index];
+    boat = &m217_colliderTbl[index];
     destination = boat->vertices;
     memcpy(destination, vertices, boat->vertexCount * sizeof(Vec));
     boat->unk_C4 = arg2;
-    func_80110888_puddle_paddle(destination, &boat->plane);
+    m217_PlaneCalc(destination, &boat->plane);
 }
 
-void func_8010F4DC_puddle_paddle(void) {
+void m217_ColliderUpdate(void) {
     s32 unused[8]; // Unreferenced, but present in the stack frame.
 }
 
-void func_8010F4E8_puddle_paddle(PuddlePaddleShip *ship, s16 count, f32 radius, s16 model) {
+void m217_MoverInit(PuddlePaddleMover *ship, s16 count, f32 radius, s16 model) {
     if (ship != NULL) {
         ship->unk_08 = count + 1;
         ship->unk_04 = HuMemAllocTag(ship->unk_08 * sizeof(s16), TAG_OVERLAY);
@@ -1082,8 +1082,8 @@ void func_8010F4E8_puddle_paddle(PuddlePaddleShip *ship, s16 count, f32 radius, 
     }
 }
 
-void func_8010F580_puddle_paddle(PuddlePaddleShip *ship) {
-    PuddlePaddleBoat *boat;
+void m217_MoverUpdate(PuddlePaddleMover *ship) {
+    PuddlePaddleCollider *boat;
     s16 i;
 
     ship->unk_30 = 0;
@@ -1098,10 +1098,10 @@ void func_8010F580_puddle_paddle(PuddlePaddleShip *ship) {
     }
     for (i = 1; i < ship->unk_08; i++) {
         if (ship->unk_04[i] != -1) {
-            boat = &D_80111670_puddle_paddle[ship->unk_04[i]];
+            boat = &m217_colliderTbl[ship->unk_04[i]];
             if (!(boat->unk_00 & 1)) {
                 if (boat->unk_00 & 0x400) {
-                    if ((s16)func_8010F80C_puddle_paddle(boat, ship) != 0) {
+                    if ((s16)m217_CylinderHitCheck(boat, ship) != 0) {
                         if (boat->unk_00 & 0x80) {
                             ship->unk_00 |= 1;
                         } else {
@@ -1109,7 +1109,7 @@ void func_8010F580_puddle_paddle(PuddlePaddleShip *ship) {
                         }
                     }
                 } else if (boat->unk_00 & 0x200) {
-                    if ((s16)func_8010F9FC_puddle_paddle(boat, ship) != 0) {
+                    if ((s16)m217_SphereHitCheck(boat, ship) != 0) {
                         if (boat->unk_00 & 0x80) {
                             ship->unk_00 |= 1;
                         } else {
@@ -1117,11 +1117,11 @@ void func_8010F580_puddle_paddle(PuddlePaddleShip *ship) {
                         }
                     }
                 } else if (boat->unk_00 & 0x100) {
-                    if ((s16)func_8010FBD4_puddle_paddle(boat, ship) != 0) {
+                    if ((s16)m217_PlaneHitCheck(boat, ship) != 0) {
                         ship->unk_2A = i;
                     }
                 } else {
-                    if ((s16)func_80110284_puddle_paddle(boat, ship) != 0) {
+                    if ((s16)m217_PrismHitCheck(boat, ship) != 0) {
                         if (boat->unk_00 & 0x80) {
                             ship->unk_00 |= 1;
                         } else {
@@ -1142,7 +1142,7 @@ void func_8010F580_puddle_paddle(PuddlePaddleShip *ship) {
     }
 }
 
-s32 func_8010F80C_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship) {
+s32 m217_CylinderHitCheck(PuddlePaddleCollider *boat, PuddlePaddleMover *ship) {
     f32 bounds[2];
     Vec position;
     Vec movement;
@@ -1193,7 +1193,7 @@ s32 func_8010F80C_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship) 
     return 1;
 }
 
-s32 func_8010F9FC_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship) {
+s32 m217_SphereHitCheck(PuddlePaddleCollider *boat, PuddlePaddleMover *ship) {
     Vec position;
     Vec movement;
     Vec next;
@@ -1240,7 +1240,7 @@ s32 func_8010F9FC_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship) 
     return 1;
 }
 
-s32 func_8010FBD4_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship) {
+s32 m217_PlaneHitCheck(PuddlePaddleCollider *boat, PuddlePaddleMover *ship) {
     Vec normal;
     Vec position;
     Vec movement;
@@ -1273,7 +1273,7 @@ s32 func_8010FBD4_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship) 
     next.z = position.z + movement.z;
     if (!(boat->unk_00 & 0x20)) {
         side = normal.x * next.x + normal.y * next.y + normal.z * next.z + constant;
-        distance = func_801101E0_puddle_paddle(boat, &next);
+        distance = m217_PlaneDistCalc(boat, &next);
         if (side > 0.0f) {
             radius = ship->unk_24;
             if (distance > 0.0f ? radius <= distance : radius <= -distance) {
@@ -1281,7 +1281,7 @@ s32 func_8010FBD4_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship) 
             }
         }
     } else {
-        distance = func_801101E0_puddle_paddle(boat, &next);
+        distance = m217_PlaneDistCalc(boat, &next);
         radius = ship->unk_24;
         if (distance > 0.0f ? radius <= distance : radius <= -distance) {
             return 0;
@@ -1290,7 +1290,7 @@ s32 func_8010FBD4_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship) 
     contact.x = -normal.x * distance + next.x;
     contact.y = -normal.y * distance + next.y;
     contact.z = -normal.z * distance + next.z;
-    result = func_8010FEC0_puddle_paddle(boat, &contact);
+    result = m217_PolyInsideCheck(boat, &contact);
     if (result != 0) {
         if (boat->unk_00 & 0x10) {
             return 1;
@@ -1308,7 +1308,7 @@ s32 func_8010FBD4_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship) 
     return result;
 }
 
-s16 func_8010FEC0_puddle_paddle(PuddlePaddleBoat *boat, Vec *point) {
+s16 m217_PolyInsideCheck(PuddlePaddleCollider *boat, Vec *point) {
     Vec edge;
     Vec offset;
     f32 cross;
@@ -1363,7 +1363,7 @@ s16 func_8010FEC0_puddle_paddle(PuddlePaddleBoat *boat, Vec *point) {
     return 1;
 }
 
-f32 func_801101E0_puddle_paddle(PuddlePaddleBoat *boat, Vec *point) {
+f32 m217_PlaneDistCalc(PuddlePaddleCollider *boat, Vec *point) {
     f32 x = point->x;
     f32 y = point->y;
     f32 z = point->z;
@@ -1377,7 +1377,7 @@ f32 func_801101E0_puddle_paddle(PuddlePaddleBoat *boat, Vec *point) {
     return (x * normal.x + y * normal.y + z * normal.z - boat->plane.constant) / length;
 }
 
-s32 func_80110284_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship) {
+s32 m217_PrismHitCheck(PuddlePaddleCollider *boat, PuddlePaddleMover *ship) {
     f32 side;
     f32 edge;
     s16 i;
@@ -1386,7 +1386,7 @@ s32 func_80110284_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship) 
     if (!(boat->unk_00 & 2) && ship->pos.y > boat->unk_C4) {
         return 0;
     }
-    side = func_801104C8_puddle_paddle(ship, &boat->transformed[0], &boat->transformed[1]);
+    side = m217_EdgeSideCalc(ship, &boat->transformed[0], &boat->transformed[1]);
     if (side == 0.0f) {
         return 0;
     }
@@ -1394,7 +1394,7 @@ s32 func_80110284_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship) 
         for (i = 1; i < boat->vertexCount; i++) {
             next = i + 1;
             next = next != boat->vertexCount ? next : 0;
-            edge = func_801104C8_puddle_paddle(ship, &boat->transformed[i], &boat->transformed[next]);
+            edge = m217_EdgeSideCalc(ship, &boat->transformed[i], &boat->transformed[next]);
             if (edge == 0.0f) {
                 return 1;
             }
@@ -1406,7 +1406,7 @@ s32 func_80110284_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship) 
         for (i = 1; i < boat->vertexCount; i++) {
             next = i + 1;
             next = next != boat->vertexCount ? next : 0;
-            edge = func_801104C8_puddle_paddle(ship, &boat->transformed[i], &boat->transformed[next]);
+            edge = m217_EdgeSideCalc(ship, &boat->transformed[i], &boat->transformed[next]);
             if (edge == 0.0f) {
                 return 1;
             }
@@ -1418,7 +1418,7 @@ s32 func_80110284_puddle_paddle(PuddlePaddleBoat *boat, PuddlePaddleShip *ship) 
     return 1;
 }
 
-f32 func_801104C8_puddle_paddle(PuddlePaddleShip *arg0, Vec *arg1, Vec *arg2) {
+f32 m217_EdgeSideCalc(PuddlePaddleMover *arg0, Vec *arg1, Vec *arg2) {
     Vec pos, v1, v2;
 
     pos.x = arg0->pos.x;
@@ -1430,7 +1430,7 @@ f32 func_801104C8_puddle_paddle(PuddlePaddleShip *arg0, Vec *arg1, Vec *arg2) {
     return v1.z * v2.x - v1.x * v2.z;
 }
 
-s32 func_80110524_puddle_paddle(f32 *outPos, u8 *tickPtr, f32 posA, f32 posB, f32 numTicks) {
+s32 m217_LerpCalc(f32 *outPos, u8 *tickPtr, f32 posA, f32 posB, f32 numTicks) {
     f32 frac = (f32)*tickPtr / numTicks;
     u8 tick;
 
@@ -1445,7 +1445,7 @@ s32 func_80110524_puddle_paddle(f32 *outPos, u8 *tickPtr, f32 posA, f32 posB, f3
     return 0;
 }
 
-f32 func_8011059C_puddle_paddle(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
+f32 m217_BezierCalc(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     f32 t = arg0;
     f32 a;
 
@@ -1456,7 +1456,7 @@ f32 func_8011059C_puddle_paddle(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
     return a * a * arg1 + (a + a) * t * arg2 + t * t * arg3;
 }
 
-void func_80110608_puddle_paddle(u16 *order, s16 count) {
+void m217_RandPermCreate(u16 *order, s16 count) {
     s16 i;
     s16 index;
     s32 random;
@@ -1474,7 +1474,7 @@ void func_80110608_puddle_paddle(u16 *order, s16 count) {
     }
 }
 
-void func_80110714_puddle_paddle(omObjData *object) {
+void m217_MdlSync(omObjData *object) {
     HmfModel *model = &Hu3DData[object->model[0]];
 
     object->scale.x = model->scale.x;
@@ -1506,7 +1506,7 @@ void func_80110714_puddle_paddle(omObjData *object) {
     object->rot.z = model->rot.z;
 }
 
-void func_80110888_puddle_paddle(Vec *vertices, PuddlePaddlePlane *plane) {
+void m217_PlaneCalc(Vec *vertices, PuddlePaddlePlane *plane) {
     f32 firstX, firstY, firstZ, secondX, secondY, secondZ;
     f32 normal[3];
     f32 length;
@@ -1542,7 +1542,7 @@ void func_80110888_puddle_paddle(Vec *vertices, PuddlePaddlePlane *plane) {
     plane->axis = axis;
 }
 
-void func_80110A8C_puddle_paddle(Vec from, Vec to, f32 *angles) {
+void m217_PitchYawCalc(Vec from, Vec to, f32 *angles) {
     Vec difference;
     f32 angle;
     f32 fullRotation = 360.0f;
@@ -1566,7 +1566,7 @@ void func_80110A8C_puddle_paddle(Vec from, Vec to, f32 *angles) {
     *angles = angle;
 }
 
-void func_80110BBC_puddle_paddle(f32 *angle, f32 *target) {
+void m217_AngleDiffMinimize(f32 *angle, f32 *target) {
     f32 difference;
 
     while (*target < 0.0f) {
@@ -1594,7 +1594,7 @@ void func_80110BBC_puddle_paddle(f32 *angle, f32 *target) {
     }
 }
 
-void func_80110D3C_puddle_paddle(f32 *mtx) {
+void m217_MtxIdentSet(f32 *mtx) {
     s16 i, j;
 
     for (i = 0; i < 4; i++) {
@@ -1605,30 +1605,30 @@ void func_80110D3C_puddle_paddle(f32 *mtx) {
     }
 }
 
-void func_80110DC4_puddle_paddle(f32 *matrix, f32 x, f32 y, f32 z) {
-    func_80110D3C_puddle_paddle(matrix);
+void m217_MtxTransSet(f32 *matrix, f32 x, f32 y, f32 z) {
+    m217_MtxIdentSet(matrix);
     matrix[12] = x;
     matrix[13] = y;
     matrix[14] = z;
 }
 
-void func_80110E1C_puddle_paddle(f32 *matrix, f32 angle) {
-    func_80110D3C_puddle_paddle(matrix);
+void m217_MtxRotXSet(f32 *matrix, f32 angle) {
+    m217_MtxIdentSet(matrix);
     matrix[5] = cosdf(angle);
     matrix[6] = sindf(angle);
     matrix[9] = -sindf(angle);
     matrix[10] = cosdf(angle);
 }
 
-void func_80110E84_puddle_paddle(f32 *matrix, f32 angle) {
-    func_80110D3C_puddle_paddle(matrix);
+void m217_MtxRotYSet(f32 *matrix, f32 angle) {
+    m217_MtxIdentSet(matrix);
     matrix[0] = cosdf(angle);
     matrix[2] = -sindf(angle);
     matrix[8] = sindf(angle);
     matrix[10] = cosdf(angle);
 }
 
-void func_80110EEC_puddle_paddle(f32 *left, f32 *right, f32 *output) {
+void m217_MtxMul(f32 *left, f32 *right, f32 *output) {
     s16 i, j;
 
     for (i = 0; i < 4; i++) {
@@ -1639,26 +1639,26 @@ void func_80110EEC_puddle_paddle(f32 *left, f32 *right, f32 *output) {
     }
 }
 
-void func_80110FA0_puddle_paddle(f32 *matrix, f32 *output) {
+void m217_MtxTransCalc(f32 *matrix, f32 *output) {
     *output++ = matrix[12] * matrix[0] + matrix[13] * matrix[4] + matrix[14] * matrix[8];
     *output++ = matrix[12] * matrix[1] + matrix[13] * matrix[5] + matrix[14] * matrix[9];
     *output = matrix[12] * matrix[2] + matrix[13] * matrix[6] + matrix[14] * matrix[10];
 }
 
-void func_80111038_puddle_paddle(f32 x, f32 y, f32 z, f32 rx, f32 ry, f32 rz, f32 *matrix) {
+void m217_MtxTransformSet(f32 x, f32 y, f32 z, f32 rx, f32 ry, f32 rz, f32 *matrix) {
     f32 translation[16];
     f32 rotationX[16];
     f32 rotationY[16];
     f32 rotation[16];
 
-    func_80110DC4_puddle_paddle(translation, x, y, z);
-    func_80110E1C_puddle_paddle(rotationX, rx);
-    func_80110E84_puddle_paddle(rotationY, ry);
-    func_80110EEC_puddle_paddle(rotationX, rotationY, rotation);
-    func_80110EEC_puddle_paddle(rotation, translation, matrix);
+    m217_MtxTransSet(translation, x, y, z);
+    m217_MtxRotXSet(rotationX, rx);
+    m217_MtxRotYSet(rotationY, ry);
+    m217_MtxMul(rotationX, rotationY, rotation);
+    m217_MtxMul(rotation, translation, matrix);
 }
 
-void func_801110F0_puddle_paddle(Vec *vertices, s16 count, f32 *matrix, Vec *output) {
+void m217_VtxTransform(Vec *vertices, s16 count, f32 *matrix, Vec *output) {
     s16 i;
 
     for (i = 0; i < count; i++) {

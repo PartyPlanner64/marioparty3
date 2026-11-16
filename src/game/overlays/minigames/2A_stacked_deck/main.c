@@ -3,12 +3,12 @@
 #include "math.h"
 #include "game/overlays/minigame.h"
 
-// The 4 player entries start at entry 2 of D_8010F730_stacked_deck, and the 12
+// The 4 player entries start at entry 2 of m242_objWorkTbl, and the 12
 // cards laid out on the table start at entry 6.
-#define STACKED_DECK_PLAYERS (&D_8010F730_stacked_deck[2])
-#define STACKED_DECK_CARDS (&D_8010F730_stacked_deck[6])
-// Entries 23-25 are the three spinning objects created by func_8010E4EC_stacked_deck.
-#define STACKED_DECK_SPINNERS (&D_8010F730_stacked_deck[23])
+#define STACKED_DECK_PLAYERS (&m242_objWorkTbl[2])
+#define STACKED_DECK_CARDS (&m242_objWorkTbl[6])
+// Entries 23-25 are the three spinning objects created by m242_DecoObjCreateAll.
+#define STACKED_DECK_SPINNERS (&m242_objWorkTbl[23])
 
 typedef struct {
     f32 scissorX;
@@ -21,7 +21,7 @@ typedef struct {
 } StackedDeckCamera;
 
 // One entry of the 50 card stack. Layout derived from the table clear in
-// func_80105A74_stacked_deck, which walks 50 entries of 0x84 bytes.
+// m242_ObjWorkInit, which walks 50 entries of 0x84 bytes.
 typedef struct {
     /* 0x00 */ omObjData *obj;
     /* 0x04 */ s16 unk_04[10];
@@ -32,25 +32,25 @@ typedef struct {
     /* 0x5C */ Vec unk_5C;
     /* 0x68 */ f32 unk_68[4];
     /* 0x78 */ Vec unk_78;
-} StackedDeckCard; // sizeof 0x84
+} StackedDeckObjWork; // sizeof 0x84
 // Groups of BSS variables that are not 4-aligned as standalone arrays. The
 // original names are aliased to the fields (see undefined_syms.txt).
 typedef struct {
     /* 0x00 */ u8 unk_00;
     /* 0x01 */ s8 unk_01[5];
     /* 0x06 */ s16 unk_06[7];
-} StackedDeckBssF6F4; // sizeof 0x14
+} StackedDeckPhaseWork; // sizeof 0x14
 
 typedef struct {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02[4];
-} StackedDeckBssS16Run; // sizeof 0xA
+} StackedDeckS16Group; // sizeof 0xA
 
 extern s32 omCharModelNoTbl[][6];
 extern s32 omCharMotTbl[][6];
 
-s32 D_8010F290_stacked_deck[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
-Vec2f D_8010F2B0_stacked_deck[12] = {
+s32 m242_voiceChrTbl[8] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+Vec2f m242_cardPosTbl[12] = {
     { -525.0f, -350.0f },
     { -175.0f, -350.0f },
     { 175.0f, -350.0f },
@@ -64,94 +64,94 @@ Vec2f D_8010F2B0_stacked_deck[12] = {
     { 175.0f, 650.0f },
     { 525.0f, 650.0f },
 };
-Vec2f D_8010F310_stacked_deck[3] = { { 70.0f, 20.0f }, { -10.0f, 10.0f }, { -70.0f, 20.0f } };
-f32 D_8010F328_stacked_deck[3] = { 2.0f, 2.0f, 2.0f };
+Vec2f m242_decoPosTbl[3] = { { 70.0f, 20.0f }, { -10.0f, 10.0f }, { -70.0f, 20.0f } };
+f32 m242_decoSpeedTbl[3] = { 2.0f, 2.0f, 2.0f };
 // The intended delays (90, 900, 0, 30, 150) landed in gaugeValue/winners, likely
 // from an initializer written without the inner braces. It doesn't matter in
 // practice: this overlay never runs MgFlowMain, so only the
 // setup in MgFlowInit reads this struct.
-MinigameFlow D_8010F334_stacked_deck = {
+MinigameFlow m242_mgFlow = {
     MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
     { 90.0f, 900.0f, 0.0f, 30.0f },
     { 150, 0, 0, 0 },
     0, 0, 0, 0, 0
 };
-s32 D_8010F35C_stacked_deck = 0;
-StackedDeckCamera D_8010F360_stacked_deck[1] = {
+s32 m242_cameraSetF = 0;
+StackedDeckCamera m242_cameraViewTbl[1] = {
     { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 33.0f }
 };
 
-extern const s16 D_8010F6E8_stacked_deck[];
+extern const s16 m242_fontMesTbl[];
 
-s16 D_8010F6F0_stacked_deck BSS;
-s16 D_8010F6F2_stacked_deck BSS;
-StackedDeckBssF6F4 stackedDeckBssF6F4 BSS;
-extern u8 D_8010F6F4_stacked_deck;     // stackedDeckBssF6F4.unk_00
-extern s8 D_8010F6F5_stacked_deck[5];  // stackedDeckBssF6F4.unk_01
-extern s16 D_8010F6FA_stacked_deck[7]; // stackedDeckBssF6F4.unk_06
-void *D_8010F708_stacked_deck[6] BSS;
-s16 D_8010F720_stacked_deck BSS;
-u8 D_8010F724_stacked_deck[0xC] BSS; /* Unreferenced. */
-StackedDeckCard D_8010F730_stacked_deck[50] BSS;
+s16 m242_pickCardType BSS;
+s16 m242_flySeF BSS;
+StackedDeckPhaseWork m242_phaseWork BSS;
+extern u8 m242_phase;     // m242_phaseWork.unk_00
+extern s8 m242_rankCntTbl[5];  // m242_phaseWork.unk_01
+extern s16 m242_coinRankTbl[7]; // m242_phaseWork.unk_06
+void *m242_cardAnimDataTbl[6] BSS;
+s16 m242_timer BSS;
+u8 m242_timerPad[0xC] BSS; /* Unreferenced. */
+StackedDeckObjWork m242_objWorkTbl[50] BSS;
 // Alias of the player entries (STACKED_DECK_PLAYERS), used where the target
 // indexes the player table directly.
-extern StackedDeckCard D_8010F838_stacked_deck[4];
-s16 D_801110F8_stacked_deck BSS;
-s16 D_801110FA_stacked_deck BSS;
-s32 D_801110FC_stacked_deck BSS;
-StackedDeckBssS16Run stackedDeckBss11100 BSS;
-extern s16 D_80111100_stacked_deck;    // stackedDeckBss11100.unk_00
-extern s16 D_80111102_stacked_deck[4]; // stackedDeckBss11100.unk_02
-s16 D_8011110A_stacked_deck BSS;
-s16 D_8011110C_stacked_deck BSS;
-s8 D_80111110_stacked_deck[4][4] BSS;
-s16 D_80111120_stacked_deck BSS;
-u8 D_80111124_stacked_deck[4] BSS; /* Unreferenced. */
-s16 D_80111128_stacked_deck[12] BSS;
-StackedDeckBssS16Run stackedDeckBss11140 BSS;
-extern s16 D_80111140_stacked_deck;    // stackedDeckBss11140.unk_00
-extern s16 D_80111142_stacked_deck[4]; // stackedDeckBss11140.unk_02
-s16 D_8011114A_stacked_deck BSS;
-s16 D_8011114C_stacked_deck BSS;
-s16 D_8011114E_stacked_deck BSS;
-s16 D_80111150_stacked_deck[12] BSS;
-u8 D_80111168_stacked_deck BSS;
-u8 D_80111169_stacked_deck BSS;
-s16 D_8011116A_stacked_deck BSS;
-s16 D_8011116C_stacked_deck BSS;
-s16 D_8011116E_stacked_deck BSS;
-s16 D_80111170_stacked_deck BSS;
+extern StackedDeckObjWork m242_playerWorkTbl[4];
+s16 m242_shuffleCnt BSS;
+s16 m242_koopaCardNum BSS;
+s32 m242_decoMdl BSS;
+StackedDeckS16Group m242_teresaCardGrp BSS;
+extern s16 m242_teresaCardNum;    // m242_teresaCardGrp.unk_00
+extern s16 m242_starRankTbl[4]; // m242_teresaCardGrp.unk_02
+s16 m242_finalHitF BSS;
+s16 m242_cardSeStep BSS;
+s8 m242_rankPlayerTbl[4][4] BSS;
+s16 m242_hitEffState BSS;
+u8 m242_hitEffStatePad[4] BSS; /* Unreferenced. */
+s16 m242_slotUsedTbl[12] BSS;
+StackedDeckS16Group m242_flipSeGrp BSS;
+extern s16 m242_flipSeCnt;    // m242_flipSeGrp.unk_00
+extern s16 m242_queueSlotFTbl[4]; // m242_flipSeGrp.unk_02
+s16 m242_comFlipF BSS;
+s16 m242_shuffleCardNo BSS;
+s16 m242_dealCnt BSS;
+s16 m242_cardAnimTbl[12] BSS;
+u8 m242_jumpF BSS;
+u8 m242_phaseDoneNo BSS;
+s16 m242_kinokoCardNum BSS;
+s16 m242_roundNo BSS;
+s16 m242_queueLast BSS;
+s16 m242_smokeState BSS;
 
-void func_801063F4_stacked_deck(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f32 *velZ, f32 speed);
-void func_80106554_stacked_deck(omObjData *object);
-void func_8010655C_stacked_deck(omObjData *object);
-void func_80106694_stacked_deck(omObjData *object);
-void func_8010669C_stacked_deck(omObjData *object);
-void func_80106780_stacked_deck(omObjData *object);
-void func_801069A0_stacked_deck(omObjData *object);
-void func_80106BC8_stacked_deck(omObjData *object);
-void func_80108E48_stacked_deck(omObjData *object);
-void func_801097D4_stacked_deck(omObjData *object);
-void func_8010C188_stacked_deck(omObjData *object);
-void func_8010C5C8_stacked_deck(omObjData *object);
-void func_8010D98C_stacked_deck(omObjData *object);
-void func_8010DAE4_stacked_deck(omObjData *object);
-void func_8010DC2C_stacked_deck(omObjData *object);
-void func_8010DDAC_stacked_deck(omObjData *object);
-void func_8010DEF4_stacked_deck(omObjData *object);
-void func_8010E368_stacked_deck(omObjData *object);
-void func_8010E650_stacked_deck(omObjData *object);
-void func_8010E6FC_stacked_deck(omObjData *object);
-void func_8010E734_stacked_deck(omObjData *object);
-void func_8010E78C_stacked_deck(omObjData *object);
-void func_8010ED44_stacked_deck(omObjData *object);
-void func_8010F134_stacked_deck(void);
+void m242_VelCalc(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f32 *velZ, f32 speed);
+void m242_MapObjMain(omObjData *object);
+void m242_MapObjInit(omObjData *object);
+void m242_BackObjMain(omObjData *object);
+void m242_BackObjInit(omObjData *object);
+void m242_PlayerComInput(omObjData *object);
+void m242_PlayerCardFlipCheck(omObjData *object);
+void m242_PlayerObjMain(omObjData *object);
+void m242_PlayerObjInit(omObjData *object);
+void m242_CardObjMain(omObjData *object);
+void m242_CardObjInit(omObjData *object);
+void m242_CardChrObjMain(omObjData *object);
+void m242_SmokeObjMain(omObjData *object);
+void m242_SmokeObjInit(omObjData *object);
+void m242_HitEffObjMain(omObjData *object);
+void m242_HitEffObjInit(omObjData *object);
+void m242_DecoObjMain(omObjData *object);
+void m242_DecoObjInit(omObjData *object);
+void m242_ExitObjMain(omObjData *object);
+void m242_ExitWaitObjMain(omObjData *object);
+void m242_ExitCheckObjMain(omObjData *object);
+void m242_MainObjMain(omObjData *object);
+void m242_MainObjInit(omObjData *object);
+void m242_ObjectSetup(void);
 
-void func_801059A0_stacked_deck(void) {
-    func_8010F134_stacked_deck();
+void m242_Executor(void) {
+    m242_ObjectSetup();
 }
 
-f32 func_801059BC_stacked_deck(f32 arg0, f32 arg1) {
+f32 m242_AngleAdd(f32 arg0, f32 arg1) {
     f32 angle = arg0 + arg1;
 
     while (angle >= 360.0f) {
@@ -165,16 +165,16 @@ f32 func_801059BC_stacked_deck(f32 arg0, f32 arg1) {
     return angle;
 }
 
-u8 func_80105A3C_stacked_deck(s32 arg0) {
+u8 m242_RandMulGet(s32 arg0) {
     u32 ret = (rand8() & 0xFF) * arg0;
     return ret >> 8;
 }
 
-void func_80105A74_stacked_deck(void) {
-    StackedDeckCard *card;
+void m242_ObjWorkInit(void) {
+    StackedDeckObjWork *card;
     u32 i;
 
-    for (i = 0, card = D_8010F730_stacked_deck; i < 50; i++, card++) {
+    for (i = 0, card = m242_objWorkTbl; i < 50; i++, card++) {
         card->obj = NULL;
         card->unk_04[0] = 0;
         card->unk_04[1] = 0;
@@ -209,24 +209,24 @@ void func_80105A74_stacked_deck(void) {
     }
 }
 
-void func_80105B3C_stacked_deck(s32 playerIndex) {
+void m242_PadClear(s32 playerIndex) {
     HuPadBtn[GwPlayer[playerIndex].pad] = 0;
     HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
     HuPadStkX[GwPlayer[playerIndex].pad] = 0;
     HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
-void func_80105BB4_stacked_deck(f32 x0, f32 z0, f32 x1, f32 z1) {
+void m242_CameraDebugPrint(f32 x0, f32 z0, f32 x1, f32 z1) {
     f32 dx = fabs(x0 - x1) * 5.0;
     f32 dz = fabs(z0 - z1) * 5.0;
     f32 zoom = sqrtf(dx * dx + dz * dz);
-    f32 rot = func_801059BC_stacked_deck(atan2df(dx, dz), 0.0f);
+    f32 rot = m242_AngleAdd(atan2df(dx, dz), 0.0f);
 
     osSyncPrintf("Zoom = %f\n", zoom);
     osSyncPrintf("Rot  = %f\n", 360.0f - rot);
 }
 
-void func_80105CBC_stacked_deck(s16 conNo) {
+void m242_CameraDebugPad(s16 conNo) {
     s16 i;
 
     if (conNo < 0 || conNo >= 4) {
@@ -235,22 +235,22 @@ void func_80105CBC_stacked_deck(s16 conNo) {
     }
     if ((u16)HuPadBtn[conNo] & D_JPAD) {
         for (i = 0; i < 1; i++) {
-            CRotM[i].x = func_801059BC_stacked_deck(CRotM[i].x, 1.0f);
+            CRotM[i].x = m242_AngleAdd(CRotM[i].x, 1.0f);
         }
     }
     if ((u16)HuPadBtn[conNo] & U_JPAD) {
         for (i = 0; i < 1; i++) {
-            CRotM[i].x = func_801059BC_stacked_deck(CRotM[i].x, -1.0f);
+            CRotM[i].x = m242_AngleAdd(CRotM[i].x, -1.0f);
         }
     }
     if ((u16)HuPadBtn[conNo] & L_JPAD) {
         for (i = 0; i < 1; i++) {
-            CRotM[i].y = func_801059BC_stacked_deck(CRotM[i].y, 1.0f);
+            CRotM[i].y = m242_AngleAdd(CRotM[i].y, 1.0f);
         }
     }
     if ((u16)HuPadBtn[conNo] & R_JPAD) {
         for (i = 0; i < 1; i++) {
-            CRotM[i].y = func_801059BC_stacked_deck(CRotM[i].y, -1.0f);
+            CRotM[i].y = m242_AngleAdd(CRotM[i].y, -1.0f);
         }
     }
     if ((u16)HuPadBtn[conNo] & A_BUTTON) {
@@ -293,31 +293,31 @@ void func_80105CBC_stacked_deck(s16 conNo) {
     }
 }
 
-void func_80106290_stacked_deck(u8 value) {
-    D_8010F6F4_stacked_deck = value;
+void m242_PhaseSet(u8 value) {
+    m242_phase = value;
 }
 
-void func_8010629C_stacked_deck(omObjData *object, s16 motion, s16 start, s16 end, s16 shift, s16 *current) {
+void m242_MotShiftSet(omObjData *object, s16 motion, s16 start, s16 end, s16 shift, s16 *current) {
     if (*current != motion) {
         Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[motion]].motId, start, end, shift);
         *current = motion;
     }
 }
 
-f32 func_80106338_stacked_deck(f32 base, f32 *value, f32 step) {
+f32 m242_GravityCalc(f32 base, f32 *value, f32 step) {
     f32 prev = *value;
 
     *value = prev - step;
     return base + prev;
 }
 
-void func_80106354_stacked_deck(omObjData *object, u8 anim) {
-    Hu3DAnimKill(D_80111150_stacked_deck[object->work[0]]);
-    D_80111150_stacked_deck[object->work[0]] =
-        Hu3DAnimCreate(Hu3DData[object->model[0]].hmf, D_8010F708_stacked_deck[anim], 0, "card_k_DEF");
+void m242_CardAnimSet(omObjData *object, u8 anim) {
+    Hu3DAnimKill(m242_cardAnimTbl[object->work[0]]);
+    m242_cardAnimTbl[object->work[0]] =
+        Hu3DAnimCreate(Hu3DData[object->model[0]].hmf, m242_cardAnimDataTbl[anim], 0, "card_k_DEF");
 }
 
-void func_801063F4_stacked_deck(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f32 *velZ, f32 speed) {
+void m242_VelCalc(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f32 *velZ, f32 speed) {
     f32 dx = x1;
     f32 dz = z1;
     f32 absDx;
@@ -368,10 +368,10 @@ void func_801063F4_stacked_deck(f32 x0, f32 z0, f32 x1, f32 z1, f32 *velX, f32 *
     }
 }
 
-void func_80106554_stacked_deck(omObjData *object) {
+void m242_MapObjMain(omObjData *object) {
 }
 
-void func_8010655C_stacked_deck(omObjData *object) {
+void m242_MapObjInit(omObjData *object) {
     MgMapWork *work;
 
     mgMapObjTbl[mgMapObjNum++] = object;
@@ -384,20 +384,20 @@ void func_8010655C_stacked_deck(omObjData *object) {
     MgMapFrictionSet(object, 0.5f);
     MgMapAccelSet(object, mgPlayerAccel);
     MgMapBoxSet(mgMapObjTbl[0], 1.0f, -5060.0f, -5000.0f, 5060.0f, 5000.0f);
-    object->func = func_80106554_stacked_deck;
+    object->func = m242_MapObjMain;
 }
 
-void func_80106654_stacked_deck(void) {
-    omObjData *obj = omAddObj(0x3E6, 1, 1, -1, func_8010655C_stacked_deck);
+void m242_MapObjCreate(void) {
+    omObjData *obj = omAddObj(0x3E6, 1, 1, -1, m242_MapObjInit);
     obj->work[0] = 0;
-    D_8010F730_stacked_deck[0].obj = obj;
+    m242_objWorkTbl[0].obj = obj;
 }
 
-void func_80106694_stacked_deck(omObjData *object) {
+void m242_BackObjMain(omObjData *object) {
 }
 
-void func_8010669C_stacked_deck(omObjData *object) {
-    StackedDeckCard *card = &D_8010F730_stacked_deck[1];
+void m242_BackObjInit(omObjData *object) {
+    StackedDeckObjWork *card = &m242_objWorkTbl[1];
 
     card->unk_40[0] = HuSprAnimDataRead(0x4B0000);
     card->unk_40[1] = espEntry(card->unk_40[0], 0, 0);
@@ -405,20 +405,20 @@ void func_8010669C_stacked_deck(omObjData *object) {
     card->unk_44.x = 160.0f;
     card->unk_44.y = 120.0f;
     espPosSet(card->unk_40[1], 160, 120);
-    object->func = func_80106694_stacked_deck;
+    object->func = m242_BackObjMain;
 }
 
-void func_80106738_stacked_deck(void) {
-    omObjData *obj = omAddObj(0x3E7, 1, 1, -1, func_8010669C_stacked_deck);
+void m242_BackObjCreate(void) {
+    omObjData *obj = omAddObj(0x3E7, 1, 1, -1, m242_BackObjInit);
     obj->work[0] = 0;
-    D_8010F730_stacked_deck[1].obj = obj;
+    m242_objWorkTbl[1].obj = obj;
 }
 
-void func_80106778_stacked_deck(void) {
+void m242_PlayerDummy(void) {
 }
 
-void func_80106780_stacked_deck(omObjData *object) {
-    StackedDeckCard *card = &D_8010F730_stacked_deck[object->work[0] + 2];
+void m242_PlayerComInput(omObjData *object) {
+    StackedDeckObjWork *card = &m242_objWorkTbl[object->work[0] + 2];
     omObjData *target;
     f32 velX;
     f32 velZ;
@@ -437,7 +437,7 @@ void func_80106780_stacked_deck(omObjData *object) {
     }
 
     target = STACKED_DECK_CARDS[card->unk_04[8]].obj;
-    func_801063F4_stacked_deck(target->trans.x, target->trans.z, object->trans.x, object->trans.z, &velX, &velZ, 60.0f);
+    m242_VelCalc(target->trans.x, target->trans.z, object->trans.x, object->trans.z, &velX, &velZ, 60.0f);
     HuPadStkX[object->work[3]] = velX;
     HuPadStkY[object->work[3]] = -velZ;
     if (target->trans.x - 45.0f <= object->trans.x && object->trans.x <= target->trans.x + 45.0f &&
@@ -447,10 +447,10 @@ void func_80106780_stacked_deck(omObjData *object) {
     }
 }
 
-void func_801069A0_stacked_deck(omObjData *object) {
-    StackedDeckCard *card = &D_8010F730_stacked_deck[object->work[0] + 2];
+void m242_PlayerCardFlipCheck(omObjData *object) {
+    StackedDeckObjWork *card = &m242_objWorkTbl[object->work[0] + 2];
     MgPlayerWork *data = object->data;
-    StackedDeckCard *other;
+    StackedDeckObjWork *other;
     omObjData *cardObj;
     s16 i;
 
@@ -466,17 +466,17 @@ void func_801069A0_stacked_deck(omObjData *object) {
                 card->unk_04[8] = 0;
                 card->unk_04[9] = 0;
                 other->unk_04[0] = 1;
-                D_8010F6F0_stacked_deck = cardObj->work[1];
-                D_80111169_stacked_deck = 6;
+                m242_pickCardType = cardObj->work[1];
+                m242_phaseDoneNo = 6;
             }
         }
     }
     if (data->unk5C != 0x200 && data->unk50 != 0x80 && object->trans.y <= 1.0f) {
         card->unk_04[0] = 0;
-        D_80111168_stacked_deck = 0;
+        m242_jumpF = 0;
     }
     if (object->trans.y > 1.0f) {
-        D_80111168_stacked_deck = 1;
+        m242_jumpF = 1;
     }
     if (object->trans.z > 800.0f) {
         object->trans.z = 800.0f;
@@ -489,12 +489,12 @@ void func_801069A0_stacked_deck(omObjData *object) {
     }
 }
 
-void func_80106BC8_stacked_deck(omObjData *object) {
-    StackedDeckCard *card = &STACKED_DECK_PLAYERS[object->work[0]];
+void m242_PlayerObjMain(omObjData *object) {
+    StackedDeckObjWork *card = &STACKED_DECK_PLAYERS[object->work[0]];
     MgPlayerWork *data = object->data;
     omObjData *player;
-    StackedDeckCard *other;
-    StackedDeckCard *effect;
+    StackedDeckObjWork *other;
+    StackedDeckObjWork *effect;
     omObjData *obj;
     omObjData *cardObj;
     f32 velX;
@@ -503,11 +503,11 @@ void func_80106BC8_stacked_deck(omObjData *object) {
     s16 found;
     s16 i;
 
-    if (D_8010F6F4_stacked_deck != 6) {
-        func_80105B3C_stacked_deck(object->work[0]);
+    if (m242_phase != 6) {
+        m242_PadClear(object->work[0]);
     }
 
-    switch (D_8010F6F4_stacked_deck) {
+    switch (m242_phase) {
         case 1:
         case 2:
         case 3:
@@ -522,9 +522,9 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                     HuPadStkY[object->work[3]] = 60;
                 }
                 if (object->trans.z <= 800.0f) {
-                    D_80111169_stacked_deck = 4;
+                    m242_phaseDoneNo = 4;
                 }
-            } else if (object->work[1] <= D_8011116E_stacked_deck) {
+            } else if (object->work[1] <= m242_queueLast) {
                 if ((object->work[1] - 1) * 140.0f < object->trans.x) {
                     HuPadStkX[object->work[3]] = -60;
                 } else {
@@ -534,7 +534,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
             }
             break;
         case 5:
-            if (object->work[1] != 0 && object->work[1] <= D_8011116E_stacked_deck) {
+            if (object->work[1] != 0 && object->work[1] <= m242_queueLast) {
                 if ((object->work[1] - 1) * 140.0f < object->trans.x) {
                     HuPadStkX[object->work[3]] = -60;
                 } else {
@@ -551,9 +551,9 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                     HuPadStkY[object->work[3]] = 60;
                 }
                 if (object->trans.z <= 800.0f) {
-                    D_80111169_stacked_deck = 13;
+                    m242_phaseDoneNo = 13;
                 }
-            } else if (object->work[1] <= D_8011116E_stacked_deck) {
+            } else if (object->work[1] <= m242_queueLast) {
                 if ((object->work[1] - 1) * 140.0f < object->trans.x) {
                     HuPadStkX[object->work[3]] = -60;
                 } else {
@@ -563,19 +563,19 @@ void func_80106BC8_stacked_deck(omObjData *object) {
             }
             break;
         case 6:
-            if (D_8010F720_stacked_deck >= 286) {
-                func_80105B3C_stacked_deck(object->work[0]);
+            if (m242_timer >= 286) {
+                m242_PadClear(object->work[0]);
                 break;
             }
             if (object->work[1] == 0) {
                 if (GwPlayer[object->work[0]].stat & 1) {
-                    func_80105B3C_stacked_deck(object->work[0]);
-                    func_80106780_stacked_deck(object);
+                    m242_PadClear(object->work[0]);
+                    m242_PlayerComInput(object);
                 }
-                func_801069A0_stacked_deck(object);
-                D_8011114A_stacked_deck = 0;
-            } else if (object->work[1] <= D_8011116E_stacked_deck) {
-                func_80105B3C_stacked_deck(object->work[0]);
+                m242_PlayerCardFlipCheck(object);
+                m242_comFlipF = 0;
+            } else if (object->work[1] <= m242_queueLast) {
+                m242_PadClear(object->work[0]);
                 if ((object->work[1] - 1) * 140.0f < object->trans.x) {
                     HuPadStkX[object->work[3]] = -60;
                 } else {
@@ -583,7 +583,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                     data->unk3C = 180.0f;
                 }
             }
-            D_80111140_stacked_deck = 0;
+            m242_flipSeCnt = 0;
             break;
         case 7:
             if (object->work[1] == 0) {
@@ -597,18 +597,18 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                 if (data->unk50 == 0x80 ||
                     (cardObj->trans.x - 90.0f < object->trans.x && object->trans.x < cardObj->trans.x + 90.0f &&
                      cardObj->trans.z - 135.0f < object->trans.z && object->trans.z < cardObj->trans.z + 135.0f &&
-                     other->unk_04[0] == 1 && D_8011114A_stacked_deck == 0)) {
+                     other->unk_04[0] == 1 && m242_comFlipF == 0)) {
                     MgPlayerMotSet(object, 0);
                     HuPadBtnDown[object->work[3]] |= 0x8000;
-                    D_8011114A_stacked_deck = 1;
+                    m242_comFlipF = 1;
                 }
             }
             if (object->work[1] == 0) {
-                if (D_80111140_stacked_deck == 3) {
-                    D_80111140_stacked_deck = 4;
+                if (m242_flipSeCnt == 3) {
+                    m242_flipSeCnt = 4;
                     HuAudPlayerFXPlay(0x445, object->work[0]);
-                } else if (D_80111140_stacked_deck < 3) {
-                    D_80111140_stacked_deck++;
+                } else if (m242_flipSeCnt < 3) {
+                    m242_flipSeCnt++;
                 }
                 data->unk3C = 0.0f;
                 if (object->trans.x >= -175.0f && object->trans.x <= 175.0f) {
@@ -632,7 +632,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                         HuPadStkX[object->work[3]] = -60;
                     }
                 }
-            } else if (object->work[1] <= D_8011116E_stacked_deck) {
+            } else if (object->work[1] <= m242_queueLast) {
                 if ((object->work[1] - 1) * 140.0f < object->trans.x) {
                     HuPadStkX[object->work[3]] = -60;
                 } else {
@@ -640,11 +640,11 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                     data->unk3C = 180.0f;
                 }
             }
-            D_8010F6F2_stacked_deck = 0;
+            m242_flySeF = 0;
             break;
         case 8:
             if (object->work[1] == 0) {
-                effect = &D_8010F730_stacked_deck[18];
+                effect = &m242_objWorkTbl[18];
                 switch (card->unk_04[2]) {
                     case 0:
                         if (effect->unk_04[0] == 2 && card->unk_04[1] != 0x27) {
@@ -658,27 +658,27 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                         }
                         break;
                     case 1:
-                        if (D_8011116E_stacked_deck >= 2) {
-                            func_801063F4_stacked_deck((D_8011116E_stacked_deck - 1) * 140.0f, 800.0f, object->trans.x,
+                        if (m242_queueLast >= 2) {
+                            m242_VelCalc((m242_queueLast - 1) * 140.0f, 800.0f, object->trans.x,
                                                        object->trans.z, &velX, &velZ, 60.0f);
                             HuPadStkX[object->work[3]] = velX;
                             HuPadStkY[object->work[3]] = -velZ;
-                            if ((D_8011116E_stacked_deck - 1) * 140.0f - 10.0f < object->trans.x &&
-                                object->trans.x < (D_8011116E_stacked_deck - 1) * 140.0f + 10.0f) {
+                            if ((m242_queueLast - 1) * 140.0f - 10.0f < object->trans.x &&
+                                object->trans.x < (m242_queueLast - 1) * 140.0f + 10.0f) {
                                 card->unk_04[2] = 2;
                                 data->unk40 = 0.0f;
-                                object->trans.x = (D_8011116E_stacked_deck - 1) * 140.0f;
+                                object->trans.x = (m242_queueLast - 1) * 140.0f;
                             }
                         } else {
-                            func_801063F4_stacked_deck(D_8011116E_stacked_deck * 140.0f, 800.0f, object->trans.x,
+                            m242_VelCalc(m242_queueLast * 140.0f, 800.0f, object->trans.x,
                                                        object->trans.z, &velX, &velZ, 60.0f);
                             HuPadStkX[object->work[3]] = velX;
                             HuPadStkY[object->work[3]] = -velZ;
-                            if (D_8011116E_stacked_deck * 140.0f - 10.0f < object->trans.x &&
-                                object->trans.x < D_8011116E_stacked_deck * 140.0f + 10.0f) {
+                            if (m242_queueLast * 140.0f - 10.0f < object->trans.x &&
+                                object->trans.x < m242_queueLast * 140.0f + 10.0f) {
                                 card->unk_04[2] = 2;
                                 data->unk40 = 0.0f;
-                                object->trans.x = D_8011116E_stacked_deck * 140.0f;
+                                object->trans.x = m242_queueLast * 140.0f;
                             }
                         }
                         break;
@@ -687,11 +687,11 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                             HuPadStkY[object->work[3]] = -60;
                         } else {
                             object->trans.z = 1100.0f;
-                            if ((D_8011116E_stacked_deck - 1) * 140.0f < object->trans.x) {
+                            if ((m242_queueLast - 1) * 140.0f < object->trans.x) {
                                 HuPadStkX[object->work[3]] = -60;
                             } else {
                                 data->unk40 = 0.0f;
-                                object->trans.x = (D_8011116E_stacked_deck - 1) * 140.0f;
+                                object->trans.x = (m242_queueLast - 1) * 140.0f;
                                 if (data->unk3C <= 200.0f && data->unk3C >= 160.0f) {
                                     if (card->unk_04[1] != 0) {
                                         MgPlayerMotSet(object, 2);
@@ -702,11 +702,11 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                                     data->unk3C = 180.0f;
                                     if (effect->unk_04[0] == 5) {
                                         card->unk_04[2] = 0;
-                                        D_80111169_stacked_deck = 8;
+                                        m242_phaseDoneNo = 8;
                                         effect->unk_04[0] = 0;
                                     }
                                 } else {
-                                    data->unk3C = func_801059BC_stacked_deck(data->unk3C, -15.0f);
+                                    data->unk3C = m242_AngleAdd(data->unk3C, -15.0f);
                                     if (card->unk_04[1] != 2) {
                                         MgPlayerMotSet(object, 2);
                                         object->motion[43] = object->motion[0];
@@ -718,7 +718,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                         }
                         break;
                 }
-            } else if (object->work[1] <= D_8011116E_stacked_deck) {
+            } else if (object->work[1] <= m242_queueLast) {
                 for (i = 0; i < 4; i++) {
                     other = &STACKED_DECK_PLAYERS[i];
                     player = other->obj;
@@ -739,20 +739,20 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                     }
                 }
             }
-            if (object->work[0] == 3 && D_80111169_stacked_deck == 8) {
+            if (object->work[0] == 3 && m242_phaseDoneNo == 8) {
                 for (i = 0; i < 4; i++) {
                     other = &STACKED_DECK_PLAYERS[i];
                     player = other->obj;
                     if (player->work[1] == 0) {
-                        player->work[1] = D_8011116E_stacked_deck;
-                    } else if (player->work[1] <= D_8011116E_stacked_deck) {
+                        player->work[1] = m242_queueLast;
+                    } else if (player->work[1] <= m242_queueLast) {
                         player->work[1]--;
                     }
                 }
             }
             break;
         case 9:
-            effect = &D_8010F730_stacked_deck[19];
+            effect = &m242_objWorkTbl[19];
             if (object->work[1] == 0) {
                 switch (card->unk_04[2]) {
                     case 0:
@@ -772,10 +772,10 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                         break;
                     case 1:
                         if (object->trans.z < 800.0f) {
-                            func_801063F4_stacked_deck(150.0f, 800.0f, object->trans.x, object->trans.z, &velX,
+                            m242_VelCalc(150.0f, 800.0f, object->trans.x, object->trans.z, &velX,
                                                        &velZ, 60.0f);
                         } else {
-                            func_801063F4_stacked_deck(150.0f, 1600.0f, object->trans.x, object->trans.z, &velX,
+                            m242_VelCalc(150.0f, 1600.0f, object->trans.x, object->trans.z, &velX,
                                                        &velZ, 60.0f);
                         }
                         HuPadStkX[object->work[3]] = velX;
@@ -790,7 +790,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                         card->unk_04[2] = 3;
                         break;
                 }
-            } else if (object->work[1] <= D_8011116E_stacked_deck) {
+            } else if (object->work[1] <= m242_queueLast) {
                 switch (card->unk_04[2]) {
                     case 0:
                         if (effect->unk_04[0] == 2 && card->unk_04[1] != 0x28) {
@@ -855,7 +855,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                 for (i = 0; i < 4; i++) {
                     other = &STACKED_DECK_PLAYERS[i];
                     player = other->obj;
-                    if (other->unk_04[2] != 3 && player->work[1] <= D_8011116E_stacked_deck) {
+                    if (other->unk_04[2] != 3 && player->work[1] <= m242_queueLast) {
                         found = TRUE;
                     }
                 }
@@ -864,27 +864,27 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                         other = &STACKED_DECK_PLAYERS[i];
                         other->unk_04[2] = 0;
                     }
-                    D_80111169_stacked_deck = 9;
+                    m242_phaseDoneNo = 9;
                     effect->unk_04[0] = 0;
                 }
             }
             break;
         case 10:
-            if (object->work[1] <= D_8011116E_stacked_deck) {
+            if (object->work[1] <= m242_queueLast) {
                 switch (card->unk_04[2]) {
                     case 0:
-                        slot = (rand8() & 0xFF) % (D_8011116E_stacked_deck + 1);
+                        slot = (rand8() & 0xFF) % (m242_queueLast + 1);
                         while (TRUE) {
-                            if (D_80111142_stacked_deck[slot] == 0) {
+                            if (m242_queueSlotFTbl[slot] == 0) {
                                 object->work[1] = slot;
                                 object->trans.x = slot * 140.0f;
                                 object->trans.z = 1500.0f;
                                 card->unk_04[2] = 1;
                                 data->unk40 = 0.0f;
-                                D_80111142_stacked_deck[slot] = 1;
+                                m242_queueSlotFTbl[slot] = 1;
                                 break;
                             }
-                            if (++slot > D_8011116E_stacked_deck) {
+                            if (++slot > m242_queueLast) {
                                 slot = 0;
                             }
                         }
@@ -907,7 +907,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                 for (i = 0; i < 4; i++) {
                     other = &STACKED_DECK_PLAYERS[i];
                     player = other->obj;
-                    if (other->unk_04[2] != 2 && player->work[1] <= D_8011116E_stacked_deck) {
+                    if (other->unk_04[2] != 2 && player->work[1] <= m242_queueLast) {
                         found = TRUE;
                     }
                 }
@@ -915,15 +915,15 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                     for (i = 0; i < 4; i++) {
                         other = &STACKED_DECK_PLAYERS[i];
                         other->unk_04[2] = 0;
-                        D_80111142_stacked_deck[i] = 0;
+                        m242_queueSlotFTbl[i] = 0;
                     }
-                    D_80111169_stacked_deck = 10;
+                    m242_phaseDoneNo = 10;
                 }
             }
             break;
         case 11:
             if (object->work[1] == 0) {
-                effect = &D_8010F730_stacked_deck[20];
+                effect = &m242_objWorkTbl[20];
                 obj = effect->obj;
                 switch (card->unk_04[2]) {
                     case 0:
@@ -932,7 +932,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                         if (effect->unk_04[0] == 2 && card->unk_04[1] != 0x29) {
                             MgPlayerMotSet(object, 0x29);
                             card->unk_04[1] = 0x29;
-                            card->unk_04[7] = D_8011116E_stacked_deck;
+                            card->unk_04[7] = m242_queueLast;
                         }
                         if (obj->trans.x > object->trans.x) {
                             card->unk_04[6] = 1;
@@ -946,25 +946,25 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                             Hu3DMotionTimeSet(object->model[0], 0.0f);
                             Hu3DMotionSpeedSet(object->model[0], 0.0f);
                             card->unk_18[2] = 50.0f;
-                            D_80111120_stacked_deck = 1;
+                            m242_hitEffState = 1;
                         }
                         break;
                     case 1:
-                        if (D_8010F6F2_stacked_deck == 0) {
-                            D_8010F6F2_stacked_deck = 1;
+                        if (m242_flySeF == 0) {
+                            m242_flySeF = 1;
                             PlayerFXPlay(0x286, object->work[0]);
                             HuAudFXPlay(0x44A);
                         }
                         object->trans.y = card->unk_18[3] =
-                            func_80106338_stacked_deck(card->unk_18[3], &card->unk_18[2], 0.05f);
+                            m242_GravityCalc(card->unk_18[3], &card->unk_18[2], 0.05f);
                         if (card->unk_04[6] == 1) {
                             object->trans.x -= 20.0f;
                         } else {
                             object->trans.x += 20.0f;
                         }
                         object->trans.z += 20.0f;
-                        object->rot.y = func_801059BC_stacked_deck(object->rot.y, 66.0f);
-                        object->rot.x = func_801059BC_stacked_deck(object->rot.x, 66.0f);
+                        object->rot.y = m242_AngleAdd(object->rot.y, 66.0f);
+                        object->rot.x = m242_AngleAdd(object->rot.x, 66.0f);
                         if (object->trans.y > 3000.0f) {
                             object->trans.x = 3000.0f;
                             card->unk_04[2] = 2;
@@ -974,13 +974,13 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                     case 2:
                         if (effect->unk_04[0] == 7) {
                             card->unk_04[2] = 0;
-                            D_80111169_stacked_deck = 11;
+                            m242_phaseDoneNo = 11;
                             effect->unk_04[0] = 0;
                             card->unk_04[1] = 0;
                         }
                         break;
                 }
-            } else if (object->work[1] <= D_8011116E_stacked_deck) {
+            } else if (object->work[1] <= m242_queueLast) {
                 for (i = 0; i < 4; i++) {
                     other = &STACKED_DECK_PLAYERS[i];
                     player = other->obj;
@@ -1001,23 +1001,23 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                     }
                 }
             }
-            if (object->work[0] == 3 && D_80111169_stacked_deck == 11) {
+            if (object->work[0] == 3 && m242_phaseDoneNo == 11) {
                 for (i = 0; i < 4; i++) {
                     other = &STACKED_DECK_PLAYERS[i];
                     player = other->obj;
                     if (player->work[1] == 0) {
                         player->work[1] = 99;
-                    } else if (player->work[1] <= D_8011116E_stacked_deck) {
+                    } else if (player->work[1] <= m242_queueLast) {
                         player->work[1]--;
                     }
                 }
-                D_8011116E_stacked_deck--;
+                m242_queueLast--;
             }
             break;
         case 14:
         case 15:
             if (object->work[1] == 0) {
-                effect = &D_8010F730_stacked_deck[20];
+                effect = &m242_objWorkTbl[20];
                 obj = effect->obj;
                 switch (card->unk_04[2]) {
                     case 0:
@@ -1026,7 +1026,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                         if (effect->unk_04[0] == 2 && card->unk_04[1] != 0x29) {
                             MgPlayerMotSet(object, 0x29);
                             card->unk_04[1] = 0x29;
-                            card->unk_04[7] = D_8011116E_stacked_deck;
+                            card->unk_04[7] = m242_queueLast;
                         }
                         if (obj->trans.x > object->trans.x) {
                             card->unk_04[6] = 1;
@@ -1040,26 +1040,26 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                             Hu3DMotionTimeSet(object->model[0], 0.0f);
                             Hu3DMotionSpeedSet(object->model[0], 0.0f);
                             card->unk_18[2] = 50.0f;
-                            D_80111120_stacked_deck = 1;
-                            D_8011110A_stacked_deck = 1;
+                            m242_hitEffState = 1;
+                            m242_finalHitF = 1;
                         }
                         break;
                     case 1:
-                        if (D_8010F6F2_stacked_deck == 0) {
-                            D_8010F6F2_stacked_deck = 1;
+                        if (m242_flySeF == 0) {
+                            m242_flySeF = 1;
                             PlayerFXPlay(0x286, object->work[0]);
                             HuAudFXPlay(0x44A);
                         }
                         object->trans.y = card->unk_18[3] =
-                            func_80106338_stacked_deck(card->unk_18[3], &card->unk_18[2], 0.05f);
+                            m242_GravityCalc(card->unk_18[3], &card->unk_18[2], 0.05f);
                         if (card->unk_04[6] == 1) {
                             object->trans.x -= 20.0f;
                         } else {
                             object->trans.x += 20.0f;
                         }
                         object->trans.z += 20.0f;
-                        object->rot.y = func_801059BC_stacked_deck(object->rot.y, 66.0f);
-                        object->rot.x = func_801059BC_stacked_deck(object->rot.x, 66.0f);
+                        object->rot.y = m242_AngleAdd(object->rot.y, 66.0f);
+                        object->rot.x = m242_AngleAdd(object->rot.x, 66.0f);
                         if (object->trans.y > 3000.0f) {
                             object->trans.x = 3000.0f;
                             card->unk_04[2] = 2;
@@ -1068,7 +1068,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                     case 2:
                         break;
                 }
-            } else if (object->work[1] <= D_8011116E_stacked_deck && D_8010F6F4_stacked_deck == 15) {
+            } else if (object->work[1] <= m242_queueLast && m242_phase == 15) {
                 if (data->unk3C <= 20.0f || data->unk3C >= 340.0f) {
                     data->unk3C = 0.0f;
                     MgPlayerMotSet(object, 2);
@@ -1076,7 +1076,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                     MgPlayerMotSet(object, 0);
                     card->unk_04[1] = 0;
                 } else {
-                    data->unk3C = func_801059BC_stacked_deck(data->unk3C, 15.0f);
+                    data->unk3C = m242_AngleAdd(data->unk3C, 15.0f);
                     if (card->unk_04[1] != 2) {
                         MgPlayerMotSet(object, 2);
                         object->motion[43] = object->motion[0];
@@ -1089,7 +1089,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
         case 16:
         case 17:
             if (object->work[1] == 0) {
-                effect = &D_8010F730_stacked_deck[20];
+                effect = &m242_objWorkTbl[20];
                 obj = effect->obj;
                 switch (card->unk_04[2]) {
                     case 0:
@@ -1098,7 +1098,7 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                         if (effect->unk_04[0] == 2 && card->unk_04[1] != 0x29) {
                             MgPlayerMotSet(object, 0x29);
                             card->unk_04[1] = 0x29;
-                            card->unk_04[7] = D_8011116E_stacked_deck;
+                            card->unk_04[7] = m242_queueLast;
                         }
                         if (obj->trans.x > object->trans.x) {
                             card->unk_04[6] = 1;
@@ -1112,26 +1112,26 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                             Hu3DMotionTimeSet(object->model[0], 0.0f);
                             Hu3DMotionSpeedSet(object->model[0], 0.0f);
                             card->unk_18[2] = 50.0f;
-                            D_80111120_stacked_deck = 1;
-                            D_8011110A_stacked_deck = 1;
+                            m242_hitEffState = 1;
+                            m242_finalHitF = 1;
                         }
                         break;
                     case 1:
-                        if (D_8010F6F2_stacked_deck == 0) {
-                            D_8010F6F2_stacked_deck = 1;
+                        if (m242_flySeF == 0) {
+                            m242_flySeF = 1;
                             PlayerFXPlay(0x286, object->work[0]);
                             HuAudFXPlay(0x44A);
                         }
                         object->trans.y = card->unk_18[3] =
-                            func_80106338_stacked_deck(card->unk_18[3], &card->unk_18[2], 0.05f);
+                            m242_GravityCalc(card->unk_18[3], &card->unk_18[2], 0.05f);
                         if (card->unk_04[6] == 1) {
                             object->trans.x -= 20.0f;
                         } else {
                             object->trans.x += 20.0f;
                         }
                         object->trans.z += 20.0f;
-                        object->rot.y = func_801059BC_stacked_deck(object->rot.y, 66.0f);
-                        object->rot.x = func_801059BC_stacked_deck(object->rot.x, 66.0f);
+                        object->rot.y = m242_AngleAdd(object->rot.y, 66.0f);
+                        object->rot.x = m242_AngleAdd(object->rot.x, 66.0f);
                         if (object->trans.y > 3000.0f) {
                             object->trans.x = 3000.0f;
                             card->unk_04[2] = 2;
@@ -1140,24 +1140,24 @@ void func_80106BC8_stacked_deck(omObjData *object) {
                     case 2:
                         if (effect->unk_04[0] == 7) {
                             card->unk_04[2] = 0;
-                            D_80111169_stacked_deck = 11;
+                            m242_phaseDoneNo = 11;
                             effect->unk_04[0] = 0;
                             card->unk_04[1] = 0;
                         }
                         break;
                 }
-            } else if (object->work[1] <= D_8011116E_stacked_deck) {
+            } else if (object->work[1] <= m242_queueLast) {
                 if (data->unk3C <= 20.0f || data->unk3C >= 340.0f) {
                     data->unk3C = 0.0f;
-                    if (card->unk_04[1] != 13 && D_8010F720_stacked_deck >= 0) {
+                    if (card->unk_04[1] != 13 && m242_timer >= 0) {
                         object->motion[0] = object->motion[43];
                         MgPlayerMotSet(object, 13);
                         card->unk_04[1] = 13;
                         card->unk_04[7] = 0;
-                        HuAudCharVoicePlay((D_8010F290_stacked_deck[GwPlayer[object->work[0]].chr] << 16) | 0x30);
+                        HuAudCharVoicePlay((m242_voiceChrTbl[GwPlayer[object->work[0]].chr] << 16) | 0x30);
                     }
                 } else {
-                    data->unk3C = func_801059BC_stacked_deck(data->unk3C, 15.0f);
+                    data->unk3C = m242_AngleAdd(data->unk3C, 15.0f);
                     if (card->unk_04[1] != 2) {
                         MgPlayerMotSet(object, 2);
                         object->motion[43] = object->motion[0];
@@ -1169,13 +1169,13 @@ void func_80106BC8_stacked_deck(omObjData *object) {
             break;
     }
 
-    if (D_8010F6F4_stacked_deck == 7) {
+    if (m242_phase == 7) {
         mgPlayerJumpPower = 1.7f;
     } else {
         mgPlayerJumpPower = 1.3f;
     }
-    if (object->work[1] > D_8011116E_stacked_deck) {
-        func_80105B3C_stacked_deck(object->work[0]);
+    if (object->work[1] > m242_queueLast) {
+        m242_PadClear(object->work[0]);
         data->unk40 = 0.0f;
     }
     MgPlayerObjMain(object);
@@ -1188,14 +1188,14 @@ void func_80106BC8_stacked_deck(omObjData *object) {
     }
 }
 
-void func_80108E48_stacked_deck(omObjData *object) {
-    StackedDeckCard *card = &STACKED_DECK_PLAYERS[object->work[0]];
+void m242_PlayerObjInit(omObjData *object) {
+    StackedDeckObjWork *card = &STACKED_DECK_PLAYERS[object->work[0]];
     u16 character = GwPlayer[object->work[0]].chr;
     s32 modelFile = omCharModelNoTbl[character][0];
     s32 motionFile = omCharMotTbl[character][0];
     MgPlayerWork *work;
     omObjData *obj;
-    StackedDeckCard *player;
+    StackedDeckObjWork *player;
     s32 values[4];
     s16 i;
     s16 j;
@@ -1242,7 +1242,7 @@ void func_80108E48_stacked_deck(omObjData *object) {
                     rank++;
                 }
             }
-            D_8010F6FA_stacked_deck[i] = rank;
+            m242_coinRankTbl[i] = rank;
         }
         for (i = 0; i < 4; i++) {
             player = &STACKED_DECK_PLAYERS[i];
@@ -1255,31 +1255,31 @@ void func_80108E48_stacked_deck(omObjData *object) {
                     if (values[obj->work[0]] < values[j]) {
                         rank++;
                     } else if (values[obj->work[0]] == values[j] &&
-                               D_8010F6FA_stacked_deck[i] > D_8010F6FA_stacked_deck[j]) {
+                               m242_coinRankTbl[i] > m242_coinRankTbl[j]) {
                         rank++;
                     }
                 }
             }
-            D_80111102_stacked_deck[i] = rank;
+            m242_starRankTbl[i] = rank;
         }
         for (i = 0; i < 4; i++) {
             player = &STACKED_DECK_PLAYERS[i];
             obj = player->obj;
-            rank = D_80111102_stacked_deck[i];
+            rank = m242_starRankTbl[i];
             obj->work[1] = rank;
-            D_80111110_stacked_deck[rank][D_8010F6F5_stacked_deck[rank]] = obj->work[0];
-            D_8010F6F5_stacked_deck[rank]++;
+            m242_rankPlayerTbl[rank][m242_rankCntTbl[rank]] = obj->work[0];
+            m242_rankCntTbl[rank]++;
         }
         for (i = 0; i < 4;) {
-            if (D_8010F6F5_stacked_deck[i] >= 2) {
-                slot = func_80105A3C_stacked_deck(D_8010F6F5_stacked_deck[i]);
-                obj = D_8010F838_stacked_deck[D_80111110_stacked_deck[i][slot]].obj;
-                obj->work[1] += D_8010F6F5_stacked_deck[i] - 1;
-                D_8010F6F5_stacked_deck[i]--;
+            if (m242_rankCntTbl[i] >= 2) {
+                slot = m242_RandMulGet(m242_rankCntTbl[i]);
+                obj = m242_playerWorkTbl[m242_rankPlayerTbl[i][slot]].obj;
+                obj->work[1] += m242_rankCntTbl[i] - 1;
+                m242_rankCntTbl[i]--;
                 for (j = slot; j < 3; j++) {
-                    D_80111110_stacked_deck[i][j] = D_80111110_stacked_deck[i][j + 1];
+                    m242_rankPlayerTbl[i][j] = m242_rankPlayerTbl[i][j + 1];
                 }
-                if (D_8010F6F5_stacked_deck[i] == 1) {
+                if (m242_rankCntTbl[i] == 1) {
                     i++;
                 }
             } else {
@@ -1297,14 +1297,14 @@ void func_80108E48_stacked_deck(omObjData *object) {
         }
     }
     MgPlayerMapAttrSet(object, 0, 2);
-    func_80105B3C_stacked_deck(object->work[0]);
+    m242_PadClear(object->work[0]);
     object->rot.y = 180.0f;
     work->unk3C = 180.0f;
-    object->func = func_80106BC8_stacked_deck;
+    object->func = m242_PlayerObjMain;
 }
 
-void func_8010969C_stacked_deck(void) {
-    StackedDeckCard *card;
+void m242_PlayerObjCreateAll(void) {
+    StackedDeckObjWork *card;
     omObjData *obj;
     u16 player;
     s16 i;
@@ -1327,8 +1327,8 @@ void func_8010969C_stacked_deck(void) {
                 player = 0;
                 break;
         }
-        card = &D_8010F730_stacked_deck[i + 2];
-        obj = omAddObj(0x1F4, 9, 0x3C, -1, func_80108E48_stacked_deck);
+        card = &m242_objWorkTbl[i + 2];
+        obj = omAddObj(0x1F4, 9, 0x3C, -1, m242_PlayerObjInit);
         obj->work[0] = player;
         obj->work[3] = GwPlayer[player].pad;
         card->obj = obj;
@@ -1337,106 +1337,106 @@ void func_8010969C_stacked_deck(void) {
     }
 }
 
-void func_801097D4_stacked_deck(omObjData *object) {
-    StackedDeckCard *card = &STACKED_DECK_CARDS[object->work[0]];
+void m242_CardObjMain(omObjData *object) {
+    StackedDeckObjWork *card = &STACKED_DECK_CARDS[object->work[0]];
     s16 i;
     s16 slot;
     u8 busy;
     f32 targetZ;
     omObjData *cardObj;
-    StackedDeckCard *other;
+    StackedDeckObjWork *other;
 
-    switch (D_8010F6F4_stacked_deck) {
+    switch (m242_phase) {
         case 1:
             switch (card->unk_04[1]) {
                 case 0:
                     for (i = 0; i < 12; i++) {
-                        if (D_80111128_stacked_deck[i] == 0) {
+                        if (m242_slotUsedTbl[i] == 0) {
                             if (i == 0 || i == 1 || i == 4 || i == 5 || i == 8 || i == 9) {
                                 object->trans.x = -1200.0f;
                             } else {
                                 object->trans.x = 1200.0f;
                             }
                             object->trans.y = (object->work[0] + 1) * 2;
-                            object->trans.z = D_8010F2B0_stacked_deck[i].y;
+                            object->trans.z = m242_cardPosTbl[i].y;
                             card->unk_04[3] = i;
-                            D_80111128_stacked_deck[i] = 1;
+                            m242_slotUsedTbl[i] = 1;
                             break;
                         }
                     }
-                    switch (D_8011116C_stacked_deck) {
+                    switch (m242_roundNo) {
                         case 0:
-                            if (D_8011114E_stacked_deck < 6) {
-                                func_80106354_stacked_deck(object, 0);
+                            if (m242_dealCnt < 6) {
+                                m242_CardAnimSet(object, 0);
                                 object->work[1] = 1;
-                                D_8011116A_stacked_deck++;
+                                m242_kinokoCardNum++;
                             }
-                            if (D_8011114E_stacked_deck >= 6 && D_8011114E_stacked_deck < 8) {
-                                func_80106354_stacked_deck(object, 1);
+                            if (m242_dealCnt >= 6 && m242_dealCnt < 8) {
+                                m242_CardAnimSet(object, 1);
                                 object->work[1] = 2;
-                                D_80111100_stacked_deck++;
+                                m242_teresaCardNum++;
                             }
-                            if (D_8011114E_stacked_deck >= 8) {
-                                func_80106354_stacked_deck(object, 2);
+                            if (m242_dealCnt >= 8) {
+                                m242_CardAnimSet(object, 2);
                                 object->work[1] = 3;
-                                D_801110FA_stacked_deck++;
+                                m242_koopaCardNum++;
                             }
                             break;
                         case 1:
-                            if (D_8011114E_stacked_deck < 4) {
-                                func_80106354_stacked_deck(object, 0);
+                            if (m242_dealCnt < 4) {
+                                m242_CardAnimSet(object, 0);
                                 object->work[1] = 1;
-                                D_8011116A_stacked_deck++;
+                                m242_kinokoCardNum++;
                             }
-                            if (D_8011114E_stacked_deck >= 4 && D_8011114E_stacked_deck < 7) {
-                                func_80106354_stacked_deck(object, 2);
+                            if (m242_dealCnt >= 4 && m242_dealCnt < 7) {
+                                m242_CardAnimSet(object, 2);
                                 object->work[1] = 3;
-                                D_801110FA_stacked_deck++;
+                                m242_koopaCardNum++;
                             }
-                            if (D_8011114E_stacked_deck >= 7) {
-                                func_80106354_stacked_deck(object, 1);
+                            if (m242_dealCnt >= 7) {
+                                m242_CardAnimSet(object, 1);
                                 object->work[1] = 2;
-                                D_80111100_stacked_deck++;
+                                m242_teresaCardNum++;
                             }
                             break;
                         case 2:
-                            if (D_8011114E_stacked_deck < 3) {
-                                func_80106354_stacked_deck(object, 0);
+                            if (m242_dealCnt < 3) {
+                                m242_CardAnimSet(object, 0);
                                 object->work[1] = 1;
-                                D_8011116A_stacked_deck++;
+                                m242_kinokoCardNum++;
                             }
-                            if (D_8011114E_stacked_deck >= 3) {
-                                func_80106354_stacked_deck(object, 2);
+                            if (m242_dealCnt >= 3) {
+                                m242_CardAnimSet(object, 2);
                                 object->work[1] = 3;
-                                D_801110FA_stacked_deck++;
+                                m242_koopaCardNum++;
                             }
                             break;
                         case 3:
-                            if (D_8011114E_stacked_deck < 2) {
-                                func_80106354_stacked_deck(object, 0);
+                            if (m242_dealCnt < 2) {
+                                m242_CardAnimSet(object, 0);
                                 object->work[1] = 1;
-                                D_8011116A_stacked_deck++;
+                                m242_kinokoCardNum++;
                             }
-                            if (D_8011114E_stacked_deck >= 2) {
-                                func_80106354_stacked_deck(object, 2);
+                            if (m242_dealCnt >= 2) {
+                                m242_CardAnimSet(object, 2);
                                 object->work[1] = 3;
-                                D_801110FA_stacked_deck++;
+                                m242_koopaCardNum++;
                             }
                             break;
                         case 4:
-                            if (D_8011114E_stacked_deck < 1) {
-                                func_80106354_stacked_deck(object, 0);
+                            if (m242_dealCnt < 1) {
+                                m242_CardAnimSet(object, 0);
                                 object->work[1] = 1;
-                                D_8011116A_stacked_deck++;
+                                m242_kinokoCardNum++;
                             }
-                            if (D_8011114E_stacked_deck >= 1) {
-                                func_80106354_stacked_deck(object, 2);
+                            if (m242_dealCnt >= 1) {
+                                m242_CardAnimSet(object, 2);
                                 object->work[1] = 3;
-                                D_801110FA_stacked_deck++;
+                                m242_koopaCardNum++;
                             }
                             break;
                     }
-                    D_8011114E_stacked_deck++;
+                    m242_dealCnt++;
                     Hu3DModelAttrSet(object->model[0], 4, 0);
                     Hu3DModelAttrSet(object->model[1], 4, 0);
                     Hu3DModelAttrSet(object->model[2], 4, 0);
@@ -1446,10 +1446,10 @@ void func_801097D4_stacked_deck(omObjData *object) {
                 case 1:
                     if (card->unk_04[3] == 0 || card->unk_04[3] == 1 || card->unk_04[3] == 4 ||
                         card->unk_04[3] == 5 || card->unk_04[3] == 8 || card->unk_04[3] == 9) {
-                        if (object->trans.x < D_8010F2B0_stacked_deck[card->unk_04[3]].x) {
+                        if (object->trans.x < m242_cardPosTbl[card->unk_04[3]].x) {
                             object->trans.x += 50.0f;
                         } else {
-                            object->trans.x = D_8010F2B0_stacked_deck[card->unk_04[3]].x;
+                            object->trans.x = m242_cardPosTbl[card->unk_04[3]].x;
                             if (object->trans.y > 0.0f) {
                                 object->trans.y -= 5.0f;
                             }
@@ -1457,10 +1457,10 @@ void func_801097D4_stacked_deck(omObjData *object) {
                                 object->trans.y = 0.0f;
                             }
                         }
-                    } else if (object->trans.x > D_8010F2B0_stacked_deck[card->unk_04[3]].x) {
+                    } else if (object->trans.x > m242_cardPosTbl[card->unk_04[3]].x) {
                         object->trans.x -= 50.0f;
                     } else {
-                        object->trans.x = D_8010F2B0_stacked_deck[card->unk_04[3]].x;
+                        object->trans.x = m242_cardPosTbl[card->unk_04[3]].x;
                         if (object->trans.y > 0.0f) {
                             object->trans.y -= 5.0f;
                         }
@@ -1469,23 +1469,23 @@ void func_801097D4_stacked_deck(omObjData *object) {
                         }
                     }
                     if (object->work[0] == 11) {
-                        if (D_8011110C_stacked_deck == 0) {
+                        if (m242_cardSeStep == 0) {
                             HuAudFXPlay(0x447);
-                            D_8011110C_stacked_deck = 1;
+                            m242_cardSeStep = 1;
                         }
                         busy = FALSE;
                         for (i = 0; i < 12; i++) {
                             other = &STACKED_DECK_CARDS[i];
                             cardObj = other->obj;
-                            if (cardObj->trans.x != D_8010F2B0_stacked_deck[other->unk_04[3]].x ||
+                            if (cardObj->trans.x != m242_cardPosTbl[other->unk_04[3]].x ||
                                 cardObj->trans.y != 0.0f) {
                                 busy = TRUE;
                             }
                         }
                         if (!busy) {
-                            D_80111169_stacked_deck = 1;
-                            D_8011114E_stacked_deck = 0;
-                            D_8011110C_stacked_deck = 0;
+                            m242_phaseDoneNo = 1;
+                            m242_dealCnt = 0;
+                            m242_cardSeStep = 0;
                         }
                     }
                     break;
@@ -1495,9 +1495,9 @@ void func_801097D4_stacked_deck(omObjData *object) {
             switch (card->unk_04[4]) {
                 case 0:
                     if (card->unk_04[2] == 1) {
-                        if (D_8011110C_stacked_deck == 0) {
+                        if (m242_cardSeStep == 0) {
                             HuAudFXPlay(0x44F);
-                            D_8011110C_stacked_deck = 1;
+                            m242_cardSeStep = 1;
                         }
                         if (card->unk_18[0] > 0.0f) {
                             card->unk_18[4] -= 0.02;
@@ -1505,7 +1505,7 @@ void func_801097D4_stacked_deck(omObjData *object) {
                             card->unk_18[4] += 0.02;
                         }
                         card->unk_18[1] += 8.0f;
-                        object->trans.y = func_80106338_stacked_deck(object->trans.y, &card->unk_18[0], 1.0f);
+                        object->trans.y = m242_GravityCalc(object->trans.y, &card->unk_18[0], 1.0f);
                         if (card->unk_18[1] > 180.0f) {
                             card->unk_18[1] = 180.0f;
                         }
@@ -1513,9 +1513,9 @@ void func_801097D4_stacked_deck(omObjData *object) {
                             object->trans.y = 0.0f;
                             card->unk_18[4] = 1.0f;
                             if (card->unk_04[6] < 255) {
-                                if (D_8011110C_stacked_deck == 1) {
+                                if (m242_cardSeStep == 1) {
                                     HuAudFXPlay(0x450);
-                                    D_8011110C_stacked_deck = 2;
+                                    m242_cardSeStep = 2;
                                 }
                                 card->unk_04[6] += 7;
                             } else {
@@ -1536,9 +1536,9 @@ void func_801097D4_stacked_deck(omObjData *object) {
                     break;
                 case 1:
                     if (card->unk_04[2] == 1) {
-                        if (D_8011110C_stacked_deck == 2) {
+                        if (m242_cardSeStep == 2) {
                             HuAudFXPlay(0x44F);
-                            D_8011110C_stacked_deck = 0;
+                            m242_cardSeStep = 0;
                         }
                         if (card->unk_18[0] > 0.0f) {
                             card->unk_18[4] -= 0.02;
@@ -1546,7 +1546,7 @@ void func_801097D4_stacked_deck(omObjData *object) {
                             card->unk_18[4] += 0.02;
                         }
                         card->unk_18[1] -= 8.0f;
-                        object->trans.y = func_80106338_stacked_deck(object->trans.y, &card->unk_18[0], 1.0f);
+                        object->trans.y = m242_GravityCalc(object->trans.y, &card->unk_18[0], 1.0f);
                         if (card->unk_18[1] < 0.0f) {
                             card->unk_18[1] = 0.0f;
                         }
@@ -1578,29 +1578,29 @@ void func_801097D4_stacked_deck(omObjData *object) {
                                 other->unk_04[4] = 2;
                                 other->unk_04[2] = 0;
                                 other->unk_04[3] = 0;
-                                D_80111128_stacked_deck[i] = 0;
+                                m242_slotUsedTbl[i] = 0;
                             }
                         }
                     }
                     break;
                 case 2:
-                    if (object->work[0] == 11 && D_8011110C_stacked_deck == 0) {
-                        D_8011110C_stacked_deck = 1;
+                    if (object->work[0] == 11 && m242_cardSeStep == 0) {
+                        m242_cardSeStep = 1;
                         HuAudFXPlay(0x447);
                     }
                     if (object->trans.y < (object->work[0] + 1) * 2) {
                         object->trans.y += 1.0f;
                     } else {
                         object->trans.y = (object->work[0] + 1) * 2;
-                        if (D_8010F2B0_stacked_deck[0].x < object->trans.x) {
+                        if (m242_cardPosTbl[0].x < object->trans.x) {
                             object->trans.x -= 50.0f;
                         } else {
-                            object->trans.x = D_8010F2B0_stacked_deck[0].x;
+                            object->trans.x = m242_cardPosTbl[0].x;
                         }
-                        if (D_8010F2B0_stacked_deck[0].y < object->trans.z) {
+                        if (m242_cardPosTbl[0].y < object->trans.z) {
                             object->trans.z -= 50.0f;
                         } else {
-                            object->trans.z = D_8010F2B0_stacked_deck[0].y;
+                            object->trans.z = m242_cardPosTbl[0].y;
                         }
                     }
                     busy = FALSE;
@@ -1608,8 +1608,8 @@ void func_801097D4_stacked_deck(omObjData *object) {
                         for (i = 0; i < 12; i++) {
                             other = &STACKED_DECK_CARDS[i];
                             cardObj = other->obj;
-                            if (other->unk_04[4] != 2 || cardObj->trans.x != D_8010F2B0_stacked_deck[0].x ||
-                                cardObj->trans.z != D_8010F2B0_stacked_deck[0].y) {
+                            if (other->unk_04[4] != 2 || cardObj->trans.x != m242_cardPosTbl[0].x ||
+                                cardObj->trans.z != m242_cardPosTbl[0].y) {
                                 busy = TRUE;
                             }
                         }
@@ -1617,31 +1617,31 @@ void func_801097D4_stacked_deck(omObjData *object) {
                             for (i = 0; i < 12; i++) {
                                 other = &STACKED_DECK_CARDS[i];
                                 other->unk_04[4] = 3;
-                                D_8011110C_stacked_deck = 0;
+                                m242_cardSeStep = 0;
                             }
                         }
                     }
                     break;
                 case 3:
-                    if (object->work[0] == 11 && D_8011110C_stacked_deck == 0) {
-                        D_8011110C_stacked_deck = 1;
+                    if (object->work[0] == 11 && m242_cardSeStep == 0) {
+                        m242_cardSeStep = 1;
                         HuAudFXPlay(0x448);
                     }
                     if (object->trans.y == 2.0f) {
-                        D_8011114C_stacked_deck = object->work[0];
-                        if (D_8010F2B0_stacked_deck[1].x > object->trans.x) {
+                        m242_shuffleCardNo = object->work[0];
+                        if (m242_cardPosTbl[1].x > object->trans.x) {
                             object->trans.x += 50.0f;
                         } else {
-                            object->trans.x = D_8010F2B0_stacked_deck[1].x;
+                            object->trans.x = m242_cardPosTbl[1].x;
                         }
-                        if (D_8010F2B0_stacked_deck[1].y > object->trans.z) {
+                        if (m242_cardPosTbl[1].y > object->trans.z) {
                             object->trans.z += 50.0f;
                         } else {
-                            object->trans.z = D_8010F2B0_stacked_deck[1].y;
+                            object->trans.z = m242_cardPosTbl[1].y;
                         }
-                        if (object->trans.x == D_8010F2B0_stacked_deck[1].x &&
-                            object->trans.z == D_8010F2B0_stacked_deck[1].y) {
-                            D_801110F8_stacked_deck++;
+                        if (object->trans.x == m242_cardPosTbl[1].x &&
+                            object->trans.z == m242_cardPosTbl[1].y) {
+                            m242_shuffleCnt++;
                             for (i = 0; i < 12; i++) {
                                 other = &STACKED_DECK_CARDS[i];
                                 other->unk_04[4] = 4;
@@ -1650,25 +1650,25 @@ void func_801097D4_stacked_deck(omObjData *object) {
                     }
                     break;
                 case 4:
-                    if (object->work[0] != D_8011114C_stacked_deck) {
+                    if (object->work[0] != m242_shuffleCardNo) {
                         object->trans.y -= 2.0f;
                         card->unk_04[4] = 5;
                     } else if (object->trans.y < 26.0f) {
                         object->trans.y += 5.0f;
                     } else {
                         object->trans.y = 26.0f;
-                        if (D_8010F2B0_stacked_deck[0].x < object->trans.x) {
+                        if (m242_cardPosTbl[0].x < object->trans.x) {
                             object->trans.x -= 50.0f;
                         } else {
-                            object->trans.x = D_8010F2B0_stacked_deck[0].x;
+                            object->trans.x = m242_cardPosTbl[0].x;
                         }
-                        if (D_8010F2B0_stacked_deck[0].y < object->trans.z) {
+                        if (m242_cardPosTbl[0].y < object->trans.z) {
                             object->trans.z -= 50.0f;
                         } else {
-                            object->trans.z = D_8010F2B0_stacked_deck[0].y;
+                            object->trans.z = m242_cardPosTbl[0].y;
                         }
-                        if (object->trans.x == D_8010F2B0_stacked_deck[0].x &&
-                            object->trans.z == D_8010F2B0_stacked_deck[0].y) {
+                        if (object->trans.x == m242_cardPosTbl[0].x &&
+                            object->trans.z == m242_cardPosTbl[0].y) {
                             card->unk_04[4] = 5;
                         }
                     }
@@ -1679,20 +1679,20 @@ void func_801097D4_stacked_deck(omObjData *object) {
                         for (i = 0; i < 12; i++) {
                             other = &STACKED_DECK_CARDS[i];
                             cardObj = other->obj;
-                            if (other->unk_04[4] != 5 || cardObj->trans.x != D_8010F2B0_stacked_deck[0].x ||
-                                cardObj->trans.z != D_8010F2B0_stacked_deck[0].y) {
+                            if (other->unk_04[4] != 5 || cardObj->trans.x != m242_cardPosTbl[0].x ||
+                                cardObj->trans.z != m242_cardPosTbl[0].y) {
                                 busy = TRUE;
                             }
                         }
                         if (!busy) {
                             for (i = 0; i < 12; i++) {
                                 other = &STACKED_DECK_CARDS[i];
-                                if (D_801110F8_stacked_deck > 0) {
+                                if (m242_shuffleCnt > 0) {
                                     other->unk_04[4] = 6;
                                     if (i == 11) {
-                                        D_801110F8_stacked_deck = 0;
+                                        m242_shuffleCnt = 0;
                                     }
-                                    D_8011110C_stacked_deck = 0;
+                                    m242_cardSeStep = 0;
                                 } else {
                                     other->unk_04[4] = 3;
                                 }
@@ -1703,9 +1703,9 @@ void func_801097D4_stacked_deck(omObjData *object) {
                 case 6:
                     slot = (u8)(rand8() % 12);
                     while (TRUE) {
-                        if (D_80111128_stacked_deck[slot] == 0) {
+                        if (m242_slotUsedTbl[slot] == 0) {
                             card->unk_04[3] = slot;
-                            D_80111128_stacked_deck[slot] = 1;
+                            m242_slotUsedTbl[slot] = 1;
                             card->unk_04[4] = 7;
                             break;
                         }
@@ -1715,22 +1715,22 @@ void func_801097D4_stacked_deck(omObjData *object) {
                     }
                     break;
                 case 7:
-                    if (object->work[0] == 11 && D_8011110C_stacked_deck == 0) {
-                        D_8011110C_stacked_deck = 1;
+                    if (object->work[0] == 11 && m242_cardSeStep == 0) {
+                        m242_cardSeStep = 1;
                         HuAudFXPlay(0x449);
                     }
-                    if (D_8010F2B0_stacked_deck[card->unk_04[3]].x > object->trans.x) {
+                    if (m242_cardPosTbl[card->unk_04[3]].x > object->trans.x) {
                         object->trans.x += 50.0f;
                     } else {
-                        object->trans.x = D_8010F2B0_stacked_deck[card->unk_04[3]].x;
+                        object->trans.x = m242_cardPosTbl[card->unk_04[3]].x;
                     }
-                    if (D_8010F2B0_stacked_deck[card->unk_04[3]].y > object->trans.z) {
+                    if (m242_cardPosTbl[card->unk_04[3]].y > object->trans.z) {
                         object->trans.z += 50.0f;
                     } else {
-                        object->trans.z = D_8010F2B0_stacked_deck[card->unk_04[3]].y;
+                        object->trans.z = m242_cardPosTbl[card->unk_04[3]].y;
                     }
-                    if (object->trans.x == D_8010F2B0_stacked_deck[card->unk_04[3]].x &&
-                        object->trans.z == D_8010F2B0_stacked_deck[card->unk_04[3]].y) {
+                    if (object->trans.x == m242_cardPosTbl[card->unk_04[3]].x &&
+                        object->trans.z == m242_cardPosTbl[card->unk_04[3]].y) {
                         if (object->trans.y > 0.0f) {
                             object->trans.y -= 5.0f;
                         }
@@ -1744,8 +1744,8 @@ void func_801097D4_stacked_deck(omObjData *object) {
                             other = &STACKED_DECK_CARDS[i];
                             cardObj = other->obj;
                             if (other->unk_04[4] != 7 ||
-                                cardObj->trans.x != D_8010F2B0_stacked_deck[other->unk_04[3]].x ||
-                                cardObj->trans.z != D_8010F2B0_stacked_deck[other->unk_04[3]].y ||
+                                cardObj->trans.x != m242_cardPosTbl[other->unk_04[3]].x ||
+                                cardObj->trans.z != m242_cardPosTbl[other->unk_04[3]].y ||
                                 cardObj->trans.y != 0.0f) {
                                 busy = TRUE;
                             }
@@ -1755,7 +1755,7 @@ void func_801097D4_stacked_deck(omObjData *object) {
                                 other = &STACKED_DECK_CARDS[i];
                                 other->unk_04[4] = 0;
                             }
-                            D_80111169_stacked_deck = 2;
+                            m242_phaseDoneNo = 2;
                         }
                     }
                     break;
@@ -1765,9 +1765,9 @@ void func_801097D4_stacked_deck(omObjData *object) {
             switch (card->unk_04[4]) {
                 case 0:
                     if (card->unk_04[2] == 1) {
-                        if (D_8011110C_stacked_deck == 0) {
+                        if (m242_cardSeStep == 0) {
                             HuAudFXPlay(0x44F);
-                            D_8011110C_stacked_deck = 1;
+                            m242_cardSeStep = 1;
                         }
                         if (card->unk_18[0] > 0.0f) {
                             card->unk_18[4] -= 0.02;
@@ -1775,7 +1775,7 @@ void func_801097D4_stacked_deck(omObjData *object) {
                             card->unk_18[4] += 0.02;
                         }
                         card->unk_18[1] += 8.0f;
-                        object->trans.y = func_80106338_stacked_deck(object->trans.y, &card->unk_18[0], 1.0f);
+                        object->trans.y = m242_GravityCalc(object->trans.y, &card->unk_18[0], 1.0f);
                         if (card->unk_18[1] > 180.0f) {
                             card->unk_18[1] = 180.0f;
                         }
@@ -1783,9 +1783,9 @@ void func_801097D4_stacked_deck(omObjData *object) {
                             object->trans.y = 0.0f;
                             card->unk_18[4] = 1.0f;
                             if (card->unk_04[6] < 255) {
-                                if (D_8011110C_stacked_deck == 1) {
+                                if (m242_cardSeStep == 1) {
                                     HuAudFXPlay(0x450);
-                                    D_8011110C_stacked_deck = 2;
+                                    m242_cardSeStep = 2;
                                 }
                                 card->unk_04[6] += 7;
                             } else {
@@ -1806,9 +1806,9 @@ void func_801097D4_stacked_deck(omObjData *object) {
                     break;
                 case 1:
                     if (card->unk_04[2] == 1) {
-                        if (D_8011110C_stacked_deck == 2) {
+                        if (m242_cardSeStep == 2) {
                             HuAudFXPlay(0x44F);
-                            D_8011110C_stacked_deck = 0;
+                            m242_cardSeStep = 0;
                         }
                         if (card->unk_18[0] > 0.0f) {
                             card->unk_18[4] -= 0.02;
@@ -1816,7 +1816,7 @@ void func_801097D4_stacked_deck(omObjData *object) {
                             card->unk_18[4] += 0.02;
                         }
                         card->unk_18[1] -= 8.0f;
-                        object->trans.y = func_80106338_stacked_deck(object->trans.y, &card->unk_18[0], 1.0f);
+                        object->trans.y = m242_GravityCalc(object->trans.y, &card->unk_18[0], 1.0f);
                         if (card->unk_18[1] < 0.0f) {
                             card->unk_18[1] = 0.0f;
                         }
@@ -1847,14 +1847,14 @@ void func_801097D4_stacked_deck(omObjData *object) {
                                 other = &STACKED_DECK_CARDS[i];
                                 other->unk_04[4] = 2;
                                 other->unk_04[2] = 0;
-                                D_80111128_stacked_deck[i] = 0;
+                                m242_slotUsedTbl[i] = 0;
                             }
                         }
                     }
                     break;
                 case 2:
-                    if (object->work[0] == 11 && D_8011110C_stacked_deck == 0) {
-                        D_8011110C_stacked_deck = 1;
+                    if (object->work[0] == 11 && m242_cardSeStep == 0) {
+                        m242_cardSeStep = 1;
                         HuAudFXPlay(0x447);
                     }
                     if (object->trans.y < (object->work[0] + 1) * 2) {
@@ -1863,29 +1863,29 @@ void func_801097D4_stacked_deck(omObjData *object) {
                         object->trans.y = (object->work[0] + 1) * 2;
                         if (card->unk_04[3] == 0 || card->unk_04[3] == 1 || card->unk_04[3] == 4 ||
                             card->unk_04[3] == 5 || card->unk_04[3] == 8 || card->unk_04[3] == 9) {
-                            if (D_8010F2B0_stacked_deck[5].x > object->trans.x) {
+                            if (m242_cardPosTbl[5].x > object->trans.x) {
                                 object->trans.x += 40.0f;
                             } else {
-                                object->trans.x = D_8010F2B0_stacked_deck[5].x;
+                                object->trans.x = m242_cardPosTbl[5].x;
                             }
-                            if (D_8010F2B0_stacked_deck[5].y < object->trans.z) {
+                            if (m242_cardPosTbl[5].y < object->trans.z) {
                                 object->trans.z -= 40.0f;
-                            } else if (object->trans.z < D_8010F2B0_stacked_deck[5].y) {
+                            } else if (object->trans.z < m242_cardPosTbl[5].y) {
                                 object->trans.z += 40.0f;
                             }
-                            targetZ = D_8010F2B0_stacked_deck[5].y;
+                            targetZ = m242_cardPosTbl[5].y;
                         } else {
-                            if (D_8010F2B0_stacked_deck[6].x < object->trans.x) {
+                            if (m242_cardPosTbl[6].x < object->trans.x) {
                                 object->trans.x -= 40.0f;
                             } else {
-                                object->trans.x = D_8010F2B0_stacked_deck[6].x;
+                                object->trans.x = m242_cardPosTbl[6].x;
                             }
-                            if (D_8010F2B0_stacked_deck[6].y < object->trans.z) {
+                            if (m242_cardPosTbl[6].y < object->trans.z) {
                                 object->trans.z -= 40.0f;
-                            } else if (object->trans.z < D_8010F2B0_stacked_deck[6].y) {
+                            } else if (object->trans.z < m242_cardPosTbl[6].y) {
                                 object->trans.z += 40.0f;
                             }
-                            targetZ = D_8010F2B0_stacked_deck[6].y;
+                            targetZ = m242_cardPosTbl[6].y;
                         }
                         if (targetZ - 30.0f < object->trans.z && object->trans.z < targetZ + 30.0f) {
                             object->trans.z = targetZ;
@@ -1898,13 +1898,13 @@ void func_801097D4_stacked_deck(omObjData *object) {
                             cardObj = other->obj;
                             if (other->unk_04[3] == 0 || other->unk_04[3] == 1 || other->unk_04[3] == 4 ||
                                 other->unk_04[3] == 5 || other->unk_04[3] == 8 || other->unk_04[3] == 9) {
-                                if (other->unk_04[4] != 2 || cardObj->trans.x != D_8010F2B0_stacked_deck[5].x ||
-                                    cardObj->trans.z != D_8010F2B0_stacked_deck[5].y) {
+                                if (other->unk_04[4] != 2 || cardObj->trans.x != m242_cardPosTbl[5].x ||
+                                    cardObj->trans.z != m242_cardPosTbl[5].y) {
                                     busy = TRUE;
                                 }
                             } else if (other->unk_04[4] != 2 ||
-                                       cardObj->trans.x != D_8010F2B0_stacked_deck[6].x ||
-                                       cardObj->trans.z != D_8010F2B0_stacked_deck[6].y) {
+                                       cardObj->trans.x != m242_cardPosTbl[6].x ||
+                                       cardObj->trans.z != m242_cardPosTbl[6].y) {
                                 busy = TRUE;
                             }
                         }
@@ -1912,7 +1912,7 @@ void func_801097D4_stacked_deck(omObjData *object) {
                             for (i = 0; i < 12; i++) {
                                 other = &STACKED_DECK_CARDS[i];
                                 other->unk_04[4] = 3;
-                                D_8011110C_stacked_deck = 0;
+                                m242_cardSeStep = 0;
                                 if (other->unk_04[3] == 0 || other->unk_04[3] == 1 || other->unk_04[3] == 4 ||
                                     other->unk_04[3] == 5 || other->unk_04[3] == 8 || other->unk_04[3] == 9) {
                                     other->unk_04[3] = 5;
@@ -1924,15 +1924,15 @@ void func_801097D4_stacked_deck(omObjData *object) {
                     }
                     break;
                 case 3:
-                    if (object->work[0] == 11 && D_8011110C_stacked_deck == 0) {
-                        D_8011110C_stacked_deck = 1;
+                    if (object->work[0] == 11 && m242_cardSeStep == 0) {
+                        m242_cardSeStep = 1;
                         HuAudFXPlay(0x448);
                     }
                     if (card->unk_04[3] == 5) {
-                        if (D_8010F2B0_stacked_deck[6].x > object->trans.x) {
+                        if (m242_cardPosTbl[6].x > object->trans.x) {
                             object->trans.x += 40.0f;
                         } else {
-                            object->trans.x = D_8010F2B0_stacked_deck[6].x;
+                            object->trans.x = m242_cardPosTbl[6].x;
                         }
                     }
                     busy = FALSE;
@@ -1940,7 +1940,7 @@ void func_801097D4_stacked_deck(omObjData *object) {
                         for (i = 0; i < 12; i++) {
                             other = &STACKED_DECK_CARDS[i];
                             cardObj = other->obj;
-                            if (other->unk_04[4] != 3 || cardObj->trans.x != D_8010F2B0_stacked_deck[6].x) {
+                            if (other->unk_04[4] != 3 || cardObj->trans.x != m242_cardPosTbl[6].x) {
                                 busy = TRUE;
                             }
                         }
@@ -1954,10 +1954,10 @@ void func_801097D4_stacked_deck(omObjData *object) {
                     break;
                 case 4:
                     if (card->unk_04[3] == 6) {
-                        if (D_8010F2B0_stacked_deck[5].x < object->trans.x) {
+                        if (m242_cardPosTbl[5].x < object->trans.x) {
                             object->trans.x -= 40.0f;
                         } else {
-                            object->trans.x = D_8010F2B0_stacked_deck[5].x;
+                            object->trans.x = m242_cardPosTbl[5].x;
                         }
                     }
                     busy = FALSE;
@@ -1966,7 +1966,7 @@ void func_801097D4_stacked_deck(omObjData *object) {
                             other = &STACKED_DECK_CARDS[i];
                             cardObj = other->obj;
                             if (other->unk_04[3] == 6 &&
-                                (other->unk_04[4] != 4 || cardObj->trans.x != D_8010F2B0_stacked_deck[5].x)) {
+                                (other->unk_04[4] != 4 || cardObj->trans.x != m242_cardPosTbl[5].x)) {
                                 busy = TRUE;
                             }
                         }
@@ -1974,7 +1974,7 @@ void func_801097D4_stacked_deck(omObjData *object) {
                             for (i = 0; i < 12; i++) {
                                 other = &STACKED_DECK_CARDS[i];
                                 other->unk_04[4] = 7;
-                                D_8011110C_stacked_deck = 0;
+                                m242_cardSeStep = 0;
                             }
                         }
                     }
@@ -1984,9 +1984,9 @@ void func_801097D4_stacked_deck(omObjData *object) {
                     if (card->unk_04[3] == 5) {
                         while (TRUE) {
                             if ((slot == 0 || slot == 1 || slot == 4 || slot == 5 || slot == 8 || slot == 9) &&
-                                D_80111128_stacked_deck[slot] == 0) {
+                                m242_slotUsedTbl[slot] == 0) {
                                 card->unk_04[3] = slot;
-                                D_80111128_stacked_deck[slot] = 1;
+                                m242_slotUsedTbl[slot] = 1;
                                 card->unk_04[4] = 8;
                                 break;
                             }
@@ -1997,9 +1997,9 @@ void func_801097D4_stacked_deck(omObjData *object) {
                     } else {
                         while (TRUE) {
                             if ((slot == 2 || slot == 3 || slot == 6 || slot == 7 || slot == 10 || slot == 11) &&
-                                D_80111128_stacked_deck[slot] == 0) {
+                                m242_slotUsedTbl[slot] == 0) {
                                 card->unk_04[3] = slot;
-                                D_80111128_stacked_deck[slot] = 1;
+                                m242_slotUsedTbl[slot] = 1;
                                 card->unk_04[4] = 8;
                                 break;
                             }
@@ -2010,30 +2010,30 @@ void func_801097D4_stacked_deck(omObjData *object) {
                     }
                     break;
                 case 8:
-                    if (object->work[0] == 11 && D_8011110C_stacked_deck == 0) {
-                        D_8011110C_stacked_deck = 1;
+                    if (object->work[0] == 11 && m242_cardSeStep == 0) {
+                        m242_cardSeStep = 1;
                         HuAudFXPlay(0x449);
                     }
-                    if (D_8010F2B0_stacked_deck[card->unk_04[3]].x < object->trans.x) {
+                    if (m242_cardPosTbl[card->unk_04[3]].x < object->trans.x) {
                         object->trans.x -= 40.0f;
-                    } else if (object->trans.x < D_8010F2B0_stacked_deck[card->unk_04[3]].x) {
+                    } else if (object->trans.x < m242_cardPosTbl[card->unk_04[3]].x) {
                         object->trans.x += 40.0f;
                     }
-                    if (D_8010F2B0_stacked_deck[card->unk_04[3]].x - 30.0f < object->trans.x &&
-                        object->trans.x < D_8010F2B0_stacked_deck[card->unk_04[3]].x + 30.0f) {
-                        object->trans.x = D_8010F2B0_stacked_deck[card->unk_04[3]].x;
+                    if (m242_cardPosTbl[card->unk_04[3]].x - 30.0f < object->trans.x &&
+                        object->trans.x < m242_cardPosTbl[card->unk_04[3]].x + 30.0f) {
+                        object->trans.x = m242_cardPosTbl[card->unk_04[3]].x;
                     }
-                    if (D_8010F2B0_stacked_deck[card->unk_04[3]].y < object->trans.z) {
+                    if (m242_cardPosTbl[card->unk_04[3]].y < object->trans.z) {
                         object->trans.z -= 40.0f;
-                    } else if (object->trans.z < D_8010F2B0_stacked_deck[card->unk_04[3]].y) {
+                    } else if (object->trans.z < m242_cardPosTbl[card->unk_04[3]].y) {
                         object->trans.z += 40.0f;
                     }
-                    if (D_8010F2B0_stacked_deck[card->unk_04[3]].y - 30.0f < object->trans.z &&
-                        object->trans.z < D_8010F2B0_stacked_deck[card->unk_04[3]].y + 30.0f) {
-                        object->trans.z = D_8010F2B0_stacked_deck[card->unk_04[3]].y;
+                    if (m242_cardPosTbl[card->unk_04[3]].y - 30.0f < object->trans.z &&
+                        object->trans.z < m242_cardPosTbl[card->unk_04[3]].y + 30.0f) {
+                        object->trans.z = m242_cardPosTbl[card->unk_04[3]].y;
                     }
-                    if (object->trans.x == D_8010F2B0_stacked_deck[card->unk_04[3]].x &&
-                        object->trans.z == D_8010F2B0_stacked_deck[card->unk_04[3]].y) {
+                    if (object->trans.x == m242_cardPosTbl[card->unk_04[3]].x &&
+                        object->trans.z == m242_cardPosTbl[card->unk_04[3]].y) {
                         if (object->trans.y > 0.0f) {
                             object->trans.y -= 5.0f;
                         }
@@ -2047,8 +2047,8 @@ void func_801097D4_stacked_deck(omObjData *object) {
                             other = &STACKED_DECK_CARDS[i];
                             cardObj = other->obj;
                             if (other->unk_04[4] != 8 ||
-                                cardObj->trans.x != D_8010F2B0_stacked_deck[other->unk_04[3]].x ||
-                                cardObj->trans.z != D_8010F2B0_stacked_deck[other->unk_04[3]].y ||
+                                cardObj->trans.x != m242_cardPosTbl[other->unk_04[3]].x ||
+                                cardObj->trans.z != m242_cardPosTbl[other->unk_04[3]].y ||
                                 cardObj->trans.y != 0.0f) {
                                 busy = TRUE;
                             }
@@ -2058,17 +2058,17 @@ void func_801097D4_stacked_deck(omObjData *object) {
                                 other = &STACKED_DECK_CARDS[i];
                                 other->unk_04[4] = 0;
                             }
-                            D_80111169_stacked_deck = 3;
+                            m242_phaseDoneNo = 3;
                         }
                     }
                     break;
             }
             break;
         case 7:
-            if (D_8010F6F0_stacked_deck == 4 && card->unk_04[1] == 1) {
+            if (m242_pickCardType == 4 && card->unk_04[1] == 1) {
                 if (card->unk_04[0] == 0 && object->work[1] == 3) {
                     card->unk_04[0] = 1;
-                    D_8010F6F0_stacked_deck = 3;
+                    m242_pickCardType = 3;
                 }
             } else if (card->unk_04[0] == 1 && card->unk_04[1] == 1) {
                 if (card->unk_18[0] > 0.0f) {
@@ -2076,7 +2076,7 @@ void func_801097D4_stacked_deck(omObjData *object) {
                 } else if (card->unk_18[0] < 0.0f) {
                     card->unk_18[4] += 0.02;
                 }
-                object->trans.y = func_80106338_stacked_deck(object->trans.y, &card->unk_18[0], 1.0f);
+                object->trans.y = m242_GravityCalc(object->trans.y, &card->unk_18[0], 1.0f);
                 card->unk_18[1] += 45.0f;
                 if (card->unk_18[1] > 900.0f) {
                     card->unk_18[1] = 900.0f;
@@ -2094,18 +2094,18 @@ void func_801097D4_stacked_deck(omObjData *object) {
                     card->unk_18[4] = 1.0f;
                     switch (object->work[1]) {
                         case 1:
-                            func_80106354_stacked_deck(object, 3);
+                            m242_CardAnimSet(object, 3);
                             break;
                         case 2:
-                            func_80106354_stacked_deck(object, 4);
+                            m242_CardAnimSet(object, 4);
                             break;
                         case 3:
-                            func_80106354_stacked_deck(object, 5);
+                            m242_CardAnimSet(object, 5);
                             break;
                     }
                     if (++card->unk_04[7] >= 7) {
                         card->unk_04[7] = 0;
-                        D_80111169_stacked_deck = 7;
+                        m242_phaseDoneNo = 7;
                     }
                 }
             }
@@ -2129,7 +2129,7 @@ void func_801097D4_stacked_deck(omObjData *object) {
                     Hu3DModelAttrSet(object->model[2], 4, 4);
                     card->unk_04[0] = 0;
                     card->unk_04[1] = 0;
-                    D_80111128_stacked_deck[card->unk_04[3]] = 0;
+                    m242_slotUsedTbl[card->unk_04[3]] = 0;
                     card->unk_04[3] = 0;
                     card->unk_18[0] = 15.0f;
                     card->unk_18[1] = 0.0f;
@@ -2159,7 +2159,7 @@ void func_801097D4_stacked_deck(omObjData *object) {
     Hu3DModelTPLvlSet(object->model[2], card->unk_04[6]);
     object->rot.x = 0.0f;
     object->rot.y = 180.0f;
-    object->rot.z = func_801059BC_stacked_deck(card->unk_18[1], 0.0f);
+    object->rot.z = m242_AngleAdd(card->unk_18[1], 0.0f);
     Hu3DModelRotSet(object->model[0], object->rot.x, object->rot.y, object->rot.z);
     Hu3DModelRotSet(object->model[1], 0.0f, 0.0f, 0.0f);
     Hu3DModelRotSet(object->model[2], object->rot.x, object->rot.y, object->rot.z);
@@ -2189,22 +2189,22 @@ void func_801097D4_stacked_deck(omObjData *object) {
     Hu3DModelPosSet(object->model[2], object->trans.x, object->trans.y, object->trans.z);
 }
 
-void func_8010C188_stacked_deck(omObjData *object) {
-    StackedDeckCard *card = &STACKED_DECK_CARDS[object->work[0]];
+void m242_CardObjInit(omObjData *object) {
+    StackedDeckObjWork *card = &STACKED_DECK_CARDS[object->work[0]];
 
     object->model[0] = Hu3DModelRead(0x4B0008, 0x2A9);
     object->model[1] = Hu3DModelRead(0x4B0009, 0x2A9);
     object->model[2] = Hu3DModelRead(0x4B000B, 0x2A9);
     if (object->work[0] == 0) {
-        D_8010F708_stacked_deck[0] = DataRead(0x4B0002);
-        D_8010F708_stacked_deck[1] = DataRead(0x4B0003);
-        D_8010F708_stacked_deck[2] = DataRead(0x4B0004);
-        D_8010F708_stacked_deck[3] = DataRead(0x4B0005);
-        D_8010F708_stacked_deck[4] = DataRead(0x4B0006);
-        D_8010F708_stacked_deck[5] = DataRead(0x4B0007);
+        m242_cardAnimDataTbl[0] = DataRead(0x4B0002);
+        m242_cardAnimDataTbl[1] = DataRead(0x4B0003);
+        m242_cardAnimDataTbl[2] = DataRead(0x4B0004);
+        m242_cardAnimDataTbl[3] = DataRead(0x4B0005);
+        m242_cardAnimDataTbl[4] = DataRead(0x4B0006);
+        m242_cardAnimDataTbl[5] = DataRead(0x4B0007);
     }
-    D_80111150_stacked_deck[object->work[0]] =
-        Hu3DAnimCreate(Hu3DData[object->model[0]].hmf, D_8010F708_stacked_deck[0], 0, "card_k_DEF");
+    m242_cardAnimTbl[object->work[0]] =
+        Hu3DAnimCreate(Hu3DData[object->model[0]].hmf, m242_cardAnimDataTbl[0], 0, "card_k_DEF");
     Hu3DModelRemakeStatic(object->model[0]);
     Hu3DModelDynamicFree(object->model[0]);
     card->unk_04[5] = 150;
@@ -2217,7 +2217,7 @@ void func_8010C188_stacked_deck(omObjData *object) {
     card->unk_18[1] = 0.0f;
     object->rot.x = 0.0f;
     object->rot.y = 180.0f;
-    object->rot.z = func_801059BC_stacked_deck(card->unk_18[1], 0.0f);
+    object->rot.z = m242_AngleAdd(card->unk_18[1], 0.0f);
     Hu3DModelRotSet(object->model[0], object->rot.x, object->rot.y, object->rot.z);
     Hu3DModelRotSet(object->model[1], object->rot.x, object->rot.y, object->rot.z);
     Hu3DModelRotSet(object->model[2], object->rot.x, object->rot.y, object->rot.z);
@@ -2230,9 +2230,9 @@ void func_8010C188_stacked_deck(omObjData *object) {
     Hu3DModelScaleSet(object->model[0], object->scale.x, object->scale.y, object->scale.z);
     Hu3DModelScaleSet(object->model[1], card->unk_18[3], object->scale.y, object->scale.z);
     Hu3DModelScaleSet(object->model[2], object->scale.x, object->scale.y, object->scale.z);
-    object->trans.x = D_8010F2B0_stacked_deck[object->work[0]].x;
+    object->trans.x = m242_cardPosTbl[object->work[0]].x;
     object->trans.y = 0.0f;
-    object->trans.z = D_8010F2B0_stacked_deck[object->work[0]].y;
+    object->trans.z = m242_cardPosTbl[object->work[0]].y;
     card->unk_18[5] = 0.0f;
     card->unk_18[6] = 0.0f;
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
@@ -2241,23 +2241,23 @@ void func_8010C188_stacked_deck(omObjData *object) {
     Hu3DModelAttrSet(object->model[0], 4, 4);
     Hu3DModelAttrSet(object->model[1], 4, 4);
     Hu3DModelAttrSet(object->model[2], 4, 4);
-    object->func = func_801097D4_stacked_deck;
+    object->func = m242_CardObjMain;
 }
 
-void func_8010C524_stacked_deck(void) {
+void m242_CardObjCreateAll(void) {
     s16 i;
 
     for (i = 0; i < 12; i++) {
-        StackedDeckCard *card = &STACKED_DECK_CARDS[i];
-        omObjData *obj = omAddObj(0x226, 3, 3, -1, func_8010C188_stacked_deck);
+        StackedDeckObjWork *card = &STACKED_DECK_CARDS[i];
+        omObjData *obj = omAddObj(0x226, 3, 3, -1, m242_CardObjInit);
 
         obj->work[0] = i;
         card->obj = obj;
     }
 }
 
-void func_8010C5C8_stacked_deck(omObjData *object) {
-    StackedDeckCard *card = &D_8010F730_stacked_deck[object->work[0] + 18];
+void m242_CardChrObjMain(omObjData *object) {
+    StackedDeckObjWork *card = &m242_objWorkTbl[object->work[0] + 18];
     omObjData *player;
     omObjData *cardObj;
     s16 i;
@@ -2269,7 +2269,7 @@ void func_8010C5C8_stacked_deck(omObjData *object) {
         }
     }
 
-    switch (D_8010F6F4_stacked_deck) {
+    switch (m242_phase) {
         case 8:
             if (object->work[0] != 0) {
                 break;
@@ -2290,9 +2290,9 @@ void func_8010C5C8_stacked_deck(omObjData *object) {
                     break;
                 case 1:
                     card->unk_18[1] += 30.0f;
-                    func_8010629C_stacked_deck(object, 0, 0, 5, 2, &card->unk_04[1]);
-                    if (D_80111170_stacked_deck == 0) {
-                        D_80111170_stacked_deck = 1;
+                    m242_MotShiftSet(object, 0, 0, 5, 2, &card->unk_04[1]);
+                    if (m242_smokeState == 0) {
+                        m242_smokeState = 1;
                         HuAudFXPlay(0x446);
                     }
                     Hu3DModelAttrSet(object->model[0], 4, 0);
@@ -2312,7 +2312,7 @@ void func_8010C5C8_stacked_deck(omObjData *object) {
                         card->unk_18[4] += 0.03;
                     }
                     card->unk_18[1] += 30.0f;
-                    object->trans.y = func_80106338_stacked_deck(object->trans.y, &card->unk_18[0], 1.0f);
+                    object->trans.y = m242_GravityCalc(object->trans.y, &card->unk_18[0], 1.0f);
                     if (object->trans.y < 0.0f) {
                         object->trans.y = 0.0f;
                         card->unk_18[4] = 1.0f;
@@ -2323,7 +2323,7 @@ void func_8010C5C8_stacked_deck(omObjData *object) {
                     card->unk_04[0] = 4;
                     break;
                 case 4:
-                    func_8010629C_stacked_deck(object, 1, 0, 5, 2, &card->unk_04[1]);
+                    m242_MotShiftSet(object, 1, 0, 5, 2, &card->unk_04[1]);
                     if (object->trans.z < 150.0f) {
                         object->trans.z += 25.0f;
                         card->unk_18[1] = 0.0f;
@@ -2384,9 +2384,9 @@ void func_8010C5C8_stacked_deck(omObjData *object) {
                     if (card->unk_04[4] >= 256) {
                         card->unk_04[4] = 255;
                     }
-                    func_8010629C_stacked_deck(object, 0, 0, 5, 2, &card->unk_04[1]);
-                    if (D_80111170_stacked_deck == 0) {
-                        D_80111170_stacked_deck = 1;
+                    m242_MotShiftSet(object, 0, 0, 5, 2, &card->unk_04[1]);
+                    if (m242_smokeState == 0) {
+                        m242_smokeState = 1;
                         HuAudFXPlay(0x446);
                     }
                     Hu3DModelAttrSet(object->model[0], 4, 0);
@@ -2411,7 +2411,7 @@ void func_8010C5C8_stacked_deck(omObjData *object) {
                     if (card->unk_04[4] >= 256) {
                         card->unk_04[4] = 255;
                     }
-                    object->trans.y = func_80106338_stacked_deck(object->trans.y, &card->unk_18[0], 1.0f);
+                    object->trans.y = m242_GravityCalc(object->trans.y, &card->unk_18[0], 1.0f);
                     if (object->trans.y < 0.0f) {
                         object->trans.y = 0.0f;
                         card->unk_18[4] = card->unk_18[5];
@@ -2447,11 +2447,11 @@ void func_8010C5C8_stacked_deck(omObjData *object) {
                     if (player->trans.z < 1500.0f) {
                         card->unk_18[1] =
                             atan2df(player->trans.x - object->trans.x, player->trans.z - object->trans.z);
-                        func_801063F4_stacked_deck(player->trans.x, player->trans.z, object->trans.x,
+                        m242_VelCalc(player->trans.x, player->trans.z, object->trans.x,
                                                    object->trans.z, &card->unk_18[2], &card->unk_18[3], 15.0f);
                     } else {
                         card->unk_18[1] = atan2df(player->trans.x - object->trans.x, 2500.0f - object->trans.z);
-                        func_801063F4_stacked_deck(player->trans.x, 2500.0f, object->trans.x, object->trans.z,
+                        m242_VelCalc(player->trans.x, 2500.0f, object->trans.x, object->trans.z,
                                                    &card->unk_18[2], &card->unk_18[3], 17.0f);
                     }
                     object->trans.x += card->unk_18[2];
@@ -2501,9 +2501,9 @@ void func_8010C5C8_stacked_deck(omObjData *object) {
                     break;
                 case 1:
                     card->unk_18[1] += 30.0f;
-                    func_8010629C_stacked_deck(object, 0, 0, 5, 2, &card->unk_04[1]);
-                    if (D_80111170_stacked_deck == 0) {
-                        D_80111170_stacked_deck = 1;
+                    m242_MotShiftSet(object, 0, 0, 5, 2, &card->unk_04[1]);
+                    if (m242_smokeState == 0) {
+                        m242_smokeState = 1;
                         HuAudFXPlay(0x446);
                     }
                     Hu3DModelAttrSet(object->model[0], 4, 0);
@@ -2520,7 +2520,7 @@ void func_8010C5C8_stacked_deck(omObjData *object) {
                         card->unk_18[4] += 0.03;
                     }
                     card->unk_18[1] += 30.0f;
-                    object->trans.y = func_80106338_stacked_deck(object->trans.y, &card->unk_18[0], 1.0f);
+                    object->trans.y = m242_GravityCalc(object->trans.y, &card->unk_18[0], 1.0f);
                     if (object->trans.y < 0.0f) {
                         object->trans.y = 0.0f;
                         card->unk_18[4] = 1.0f;
@@ -2532,9 +2532,9 @@ void func_8010C5C8_stacked_deck(omObjData *object) {
                     card->unk_04[0] = 4;
                     break;
                 case 4:
-                    func_8010629C_stacked_deck(object, 1, 0, 5, 2, &card->unk_04[1]);
+                    m242_MotShiftSet(object, 1, 0, 5, 2, &card->unk_04[1]);
                     card->unk_18[1] = atan2df(player->trans.x - object->trans.x, player->trans.z - object->trans.z);
-                    func_801063F4_stacked_deck(player->trans.x, player->trans.z, object->trans.x, object->trans.z,
+                    m242_VelCalc(player->trans.x, player->trans.z, object->trans.x, object->trans.z,
                                                &card->unk_18[2], &card->unk_18[3], 30.0f);
                     object->trans.x += card->unk_18[2];
                     object->trans.z += card->unk_18[3];
@@ -2551,14 +2551,14 @@ void func_8010C5C8_stacked_deck(omObjData *object) {
                             card->unk_04[3] = 2;
                         }
                     }
-                    func_8010629C_stacked_deck(object, 0, 0, 5, 2, &card->unk_04[1]);
+                    m242_MotShiftSet(object, 0, 0, 5, 2, &card->unk_04[1]);
                     if (++card->unk_04[2] >= 16) {
                         card->unk_04[0] = 6;
                         card->unk_04[2] = 0;
                     }
                     break;
                 case 6:
-                    func_8010629C_stacked_deck(object, 1, 0, 5, 2, &card->unk_04[1]);
+                    m242_MotShiftSet(object, 1, 0, 5, 2, &card->unk_04[1]);
                     if (object->trans.z < 150.0f) {
                         object->trans.z += 30.0f;
                         card->unk_18[1] = 0.0f;
@@ -2590,15 +2590,15 @@ void func_8010C5C8_stacked_deck(omObjData *object) {
     if (card->unk_18[1] > 720.0f) {
         card->unk_18[1] = 720.0f;
     }
-    object->rot.y = func_801059BC_stacked_deck(card->unk_18[1], 0.0f);
+    object->rot.y = m242_AngleAdd(card->unk_18[1], 0.0f);
     Hu3DModelRotSet(object->model[0], object->rot.x, object->rot.y, object->rot.z);
     Hu3DModelRotSet(object->model[1], object->rot.x, object->rot.y, object->rot.z);
     Hu3DModelScaleSet(object->model[0], object->scale.x, object->scale.y, object->scale.z);
     Hu3DModelScaleSet(object->model[1], card->unk_18[4], object->scale.y, card->unk_18[4]);
 }
 
-void func_8010D58C_stacked_deck(omObjData *object) {
-    StackedDeckCard *card = &D_8010F730_stacked_deck[object->work[0] + 18];
+void m242_CardChrObjInit(omObjData *object) {
+    StackedDeckObjWork *card = &m242_objWorkTbl[object->work[0] + 18];
 
     switch (object->work[0]) {
         case 0:
@@ -2673,27 +2673,27 @@ void func_8010D58C_stacked_deck(omObjData *object) {
     Hu3DModelScaleSet(object->model[1], card->unk_18[4], object->scale.y, card->unk_18[4]);
     Hu3DModelAttrSet(object->model[0], 4, 4);
     Hu3DModelAttrSet(object->model[1], 4, 4);
-    object->func = func_8010C5C8_stacked_deck;
+    object->func = m242_CardChrObjMain;
 }
 
-void func_8010D8E8_stacked_deck(void) {
+void m242_CardChrObjCreateAll(void) {
     s16 i;
 
     for (i = 0; i < 3; i++) {
-        StackedDeckCard *card = &D_8010F730_stacked_deck[i + 18];
-        omObjData *obj = omAddObj(0x23A, 5, 5, -1, func_8010D58C_stacked_deck);
+        StackedDeckObjWork *card = &m242_objWorkTbl[i + 18];
+        omObjData *obj = omAddObj(0x23A, 5, 5, -1, m242_CardChrObjInit);
 
         obj->work[0] = i;
         card->obj = obj;
     }
 }
 
-void func_8010D98C_stacked_deck(omObjData *object) {
-    StackedDeckCard *effect = &D_8010F730_stacked_deck[21];
+void m242_SmokeObjMain(omObjData *object) {
+    StackedDeckObjWork *effect = &m242_objWorkTbl[21];
     omObjData *cardObj;
     s16 i;
 
-    switch (D_80111170_stacked_deck) {
+    switch (m242_smokeState) {
         case 0:
             break;
         case 1:
@@ -2707,21 +2707,21 @@ void func_8010D98C_stacked_deck(omObjData *object) {
             object->trans.y = -50.0f;
             object->trans.z = cardObj->trans.z + 150.0f;
             Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
-            D_80111170_stacked_deck = 2;
+            m242_smokeState = 2;
             break;
         case 2:
             effect->unk_18[0] += 0.7f;
             Hu3DSprModelFrameSet(effect->unk_04[0], (s32)effect->unk_18[0]);
             if (Hu3DSprModelFrameGet(effect->unk_04[0]) >= 14) {
-                D_80111170_stacked_deck = 0;
+                m242_smokeState = 0;
                 effect->unk_18[0] = 0.0f;
             }
             break;
     }
 }
 
-void func_8010DAE4_stacked_deck(omObjData *object) {
-    StackedDeckCard *effect = &D_8010F730_stacked_deck[21];
+void m242_SmokeObjInit(omObjData *object) {
+    StackedDeckObjWork *effect = &m242_objWorkTbl[21];
     void *data;
     u16 sprite;
 
@@ -2736,16 +2736,16 @@ void func_8010DAE4_stacked_deck(omObjData *object) {
     Hu3DSprModelFrameSet(effect->unk_04[0], 14);
     object->scale.x = object->scale.y = object->scale.z = 10.0f;
     Hu3DModelScaleSet(object->model[0], object->scale.x, object->scale.y, object->scale.z);
-    object->func = func_8010D98C_stacked_deck;
+    object->func = m242_SmokeObjMain;
 }
 
-void func_8010DBF4_stacked_deck(void) {
-    omObjData *obj = omAddObj(0x244, 1, 0, -1, func_8010DAE4_stacked_deck);
+void m242_SmokeObjCreate(void) {
+    omObjData *obj = omAddObj(0x244, 1, 0, -1, m242_SmokeObjInit);
     obj->work[0] = 0;
 }
 
-void func_8010DC2C_stacked_deck(omObjData *object) {
-    StackedDeckCard *effect = &D_8010F730_stacked_deck[22];
+void m242_HitEffObjMain(omObjData *object) {
+    StackedDeckObjWork *effect = &m242_objWorkTbl[22];
     omObjData *player;
     s16 i;
 
@@ -2756,7 +2756,7 @@ void func_8010DC2C_stacked_deck(omObjData *object) {
         }
     }
 
-    switch (D_80111120_stacked_deck) {
+    switch (m242_hitEffState) {
         case 0:
             break;
         case 1:
@@ -2764,7 +2764,7 @@ void func_8010DC2C_stacked_deck(omObjData *object) {
             object->trans.y = 60.0f;
             object->trans.z = player->trans.z + 60.0f;
             Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
-            D_80111120_stacked_deck = 2;
+            m242_hitEffState = 2;
             if (!(GwPlayer[player->work[0]].stat & 1)) {
                 omVibrate(player->work[0], 20, 0, 20);
             }
@@ -2774,7 +2774,7 @@ void func_8010DC2C_stacked_deck(omObjData *object) {
                 Hu3DModelAttrSet(object->model[0], 4, 0);
                 effect->unk_04[1]++;
             } else {
-                D_80111120_stacked_deck = 0;
+                m242_hitEffState = 0;
                 effect->unk_04[1] = 0;
                 Hu3DModelAttrSet(object->model[0], 4, 4);
             }
@@ -2782,8 +2782,8 @@ void func_8010DC2C_stacked_deck(omObjData *object) {
     }
 }
 
-void func_8010DDAC_stacked_deck(omObjData *object) {
-    StackedDeckCard *effect = &D_8010F730_stacked_deck[22];
+void m242_HitEffObjInit(omObjData *object) {
+    StackedDeckObjWork *effect = &m242_objWorkTbl[22];
     void *data;
     u16 sprite;
 
@@ -2798,22 +2798,22 @@ void func_8010DDAC_stacked_deck(omObjData *object) {
     object->scale.x = object->scale.y = object->scale.z = 5.0f;
     Hu3DModelScaleSet(object->model[0], object->scale.x, object->scale.y, object->scale.z);
     Hu3DModelAttrSet(object->model[0], 4, 4);
-    object->func = func_8010DC2C_stacked_deck;
+    object->func = m242_HitEffObjMain;
 }
 
-void func_8010DEBC_stacked_deck(void) {
-    omObjData *obj = omAddObj(0x24E, 1, 0, -1, func_8010DDAC_stacked_deck);
+void m242_HitEffObjCreate(void) {
+    omObjData *obj = omAddObj(0x24E, 1, 0, -1, m242_HitEffObjInit);
     obj->work[0] = 0;
 }
 
-void func_8010DEF4_stacked_deck(omObjData *object) {
-    StackedDeckCard *card = &D_8010F730_stacked_deck[object->work[0] + 23];
-    StackedDeckCard *spinner;
+void m242_DecoObjMain(omObjData *object) {
+    StackedDeckObjWork *card = &m242_objWorkTbl[object->work[0] + 23];
+    StackedDeckObjWork *spinner;
     f32 speed;
     s16 i;
     s16 moving;
 
-    switch (D_8010F6F4_stacked_deck) {
+    switch (m242_phase) {
         case 8:
             speed = 2.0f;
             break;
@@ -2825,32 +2825,32 @@ void func_8010DEF4_stacked_deck(omObjData *object) {
             break;
     }
 
-    switch (D_8010F6F4_stacked_deck) {
+    switch (m242_phase) {
         case 2:
-            card->unk_18[0] -= D_8010F328_stacked_deck[object->work[0]] * 5.0f;
+            card->unk_18[0] -= m242_decoSpeedTbl[object->work[0]] * 5.0f;
             if (card->unk_18[0] < 0.0f) {
-                card->unk_18[0] = func_801059BC_stacked_deck(card->unk_18[0], 0.0f);
+                card->unk_18[0] = m242_AngleAdd(card->unk_18[0], 0.0f);
             }
             card->unk_04[0] = 0;
             break;
         case 3:
-            card->unk_18[0] += D_8010F328_stacked_deck[object->work[0]] * 5.0f;
+            card->unk_18[0] += m242_decoSpeedTbl[object->work[0]] * 5.0f;
             if (card->unk_18[0] > 360.0f) {
-                card->unk_18[0] = func_801059BC_stacked_deck(card->unk_18[0], 0.0f);
+                card->unk_18[0] = m242_AngleAdd(card->unk_18[0], 0.0f);
             }
             card->unk_04[0] = 0;
             break;
         case 11:
             if (object->work[0] == 0 || object->work[0] == 2) {
-                card->unk_18[0] += D_8010F328_stacked_deck[object->work[0]] * 5.0f;
+                card->unk_18[0] += m242_decoSpeedTbl[object->work[0]] * 5.0f;
             } else {
-                card->unk_18[0] -= D_8010F328_stacked_deck[object->work[0]] * 5.0f;
+                card->unk_18[0] -= m242_decoSpeedTbl[object->work[0]] * 5.0f;
             }
             if (card->unk_18[0] > 360.0f) {
-                card->unk_18[0] = func_801059BC_stacked_deck(card->unk_18[0], 0.0f);
+                card->unk_18[0] = m242_AngleAdd(card->unk_18[0], 0.0f);
             }
             if (card->unk_18[0] < 0.0f) {
-                card->unk_18[0] = func_801059BC_stacked_deck(card->unk_18[0], 0.0f);
+                card->unk_18[0] = m242_AngleAdd(card->unk_18[0], 0.0f);
             }
             card->unk_04[0] = 0;
             break;
@@ -2858,7 +2858,7 @@ void func_8010DEF4_stacked_deck(omObjData *object) {
             switch (card->unk_04[0]) {
                 case 0:
                     if (card->unk_18[0] > -40.0f) {
-                        card->unk_18[0] -= speed * D_8010F328_stacked_deck[object->work[0]];
+                        card->unk_18[0] -= speed * m242_decoSpeedTbl[object->work[0]];
                     } else {
                         card->unk_18[0] = -40.0f;
                     }
@@ -2878,7 +2878,7 @@ void func_8010DEF4_stacked_deck(omObjData *object) {
                     break;
                 case 1:
                     if (card->unk_18[0] < 40.0f) {
-                        card->unk_18[0] += speed * D_8010F328_stacked_deck[object->work[0]];
+                        card->unk_18[0] += speed * m242_decoSpeedTbl[object->work[0]];
                     } else {
                         card->unk_18[0] = 40.0f;
                     }
@@ -2900,21 +2900,21 @@ void func_8010DEF4_stacked_deck(omObjData *object) {
             break;
     }
 
-    object->rot.z = func_801059BC_stacked_deck(card->unk_18[0], 0.0f);
+    object->rot.z = m242_AngleAdd(card->unk_18[0], 0.0f);
     Hu3DModelRotSet(object->model[0], object->rot.x, object->rot.y, object->rot.z);
 }
 
-void func_8010E368_stacked_deck(omObjData *object) {
-    StackedDeckCard *card = &D_8010F730_stacked_deck[object->work[0] + 23];
+void m242_DecoObjInit(omObjData *object) {
+    StackedDeckObjWork *card = &m242_objWorkTbl[object->work[0] + 23];
 
     if (object->work[0] == 0) {
         object->model[0] = Hu3DModelRead(0x4B000A, 0x2B9);
-        D_801110FC_stacked_deck = object->model[0];
+        m242_decoMdl = object->model[0];
     } else {
-        object->model[0] = Hu3DModelLink((s16)D_801110FC_stacked_deck);
+        object->model[0] = Hu3DModelLink((s16)m242_decoMdl);
     }
-    object->trans.x = D_8010F310_stacked_deck[object->work[0]].x * 5.0f;
-    object->trans.y = D_8010F310_stacked_deck[object->work[0]].y * 5.0f;
+    object->trans.x = m242_decoPosTbl[object->work[0]].x * 5.0f;
+    object->trans.y = m242_decoPosTbl[object->work[0]].y * 5.0f;
     object->trans.z = -875.0f;
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
     object->rot.x = 0.0f;
@@ -2927,26 +2927,26 @@ void func_8010E368_stacked_deck(omObjData *object) {
     Hu3DModelScaleSet(object->model[0], object->scale.x, object->scale.y, object->scale.z);
     card->unk_18[0] = 0.0f;
     Hu3DModelAttrSet(object->model[0], 4, 0);
-    object->func = func_8010DEF4_stacked_deck;
+    object->func = m242_DecoObjMain;
 }
 
-void func_8010E4EC_stacked_deck(void) {
+void m242_DecoObjCreateAll(void) {
     s16 i;
 
     for (i = 0; i < 3; i++) {
-        StackedDeckCard *card = &D_8010F730_stacked_deck[i + 23];
-        omObjData *obj = omAddObj(0x258, 1, 1, -1, func_8010E368_stacked_deck);
+        StackedDeckObjWork *card = &m242_objWorkTbl[i + 23];
+        omObjData *obj = omAddObj(0x258, 1, 1, -1, m242_DecoObjInit);
 
         obj->work[0] = i;
         card->obj = obj;
     }
 }
 
-void func_8010E590_stacked_deck(void) {
+void m242_CameraViewInit(void) {
     u32 i;
 
-    if (D_8010F35C_stacked_deck == 0) {
-        D_8010F35C_stacked_deck = 1;
+    if (m242_cameraSetF == 0) {
+        m242_cameraSetF = 1;
         for (i = 0; i < 1; i++) {
             CZoomM[i] = 2522.7217f;
             CRotM[i].x = 332.3684f;
@@ -2959,36 +2959,36 @@ void func_8010E590_stacked_deck(void) {
     }
 }
 
-void func_8010E650_stacked_deck(omObjData *object) {
+void m242_ExitObjMain(omObjData *object) {
     s16 i;
 
     for (i = 0; i < 6; i++) {
-        DataClose(D_8010F708_stacked_deck[i]);
+        DataClose(m242_cardAnimDataTbl[i]);
     }
     for (i = 0; i < 12; i++) {
-        Hu3DAnimKill(D_80111150_stacked_deck[i]);
+        Hu3DAnimKill(m242_cardAnimTbl[i]);
     }
     osViBlack(FALSE);
     omOvlReturnEx(1);
 }
 
-void func_8010E6FC_stacked_deck(omObjData *object) {
+void m242_ExitWaitObjMain(omObjData *object) {
     if (WipeStatGet() == 0) {
-        object->func = func_8010E650_stacked_deck;
+        object->func = m242_ExitObjMain;
     }
 }
 
-void func_8010E734_stacked_deck(omObjData *object) {
+void m242_ExitCheckObjMain(omObjData *object) {
     if (omSysExitReq == 1) {
         WipeCreateOut(0, 20);
-        object->func = func_8010E6FC_stacked_deck;
+        object->func = m242_ExitWaitObjMain;
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
     }
 }
 
-void func_8010E78C_stacked_deck(omObjData *object) {
-    StackedDeckCard *players[4];
+void m242_MainObjMain(omObjData *object) {
+    StackedDeckObjWork *players[4];
     omObjData *playerObjs[4];
     s16 i;
 
@@ -2997,235 +2997,235 @@ void func_8010E78C_stacked_deck(omObjData *object) {
         playerObjs[i] = players[i]->obj;
     }
 
-    switch (D_8010F6F4_stacked_deck) {
+    switch (m242_phase) {
         case 0:
-            func_80106290_stacked_deck(1);
-            D_8010F720_stacked_deck = 0;
+            m242_PhaseSet(1);
+            m242_timer = 0;
             break;
         case 1:
-            if (D_80111169_stacked_deck == 1) {
+            if (m242_phaseDoneNo == 1) {
                 if (!(rand8() & 1)) {
-                    func_80106290_stacked_deck(2);
+                    m242_PhaseSet(2);
                 } else {
-                    func_80106290_stacked_deck(3);
+                    m242_PhaseSet(3);
                 }
             }
             break;
         case 2:
-            if (D_80111169_stacked_deck == 2) {
-                if (D_8011116C_stacked_deck == 0) {
-                    func_80106290_stacked_deck(4);
+            if (m242_phaseDoneNo == 2) {
+                if (m242_roundNo == 0) {
+                    m242_PhaseSet(4);
                 } else {
-                    func_80106290_stacked_deck(13);
+                    m242_PhaseSet(13);
                 }
-                if (++D_8011116C_stacked_deck >= 5) {
-                    D_8011116C_stacked_deck = 4;
+                if (++m242_roundNo >= 5) {
+                    m242_roundNo = 4;
                 }
             }
             break;
         case 3:
-            if (D_80111169_stacked_deck == 3) {
-                if (D_8011116C_stacked_deck == 0) {
-                    func_80106290_stacked_deck(4);
+            if (m242_phaseDoneNo == 3) {
+                if (m242_roundNo == 0) {
+                    m242_PhaseSet(4);
                 } else {
-                    func_80106290_stacked_deck(13);
+                    m242_PhaseSet(13);
                 }
-                if (++D_8011116C_stacked_deck >= 5) {
-                    D_8011116C_stacked_deck = 4;
+                if (++m242_roundNo >= 5) {
+                    m242_roundNo = 4;
                 }
             }
             break;
         case 4:
-            if (D_80111169_stacked_deck == 4) {
-                func_80106290_stacked_deck(5);
-                D_8010F720_stacked_deck = 0;
+            if (m242_phaseDoneNo == 4) {
+                m242_PhaseSet(5);
+                m242_timer = 0;
             }
             break;
         case 5:
-            if (D_8010F720_stacked_deck == 0) {
+            if (m242_timer == 0) {
                 GMesCreate(7);
-                D_8010F720_stacked_deck++;
-            } else if (D_8010F720_stacked_deck >= 43) {
+                m242_timer++;
+            } else if (m242_timer >= 43) {
                 HuAudSeqPlay(0x35);
             } else {
-                D_8010F720_stacked_deck++;
+                m242_timer++;
             }
             if (GMesStatGet() == 0) {
-                func_80106290_stacked_deck(6);
+                m242_PhaseSet(6);
                 GMesCreate(0x1A, 10, 0xA0, 0x1C);
-                D_8010F720_stacked_deck = 301;
+                m242_timer = 301;
             }
             break;
         case 13:
-            if (D_80111169_stacked_deck == 13) {
-                func_80106290_stacked_deck(6);
+            if (m242_phaseDoneNo == 13) {
+                m242_PhaseSet(6);
                 GMesCreate(0x1A, 10, 0xA0, 0x1C);
-                D_8010F720_stacked_deck = 301;
+                m242_timer = 301;
             }
             break;
         case 6:
-            if (D_8010F720_stacked_deck > 0) {
-                D_8010F720_stacked_deck--;
-                GMesTimerValueSet((D_8010F720_stacked_deck + 29) / 30);
-            } else if (D_80111169_stacked_deck != 6 && D_80111168_stacked_deck == 0) {
-                D_8010F6F0_stacked_deck = 4;
+            if (m242_timer > 0) {
+                m242_timer--;
+                GMesTimerValueSet((m242_timer + 29) / 30);
+            } else if (m242_phaseDoneNo != 6 && m242_jumpF == 0) {
+                m242_pickCardType = 4;
                 GMesTimerEnd();
-                D_8010F720_stacked_deck = 0;
-                func_80106290_stacked_deck(7);
+                m242_timer = 0;
+                m242_PhaseSet(7);
             }
-            if (D_80111169_stacked_deck == 6) {
+            if (m242_phaseDoneNo == 6) {
                 GMesTimerEnd();
-                D_8010F720_stacked_deck = 0;
-                func_80106290_stacked_deck(7);
+                m242_timer = 0;
+                m242_PhaseSet(7);
             }
             break;
         case 7:
-            if (D_80111169_stacked_deck == 7) {
-                D_8010F720_stacked_deck = 0;
-                switch (D_8010F6F0_stacked_deck) {
+            if (m242_phaseDoneNo == 7) {
+                m242_timer = 0;
+                switch (m242_pickCardType) {
                     case 1:
-                        func_80106290_stacked_deck(8);
+                        m242_PhaseSet(8);
                         break;
                     case 2:
-                        func_80106290_stacked_deck(9);
+                        m242_PhaseSet(9);
                         break;
                     case 3:
-                        if (D_8011116E_stacked_deck == 1) {
-                            func_80106290_stacked_deck(14);
+                        if (m242_queueLast == 1) {
+                            m242_PhaseSet(14);
                         } else {
-                            func_80106290_stacked_deck(11);
+                            m242_PhaseSet(11);
                         }
                         break;
                 }
             }
             break;
         case 8:
-            if (D_80111169_stacked_deck == 8) {
-                D_8011116A_stacked_deck--;
-                func_80106290_stacked_deck(13);
+            if (m242_phaseDoneNo == 8) {
+                m242_kinokoCardNum--;
+                m242_PhaseSet(13);
             }
             break;
         case 9:
-            if (D_80111169_stacked_deck == 9) {
-                D_80111100_stacked_deck--;
-                func_80106290_stacked_deck(10);
+            if (m242_phaseDoneNo == 9) {
+                m242_teresaCardNum--;
+                m242_PhaseSet(10);
             }
             break;
         case 10:
-            if (D_80111169_stacked_deck == 10) {
-                func_80106290_stacked_deck(13);
+            if (m242_phaseDoneNo == 10) {
+                m242_PhaseSet(13);
             }
             break;
         case 11:
-            if (D_80111169_stacked_deck == 11) {
-                D_801110FA_stacked_deck--;
-                func_80106290_stacked_deck(13);
+            if (m242_phaseDoneNo == 11) {
+                m242_koopaCardNum--;
+                m242_PhaseSet(13);
             }
             break;
         case 12:
             break;
         case 14:
-            if (D_8011110A_stacked_deck == 1) {
+            if (m242_finalHitF == 1) {
                 GMesCreate(0x12);
                 HuAudSeqFadeOut(120);
-                func_80106290_stacked_deck(15);
-                D_8010F720_stacked_deck = -15;
+                m242_PhaseSet(15);
+                m242_timer = -15;
             }
             break;
         case 15:
             if (GMesStatGet() == 0) {
-                if (D_8010F720_stacked_deck >= 0) {
-                    func_80106290_stacked_deck(16);
-                    D_8010F720_stacked_deck = 98;
+                if (m242_timer >= 0) {
+                    m242_PhaseSet(16);
+                    m242_timer = 98;
                 } else {
-                    D_8010F720_stacked_deck++;
+                    m242_timer++;
                 }
             }
             break;
         case 16:
-            if (D_8010F720_stacked_deck == 98) {
+            if (m242_timer == 98) {
                 HuAudSeqPlay(0x65);
             }
-            if (D_8010F720_stacked_deck > 0) {
-                D_8010F720_stacked_deck--;
+            if (m242_timer > 0) {
+                m242_timer--;
             } else {
-                func_80106290_stacked_deck(17);
-                D_8010F720_stacked_deck = 0;
+                m242_PhaseSet(17);
+                m242_timer = 0;
                 for (i = 0; i < 4; i++) {
                     GwPlayer[playerObjs[i]->work[0]].bonusCoin = players[i]->unk_04[7];
                 }
             }
             break;
         case 17:
-            if (D_8010F720_stacked_deck == 0) {
+            if (m242_timer == 0) {
                 WipeCreateOut(0, 20);
-                object->func = func_8010E6FC_stacked_deck;
-                D_8010F720_stacked_deck++;
+                object->func = m242_ExitWaitObjMain;
+                m242_timer++;
             }
             break;
     }
 }
 
-void func_8010ED44_stacked_deck(omObjData *object) {
+void m242_MainObjInit(omObjData *object) {
     s16 i;
     s16 j;
 
     MgFlowStatSet(MG_STATE_PLAY);
-    D_8010F720_stacked_deck = 0;
-    D_8010F6F4_stacked_deck = 0;
-    D_80111169_stacked_deck = 0;
-    D_8011116C_stacked_deck = 0;
-    D_8011116A_stacked_deck = 0;
-    D_80111100_stacked_deck = 0;
-    D_801110FA_stacked_deck = 0;
-    D_80111170_stacked_deck = 0;
-    D_80111120_stacked_deck = 0;
-    D_8010F6F0_stacked_deck = 0;
-    D_8011116E_stacked_deck = 3;
+    m242_timer = 0;
+    m242_phase = 0;
+    m242_phaseDoneNo = 0;
+    m242_roundNo = 0;
+    m242_kinokoCardNum = 0;
+    m242_teresaCardNum = 0;
+    m242_koopaCardNum = 0;
+    m242_smokeState = 0;
+    m242_hitEffState = 0;
+    m242_pickCardType = 0;
+    m242_queueLast = 3;
     for (i = 0; i < 4; i++) {
-        D_80111142_stacked_deck[i] = 0;
+        m242_queueSlotFTbl[i] = 0;
     }
-    D_80111168_stacked_deck = 0;
+    m242_jumpF = 0;
     for (i = 0; i < 12; i++) {
-        D_80111128_stacked_deck[i] = 0;
+        m242_slotUsedTbl[i] = 0;
     }
-    D_8011114E_stacked_deck = 0;
-    D_801110F8_stacked_deck = 0;
-    D_8011114C_stacked_deck = 0;
+    m242_dealCnt = 0;
+    m242_shuffleCnt = 0;
+    m242_shuffleCardNo = 0;
     for (i = 0; i < 4; i++) {
-        D_8010F6F5_stacked_deck[i] = 0;
+        m242_rankCntTbl[i] = 0;
     }
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 4; j++) {
-            D_80111110_stacked_deck[i][j] = 0;
+            m242_rankPlayerTbl[i][j] = 0;
         }
     }
     for (i = 0; i < 4; i++) {
-        D_8010F6FA_stacked_deck[i] = 0;
-        D_80111102_stacked_deck[i] = 0;
+        m242_coinRankTbl[i] = 0;
+        m242_starRankTbl[i] = 0;
     }
-    D_8011114A_stacked_deck = 0;
-    D_8011110C_stacked_deck = 0;
-    D_8010F6F2_stacked_deck = 0;
-    D_80111140_stacked_deck = 0;
-    D_8011110A_stacked_deck = 0;
-    func_80106654_stacked_deck();
-    func_80106738_stacked_deck();
-    func_8010969C_stacked_deck();
-    func_8010C524_stacked_deck();
-    func_8010D8E8_stacked_deck();
-    func_8010DBF4_stacked_deck();
-    func_8010DEBC_stacked_deck();
-    func_8010E4EC_stacked_deck();
-    func_8010E590_stacked_deck();
+    m242_comFlipF = 0;
+    m242_cardSeStep = 0;
+    m242_flySeF = 0;
+    m242_flipSeCnt = 0;
+    m242_finalHitF = 0;
+    m242_MapObjCreate();
+    m242_BackObjCreate();
+    m242_PlayerObjCreateAll();
+    m242_CardObjCreateAll();
+    m242_CardChrObjCreateAll();
+    m242_SmokeObjCreate();
+    m242_HitEffObjCreate();
+    m242_DecoObjCreateAll();
+    m242_CameraViewInit();
     WipeCreateIn(WIPE_TYPE_PREV, 16);
-    object->func = func_8010E78C_stacked_deck;
+    object->func = m242_MainObjMain;
 }
 
-void func_8010EFBC_stacked_deck(void) {
+void m242_Dummy(void) {
 }
 
-void func_8010EFC4_stacked_deck(void) {
+void m242_CameraInit(void) {
     omObjData *obj;
     s32 i;
 
@@ -3235,21 +3235,21 @@ void func_8010EFC4_stacked_deck(void) {
     CamSetupInit(1);
     CamSetupMapCullAddMulti(1);
     for (i = 0; i < 1; i++) {
-        ScissorSet(i, D_8010F360_stacked_deck[i].scissorX, D_8010F360_stacked_deck[i].scissorY,
-                   D_8010F360_stacked_deck[i].scissorWidth, D_8010F360_stacked_deck[i].scissorHeight);
-        ViewportSet(i, D_8010F360_stacked_deck[i].viewportScale.x, D_8010F360_stacked_deck[i].viewportScale.y,
-                    D_8010F360_stacked_deck[i].viewportScale.z, D_8010F360_stacked_deck[i].viewportTranslate.x,
-                    D_8010F360_stacked_deck[i].viewportTranslate.y, D_8010F360_stacked_deck[i].viewportTranslate.z);
-        Hu3DCameraPerspectiveSet(i, D_8010F360_stacked_deck[i].fov, 80.0f, 8000.0f);
+        ScissorSet(i, m242_cameraViewTbl[i].scissorX, m242_cameraViewTbl[i].scissorY,
+                   m242_cameraViewTbl[i].scissorWidth, m242_cameraViewTbl[i].scissorHeight);
+        ViewportSet(i, m242_cameraViewTbl[i].viewportScale.x, m242_cameraViewTbl[i].viewportScale.y,
+                    m242_cameraViewTbl[i].viewportScale.z, m242_cameraViewTbl[i].viewportTranslate.x,
+                    m242_cameraViewTbl[i].viewportTranslate.y, m242_cameraViewTbl[i].viewportTranslate.z);
+        Hu3DCameraPerspectiveSet(i, m242_cameraViewTbl[i].fov, 80.0f, 8000.0f);
     }
 }
 
-void func_8010F134_stacked_deck(void) {
+void m242_ObjectSetup(void) {
     MapCollInit(50);
     Hu3DSprModelInit(50);
     omInitObjMan(50, 0);
     omGameSysInit();
-    func_8010EFC4_stacked_deck();
+    m242_CameraInit();
     Hu3DGLightMaxSet(1);
     Hu3DGLightMaxSet(2);
     Hu3DGLightColorSet(0, 0x90, 0x90, 0x90);
@@ -3261,12 +3261,12 @@ void func_8010F134_stacked_deck(void) {
     mgItemObjNum = 0;
     mgPlayerObjNum = 0;
     mgMapObjNum = 0;
-    GMesFontMesCreate(D_8010F6E8_stacked_deck, 0);
-    GMesFontMesCreate(D_8010F6E8_stacked_deck, 1);
-    omAddObj(1000, 0, 0, -1, func_8010ED44_stacked_deck);
-    omAddObj(1000, 0, 0, -1, func_8010E734_stacked_deck);
-    func_80105A74_stacked_deck();
-    MgFlowInit(&D_8010F334_stacked_deck);
+    GMesFontMesCreate(m242_fontMesTbl, 0);
+    GMesFontMesCreate(m242_fontMesTbl, 1);
+    omAddObj(1000, 0, 0, -1, m242_MainObjInit);
+    omAddObj(1000, 0, 0, -1, m242_ExitCheckObjMain);
+    m242_ObjWorkInit();
+    MgFlowInit(&m242_mgFlow);
 }
 
-const s16 D_8010F6E8_stacked_deck[] = { 0x8260, 0x8261, 0x8262, 0 };
+const s16 m242_fontMesTbl[] = { 0x8260, 0x8261, 0x8262, 0 };

@@ -132,56 +132,56 @@ typedef struct {
     /* 0x9E */ s16 trackerCount;
 } QuadCollider; // Size 0xA0
 
-void m257_CreateSystem(void);
+void m257_SystemCreate(void);
 
-FuncGroup* m257_CreateFuncGroup(omObjData* object, s8 groupId, s16 maxModels, s16 maxFuncs);
-s16 m257_SetFunc(s8 groupId, s32 prio, void* data, void (*func)(FuncGroupContext*, FuncContext*), s8 tag);
-void m257_ResetFunc(s8 groupId, FuncContext* ctx);
-void m257_ResetFuncTag(s8 groupId, s8 tag);
-void m257_ResetFuncGroup(s8 groupId);
-void m257_UpdateFuncGroup(s8 groupId);
+FuncGroup* m257_FuncGroupCreate(omObjData* object, s8 groupId, s16 maxModels, s16 maxFuncs);
+s16 m257_FuncSet(s8 groupId, s32 prio, void* data, void (*func)(FuncGroupContext*, FuncContext*), s8 tag);
+void m257_FuncReset(s8 groupId, FuncContext* ctx);
+void m257_FuncTagReset(s8 groupId, s8 tag);
+void m257_FuncGroupReset(s8 groupId);
+void m257_FuncGroupUpdate(s8 groupId);
 
-s16 m257_SetSprite(u16 prio, s32 dir, s32 file, u16 arg3, s32 attr);
-void m257_SetSpriteDispOn(s16 spriteId, s32 posX, s32 posY);
-void m257_SetSpriteDispOff(s16 spriteId);
-void m257_UpdateSprites(void);
+s16 m257_SprCreate(u16 prio, s32 dir, s32 file, u16 arg3, s32 attr);
+void m257_SprDispOn(s16 spriteId, s32 posX, s32 posY);
+void m257_SprDispOff(s16 spriteId);
+void m257_SprUpdate(void);
 
-s32 m257_SetAnimModel(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4);
-s32 m257_SetAnimModelDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 rotX, f32 rotY, f32 rotZ, f32 scale, f32 animStart);
-void m257_UpdateAnimModels(void);
+s32 m257_AnimMdlCreate(s32 dir, s32 file, f32 freq, s32 attr, s32 arg4);
+s32 m257_AnimMdlDispOn(s16 animModelId, f32 posX, f32 posY, f32 posZ, f32 rotX, f32 rotY, f32 rotZ, f32 scale, f32 animStart);
+void m257_AnimMdlUpdate(void);
 
-s32 m257_SetBill(s32 dir, s32 file, s32 attr);
-void m257_SetBillDispOn(s16 billId, f32 posX, f32 posY, f32 posZ);
-void m257_SetBillDispOnRef(s16 billId, f32* posX, f32* posY, f32* posZ);
-BillboardData* m257_GetBill(s16 billId);
-HmfModel* m257_GetBillModel(s16 billId);
-void m257_UpdateBills(void);
+s32 m257_BillboardCreate(s32 dir, s32 file, s32 attr);
+void m257_BillboardDispOn(s16 billId, f32 posX, f32 posY, f32 posZ);
+void m257_BillboardDispOnRef(s16 billId, f32* posX, f32* posY, f32* posZ);
+BillboardData* m257_BillboardGet(s16 billId);
+HmfModel* m257_BillboardMdlGet(s16 billId);
+void m257_BillboardUpdate(void);
 
-void m257_CreateColliders(FuncGroupContext* groupCtx, FuncContext* ctx);
-s32 m257_SetCollider(s16 modelId, Quad* baseQuad, f32 height, s16 maxTrackers, s32 attr);
-ModelTracker* m257_SetModelTracker(s16 colliderId, s16 modelId);
-void m257_SetColliderBaseQuad(s16 colliderId, Quad* baseQuad, f32 height);
+void m257_ColliderInit(FuncGroupContext* groupCtx, FuncContext* ctx);
+s32 m257_ColliderCreate(s16 modelId, Quad* baseQuad, f32 height, s16 maxTrackers, s32 attr);
+ModelTracker* m257_ColliderTrackerCreate(s16 colliderId, s16 modelId);
+void m257_ColliderVtxSet(s16 colliderId, Quad* baseQuad, f32 height);
 
-u8 m257_CalcLerp(f32* out, u8* timer, f32 start, f32 end, f32 duration);
-f32 m257_CalcQuadraticBezier(f32 t, f32 p0, f32 p1, f32 p2);
-void m257_MakeRandPermutation(s16* out, s16 n);
-void m257_SyncWithModel(omObjData* object);
-void m257_CalcPitchAndYaw(Vec from, Vec to, f32* out);
-void m257_MinimizeAngleDiff(f32* a, f32* b);
+u8 m257_LerpCalc(f32* out, u8* timer, f32 start, f32 end, f32 duration);
+f32 m257_BezierCalc(f32 t, f32 p0, f32 p1, f32 p2);
+void m257_RandPermCreate(s16* out, s16 n);
+void m257_MdlSync(omObjData* object);
+void m257_PitchYawCalc(Vec from, Vec to, f32* out);
+void m257_AngleDiffMinimize(f32* a, f32* b);
 
-void m257_MakeIdentityMtx(f32* out);
-void m257_MakeTranslationMtx(f32* out, f32 x, f32 y, f32 z);
-void m257_MakeRotXMtx(f32* out, f32 angle);
-void m257_MakeRotYMtx(f32* out, f32 angle);
-void m257_MultiplyMtx(f32* a, f32* b, f32* out);
-void func_8010E214_tick_tock_hop(f32* arg0, f32* out);
-void m257_MakeTransformMtx(f32 transX, f32 transY, f32 transZ, f32 rotX, f32 rotY, f32 rotZ, f32* out);
-void m257_ApplyTransformMtx(Vec* in, s16 n, f32* mtx, Vec* out);
+void m257_MtxIdentSet(f32* out);
+void m257_MtxTransSet(f32* out, f32 x, f32 y, f32 z);
+void m257_MtxRotXSet(f32* out, f32 angle);
+void m257_MtxRotYSet(f32* out, f32 angle);
+void m257_MtxMul(f32* a, f32* b, f32* out);
+void m257_MtxTransCalc(f32* arg0, f32* out);
+void m257_MtxTransformSet(f32 transX, f32 transY, f32 transZ, f32 rotX, f32 rotY, f32 rotZ, f32* out);
+void m257_VtxTransform(Vec* in, s16 n, f32* mtx, Vec* out);
 
-extern BillboardData* m257_billboards;
-extern FuncGroup* m257_funcGroups;
-extern SpriteData* m257_sprites;
-extern AnimModelData* m257_animModels;
-extern QuadCollider* m257_colliders;
+extern BillboardData* m257_billboardTbl;
+extern FuncGroup* m257_funcGroupTbl;
+extern SpriteData* m257_sprTbl;
+extern AnimModelData* m257_animMdlTbl;
+extern QuadCollider* m257_colliderTbl;
 
 #endif

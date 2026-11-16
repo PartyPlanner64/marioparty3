@@ -1,14 +1,14 @@
 #include "common.h"
 #include "game_guys_lucky_7.h"
 
-typedef struct GameGuysLucky7Banner { // 0x14 bytes
+typedef struct GameGuysLucky7SpotLayer { // 0x14 bytes
     /* 0x00 */ HuSprite *sprite;
     /* 0x04 */ void *unk_04[3];
     /* 0x10 */ s16 group;
     /* 0x12 */ s16 timer;
-} GameGuysLucky7Banner;
+} GameGuysLucky7SpotLayer;
 
-typedef struct GameGuysLucky7Ring { // 0x18 bytes
+typedef struct GameGuysLucky7Spot { // 0x18 bytes
     /* 0x00 */ s16 active;
     /* 0x02 */ s16 color;
     /* 0x04 */ s16 x;
@@ -18,222 +18,222 @@ typedef struct GameGuysLucky7Ring { // 0x18 bytes
     /* 0x0C */ s16 freqY;
     /* 0x10 */ f32 angle;
     /* 0x14 */ f32 speed;
-} GameGuysLucky7Ring;
+} GameGuysLucky7Spot;
 
-typedef struct GameGuysLucky7RingHistory { // 0x20 bytes
+typedef struct GameGuysLucky7SpotHistory { // 0x20 bytes
     /* 0x00 */ s16 active[4];
     /* 0x08 */ s16 x[4];
     /* 0x10 */ s16 y[4];
     /* 0x18 */ s16 radius[4];
-} GameGuysLucky7RingHistory;
+} GameGuysLucky7SpotHistory;
 
-typedef struct GameGuysLucky7RingFreq {
+typedef struct GameGuysLucky7SpotFreq {
     /* 0x00 */ s16 x;
     /* 0x02 */ s16 y;
-} GameGuysLucky7RingFreq;
+} GameGuysLucky7SpotFreq;
 
-s16 D_8010D300_game_guys_lucky_7 = 0;   // intro timer
-s16 D_8010D302_game_guys_lucky_7 = 120; // intro start y
-s16 D_8010D304_game_guys_lucky_7 = 0;   // outro timer
+s16 m267_spotIntroTimer = 0;   // intro timer
+s16 m267_spotStartY = 120; // intro start y
+s16 m267_spotBeamTimer = 0;   // outro timer
 
-GameGuysLucky7Ring D_8010D810_game_guys_lucky_7[3] BSS;
-s16 D_8010D858_game_guys_lucky_7 BSS;                          // center x
-s16 D_8010D85A_game_guys_lucky_7 BSS;                          // center y
-s16 D_8010D85C_game_guys_lucky_7 BSS;                          // radius
-s16 D_8010D85E_game_guys_lucky_7 BSS;                          // target x
-s16 D_8010D860_game_guys_lucky_7 BSS;                          // target y
-u8 D_8010D864_game_guys_lucky_7[4] BSS;                        /* Unreferenced. */
-GameGuysLucky7RingHistory D_8010D868_game_guys_lucky_7[3] BSS; // per-buffer ring state
-u8 D_8010D8C8_game_guys_lucky_7[8] BSS;                        /* Unreferenced. */
-GameGuysLucky7Banner D_8010D8D0_game_guys_lucky_7 BSS;
-s16 D_8010D8E4_game_guys_lucky_7 BSS; // current buffer index
-GameGuysLucky7Banner D_8010D8E8_game_guys_lucky_7 BSS;
+GameGuysLucky7Spot m267_spotTbl[3] BSS;
+s16 m267_spotCenterX BSS;                          // center x
+s16 m267_spotCenterY BSS;                          // center y
+s16 m267_spotRadius BSS;                          // radius
+s16 m267_spotTargetX BSS;                          // target x
+s16 m267_spotTargetY BSS;                          // target y
+u8 m267_spotTargetYPad[4] BSS;                        /* Unreferenced. */
+GameGuysLucky7SpotHistory m267_spotHistoryTbl[3] BSS; // per-buffer ring state
+u8 m267_spotHistoryTblPad[8] BSS;                        /* Unreferenced. */
+GameGuysLucky7SpotLayer m267_spotMaskLayer BSS;
+s16 m267_spotBufNo BSS; // current buffer index
+GameGuysLucky7SpotLayer m267_spotColorLayer BSS;
 
-void func_8010C97C_game_guys_lucky_7(void);
-void func_8010CAE0_game_guys_lucky_7(void);
-void func_8010CB70_game_guys_lucky_7(s16 active, s16 x, s16 y, s16 radius);
-void func_8010CCCC_game_guys_lucky_7(s16 active, s16 x, s16 y, s16 color);
-void func_8010CD0C_game_guys_lucky_7(s16 active, s16 x, s16 y, s16 radius, s16 color);
-void func_8010CF04_game_guys_lucky_7(s16 x0, s16 y0, s16 x1, s16 y1);
+void m267_SpotLayerInit(void);
+void m267_SpotLayerClear(void);
+void m267_SpotErase(s16 active, s16 x, s16 y, s16 radius);
+void m267_SpotDraw(s16 active, s16 x, s16 y, s16 color);
+void m267_SpotDrawEx(s16 active, s16 x, s16 y, s16 radius, s16 color);
+void m267_SpotLineDraw(s16 x0, s16 y0, s16 x1, s16 y1);
 
-void func_8010B830_game_guys_lucky_7(s16 x, s16 y) {
+void m267_SpotIntroInit(s16 x, s16 y) {
     s16 i;
     u8 pattern;
-    GameGuysLucky7RingFreq freqs[3] = { { 10, 7 }, { 10, 8 }, { 10, 10 } };
+    GameGuysLucky7SpotFreq freqs[3] = { { 10, 7 }, { 10, 8 }, { 10, 10 } };
 
-    D_8010D858_game_guys_lucky_7 = 160;
-    D_8010D85A_game_guys_lucky_7 = 120;
-    D_8010D85C_game_guys_lucky_7 = 95;
-    D_8010D85E_game_guys_lucky_7 = x;
-    D_8010D860_game_guys_lucky_7 = y;
+    m267_spotCenterX = 160;
+    m267_spotCenterY = 120;
+    m267_spotRadius = 95;
+    m267_spotTargetX = x;
+    m267_spotTargetY = y;
     pattern = rand8() % 3;
     for (i = 0; i < 3; i++) {
-        D_8010D810_game_guys_lucky_7[i].active = 0;
-        D_8010D810_game_guys_lucky_7[i].freqX = freqs[pattern].x;
-        D_8010D810_game_guys_lucky_7[i].freqY = freqs[pattern].y;
-        D_8010D810_game_guys_lucky_7[i].speed = 1.5f;
+        m267_spotTbl[i].active = 0;
+        m267_spotTbl[i].freqX = freqs[pattern].x;
+        m267_spotTbl[i].freqY = freqs[pattern].y;
+        m267_spotTbl[i].speed = 1.5f;
         if (pattern == 0) {
-            D_8010D810_game_guys_lucky_7[i].speed = 1.75f;
+            m267_spotTbl[i].speed = 1.75f;
         }
-        D_8010D810_game_guys_lucky_7[i].angle = i * 120;
-        D_8010D810_game_guys_lucky_7[i].x =
-            D_8010D858_game_guys_lucky_7 + cosdf(D_8010D810_game_guys_lucky_7[i].freqX * D_8010D810_game_guys_lucky_7[i].angle) * D_8010D85C_game_guys_lucky_7;
-        D_8010D810_game_guys_lucky_7[i].y =
-            D_8010D85A_game_guys_lucky_7 + sindf(D_8010D810_game_guys_lucky_7[i].freqY * D_8010D810_game_guys_lucky_7[i].angle) * D_8010D85C_game_guys_lucky_7;
-        D_8010D810_game_guys_lucky_7[i].radius = 0;
+        m267_spotTbl[i].angle = i * 120;
+        m267_spotTbl[i].x =
+            m267_spotCenterX + cosdf(m267_spotTbl[i].freqX * m267_spotTbl[i].angle) * m267_spotRadius;
+        m267_spotTbl[i].y =
+            m267_spotCenterY + sindf(m267_spotTbl[i].freqY * m267_spotTbl[i].angle) * m267_spotRadius;
+        m267_spotTbl[i].radius = 0;
     }
-    D_8010D810_game_guys_lucky_7[0].color = 1;
-    D_8010D810_game_guys_lucky_7[1].color = 2;
-    D_8010D810_game_guys_lucky_7[2].color = 4;
-    D_8010D8E8_game_guys_lucky_7.timer = 128;
-    D_8010D8D0_game_guys_lucky_7.timer = 256;
-    func_8010C97C_game_guys_lucky_7();
-    func_8010CAE0_game_guys_lucky_7();
-    D_8010D8E4_game_guys_lucky_7 = 0;
+    m267_spotTbl[0].color = 1;
+    m267_spotTbl[1].color = 2;
+    m267_spotTbl[2].color = 4;
+    m267_spotColorLayer.timer = 128;
+    m267_spotMaskLayer.timer = 256;
+    m267_SpotLayerInit();
+    m267_SpotLayerClear();
+    m267_spotBufNo = 0;
 }
 
-void func_8010BAFC_game_guys_lucky_7(void) {
-    func_8010CAE0_game_guys_lucky_7();
-    D_8010D8E4_game_guys_lucky_7 = 0;
-    D_8010D8E8_game_guys_lucky_7.timer = 0;
-    HuSprTPLvlSet(D_8010D8E8_game_guys_lucky_7.group, 0, 0);
-    HuSprAttrReset(D_8010D8E8_game_guys_lucky_7.group, 0, 0xFFFF);
-    HuSprAttrSet(D_8010D8E8_game_guys_lucky_7.group, 0, 0x1000);
-    D_8010D8E8_game_guys_lucky_7.sprite->data->pat->data =
-        D_8010D8E8_game_guys_lucky_7.unk_04[D_8010D8E4_game_guys_lucky_7];
+void m267_SpotBeamInit(void) {
+    m267_SpotLayerClear();
+    m267_spotBufNo = 0;
+    m267_spotColorLayer.timer = 0;
+    HuSprTPLvlSet(m267_spotColorLayer.group, 0, 0);
+    HuSprAttrReset(m267_spotColorLayer.group, 0, 0xFFFF);
+    HuSprAttrSet(m267_spotColorLayer.group, 0, 0x1000);
+    m267_spotColorLayer.sprite->data->pat->data =
+        m267_spotColorLayer.unk_04[m267_spotBufNo];
 }
 
-s16 func_8010BB88_game_guys_lucky_7(void) {
+s16 m267_SpotIntroUpdate(void) {
     s16 i;
 
     if (WipeStatGet() == 1) {
         return 0;
     }
-    if (D_8010D300_game_guys_lucky_7 >= 5) {
-        if (D_8010D300_game_guys_lucky_7 < 15) {
+    if (m267_spotIntroTimer >= 5) {
+        if (m267_spotIntroTimer < 15) {
             for (i = 0; i < 3; i++) {
-                D_8010D810_game_guys_lucky_7[i].active = 1;
-                D_8010D810_game_guys_lucky_7[i].radius = sindf((D_8010D300_game_guys_lucky_7 - 5) * 9.0f) * 45.0f;
+                m267_spotTbl[i].active = 1;
+                m267_spotTbl[i].radius = sindf((m267_spotIntroTimer - 5) * 9.0f) * 45.0f;
             }
-        } else if (D_8010D300_game_guys_lucky_7 < 20) {
+        } else if (m267_spotIntroTimer < 20) {
             for (i = 0; i < 3; i++) {
-                D_8010D810_game_guys_lucky_7[i].radius = 45;
+                m267_spotTbl[i].radius = 45;
             }
-        } else if (D_8010D300_game_guys_lucky_7 < 47) {
+        } else if (m267_spotIntroTimer < 47) {
             for (i = 0; i < 3; i++) {
-                D_8010D810_game_guys_lucky_7[i].angle += D_8010D810_game_guys_lucky_7[i].speed;
-                if (D_8010D810_game_guys_lucky_7[i].angle >= 360.0f) {
-                    D_8010D810_game_guys_lucky_7[i].angle -= 360.0f;
+                m267_spotTbl[i].angle += m267_spotTbl[i].speed;
+                if (m267_spotTbl[i].angle >= 360.0f) {
+                    m267_spotTbl[i].angle -= 360.0f;
                 }
-                if (D_8010D810_game_guys_lucky_7[i].angle < 0.0f) {
-                    D_8010D810_game_guys_lucky_7[i].angle += 360.0f;
+                if (m267_spotTbl[i].angle < 0.0f) {
+                    m267_spotTbl[i].angle += 360.0f;
                 }
-                D_8010D810_game_guys_lucky_7[i].x = D_8010D858_game_guys_lucky_7 +
-                                                    cosdf(D_8010D810_game_guys_lucky_7[i].freqX * D_8010D810_game_guys_lucky_7[i].angle) * D_8010D85C_game_guys_lucky_7;
-                D_8010D810_game_guys_lucky_7[i].y = D_8010D85A_game_guys_lucky_7 +
-                                                    sindf(D_8010D810_game_guys_lucky_7[i].freqY * D_8010D810_game_guys_lucky_7[i].angle) * D_8010D85C_game_guys_lucky_7;
+                m267_spotTbl[i].x = m267_spotCenterX +
+                                                    cosdf(m267_spotTbl[i].freqX * m267_spotTbl[i].angle) * m267_spotRadius;
+                m267_spotTbl[i].y = m267_spotCenterY +
+                                                    sindf(m267_spotTbl[i].freqY * m267_spotTbl[i].angle) * m267_spotRadius;
             }
-        } else if (D_8010D300_game_guys_lucky_7 < 80) {
-            if (D_8010D85C_game_guys_lucky_7 > 0) {
-                if ((D_8010D85C_game_guys_lucky_7 -= 3) <= 0) {
-                    D_8010D85C_game_guys_lucky_7 = 0;
+        } else if (m267_spotIntroTimer < 80) {
+            if (m267_spotRadius > 0) {
+                if ((m267_spotRadius -= 3) <= 0) {
+                    m267_spotRadius = 0;
                 }
             }
-            D_8010D85A_game_guys_lucky_7 =
-                D_8010D302_game_guys_lucky_7 - sindf((D_8010D300_game_guys_lucky_7 - 47) * 2.7272727f) *
-                                                   (D_8010D302_game_guys_lucky_7 - D_8010D860_game_guys_lucky_7);
-            if (D_8010D300_game_guys_lucky_7 == 79) {
-                D_8010D85A_game_guys_lucky_7 = D_8010D860_game_guys_lucky_7;
+            m267_spotCenterY =
+                m267_spotStartY - sindf((m267_spotIntroTimer - 47) * 2.7272727f) *
+                                                   (m267_spotStartY - m267_spotTargetY);
+            if (m267_spotIntroTimer == 79) {
+                m267_spotCenterY = m267_spotTargetY;
             }
             for (i = 0; i < 3; i++) {
-                D_8010D810_game_guys_lucky_7[i].angle += D_8010D810_game_guys_lucky_7[i].speed;
-                if (D_8010D810_game_guys_lucky_7[i].angle >= 360.0f) {
-                    D_8010D810_game_guys_lucky_7[i].angle -= 360.0f;
+                m267_spotTbl[i].angle += m267_spotTbl[i].speed;
+                if (m267_spotTbl[i].angle >= 360.0f) {
+                    m267_spotTbl[i].angle -= 360.0f;
                 }
-                if (D_8010D810_game_guys_lucky_7[i].angle < 0.0f) {
-                    D_8010D810_game_guys_lucky_7[i].angle += 360.0f;
+                if (m267_spotTbl[i].angle < 0.0f) {
+                    m267_spotTbl[i].angle += 360.0f;
                 }
-                D_8010D810_game_guys_lucky_7[i].x = D_8010D858_game_guys_lucky_7 +
-                                                    cosdf(D_8010D810_game_guys_lucky_7[i].freqX * D_8010D810_game_guys_lucky_7[i].angle) * D_8010D85C_game_guys_lucky_7;
-                D_8010D810_game_guys_lucky_7[i].y = D_8010D85A_game_guys_lucky_7 +
-                                                    sindf(D_8010D810_game_guys_lucky_7[i].freqY * D_8010D810_game_guys_lucky_7[i].angle) * D_8010D85C_game_guys_lucky_7;
+                m267_spotTbl[i].x = m267_spotCenterX +
+                                                    cosdf(m267_spotTbl[i].freqX * m267_spotTbl[i].angle) * m267_spotRadius;
+                m267_spotTbl[i].y = m267_spotCenterY +
+                                                    sindf(m267_spotTbl[i].freqY * m267_spotTbl[i].angle) * m267_spotRadius;
             }
-        } else if (D_8010D300_game_guys_lucky_7 < 90) {
+        } else if (m267_spotIntroTimer < 90) {
             for (i = 1; i < 3; i++) {
-                D_8010D810_game_guys_lucky_7[i].active = 0;
+                m267_spotTbl[i].active = 0;
             }
-            D_8010D810_game_guys_lucky_7[0].color = 7;
-        } else if (D_8010D300_game_guys_lucky_7 >= 120) {
-            func_8010C824_game_guys_lucky_7();
+            m267_spotTbl[0].color = 7;
+        } else if (m267_spotIntroTimer >= 120) {
+            m267_SpotDispOff();
             return 1;
         } else {
-            D_8010D810_game_guys_lucky_7[0].radius = sindf((D_8010D300_game_guys_lucky_7 - 90) * 3.0f) * 50.0f + 45.0f;
-            D_8010D8E8_game_guys_lucky_7.timer = 128.0f - sindf((D_8010D300_game_guys_lucky_7 - 90) * 3.0f) * 128.0f;
-            D_8010D8D0_game_guys_lucky_7.timer = 256.0f - sindf((D_8010D300_game_guys_lucky_7 - 90) * 3.0f) * 256.0f;
+            m267_spotTbl[0].radius = sindf((m267_spotIntroTimer - 90) * 3.0f) * 50.0f + 45.0f;
+            m267_spotColorLayer.timer = 128.0f - sindf((m267_spotIntroTimer - 90) * 3.0f) * 128.0f;
+            m267_spotMaskLayer.timer = 256.0f - sindf((m267_spotIntroTimer - 90) * 3.0f) * 256.0f;
         }
     }
-    if (D_8010D300_game_guys_lucky_7 == 15) {
+    if (m267_spotIntroTimer == 15) {
         HuAudFXPlay(0x51F);
     }
-    if (D_8010D300_game_guys_lucky_7 == 90) {
+    if (m267_spotIntroTimer == 90) {
         HuAudFXAllFadeOut(30);
         HuAudSeqPlay(0x43);
     }
-    if (D_8010D300_game_guys_lucky_7 == 100) {
+    if (m267_spotIntroTimer == 100) {
         HuAudFXPlay(0x2A1);
     }
-    if (D_8010D8E8_game_guys_lucky_7.timer <= 0) {
-        D_8010D8E8_game_guys_lucky_7.timer = 0;
+    if (m267_spotColorLayer.timer <= 0) {
+        m267_spotColorLayer.timer = 0;
     }
-    HuSprTPLvlSet(D_8010D8E8_game_guys_lucky_7.group, 0, D_8010D8E8_game_guys_lucky_7.timer);
-    if (D_8010D8D0_game_guys_lucky_7.timer <= 0) {
-        D_8010D8D0_game_guys_lucky_7.timer = 0;
+    HuSprTPLvlSet(m267_spotColorLayer.group, 0, m267_spotColorLayer.timer);
+    if (m267_spotMaskLayer.timer <= 0) {
+        m267_spotMaskLayer.timer = 0;
     }
-    HuSprTPLvlSet(D_8010D8D0_game_guys_lucky_7.group, 0, D_8010D8D0_game_guys_lucky_7.timer);
-    if (D_8010D300_game_guys_lucky_7 < 90) {
+    HuSprTPLvlSet(m267_spotMaskLayer.group, 0, m267_spotMaskLayer.timer);
+    if (m267_spotIntroTimer < 90) {
         for (i = 0; i < 3; i++) {
-            func_8010CB70_game_guys_lucky_7(D_8010D868_game_guys_lucky_7[D_8010D8E4_game_guys_lucky_7].active[i], D_8010D868_game_guys_lucky_7[D_8010D8E4_game_guys_lucky_7].x[i],
-                                            D_8010D868_game_guys_lucky_7[D_8010D8E4_game_guys_lucky_7].y[i], D_8010D868_game_guys_lucky_7[D_8010D8E4_game_guys_lucky_7].radius[i]);
-            D_8010D868_game_guys_lucky_7[D_8010D8E4_game_guys_lucky_7].active[i] = D_8010D810_game_guys_lucky_7[i].active;
-            D_8010D868_game_guys_lucky_7[D_8010D8E4_game_guys_lucky_7].x[i] = D_8010D810_game_guys_lucky_7[i].x;
-            D_8010D868_game_guys_lucky_7[D_8010D8E4_game_guys_lucky_7].y[i] = D_8010D810_game_guys_lucky_7[i].y;
-            D_8010D868_game_guys_lucky_7[D_8010D8E4_game_guys_lucky_7].radius[i] = D_8010D810_game_guys_lucky_7[i].radius;
+            m267_SpotErase(m267_spotHistoryTbl[m267_spotBufNo].active[i], m267_spotHistoryTbl[m267_spotBufNo].x[i],
+                                            m267_spotHistoryTbl[m267_spotBufNo].y[i], m267_spotHistoryTbl[m267_spotBufNo].radius[i]);
+            m267_spotHistoryTbl[m267_spotBufNo].active[i] = m267_spotTbl[i].active;
+            m267_spotHistoryTbl[m267_spotBufNo].x[i] = m267_spotTbl[i].x;
+            m267_spotHistoryTbl[m267_spotBufNo].y[i] = m267_spotTbl[i].y;
+            m267_spotHistoryTbl[m267_spotBufNo].radius[i] = m267_spotTbl[i].radius;
         }
     }
-    if (D_8010D300_game_guys_lucky_7 < 20) {
+    if (m267_spotIntroTimer < 20) {
         for (i = 0; i < 3; i++) {
-            func_8010CD0C_game_guys_lucky_7(D_8010D810_game_guys_lucky_7[i].active, D_8010D810_game_guys_lucky_7[i].x, D_8010D810_game_guys_lucky_7[i].y, D_8010D810_game_guys_lucky_7[i].radius, D_8010D810_game_guys_lucky_7[i].color);
+            m267_SpotDrawEx(m267_spotTbl[i].active, m267_spotTbl[i].x, m267_spotTbl[i].y, m267_spotTbl[i].radius, m267_spotTbl[i].color);
         }
-    } else if (D_8010D300_game_guys_lucky_7 < 81) {
+    } else if (m267_spotIntroTimer < 81) {
         for (i = 0; i < 3; i++) {
-            func_8010CCCC_game_guys_lucky_7(D_8010D810_game_guys_lucky_7[i].active, D_8010D810_game_guys_lucky_7[i].x, D_8010D810_game_guys_lucky_7[i].y, D_8010D810_game_guys_lucky_7[i].color);
+            m267_SpotDraw(m267_spotTbl[i].active, m267_spotTbl[i].x, m267_spotTbl[i].y, m267_spotTbl[i].color);
         }
     } else {
-        func_8010CD0C_game_guys_lucky_7(D_8010D810_game_guys_lucky_7[0].active, D_8010D810_game_guys_lucky_7[0].x, D_8010D810_game_guys_lucky_7[0].y, D_8010D810_game_guys_lucky_7[0].radius, D_8010D810_game_guys_lucky_7[0].color);
+        m267_SpotDrawEx(m267_spotTbl[0].active, m267_spotTbl[0].x, m267_spotTbl[0].y, m267_spotTbl[0].radius, m267_spotTbl[0].color);
     }
-    D_8010D8E8_game_guys_lucky_7.sprite->data->pat->data = D_8010D8E8_game_guys_lucky_7.unk_04[D_8010D8E4_game_guys_lucky_7];
-    D_8010D8D0_game_guys_lucky_7.sprite->data->pat->data = D_8010D8D0_game_guys_lucky_7.unk_04[D_8010D8E4_game_guys_lucky_7];
-    D_8010D8E4_game_guys_lucky_7 = (s16)(D_8010D8E4_game_guys_lucky_7 + 1) % 3;
-    D_8010D300_game_guys_lucky_7++;
+    m267_spotColorLayer.sprite->data->pat->data = m267_spotColorLayer.unk_04[m267_spotBufNo];
+    m267_spotMaskLayer.sprite->data->pat->data = m267_spotMaskLayer.unk_04[m267_spotBufNo];
+    m267_spotBufNo = (s16)(m267_spotBufNo + 1) % 3;
+    m267_spotIntroTimer++;
     return 0;
 }
 
-s32 func_8010C670_game_guys_lucky_7(s32 x) {
+s32 m267_SpotBeamUpdate(s32 x) {
     s16 i;
 
-    D_8010D8E8_game_guys_lucky_7.sprite->data->pat->data = D_8010D8E8_game_guys_lucky_7.unk_04[0];
-    if (D_8010D304_game_guys_lucky_7++ < 10) {
-        D_8010D8E8_game_guys_lucky_7.timer = 0;
-    } else if (D_8010D304_game_guys_lucky_7 < 30) {
-        D_8010D8E8_game_guys_lucky_7.timer = sindf((D_8010D304_game_guys_lucky_7 - 10) * 4.5f) * 128.0f;
-        HuSprTPLvlSet(D_8010D8E8_game_guys_lucky_7.group, 0, D_8010D8E8_game_guys_lucky_7.timer);
-    } else if (D_8010D304_game_guys_lucky_7 >= 40) {
-        if (D_8010D304_game_guys_lucky_7 < 90) {
+    m267_spotColorLayer.sprite->data->pat->data = m267_spotColorLayer.unk_04[0];
+    if (m267_spotBeamTimer++ < 10) {
+        m267_spotColorLayer.timer = 0;
+    } else if (m267_spotBeamTimer < 30) {
+        m267_spotColorLayer.timer = sindf((m267_spotBeamTimer - 10) * 4.5f) * 128.0f;
+        HuSprTPLvlSet(m267_spotColorLayer.group, 0, m267_spotColorLayer.timer);
+    } else if (m267_spotBeamTimer >= 40) {
+        if (m267_spotBeamTimer < 90) {
             for (i = 0; i < 5; i++) {
-                func_8010CF04_game_guys_lucky_7(x, -100, x + (D_8010D304_game_guys_lucky_7 - 40) + i, 240);
-                func_8010CF04_game_guys_lucky_7(x, -100, x - (D_8010D304_game_guys_lucky_7 - 40) - i, 240);
+                m267_SpotLineDraw(x, -100, x + (m267_spotBeamTimer - 40) + i, 240);
+                m267_SpotLineDraw(x, -100, x - (m267_spotBeamTimer - 40) - i, 240);
             }
-            D_8010D304_game_guys_lucky_7 += 4;
+            m267_spotBeamTimer += 4;
         } else {
             return 1;
         }
@@ -241,16 +241,16 @@ s32 func_8010C670_game_guys_lucky_7(s32 x) {
     return 0;
 }
 
-void func_8010C824_game_guys_lucky_7(void) {
-    HuSprDispOff(D_8010D8E8_game_guys_lucky_7.group, 0);
-    HuSprDispOff(D_8010D8D0_game_guys_lucky_7.group, 0);
-    D_8010D8E8_game_guys_lucky_7.sprite->data->pat->data =
-        D_8010D8E8_game_guys_lucky_7.unk_04[0];
-    D_8010D8D0_game_guys_lucky_7.sprite->data->pat->data =
-        D_8010D8D0_game_guys_lucky_7.unk_04[0];
+void m267_SpotDispOff(void) {
+    HuSprDispOff(m267_spotColorLayer.group, 0);
+    HuSprDispOff(m267_spotMaskLayer.group, 0);
+    m267_spotColorLayer.sprite->data->pat->data =
+        m267_spotColorLayer.unk_04[0];
+    m267_spotMaskLayer.sprite->data->pat->data =
+        m267_spotMaskLayer.unk_04[0];
 }
 
-s16 func_8010C8A8_game_guys_lucky_7(s32 dataNum, s32 attr, s32 priority, s32 tpLvl) {
+s16 m267_SpotSprCreate(s32 dataNum, s32 attr, s32 priority, s32 tpLvl) {
     s16 sprite;
     s16 group;
 
@@ -265,15 +265,15 @@ s16 func_8010C8A8_game_guys_lucky_7(s32 dataNum, s32 attr, s32 priority, s32 tpL
     return group;
 }
 
-void func_8010C97C_game_guys_lucky_7(void) {
+void m267_SpotLayerInit(void) {
     s16 *pal;
 
-    D_8010D8E8_game_guys_lucky_7.group = func_8010C8A8_game_guys_lucky_7(0x64000A, 0, 10, 128);
-    D_8010D8E8_game_guys_lucky_7.sprite = HuSprGet(D_8010D8E8_game_guys_lucky_7.group, 0);
-    D_8010D8E8_game_guys_lucky_7.unk_04[0] = D_8010D8E8_game_guys_lucky_7.sprite->data->pat->data;
-    pal = D_8010D8E8_game_guys_lucky_7.sprite->data->pal;
-    D_8010D8E8_game_guys_lucky_7.unk_04[1] = HuMemAllocTag(0x9600, 0x7918);
-    D_8010D8E8_game_guys_lucky_7.unk_04[2] = HuMemAllocTag(0x9600, 0x7918);
+    m267_spotColorLayer.group = m267_SpotSprCreate(0x64000A, 0, 10, 128);
+    m267_spotColorLayer.sprite = HuSprGet(m267_spotColorLayer.group, 0);
+    m267_spotColorLayer.unk_04[0] = m267_spotColorLayer.sprite->data->pat->data;
+    pal = m267_spotColorLayer.sprite->data->pal;
+    m267_spotColorLayer.unk_04[1] = HuMemAllocTag(0x9600, 0x7918);
+    m267_spotColorLayer.unk_04[2] = HuMemAllocTag(0x9600, 0x7918);
     pal[0] = 0x0001;
     pal[1] = 0x003F;
     pal[2] = 0x07C1;
@@ -283,35 +283,35 @@ void func_8010C97C_game_guys_lucky_7(void) {
     pal[6] = 0xFFC1;
     pal[7] = 0xFFFE;
 
-    D_8010D8D0_game_guys_lucky_7.group = func_8010C8A8_game_guys_lucky_7(0x64000A, 0, 10, 256);
-    D_8010D8D0_game_guys_lucky_7.sprite = HuSprGet(D_8010D8D0_game_guys_lucky_7.group, 0);
-    D_8010D8D0_game_guys_lucky_7.unk_04[0] = D_8010D8D0_game_guys_lucky_7.sprite->data->pat->data;
-    pal = D_8010D8D0_game_guys_lucky_7.sprite->data->pal;
-    D_8010D8D0_game_guys_lucky_7.unk_04[1] = HuMemAllocTag(0x9600, 0x7918);
-    D_8010D8D0_game_guys_lucky_7.unk_04[2] = HuMemAllocTag(0x9600, 0x7918);
+    m267_spotMaskLayer.group = m267_SpotSprCreate(0x64000A, 0, 10, 256);
+    m267_spotMaskLayer.sprite = HuSprGet(m267_spotMaskLayer.group, 0);
+    m267_spotMaskLayer.unk_04[0] = m267_spotMaskLayer.sprite->data->pat->data;
+    pal = m267_spotMaskLayer.sprite->data->pal;
+    m267_spotMaskLayer.unk_04[1] = HuMemAllocTag(0x9600, 0x7918);
+    m267_spotMaskLayer.unk_04[2] = HuMemAllocTag(0x9600, 0x7918);
     pal[0] = 0x0001;
     pal[1] = 0x0000;
 }
 
-void func_8010CAE0_game_guys_lucky_7(void) {
+void m267_SpotLayerClear(void) {
     s32 i, j;
     u8 *ptr;
 
     for (i = 0; i < 3; i++) {
-        ptr = D_8010D8E8_game_guys_lucky_7.unk_04[i];
+        ptr = m267_spotColorLayer.unk_04[i];
         for (j = 0; j <= 0x95FF; j++) {
             *ptr++ = 0;
         }
     }
     for (i = 0; i < 3; i++) {
-        ptr = D_8010D8D0_game_guys_lucky_7.unk_04[i];
+        ptr = m267_spotMaskLayer.unk_04[i];
         for (j = 0; j <= 0x95FF; j++) {
             *ptr++ = 0;
         }
     }
 }
 
-void func_8010CB70_game_guys_lucky_7(s16 active, s16 x, s16 y, s16 radius) {
+void m267_SpotErase(s16 active, s16 x, s16 y, s16 radius) {
     s32 px;
     s32 py;
     u8 *pixels;
@@ -320,8 +320,8 @@ void func_8010CB70_game_guys_lucky_7(s16 active, s16 x, s16 y, s16 radius) {
     if ((active == 0) | (radius < 1)) {
         return;
     }
-    pixels = (u8 *)D_8010D8E8_game_guys_lucky_7.unk_04[D_8010D8E4_game_guys_lucky_7] + (x + radius) / 2 + (y - (radius + 1)) * 160 + 1;
-    mask = (u8 *)D_8010D8D0_game_guys_lucky_7.unk_04[D_8010D8E4_game_guys_lucky_7] + (x + radius) / 2 + (y - (radius + 1)) * 160 + 1;
+    pixels = (u8 *)m267_spotColorLayer.unk_04[m267_spotBufNo] + (x + radius) / 2 + (y - (radius + 1)) * 160 + 1;
+    mask = (u8 *)m267_spotMaskLayer.unk_04[m267_spotBufNo] + (x + radius) / 2 + (y - (radius + 1)) * 160 + 1;
     for (py = y - radius; py < y + radius; py++) {
         pixels += 159 - radius;
         mask += 159 - radius;
@@ -336,11 +336,11 @@ void func_8010CB70_game_guys_lucky_7(s16 active, s16 x, s16 y, s16 radius) {
     }
 }
 
-void func_8010CCCC_game_guys_lucky_7(s16 active, s16 x, s16 y, s16 color) {
-    func_8010CD0C_game_guys_lucky_7(active, x, y, 45, color);
+void m267_SpotDraw(s16 active, s16 x, s16 y, s16 color) {
+    m267_SpotDrawEx(active, x, y, 45, color);
 }
 
-void func_8010CD0C_game_guys_lucky_7(s16 active, s16 x, s16 y, s16 radius, s16 color) {
+void m267_SpotDrawEx(s16 active, s16 x, s16 y, s16 radius, s16 color) {
     s32 radiusSq;
     s32 distXSq;
     s32 distYSq;
@@ -354,8 +354,8 @@ void func_8010CD0C_game_guys_lucky_7(s16 active, s16 x, s16 y, s16 radius, s16 c
         return;
     }
     for (py = y - radius; py < y + radius; py++) {
-        pixels = (u8 *)D_8010D8E8_game_guys_lucky_7.unk_04[D_8010D8E4_game_guys_lucky_7] + (x - radius) / 2 + py * 160;
-        mask = (u8 *)D_8010D8D0_game_guys_lucky_7.unk_04[D_8010D8E4_game_guys_lucky_7] + (x - radius) / 2 + py * 160;
+        pixels = (u8 *)m267_spotColorLayer.unk_04[m267_spotBufNo] + (x - radius) / 2 + py * 160;
+        mask = (u8 *)m267_spotMaskLayer.unk_04[m267_spotBufNo] + (x - radius) / 2 + py * 160;
         distYSq = (py - y) * (py - y);
         for (px = x - radius; px < x + radius; px++) {
             distXSq = (px - x) * (px - x);
@@ -378,7 +378,7 @@ void func_8010CD0C_game_guys_lucky_7(s16 active, s16 x, s16 y, s16 radius, s16 c
     }
 }
 
-void func_8010CF04_game_guys_lucky_7(s16 x0, s16 y0, s16 x1, s16 y1) {
+void m267_SpotLineDraw(s16 x0, s16 y0, s16 x1, s16 y1) {
     s16 dx;
     s16 dy;
     s16 err;
@@ -395,7 +395,7 @@ void func_8010CF04_game_guys_lucky_7(s16 x0, s16 y0, s16 x1, s16 y1) {
                 x0++;
             }
             if (x0 >= 0 && x0 < 320 && y0 >= 0 && y0 < 240) {
-                pixels = (u8 *)D_8010D8E8_game_guys_lucky_7.unk_04[D_8010D8E4_game_guys_lucky_7] + x0 / 2 + y0 * 160;
+                pixels = (u8 *)m267_spotColorLayer.unk_04[m267_spotBufNo] + x0 / 2 + y0 * 160;
                 if (x0 & 1) {
                     *pixels |= 7;
                 } else {
@@ -411,7 +411,7 @@ void func_8010CF04_game_guys_lucky_7(s16 x0, s16 y0, s16 x1, s16 y1) {
                 x0--;
             }
             if (x0 >= 0 && x0 < 320 && y0 >= 0 && y0 < 240) {
-                pixels = (u8 *)D_8010D8E8_game_guys_lucky_7.unk_04[D_8010D8E4_game_guys_lucky_7] + x0 / 2 + y0 * 160;
+                pixels = (u8 *)m267_spotColorLayer.unk_04[m267_spotBufNo] + x0 / 2 + y0 * 160;
                 if (x0 & 1) {
                     *pixels |= 7;
                 } else {

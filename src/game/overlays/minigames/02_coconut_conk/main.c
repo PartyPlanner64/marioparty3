@@ -61,30 +61,30 @@ typedef struct {
 typedef struct {
     /* 0x00 */ u8 unk00;
     /* 0x01 */ u8 unk01[3];
-} CoconutConkBssB1C8; // sizeof 0x4
+} CoconutConkPhaseBss; // sizeof 0x4
 
 typedef struct {
     /* 0x00 */ s16 unk00;
     /* 0x02 */ u16 unk02[2];
-} CoconutConkBssB1E0; // sizeof 0x6
+} CoconutConkTimerBss; // sizeof 0x6
 
-extern char D_8010B070_coconut_conk[];
-extern char D_8010B07C_coconut_conk[];
-extern char D_8010B088_coconut_conk[];
-extern char D_8010B094_coconut_conk[];
-extern char D_8010B0A0_coconut_conk[];
-extern char D_8010B0AC_coconut_conk[];
-extern char D_8010B0B8_coconut_conk[];
-extern char D_8010B0C4_coconut_conk[];
-extern char D_8010B0D0_coconut_conk[];
-extern char D_8010B0E4_coconut_conk[];
+extern char m202_faceTexDaisy[];
+extern char m202_faceTexWaluigi[];
+extern char m202_faceTexDonkey[];
+extern char m202_faceTexWario[];
+extern char m202_faceTexYoshi[];
+extern char m202_faceTexPeach[];
+extern char m202_faceTexLuigi[];
+extern char m202_faceTexMario[];
+extern char m202_seaObjName[];
+extern char m202_seaTexName[];
 
-s16 D_8010AF60_coconut_conk = 0xC1;
-s16 D_8010AF62_coconut_conk = 0x310;
-s16 D_8010AF64_coconut_conk = 0x312;
-s16 D_8010AF66_coconut_conk = 0x311;
+s16 m202_dizzySe = 0xC1;
+s16 m202_coconutLandSe = 0x310;
+s16 m202_coconutHitSe = 0x312;
+s16 m202_rollSe = 0x311;
 
-u16 D_8010AF68_coconut_conk[][3] = {
+u16 m202_faceFileTbl[][3] = {
     { 0xA4, 0xA5, 0xA8 },
     { 0xA4, 0xA5, 0xA9 },
     { 0xA4, 0xA5, 0xA9 },
@@ -95,110 +95,110 @@ u16 D_8010AF68_coconut_conk[][3] = {
     { 0x1A, 0x1C, 0x25 },
 };
 
-char *D_8010AF98_coconut_conk[] = {
-    D_8010B0C4_coconut_conk,
-    D_8010B0B8_coconut_conk,
-    D_8010B0AC_coconut_conk,
-    D_8010B0A0_coconut_conk,
-    D_8010B094_coconut_conk,
-    D_8010B088_coconut_conk,
-    D_8010B07C_coconut_conk,
-    D_8010B070_coconut_conk,
+char *m202_faceTexTbl[] = {
+    m202_faceTexMario,
+    m202_faceTexLuigi,
+    m202_faceTexPeach,
+    m202_faceTexYoshi,
+    m202_faceTexWario,
+    m202_faceTexDonkey,
+    m202_faceTexWaluigi,
+    m202_faceTexDaisy,
 };
 
-f32 D_8010AFB8_coconut_conk[] = { -425.0f, -255.0f, -85.0f, 85.0f, 255.0f, 425.0f };
+f32 m202_treePosXTbl[] = { -425.0f, -255.0f, -85.0f, 85.0f, 255.0f, 425.0f };
 
-s32 D_8010AFD0_coconut_conk[] = { 2, 3, 7, 4, 5, 6, 8, 9 };
+s32 m202_voiceChrTbl[] = { 2, 3, 7, 4, 5, 6, 8, 9 };
 
 // The intended delays (90, 900, 0, 30, 150) landed in gaugeValue/winners, likely
 // from an initializer written without the inner braces. It doesn't matter in
 // practice: this overlay never runs MgFlowMain, so only the
 // setup in MgFlowInit reads this struct.
-MinigameFlow D_8010AFF0_coconut_conk = {
+MinigameFlow m202_mgFlow = {
     MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
     { 90.0f, 900.0f, 0.0f, 30.0f },
     { 150, 0, 0, 0 },
     0, 0, 0, 0, 0
 };
 
-CoconutConkCamera D_8010B018_coconut_conk[2] = {
+CoconutConkCamera m202_cameraViewTbl[2] = {
     { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 43.0f },
     { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 43.0f },
 };
 
-s16 D_8010B1C0_coconut_conk BSS;
-s16 D_8010B1C2_coconut_conk BSS;
-HuSprAnimData *D_8010B1C4_coconut_conk BSS;
-CoconutConkBssB1C8 coconutConkBssB1C8 BSS;
-u8 D_8010B1CC_coconut_conk BSS;
-void *D_8010B1D0_coconut_conk[3] BSS;
-s16 D_8010B1DC_coconut_conk BSS;
-u8 D_8010B1DE_coconut_conk BSS;
-CoconutConkBssB1E0 coconutConkBssB1E0 BSS;
-s16 D_8010B1E6_coconut_conk BSS;
-u8 D_8010B1E8_coconut_conk[8] BSS; /* Unreferenced. */
-CoconutConkData D_8010B1F0_coconut_conk[50] BSS;
-s16 D_8010CBB8_coconut_conk BSS;
-u8 D_8010CBBA_coconut_conk BSS;
-u8 D_8010CBBB_coconut_conk BSS;
-s16 D_8010CBBC_coconut_conk BSS;
-u8 D_8010CBBE_coconut_conk BSS;
-s16 D_8010CBC0_coconut_conk BSS;
-u8 D_8010CBC4_coconut_conk[0xC] BSS; /* Unreferenced. */
+s16 m202_soloStillCnt BSS;
+s16 m202_rollSeVol BSS;
+HuSprAnimData *m202_backImgData BSS;
+CoconutConkPhaseBss m202_phaseBss BSS;
+u8 m202_soloHitF BSS;
+void *m202_faceAnimDataTbl[3] BSS;
+s16 m202_faceAnim BSS;
+u8 m202_coconutFallNum BSS;
+CoconutConkTimerBss m202_timerBss BSS;
+s16 m202_rollSePitch BSS;
+u8 m202_rollSePitchPad[8] BSS; /* Unreferenced. */
+CoconutConkData m202_objWorkTbl[50] BSS;
+s16 m202_rollSeTimer BSS;
+u8 m202_readyState BSS;
+u8 m202_teamComNum BSS;
+s16 m202_teamComDelay BSS;
+u8 m202_teamSlotNum BSS;
+s16 m202_rollSeNo BSS;
+u8 m202_rollSeNoPad[0xC] BSS; /* Unreferenced. */
 
-extern const s16 D_8010B1B8_coconut_conk[];
-/* Aliases of coconutConkBssB1C8 and coconutConkBssB1E0 fields (undefined_syms.txt). */
-extern u8 D_8010B1C8_coconut_conk;
-extern u8 D_8010B1C9_coconut_conk[3];
-extern s16 D_8010B1E0_coconut_conk;
-extern u16 D_8010B1E2_coconut_conk[2];
-/* Aliases of D_8010B1F0_coconut_conk element fields (undefined_syms.txt). */
-extern omObjData *D_8010B274_coconut_conk;
-extern s16 D_8010B2B4_coconut_conk;
-extern u16 D_8010B2B6_coconut_conk;
-extern f32 D_8010B2B8_coconut_conk;
-extern f32 D_8010B2BC_coconut_conk;
-extern omObjData *D_8010B37C_coconut_conk;
-extern s16 D_8010B3BC_coconut_conk;
-extern u16 D_8010B3BE_coconut_conk;
-extern f32 D_8010B3C0_coconut_conk;
-extern f32 D_8010B3C4_coconut_conk;
-extern omObjData *D_8010B400_coconut_conk;
-extern f32 D_8010B418_coconut_conk;
-extern omObjData *D_8010B484_coconut_conk;
-extern f32 D_8010B4A0_coconut_conk;
-extern f32 D_8010B4A4_coconut_conk;
+extern const s16 m202_fontMesTbl[];
+/* Aliases of m202_phaseBss and m202_timerBss fields (undefined_syms.txt). */
+extern u8 m202_phase;
+extern u8 m202_teamSlotTbl[3];
+extern s16 m202_timer;
+extern u16 m202_seaTexSize[2];
+/* Aliases of m202_objWorkTbl element fields (undefined_syms.txt). */
+extern omObjData *m202_backObj;
+extern s16 m202_backSprAnim;
+extern u16 m202_backSpr;
+extern f32 m202_backSprX;
+extern f32 m202_backSprY;
+extern omObjData *m202_foreObj;
+extern s16 m202_foreSprAnim;
+extern u16 m202_foreSpr;
+extern f32 m202_foreSprX;
+extern f32 m202_foreSprY;
+extern omObjData *m202_seaObj;
+extern f32 m202_seaScroll;
+extern omObjData *m202_cloudObj;
+extern f32 m202_cloudScaleA;
+extern f32 m202_cloudScaleB;
 extern u8 omAllPauseF;
 extern s32 omCharModelNoTbl[][6];
 extern s32 omCharMotTbl[][6];
 
-void func_80105C58_coconut_conk(omObjData *);
-void func_80105C60_coconut_conk(omObjData *);
-void func_80105D98_coconut_conk(Gfx **, s32, s32);
-void func_801060C0_coconut_conk(omObjData *);
-void func_801060C8_coconut_conk(omObjData *);
-void func_801062D4_coconut_conk(omObjData *);
-void func_801061F4_coconut_conk(omObjData *);
-void func_80106394_coconut_conk(omObjData *);
-void func_80106468_coconut_conk(omObjData *);
-void func_8010659C_coconut_conk(omObjData *);
-void func_801067E0_coconut_conk(omObjData *);
-void func_801069BC_coconut_conk(omObjData *);
-void func_80106D5C_coconut_conk(omObjData *);
-void func_80106F18_coconut_conk(omObjData *);
-void func_8010815C_coconut_conk(omObjData *);
-void func_801089DC_coconut_conk(omObjData *);
-void func_801090C4_coconut_conk(omObjData *);
-void func_80109DEC_coconut_conk(omObjData *);
-void func_8010A55C_coconut_conk(omObjData *);
-void func_8010A668_coconut_conk(omObjData *);
-void func_8010AE04_coconut_conk(void);
+void m202_MapObjMain(omObjData *);
+void m202_MapObjInit(omObjData *);
+void m202_BackDraw(Gfx **, s32, s32);
+void m202_BackObjMain(omObjData *);
+void m202_BackObjInit(omObjData *);
+void m202_SeaObjMain(omObjData *);
+void m202_ForeObjInit(omObjData *);
+void m202_SeaObjInit(omObjData *);
+void m202_CloudObjMain(omObjData *);
+void m202_CloudObjInit(omObjData *);
+void m202_TreeObjInit(omObjData *);
+void m202_CoconutUpdate(omObjData *);
+void m202_CoconutObjInit(omObjData *);
+void m202_SoloComInputCalc(omObjData *);
+void m202_SoloObjMain(omObjData *);
+void m202_SoloObjInit(omObjData *);
+void m202_TeamComInputCalc(omObjData *);
+void m202_TeamObjInit(omObjData *);
+void m202_ExitObjMain(omObjData *);
+void m202_MainObjMain(omObjData *);
+void m202_ObjectSetup(void);
 
-void func_801059A0_coconut_conk(void) {
-    func_8010AE04_coconut_conk();
+void m202_Executor(void) {
+    m202_ObjectSetup();
 }
 
-f32 func_801059BC_coconut_conk(f32 arg0, f32 arg1) {
+f32 m202_AngleAdd(f32 arg0, f32 arg1) {
     f32 angle = arg0 + arg1;
 
     while (angle >= 360.0f) {
@@ -212,11 +212,11 @@ f32 func_801059BC_coconut_conk(f32 arg0, f32 arg1) {
     return angle;
 }
 
-void func_80105A3C_coconut_conk(void) {
+void m202_ObjWorkInit(void) {
     CoconutConkData *data;
     u32 i;
 
-    for (i = 0, data = D_8010B1F0_coconut_conk; i < 50; i++, data++) {
+    for (i = 0, data = m202_objWorkTbl; i < 50; i++, data++) {
         data->unk00 = NULL;
         data->unk04 = 0;
         data->unk06 = 0;
@@ -251,36 +251,36 @@ void func_80105A3C_coconut_conk(void) {
     }
 }
 
-void func_80105B04_coconut_conk(s32 playerIndex) {
+void m202_PadClear(s32 playerIndex) {
     HuPadBtn[GwPlayer[playerIndex].pad] = 0;
     HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
     HuPadStkX[GwPlayer[playerIndex].pad] = 0;
     HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
-void func_80105B7C_coconut_conk(u8 arg0) {
-    D_8010B1C8_coconut_conk = arg0;
+void m202_PhaseSet(u8 arg0) {
+    m202_phase = arg0;
 }
 
-f32 func_80105B88_coconut_conk(f32 arg0, f32 *arg1, f32 arg2) {
+f32 m202_GravityCalc(f32 arg0, f32 *arg1, f32 arg2) {
     f32 value = *arg1;
 
     *arg1 = value - arg2;
     return arg0 + value;
 }
 
-void func_80105BA4_coconut_conk(omObjData *arg0, u8 arg1) {
+void m202_SoloFaceSet(omObjData *arg0, u8 arg1) {
     s32 character = GwPlayer[arg0->work[0]].chr;
 
-    Hu3DAnimKill(D_8010B1DC_coconut_conk);
-    D_8010B1DC_coconut_conk = Hu3DAnimCreate(Hu3DData[arg0->model[0]].hmf, D_8010B1D0_coconut_conk[arg1], 0,
-                                             D_8010AF98_coconut_conk[character]);
+    Hu3DAnimKill(m202_faceAnim);
+    m202_faceAnim = Hu3DAnimCreate(Hu3DData[arg0->model[0]].hmf, m202_faceAnimDataTbl[arg1], 0,
+                                             m202_faceTexTbl[character]);
 }
 
-void func_80105C58_coconut_conk(omObjData *arg0) {
+void m202_MapObjMain(omObjData *arg0) {
 }
 
-void func_80105C60_coconut_conk(omObjData *arg0) {
+void m202_MapObjInit(omObjData *arg0) {
     CoconutConkCameraWork *work;
 
     mgMapObjTbl[mgMapObjNum++] = arg0;
@@ -294,16 +294,16 @@ void func_80105C60_coconut_conk(omObjData *arg0) {
     MgMapFrictionSet(arg0, 0.5f);
     MgMapAccelSet(arg0, mgPlayerAccel);
     MgMapBoxSet(mgMapObjTbl[0], 512.0f, -1000.0f, -285.0f, 1000.0f, -165.0f);
-    arg0->func = func_80105C58_coconut_conk;
+    arg0->func = m202_MapObjMain;
 }
 
-void func_80105D58_coconut_conk(void) {
-    omObjData *obj = omAddObj(0x3E8, 1, 0xA, -1, func_80105C60_coconut_conk);
+void m202_MapObjCreate(void) {
+    omObjData *obj = omAddObj(0x3E8, 1, 0xA, -1, m202_MapObjInit);
     obj->work[0] = 0;
-    D_8010B1F0_coconut_conk[0].unk00 = obj;
+    m202_objWorkTbl[0].unk00 = obj;
 }
 
-void func_80105D98_coconut_conk(Gfx **arg0, s32 arg1, s32 arg2) {
+void m202_BackDraw(Gfx **arg0, s32 arg1, s32 arg2) {
     Gfx *gfx = *arg0;
     s32 x;
     s32 top;
@@ -319,10 +319,10 @@ void func_80105D98_coconut_conk(Gfx **arg0, s32 arg1, s32 arg2) {
     gDPSetPrimColor(gfx++, 0, 0, 0, 0, 0, 255);
     gDPSetRenderMode(gfx++, G_RM_AA_TEX_EDGE, G_RM_AA_TEX_EDGE2);
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
-    gDPLoadTLUT_pal256(gfx++, D_8010B1C4_coconut_conk->pal);
+    gDPLoadTLUT_pal256(gfx++, m202_backImgData->pal);
     x = 0;
     for (y = 0, top = 128; y < 112; y += 4) {
-        gDPLoadTextureTile(gfx++, D_8010B1C4_coconut_conk->data, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 0, 0, y, 320, y + 4,
+        gDPLoadTextureTile(gfx++, m202_backImgData->data, G_IM_FMT_CI, G_IM_SIZ_8b, 320, 0, 0, y, 320, y + 4,
                            0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                            G_TX_NOLOD, G_TX_NOLOD);
         gDPSetTileSize(gfx++, G_TX_RENDERTILE, 0, 0, 320 << 2, 4 << 2);
@@ -332,78 +332,78 @@ void func_80105D98_coconut_conk(Gfx **arg0, s32 arg1, s32 arg2) {
     *arg0 = gfx;
 }
 
-void func_801060C0_coconut_conk(omObjData *arg0) {
+void m202_BackObjMain(omObjData *arg0) {
 }
 
-void func_801060C8_coconut_conk(omObjData *arg0) {
-    D_8010B2B4_coconut_conk = HuSprAnimDataRead(0x23000D);
-    D_8010B2B6_coconut_conk = espEntry(D_8010B2B4_coconut_conk, 0, 0);
-    espAttrSet(D_8010B2B6_coconut_conk, 0x4000);
-    D_8010B2B8_coconut_conk = 160.0f;
-    D_8010B2BC_coconut_conk = 67.0f;
-    espPosSet(D_8010B2B6_coconut_conk, 160, 67);
-    D_8010B1C4_coconut_conk = HuSprAnimDataGet(HuSprAnimDataRead(0x23000E));
-    Hu3DModelCameraSet(Hu3DHookFuncCreate(0, func_80105D98_coconut_conk, 2), HU3D_CAM0);
-    arg0->func = func_801060C0_coconut_conk;
+void m202_BackObjInit(omObjData *arg0) {
+    m202_backSprAnim = HuSprAnimDataRead(0x23000D);
+    m202_backSpr = espEntry(m202_backSprAnim, 0, 0);
+    espAttrSet(m202_backSpr, 0x4000);
+    m202_backSprX = 160.0f;
+    m202_backSprY = 67.0f;
+    espPosSet(m202_backSpr, 160, 67);
+    m202_backImgData = HuSprAnimDataGet(HuSprAnimDataRead(0x23000E));
+    Hu3DModelCameraSet(Hu3DHookFuncCreate(0, m202_BackDraw, 2), HU3D_CAM0);
+    arg0->func = m202_BackObjMain;
 }
 
-void func_801061AC_coconut_conk(void) {
-    omObjData *obj = omAddObj(0x384, 1, 0xA, -1, func_801060C8_coconut_conk);
+void m202_BackObjCreate(void) {
+    omObjData *obj = omAddObj(0x384, 1, 0xA, -1, m202_BackObjInit);
     obj->work[0] = 0;
-    D_8010B274_coconut_conk = obj;
+    m202_backObj = obj;
 }
 
-void func_801061EC_coconut_conk(omObjData *arg0) {
+void m202_ForeObjMain(omObjData *arg0) {
 }
 
-void func_801061F4_coconut_conk(omObjData *arg0) {
-    D_8010B3BC_coconut_conk = HuSprAnimDataRead(0x23000F);
-    D_8010B3BE_coconut_conk = espEntry(D_8010B3BC_coconut_conk, 0, 0);
-    espAttrSet(D_8010B3BE_coconut_conk, 0);
-    D_8010B3C0_coconut_conk = 160.0f;
-    D_8010B3C4_coconut_conk = 219.0f;
-    espPosSet(D_8010B3BE_coconut_conk, 160, 219);
-    arg0->func = func_801061EC_coconut_conk;
+void m202_ForeObjInit(omObjData *arg0) {
+    m202_foreSprAnim = HuSprAnimDataRead(0x23000F);
+    m202_foreSpr = espEntry(m202_foreSprAnim, 0, 0);
+    espAttrSet(m202_foreSpr, 0);
+    m202_foreSprX = 160.0f;
+    m202_foreSprY = 219.0f;
+    espPosSet(m202_foreSpr, 160, 219);
+    arg0->func = m202_ForeObjMain;
 }
 
-void func_80106294_coconut_conk(void) {
-    omObjData *obj = omAddObj(0x3B6, 1, 0xA, -1, func_801061F4_coconut_conk);
+void m202_ForeObjCreate(void) {
+    omObjData *obj = omAddObj(0x3B6, 1, 0xA, -1, m202_ForeObjInit);
     obj->work[0] = 0;
-    D_8010B37C_coconut_conk = obj;
+    m202_foreObj = obj;
 }
 
-void func_801062D4_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010B1F0_coconut_conk[4];
+void m202_SeaObjMain(omObjData *arg0) {
+    CoconutConkData *data = &m202_objWorkTbl[4];
 
     if (omPauseChk() + omAllPauseF == 0) {
         data->unk18 += 0.2f;
     }
-    Hu3DModelObjTexScroll(arg0->model[0], 0.0f, data->unk18, D_8010B1E2_coconut_conk[0], D_8010B1E2_coconut_conk[1],
-                       D_8010B0D0_coconut_conk, 0);
+    Hu3DModelObjTexScroll(arg0->model[0], 0.0f, data->unk18, m202_seaTexSize[0], m202_seaTexSize[1],
+                       m202_seaObjName, 0);
     Hu3DModelPosSet(arg0->model[0], arg0->trans.x, arg0->trans.y, arg0->trans.z);
 }
 
-void func_80106394_coconut_conk(omObjData *arg0) {
+void m202_SeaObjInit(omObjData *arg0) {
     arg0->model[0] = Hu3DModelRead(0x230004, 0x289);
     Hu3DModelVtxBufMake(arg0->model[0]);
-    Hu3DTexSizeGet(D_8010B0E4_coconut_conk, D_8010B1E2_coconut_conk);
-    D_8010B418_coconut_conk = 0.0f;
+    Hu3DTexSizeGet(m202_seaTexName, m202_seaTexSize);
+    m202_seaScroll = 0.0f;
     arg0->trans.x = 0.0f;
     arg0->trans.y = 0.0f;
     arg0->trans.z = 0.0f;
     Hu3DModelCameraSet(arg0->model[0], HU3D_CAM0);
-    arg0->func = func_801062D4_coconut_conk;
+    arg0->func = m202_SeaObjMain;
 }
 
-void func_8010641C_coconut_conk(void) {
-    omObjData *obj = omAddObj(0x35C, 1, 0, -1, func_80106394_coconut_conk);
+void m202_SeaObjCreate(void) {
+    omObjData *obj = omAddObj(0x35C, 1, 0, -1, m202_SeaObjInit);
     obj->work[0] = 0;
-    D_8010B400_coconut_conk = obj;
+    m202_seaObj = obj;
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
-void func_80106468_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010B1F0_coconut_conk[5];
+void m202_CloudObjMain(omObjData *arg0) {
+    CoconutConkData *data = &m202_objWorkTbl[5];
 
     switch (data->unk04) {
         case 0:
@@ -426,7 +426,7 @@ void func_80106468_coconut_conk(omObjData *arg0) {
     Hu3DModelScaleSet(arg0->model[1], data->unk20, data->unk20, data->unk20);
 }
 
-void func_8010659C_coconut_conk(omObjData *arg0) {
+void m202_CloudObjInit(omObjData *arg0) {
     arg0->model[0] = Hu3DModelRead(0x230005, 0x289);
     arg0->model[1] = Hu3DModelRead(0x230005, 0x289);
     arg0->trans.x = -400.0f;
@@ -434,21 +434,21 @@ void func_8010659C_coconut_conk(omObjData *arg0) {
     arg0->trans.z = -1000.0f;
     Hu3DModelPosSet(arg0->model[0], arg0->trans.x, arg0->trans.y, -1000.0f);
     Hu3DModelPosSet(arg0->model[1], 450.0f, 750.0f, -1000.0f);
-    D_8010B4A0_coconut_conk = 1.0f;
-    D_8010B4A4_coconut_conk = 1.0f;
+    m202_cloudScaleA = 1.0f;
+    m202_cloudScaleB = 1.0f;
     Hu3DModelCameraSet(arg0->model[0], HU3D_CAM1);
     Hu3DModelCameraSet(arg0->model[1], HU3D_CAM1);
-    arg0->func = func_80106468_coconut_conk;
+    arg0->func = m202_CloudObjMain;
 }
 
-void func_801066A4_coconut_conk(void) {
-    omObjData *obj = omAddObj(0x366, 5, 0xA, -1, func_8010659C_coconut_conk);
+void m202_CloudObjCreate(void) {
+    omObjData *obj = omAddObj(0x366, 5, 0xA, -1, m202_CloudObjInit);
     obj->work[0] = 0;
-    D_8010B484_coconut_conk = obj;
+    m202_cloudObj = obj;
 }
 
-void func_801066E4_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010B1F0_coconut_conk[6 + arg0->work[0]];
+void m202_TreeObjMain(omObjData *arg0) {
+    CoconutConkData *data = &m202_objWorkTbl[6 + arg0->work[0]];
 
     switch (data->unk04) {
         case 0:
@@ -464,7 +464,7 @@ void func_801066E4_coconut_conk(omObjData *arg0) {
     }
 }
 
-void func_801067E0_coconut_conk(omObjData *arg0) {
+void m202_TreeObjInit(omObjData *arg0) {
     if (arg0->work[0] % 3 == 0) {
         arg0->model[0] = Hu3DModelRead(0x230001, 0x299);
     }
@@ -474,28 +474,28 @@ void func_801067E0_coconut_conk(omObjData *arg0) {
     if (arg0->work[0] % 3 == 2) {
         arg0->model[0] = Hu3DModelRead(0x23000C, 0x299);
     }
-    arg0->trans.x = D_8010AFB8_coconut_conk[arg0->work[0]];
+    arg0->trans.x = m202_treePosXTbl[arg0->work[0]];
     arg0->trans.y = 0.0f;
     arg0->trans.z = -225.0f;
     Hu3DModelPosSet(arg0->model[0], arg0->trans.x, arg0->trans.y, -225.0f);
     Hu3DModelCameraSet(arg0->model[0], HU3D_CAM1);
-    arg0->func = func_801066E4_coconut_conk;
+    arg0->func = m202_TreeObjMain;
 }
 
-void func_80106924_coconut_conk(void) {
+void m202_TreeObjCreateAll(void) {
     u8 i;
 
     for (i = 0; i < 6; i++) {
-        CoconutConkData *data = &D_8010B1F0_coconut_conk[6 + i];
-        omObjData *obj = omAddObj(0x352, 1, 0xA, -1, func_801067E0_coconut_conk);
+        CoconutConkData *data = &m202_objWorkTbl[6 + i];
+        omObjData *obj = omAddObj(0x352, 1, 0xA, -1, m202_TreeObjInit);
 
         obj->work[0] = i;
         data->unk00 = obj;
     }
 }
 
-void func_801069BC_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010B1F0_coconut_conk[12 + arg0->work[0]];
+void m202_CoconutUpdate(omObjData *arg0) {
+    CoconutConkData *data = &m202_objWorkTbl[12 + arg0->work[0]];
     s16 sound;
     s16 pan;
 
@@ -528,7 +528,7 @@ void func_801069BC_coconut_conk(omObjData *arg0) {
         case 3:
             if (data->unk06 == 0) {
                 Hu3DMotionSpeedSet(arg0->model[0], 2.0f);
-                sound = HuAudFXPlay(D_8010AF62_coconut_conk);
+                sound = HuAudFXPlay(m202_coconutLandSe);
                 pan = (arg0->trans.x + 390.0f) * 0.165f;
                 if (pan < 0) {
                     pan = 0;
@@ -543,7 +543,7 @@ void func_801069BC_coconut_conk(omObjData *arg0) {
                 Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             if (data->unk06 >= 16) {
-                D_8010B1DE_coconut_conk--;
+                m202_coconutFallNum--;
                 data->unk04 = 0;
                 data->unk06 = 0;
                 arg0->trans.z = -200.0f;
@@ -555,7 +555,7 @@ void func_801069BC_coconut_conk(omObjData *arg0) {
         case 4:
             if (data->unk06 == 0) {
                 Hu3DMotionSpeedSet(arg0->model[0], 2.0f);
-                sound = HuAudFXPlay(D_8010AF64_coconut_conk);
+                sound = HuAudFXPlay(m202_coconutHitSe);
                 pan = (arg0->trans.x + 390.0f) * 0.165f;
                 if (pan < 0) {
                     pan = 0;
@@ -569,7 +569,7 @@ void func_801069BC_coconut_conk(omObjData *arg0) {
                 Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             if (data->unk06 >= 16) {
-                D_8010B1DE_coconut_conk--;
+                m202_coconutFallNum--;
                 data->unk04 = 0;
                 data->unk06 = 0;
                 arg0->trans.z = -200.0f;
@@ -581,11 +581,11 @@ void func_801069BC_coconut_conk(omObjData *arg0) {
     }
 }
 
-void func_80106D40_coconut_conk(omObjData *arg0) {
-    func_801069BC_coconut_conk(arg0);
+void m202_CoconutObjMain(omObjData *arg0) {
+    m202_CoconutUpdate(arg0);
 }
 
-void func_80106D5C_coconut_conk(omObjData *arg0) {
+void m202_CoconutObjInit(omObjData *arg0) {
     if (arg0->work[0] < 3) {
         arg0->model[0] = Hu3DModelRead(0x23000B, 0x289);
     }
@@ -602,23 +602,23 @@ void func_80106D5C_coconut_conk(omObjData *arg0) {
     Hu3DModelPosSet(arg0->model[1], arg0->trans.x, arg0->trans.y, arg0->trans.z);
     Hu3DModelCameraSet(arg0->model[0], HU3D_CAM1);
     Hu3DModelCameraSet(arg0->model[1], HU3D_CAM1);
-    arg0->func = func_80106D40_coconut_conk;
+    arg0->func = m202_CoconutObjMain;
 }
 
-void func_80106E80_coconut_conk(void) {
+void m202_CoconutObjCreateAll(void) {
     u8 i;
 
     for (i = 0; i < 9; i++) {
-        CoconutConkData *data = &D_8010B1F0_coconut_conk[12 + i];
-        omObjData *obj = omAddObj(0x320, 5, 0xA, -1, func_80106D5C_coconut_conk);
+        CoconutConkData *data = &m202_objWorkTbl[12 + i];
+        omObjData *obj = omAddObj(0x320, 5, 0xA, -1, m202_CoconutObjInit);
 
         obj->work[0] = i;
         data->unk00 = obj;
     }
 }
 
-void func_80106F18_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010B1F0_coconut_conk[21];
+void m202_SoloComInputCalc(omObjData *arg0) {
+    CoconutConkData *data = &m202_objWorkTbl[21];
     u16 player = arg0->work[0];
     f32 target = 0.0f;
     f32 gaps[4];
@@ -644,7 +644,7 @@ void func_80106F18_coconut_conk(omObjData *arg0) {
         ((GwPlayer[player].cpu_difficulty == 2) & (input < 180)) ||
         ((GwPlayer[player].cpu_difficulty == 3) & (input < 255))) {
         for (i = 0; i < 3; i++) {
-            CoconutConkData *e = &D_8010B1F0_coconut_conk[22 + i];
+            CoconutConkData *e = &m202_objWorkTbl[22 + i];
             omObjData *o = e->unk00;
 
             pos[i] = o->trans.x;
@@ -653,7 +653,7 @@ void func_80106F18_coconut_conk(omObjData *arg0) {
             }
         }
         for (i = 0; i < 3; i++) {
-            entry = &D_8010B1F0_coconut_conk[12 + i];
+            entry = &m202_objWorkTbl[12 + i];
             obj = entry->unk00;
             if (entry->unk04 == 1 || entry->unk04 == 2) {
                 if (obj->trans.x + 29.0f > arg0->trans.x - 40.0f && obj->trans.x - 29.0f < arg0->trans.x + 40.0f) {
@@ -772,12 +772,12 @@ void func_80106F18_coconut_conk(omObjData *arg0) {
     }
 }
 
-void func_80107674_coconut_conk(omObjData *arg0) {
-    func_80106F18_coconut_conk(arg0);
+void m202_SoloComInput(omObjData *arg0) {
+    m202_SoloComInputCalc(arg0);
 }
 
-void func_80107690_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010B1F0_coconut_conk[21];
+void m202_SoloPadInput(omObjData *arg0) {
+    CoconutConkData *data = &m202_objWorkTbl[21];
 
     data->unk04 = 0;
     if (HuPadStkX[arg0->work[3]] <= -30) {
@@ -788,8 +788,8 @@ void func_80107690_coconut_conk(omObjData *arg0) {
     }
 }
 
-void func_801076EC_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010B1F0_coconut_conk[21];
+void m202_SoloIntroMove(omObjData *arg0) {
+    CoconutConkData *data = &m202_objWorkTbl[21];
 
     switch (data->unk04) {
         case 0:
@@ -821,12 +821,12 @@ void func_801076EC_coconut_conk(omObjData *arg0) {
             }
             break;
     }
-    arg0->rot.z = func_801059BC_coconut_conk(arg0->rot.z, -data->unk18);
+    arg0->rot.z = m202_AngleAdd(arg0->rot.z, -data->unk18);
     arg0->trans.x += data->unk18;
 }
 
-void func_801078BC_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010B1F0_coconut_conk[21];
+void m202_SoloMove(omObjData *arg0) {
+    CoconutConkData *data = &m202_objWorkTbl[21];
     f32 nextX;
 
     switch (data->unk04) {
@@ -860,36 +860,36 @@ void func_801078BC_coconut_conk(omObjData *arg0) {
             break;
     }
     if (data->unk18 >= -3.0f && data->unk18 <= 3.0f) {
-        D_8010B1C0_coconut_conk++;
-        if (D_8010B1C0_coconut_conk > 500) {
-            D_8010B1C0_coconut_conk = 500;
+        m202_soloStillCnt++;
+        if (m202_soloStillCnt > 500) {
+            m202_soloStillCnt = 500;
         }
     } else {
-        D_8010B1C0_coconut_conk = 0;
+        m202_soloStillCnt = 0;
     }
     nextX = arg0->trans.x + data->unk18;
     if ((nextX >= 450.0f) | (nextX <= -450.0f)) {
         data->unk18 = -(data->unk18 * 0.5f);
     }
-    arg0->rot.z = func_801059BC_coconut_conk(arg0->rot.z, -data->unk18);
+    arg0->rot.z = m202_AngleAdd(arg0->rot.z, -data->unk18);
     arg0->trans.x += data->unk18;
 }
 
-void func_80107B8C_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010B1F0_coconut_conk[21];
+void m202_SoloHitCheck(omObjData *arg0) {
+    CoconutConkData *data = &m202_objWorkTbl[21];
     s16 i;
     s16 sound;
 
     for (i = 0; i < 9; i++) {
-        CoconutConkData *coconut = &D_8010B1F0_coconut_conk[12 + i];
+        CoconutConkData *coconut = &m202_objWorkTbl[12 + i];
         omObjData *obj = coconut->unk00;
 
         if (coconut->unk04 == 2 && obj->trans.x + 29.0f >= arg0->trans.x - 40.0f &&
             obj->trans.x - 29.0f <= arg0->trans.x + 40.0f && obj->trans.y + 84.0f >= arg0->trans.y - 50.0f &&
             obj->trans.y <= arg0->trans.y + 50.0f) {
-            if (D_8010B1C8_coconut_conk == 2 && D_8010B1E0_coconut_conk > 0) {
-                D_8010B1CC_coconut_conk = 1;
-                func_80105BA4_coconut_conk(arg0, 2);
+            if (m202_phase == 2 && m202_timer > 0) {
+                m202_soloHitF = 1;
+                m202_SoloFaceSet(arg0, 2);
                 Hu3DMotionSpeedSet(arg0->model[6], 1.0f);
                 Hu3DModelAttrSet(arg0->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DModelPosSet(arg0->model[6], arg0->trans.x, arg0->trans.y + 50.0f, arg0->trans.z);
@@ -906,7 +906,7 @@ void func_80107B8C_coconut_conk(omObjData *arg0) {
         Hu3DModelAttrSet(arg0->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(arg0->model[7], arg0->trans.x, arg0->trans.y + 50.0f, arg0->trans.z + 40.0f);
         if (data->unk0C == 0) {
-            sound = PlayerFXPlay(D_8010AF60_coconut_conk, arg0->work[0]);
+            sound = PlayerFXPlay(m202_dizzySe, arg0->work[0]);
             data->unk0C++;
             HuAudFXPitchSet(sound, 0);
             HuAudFXVolSet(sound, 127);
@@ -963,12 +963,12 @@ void func_80107B8C_coconut_conk(omObjData *arg0) {
     Hu3DModelScaleSet(arg0->model[3], data->unk28, 1.0f, data->unk24);
 }
 
-void func_8010815C_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010B1F0_coconut_conk[21];
+void m202_SoloObjMain(omObjData *arg0) {
+    CoconutConkData *data = &m202_objWorkTbl[21];
     u16 player = arg0->work[0];
     s16 pan;
 
-    switch (D_8010B1C8_coconut_conk) {
+    switch (m202_phase) {
         case 0:
             switch (data->unk08) {
                 case 0:
@@ -995,30 +995,30 @@ void func_8010815C_coconut_conk(omObjData *arg0) {
                     }
                     break;
                 case 3:
-                    D_8010CBBA_coconut_conk = 0;
+                    m202_readyState = 0;
                     data->unk08 = 0;
                     break;
             }
-            func_801076EC_coconut_conk(arg0);
+            m202_SoloIntroMove(arg0);
             break;
         case 2:
-            if (D_8010B1E0_coconut_conk > 0 && D_8010B1CC_coconut_conk == 0) {
+            if (m202_timer > 0 && m202_soloHitF == 0) {
                 if (GwPlayer[player].stat & 1) {
-                    func_80107674_coconut_conk(arg0);
+                    m202_SoloComInput(arg0);
                 } else {
-                    func_80107690_coconut_conk(arg0);
+                    m202_SoloPadInput(arg0);
                 }
-                func_801078BC_coconut_conk(arg0);
+                m202_SoloMove(arg0);
             }
-            func_80107B8C_coconut_conk(arg0);
+            m202_SoloHitCheck(arg0);
             break;
         case 3:
-            func_80107B8C_coconut_conk(arg0);
+            m202_SoloHitCheck(arg0);
             data->unk18 = 0.0f;
             break;
         case 4:
-            func_80107B8C_coconut_conk(arg0);
-            if (D_8010B1CC_coconut_conk != 0) {
+            m202_SoloHitCheck(arg0);
+            if (m202_soloHitF != 0) {
                 break;
             }
             switch (data->unk08) {
@@ -1031,19 +1031,19 @@ void func_8010815C_coconut_conk(omObjData *arg0) {
                     Hu3DMotionSpeedSet(arg0->model[5], 1.0f);
                     Hu3DModelAttrSet(arg0->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DModelPosSet(arg0->model[5], arg0->trans.x, arg0->trans.y + 20.0f, arg0->trans.z);
-                    func_80105BA4_coconut_conk(arg0, 1);
+                    m202_SoloFaceSet(arg0, 1);
                     arg0->rot.z = 0.0f;
                     Hu3DMotionModelSet(arg0->model[0], arg0->motion[1]);
                     data->unk1C = 30.0f;
                     data->unk08 = 1;
                     break;
                 case 1:
-                    arg0->trans.y = func_80105B88_coconut_conk(arg0->trans.y, &data->unk1C, 3.0f);
+                    arg0->trans.y = m202_GravityCalc(arg0->trans.y, &data->unk1C, 3.0f);
                     if (arg0->trans.y <= 0.0f) {
                         arg0->trans.y = 0.0f;
                         data->unk08 = 2;
                         Hu3DMotionShiftSet(arg0->model[0], Hu3DData[arg0->motion[2]].motId, 0, 5, 0);
-                        HuAudCharVoicePlay((D_8010AFD0_coconut_conk[GwPlayer[arg0->work[0]].chr] << 16) | 0x2F);
+                        HuAudCharVoicePlay((m202_voiceChrTbl[GwPlayer[arg0->work[0]].chr] << 16) | 0x2F);
                     }
                     data->unk20 -= 9.0f;
                     if (data->unk20 < 0.0f) {
@@ -1077,39 +1077,39 @@ void func_8010815C_coconut_conk(omObjData *arg0) {
             break;
     }
     Hu3DModelPosSet(arg0->model[1], arg0->trans.x, 0.0f, arg0->trans.z);
-    if (++D_8010CBB8_coconut_conk >= 100) {
-        D_8010CBB8_coconut_conk = 0;
+    if (++m202_rollSeTimer >= 100) {
+        m202_rollSeTimer = 0;
     }
-    if (D_8010CBC0_coconut_conk == -1) {
-        D_8010CBC0_coconut_conk = HuAudPlayerFXPlay(D_8010AF66_coconut_conk, arg0->work[0]);
-        if (D_8010CBC0_coconut_conk == -1) {
+    if (m202_rollSeNo == -1) {
+        m202_rollSeNo = HuAudPlayerFXPlay(m202_rollSe, arg0->work[0]);
+        if (m202_rollSeNo == -1) {
             return;
         }
-        D_8010B1E6_coconut_conk = -400;
-        HuAudFXPitchSet(D_8010CBC0_coconut_conk, -400);
-        D_8010B1C2_coconut_conk = 0;
-        HuAudFXVolSet(D_8010CBC0_coconut_conk, D_8010B1C2_coconut_conk);
-        if (D_8010CBC0_coconut_conk == -1) {
+        m202_rollSePitch = -400;
+        HuAudFXPitchSet(m202_rollSeNo, -400);
+        m202_rollSeVol = 0;
+        HuAudFXVolSet(m202_rollSeNo, m202_rollSeVol);
+        if (m202_rollSeNo == -1) {
             return;
         }
     }
-    if (D_8010B1C8_coconut_conk < 3) {
-        if (!(D_8010CBB8_coconut_conk & 1)) {
-            D_8010B1E6_coconut_conk = fabs(data->unk18 * 60.0f) + 0.0;
-            if (D_8010B1E6_coconut_conk > 400) {
-                D_8010B1E6_coconut_conk = 400;
-            } else if (D_8010B1E6_coconut_conk < 0) {
-                D_8010B1E6_coconut_conk = 0;
+    if (m202_phase < 3) {
+        if (!(m202_rollSeTimer & 1)) {
+            m202_rollSePitch = fabs(data->unk18 * 60.0f) + 0.0;
+            if (m202_rollSePitch > 400) {
+                m202_rollSePitch = 400;
+            } else if (m202_rollSePitch < 0) {
+                m202_rollSePitch = 0;
             }
-            HuAudFXPitchSet(D_8010CBC0_coconut_conk, D_8010B1E6_coconut_conk);
+            HuAudFXPitchSet(m202_rollSeNo, m202_rollSePitch);
         } else {
-            D_8010B1C2_coconut_conk = fabs(data->unk18 * 20.0f) + 0.0;
-            if (D_8010B1C2_coconut_conk > 125) {
-                D_8010B1C2_coconut_conk = 125;
-            } else if (D_8010B1C2_coconut_conk < 0) {
-                D_8010B1C2_coconut_conk = 0;
+            m202_rollSeVol = fabs(data->unk18 * 20.0f) + 0.0;
+            if (m202_rollSeVol > 125) {
+                m202_rollSeVol = 125;
+            } else if (m202_rollSeVol < 0) {
+                m202_rollSeVol = 0;
             }
-            HuAudFXVolSet(D_8010CBC0_coconut_conk, D_8010B1C2_coconut_conk);
+            HuAudFXVolSet(m202_rollSeNo, m202_rollSeVol);
         }
         pan = (arg0->trans.x + 450.0f) * 0.143f;
         if (pan < 0) {
@@ -1117,22 +1117,22 @@ void func_8010815C_coconut_conk(omObjData *arg0) {
         } else if (pan > 127) {
             pan = 127;
         }
-        HuAudFXPanning(D_8010CBC0_coconut_conk, pan);
+        HuAudFXPanning(m202_rollSeNo, pan);
     }
 }
 
-void func_801089DC_coconut_conk(omObjData *obj) {
-    CoconutConkData *data = &D_8010B1F0_coconut_conk[21];
+void m202_SoloObjInit(omObjData *obj) {
+    CoconutConkData *data = &m202_objWorkTbl[21];
     s8 chr = GwPlayer[obj->work[0]].chr;
     s32 model = omCharModelNoTbl[chr][0];
     s16 i;
 
     obj->model[0] = Hu3DModelRead(model | omCharModelNoTbl[chr][2], 0x2A9);
     for (i = 0; i < 3; i++) {
-        D_8010B1D0_coconut_conk[i] = DataRead(model | D_8010AF68_coconut_conk[chr][i]);
+        m202_faceAnimDataTbl[i] = DataRead(model | m202_faceFileTbl[chr][i]);
     }
-    D_8010B1DC_coconut_conk = Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, D_8010B1D0_coconut_conk[0], 0,
-                                             D_8010AF98_coconut_conk[chr]);
+    m202_faceAnim = Hu3DAnimCreate(Hu3DData[obj->model[0]].hmf, m202_faceAnimDataTbl[0], 0,
+                                             m202_faceTexTbl[chr]);
     Hu3DModelRemakeStatic(obj->model[0]);
     Hu3DModelDynamicFree(obj->model[0]);
     omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0x62));
@@ -1190,10 +1190,10 @@ void func_801089DC_coconut_conk(omObjData *obj) {
     Hu3DModelCameraSet(obj->model[5], HU3D_CAM1);
     Hu3DModelCameraSet(obj->model[6], HU3D_CAM1);
     Hu3DModelCameraSet(obj->model[7], HU3D_CAM1);
-    obj->func = func_8010815C_coconut_conk;
+    obj->func = m202_SoloObjMain;
 }
 
-void func_80108FA0_coconut_conk(void) {
+void m202_SoloObjCreate(void) {
     u16 player = 0;
     s16 i;
 
@@ -1215,26 +1215,26 @@ void func_80108FA0_coconut_conk(void) {
                     player = 3;
                     break;
             }
-            obj = omAddObj(0x2BC, 9, 0x3C, -1, func_801089DC_coconut_conk);
+            obj = omAddObj(0x2BC, 9, 0x3C, -1, m202_SoloObjInit);
             obj->work[0] = player;
             obj->work[3] = GwPlayer[player].pad;
-            D_8010B1F0_coconut_conk[21].unk00 = obj;
+            m202_objWorkTbl[21].unk00 = obj;
         }
     }
 }
 
-void func_801090C4_coconut_conk(omObjData *arg0) {
+void m202_TeamComInputCalc(omObjData *arg0) {
     CoconutConkData *coconuts[3];
     omObjData *objs[3];
-    CoconutConkData *data = &D_8010B1F0_coconut_conk[22 + arg0->work[1]];
+    CoconutConkData *data = &m202_objWorkTbl[22 + arg0->work[1]];
     u16 player = arg0->work[0];
     u8 dir = rand8();
-    omObjData *target = D_8010B1F0_coconut_conk[21].unk00;
+    omObjData *target = m202_objWorkTbl[21].unk00;
     f32 minDist;
     s16 closest;
     s16 i;
 
-    if (D_8010B1C8_coconut_conk == 2) {
+    if (m202_phase == 2) {
         u8 difficulty = GwPlayer[player].cpu_difficulty;
 
         if ((difficulty == 0 && dir < 50) || (difficulty == 1 && dir < 80) || (difficulty == 2 && dir < 100) ||
@@ -1246,11 +1246,11 @@ void func_801090C4_coconut_conk(omObjData *arg0) {
             }
         }
     }
-    if (D_8010CBBB_coconut_conk == 3 && D_8010B1C0_coconut_conk >= D_8010CBBC_coconut_conk) {
+    if (m202_teamComNum == 3 && m202_soloStillCnt >= m202_teamComDelay) {
         closest = 0;
         minDist = 5000.0f;
         for (i = 0; i < 3; i++) {
-            coconuts[i] = &D_8010B1F0_coconut_conk[22 + i];
+            coconuts[i] = &m202_objWorkTbl[22 + i];
             objs[i] = coconuts[i]->unk00;
         }
         for (i = 0; i < 3; i++) {
@@ -1301,18 +1301,18 @@ void func_801090C4_coconut_conk(omObjData *arg0) {
     }
 }
 
-void func_801095C0_coconut_conk(omObjData *);
-void func_801095C8_coconut_conk(omObjData *);
+void m202_TeamPadInput(omObjData *);
+void m202_TeamUpdate(omObjData *);
 
-void func_801095A4_coconut_conk(omObjData *arg0) {
-    func_801090C4_coconut_conk(arg0);
+void m202_TeamComInput(omObjData *arg0) {
+    m202_TeamComInputCalc(arg0);
 }
 
-void func_801095C0_coconut_conk(omObjData *arg0) {
+void m202_TeamPadInput(omObjData *arg0) {
 }
 
-void func_801095C8_coconut_conk(omObjData *arg0) {
-    CoconutConkData *data = &D_8010B1F0_coconut_conk[22 + arg0->work[1]];
+void m202_TeamUpdate(omObjData *arg0) {
+    CoconutConkData *data = &m202_objWorkTbl[22 + arg0->work[1]];
     MgPlayerWork *work = arg0->data;
     CoconutConkData *target;
     f32 minDist;
@@ -1331,20 +1331,20 @@ void func_801095C8_coconut_conk(omObjData *arg0) {
     }
     if (work->unk5C == 0x200 && work->unk50 == 0x80 && data->unk04 == 0) {
         data->unk04 = 1;
-        if (D_8010B1DE_coconut_conk < 3) {
-            D_8010B1DE_coconut_conk++;
+        if (m202_coconutFallNum < 3) {
+            m202_coconutFallNum++;
             MgPlayerEffSet(arg0, 7, arg0->trans.x, arg0->trans.y, arg0->trans.z, 0.0f, 0.0f);
             minDist = 3000.0f;
             closest = 0;
             for (i = 0; i < 6; i++) {
                 s32 idx = i;
 
-                if (minDist > fabs(arg0->trans.x - D_8010AFB8_coconut_conk[idx])) {
-                    minDist = fabs(arg0->trans.x - D_8010AFB8_coconut_conk[idx]);
+                if (minDist > fabs(arg0->trans.x - m202_treePosXTbl[idx])) {
+                    minDist = fabs(arg0->trans.x - m202_treePosXTbl[idx]);
                     closest = i;
                 }
             }
-            target = &D_8010B1F0_coconut_conk[6 + closest];
+            target = &m202_objWorkTbl[6 + closest];
             if (target->unk04 == 0) {
                 target->unk04 = 1;
                 data->unk16 = 1;
@@ -1353,7 +1353,7 @@ void func_801095C8_coconut_conk(omObjData *arg0) {
                 case 0:
                 case 3:
                     for (i = 0; i < 3; i++) {
-                        CoconutConkData *coconut = &D_8010B1F0_coconut_conk[12 + i];
+                        CoconutConkData *coconut = &m202_objWorkTbl[12 + i];
                         omObjData *obj = coconut->unk00;
 
                         if (coconut->unk04 == 0) {
@@ -1366,7 +1366,7 @@ void func_801095C8_coconut_conk(omObjData *arg0) {
                 case 1:
                 case 4:
                     for (i = 3; i < 6; i++) {
-                        CoconutConkData *coconut = &D_8010B1F0_coconut_conk[12 + i];
+                        CoconutConkData *coconut = &m202_objWorkTbl[12 + i];
                         omObjData *obj = coconut->unk00;
 
                         if (coconut->unk04 == 0) {
@@ -1379,7 +1379,7 @@ void func_801095C8_coconut_conk(omObjData *arg0) {
                 case 2:
                 case 5:
                     for (i = 6; i < 9; i++) {
-                        CoconutConkData *coconut = &D_8010B1F0_coconut_conk[12 + i];
+                        CoconutConkData *coconut = &m202_objWorkTbl[12 + i];
                         omObjData *obj = coconut->unk00;
 
                         if (coconut->unk04 == 0) {
@@ -1397,28 +1397,28 @@ void func_801095C8_coconut_conk(omObjData *arg0) {
     }
 }
 
-void func_80109940_coconut_conk(omObjData *arg0) {
+void m202_TeamObjMain(omObjData *arg0) {
     MgPlayerWork *works[3];
     CoconutConkData *datas[3];
     omObjData *objs[3];
-    CoconutConkData *data = &D_8010B1F0_coconut_conk[22 + arg0->work[1]];
+    CoconutConkData *data = &m202_objWorkTbl[22 + arg0->work[1]];
     MgPlayerWork *work = arg0->data;
     s16 i;
 
-    if (D_8010B1C8_coconut_conk != 2) {
-        func_80105B04_coconut_conk(arg0->work[0]);
+    if (m202_phase != 2) {
+        m202_PadClear(arg0->work[0]);
     }
     data->unk18 = arg0->trans.x;
-    switch (D_8010B1C8_coconut_conk) {
+    switch (m202_phase) {
         case 2:
-            if (D_8010B1E0_coconut_conk > 0 && D_8010B1CC_coconut_conk == 0) {
+            if (m202_timer > 0 && m202_soloHitF == 0) {
                 if (!(GwPlayer[arg0->work[0]].stat & 1)) {
-                    func_801095C0_coconut_conk(arg0);
+                    m202_TeamPadInput(arg0);
                 } else {
-                    func_801095A4_coconut_conk(arg0);
+                    m202_TeamComInput(arg0);
                 }
             }
-            func_801095C8_coconut_conk(arg0);
+            m202_TeamUpdate(arg0);
             break;
         case 3:
             if (arg0->trans.y > 512.0f) {
@@ -1431,9 +1431,9 @@ void func_80109940_coconut_conk(omObjData *arg0) {
                     HuPadStkX[arg0->work[3]] = 40;
                 }
                 if (data->unk0C >= 140) {
-                    func_801095A4_coconut_conk(arg0);
+                    m202_TeamComInput(arg0);
                 }
-                func_801095C8_coconut_conk(arg0);
+                m202_TeamUpdate(arg0);
                 break;
             }
             if (work->unk3C != 0.0f) {
@@ -1441,7 +1441,7 @@ void func_80109940_coconut_conk(omObjData *arg0) {
                 HuPadStkY[arg0->work[3]] = -40;
             }
             for (i = 0; i < 3; i++) {
-                datas[i] = &D_8010B1F0_coconut_conk[22 + i];
+                datas[i] = &m202_objWorkTbl[22 + i];
                 objs[i] = datas[i]->unk00;
                 works[i] = objs[i]->data;
             }
@@ -1451,19 +1451,19 @@ void func_80109940_coconut_conk(omObjData *arg0) {
                 (works[1]->unk50 == 0 || works[1]->unk50 == 0x80) && works[1]->unk5C == works[0]->unk5C &&
                 objs[2]->trans.y <= 512.0f && works[2]->unk3C == 0.0f &&
                 (works[2]->unk50 == 0 || works[2]->unk50 == 0x80) && works[2]->unk5C == works[1]->unk5C) {
-                D_8010CBBA_coconut_conk = 3;
+                m202_readyState = 3;
             }
             MgPlayerObjMain(arg0);
             break;
         case 4:
             if (data->unk0E == 0) {
-                if (D_8010B1CC_coconut_conk == 0) {
+                if (m202_soloHitF == 0) {
                     MgPlayerMotSet(arg0, 14);
                     data->unk0E = 1;
                 } else {
                     MgPlayerMotSet(arg0, 13);
                     data->unk0E = 1;
-                    HuAudCharVoicePlay((D_8010AFD0_coconut_conk[GwPlayer[arg0->work[0]].chr] << 16) | 0x2F);
+                    HuAudCharVoicePlay((m202_voiceChrTbl[GwPlayer[arg0->work[0]].chr] << 16) | 0x2F);
                 }
             }
             break;
@@ -1472,7 +1472,7 @@ void func_80109940_coconut_conk(omObjData *arg0) {
         case 5:
             break;
     }
-    if (D_8010B1C8_coconut_conk != 2 && D_8010B1C8_coconut_conk != 3) {
+    if (m202_phase != 2 && m202_phase != 3) {
         MgPlayerObjMain(arg0);
     }
     if (arg0->trans.x < -450.0f) {
@@ -1494,7 +1494,7 @@ void func_80109940_coconut_conk(omObjData *arg0) {
     }
 }
 
-void func_80109DEC_coconut_conk(omObjData *arg0) {
+void m202_TeamObjInit(omObjData *arg0) {
     u16 character = GwPlayer[arg0->work[0]].chr;
     s32 modelFile;
     s32 motionFile;
@@ -1502,26 +1502,26 @@ void func_80109DEC_coconut_conk(omObjData *arg0) {
     u8 slot;
 
     if (GwPlayer[arg0->work[0]].stat & 1) {
-        D_8010CBBB_coconut_conk++;
+        m202_teamComNum++;
         switch (GwPlayer[arg0->work[0]].cpu_difficulty) {
             case 0:
-                if (D_8010CBBC_coconut_conk > 60) {
-                    D_8010CBBC_coconut_conk = 60;
+                if (m202_teamComDelay > 60) {
+                    m202_teamComDelay = 60;
                 }
                 break;
             case 1:
-                if (D_8010CBBC_coconut_conk > 30) {
-                    D_8010CBBC_coconut_conk = 30;
+                if (m202_teamComDelay > 30) {
+                    m202_teamComDelay = 30;
                 }
                 break;
             case 2:
-                if (D_8010CBBC_coconut_conk > 15) {
-                    D_8010CBBC_coconut_conk = 15;
+                if (m202_teamComDelay > 15) {
+                    m202_teamComDelay = 15;
                 }
                 break;
             case 3:
-                if (D_8010CBBC_coconut_conk > 10) {
-                    D_8010CBBC_coconut_conk = 10;
+                if (m202_teamComDelay > 10) {
+                    m202_teamComDelay = 10;
                 }
                 break;
         }
@@ -1552,9 +1552,9 @@ void func_80109DEC_coconut_conk(omObjData *arg0) {
     mgFieldStat = 1;
     slot = rand8() % 3;
     while (TRUE) {
-        if (slot != D_8010B1C9_coconut_conk[0] && slot != D_8010B1C9_coconut_conk[1]) {
-            D_8010B1C9_coconut_conk[D_8010CBBE_coconut_conk] = slot;
-            D_8010CBBE_coconut_conk++;
+        if (slot != m202_teamSlotTbl[0] && slot != m202_teamSlotTbl[1]) {
+            m202_teamSlotTbl[m202_teamSlotNum] = slot;
+            m202_teamSlotNum++;
             switch (slot) {
                 case 0:
                     arg0->trans.x = -300.0f;
@@ -1584,11 +1584,11 @@ void func_80109DEC_coconut_conk(omObjData *arg0) {
     Hu3DModelCameraSet(arg0->model[7], HU3D_CAM1);
     Hu3DModelCameraSet(arg0->model[6], HU3D_CAM1);
     MgPlayerMapAttrSet(arg0, 0, 2);
-    func_80105B04_coconut_conk(arg0->work[0]);
-    arg0->func = func_80109940_coconut_conk;
+    m202_PadClear(arg0->work[0]);
+    arg0->func = m202_TeamObjMain;
 }
 
-void func_8010A344_coconut_conk(void) {
+void m202_TeamObjCreate(void) {
     u16 player = 0;
     s32 count = 0;
     s16 i;
@@ -1612,8 +1612,8 @@ void func_8010A344_coconut_conk(void) {
                     player = 3;
                     break;
             }
-            data = &D_8010B1F0_coconut_conk[22 + count];
-            obj = omAddObj(0x28A, 9, 0x3C, -1, func_80109DEC_coconut_conk);
+            data = &m202_objWorkTbl[22 + count];
+            obj = omAddObj(0x28A, 9, 0x3C, -1, m202_TeamObjInit);
             obj->work[0] = player;
             obj->work[3] = GwPlayer[player].pad;
             data->unk00 = obj;
@@ -1624,7 +1624,7 @@ void func_8010A344_coconut_conk(void) {
     }
 }
 
-void func_8010A4AC_coconut_conk(void) {
+void m202_CameraViewInit(void) {
     u32 i;
 
     for (i = 0; i < 2; i++) {
@@ -1638,111 +1638,111 @@ void func_8010A4AC_coconut_conk(void) {
     }
 }
 
-void func_8010A55C_coconut_conk(omObjData *arg0) {
+void m202_ExitObjMain(omObjData *arg0) {
     u8 i;
 
     for (i = 0; i < 3; i++) {
-        DataClose(D_8010B1D0_coconut_conk[i]);
+        DataClose(m202_faceAnimDataTbl[i]);
     }
-    Hu3DAnimKill(D_8010B1DC_coconut_conk);
+    Hu3DAnimKill(m202_faceAnim);
     osViBlack(0);
     HuAudFXStop(-1);
     omOvlReturnEx(1);
 }
 
-void func_8010A5D8_coconut_conk(omObjData *arg0) {
+void m202_ExitWaitObjMain(omObjData *arg0) {
     if (WipeStatGet() == 0) {
-        arg0->func = func_8010A55C_coconut_conk;
+        arg0->func = m202_ExitObjMain;
     }
 }
 
-void func_8010A610_coconut_conk(omObjData *arg0) {
+void m202_ExitCheckObjMain(omObjData *arg0) {
     if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
-        arg0->func = func_8010A5D8_coconut_conk;
+        arg0->func = m202_ExitWaitObjMain;
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
     }
 }
 
-void func_8010A668_coconut_conk(omObjData *arg0) {
+void m202_MainObjMain(omObjData *arg0) {
     u8 chars[8];
     CoconutConkData *datas[3];
     omObjData *objs[3];
-    omObjData *obj = D_8010B1F0_coconut_conk[21].unk00;
+    omObjData *obj = m202_objWorkTbl[21].unk00;
     s16 i;
     s16 j;
 
     for (i = 0; i < 3; i++) {
-        datas[i] = &D_8010B1F0_coconut_conk[22 + i];
+        datas[i] = &m202_objWorkTbl[22 + i];
         objs[i] = datas[i]->unk00;
     }
 
-    switch (D_8010B1C8_coconut_conk) {
+    switch (m202_phase) {
         case 0:
-            if (D_8010B1E0_coconut_conk == 13) {
+            if (m202_timer == 13) {
                 HuAudFXPlay(0x314);
-                D_8010B1E0_coconut_conk = 14;
-            } else if (D_8010B1E0_coconut_conk < 13) {
-                D_8010B1E0_coconut_conk++;
+                m202_timer = 14;
+            } else if (m202_timer < 13) {
+                m202_timer++;
             }
-            if (D_8010CBBA_coconut_conk == 0) {
-                func_80105B7C_coconut_conk(1);
-                D_8010B1E0_coconut_conk = 1;
+            if (m202_readyState == 0) {
+                m202_PhaseSet(1);
+                m202_timer = 1;
                 HuAudSeqPlay(0x30);
             }
             break;
         case 1:
-            if (--D_8010B1E0_coconut_conk == 0) {
+            if (--m202_timer == 0) {
                 GMesCreate(4);
             }
             if (GMesStatGet() == 0) {
-                func_80105B7C_coconut_conk(2);
+                m202_PhaseSet(2);
                 GMesCreate(0x1A, 30, 160, 28);
-                D_8010B1E0_coconut_conk = 901;
+                m202_timer = 901;
             }
             break;
         case 2:
-            if (D_8010B1E0_coconut_conk > 0) {
-                D_8010B1E0_coconut_conk--;
-                GMesTimerValueSet((D_8010B1E0_coconut_conk + 29) / 30);
-            } else if (D_8010B1CC_coconut_conk == 0) {
+            if (m202_timer > 0) {
+                m202_timer--;
+                GMesTimerValueSet((m202_timer + 29) / 30);
+            } else if (m202_soloHitF == 0) {
                 GMesTimerEnd();
-                func_80105B7C_coconut_conk(3);
+                m202_PhaseSet(3);
                 GMesCreate(0xF);
-                D_8010B1CC_coconut_conk = 0;
-                D_8010B1E0_coconut_conk = -15;
+                m202_soloHitF = 0;
+                m202_timer = -15;
                 HuAudSeqFadeOut(120);
-                HuAudFXStop(D_8010CBC0_coconut_conk);
+                HuAudFXStop(m202_rollSeNo);
             }
-            if (D_8010B1CC_coconut_conk == 1) {
+            if (m202_soloHitF == 1) {
                 GMesTimerEnd();
-                func_80105B7C_coconut_conk(3);
+                m202_PhaseSet(3);
                 GMesCreate(0xF);
-                D_8010B1CC_coconut_conk = 1;
-                D_8010B1E0_coconut_conk = -15;
+                m202_soloHitF = 1;
+                m202_timer = -15;
                 HuAudSeqFadeOut(120);
             }
             break;
         case 3:
             if (GMesStatGet() == 0) {
-                if (D_8010B1E0_coconut_conk >= 0) {
-                    if (D_8010CBBA_coconut_conk == 3) {
-                        func_80105B7C_coconut_conk(4);
-                        D_8010B1E0_coconut_conk = -1;
+                if (m202_timer >= 0) {
+                    if (m202_readyState == 3) {
+                        m202_PhaseSet(4);
+                        m202_timer = -1;
                         break;
                     }
                 }
-                if (D_8010B1E0_coconut_conk < 0) {
-                    D_8010B1E0_coconut_conk++;
+                if (m202_timer < 0) {
+                    m202_timer++;
                 }
             }
             break;
         case 4:
-            if (D_8010B1E0_coconut_conk == -1) {
-                D_8010B1E0_coconut_conk = 0;
+            if (m202_timer == -1) {
+                m202_timer = 0;
                 j = 0;
-                if (D_8010B1CC_coconut_conk == 0) {
+                if (m202_soloHitF == 0) {
                     for (i = 0; i < 4; i++) {
                         if (GwPlayer[i].group == 0) {
                             chars[0] = GwPlayer[i].chr;
@@ -1766,61 +1766,61 @@ void func_8010A668_coconut_conk(omObjData *arg0) {
                 }
             }
             if (GMesStatGet() == 0) {
-                if (D_8010B1E0_coconut_conk >= 15) {
-                    func_80105B7C_coconut_conk(5);
-                    D_8010B1E0_coconut_conk = -1;
+                if (m202_timer >= 15) {
+                    m202_PhaseSet(5);
+                    m202_timer = -1;
                 }
-                D_8010B1E0_coconut_conk++;
+                m202_timer++;
             }
             break;
         case 5:
-            if (D_8010B1E0_coconut_conk == 0) {
+            if (m202_timer == 0) {
                 WipeCreateOut(WIPE_TYPE_NORMAL, 20);
-                arg0->func = func_8010A5D8_coconut_conk;
-                D_8010B1E0_coconut_conk++;
+                arg0->func = m202_ExitWaitObjMain;
+                m202_timer++;
             }
             break;
     }
 }
 
-void func_8010AB4C_coconut_conk(omObjData *arg0) {
+void m202_MainObjInit(omObjData *arg0) {
     s16 i;
 
     MgFlowStatSet(MG_STATE_PLAY);
     WipeCreateIn(WIPE_TYPE_PREV, 16);
-    D_8010B1E0_coconut_conk = 0;
-    D_8010B1C8_coconut_conk = 0;
-    D_8010CBBA_coconut_conk = 100;
+    m202_timer = 0;
+    m202_phase = 0;
+    m202_readyState = 100;
     for (i = 0; i < 3; i++) {
-        D_8010B1C9_coconut_conk[i] = 5;
+        m202_teamSlotTbl[i] = 5;
     }
-    D_8010CBBE_coconut_conk = 0;
-    D_8010B1C0_coconut_conk = 0;
-    D_8010CBBB_coconut_conk = 0;
-    D_8010CBBC_coconut_conk = 500;
-    D_8010B1CC_coconut_conk = 0;
-    D_8010B1DE_coconut_conk = 0;
-    D_8010CBC0_coconut_conk = -1;
-    D_8010B1E6_coconut_conk = -400;
-    D_8010B1C2_coconut_conk = 0;
-    D_8010CBB8_coconut_conk = 0;
-    func_80105D58_coconut_conk();
-    func_801061AC_coconut_conk();
-    func_80106294_coconut_conk();
-    func_8010641C_coconut_conk();
-    func_801066A4_coconut_conk();
-    func_80108FA0_coconut_conk();
-    func_8010A344_coconut_conk();
-    func_80106E80_coconut_conk();
-    func_80106924_coconut_conk();
-    func_8010A4AC_coconut_conk();
-    arg0->func = func_8010A668_coconut_conk;
+    m202_teamSlotNum = 0;
+    m202_soloStillCnt = 0;
+    m202_teamComNum = 0;
+    m202_teamComDelay = 500;
+    m202_soloHitF = 0;
+    m202_coconutFallNum = 0;
+    m202_rollSeNo = -1;
+    m202_rollSePitch = -400;
+    m202_rollSeVol = 0;
+    m202_rollSeTimer = 0;
+    m202_MapObjCreate();
+    m202_BackObjCreate();
+    m202_ForeObjCreate();
+    m202_SeaObjCreate();
+    m202_CloudObjCreate();
+    m202_SoloObjCreate();
+    m202_TeamObjCreate();
+    m202_CoconutObjCreateAll();
+    m202_TreeObjCreateAll();
+    m202_CameraViewInit();
+    arg0->func = m202_MainObjMain;
 }
 
-void func_8010AC88_coconut_conk(void) {
+void m202_Dummy(void) {
 }
 
-void func_8010AC90_coconut_conk(void) {
+void m202_CameraInit(void) {
     omObjData *obj;
     s32 i;
 
@@ -1830,21 +1830,21 @@ void func_8010AC90_coconut_conk(void) {
     CamSetupInit(2);
     CamSetupMapCullAddMulti(2);
     for (i = 0; i < 2; i++) {
-        ScissorSet(i, D_8010B018_coconut_conk[i].scissorX, D_8010B018_coconut_conk[i].scissorY,
-                   D_8010B018_coconut_conk[i].scissorWidth, D_8010B018_coconut_conk[i].scissorHeight);
-        ViewportSet(i, D_8010B018_coconut_conk[i].viewportScale.x, D_8010B018_coconut_conk[i].viewportScale.y,
-                    D_8010B018_coconut_conk[i].viewportScale.z, D_8010B018_coconut_conk[i].viewportTranslate.x,
-                    D_8010B018_coconut_conk[i].viewportTranslate.y, D_8010B018_coconut_conk[i].viewportTranslate.z);
-        Hu3DCameraPerspectiveSet(i, D_8010B018_coconut_conk[i].fov, 80.0f, 8000.0f);
+        ScissorSet(i, m202_cameraViewTbl[i].scissorX, m202_cameraViewTbl[i].scissorY,
+                   m202_cameraViewTbl[i].scissorWidth, m202_cameraViewTbl[i].scissorHeight);
+        ViewportSet(i, m202_cameraViewTbl[i].viewportScale.x, m202_cameraViewTbl[i].viewportScale.y,
+                    m202_cameraViewTbl[i].viewportScale.z, m202_cameraViewTbl[i].viewportTranslate.x,
+                    m202_cameraViewTbl[i].viewportTranslate.y, m202_cameraViewTbl[i].viewportTranslate.z);
+        Hu3DCameraPerspectiveSet(i, m202_cameraViewTbl[i].fov, 80.0f, 8000.0f);
     }
 }
 
-void func_8010AE04_coconut_conk(void) {
+void m202_ObjectSetup(void) {
     MapCollInit(50);
     Hu3DSprModelInit(50);
     omInitObjMan(50, 0);
     omGameSysInit();
-    func_8010AC90_coconut_conk();
+    m202_CameraInit();
     Hu3DGLightMaxSet(1);
     Hu3DGLightMaxSet(2);
     Hu3DGLightColorSet(0, 0xFF, 0xFF, 0xFF);
@@ -1856,13 +1856,13 @@ void func_8010AE04_coconut_conk(void) {
     mgItemObjNum = 0;
     mgPlayerObjNum = 0;
     mgMapObjNum = 0;
-    GMesFontMesCreate(D_8010B1B8_coconut_conk, 0);
-    GMesFontMesCreate(D_8010B1B8_coconut_conk, 1);
-    omAddObj(0x5DC, 0, 0, -1, func_8010AB4C_coconut_conk);
-    omAddObj(0x5DC, 0, 0, -1, func_8010A610_coconut_conk);
-    func_80105A3C_coconut_conk();
-    MgFlowInit(&D_8010AFF0_coconut_conk);
+    GMesFontMesCreate(m202_fontMesTbl, 0);
+    GMesFontMesCreate(m202_fontMesTbl, 1);
+    omAddObj(0x5DC, 0, 0, -1, m202_MainObjInit);
+    omAddObj(0x5DC, 0, 0, -1, m202_ExitCheckObjMain);
+    m202_ObjWorkInit();
+    MgFlowInit(&m202_mgFlow);
 }
 
 // Keep this table after the functions to preserve the original rodata order.
-const s16 D_8010B1B8_coconut_conk[] = { 0x8260, 0x8261, 0x8262, 0 };
+const s16 m202_fontMesTbl[] = { 0x8260, 0x8261, 0x8262, 0 };

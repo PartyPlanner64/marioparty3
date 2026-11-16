@@ -9,112 +9,112 @@ extern f32 Hu3DMatAmbScale;
 extern f32 Hu3DMatColScale;
 extern omObjData *mgItemObjTbl[];
 
-s32 D_8010AF80_treadmill_grill = 0;
-u8 D_8010AF84_treadmill_grill[4] = { 0, 0, 0, 0 };
-f32 D_8010AF88_treadmill_grill = 1.0f;
-f32 D_8010AF8C_treadmill_grill[4] = { 1000.0f, 1000.0f, 1000.0f, 1000.0f };
-f32 D_8010AF9C_treadmill_grill[4] = { 1000.0f, 1000.0f, 1000.0f, 1000.0f };
-f32 D_8010AFAC_treadmill_grill = 0.0f;
-Vec D_8010AFB0_treadmill_grill[4] = {
+s32 m221_fireMdlIdx = 0;
+u8 m221_playerOutTbl[4] = { 0, 0, 0, 0 };
+f32 m221_beltWidthScale = 1.0f;
+f32 m221_beltWidthTbl[4] = { 1000.0f, 1000.0f, 1000.0f, 1000.0f };
+f32 m221_beltWidthPrevTbl[4] = { 1000.0f, 1000.0f, 1000.0f, 1000.0f };
+f32 m221_flameRot = 0.0f;
+Vec m221_playerStartPosTbl[4] = {
     { -200.0f, 250.0f, -250.0f },
     { 200.0f, 250.0f, -250.0f },
     { 200.0f, 250.0f, -650.0f },
     { -200.0f, 250.0f, -650.0f }
 };
-Vec2f D_8010AFE0_treadmill_grill[4] = {
+Vec2f m221_fireBeltPosTbl[4] = {
     { 0.0f, -200.0f },
     { 0.0f, -800.0f },
     { 0.0f, -600.0f },
     { 0.0f, -900.0f }
 };
-Vec D_8010B000_treadmill_grill[4] = { 0 };
-s32 D_8010B030_treadmill_grill[3] = { 1, 1, 1 };
-MinigameFlow D_8010B03C_treadmill_grill = {
+Vec m221_firePosTbl[4] = { 0 };
+s32 m221_fireHideTbl[3] = { 1, 1, 1 };
+MinigameFlow m221_mgFlow = {
     MG_STATE_OPENING, MINIGAME_4P, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
     { 0.0f, 0.0f, 0.0f, 0.0f },
     { 0, 0, 0, 0 },
     105, 900, -1, 75, 135
 };
-f32 D_8010B064_treadmill_grill[13] = {
+f32 m221_flameScaleTbl[13] = {
     0.0f, -0.5f, -1.0f, -1.5f, -2.0f, -2.5f, -3.0f, -3.5f, -4.0f, -4.5f, -5.0f, -5.5f, -6.0f
 };
-s32 D_8010B098_treadmill_grill[13] = { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 };
-f32 D_8010B0CC_treadmill_grill[2] = { 1.3f, 2.0f }; /* Unreferenced. */
-s16 D_8010B0D4_treadmill_grill = -1;
-u32 D_8010B0D8_treadmill_grill[4] = { 0, 0, 0, 0 };
-f32 D_8010B0E8_treadmill_grill[4] = { 0.75f, 0.8f, 0.9f, 1.0f };
-s32 D_8010B0F8_treadmill_grill[4] = { 0, 0, 0, 0 };
-s32 D_8010B108_treadmill_grill[4] = { 0xA0, 0xC0, 0xE0, 0xFF };
-s32 D_8010B118_treadmill_grill[4] = { 0, 0, 0, 0 };
-s32 D_8010B128_treadmill_grill[4][4] = {
+s32 m221_flameSeFTbl[13] = { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 };
+f32 m221_flameSeFTblPad[2] = { 1.3f, 2.0f }; /* Unreferenced. */
+s16 m221_dustMdl = -1;
+u32 m221_playerMoveStepTbl[4] = { 0, 0, 0, 0 };
+f32 m221_comStickScaleTbl[4] = { 0.75f, 0.8f, 0.9f, 1.0f };
+s32 m221_comStateTbl[4] = { 0, 0, 0, 0 };
+s32 m221_comChanceTbl[4] = { 0xA0, 0xC0, 0xE0, 0xFF };
+s32 m221_comTimerTbl[4] = { 0, 0, 0, 0 };
+s32 m221_dustTimerTbl[4][4] = {
     { 0, -2, -4, -6 },
     { 0, -2, -4, -6 },
     { 0, -2, -4, -6 },
     { 0, -2, -4, -6 }
 };
-f32 D_8010B168_treadmill_grill[4] = { 0.5f, 1.0f, 1.5f, 2.0f };
-s32 D_8010B178_treadmill_grill = 0;
-f32 D_8010B17C_treadmill_grill[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-f32 D_8010B18C_treadmill_grill[4] = { 0.0f, 0.0f, 0.0f, 0.0f }; /* Unreferenced. */
-s32 D_8010B19C_treadmill_grill = -1;
-s32 D_8010B1A0_treadmill_grill = 0; /* Unreferenced. */
-f32 D_8010B1A4_treadmill_grill[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-f32 D_8010B1B4_treadmill_grill[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-f32 D_8010B1C4_treadmill_grill[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-s32 D_8010B1D4_treadmill_grill = 0;
-s32 D_8010B1D8_treadmill_grill = 20;
-s32 D_8010B1DC_treadmill_grill = 0;
-f32 D_8010B1E0_treadmill_grill[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-f32 D_8010B1F0_treadmill_grill[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-f32 D_8010B200_treadmill_grill[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-s32 D_8010B210_treadmill_grill[4] = { 90, 90, 90, 90 };
-f32 D_8010B220_treadmill_grill = 0.0f;
-s32 D_8010B224_treadmill_grill[4] = { -1, -1, -1, -1 };
-f32 D_8010B234_treadmill_grill[6] = { -3.0f, -2.0f, -1.25f, 1.25f, 2.0f, 3.0f };
-s16 D_8010B24C_treadmill_grill[6] = { 200, 0, -200, -200, 0, 200 };
-s32 D_8010B258_treadmill_grill = 0;
-f32 D_8010B25C_treadmill_grill = -480.0f;
-f32 D_8010B260_treadmill_grill = 480.0f;
+f32 m221_dustScaleTbl[4] = { 0.5f, 1.0f, 1.5f, 2.0f };
+s32 m221_flameNum = 0;
+f32 m221_beltAccelTbl[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+f32 m221_beltAccelTblPad[4] = { 0.0f, 0.0f, 0.0f, 0.0f }; /* Unreferenced. */
+s32 m221_beltStopTimer = -1;
+s32 m221_beltStopTimerPad = 0; /* Unreferenced. */
+f32 m221_beltScrollTbl[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+f32 m221_beltSpeedTbl[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+f32 m221_beltSpeedStepTbl[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+s32 m221_beltChangeTimer = 0;
+s32 m221_beltSpeedStepCnt = 20;
+s32 m221_beltRunTimer = 0;
+f32 m221_fireDirTbl[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+f32 m221_fireTurnTbl[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+f32 m221_fireSpeedTbl[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+s32 m221_fireWanderTimerTbl[4] = { 90, 90, 90, 90 };
+f32 m221_fireScaleRot = 0.0f;
+s32 m221_beltSeTbl[4] = { -1, -1, -1, -1 };
+f32 m221_beltSpeedChoiceTbl[6] = { -3.0f, -2.0f, -1.25f, 1.25f, 2.0f, 3.0f };
+s16 m221_beltSePitchTbl[6] = { 200, 0, -200, -200, 0, 200 };
+s32 m221_beltStopCnt = 0;
+f32 m221_wallLeftX = -480.0f;
+f32 m221_wallRightX = 480.0f;
 
-s32 D_8010B2E0_treadmill_grill[4][2] BSS;
-s32 D_8010B300_treadmill_grill BSS;
-s32 D_8010B304_treadmill_grill BSS;
-s32 D_8010B308_treadmill_grill BSS;
-s32 D_8010B30C_treadmill_grill BSS;
-s16 D_8010B310_treadmill_grill[16] BSS;
-Vec D_8010B330_treadmill_grill[6] BSS;
-Vec D_8010B378_treadmill_grill[20] BSS;
+s32 m221_comStickSaveTbl[4][2] BSS;
+s32 m221_padBtnSave BSS;
+s32 m221_padBtnDownSave BSS;
+s32 m221_padStkXSave BSS;
+s32 m221_padStkYSave BSS;
+s16 m221_fireMdlTbl[16] BSS;
+Vec m221_flamePathTbl[6] BSS;
+Vec m221_flamePosTbl[20] BSS;
 
-void func_80106008_treadmill_grill(omObjData *object);
-void func_801062DC_treadmill_grill(omObjData *object);
-void func_801065DC_treadmill_grill(omObjData *object);
-void func_801067A8_treadmill_grill(omObjData *object);
-void func_80106DA0_treadmill_grill(omObjData *object, s32 model, s32 motion, u16 player, f32 x, f32 y, f32 z);
-void func_80107238_treadmill_grill(omObjData *object);
-void func_80107454_treadmill_grill(omObjData *object, f32 *x, f32 *y, f32 *z);
-void func_80107798_treadmill_grill(omObjData *object);
-void func_801084B4_treadmill_grill(omObjData *object);
-void func_801085D8_treadmill_grill(omObjData *object);
-void func_80108730_treadmill_grill(omObjData *object);
-void func_80108888_treadmill_grill(omObjData *object);
-void func_801089E0_treadmill_grill(void);
-void func_80108C64_treadmill_grill(omObjData *object, f32 x, f32 y, f32 z);
-void func_80108DE0_treadmill_grill(omObjData *object);
-void func_80108FCC_treadmill_grill(omObjData *object);
-void func_80109108_treadmill_grill(omObjData *object);
-void func_80109FA8_treadmill_grill(omObjData *object);
-f32 func_801093E8_treadmill_grill(s32 index, omObjData *object);
-void func_8010980C_treadmill_grill(omObjData *object);
-void func_8010A548_treadmill_grill(void);
-void func_8010A6A4_treadmill_grill(void);
-void func_8010A754_treadmill_grill(omObjData *object);
-void func_8010A9AC_treadmill_grill(omObjData *object);
-s32 func_8010AA2C_treadmill_grill(f32 x, f32 z);
-s32 func_8010AB9C_treadmill_grill(f32 z);
-void func_8010ACBC_treadmill_grill(omObjData *object);
-void func_8010AE6C_treadmill_grill(omObjData *object);
+void m221_ExitObjMain(omObjData *object);
+void m221_MainObjMain(omObjData *object);
+void m221_MainObjInit(omObjData *object);
+void m221_BeltObjInit(omObjData *object);
+void m221_PlayerInit(omObjData *object, s32 model, s32 motion, u16 player, f32 x, f32 y, f32 z);
+void m221_PlayerFireHitCheck(omObjData *object);
+void m221_PlayerMoveHook(omObjData *object, f32 *x, f32 *y, f32 *z);
+void m221_PlayerComInput(omObjData *object);
+void m221_Player0ObjInit(omObjData *object);
+void m221_Player1ObjInit(omObjData *object);
+void m221_Player2ObjInit(omObjData *object);
+void m221_Player3ObjInit(omObjData *object);
+void m221_FireMdlInit(void);
+void m221_PlayerDustUpdate(omObjData *object, f32 x, f32 y, f32 z);
+void m221_FlameObjInit(omObjData *object);
+void m221_FlameObjMain(omObjData *object);
+void m221_FlamePathCalc(omObjData *object);
+void m221_BeltObjMain(omObjData *object);
+f32 m221_FireDirUpdate(s32 index, omObjData *object);
+void m221_FireUpdate(omObjData *object);
+void m221_BeltSpeedChange(void);
+void m221_BeltStop(void);
+void m221_BeltShrink(omObjData *object);
+void m221_BeltSpeedUpdate(omObjData *object);
+s32 m221_BeltLaneGet(f32 x, f32 z);
+s32 m221_LaneGet(f32 z);
+void m221_BeltVtxUpdate(omObjData *object);
+void m221_BeltTexUpdate(omObjData *object);
 
-void func_801059A0_treadmill_grill(void) {
+void m221_ObjectSetup(void) {
     u8 camIndex;
 
     MapCollInit(50);
@@ -135,55 +135,55 @@ void func_801059A0_treadmill_grill(void) {
     mgPlayerFallInit = 0.0f;
     MgShadowAltSet(0);
     MgMapBaseSet(mgMapObjNum);
-    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 1, 0, -1, func_801065DC_treadmill_grill);
-    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 16, 0, -1, func_801067A8_treadmill_grill);
-    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 16, 60, -1, func_801084B4_treadmill_grill);
-    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 16, 60, -1, func_801085D8_treadmill_grill);
-    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 16, 60, -1, func_80108730_treadmill_grill);
-    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 16, 60, -1, func_80108888_treadmill_grill);
-    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
-    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, func_80108DE0_treadmill_grill);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 1, 0, -1, m221_MainObjInit);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 16, 0, -1, m221_BeltObjInit);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 16, 60, -1, m221_Player0ObjInit);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 16, 60, -1, m221_Player1ObjInit);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 16, 60, -1, m221_Player2ObjInit);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 16, 60, -1, m221_Player3ObjInit);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, m221_FlameObjInit);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, m221_FlameObjInit);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, m221_FlameObjInit);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, m221_FlameObjInit);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, m221_FlameObjInit);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, m221_FlameObjInit);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, m221_FlameObjInit);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, m221_FlameObjInit);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, m221_FlameObjInit);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, m221_FlameObjInit);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, m221_FlameObjInit);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, m221_FlameObjInit);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 2, 0, -1, m221_FlameObjInit);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     mgPlayerAccel = 10.0f;
     WipeCreateIn(WIPE_TYPE_PREV, 16);
-    MgFlowInit(&D_8010B03C_treadmill_grill);
+    MgFlowInit(&m221_mgFlow);
     mgFlowSeqNo = 53;
     mgFlowSeqTime = 20;
     Hu3DGLightDirSet(1, 86.0f, 45.0f, 74.0f);
-    func_801089E0_treadmill_grill();
+    m221_FireMdlInit();
 }
 
-void func_80106008_treadmill_grill(omObjData *object) {
+void m221_ExitObjMain(omObjData *object) {
     if (WipeStatGet() == 0) {
         omOvlReturnEx(1);
     }
 }
 
-void func_80106034_treadmill_grill(omObjData *object) {
+void m221_FlameIntroUpdate(omObjData *object) {
     omObjData *other;
     f32 scale;
     s32 i;
 
     if (WipeStatGet() == 0) {
-        func_80109108_treadmill_grill(object);
+        m221_FlamePathCalc(object);
         for (i = 0; i < mgItemObjNum; i++) {
             other = mgItemObjTbl[i];
-            other->trans.x = D_8010B378_treadmill_grill[i].x;
-            other->trans.y = D_8010B378_treadmill_grill[i].y;
-            other->trans.z = D_8010B378_treadmill_grill[i].z;
+            other->trans.x = m221_flamePosTbl[i].x;
+            other->trans.y = m221_flamePosTbl[i].y;
+            other->trans.z = m221_flamePosTbl[i].z;
             other->rot.y = atan2df(-other->trans.x, -other->trans.z);
-            scale = D_8010B064_treadmill_grill[i] += 0.125f;
+            scale = m221_flameScaleTbl[i] += 0.125f;
             if (scale > 2.3f) {
                 scale = 2.3f;
             }
@@ -191,15 +191,15 @@ void func_80106034_treadmill_grill(omObjData *object) {
                 scale = 0.0f;
             }
             other->scale.x = other->scale.y = other->scale.z = scale;
-            if (scale > 1.0f && D_8010B098_treadmill_grill[i] == 0) {
+            if (scale > 1.0f && m221_flameSeFTbl[i] == 0) {
                 HuAudFXPlay(0x39F);
-                D_8010B098_treadmill_grill[i]++;
+                m221_flameSeFTbl[i]++;
             }
         }
     }
 }
 
-void func_801061E8_treadmill_grill(omObjData *object) {
+void m221_FireFadeUpdate(omObjData *object) {
     f32 scale;
     s32 i;
 
@@ -214,7 +214,7 @@ void func_801061E8_treadmill_grill(omObjData *object) {
     }
 }
 
-void func_801062DC_treadmill_grill(omObjData *object) {
+void m221_MainObjMain(omObjData *object) {
     MgPlayerWork *data;
     omObjData *player;
     s32 last;
@@ -227,7 +227,7 @@ void func_801062DC_treadmill_grill(omObjData *object) {
     }
     count = 0;
     for (i = 0; i < mgPlayerObjNum; i++) {
-        if (D_8010AF84_treadmill_grill[i] == 0) {
+        if (m221_playerOutTbl[i] == 0) {
             count++;
             last = i;
         }
@@ -245,18 +245,18 @@ void func_801062DC_treadmill_grill(omObjData *object) {
             break;
         case 3:
             if (count != 1) {
-                D_8010B03C_treadmill_grill.resultType = MG_RESULT_DRAW;
+                m221_mgFlow.resultType = MG_RESULT_DRAW;
             } else {
-                D_8010B03C_treadmill_grill.winners[0] = last;
-                D_8010B03C_treadmill_grill.resultType = MG_RESULT_WIN_1;
+                m221_mgFlow.winners[0] = last;
+                m221_mgFlow.resultType = MG_RESULT_WIN_1;
             }
             break;
         case 4:
             if (mgFlowResultF == 1) {
-                if (D_8010B03C_treadmill_grill.resultType == MG_RESULT_DRAW) {
+                if (m221_mgFlow.resultType == MG_RESULT_DRAW) {
                     for (i = 0; i < 4; i++) {
                         player = mgPlayerObjTbl[i];
-                        if (D_8010AF84_treadmill_grill[i] == 0) {
+                        if (m221_playerOutTbl[i] == 0) {
                             MgPlayerMotForceSet(player, 14);
                         }
                     }
@@ -271,7 +271,7 @@ void func_801062DC_treadmill_grill(omObjData *object) {
             break;
         case 5:
             WipeCreateOut(0, 20);
-            object->func = func_80106008_treadmill_grill;
+            object->func = m221_ExitObjMain;
             break;
     }
     for (i = 0; i < mgPlayerObjNum; i++) {
@@ -281,13 +281,13 @@ void func_801062DC_treadmill_grill(omObjData *object) {
         WipeCreateOut(0, 20);
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
-        object->func = func_80106008_treadmill_grill;
+        object->func = m221_ExitObjMain;
     }
     Center.y = 150.0f;
     Center.z = -350.0f;
 }
 
-void func_801065DC_treadmill_grill(omObjData *object) {
+void m221_MainObjInit(omObjData *object) {
     MgMapWork *work;
 
     object->model[0] = Hu3DModelRead2(0x360005, 0xA9);
@@ -299,7 +299,7 @@ void func_801065DC_treadmill_grill(omObjData *object) {
     work = HuMemAllocTag(0xB4, TAG_OVERLAY);
     object->data = work;
     memset(work, 0, 0xB4);
-    object->func = func_801062DC_treadmill_grill;
+    object->func = m221_MainObjMain;
     work->unk03 = 1;
     CZoom = 3736.0f;
     CRot.x = 319.0f;
@@ -319,9 +319,9 @@ void func_801065DC_treadmill_grill(omObjData *object) {
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
-const char D_8010B288_treadmill_grill[] = "c201_000-eyes";
+const char m221_fireEyesName[] = "c201_000-eyes";
 
-void func_801067A8_treadmill_grill(omObjData *object) {
+void m221_BeltObjInit(omObjData *object) {
     MgMapWork *work;
 
     Hu3DMatAmbScale = 1.0f;
@@ -338,15 +338,15 @@ void func_801067A8_treadmill_grill(omObjData *object) {
     Hu3DMatAmbScale = 1.0f;
     Hu3DMatColScale = 1.0f;
     object->model[9] = Hu3DModelRead2(0x360006, 0x299);
-    object->model[10] = D_8010B310_treadmill_grill[D_8010AF80_treadmill_grill++];
-    object->model[11] = D_8010B310_treadmill_grill[D_8010AF80_treadmill_grill++];
-    object->model[12] = D_8010B310_treadmill_grill[D_8010AF80_treadmill_grill++];
+    object->model[10] = m221_fireMdlTbl[m221_fireMdlIdx++];
+    object->model[11] = m221_fireMdlTbl[m221_fireMdlIdx++];
+    object->model[12] = m221_fireMdlTbl[m221_fireMdlIdx++];
     Hu3DModelObjAttrSet(object->model[10], 0x70000000, 0);
     Hu3DModelObjAttrSet(object->model[11], 0x70000000, 0);
     Hu3DModelObjAttrSet(object->model[12], 0x70000000, 0);
-    Hu3DMotionNoMotSet(object->model[10], Hu3DData[object->model[10]].motId, D_8010B288_treadmill_grill, 0x4C, 0x46);
-    Hu3DMotionNoMotSet(object->model[11], Hu3DData[object->model[11]].motId, D_8010B288_treadmill_grill, 0x4C, 0x46);
-    Hu3DMotionNoMotSet(object->model[12], Hu3DData[object->model[12]].motId, D_8010B288_treadmill_grill, 0x4C, 0x46);
+    Hu3DMotionNoMotSet(object->model[10], Hu3DData[object->model[10]].motId, m221_fireEyesName, 0x4C, 0x46);
+    Hu3DMotionNoMotSet(object->model[11], Hu3DData[object->model[11]].motId, m221_fireEyesName, 0x4C, 0x46);
+    Hu3DMotionNoMotSet(object->model[12], Hu3DData[object->model[12]].motId, m221_fireEyesName, 0x4C, 0x46);
     object->model[13] = Hu3DModelRead2(0x360007, 0xAC9);
     object->model[14] = Hu3DModelLink(object->model[13]);
     object->model[15] = Hu3DModelLink(object->model[13]);
@@ -364,7 +364,7 @@ void func_801067A8_treadmill_grill(omObjData *object) {
     work = HuMemAllocTag(0xB4, TAG_OVERLAY);
     object->data = work;
     memset(work, 0, 0xB4);
-    object->func = func_80109FA8_treadmill_grill;
+    object->func = m221_BeltObjMain;
     work->unk03 = 1;
     MgMapBlockSet(object, 250.0f, 250.0f, -550.0f, -1050.0f, 550.0f, 150.0f);
     Hu3DModelObjAttrSet(object->model[0], 0x20000, 0x20000);
@@ -395,10 +395,10 @@ void func_801067A8_treadmill_grill(omObjData *object) {
     Hu3DModelPosSet(object->model[9], 0.0f, 0.0f, -450.0f);
     Hu3DModelScaleSet(object->model[9], 1.1f, 1.0f, 0.8f);
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_8010AE6C_treadmill_grill(object);
+    m221_BeltTexUpdate(object);
 }
 
-void func_80106DA0_treadmill_grill(omObjData *object, s32 model, s32 motion, u16 player, f32 x, f32 y, f32 z) {
+void m221_PlayerInit(omObjData *object, s32 model, s32 motion, u16 player, f32 x, f32 y, f32 z) {
     MgPlayerWork *data;
     s32 chr;
     s32 i;
@@ -436,10 +436,10 @@ void func_80106DA0_treadmill_grill(omObjData *object, s32 model, s32 motion, u16
     MgPlayerMotRead(object, 14, CharMotionDataNumGet(chr, 54), 1, 120);
     MgPlayerMotRead(object, 38, CharMotionDataNumGet(chr, 26), 1, 0);
     for (i = 10; i < 14; i++) {
-        if (D_8010B0D4_treadmill_grill < 0) {
-            object->model[i] = D_8010B0D4_treadmill_grill = Hu3DModelRead(0x10014, 0x89D);
+        if (m221_dustMdl < 0) {
+            object->model[i] = m221_dustMdl = Hu3DModelRead(0x10014, 0x89D);
         } else {
-            object->model[i] = Hu3DModelLink(D_8010B0D4_treadmill_grill);
+            object->model[i] = Hu3DModelLink(m221_dustMdl);
         }
     }
     object->trans.x = x;
@@ -449,16 +449,16 @@ void func_80106DA0_treadmill_grill(omObjData *object, s32 model, s32 motion, u16
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
     MgPlayerMapAttrSet(object, 0, 2);
     MgPlayerMapAttrSet(object, 1, 2);
-    MgPlayerHookSet(data, 0, (void *)func_80107798_treadmill_grill);
-    MgPlayerHookSet(data, 1, (void *)func_80107238_treadmill_grill);
-    MgPlayerHookSet(data, 20, (void *)func_80107454_treadmill_grill);
+    MgPlayerHookSet(data, 0, (void *)m221_PlayerComInput);
+    MgPlayerHookSet(data, 1, (void *)m221_PlayerFireHitCheck);
+    MgPlayerHookSet(data, 20, (void *)m221_PlayerMoveHook);
 }
 
-s32 func_80107230_treadmill_grill(void) {
+s32 m221_PlayerHitHook(void) {
     return 1;
 }
 
-void func_80107238_treadmill_grill(omObjData *object) {
+void m221_PlayerFireHitCheck(omObjData *object) {
     MgPlayerWork *data;
     f32 dx;
     f32 dy;
@@ -470,18 +470,18 @@ void func_80107238_treadmill_grill(omObjData *object) {
     data = object->data;
     player = data->unk59;
     hit = FALSE;
-    if (D_8010AF84_treadmill_grill[player] == 0) {
+    if (m221_playerOutTbl[player] == 0) {
         for (i = 0; i < 3; i++) {
-            dx = object->trans.x - D_8010B000_treadmill_grill[i].x;
-            dy = object->trans.y - D_8010B000_treadmill_grill[i].y;
-            dz = object->trans.z - D_8010B000_treadmill_grill[i].z;
+            dx = object->trans.x - m221_firePosTbl[i].x;
+            dy = object->trans.y - m221_firePosTbl[i].y;
+            dz = object->trans.z - m221_firePosTbl[i].z;
             if (HuSqrtf(dx * dx + dy * dy + dz * dz) < data->unk48 + 40.0f) {
                 hit = TRUE;
                 break;
             }
         }
         if (data->unk53[0] == 0 || hit == TRUE) {
-            D_8010AF84_treadmill_grill[player] = 1;
+            m221_playerOutTbl[player] = 1;
             MgPlayerMotForceSet(object, 0x26);
             data->unk50 |= 0x400;
             data->unk38 = -mgPlayerJumpPower;
@@ -492,14 +492,14 @@ void func_80107238_treadmill_grill(omObjData *object) {
         }
     }
     if (GwPlayer[data->unk59].stat & 1) {
-        HuPadBtnDown[data->unk57] = D_8010B304_treadmill_grill;
-        HuPadBtn[data->unk57] = D_8010B300_treadmill_grill;
-        HuPadStkX[data->unk57] = D_8010B308_treadmill_grill;
-        HuPadStkY[data->unk57] = D_8010B30C_treadmill_grill;
+        HuPadBtnDown[data->unk57] = m221_padBtnDownSave;
+        HuPadBtn[data->unk57] = m221_padBtnSave;
+        HuPadStkX[data->unk57] = m221_padStkXSave;
+        HuPadStkY[data->unk57] = m221_padStkYSave;
     }
 }
 
-void func_80107454_treadmill_grill(omObjData *object, f32 *x, f32 *y, f32 *z) {
+void m221_PlayerMoveHook(omObjData *object, f32 *x, f32 *y, f32 *z) {
     MgPlayerWork *data;
     MgMapWork *stageData;
     omObjData *stage;
@@ -528,7 +528,7 @@ void func_80107454_treadmill_grill(omObjData *object, f32 *x, f32 *y, f32 *z) {
         if (*y <= stageData->unk14) {
             data->unk38 = -mgPlayerJumpPower;
             *y = stageData->unk14;
-            switch (D_8010B0D8_treadmill_grill[data->unk59]) {
+            switch (m221_playerMoveStepTbl[data->unk59]) {
                 case 0:
                     seId = 0x39E;
                     break;
@@ -547,12 +547,12 @@ void func_80107454_treadmill_grill(omObjData *object, f32 *x, f32 *y, f32 *z) {
                     break;
             }
             HuAudPlayerFXPlay(seId, data->unk59);
-            D_8010B0D8_treadmill_grill[data->unk59]++;
+            m221_playerMoveStepTbl[data->unk59]++;
         }
     } else if (*y <= 0.0f) {
         data->unk38 = -mgPlayerJumpPower;
         *y = 0.0f;
-        switch (D_8010B0D8_treadmill_grill[data->unk59]) {
+        switch (m221_playerMoveStepTbl[data->unk59]) {
             case 0:
                 seId = 0x39E;
                 break;
@@ -571,15 +571,15 @@ void func_80107454_treadmill_grill(omObjData *object, f32 *x, f32 *y, f32 *z) {
                 break;
         }
         HuAudPlayerFXPlay(seId, data->unk59);
-        D_8010B0D8_treadmill_grill[data->unk59]++;
+        m221_playerMoveStepTbl[data->unk59]++;
     }
     data->unk38 += mgPlayerGravity * 0.6f;
-    func_80108C64_treadmill_grill(object, *x, *y, *z);
+    m221_PlayerDustUpdate(object, *x, *y, *z);
 }
 
 // CPU input logic. minX doubles as the search angle and dist as the lane width third; these reused
 // locals and the do-while around the player load are needed for matching register allocation.
-void func_80107798_treadmill_grill(omObjData *object) {
+void m221_PlayerComInput(omObjData *object) {
     MgPlayerWork *data;
     MgMapWork *stageData;
     omObjData *stage;
@@ -616,31 +616,31 @@ void func_80107798_treadmill_grill(omObjData *object) {
     if (!(GwPlayer[data->unk59].stat & 1)) {
         return;
     }
-    D_8010B304_treadmill_grill = HuPadBtnDown[pad];
-    D_8010B300_treadmill_grill = (u16)HuPadBtn[pad];
-    D_8010B308_treadmill_grill = HuPadStkX[pad];
-    D_8010B30C_treadmill_grill = HuPadStkY[pad];
+    m221_padBtnDownSave = HuPadBtnDown[pad];
+    m221_padBtnSave = (u16)HuPadBtn[pad];
+    m221_padStkXSave = HuPadStkX[pad];
+    m221_padStkYSave = HuPadStkY[pad];
     HuPadStkY[pad] = 0;
     HuPadStkX[pad] = 0;
     HuPadBtnDown[pad] = 0;
     HuPadBtn[pad] = 0;
-    if (D_8010AF84_treadmill_grill[player] == 1) {
+    if (m221_playerOutTbl[player] == 1) {
         return;
     }
     stage = mgMapObjTbl[1];
     stageData = stage->data;
     difficulty = GwPlayer[data->unk59].cpu_difficulty;
-    func_8010AA2C_treadmill_grill(object->trans.x, object->trans.z);
+    m221_BeltLaneGet(object->trans.x, object->trans.z);
     HuPadStkY[pad] = 0;
     HuPadStkX[pad] = 0;
     HuPadBtnDown[pad] = 0;
-    dist = D_8010AF8C_treadmill_grill[0] / 3.0f;
-    if (D_8010B0F8_treadmill_grill[player] == 32 && data->unk38 != 1000.0f) {
-        HuPadStkX[pad] = D_8010B2E0_treadmill_grill[player][0];
-        HuPadStkY[pad] = D_8010B2E0_treadmill_grill[player][1];
+    dist = m221_beltWidthTbl[0] / 3.0f;
+    if (m221_comStateTbl[player] == 32 && data->unk38 != 1000.0f) {
+        HuPadStkX[pad] = m221_comStickSaveTbl[player][0];
+        HuPadStkY[pad] = m221_comStickSaveTbl[player][1];
         HuPadBtn[pad] |= 0x8000;
         for (i = 0; i < 4; i++) {
-            if (D_8010AF84_treadmill_grill[i] != 1) {
+            if (m221_playerOutTbl[i] != 1) {
                 if (i != player) {
                     other = mgPlayerObjTbl[i];
                     x = other->trans.x - object->trans.x;
@@ -653,15 +653,15 @@ void func_80107798_treadmill_grill(omObjData *object) {
         }
         return;
     }
-    D_8010B118_treadmill_grill[player]++;
+    m221_comTimerTbl[player]++;
     x = object->trans.x;
     z = object->trans.z;
-    if (D_8010B0F8_treadmill_grill[player] == 4) {
+    if (m221_comStateTbl[player] == 4) {
         minX = stage->trans.x + stageData->unkA0 + dist;
         maxX = stage->trans.x + stageData->unkA8 - dist;
         minZ = stage->trans.z + stageData->unkA4 + 200.0f;
         maxZ = stage->trans.z + stageData->unkAC - 200.0f;
-    } else if (D_8010B0F8_treadmill_grill[player] == 8) {
+    } else if (m221_comStateTbl[player] == 8) {
         minX = stage->trans.x + stageData->unkA0 + dist;
         maxX = stage->trans.x + stageData->unkA8 - dist;
         minZ = stage->trans.z + stageData->unkA4 + 300.0f;
@@ -674,39 +674,39 @@ void func_80107798_treadmill_grill(omObjData *object) {
     }
     state = 0;
     if (x < minX) {
-        HuPadStkX[pad] = D_8010B0E8_treadmill_grill[difficulty] * 60.0f;
+        HuPadStkX[pad] = m221_comStickScaleTbl[difficulty] * 60.0f;
         state = 4;
-        D_8010B2E0_treadmill_grill[player][0] = HuPadStkX[pad];
+        m221_comStickSaveTbl[player][0] = HuPadStkX[pad];
     } else if (x > maxX) {
-        HuPadStkX[pad] = D_8010B0E8_treadmill_grill[difficulty] * -60.0f;
+        HuPadStkX[pad] = m221_comStickScaleTbl[difficulty] * -60.0f;
         state = 4;
-        D_8010B2E0_treadmill_grill[player][0] = HuPadStkX[pad];
+        m221_comStickSaveTbl[player][0] = HuPadStkX[pad];
     }
     if (z < minZ) {
-        HuPadStkY[pad] = D_8010B0E8_treadmill_grill[difficulty] * -60.0f;
+        HuPadStkY[pad] = m221_comStickScaleTbl[difficulty] * -60.0f;
         state = 8;
-        D_8010B2E0_treadmill_grill[player][1] = HuPadStkY[pad];
+        m221_comStickSaveTbl[player][1] = HuPadStkY[pad];
     } else if (z > maxZ) {
-        HuPadStkY[pad] = D_8010B0E8_treadmill_grill[difficulty] * 60.0f;
+        HuPadStkY[pad] = m221_comStickScaleTbl[difficulty] * 60.0f;
         state = 8;
-        D_8010B2E0_treadmill_grill[player][1] = HuPadStkY[pad];
+        m221_comStickSaveTbl[player][1] = HuPadStkY[pad];
     }
     if (state != 0) {
-        D_8010B0F8_treadmill_grill[player] = state;
-        if (D_8010B118_treadmill_grill[player] > 60 && D_8010B108_treadmill_grill[difficulty] / 4.0f >= rand8()) {
+        m221_comStateTbl[player] = state;
+        if (m221_comTimerTbl[player] > 60 && m221_comChanceTbl[difficulty] / 4.0f >= rand8()) {
             HuPadBtnDown[pad] |= 0x8000;
-            D_8010B0F8_treadmill_grill[player] = 32;
-            D_8010B118_treadmill_grill[player] = 0;
+            m221_comStateTbl[player] = 32;
+            m221_comTimerTbl[player] = 0;
         }
         return;
     }
     minDist = 2000.0f;
     nearest = -1;
     for (i = 0; i < 3; i++) {
-        if (D_8010B030_treadmill_grill[i] == 0) {
-            x = object->trans.x - D_8010B000_treadmill_grill[i].x;
-            y = object->trans.y - D_8010B000_treadmill_grill[i].y;
-            z = object->trans.z - D_8010B000_treadmill_grill[i].z;
+        if (m221_fireHideTbl[i] == 0) {
+            x = object->trans.x - m221_firePosTbl[i].x;
+            y = object->trans.y - m221_firePosTbl[i].y;
+            z = object->trans.z - m221_firePosTbl[i].z;
             dist = HuSqrtf(x * x + y * y + z * z);
             if (dist < minDist) {
                 minDist = dist;
@@ -722,13 +722,13 @@ void func_80107798_treadmill_grill(omObjData *object) {
         for (minX = 0.0f; minX < 360.0f; minX += 60.0f) {
             x = sindf(minX) * (data->unk48 + 40.0f + 200.0f) + object->trans.x;
             z = cosdf(minX) * (data->unk48 + 40.0f + 200.0f) + object->trans.z;
-            if (func_8010AA2C_treadmill_grill(x, z) != -1) {
+            if (m221_BeltLaneGet(x, z) != -1) {
                 for (i = 0; i < 3; i++) {
                     f32 dx;
                     f32 dz;
 
-                    dx = x - D_8010B000_treadmill_grill[i].x;
-                    dz = z - D_8010B000_treadmill_grill[i].z;
+                    dx = x - m221_firePosTbl[i].x;
+                    dz = z - m221_firePosTbl[i].z;
                     dist = HuSqrtf(dx * dx + dz * dz);
                     if (dist < data->unk48 + 40.0f + 200.0f) {
                         candAngle = -1.0f;
@@ -750,21 +750,21 @@ void func_80107798_treadmill_grill(omObjData *object) {
             dir.x = sindf(bestAngle);
             dir.z = cosdf(bestAngle);
         } else {
-            dir.x = object->trans.x - D_8010B000_treadmill_grill[nearest].x;
-            dir.y = object->trans.y - D_8010B000_treadmill_grill[nearest].y;
-            dir.z = object->trans.z - D_8010B000_treadmill_grill[nearest].z;
+            dir.x = object->trans.x - m221_firePosTbl[nearest].x;
+            dir.y = object->trans.y - m221_firePosTbl[nearest].y;
+            dir.z = object->trans.z - m221_firePosTbl[nearest].z;
             MapVecNormalize(&dir);
         }
-        HuPadStkX[pad] = dir.x * 60.0f * D_8010B0E8_treadmill_grill[difficulty];
-        HuPadStkY[pad] = -dir.z * 60.0f * D_8010B0E8_treadmill_grill[difficulty];
-        D_8010B0F8_treadmill_grill[player] = 2;
+        HuPadStkX[pad] = dir.x * 60.0f * m221_comStickScaleTbl[difficulty];
+        HuPadStkY[pad] = -dir.z * 60.0f * m221_comStickScaleTbl[difficulty];
+        m221_comStateTbl[player] = 2;
         return;
     }
     nearest = -1;
     minDist = 2000.0f;
-    if (D_8010B108_treadmill_grill[difficulty] >= rand8()) {
+    if (m221_comChanceTbl[difficulty] >= rand8()) {
         for (i = 0; i < 4; i++) {
-            if (D_8010AF84_treadmill_grill[i] != 1) {
+            if (m221_playerOutTbl[i] != 1) {
                 if (i != player) {
                     other = mgPlayerObjTbl[i];
                     x = object->trans.x - other->trans.x;
@@ -779,7 +779,7 @@ void func_80107798_treadmill_grill(omObjData *object) {
                         rotY = data->unk3C;
                         if (MgDirDot(x, z, sindf(rotY), cosdf(rotY)) < -0.8f) {
                             HuPadBtnDown[pad] = 0x4000;
-                            D_8010B0F8_treadmill_grill[player] = 16;
+                            m221_comStateTbl[player] = 16;
                             break;
                         }
                     }
@@ -792,29 +792,29 @@ void func_80107798_treadmill_grill(omObjData *object) {
             dir.y = 0.0f;
             dir.z = object->trans.z - other->trans.z;
             MapVecNormalize(&dir);
-            HuPadStkX[pad] = -dir.x * 60.0f * D_8010B0E8_treadmill_grill[difficulty];
-            HuPadStkY[pad] = dir.z * 60.0f * D_8010B0E8_treadmill_grill[difficulty];
-            D_8010B0F8_treadmill_grill[player] = 16;
+            HuPadStkX[pad] = -dir.x * 60.0f * m221_comStickScaleTbl[difficulty];
+            HuPadStkY[pad] = dir.z * 60.0f * m221_comStickScaleTbl[difficulty];
+            m221_comStateTbl[player] = 16;
         }
     }
-    switch (D_8010B0F8_treadmill_grill[player]) {
+    switch (m221_comStateTbl[player]) {
         case 4:
         case 8:
-            if (D_8010B118_treadmill_grill[player] > 60 && D_8010B108_treadmill_grill[difficulty] / 4.0f >= rand8()) {
+            if (m221_comTimerTbl[player] > 60 && m221_comChanceTbl[difficulty] / 4.0f >= rand8()) {
                 HuPadBtnDown[pad] |= 0x8000;
-                D_8010B0F8_treadmill_grill[player] = 32;
-                D_8010B118_treadmill_grill[player] = 0;
+                m221_comStateTbl[player] = 32;
+                m221_comTimerTbl[player] = 0;
             }
             break;
         default:
-            D_8010B2E0_treadmill_grill[player][0] = 0;
-            D_8010B2E0_treadmill_grill[player][1] = 0;
+            m221_comStickSaveTbl[player][0] = 0;
+            m221_comStickSaveTbl[player][1] = 0;
             break;
     }
-    D_8010B118_treadmill_grill[player]++;
+    m221_comTimerTbl[player]++;
 }
 
-void func_801084B4_treadmill_grill(omObjData *object) {
+void m221_Player0ObjInit(omObjData *object) {
     MgPlayerWork *data;
     s32 motion;
     s32 model;
@@ -822,17 +822,17 @@ void func_801084B4_treadmill_grill(omObjData *object) {
 
     motion = omCharModelNoTbl[GwPlayer[0].chr][1];
     model = omCharModelNoTbl[GwPlayer[0].chr][0];
-    func_80106DA0_treadmill_grill(object, model, motion, 0, 0.0f, 250.0f, -500.0f);
+    m221_PlayerInit(object, model, motion, 0, 0.0f, 250.0f, -500.0f);
     data = object->data;
     i = rand8() & 3;
-    object->trans.x = D_8010AFB0_treadmill_grill[i].x;
-    object->trans.y = D_8010AFB0_treadmill_grill[i].y;
-    object->trans.z = D_8010AFB0_treadmill_grill[i].z;
-    D_8010AFB0_treadmill_grill[i].x = D_8010AFB0_treadmill_grill[i].y = D_8010AFB0_treadmill_grill[i].z = 0.0f;
+    object->trans.x = m221_playerStartPosTbl[i].x;
+    object->trans.y = m221_playerStartPosTbl[i].y;
+    object->trans.z = m221_playerStartPosTbl[i].z;
+    m221_playerStartPosTbl[i].x = m221_playerStartPosTbl[i].y = m221_playerStartPosTbl[i].z = 0.0f;
     data->unk3C = i * 90.0f + 135.0f;
 }
 
-void func_801085D8_treadmill_grill(omObjData *object) {
+void m221_Player1ObjInit(omObjData *object) {
     MgPlayerWork *data;
     s32 motion;
     s32 model;
@@ -840,19 +840,19 @@ void func_801085D8_treadmill_grill(omObjData *object) {
 
     motion = omCharModelNoTbl[GwPlayer[1].chr][1];
     model = omCharModelNoTbl[GwPlayer[1].chr][0];
-    func_80106DA0_treadmill_grill(object, model, motion, 1, 0.0f, 250.0f, -300.0f);
+    m221_PlayerInit(object, model, motion, 1, 0.0f, 250.0f, -300.0f);
     data = object->data;
     do {
         i = rand8() & 3;
-    } while (D_8010AFB0_treadmill_grill[i].x == 0.0f);
-    object->trans.x = D_8010AFB0_treadmill_grill[i].x;
-    object->trans.y = D_8010AFB0_treadmill_grill[i].y;
-    object->trans.z = D_8010AFB0_treadmill_grill[i].z;
-    D_8010AFB0_treadmill_grill[i].x = D_8010AFB0_treadmill_grill[i].y = D_8010AFB0_treadmill_grill[i].z = 0.0f;
+    } while (m221_playerStartPosTbl[i].x == 0.0f);
+    object->trans.x = m221_playerStartPosTbl[i].x;
+    object->trans.y = m221_playerStartPosTbl[i].y;
+    object->trans.z = m221_playerStartPosTbl[i].z;
+    m221_playerStartPosTbl[i].x = m221_playerStartPosTbl[i].y = m221_playerStartPosTbl[i].z = 0.0f;
     data->unk3C = i * 90.0f + 135.0f;
 }
 
-void func_80108730_treadmill_grill(omObjData *object) {
+void m221_Player2ObjInit(omObjData *object) {
     MgPlayerWork *data;
     s32 motion;
     s32 model;
@@ -860,19 +860,19 @@ void func_80108730_treadmill_grill(omObjData *object) {
 
     motion = omCharModelNoTbl[GwPlayer[2].chr][1];
     model = omCharModelNoTbl[GwPlayer[2].chr][0];
-    func_80106DA0_treadmill_grill(object, model, motion, 2, 0.0f, 250.0f, -300.0f);
+    m221_PlayerInit(object, model, motion, 2, 0.0f, 250.0f, -300.0f);
     data = object->data;
     do {
         i = rand8() & 3;
-    } while (D_8010AFB0_treadmill_grill[i].x == 0.0f);
-    object->trans.x = D_8010AFB0_treadmill_grill[i].x;
-    object->trans.y = D_8010AFB0_treadmill_grill[i].y;
-    object->trans.z = D_8010AFB0_treadmill_grill[i].z;
-    D_8010AFB0_treadmill_grill[i].x = D_8010AFB0_treadmill_grill[i].y = D_8010AFB0_treadmill_grill[i].z = 0.0f;
+    } while (m221_playerStartPosTbl[i].x == 0.0f);
+    object->trans.x = m221_playerStartPosTbl[i].x;
+    object->trans.y = m221_playerStartPosTbl[i].y;
+    object->trans.z = m221_playerStartPosTbl[i].z;
+    m221_playerStartPosTbl[i].x = m221_playerStartPosTbl[i].y = m221_playerStartPosTbl[i].z = 0.0f;
     data->unk3C = i * 90.0f + 135.0f;
 }
 
-void func_80108888_treadmill_grill(omObjData *object) {
+void m221_Player3ObjInit(omObjData *object) {
     MgPlayerWork *data;
     s32 motion;
     s32 model;
@@ -880,19 +880,19 @@ void func_80108888_treadmill_grill(omObjData *object) {
 
     motion = omCharModelNoTbl[GwPlayer[3].chr][1];
     model = omCharModelNoTbl[GwPlayer[3].chr][0];
-    func_80106DA0_treadmill_grill(object, model, motion, 3, 0.0f, 250.0f, -300.0f);
+    m221_PlayerInit(object, model, motion, 3, 0.0f, 250.0f, -300.0f);
     data = object->data;
     do {
         i = rand8() & 3;
-    } while (D_8010AFB0_treadmill_grill[i].x == 0.0f);
-    object->trans.x = D_8010AFB0_treadmill_grill[i].x;
-    object->trans.y = D_8010AFB0_treadmill_grill[i].y;
-    object->trans.z = D_8010AFB0_treadmill_grill[i].z;
-    D_8010AFB0_treadmill_grill[i].x = D_8010AFB0_treadmill_grill[i].y = D_8010AFB0_treadmill_grill[i].z = 0.0f;
+    } while (m221_playerStartPosTbl[i].x == 0.0f);
+    object->trans.x = m221_playerStartPosTbl[i].x;
+    object->trans.y = m221_playerStartPosTbl[i].y;
+    object->trans.z = m221_playerStartPosTbl[i].z;
+    m221_playerStartPosTbl[i].x = m221_playerStartPosTbl[i].y = m221_playerStartPosTbl[i].z = 0.0f;
     data->unk3C = i * 90.0f + 135.0f;
 }
 
-void func_801089E0_treadmill_grill(void) {
+void m221_FireMdlInit(void) {
     s16 model;
     s32 i;
     void *data;
@@ -901,60 +901,60 @@ void func_801089E0_treadmill_grill(void) {
     Hu3DMatAmbScale = 1.0f;
     Hu3DMatColScale = 1.0f;
     data = DataRead(0xA008A);
-    D_8010B310_treadmill_grill[0] = Hu3DModelCreate(data, 0xAC1);
-    anim = Hu3DAnimRead(Hu3DData[D_8010B310_treadmill_grill[0]].hmf, 0xA008C, "c201n_00_DEF");
-    Hu3DModelRemakeStatic(D_8010B310_treadmill_grill[0]);
-    Hu3DModelDynamicFree(D_8010B310_treadmill_grill[0]);
+    m221_fireMdlTbl[0] = Hu3DModelCreate(data, 0xAC1);
+    anim = Hu3DAnimRead(Hu3DData[m221_fireMdlTbl[0]].hmf, 0xA008C, "c201n_00_DEF");
+    Hu3DModelRemakeStatic(m221_fireMdlTbl[0]);
+    Hu3DModelDynamicFree(m221_fireMdlTbl[0]);
     for (i = 1; i < 3; i++) {
         model = Hu3DModelCreate(data, 0xAC1);
         Hu3DAnimLink(Hu3DData[model].hmf, anim, 0, "c201n_00_DEF");
         Hu3DModelRemakeStatic(model);
         Hu3DModelDynamicFree(model);
-        D_8010B310_treadmill_grill[i] = model;
+        m221_fireMdlTbl[i] = model;
     }
     HuMemMemoryFreePerm(data);
     data = DataRead(0xA008A);
-    D_8010B310_treadmill_grill[i] = Hu3DModelCreate(data, 0xAC1);
-    anim = Hu3DAnimRead(Hu3DData[D_8010B310_treadmill_grill[i]].hmf, 0xA008D, "c201n_00_DEF");
-    Hu3DModelRemakeStatic(D_8010B310_treadmill_grill[i]);
-    Hu3DModelDynamicFree(D_8010B310_treadmill_grill[i]);
+    m221_fireMdlTbl[i] = Hu3DModelCreate(data, 0xAC1);
+    anim = Hu3DAnimRead(Hu3DData[m221_fireMdlTbl[i]].hmf, 0xA008D, "c201n_00_DEF");
+    Hu3DModelRemakeStatic(m221_fireMdlTbl[i]);
+    Hu3DModelDynamicFree(m221_fireMdlTbl[i]);
     for (i++; i < 16; i++) {
         model = Hu3DModelCreate(data, 0xAC1);
         Hu3DAnimLink(Hu3DData[model].hmf, anim, 0, "c201n_00_DEF");
         Hu3DModelRemakeStatic(model);
         Hu3DModelDynamicFree(model);
-        D_8010B310_treadmill_grill[i] = model;
+        m221_fireMdlTbl[i] = model;
     }
     HuMemMemoryFreePerm(data);
     Hu3DMatAmbScale = 1.0f;
     Hu3DMatColScale = 1.0f;
 }
 
-void func_80108C64_treadmill_grill(omObjData *object, f32 x, f32 y, f32 z) {
+void m221_PlayerDustUpdate(omObjData *object, f32 x, f32 y, f32 z) {
     s32 player;
     f32 scale;
     s32 i;
 
     player = ((MgPlayerWork *)object->data)->unk59;
     for (i = 0; i < 4; i++) {
-        if (D_8010B128_treadmill_grill[player][i] >= 0) {
-            if (D_8010B128_treadmill_grill[player][i] == 0) {
+        if (m221_dustTimerTbl[player][i] >= 0) {
+            if (m221_dustTimerTbl[player][i] == 0) {
                 Hu3DModelPosSet(object->model[10 + i], x, y + 30.0f, z);
                 Hu3DModelAttrSet(object->model[10 + i], 4, 0);
             }
-            if (D_8010B128_treadmill_grill[player][i] < 8) {
-                scale = D_8010B168_treadmill_grill[D_8010B128_treadmill_grill[player][i] / 2];
+            if (m221_dustTimerTbl[player][i] < 8) {
+                scale = m221_dustScaleTbl[m221_dustTimerTbl[player][i] / 2];
                 Hu3DModelScaleSet(object->model[10 + i], scale, scale, 1.0f);
             }
-            if (D_8010B128_treadmill_grill[player][i] >= 8) {
-                D_8010B128_treadmill_grill[player][i] = -1;
+            if (m221_dustTimerTbl[player][i] >= 8) {
+                m221_dustTimerTbl[player][i] = -1;
             }
         }
-        D_8010B128_treadmill_grill[player][i]++;
+        m221_dustTimerTbl[player][i]++;
     }
 }
 
-void func_80108DE0_treadmill_grill(omObjData *object) {
+void m221_FlameObjInit(omObjData *object) {
     MgItemWork *data;
     s32 i;
 
@@ -962,8 +962,8 @@ void func_80108DE0_treadmill_grill(omObjData *object) {
     memset(object->data, 0, sizeof(MgItemWork));
     data = object->data;
     object->model[1] = 0;
-    object->model[0] = D_8010B310_treadmill_grill[D_8010AF80_treadmill_grill++];
-    object->func = func_80108FCC_treadmill_grill;
+    object->model[0] = m221_fireMdlTbl[m221_fireMdlIdx++];
+    object->func = m221_FlameObjMain;
     data->unk44 = 0.3f;
     data->unk48 = 60.0f;
     data->unk34 = 150.0f;
@@ -978,33 +978,33 @@ void func_80108DE0_treadmill_grill(omObjData *object) {
     for (i = 0; i < 9; i++) {
         data->unk84[i] = NULL;
     }
-    data->unk56 = D_8010B178_treadmill_grill;
+    data->unk56 = m221_flameNum;
     MgPlayerMapAttrSet(object, 0, 2);
     MgPlayerMapAttrSet(object, 1, 2);
-    object->trans.x = sindf(D_8010B178_treadmill_grill * 36.0f) * 450.0f;
+    object->trans.x = sindf(m221_flameNum * 36.0f) * 450.0f;
     object->trans.y = 500.0f;
-    object->trans.z = cosdf(D_8010B178_treadmill_grill * 36.0f) * 450.0f + -512.0f;
+    object->trans.z = cosdf(m221_flameNum * 36.0f) * 450.0f + -512.0f;
     object->scale.x = object->scale.y = object->scale.z = 0.0f;
-    D_8010B178_treadmill_grill++;
+    m221_flameNum++;
 }
 
-void func_80108FCC_treadmill_grill(omObjData *object) {
+void m221_FlameObjMain(omObjData *object) {
     omObjData *stage;
     MgItemWork *data;
 
     stage = mgMapObjTbl[1];
     data = object->data;
     if (MgFlowStatGet() == MG_STATE_PLAY) {
-        object->trans.x = D_8010B378_treadmill_grill[data->unk56].x;
-        object->trans.y = D_8010B378_treadmill_grill[data->unk56].y;
-        object->trans.z = D_8010B378_treadmill_grill[data->unk56].z;
+        object->trans.x = m221_flamePosTbl[data->unk56].x;
+        object->trans.y = m221_flamePosTbl[data->unk56].y;
+        object->trans.z = m221_flamePosTbl[data->unk56].z;
         object->rot.y = atan2df(stage->trans.x - object->trans.x, stage->trans.z - object->trans.z);
         object->scale.x = object->scale.y = object->scale.z =
-            sindf(D_8010AFAC_treadmill_grill * 5.0f + data->unk56 * 30) * 0.3f + 2.2f;
+            sindf(m221_flameRot * 5.0f + data->unk56 * 30) * 0.3f + 2.2f;
     }
 }
 
-void func_80109108_treadmill_grill(omObjData *object) {
+void m221_FlamePathCalc(omObjData *object) {
     Vec dir;
     f32 length;
     f32 spacing;
@@ -1015,38 +1015,38 @@ void func_80109108_treadmill_grill(omObjData *object) {
     s32 n;
 
     n = 0;
-    length = 2.0f * (D_8010AF8C_treadmill_grill[0] + 600.0f) + 2000.0f;
+    length = 2.0f * (m221_beltWidthTbl[0] + 600.0f) + 2000.0f;
     spacing = length / (mgItemObjNum - 1);
-    D_8010B330_treadmill_grill[0].x = sindf(D_8010AFAC_treadmill_grill) * (spacing / 2.0f) + object->trans.x + 0.0f;
-    D_8010B330_treadmill_grill[0].y = 50.0f;
-    D_8010B330_treadmill_grill[0].z = 350.0f;
-    halfWidth = D_8010AF8C_treadmill_grill[0] / 2.0f;
-    D_8010B330_treadmill_grill[1].x = halfWidth + object->trans.x + 180.0f;
-    D_8010B330_treadmill_grill[1].y = 50.0f;
-    D_8010B330_treadmill_grill[1].z = 350.0f;
-    D_8010B330_treadmill_grill[2].x = halfWidth + object->trans.x + 180.0f;
-    D_8010B330_treadmill_grill[2].y = 50.0f;
-    D_8010B330_treadmill_grill[2].z = -1150.0f;
-    D_8010B330_treadmill_grill[3].x = object->trans.x - halfWidth - 180.0f;
-    D_8010B330_treadmill_grill[3].y = 50.0f;
-    D_8010B330_treadmill_grill[3].z = -1150.0f;
-    D_8010B330_treadmill_grill[4].x = object->trans.x - halfWidth - 180.0f;
-    D_8010B330_treadmill_grill[4].y = 50.0f;
-    D_8010B330_treadmill_grill[4].z = 350.0f;
-    D_8010B330_treadmill_grill[5].x = D_8010B330_treadmill_grill[0].x;
-    D_8010B330_treadmill_grill[5].y = 50.0f;
-    D_8010B330_treadmill_grill[5].z = 350.0f;
+    m221_flamePathTbl[0].x = sindf(m221_flameRot) * (spacing / 2.0f) + object->trans.x + 0.0f;
+    m221_flamePathTbl[0].y = 50.0f;
+    m221_flamePathTbl[0].z = 350.0f;
+    halfWidth = m221_beltWidthTbl[0] / 2.0f;
+    m221_flamePathTbl[1].x = halfWidth + object->trans.x + 180.0f;
+    m221_flamePathTbl[1].y = 50.0f;
+    m221_flamePathTbl[1].z = 350.0f;
+    m221_flamePathTbl[2].x = halfWidth + object->trans.x + 180.0f;
+    m221_flamePathTbl[2].y = 50.0f;
+    m221_flamePathTbl[2].z = -1150.0f;
+    m221_flamePathTbl[3].x = object->trans.x - halfWidth - 180.0f;
+    m221_flamePathTbl[3].y = 50.0f;
+    m221_flamePathTbl[3].z = -1150.0f;
+    m221_flamePathTbl[4].x = object->trans.x - halfWidth - 180.0f;
+    m221_flamePathTbl[4].y = 50.0f;
+    m221_flamePathTbl[4].z = 350.0f;
+    m221_flamePathTbl[5].x = m221_flamePathTbl[0].x;
+    m221_flamePathTbl[5].y = 50.0f;
+    m221_flamePathTbl[5].z = 350.0f;
     t = 0.0f;
     for (i = 0; i < 5; i++) {
-        dir.x = D_8010B330_treadmill_grill[i + 1].x - D_8010B330_treadmill_grill[i].x;
-        dir.y = D_8010B330_treadmill_grill[i + 1].y - D_8010B330_treadmill_grill[i].y;
-        dir.z = D_8010B330_treadmill_grill[i + 1].z - D_8010B330_treadmill_grill[i].z;
+        dir.x = m221_flamePathTbl[i + 1].x - m221_flamePathTbl[i].x;
+        dir.y = m221_flamePathTbl[i + 1].y - m221_flamePathTbl[i].y;
+        dir.z = m221_flamePathTbl[i + 1].z - m221_flamePathTbl[i].z;
         dist = HuSqrtf(dir.x * dir.x + dir.z * dir.z);
         MapVecNormalize(&dir);
         do {
-            D_8010B378_treadmill_grill[n].x = t * dir.x + D_8010B330_treadmill_grill[i].x;
-            D_8010B378_treadmill_grill[n].y = t * dir.y + D_8010B330_treadmill_grill[i].y;
-            D_8010B378_treadmill_grill[n].z = t * dir.z + D_8010B330_treadmill_grill[i].z;
+            m221_flamePosTbl[n].x = t * dir.x + m221_flamePathTbl[i].x;
+            m221_flamePosTbl[n].y = t * dir.y + m221_flamePathTbl[i].y;
+            m221_flamePosTbl[n].z = t * dir.z + m221_flamePathTbl[i].z;
             t += spacing;
             n++;
         } while (t < dist);
@@ -1054,66 +1054,66 @@ void func_80109108_treadmill_grill(omObjData *object) {
     }
 }
 
-void func_801093E0_treadmill_grill(omObjData *object, s32 index) {
+void m221_BeltDummy(omObjData *object, s32 index) {
 }
 
-f32 func_801093E8_treadmill_grill(s32 index, omObjData *object) {
+f32 m221_FireDirUpdate(s32 index, omObjData *object) {
     f32 angle;
     f32 speed;
 
-    if (D_8010AFE0_treadmill_grill[index].y < 0.0f && D_8010AFE0_treadmill_grill[index].y > -900.0f) {
-        if (D_8010B210_treadmill_grill[index] == 0) {
-            D_8010B1F0_treadmill_grill[index] = rand8() / 100.0f;
-            D_8010B200_treadmill_grill[index] = rand8() / 100.0f + 1.0f;
-            D_8010B210_treadmill_grill[index] = (rand8() >> 3) + 90;
+    if (m221_fireBeltPosTbl[index].y < 0.0f && m221_fireBeltPosTbl[index].y > -900.0f) {
+        if (m221_fireWanderTimerTbl[index] == 0) {
+            m221_fireTurnTbl[index] = rand8() / 100.0f;
+            m221_fireSpeedTbl[index] = rand8() / 100.0f + 1.0f;
+            m221_fireWanderTimerTbl[index] = (rand8() >> 3) + 90;
         }
-        if (D_8010B1F0_treadmill_grill[index] > 0.0f) {
-            D_8010B1F0_treadmill_grill[index] -= 0.05f;
+        if (m221_fireTurnTbl[index] > 0.0f) {
+            m221_fireTurnTbl[index] -= 0.05f;
         }
-        D_8010B210_treadmill_grill[index]--;
-    } else if (D_8010AFE0_treadmill_grill[index].y >= 0.0f) {
-        if (D_8010B1E0_treadmill_grill[index] > 210.0f) {
-            D_8010B1F0_treadmill_grill[index] = -2.0f;
-            D_8010B200_treadmill_grill[index] -= 0.2f;
-            if (D_8010B200_treadmill_grill[index] < 0.0f) {
-                D_8010B200_treadmill_grill[index] = 0.0f;
+        m221_fireWanderTimerTbl[index]--;
+    } else if (m221_fireBeltPosTbl[index].y >= 0.0f) {
+        if (m221_fireDirTbl[index] > 210.0f) {
+            m221_fireTurnTbl[index] = -2.0f;
+            m221_fireSpeedTbl[index] -= 0.2f;
+            if (m221_fireSpeedTbl[index] < 0.0f) {
+                m221_fireSpeedTbl[index] = 0.0f;
             }
-        } else if (D_8010B1E0_treadmill_grill[index] < 150.0f) {
-            D_8010B1F0_treadmill_grill[index] = 2.0f;
-            D_8010B200_treadmill_grill[index] -= 0.2f;
-            if (D_8010B200_treadmill_grill[index] < 0.0f) {
-                D_8010B200_treadmill_grill[index] = 0.0f;
+        } else if (m221_fireDirTbl[index] < 150.0f) {
+            m221_fireTurnTbl[index] = 2.0f;
+            m221_fireSpeedTbl[index] -= 0.2f;
+            if (m221_fireSpeedTbl[index] < 0.0f) {
+                m221_fireSpeedTbl[index] = 0.0f;
             }
         } else {
-            D_8010B1F0_treadmill_grill[index] = 0.0f;
-            D_8010B200_treadmill_grill[index] = 2.0f;
+            m221_fireTurnTbl[index] = 0.0f;
+            m221_fireSpeedTbl[index] = 2.0f;
         }
-    } else if (D_8010AFE0_treadmill_grill[index].y <= -900.0f) {
-        if (D_8010B1E0_treadmill_grill[index] < 330.0f && D_8010B1E0_treadmill_grill[index] > 180.0f) {
-            D_8010B1F0_treadmill_grill[index] = 2.0f;
-            D_8010B200_treadmill_grill[index] -= 0.2f;
-            if (D_8010B200_treadmill_grill[index] < 0.0f) {
-                D_8010B200_treadmill_grill[index] = 0.0f;
+    } else if (m221_fireBeltPosTbl[index].y <= -900.0f) {
+        if (m221_fireDirTbl[index] < 330.0f && m221_fireDirTbl[index] > 180.0f) {
+            m221_fireTurnTbl[index] = 2.0f;
+            m221_fireSpeedTbl[index] -= 0.2f;
+            if (m221_fireSpeedTbl[index] < 0.0f) {
+                m221_fireSpeedTbl[index] = 0.0f;
             }
-        } else if (D_8010B1E0_treadmill_grill[index] > 30.0f && D_8010B1E0_treadmill_grill[index] < 180.0f) {
-            D_8010B1F0_treadmill_grill[index] = -2.0f;
-            D_8010B200_treadmill_grill[index] -= 0.2f;
-            if (D_8010B200_treadmill_grill[index] < 0.0f) {
-                D_8010B200_treadmill_grill[index] = 0.0f;
+        } else if (m221_fireDirTbl[index] > 30.0f && m221_fireDirTbl[index] < 180.0f) {
+            m221_fireTurnTbl[index] = -2.0f;
+            m221_fireSpeedTbl[index] -= 0.2f;
+            if (m221_fireSpeedTbl[index] < 0.0f) {
+                m221_fireSpeedTbl[index] = 0.0f;
             }
         } else {
-            D_8010B1F0_treadmill_grill[index] = 0.0f;
-            D_8010B200_treadmill_grill[index] = 2.0f;
+            m221_fireTurnTbl[index] = 0.0f;
+            m221_fireSpeedTbl[index] = 2.0f;
         }
     }
-    D_8010B1E0_treadmill_grill[index] += D_8010B1F0_treadmill_grill[index];
-    angle = D_8010B1E0_treadmill_grill[index] = HuAngleWrap(D_8010B1E0_treadmill_grill[index]);
-    speed = D_8010B200_treadmill_grill[index];
-    D_8010AFE0_treadmill_grill[index].x += sindf(angle) * speed;
-    D_8010AFE0_treadmill_grill[index].y += cosdf(angle) * speed;
+    m221_fireDirTbl[index] += m221_fireTurnTbl[index];
+    angle = m221_fireDirTbl[index] = HuAngleWrap(m221_fireDirTbl[index]);
+    speed = m221_fireSpeedTbl[index];
+    m221_fireBeltPosTbl[index].x += sindf(angle) * speed;
+    m221_fireBeltPosTbl[index].y += cosdf(angle) * speed;
     return angle;
 }
-void func_8010980C_treadmill_grill(omObjData *object) {
+void m221_FireUpdate(omObjData *object) {
     HmfMotionNode *node;
     s32 model;
     f32 length;
@@ -1129,141 +1129,141 @@ void func_8010980C_treadmill_grill(omObjData *object) {
         return;
     }
     for (i = 0; i < 3; i++) {
-        angle = func_801093E8_treadmill_grill(i, object);
-        length = D_8010AF8C_treadmill_grill[i] + 100.0f + 200.0f + 200.0f;
-        D_8010AFE0_treadmill_grill[i].x -=
-            D_8010B1B4_treadmill_grill[func_8010AB9C_treadmill_grill(D_8010AFE0_treadmill_grill[i].y)] * 3.125f;
-        if (D_8010AFE0_treadmill_grill[i].x > length) {
-            D_8010AFE0_treadmill_grill[i].x -= length;
+        angle = m221_FireDirUpdate(i, object);
+        length = m221_beltWidthTbl[i] + 100.0f + 200.0f + 200.0f;
+        m221_fireBeltPosTbl[i].x -=
+            m221_beltSpeedTbl[m221_LaneGet(m221_fireBeltPosTbl[i].y)] * 3.125f;
+        if (m221_fireBeltPosTbl[i].x > length) {
+            m221_fireBeltPosTbl[i].x -= length;
         }
-        if (D_8010AFE0_treadmill_grill[i].x < 0.0f) {
-            D_8010AFE0_treadmill_grill[i].x += length;
+        if (m221_fireBeltPosTbl[i].x < 0.0f) {
+            m221_fireBeltPosTbl[i].x += length;
         }
-        if (D_8010AFE0_treadmill_grill[i].x < 100.0f) {
+        if (m221_fireBeltPosTbl[i].x < 100.0f) {
             y = 0.0f;
             x = 0.0f;
             rot = 0.0f;
             scale = 1.0f;
-            D_8010B030_treadmill_grill[i] = 1;
-        } else if (D_8010AFE0_treadmill_grill[i].x <= 200.0f) {
-            y = D_8010AFE0_treadmill_grill[i].x;
-            x = -(D_8010AF8C_treadmill_grill[i] + 100.0f) / 2.0f;
+            m221_fireHideTbl[i] = 1;
+        } else if (m221_fireBeltPosTbl[i].x <= 200.0f) {
+            y = m221_fireBeltPosTbl[i].x;
+            x = -(m221_beltWidthTbl[i] + 100.0f) / 2.0f;
             rot = 90.0f;
-            scale = (D_8010AFE0_treadmill_grill[i].x - 100.0f) / 100.0f;
-            D_8010B030_treadmill_grill[i] = 1;
-        } else if (D_8010AFE0_treadmill_grill[i].x <= 250.0f) {
-            rot = 90.0f - (D_8010AFE0_treadmill_grill[i].x - 200.0f) / 50.0f * 90.0f;
+            scale = (m221_fireBeltPosTbl[i].x - 100.0f) / 100.0f;
+            m221_fireHideTbl[i] = 1;
+        } else if (m221_fireBeltPosTbl[i].x <= 250.0f) {
+            rot = 90.0f - (m221_fireBeltPosTbl[i].x - 200.0f) / 50.0f * 90.0f;
             y = 250.0f - sindf(rot) * 50.0f;
-            x = -(D_8010AF8C_treadmill_grill[i] / 2.0f) + sindf(-rot) * 50.0f;
-            scale = (D_8010AFE0_treadmill_grill[i].x - 200.0f) / 100.0f + 1.0f;
-            D_8010B030_treadmill_grill[i] = 0;
-        } else if (D_8010AFE0_treadmill_grill[i].x < D_8010AF8C_treadmill_grill[i] + 250.0f) {
-            x = -(D_8010AF8C_treadmill_grill[i] + 100.0f) / 2.0f + D_8010AFE0_treadmill_grill[i].x - 250.0f;
+            x = -(m221_beltWidthTbl[i] / 2.0f) + sindf(-rot) * 50.0f;
+            scale = (m221_fireBeltPosTbl[i].x - 200.0f) / 100.0f + 1.0f;
+            m221_fireHideTbl[i] = 0;
+        } else if (m221_fireBeltPosTbl[i].x < m221_beltWidthTbl[i] + 250.0f) {
+            x = -(m221_beltWidthTbl[i] + 100.0f) / 2.0f + m221_fireBeltPosTbl[i].x - 250.0f;
             y = 250.0f;
             rot = 0.0f;
             scale = 1.5f;
-            D_8010B030_treadmill_grill[i] = 0;
-        } else if (D_8010AFE0_treadmill_grill[i].x < D_8010AF8C_treadmill_grill[i] + 250.0f + 50.0f) {
-            rot = -((D_8010AFE0_treadmill_grill[i].x - (D_8010AF8C_treadmill_grill[i] + 250.0f)) / 50.0f) * 90.0f;
+            m221_fireHideTbl[i] = 0;
+        } else if (m221_fireBeltPosTbl[i].x < m221_beltWidthTbl[i] + 250.0f + 50.0f) {
+            rot = -((m221_fireBeltPosTbl[i].x - (m221_beltWidthTbl[i] + 250.0f)) / 50.0f) * 90.0f;
             y = sindf(rot) * 50.0f + 250.0f;
-            x = D_8010AF8C_treadmill_grill[i] / 2.0f + sindf(-rot) * 50.0f;
-            scale = (D_8010AF8C_treadmill_grill[i] + 250.0f + 50.0f - D_8010AFE0_treadmill_grill[i].x) / 100.0f + 1.0f;
-            D_8010B030_treadmill_grill[i] = 0;
-        } else if (D_8010AFE0_treadmill_grill[i].x < (end = D_8010AF8C_treadmill_grill[i] + 250.0f + 50.0f + 100.0f)) {
-            y = end - D_8010AFE0_treadmill_grill[i].x + 100.0f;
-            x = (D_8010AF8C_treadmill_grill[i] + 100.0f) / 2.0f;
+            x = m221_beltWidthTbl[i] / 2.0f + sindf(-rot) * 50.0f;
+            scale = (m221_beltWidthTbl[i] + 250.0f + 50.0f - m221_fireBeltPosTbl[i].x) / 100.0f + 1.0f;
+            m221_fireHideTbl[i] = 0;
+        } else if (m221_fireBeltPosTbl[i].x < (end = m221_beltWidthTbl[i] + 250.0f + 50.0f + 100.0f)) {
+            y = end - m221_fireBeltPosTbl[i].x + 100.0f;
+            x = (m221_beltWidthTbl[i] + 100.0f) / 2.0f;
             rot = -90.0f;
-            scale = (end - D_8010AFE0_treadmill_grill[i].x) / 100.0f;
-            D_8010B030_treadmill_grill[i] = 1;
+            scale = (end - m221_fireBeltPosTbl[i].x) / 100.0f;
+            m221_fireHideTbl[i] = 1;
         } else {
             y = 0.0f;
             x = 0.0f;
             rot = 0.0f;
             scale = 1.0f;
-            D_8010B030_treadmill_grill[i] = 1;
+            m221_fireHideTbl[i] = 1;
         }
         if (y != 0.0f) {
             model = object->model[10 + i];
             Hu3DModelAttrSet(model, 4, 0);
-            Hu3DModelPosSet(model, x + object->trans.x, y, D_8010AFE0_treadmill_grill[i].y);
+            Hu3DModelPosSet(model, x + object->trans.x, y, m221_fireBeltPosTbl[i].y);
             Hu3DModelRotSet(model, CRot.x, 0.0f, 0.0f);
             Hu3DModelScaleSet(model, scale, scale, scale);
             func_80088910_main(Hu3DData[model].mtx, 0.0f, 0.0f, rot);
-            node = Hu3DModelObjPtrGet(model, D_8010B288_treadmill_grill);
+            node = Hu3DModelObjPtrGet(model, m221_fireEyesName);
             node->baseRot.y = node->rot.y = angle;
-            D_8010B220_treadmill_grill += 5.0f;
-            D_8010B220_treadmill_grill = HuAngleWrap(D_8010B220_treadmill_grill);
-            scale = scale * 0.5f + sindf(D_8010B220_treadmill_grill) * 0.3f;
+            m221_fireScaleRot += 5.0f;
+            m221_fireScaleRot = HuAngleWrap(m221_fireScaleRot);
+            scale = scale * 0.5f + sindf(m221_fireScaleRot) * 0.3f;
             model = object->model[13 + i];
             Hu3DModelAttrSet(model, 4, 0);
-            Hu3DModelPosSet(model, x + object->trans.x, y - 3.0f, D_8010AFE0_treadmill_grill[i].y);
+            Hu3DModelPosSet(model, x + object->trans.x, y - 3.0f, m221_fireBeltPosTbl[i].y);
             Hu3DModelScaleSet(model, scale, scale, scale);
             func_80088910_main(Hu3DData[model].mtx, 0.0f, 0.0f, rot);
         } else {
             Hu3DModelAttrSet(object->model[10 + i], 4, 4);
             Hu3DModelAttrSet(object->model[13 + i], 4, 4);
         }
-        D_8010B000_treadmill_grill[i].x = x + object->trans.x;
-        D_8010B000_treadmill_grill[i].y = y;
-        D_8010B000_treadmill_grill[i].z = D_8010AFE0_treadmill_grill[i].y;
+        m221_firePosTbl[i].x = x + object->trans.x;
+        m221_firePosTbl[i].y = y;
+        m221_firePosTbl[i].z = m221_fireBeltPosTbl[i].y;
     }
 }
 
-void func_80109FA8_treadmill_grill(omObjData *object) {
+void m221_BeltObjMain(omObjData *object) {
     MgPlayerWork *data;
     omObjData *player;
     s32 lane;
     s32 i;
 
-    Hu3DModelTexScroll(object->model[0], D_8010B1A4_treadmill_grill[0], 0.0f, 32, 64);
-    Hu3DModelTexScroll(object->model[1], D_8010B1A4_treadmill_grill[1], 0.0f, 32, 64);
-    Hu3DModelTexScroll(object->model[2], D_8010B1A4_treadmill_grill[2], 0.0f, 32, 64);
-    Hu3DModelTexScroll(object->model[3], D_8010B1A4_treadmill_grill[3], 0.0f, 32, 64);
-    func_8010ACBC_treadmill_grill(object);
+    Hu3DModelTexScroll(object->model[0], m221_beltScrollTbl[0], 0.0f, 32, 64);
+    Hu3DModelTexScroll(object->model[1], m221_beltScrollTbl[1], 0.0f, 32, 64);
+    Hu3DModelTexScroll(object->model[2], m221_beltScrollTbl[2], 0.0f, 32, 64);
+    Hu3DModelTexScroll(object->model[3], m221_beltScrollTbl[3], 0.0f, 32, 64);
+    m221_BeltVtxUpdate(object);
     if (omPauseChk() + omAllPauseF != 0) {
         return;
     }
     if (MgFlowStatGet() == MG_STATE_OPENING) {
-        func_80106034_treadmill_grill(object);
+        m221_FlameIntroUpdate(object);
     } else if (MgFlowStatGet() == MG_STATE_PLAY) {
-        Hu3DModelRotSet(object->model[5], 0.0f, 0.0f, D_8010B1A4_treadmill_grill[0] * 1.2f);
-        Hu3DModelRotSet(object->model[6], 0.0f, 0.0f, D_8010B1A4_treadmill_grill[0] * 1.2f);
-        D_8010B1A4_treadmill_grill[0] += D_8010B1B4_treadmill_grill[0];
-        D_8010B1A4_treadmill_grill[1] += D_8010B1B4_treadmill_grill[1];
-        D_8010B1A4_treadmill_grill[2] += D_8010B1B4_treadmill_grill[2];
-        D_8010B1A4_treadmill_grill[3] += D_8010B1B4_treadmill_grill[3];
-        func_8010980C_treadmill_grill(object);
-        if (D_8010B19C_treadmill_grill == -1) {
-            func_8010A548_treadmill_grill();
-            D_8010B19C_treadmill_grill = 0;
-            D_8010B224_treadmill_grill[0] = HuAudFXPlay(0x397);
-            D_8010B224_treadmill_grill[1] = HuAudFXPlay(0x398);
-            D_8010B224_treadmill_grill[2] = HuAudFXPlay(0x399);
-            D_8010B224_treadmill_grill[3] = HuAudFXPlay(0x39A);
+        Hu3DModelRotSet(object->model[5], 0.0f, 0.0f, m221_beltScrollTbl[0] * 1.2f);
+        Hu3DModelRotSet(object->model[6], 0.0f, 0.0f, m221_beltScrollTbl[0] * 1.2f);
+        m221_beltScrollTbl[0] += m221_beltSpeedTbl[0];
+        m221_beltScrollTbl[1] += m221_beltSpeedTbl[1];
+        m221_beltScrollTbl[2] += m221_beltSpeedTbl[2];
+        m221_beltScrollTbl[3] += m221_beltSpeedTbl[3];
+        m221_FireUpdate(object);
+        if (m221_beltStopTimer == -1) {
+            m221_BeltSpeedChange();
+            m221_beltStopTimer = 0;
+            m221_beltSeTbl[0] = HuAudFXPlay(0x397);
+            m221_beltSeTbl[1] = HuAudFXPlay(0x398);
+            m221_beltSeTbl[2] = HuAudFXPlay(0x399);
+            m221_beltSeTbl[3] = HuAudFXPlay(0x39A);
         }
-        if (D_8010B19C_treadmill_grill == 0) {
-            if (D_8010B1D8_treadmill_grill != 0) {
-                func_8010A9AC_treadmill_grill(object);
-                D_8010B1D8_treadmill_grill--;
+        if (m221_beltStopTimer == 0) {
+            if (m221_beltSpeedStepCnt != 0) {
+                m221_BeltSpeedUpdate(object);
+                m221_beltSpeedStepCnt--;
             }
         } else {
-            D_8010B19C_treadmill_grill--;
-            if (D_8010B1D8_treadmill_grill != 0) {
-                func_8010A9AC_treadmill_grill(object);
-                D_8010B1D8_treadmill_grill--;
+            m221_beltStopTimer--;
+            if (m221_beltSpeedStepCnt != 0) {
+                m221_BeltSpeedUpdate(object);
+                m221_beltSpeedStepCnt--;
             } else {
-                func_8010A754_treadmill_grill(object);
+                m221_BeltShrink(object);
             }
         }
-        if (D_8010B19C_treadmill_grill == 0) {
-            if (++D_8010B1D4_treadmill_grill == 90) {
-                func_8010A548_treadmill_grill();
+        if (m221_beltStopTimer == 0) {
+            if (++m221_beltChangeTimer == 90) {
+                m221_BeltSpeedChange();
             }
-            if (++D_8010B1DC_treadmill_grill == 300) {
-                func_8010A6A4_treadmill_grill();
+            if (++m221_beltRunTimer == 300) {
+                m221_BeltStop();
                 for (i = 0; i < 4; i++) {
                     data = mgPlayerObjTbl[i]->data;
-                    if (D_8010AF84_treadmill_grill[i] == 0) {
+                    if (m221_playerOutTbl[i] == 0) {
                         omVibrate(data->unk59, 20, 0, 20);
                     }
                 }
@@ -1272,8 +1272,8 @@ void func_80109FA8_treadmill_grill(omObjData *object) {
         for (i = 0; i < mgPlayerObjNum; i++) {
             player = mgPlayerObjTbl[i];
             data = player->data;
-            if (D_8010AF84_treadmill_grill[i] == 0 && data->unk53[0] == 1) {
-                lane = func_8010AA2C_treadmill_grill(player->trans.x, player->trans.z);
+            if (m221_playerOutTbl[i] == 0 && data->unk53[0] == 1) {
+                lane = m221_BeltLaneGet(player->trans.x, player->trans.z);
                 switch (lane) {
                     case -1:
                         break;
@@ -1281,110 +1281,110 @@ void func_80109FA8_treadmill_grill(omObjData *object) {
                     case 1:
                     case 2:
                     case 3:
-                        player->trans.x -= D_8010B1B4_treadmill_grill[lane] * 3.125f;
+                        player->trans.x -= m221_beltSpeedTbl[lane] * 3.125f;
                         break;
                 }
             }
         }
-        D_8010AFAC_treadmill_grill = HuAngleWrap(D_8010AFAC_treadmill_grill + 3.0f);
-        func_80109108_treadmill_grill(object);
+        m221_flameRot = HuAngleWrap(m221_flameRot + 3.0f);
+        m221_FlamePathCalc(object);
     } else if (MgFlowStatGet() == MG_STATE_FINISH) {
-        if (D_8010B224_treadmill_grill[0] != -1) {
-            HuAudFXStop((s16)D_8010B224_treadmill_grill[0]);
-            D_8010B224_treadmill_grill[0] = -1;
+        if (m221_beltSeTbl[0] != -1) {
+            HuAudFXStop((s16)m221_beltSeTbl[0]);
+            m221_beltSeTbl[0] = -1;
         }
-        if (D_8010B224_treadmill_grill[1] != -1) {
-            HuAudFXStop((s16)D_8010B224_treadmill_grill[1]);
-            D_8010B224_treadmill_grill[1] = -1;
+        if (m221_beltSeTbl[1] != -1) {
+            HuAudFXStop((s16)m221_beltSeTbl[1]);
+            m221_beltSeTbl[1] = -1;
         }
-        if (D_8010B224_treadmill_grill[2] != -1) {
-            HuAudFXStop((s16)D_8010B224_treadmill_grill[2]);
-            D_8010B224_treadmill_grill[2] = -1;
+        if (m221_beltSeTbl[2] != -1) {
+            HuAudFXStop((s16)m221_beltSeTbl[2]);
+            m221_beltSeTbl[2] = -1;
         }
-        if (D_8010B224_treadmill_grill[3] != -1) {
-            HuAudFXStop((s16)D_8010B224_treadmill_grill[3]);
-            D_8010B224_treadmill_grill[3] = -1;
+        if (m221_beltSeTbl[3] != -1) {
+            HuAudFXStop((s16)m221_beltSeTbl[3]);
+            m221_beltSeTbl[3] = -1;
         }
-        func_801061E8_treadmill_grill(object);
+        m221_FireFadeUpdate(object);
     }
-    D_8010AF88_treadmill_grill = D_8010AF8C_treadmill_grill[0] / 1100.0f;
-    Hu3DModelScaleSet(object->model[4], D_8010AF88_treadmill_grill, 1.0f, 1.0f);
+    m221_beltWidthScale = m221_beltWidthTbl[0] / 1100.0f;
+    Hu3DModelScaleSet(object->model[4], m221_beltWidthScale, 1.0f, 1.0f);
     Hu3DModelPosSet(object->model[9], 0.0f, 0.0f, -450.0f);
-    Hu3DModelScaleSet(object->model[9], D_8010AF88_treadmill_grill + 0.1f, 1.0f, 0.8f);
+    Hu3DModelScaleSet(object->model[9], m221_beltWidthScale + 0.1f, 1.0f, 0.8f);
 }
 
-void func_8010A548_treadmill_grill(void) {
+void m221_BeltSpeedChange(void) {
     f32 speed;
     s32 index;
     s32 i;
 
     HuAudFXPlay(0x39C);
     for (i = 0; i < 4; i++) {
-        while (D_8010B1B4_treadmill_grill[i] == (speed = D_8010B234_treadmill_grill[index = (u8)(rand8() % 6)]) * 0.5f) {}
-        D_8010B17C_treadmill_grill[i] = (speed - D_8010B1B4_treadmill_grill[i]) / 20.0f;
-        D_8010B1C4_treadmill_grill[i] = (speed - D_8010B1B4_treadmill_grill[i]) / 20.0f;
-        if (D_8010B224_treadmill_grill[i] >= 0) {
-            HuAudFXPitchSet((s16)D_8010B224_treadmill_grill[i], D_8010B24C_treadmill_grill[index]);
+        while (m221_beltSpeedTbl[i] == (speed = m221_beltSpeedChoiceTbl[index = (u8)(rand8() % 6)]) * 0.5f) {}
+        m221_beltAccelTbl[i] = (speed - m221_beltSpeedTbl[i]) / 20.0f;
+        m221_beltSpeedStepTbl[i] = (speed - m221_beltSpeedTbl[i]) / 20.0f;
+        if (m221_beltSeTbl[i] >= 0) {
+            HuAudFXPitchSet((s16)m221_beltSeTbl[i], m221_beltSePitchTbl[index]);
         }
     }
-    D_8010B1D8_treadmill_grill = 20;
-    D_8010B1D4_treadmill_grill = 0;
+    m221_beltSpeedStepCnt = 20;
+    m221_beltChangeTimer = 0;
 }
 
-void func_8010A6A4_treadmill_grill(void) {
+void m221_BeltStop(void) {
     s32 i;
 
-    if (D_8010B258_treadmill_grill++ < 2) {
-        D_8010B19C_treadmill_grill = 50;
-        D_8010B1DC_treadmill_grill = 0;
+    if (m221_beltStopCnt++ < 2) {
+        m221_beltStopTimer = 50;
+        m221_beltRunTimer = 0;
         for (i = 0; i < 4; i++) {
-            D_8010B17C_treadmill_grill[i] = -D_8010B1B4_treadmill_grill[i] / 20.0f;
-            D_8010B1C4_treadmill_grill[i] = -D_8010B1B4_treadmill_grill[i] / 20.0f;
+            m221_beltAccelTbl[i] = -m221_beltSpeedTbl[i] / 20.0f;
+            m221_beltSpeedStepTbl[i] = -m221_beltSpeedTbl[i] / 20.0f;
         }
-        D_8010B1D8_treadmill_grill = 20;
-        D_8010B1D4_treadmill_grill = 0;
+        m221_beltSpeedStepCnt = 20;
+        m221_beltChangeTimer = 0;
     }
 }
 
-void func_8010A754_treadmill_grill(omObjData *object) {
+void m221_BeltShrink(omObjData *object) {
     f32 minX;
     f32 maxX;
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        D_8010AF9C_treadmill_grill[i] = D_8010AF8C_treadmill_grill[i];
-        D_8010AF8C_treadmill_grill[i] -= 10.0f;
+        m221_beltWidthPrevTbl[i] = m221_beltWidthTbl[i];
+        m221_beltWidthTbl[i] -= 10.0f;
     }
-    func_8010AE6C_treadmill_grill(object);
-    if (D_8010B19C_treadmill_grill == 0) {
-        func_8010A548_treadmill_grill();
+    m221_BeltTexUpdate(object);
+    if (m221_beltStopTimer == 0) {
+        m221_BeltSpeedChange();
     }
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
     Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, -300.0f);
     Hu3DModelPosSet(object->model[2], object->trans.x, object->trans.y, -600.0f);
     Hu3DModelPosSet(object->model[3], object->trans.x, object->trans.y, -900.0f);
-    D_8010B25C_treadmill_grill += 5.5f;
-    D_8010B260_treadmill_grill -= 5.5f;
+    m221_wallLeftX += 5.5f;
+    m221_wallRightX -= 5.5f;
     Hu3DModelPosSet(object->model[4], object->trans.x, 0.0f, 0.0f);
-    Hu3DModelPosSet(object->model[5], object->trans.x + D_8010B25C_treadmill_grill, 150.0f, 165.0f);
-    Hu3DModelPosSet(object->model[6], object->trans.x + D_8010B260_treadmill_grill, 150.0f, 165.0f);
-    Hu3DModelPosSet(object->model[7], object->trans.x + D_8010B25C_treadmill_grill + 50.0f, 220.0f, 155.0f);
-    Hu3DModelPosSet(object->model[8], object->trans.x + D_8010B260_treadmill_grill - 50.0f, 220.0f, 155.0f);
-    minX = -D_8010AF8C_treadmill_grill[0] / 2.0f;
-    maxX = D_8010AF8C_treadmill_grill[0] / 2.0f + 50.0f;
+    Hu3DModelPosSet(object->model[5], object->trans.x + m221_wallLeftX, 150.0f, 165.0f);
+    Hu3DModelPosSet(object->model[6], object->trans.x + m221_wallRightX, 150.0f, 165.0f);
+    Hu3DModelPosSet(object->model[7], object->trans.x + m221_wallLeftX + 50.0f, 220.0f, 155.0f);
+    Hu3DModelPosSet(object->model[8], object->trans.x + m221_wallRightX - 50.0f, 220.0f, 155.0f);
+    minX = -m221_beltWidthTbl[0] / 2.0f;
+    maxX = m221_beltWidthTbl[0] / 2.0f + 50.0f;
     MgMapBlockSet(object, 250.0f, 250.0f, minX - 50.0f, -1050.0f, maxX, 150.0f);
 }
 
-void func_8010A9AC_treadmill_grill(omObjData *object) {
+void m221_BeltSpeedUpdate(omObjData *object) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        func_801093E0_treadmill_grill(object, i);
-        D_8010B1B4_treadmill_grill[i] += D_8010B1C4_treadmill_grill[i];
+        m221_BeltDummy(object, i);
+        m221_beltSpeedTbl[i] += m221_beltSpeedStepTbl[i];
     }
 }
 
-s32 func_8010AA2C_treadmill_grill(f32 x, f32 z) {
+s32 m221_BeltLaneGet(f32 x, f32 z) {
     s32 lane = -1;
 
     if (x <= 550.0f && x >= -550.0f) {
@@ -1401,7 +1401,7 @@ s32 func_8010AA2C_treadmill_grill(f32 x, f32 z) {
     return lane;
 }
 
-s32 func_8010AB9C_treadmill_grill(f32 z) {
+s32 m221_LaneGet(f32 z) {
     if (z <= 150.0f && z > -150.0f) {
         return 0;
     }
@@ -1414,7 +1414,7 @@ s32 func_8010AB9C_treadmill_grill(f32 z) {
     return 3;
 }
 
-void func_8010ACBC_treadmill_grill(omObjData *object) {
+void m221_BeltVtxUpdate(omObjData *object) {
     HmfData *hmf;
     HmfVertexGroup *group;
     Vtx *dst;
@@ -1426,7 +1426,7 @@ void func_8010ACBC_treadmill_grill(omObjData *object) {
 
     for (i = 0; i < 4; i++) {
         hmf = Hu3DData[object->model[i]].hmf;
-        scale = D_8010AF8C_treadmill_grill[i] / 1000.0f;
+        scale = m221_beltWidthTbl[i] / 1000.0f;
         for (j = 0; j < hmf->unk1A; j++) {
             group = &hmf->unkB0[j];
             if (group->normal[1] == 127) {
@@ -1434,9 +1434,9 @@ void func_8010ACBC_treadmill_grill(omObjData *object) {
                     dst = &hmf->unk44[Hu3DBufNo][group->indices[k]];
                     src = &hmf->unk40[group->indices[k]];
                     if (src->v.ob[0] > 0) {
-                        dst->v.ob[0] = D_8010AF8C_treadmill_grill[i] * 0.5f;
+                        dst->v.ob[0] = m221_beltWidthTbl[i] * 0.5f;
                     } else {
-                        dst->v.ob[0] = -D_8010AF8C_treadmill_grill[i] * 0.5f;
+                        dst->v.ob[0] = -m221_beltWidthTbl[i] * 0.5f;
                     }
                 }
             } else {
@@ -1450,7 +1450,7 @@ void func_8010ACBC_treadmill_grill(omObjData *object) {
     }
 }
 
-void func_8010AE6C_treadmill_grill(omObjData *arg0) {
+void m221_BeltTexUpdate(omObjData *arg0) {
     HmfData *hmf;
     HmfVertexGroup *group;
     Vtx *vtx;
@@ -1461,7 +1461,7 @@ void func_8010AE6C_treadmill_grill(omObjData *arg0) {
 
     for (i = 0; i < 4; i++) {
         hmf = Hu3DData[arg0->model[i]].hmf;
-        scale = D_8010AF8C_treadmill_grill[i] / D_8010AF9C_treadmill_grill[i];
+        scale = m221_beltWidthTbl[i] / m221_beltWidthPrevTbl[i];
         for (j = 0; j < hmf->unk1A; j++) {
             group = &hmf->unkB0[j];
             for (k = 0; k < group->count; k++) {

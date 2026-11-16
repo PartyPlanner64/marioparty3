@@ -7,6 +7,6 @@ typedef struct {
     Vec position;
     Vec unk0C;
     f32 unk18;
-} HyperHydrantsChainPoint;
+} HyperHydrantsHosePoint;
 
 #endif

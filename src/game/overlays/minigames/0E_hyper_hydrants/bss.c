@@ -11,17 +11,17 @@ typedef struct {
     /* 0x00 */ s8 unk00;
     /* 0x02 */ s16 unk02[2];
     /* 0x06 */ s8 unk06;
-} HyperHydrantsBssBF40;
+} HyperHydrantsPumpState;
 
 typedef struct {
     /* 0x00 */ s16 unk00;
     /* 0x02 */ s16 unk02[2];
-} HyperHydrantsBssBF88;
+} HyperHydrantsBackSpr;
 
 typedef struct {
     /* 0x00 */ s8 unk00[2];
     /* 0x02 */ s8 unk02[2];
-} HyperHydrantsBssBFAC;
+} HyperHydrantsSprayPower;
 
 typedef struct {
     /* 0x00 */ s8 unk00;
@@ -29,32 +29,32 @@ typedef struct {
     /* 0x06 */ s16 unk06[2];
     /* 0x0A */ s16 unk0A[2][2];
     /* 0x12 */ s16 unk12[2];
-} HyperHydrantsBssC010;
+} HyperHydrantsHud;
 
-HyperHydrantsBssBF40 hyperHydrantsBssBF40 BSS;
-s32 D_8010BF48_hyper_hydrants BSS;
-s32 D_8010BF4C_hyper_hydrants BSS;
-s8 D_8010BF50_hyper_hydrants BSS;
-s16 D_8010BF52_hyper_hydrants BSS;
-s16 D_8010BF54_hyper_hydrants BSS;
-s16 D_8010BF56_hyper_hydrants BSS;
-s16 D_8010BF58_hyper_hydrants BSS;
-u8 D_8010BF5C_hyper_hydrants[4] BSS; /* Unreferenced. */
-MinigameFlow D_8010BF60_hyper_hydrants BSS;
-HyperHydrantsBssBF88 hyperHydrantsBssBF88 BSS;
-s16 D_8010BF8E_hyper_hydrants BSS;
-s16 D_8010BF90_hyper_hydrants BSS;
-u8 *D_8010BF94_hyper_hydrants[2] BSS;
-s32 D_8010BF9C_hyper_hydrants BSS;
-s32 D_8010BFA0_hyper_hydrants BSS;
-s32 D_8010BFA4_hyper_hydrants BSS;
-s8 D_8010BFA8_hyper_hydrants BSS;
-s8 D_8010BFA9_hyper_hydrants BSS;
-s8 D_8010BFAA_hyper_hydrants BSS;
-s8 D_8010BFAB_hyper_hydrants BSS;
-HyperHydrantsBssBFAC hyperHydrantsBssBFAC BSS;
-HyperHydrantsChainPoint *D_8010BFB0_hyper_hydrants[2][6] BSS;
-omObjData *D_8010BFE0_hyper_hydrants[2] BSS;
-omObjData *D_8010BFE8_hyper_hydrants[2][5] BSS;
-HyperHydrantsBssC010 hyperHydrantsBssC010 BSS;
-Vec D_8010C028_hyper_hydrants[2] BSS;
+HyperHydrantsPumpState m214_pumpState BSS;
+s32 m214_bigFireCnt BSS;
+s32 m214_fireCnt BSS;
+s8 m214_hoseCnt BSS;
+s16 m214_backAnim BSS;
+s16 m214_irisAnim BSS;
+s16 m214_frameAnim BSS;
+s16 m214_frameSprGrp BSS;
+u8 m214_frameSprGrpPad[4] BSS; /* Unreferenced. */
+MinigameFlow m214_mgFlow BSS;
+HyperHydrantsBackSpr m214_backSpr BSS;
+s16 m214_irisSizeX BSS;
+s16 m214_irisSizeY BSS;
+u8 *m214_irisTexTbl[2] BSS;
+s32 m214_irisRadius BSS;
+s32 m214_irisX BSS;
+s32 m214_irisY BSS;
+s8 m214_pumper0No BSS;
+s8 m214_pumper1No BSS;
+s8 m214_sprayer0No BSS;
+s8 m214_sprayer1No BSS;
+HyperHydrantsSprayPower m214_sprayPower BSS;
+HyperHydrantsHosePoint *m214_hoseTbl[2][6] BSS;
+omObjData *m214_bigFireObjTbl[2] BSS;
+omObjData *m214_fireObjTbl[2][5] BSS;
+HyperHydrantsHud m214_hud BSS;
+Vec m214_hydrantPosTbl[2] BSS;

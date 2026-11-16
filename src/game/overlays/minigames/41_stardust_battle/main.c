@@ -8,7 +8,7 @@
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 
-typedef struct UnkStardustBattleStard {
+typedef struct StardustBattleRay {
     /* 0x00 */ s16 active;
     /* 0x02 */ s16 modelId;
     /* 0x04 */ s16 angleX;
@@ -21,7 +21,7 @@ typedef struct UnkStardustBattleStard {
     /* 0x1C */ f32 worldX;
     /* 0x20 */ f32 worldY;
     /* 0x24 */ f32 worldZ;
-} UnkStardustBattleStard; // sizeof 0x28
+} StardustBattleRay; // sizeof 0x28
 
 typedef union StardustBattleWorkBytes { // packs the top byte of each work word
     u32 word;
@@ -33,9 +33,9 @@ typedef union StardustBattleWorkBytes { // packs the top byte of each work word
     } bytes;
 } StardustBattleWorkBytes;
 
-/* Work data of the D_80114B18_stardust_battle object, retrieved with
-   func_80111FEC_stardust_battle. */
-typedef struct UnkStardustBattleActor {
+/* Work data of the m265_starObj object, retrieved with
+   m265_WorkPtrGet. */
+typedef struct StardustBattleStarWork {
     /* 0x00 */ s16 active;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s16 unk_04;
@@ -68,11 +68,11 @@ typedef struct UnkStardustBattleActor {
     /* 0x68 */ f32 unk_68;
     /* 0x6C */ f32 unk_6C;
     /* 0x70 */ f32 unk_70;
-} UnkStardustBattleActor; // sizeof 0x74
+} StardustBattleStarWork; // sizeof 0x74
 
-/* One entry of the stardust pool allocated by func_8010CB34_stardust_battle.
-   The pool is indexed by UnkStardustBattleStars.count. */
-typedef struct UnkStardustBattleStar {
+/* One entry of the stardust pool allocated by m265_DustInit.
+   The pool is indexed by StardustBattleDustPool.count. */
+typedef struct StardustBattleDust {
     /* 0x00 */ s16 active;
     /* 0x02 */ s16 model[2];
     /* 0x06 */ s16 reflection[2];
@@ -109,19 +109,19 @@ typedef struct UnkStardustBattleStar {
     /* 0x70 */ f32 unk_70;
     /* 0x74 */ f32 unk_74;
     /* 0x78 */ f32 unk_78;
-} UnkStardustBattleStar; // sizeof 0x7C
+} StardustBattleDust; // sizeof 0x7C
 
-typedef struct UnkStardustBattleStars { // sizeof 0x10
+typedef struct StardustBattleDustPool { // sizeof 0x10
     /* 0x00 */ s16 modelId1;
     /* 0x02 */ s16 modelId2;
     /* 0x04 */ s16 effectId1;
     /* 0x06 */ s16 effectId2;
     /* 0x08 */ s16 count;
     /* 0x0A */ s16 unk_0A;
-    /* 0x0C */ UnkStardustBattleStar *star;
-} UnkStardustBattleStars;
+    /* 0x0C */ StardustBattleDust *star;
+} StardustBattleDustPool;
 
-typedef struct UnkStardustBattleScoreDisp {
+typedef struct StardustBattleTimeDisp {
     /* 0x00 */ s16 active;
     /* 0x02 */ s16 sprGrp;
     /* 0x04 */ s16 state;
@@ -130,22 +130,22 @@ typedef struct UnkStardustBattleScoreDisp {
     /* 0x0A */ s16 y;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 scale;
-} UnkStardustBattleScoreDisp; // sizeof 0x14
+} StardustBattleTimeDisp; // sizeof 0x14
 
-typedef struct UnkStardustBattleSpot {
+typedef struct StardustBattleDropSpot {
     /* 0x00 */ s16 active;
     /* 0x02 */ s16 followPlayer;
     /* 0x04 */ Vec pos;
-} UnkStardustBattleSpot; // sizeof 0x10
+} StardustBattleDropSpot; // sizeof 0x10
 
-typedef struct UnkStardustBattleSpots {
+typedef struct StardustBattleDropSpotList {
     /* 0x00 */ s16 count;
     /* 0x02 */ s16 max;
     /* 0x04 */ s16 unk_04;
-    /* 0x08 */ UnkStardustBattleSpot *spot;
-} UnkStardustBattleSpots; // sizeof 0xC
+    /* 0x08 */ StardustBattleDropSpot *spot;
+} StardustBattleDropSpotList; // sizeof 0xC
 
-typedef struct UnkStardustBattleStreak {
+typedef struct StardustBattleRipple {
     /* 0x00 */ u8 active;
     /* 0x01 */ u8 index;
     /* 0x04 */ f32 x;
@@ -162,25 +162,25 @@ typedef struct UnkStardustBattleStreak {
     /* 0x30 */ f32 unk_30;
     /* 0x34 */ f32 unk_34;
     /* 0x38 */ f32 unk_38;
-} UnkStardustBattleStreak; // sizeof 0x3C
+} StardustBattleRipple; // sizeof 0x3C
 
-typedef union UnkStardustBattleColor {
+typedef union StardustBattleColor {
     u32 word;
     u8 rgba[4];
-} UnkStardustBattleColor;
+} StardustBattleColor;
 
-typedef struct UnkStardustBattleEffect {
+typedef struct StardustBattleEffect {
     /* 0x00 */ u16 active;
     /* 0x02 */ s16 model;
-    /* 0x04 */ UnkStardustBattleColor color;
+    /* 0x04 */ StardustBattleColor color;
     /* 0x08 */ f32 frame;
     /* 0x0C */ f32 speed;
     /* 0x10 */ Vec pos;
     /* 0x1C */ Vec vel;
     /* 0x28 */ Vec scale;
-} UnkStardustBattleEffect; // sizeof 0x34
+} StardustBattleEffect; // sizeof 0x34
 
-typedef struct UnkStardustBattlePoint {
+typedef struct StardustBattleWavePoint {
     /* 0x00 */ s16 x;
     /* 0x02 */ s16 y;
     /* 0x04 */ s16 z;
@@ -189,29 +189,29 @@ typedef struct UnkStardustBattlePoint {
     /* 0x18 */ u8 unk_18;
     /* 0x1C */ Vec normal;
     /* 0x28 */ f32 height;
-} UnkStardustBattlePoint; // sizeof 0x2C
+} StardustBattleWavePoint; // sizeof 0x2C
 
-typedef struct UnkStardustBattleNearPoint {
+typedef struct StardustBattleNearPoint {
     /* 0x00 */ f32 distSq;
     /* 0x04 */ s32 index;
-} UnkStardustBattleNearPoint; // sizeof 0x8
+} StardustBattleNearPoint; // sizeof 0x8
 
-typedef struct UnkStardustBattleStarDist {
+typedef struct StardustBattleDustDist {
     /* 0x00 */ s32 index;
     /* 0x04 */ f32 distSq;
-} UnkStardustBattleStarDist; // sizeof 0x8
+} StardustBattleDustDist; // sizeof 0x8
 
 /* Extended form of HmfModelData_Unk64_Unk3C_Struct allocated by
-   func_801122D0_stardust_battle, with a third display list. */
-typedef struct UnkStardustBattleGfxData {
+   m265_RayMdlCreate, with a third display list. */
+typedef struct StardustBattleRayDL {
     /* 0x00 */ Gfx *unk00[4];
     /* 0x10 */ void *unk10;
     /* 0x14 */ void *unk14;
     /* 0x18 */ void *unk18;
-} UnkStardustBattleGfxData; // sizeof 0x1C
+} StardustBattleRayDL; // sizeof 0x1C
 
-/* Work data of the object created by func_80108B34_stardust_battle. */
-typedef struct UnkStardustBattleStage {
+/* Work data of the object created by m265_StageObjCreate. */
+typedef struct StardustBattleStageWork {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s16 unk_04;
@@ -222,16 +222,16 @@ typedef struct UnkStardustBattleStage {
     /* 0x18 */ f32 unk_18;
     /* 0x1C */ f32 unk_1C;
     /* 0x20 */ s16 unk_20;
-    /* 0x24 */ UnkStardustBattlePoint *unk_24;
-    /* 0x28 */ UnkStardustBattleStreak *streaks;
+    /* 0x24 */ StardustBattleWavePoint *unk_24;
+    /* 0x28 */ StardustBattleRipple *streaks;
     /* 0x2C */ s16 unk_2C;
     /* 0x30 */ void (*func_30)(omObjData *);
     /* 0x34 */ void (*func_34)(omObjData *);
-} UnkStardustBattleStage; // sizeof 0x38
+} StardustBattleStageWork; // sizeof 0x38
 
 /* Work data of the player object, packed into omObjData.work and retrieved
-   with func_80111FEC_stardust_battle. */
-typedef struct UnkStardustBattleObj {
+   with m265_WorkPtrGet. */
+typedef struct StardustBattlePlayerWork {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ char unk_02[0x02];
     /* 0x04 */ s16 unk_04;
@@ -266,11 +266,11 @@ typedef struct UnkStardustBattleObj {
     /* 0x70 */ void (*func_70)(omObjData *);
     /* 0x74 */ void (*func_74)(omObjData *);
     /* 0x78 */ void (*func_78)(omObjData *);
-} UnkStardustBattleObj; // sizeof 0x7C
+} StardustBattlePlayerWork; // sizeof 0x7C
 
 extern u8 Hu3DBufNo;
 extern s32 omCharModelNoTbl[][6];
-extern s16 D_80113DE6_stardust_battle[]; // low halfword of D_80113DE4
+extern s16 m265_exitTimerLo[]; // low halfword of D_80113DE4
 extern s16 motionBakeMtxCnt;
 extern s16 *motionBakeNodeMap;
 extern HuMtx4F *motionBakeMtx;
@@ -280,185 +280,185 @@ extern u8 omAllPauseF;
 extern f32 mgPlayerSpeedZero;
 extern s16 Hu3DModelTag;
 
-const s16 D_80114100_stardust_battle[] = {
+const s16 m265_startMesTbl[] = {
     0x8272, 0x8273, 0x8260, 0x8271, 0x8273, 0x0000
 };
 
-const s16 D_8011410C_stardust_battle[] = {
+const s16 m265_finishMesTbl[] = {
     0x8265, 0x8268, 0x826D, 0x8268, 0x8272, 0x8267, 0x0000
 };
 
 /* Call sites pass only the object and use the result as a pointer, so this
    can't use the definition's full prototype. */
-u32 func_80111FEC_stardust_battle(); // Unprototyped: called with varying argument counts.
-void func_80108120_stardust_battle(omObjData *object);
-void func_80108C14_stardust_battle(omObjData *object);
-void func_80108D84_stardust_battle(omObjData *object);
-void func_80108EC4_stardust_battle(s16 model, f32 u, f32 v, s32 width, s32 height, s16 index);
-void func_80109128_stardust_battle(s16 mode);
-void func_80107DCC_stardust_battle(omObjData *object, s16 mode);
-void func_8010FBCC_stardust_battle(omObjData *object);
-void func_8010C5A8_stardust_battle(s16 count, s16 arg1);
-void func_80111FC0_stardust_battle(omObjData *arg0, u32 arg1);
-void func_801081FC_stardust_battle(omObjData *object);
-void func_801082C4_stardust_battle(omObjData *object);
-void func_8010A690_stardust_battle(omObjData *object);
-void func_8010A5A4_stardust_battle(omObjData *object);
-void func_8010C1F8_stardust_battle(s16 motion, s16 startTime, s16 endTime, u8 attr);
-void func_8010DF70_stardust_battle(s16 index);
-f32 func_80111EB8_stardust_battle(f32 x, f32 y);
-f32 func_80111B28_stardust_battle(f32 arg0, f32 arg1);
-void func_801119D4_stardust_battle(s32 camIndex);
-f32 func_80111DF8_stardust_battle(f32 t, f32 start, f32 end);
-f32 func_80111E10_stardust_battle(f32 arg0, f32 arg1, f32 arg2);
-void func_801117E4_stardust_battle(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames);
-f32 func_80111C2C_stardust_battle(f32 target, f32 current, f32 step);
-s32 func_8010A04C_stardust_battle(f32 x, f32 z, f32 arg2, f32 arg3, f32 arg4, f32 arg5);
-void func_8010C0C8_stardust_battle(void);
-void func_8010C44C_stardust_battle(void);
-void func_8010C498_stardust_battle(void);
-s16 func_8010C508_stardust_battle(void);
-void func_80105D18_stardust_battle(omObjData *object);
-void func_80105DA0_stardust_battle(omObjData *object);
-void func_801065B4_stardust_battle(omObjData *object);
-void func_801065D8_stardust_battle(omObjData *object);
-void func_80106690_stardust_battle(void);
-void func_80106A3C_stardust_battle(void);
-void func_80106B60_stardust_battle(void);
-void func_80106C30_stardust_battle(void);
-s16 func_80107FA4_stardust_battle(void);
-s16 func_80107FE8_stardust_battle(void);
-void func_80108074_stardust_battle(void);
-void func_801080B0_stardust_battle(void);
-void func_801080EC_stardust_battle(void);
-void func_8010BFE4_stardust_battle(f32 arg0, s16 arg1);
-void func_8010C06C_stardust_battle(void);
-void func_8010C2CC_stardust_battle(f32 arg0);
-f32 func_8010C32C_stardust_battle(void);
-void func_8010C38C_stardust_battle(f32 arg0);
-f32 func_8010C3EC_stardust_battle(void);
-void func_8010ED7C_stardust_battle(void);
-void func_80108B34_stardust_battle(void);
-void func_8010F5E0_stardust_battle(void);
-void func_8010FA60_stardust_battle(void);
-void func_80106D0C_stardust_battle(void);
-void func_80106EB0_stardust_battle(omObjData *object);
-void func_801073F4_stardust_battle(omObjData *object);
-s16 func_80107E84_stardust_battle(s16 arg0);
-void func_80107760_stardust_battle(omObjData *object, s16 noControl);
-void func_80109B18_stardust_battle(omObjData *object);
-void func_80109FE4_stardust_battle(omObjData *object);
-void func_8010A418_stardust_battle(omObjData *object);
-s16 func_8010E03C_stardust_battle(omObjData *object);
-UnkStardustBattleStar *func_8010E300_stardust_battle(s16 arg0);
-void func_8010E35C_stardust_battle(s16 index);
-void func_8010E46C_stardust_battle(s16 arg0, f32 arg1, f32 arg2, f32 arg3);
-void func_8010E4C8_stardust_battle(s16 arg0, f32 arg1, f32 arg2, f32 arg3);
-void func_80111E70_stardust_battle(f32 *arg0, f32 *arg1, f32 *arg2, f32 arg3);
-void func_80112220_stardust_battle(omObjData *object, const char *name, HuMtx4F out);
-s16 func_8010E524_stardust_battle(omObjData *object, s16 mode, Vec *out);
-s32 func_8010FCBC_stardust_battle(Vec *pos, Vec *rot, f32 scale, s16 group);
-void func_80111F38_stardust_battle(Vec *dir, f32 *rot);
-void func_8010EA04_stardust_battle(omObjData *object);
-void func_801092F0_stardust_battle(omObjData *object);
-s16 func_8010929C_stardust_battle(void);
-void func_8010A74C_stardust_battle(void);
-void func_8010AAC4_stardust_battle(omObjData *object);
-void func_8010C538_stardust_battle(void);
-void func_8010FE74_stardust_battle(s16 arg0);
-void func_80110364_stardust_battle(omObjData *object);
-s32 func_801122D0_stardust_battle(void);
-void func_801127B8_stardust_battle(s16 model, s16 count, s16 buffer);
-void func_8010CB34_stardust_battle(void);
-void func_8010CE5C_stardust_battle(omObjData *object);
-s32 func_8010F890_stardust_battle(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color);
-void func_801107E4_stardust_battle(void);
-void func_8010EE7C_stardust_battle(void);
-Vec *func_8010CA48_stardust_battle(s16 index);
-s16 func_8010DE64_stardust_battle(Vec *target, f32 speed);
-void func_80110758_stardust_battle(f32 x, f32 y, f32 z);
-void func_80110780_stardust_battle(s16 arg0);
-void func_801107C4_stardust_battle(void);
-void func_8010F0E8_stardust_battle(omObjData *object);
-void func_801115F8_stardust_battle(s32 arg0);
-void func_80111004_stardust_battle(omObjData *object);
-void func_80107F34_stardust_battle(f32 step);
-void func_8010F400_stardust_battle(s16 index, s32 frames);
-void func_8010F580_stardust_battle(s16 index);
-void func_8010F5B0_stardust_battle(s16 index);
-void func_8010F73C_stardust_battle(omObjData *object);
-u16 func_8010EE38_stardust_battle(s32 dirAndFile);
-s32 func_80112980_stardust_battle(HuSprAnimData *sprite, u8 *color);
-s32 func_80113568_stardust_battle(HuSprAnimData *sprite, u16 model, u8 *color);
-s32 func_801138A0_stardust_battle(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset);
-void func_8011376C_stardust_battle(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color);
-void func_80108404_stardust_battle(omObjData *object);
-void func_80108444_stardust_battle(omObjData *object);
-void func_8010844C_stardust_battle(omObjData *object);
-void func_80108454_stardust_battle(omObjData *object);
-void func_801084B0_stardust_battle(omObjData *object);
-void func_801086E8_stardust_battle(omObjData *object);
-void func_8010882C_stardust_battle(omObjData *object);
-void func_801089B4_stardust_battle(omObjData *object);
-void func_801089BC_stardust_battle(omObjData *object);
-void func_80108AC4_stardust_battle(omObjData *object);
-void func_801093CC_stardust_battle(omObjData *object);
-void func_80109424_stardust_battle(omObjData *object);
-void func_80109F94_stardust_battle(omObjData *object);
-void func_8010A5E0_stardust_battle(omObjData *object);
+u32 m265_WorkPtrGet(); // Unprototyped: called with varying argument counts.
+void m265_PlayerIntroUpdate(omObjData *object);
+void m265_StageObjInit(omObjData *object);
+void m265_StageObjMain(omObjData *object);
+void m265_MdlTexScroll(s16 model, f32 u, f32 v, s32 width, s32 height, s16 index);
+void m265_StageSet(s16 mode);
+void m265_PlayerStageSet(omObjData *object, s16 mode);
+void m265_EffMdlObjMain(omObjData *object);
+void m265_DropSpotShuffle(s16 count, s16 arg1);
+void m265_WorkPtrSet(omObjData *arg0, u32 arg1);
+void m265_PlayerCameraFollowUpdate(omObjData *object);
+void m265_PlayerResultUpdate(omObjData *object);
+void m265_CometUpdate(omObjData *object);
+void m265_RippleClose(omObjData *object);
+void m265_StarMotSet(s16 motion, s16 startTime, s16 endTime, u8 attr);
+void m265_DustKill(s16 index);
+f32 m265_AngleCalc(f32 x, f32 y);
+f32 m265_AngleDiffCalc(f32 arg0, f32 arg1);
+void m265_CameraPosUpdate(s32 camIndex);
+f32 m265_InterpCalc(f32 t, f32 start, f32 end);
+f32 m265_AngleInterpCalc(f32 arg0, f32 arg1, f32 arg2);
+void m265_CameraMoveStart(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames);
+f32 m265_AngleStepCalc(f32 target, f32 current, f32 step);
+s32 m265_RippleCreate(f32 x, f32 z, f32 arg2, f32 arg3, f32 arg4, f32 arg5);
+void m265_StarFrontMove(void);
+void m265_StarWinStart(void);
+void m265_StarDefeatStart(void);
+s16 m265_StarStateGet(void);
+void m265_MainObjInit(omObjData *object);
+void m265_MainObjMain(omObjData *object);
+void m265_ExitObjMain(omObjData *object);
+void m265_ExitCheck(omObjData *object);
+void m265_ResultRecordWinUpdate(void);
+void m265_ResultRecordLoseUpdate(void);
+void m265_ResultWinUpdate(void);
+void m265_ResultLoseUpdate(void);
+s16 m265_PlayerIntroStart(void);
+s16 m265_PlayerIntroDoneCheck(void);
+void m265_PlayerCameraFollowStart(void);
+void m265_PlayerResultStart(void);
+void m265_PlayerHookClear(void);
+void m265_StarHeightMove(f32 arg0, s16 arg1);
+void m265_StarStop(void);
+void m265_StarMotSpeedSet(f32 arg0);
+f32 m265_StarMotSpeedGet(void);
+void m265_StarMotTimeSet(f32 arg0);
+f32 m265_StarMotTimeGet(void);
+void m265_DustKillAll(void);
+void m265_StageObjCreate(void);
+void m265_SmokeInit(void);
+void m265_EffMdlInit(void);
+void m265_PlayerObjCreate(void);
+void m265_PlayerObjInit(omObjData *object);
+void m265_PlayerObjMain(omObjData *object);
+s16 m265_PlayerMdlAltSet(s16 arg0);
+void m265_PlayerDustHoldUpdate(omObjData *object, s16 noControl);
+void m265_WaveUpdate(omObjData *object);
+void m265_RippleInit(omObjData *object);
+void m265_RippleUpdate(omObjData *object);
+s16 m265_DustGrab(omObjData *object);
+StardustBattleDust *m265_DustGet(s16 arg0);
+void m265_DustThrow(s16 index);
+void m265_DustPosSet(s16 arg0, f32 arg1, f32 arg2, f32 arg3);
+void m265_DustRotSet(s16 arg0, f32 arg1, f32 arg2, f32 arg3);
+void m265_MtxInterpCalc(f32 *arg0, f32 *arg1, f32 *arg2, f32 arg3);
+void m265_NodeWorldMtxCalc(omObjData *object, const char *name, HuMtx4F out);
+s16 m265_DustHitCheck(omObjData *object, s16 mode, Vec *out);
+s32 m265_EffMdlCreate(Vec *pos, Vec *rot, f32 scale, s16 group);
+void m265_DirRotCalc(Vec *dir, f32 *rot);
+void m265_PlayerPushOut(omObjData *object);
+void m265_PlayerEdgeClamp(omObjData *object);
+s16 m265_StageNoGet(void);
+void m265_StarObjCreate(void);
+void m265_StarObjMain(omObjData *object);
+void m265_DropSpotInit(void);
+void m265_RayInit(s16 arg0);
+void m265_RayObjMain(omObjData *object);
+s32 m265_RayMdlCreate(void);
+void m265_RayMdlDLUpdate(s16 model, s16 count, s16 buffer);
+void m265_DustInit(void);
+void m265_DustObjMain(omObjData *object);
+s32 m265_SmokeCreate(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color);
+void m265_CameraInit(void);
+void m265_TimeInit(void);
+Vec *m265_DropSpotGet(s16 index);
+s16 m265_DustDrop(Vec *target, f32 speed);
+void m265_RayPosSet(f32 x, f32 y, f32 z);
+void m265_RayNumSet(s16 arg0);
+void m265_RayBurstStart(void);
+void m265_TimeObjMain(omObjData *object);
+void m265_CameraKeyStore(s32 arg0);
+void m265_CameraMoveObjMain(omObjData *object);
+void m265_PlayerStarFaceTurn(f32 step);
+void m265_TimeSet(s16 index, s32 frames);
+void m265_TimePulseStart(s16 index);
+void m265_TimeSlideStart(s16 index);
+void m265_SmokeObjMain(omObjData *object);
+u16 m265_SprAnimRead(s32 dirAndFile);
+s32 m265_BillboardColorMdlCreate(HuSprAnimData *sprite, u8 *color);
+s32 m265_BillboardColorMdlLink(HuSprAnimData *sprite, u16 model, u8 *color);
+s32 m265_BillboardVtxCreate(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset);
+void m265_BillboardColorPatSet(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color);
+void m265_PlayerGroundInit(omObjData *object);
+void m265_PlayerGroundPreUpdate(omObjData *object);
+void m265_PlayerGroundPostUpdate(omObjData *object);
+void m265_PlayerWaveInit(omObjData *object);
+void m265_PlayerWavePreUpdate(omObjData *object);
+void m265_PlayerWavePostUpdate(omObjData *object);
+void m265_PlayerCometInit(omObjData *object);
+void m265_PlayerCometPreUpdate(omObjData *object);
+void m265_PlayerCometPostUpdate(omObjData *object);
+void m265_PlayerCometClose(omObjData *object);
+void m265_GroundInit(omObjData *object);
+void m265_WaveInit(omObjData *object);
+void m265_WaveClose(omObjData *object);
+void m265_CometInit(omObjData *object);
 
-Vec D_80113CB0_stardust_battle[] = {
+Vec m265_playerPosTbl[] = {
     { -0.0f, 0.0f, 0.0f },
     { -0.0f, 0.0f, -0.0f },
     { 0.0f, 0.0f, -0.0f },
     { 0.0f, 0.0f, 0.0f },
 };
 
-s16 D_80113CE0_stardust_battle[] = { 118, 130, 138, 150, 162, 172, 184, 196 };
-s16 D_80113CF0_stardust_battle[] = { 28, 40 };
-UnkStardustBattleColor D_80113CF4_stardust_battle = { 0xE9DDA180 };
-MgCameraPreset D_80113CF8_stardust_battle = { { 0.0f, 150.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 650.0f };
-MgCameraPreset D_80113D14_stardust_battle = { { 0.0f, 690.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 1250.0f };
-MgCameraPreset D_80113D30_stardust_battle = { { 0.0f, 690.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 300.0f };
-MgCameraPreset D_80113D4C_stardust_battle = { { 0.0f, 710.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 300.0f }; /* Unreferenced. */
-MgCameraPreset D_80113D68_stardust_battle = { { 0.0f, 250.0f, 0.0f }, { 330.0f, 0.0f, 0.0f }, 1550.0f };
-MgCameraPreset D_80113D84_stardust_battle = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 500.0f }; /* Unreferenced. */
-MgCameraPreset D_80113DA0_stardust_battle = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 500.0f }; /* Unreferenced. */
-s16 D_80113DBC_stardust_battle[] = { 6, 3, -1, -1 };
-s16 D_80113DC4_stardust_battle[] = { 4, 2, -1, -1 };
-s16 D_80113DCC_stardust_battle[] = { 2, 1, -1, -1, 1, 1, -1, -1 };
-void (*D_80113DDC_stardust_battle)() = NULL; // Unprototyped: called with the object.
-s16 D_80113DE0_stardust_battle = -1;
-s32 D_80113DE4_stardust_battle = 0;
-u8 D_80113DE8_stardust_battle = 2;
-s32 D_80113DEC_stardust_battle[] = { 0, 1, 2, 3 };
-s32 D_80113DFC_stardust_battle[] = { 0x00020000, 0x00030000, 0x00070000, 0x00040000, 0x00050000, 0x00060000, 0x00080000, 0x00090000 };
-s32 D_80113E1C_stardust_battle[] = { 47, 48 };
-void (*D_80113E24_stardust_battle[])(omObjData *) = { func_80108404_stardust_battle, func_80108454_stardust_battle, func_8010882C_stardust_battle };
-void (*D_80113E30_stardust_battle[])(omObjData *) = { func_80108444_stardust_battle, func_801084B0_stardust_battle, func_801089B4_stardust_battle };
-void (*D_80113E3C_stardust_battle[])(omObjData *) = { func_8010844C_stardust_battle, func_801086E8_stardust_battle, func_801089BC_stardust_battle };
-void (*D_80113E48_stardust_battle[])(omObjData *) = { NULL, NULL, func_80108AC4_stardust_battle };
-s32 D_80113E54_stardust_battle[] = { 2, 3, 4 };
-s32 D_80113E60_stardust_battle[] = { 0, 0, 1 };
-s32 D_80113E6C_stardust_battle[] = { 0x400, 0x400, 0x800 };
-void (*D_80113E78_stardust_battle[])(omObjData *) = { func_801093CC_stardust_battle, func_80109424_stardust_battle, func_8010A5E0_stardust_battle };
-void (*D_80113E84_stardust_battle[])(omObjData *) = { NULL, func_80109F94_stardust_battle, NULL };
-s16 D_80113E90_stardust_battle[] = { 0, 1, 2, 0 };
-f32 D_80113E98_stardust_battle[] = { -16.5f, -24.750002f, -33.0f, -33.0f };
-s16 D_80113EA8_stardust_battle[] = { 32, 20, 16, 16 };
-s16 D_80113EB0_stardust_battle[] = { 0, 15, 12, 9 };
-Vec D_80113EB8_stardust_battle = { 0.0f, 0.0f, 0.0f };
-UnkStardustBattleColor D_80113EC4_stardust_battle[] = { { 0xFF6400FF }, { 0xFFFFFFFF }, { 0xFFFFFFFF } };
-s32 D_80113ED0_stardust_battle[] = { 49, 50 };
-s32 D_80113ED8_stardust_battle[] = { 0, 1, 3, 4, 6, 7 };
-s32 D_80113EF0_stardust_battle[] = { 8, 5, 0x10013 };
-s32 D_80113EFC_stardust_battle[] = { 0x1800, 0x1C00, 0x1C00 };
-s32 D_80113F08_stardust_battle = 0;
-s32 D_80113F0C_stardust_battle = 0;
-s32 D_80113F10_stardust_battle = 0;
-f32 D_80113F14_stardust_battle[] = { 0.125f, 0.0f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f };
+s16 m265_timeDigitXTbl[] = { 118, 130, 138, 150, 162, 172, 184, 196 };
+s16 m265_timeYTbl[] = { 28, 40 };
+StardustBattleColor m265_smokeColor = { 0xE9DDA180 };
+MgCameraPreset m265_cameraStartPreset = { { 0.0f, 150.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 650.0f };
+MgCameraPreset m265_cameraSkyPreset = { { 0.0f, 690.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 1250.0f };
+MgCameraPreset m265_cameraStarPreset = { { 0.0f, 690.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 300.0f };
+MgCameraPreset m265_cameraStarPresetB = { { 0.0f, 710.0f, 0.0f }, { 350.0f, 0.0f, 0.0f }, 300.0f }; /* Unreferenced. */
+MgCameraPreset m265_cameraPlayPreset = { { 0.0f, 250.0f, 0.0f }, { 330.0f, 0.0f, 0.0f }, 1550.0f };
+MgCameraPreset m265_cameraZeroPreset = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 500.0f }; /* Unreferenced. */
+MgCameraPreset m265_cameraZeroPresetB = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 500.0f }; /* Unreferenced. */
+s16 m265_stageHpHardTbl[] = { 6, 3, -1, -1 };
+s16 m265_stageHpNormalTbl[] = { 4, 2, -1, -1 };
+s16 m265_stageHpEasyTbl[] = { 2, 1, -1, -1, 1, 1, -1, -1 };
+void (*m265_resultFunc)() = NULL; // Unprototyped: called with the object.
+s16 m265_introSeNo = -1;
+s32 m265_exitTimer = 0;
+u8 m265_resultStarPhase = 2;
+s32 m265_playerNoTbl[] = { 0, 1, 2, 3 };
+s32 m265_voiceChrTbl[] = { 0x00020000, 0x00030000, 0x00070000, 0x00040000, 0x00050000, 0x00060000, 0x00080000, 0x00090000 };
+s32 m265_winAnimTbl[] = { 47, 48 };
+void (*m265_playerStageInitTbl[])(omObjData *) = { m265_PlayerGroundInit, m265_PlayerWaveInit, m265_PlayerCometInit };
+void (*m265_playerStagePreTbl[])(omObjData *) = { m265_PlayerGroundPreUpdate, m265_PlayerWavePreUpdate, m265_PlayerCometPreUpdate };
+void (*m265_playerStagePostTbl[])(omObjData *) = { m265_PlayerGroundPostUpdate, m265_PlayerWavePostUpdate, m265_PlayerCometPostUpdate };
+void (*m265_playerStageCloseTbl[])(omObjData *) = { NULL, NULL, m265_PlayerCometClose };
+s32 m265_stageMdlFileTbl[] = { 2, 3, 4 };
+s32 m265_stageBaseMdlFileTbl[] = { 0, 0, 1 };
+s32 m265_stageMdlAttrTbl[] = { 0x400, 0x400, 0x800 };
+void (*m265_stageInitTbl[])(omObjData *) = { m265_GroundInit, m265_WaveInit, m265_CometInit };
+void (*m265_stageCloseTbl[])(omObjData *) = { NULL, m265_WaveClose, NULL };
+s16 m265_stageOrderTbl[] = { 0, 1, 2, 0 };
+f32 m265_dustSpeedTbl[] = { -16.5f, -24.750002f, -33.0f, -33.0f };
+s16 m265_dustIntervalTbl[] = { 32, 20, 16, 16 };
+s16 m265_rayDelayTbl[] = { 0, 15, 12, 9 };
+Vec m265_dropSpotDefault = { 0.0f, 0.0f, 0.0f };
+StardustBattleColor m265_dustLandColorTbl[] = { { 0xFF6400FF }, { 0xFFFFFFFF }, { 0xFFFFFFFF } };
+s32 m265_timeSprFileTbl[] = { 49, 50 };
+s32 m265_timeDigitMemberTbl[] = { 0, 1, 3, 4, 6, 7 };
+s32 m265_effMdlFileTbl[] = { 8, 5, 0x10013 };
+s32 m265_effMdlAttrTbl[] = { 0x1800, 0x1C00, 0x1C00 };
+s32 m265_cameraDebugMode = 0;
+s32 m265_cameraDebugX = 0;
+s32 m265_cameraDebugY = 0;
+f32 m265_cameraBumpTbl[] = { 0.125f, 0.0f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f };
 
-Gfx D_80113F30_stardust_battle[] = {
+Gfx m265_gfxRdpInit[] = {
     gsSPSegment(0x00, 0x00000000),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
@@ -486,22 +486,22 @@ Gfx D_80113F30_stardust_battle[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_80113FE8_stardust_battle[] = {
+Gfx m265_gfxRspInit[] = {
     gsSPClearGeometryMode(0xFFFFFFFF),
     gsSPTexture(0, 0, 0, G_TX_RENDERTILE, G_OFF),
     gsSPSetGeometryMode(G_SHADE | G_SHADING_SMOOTH),
     gsSPEndDisplayList(),
 };
 
-Gfx D_80114008_stardust_battle[] = {
-    gsSPDisplayList(D_80113FE8_stardust_battle),
-    gsSPDisplayList(D_80113F30_stardust_battle),
+Gfx m265_gfxInit[] = {
+    gsSPDisplayList(m265_gfxRspInit),
+    gsSPDisplayList(m265_gfxRdpInit),
     gsSPEndDisplayList(),
 };
 
-Gfx D_80114020_stardust_battle[] = {
+Gfx m265_gfxBillboardInit[] = {
     gsDPPipeSync(),
-    gsSPDisplayList(D_80114008_stardust_battle),
+    gsSPDisplayList(m265_gfxInit),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPSetGeometryMode(G_ZBUFFER | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH),
     gsDPSetBlendColor(0x00, 0x00, 0x00, 0x00),
@@ -510,7 +510,7 @@ Gfx D_80114020_stardust_battle[] = {
     gsSPEndDisplayList(),
 };
 
-Vtx_t D_80114060_stardust_battle[10] = {
+Vtx_t m265_rayVtx[10] = {
     { { 0, 0, 0 }, 0, { 0, 0 }, { 255, 255, 255, 255 } },
     { { 16, 300, 0 }, 0, { 0, 0 }, { 255, 255, 255, 255 } },
     { { -16, 300, 0 }, 0, { 0, 0 }, { 255, 255, 255, 255 } },
@@ -523,51 +523,51 @@ Vtx_t D_80114060_stardust_battle[10] = {
     { { -48, 900, 0 }, 0, { 0, 0 }, { 255, 255, 255, 0 } },
 };
 
-UnkStardustBattleNearPoint D_80114940_stardust_battle[32] BSS;
-UnkStardustBattleStarDist D_80114A40_stardust_battle[10] BSS;
-UnkStardustBattleStarDist D_80114A90_stardust_battle BSS;
-omObjData *D_80114A98_stardust_battle BSS;
-s32 D_80114A9C_stardust_battle BSS;
-s32 D_80114AA0_stardust_battle BSS;
-s32 D_80114AA4_stardust_battle BSS;
-s32 D_80114AA8_stardust_battle BSS;
-s32 D_80114AAC_stardust_battle BSS;
-s32 D_80114AB0_stardust_battle BSS;
-s32 D_80114AB4_stardust_battle BSS;
-s32 D_80114AB8_stardust_battle BSS;
-s32 D_80114ABC_stardust_battle BSS;
-s32 D_80114AC0_stardust_battle BSS;
-s32 D_80114AC4_stardust_battle BSS;
-UnkStardustBattleObj *D_80114AC8_stardust_battle BSS;
-s16 D_80114ACC_stardust_battle BSS;
-s16 D_80114ACE_stardust_battle BSS;
-HuMtx4F D_80114AD0_stardust_battle BSS;
-UnkStardustBattleStage *D_80114B10_stardust_battle BSS;
-s16 D_80114B14_stardust_battle BSS;
-omObjData *D_80114B18_stardust_battle BSS;
-UnkStardustBattleActor *D_80114B1C_stardust_battle BSS;
-UnkStardustBattleSpots *D_80114B20_stardust_battle BSS;
-s32 D_80114B24_stardust_battle BSS;
-s16 *D_80114B28_stardust_battle BSS;
-UnkStardustBattleStars *D_80114B2C_stardust_battle BSS;
-s16 *D_80114B30_stardust_battle BSS;
-omObjData *D_80114B34_stardust_battle BSS;
-u8 D_80114B38_stardust_battle[2][6] BSS;
-UnkStardustBattleScoreDisp *D_80114B44_stardust_battle BSS;
-omObjData *D_80114B48_stardust_battle BSS;
-UnkStardustBattleEffect *D_80114B4C_stardust_battle BSS;
-omObjData *D_80114B50_stardust_battle BSS;
-s16 D_80114B54_stardust_battle BSS;
-omObjData *D_80114B58_stardust_battle BSS;
-UnkStardustBattleStard *D_80114B5C_stardust_battle BSS;
-MgCameraKey D_80114B60_stardust_battle[2] BSS; // target, origin
-s32 D_80114BA8_stardust_battle BSS;
-s32 D_80114BAC_stardust_battle BSS;
-s32 D_80114BB0_stardust_battle BSS;
-s32 D_80114BB4_stardust_battle BSS;
-MinigameFlow D_80114BB8_stardust_battle BSS;
+StardustBattleNearPoint m265_nearPointTbl[32] BSS;
+StardustBattleDustDist m265_grabDistTbl[10] BSS;
+StardustBattleDustDist m265_grabDistTemp BSS;
+omObjData *m265_mainObj BSS;
+s32 m265_flag10F BSS;
+s32 m265_frameCnt BSS;
+s32 m265_phaseTimer BSS;
+s32 m265_phaseStep BSS;
+s32 m265_resultWait BSS;
+s32 m265_timer BSS;
+s32 m265_recordTime BSS;
+s32 m265_phase BSS;
+s32 m265_resultPhase BSS;
+s32 m265_recordF BSS;
+s32 m265_stageChangeF BSS;
+StardustBattlePlayerWork *m265_playerWork BSS;
+s16 m265_winner BSS;
+s16 m265_playerHitF BSS;
+HuMtx4F m265_identMtx BSS;
+StardustBattleStageWork *m265_stageWork BSS;
+s16 m265_rippleF BSS;
+omObjData *m265_starObj BSS;
+StardustBattleStarWork *m265_starWork BSS;
+StardustBattleDropSpotList *m265_dropSpotList BSS;
+s32 m265_starHpMax BSS;
+s16 *m265_stageHpTbl BSS;
+StardustBattleDustPool *m265_dustPool BSS;
+s16 *m265_sprTbl BSS;
+omObjData *m265_timeObj BSS;
+u8 m265_timeDigitTbl[2][6] BSS;
+StardustBattleTimeDisp *m265_timeDispTbl BSS;
+omObjData *m265_smokeObj BSS;
+StardustBattleEffect *m265_smokeTbl BSS;
+omObjData *m265_effMdlObj BSS;
+s16 m265_sparkEffGrp BSS;
+omObjData *m265_rayObj BSS;
+StardustBattleRay *m265_rayTbl BSS;
+MgCameraKey m265_cameraKeyTbl[2] BSS; // target, origin
+s32 m265_cameraMoveTimer BSS;
+s32 m265_cameraMoveTime BSS;
+s32 m265_cameraMoveF BSS;
+s32 m265_cameraMoveMode BSS;
+MinigameFlow m265_mgFlow BSS;
 
-void func_801059A0_stardust_battle(void) {
+void m265_ObjectSetup(void) {
     u8 camIndex;
     s32 level;
 
@@ -587,24 +587,24 @@ void func_801059A0_stardust_battle(void) {
     mgPlayerObjNum = 0;
     mgMapObjNum = 0;
     mgItemObjNum = 0;
-    D_80114AB0_stardust_battle = 0;
-    D_80114AA4_stardust_battle = 0;
-    D_80114AA0_stardust_battle = 0;
-    D_80114AA8_stardust_battle = 0;
-    D_80114AAC_stardust_battle = 0;
-    D_80114AB8_stardust_battle = -1;
-    D_80114ABC_stardust_battle = 0;
-    D_80114AC0_stardust_battle = 0;
-    D_80114B14_stardust_battle = 1;
-    D_80114B24_stardust_battle = 9;
-    D_80114B28_stardust_battle = D_80113DBC_stardust_battle;
-    D_80114AC4_stardust_battle = 1;
-    D_80114AC0_stardust_battle = _CheckFlag(0x1C);
-    if (D_80114AC0_stardust_battle != 0) {
-        D_80114AC0_stardust_battle = 1;
-        D_80114AB4_stardust_battle = GWMgRecordGet(9);
-        if (D_80114AB4_stardust_battle == 0) {
-            D_80114AB4_stardust_battle = 4500;
+    m265_timer = 0;
+    m265_phaseTimer = 0;
+    m265_frameCnt = 0;
+    m265_phaseStep = 0;
+    m265_resultWait = 0;
+    m265_phase = -1;
+    m265_resultPhase = 0;
+    m265_recordF = 0;
+    m265_rippleF = 1;
+    m265_starHpMax = 9;
+    m265_stageHpTbl = m265_stageHpHardTbl;
+    m265_stageChangeF = 1;
+    m265_recordF = _CheckFlag(0x1C);
+    if (m265_recordF != 0) {
+        m265_recordF = 1;
+        m265_recordTime = GWMgRecordGet(9);
+        if (m265_recordTime == 0) {
+            m265_recordTime = 4500;
         }
     }
     if ((GwSystem.playMode & 4) && !_CheckFlag(0x1C)) {
@@ -614,223 +614,223 @@ void func_801059A0_stardust_battle(void) {
     }
     switch (level) {
         case 0:
-            D_80114B24_stardust_battle = 3;
-            D_80114B28_stardust_battle = D_80113DCC_stardust_battle;
+            m265_starHpMax = 3;
+            m265_stageHpTbl = m265_stageHpEasyTbl;
             break;
         case 1:
-            D_80114B24_stardust_battle = 6;
-            D_80114B28_stardust_battle = D_80113DC4_stardust_battle;
+            m265_starHpMax = 6;
+            m265_stageHpTbl = m265_stageHpNormalTbl;
             break;
         default:
-            D_80114B24_stardust_battle = 9;
-            D_80114B28_stardust_battle = D_80113DBC_stardust_battle;
+            m265_starHpMax = 9;
+            m265_stageHpTbl = m265_stageHpHardTbl;
             break;
     }
-    D_80114ACC_stardust_battle = -1;
-    D_80114ACE_stardust_battle = 0;
-    D_80114B30_stardust_battle = HuMemAllocTag(0x40, TAG_OVERLAY);
-    D_80114AC8_stardust_battle = NULL;
-    D_80114B10_stardust_battle = NULL;
-    D_80114B18_stardust_battle = NULL;
-    D_80114B1C_stardust_battle = NULL;
-    D_80114B2C_stardust_battle = NULL;
-    D_80114B58_stardust_battle = NULL;
-    D_80114B5C_stardust_battle = NULL;
-    guMtxIdentF(D_80114AD0_stardust_battle);
-    D_80114A98_stardust_battle = omAddObj(0x20, 0, 0, -1, func_80105D18_stardust_battle);
-    memset(&D_80114BB8_stardust_battle, 0, 0x28);
-    D_80114BB8_stardust_battle.type = MINIGAME_BATTLE;
-    MgFlowInit(&D_80114BB8_stardust_battle);
-    GMesFontMesCreate(D_80114100_stardust_battle, 1);
-    GMesFontMesCreate(D_8011410C_stardust_battle, 1);
+    m265_winner = -1;
+    m265_playerHitF = 0;
+    m265_sprTbl = HuMemAllocTag(0x40, TAG_OVERLAY);
+    m265_playerWork = NULL;
+    m265_stageWork = NULL;
+    m265_starObj = NULL;
+    m265_starWork = NULL;
+    m265_dustPool = NULL;
+    m265_rayObj = NULL;
+    m265_rayTbl = NULL;
+    guMtxIdentF(m265_identMtx);
+    m265_mainObj = omAddObj(0x20, 0, 0, -1, m265_MainObjInit);
+    memset(&m265_mgFlow, 0, 0x28);
+    m265_mgFlow.type = MINIGAME_BATTLE;
+    MgFlowInit(&m265_mgFlow);
+    GMesFontMesCreate(m265_startMesTbl, 1);
+    GMesFontMesCreate(m265_finishMesTbl, 1);
 }
 
-void func_80105D18_stardust_battle(omObjData *object) {
-    object->func = func_80105DA0_stardust_battle;
-    func_80108B34_stardust_battle();
-    func_8010F5E0_stardust_battle();
-    func_8010FA60_stardust_battle();
-    func_80106D0C_stardust_battle();
-    func_8010A74C_stardust_battle();
-    func_8010CB34_stardust_battle();
-    func_801107E4_stardust_battle();
-    func_8010EE7C_stardust_battle();
-    D_80114B54_stardust_battle = EffectGroupStarCreate(0x1CA9, 10);
+void m265_MainObjInit(omObjData *object) {
+    object->func = m265_MainObjMain;
+    m265_StageObjCreate();
+    m265_SmokeInit();
+    m265_EffMdlInit();
+    m265_PlayerObjCreate();
+    m265_StarObjCreate();
+    m265_DustInit();
+    m265_CameraInit();
+    m265_TimeInit();
+    m265_sparkEffGrp = EffectGroupStarCreate(0x1CA9, 10);
     if (_CheckFlag(10)) {
-        D_80114A9C_stardust_battle = 1;
+        m265_flag10F = 1;
     }
 }
 
-void func_80105DA0_stardust_battle(omObjData *object) {
-    UnkStardustBattleActor *actor = D_80114B1C_stardust_battle;
+void m265_MainObjMain(omObjData *object) {
+    StardustBattleStarWork *actor = m265_starWork;
     s32 secs;
 
-    switch (D_80114AB8_stardust_battle) {
+    switch (m265_phase) {
         case -1:
-            if (D_80114AA4_stardust_battle > 0) {
-                D_80114BB4_stardust_battle = 0;
-                func_801117E4_stardust_battle(D_80113CF8_stardust_battle.center.x, D_80113CF8_stardust_battle.center.y,
-                                              D_80113CF8_stardust_battle.center.z, D_80113CF8_stardust_battle.rot.x,
-                                              D_80113CF8_stardust_battle.rot.y, D_80113CF8_stardust_battle.rot.z,
-                                              D_80113CF8_stardust_battle.zoom, 1);
-                D_80113DE0_stardust_battle = HuAudFXPlay(0x50C);
+            if (m265_phaseTimer > 0) {
+                m265_cameraMoveMode = 0;
+                m265_CameraMoveStart(m265_cameraStartPreset.center.x, m265_cameraStartPreset.center.y,
+                                              m265_cameraStartPreset.center.z, m265_cameraStartPreset.rot.x,
+                                              m265_cameraStartPreset.rot.y, m265_cameraStartPreset.rot.z,
+                                              m265_cameraStartPreset.zoom, 1);
+                m265_introSeNo = HuAudFXPlay(0x50C);
                 WipeCreateIn(WIPE_TYPE_PREV, 16);
-                D_80114AA4_stardust_battle = 0;
-                D_80114AB8_stardust_battle++;
+                m265_phaseTimer = 0;
+                m265_phase++;
             }
             break;
         case 0:
-            if (WipeStatGet() == 0 && func_80107FA4_stardust_battle() != 0) {
-                D_80114AA4_stardust_battle = 0;
-                D_80114AB8_stardust_battle++;
+            if (WipeStatGet() == 0 && m265_PlayerIntroStart() != 0) {
+                m265_phaseTimer = 0;
+                m265_phase++;
             }
             break;
         case 1:
-            if (func_80107FE8_stardust_battle() != 0) {
-                D_80114BB4_stardust_battle = 0;
-                func_801117E4_stardust_battle(D_80113D14_stardust_battle.center.x, D_80113D14_stardust_battle.center.y,
-                                              D_80113D14_stardust_battle.center.z, D_80113D14_stardust_battle.rot.x,
-                                              D_80113D14_stardust_battle.rot.y, D_80113D14_stardust_battle.rot.z,
-                                              D_80113D14_stardust_battle.zoom, 37);
-                D_80114AA4_stardust_battle = 0;
-                D_80114AB8_stardust_battle++;
+            if (m265_PlayerIntroDoneCheck() != 0) {
+                m265_cameraMoveMode = 0;
+                m265_CameraMoveStart(m265_cameraSkyPreset.center.x, m265_cameraSkyPreset.center.y,
+                                              m265_cameraSkyPreset.center.z, m265_cameraSkyPreset.rot.x,
+                                              m265_cameraSkyPreset.rot.y, m265_cameraSkyPreset.rot.z,
+                                              m265_cameraSkyPreset.zoom, 37);
+                m265_phaseTimer = 0;
+                m265_phase++;
             }
             break;
         case 2:
-            if (D_80114BB0_stardust_battle == 0) {
+            if (m265_cameraMoveF == 0) {
                 HuAudSeqPlay(0x41);
-                D_80114AA4_stardust_battle = 0;
-                D_80114AB8_stardust_battle++;
+                m265_phaseTimer = 0;
+                m265_phase++;
             }
             break;
         case 3:
-            if (D_80114AA4_stardust_battle >= 22.5) {
-                D_80114BB4_stardust_battle = 3;
-                func_801117E4_stardust_battle(D_80113D30_stardust_battle.center.x, D_80113D30_stardust_battle.center.y,
-                                              D_80113D30_stardust_battle.center.z, D_80113D30_stardust_battle.rot.x,
-                                              D_80113D30_stardust_battle.rot.y, D_80113D30_stardust_battle.rot.z,
-                                              D_80113D30_stardust_battle.zoom, 15);
-                func_80107E84_stardust_battle(0);
-                D_80114AA4_stardust_battle = 0;
-                D_80114AB8_stardust_battle++;
+            if (m265_phaseTimer >= 22.5) {
+                m265_cameraMoveMode = 3;
+                m265_CameraMoveStart(m265_cameraStarPreset.center.x, m265_cameraStarPreset.center.y,
+                                              m265_cameraStarPreset.center.z, m265_cameraStarPreset.rot.x,
+                                              m265_cameraStarPreset.rot.y, m265_cameraStarPreset.rot.z,
+                                              m265_cameraStarPreset.zoom, 15);
+                m265_PlayerMdlAltSet(0);
+                m265_phaseTimer = 0;
+                m265_phase++;
             }
             break;
         case 4:
-            if (D_80114BB0_stardust_battle == 0) {
-                func_8010C1F8_stardust_battle(0, 0, 300, 0);
+            if (m265_cameraMoveF == 0) {
+                m265_StarMotSet(0, 0, 300, 0);
                 HuAudFXPlay(0x511);
-                D_80114AA4_stardust_battle = 0;
-                D_80114AB8_stardust_battle++;
+                m265_phaseTimer = 0;
+                m265_phase++;
             }
             break;
         case 5:
-            if (func_8010C3EC_stardust_battle() >= 60.0f && func_8010C32C_stardust_battle() == 1.0f) {
-                func_8010C38C_stardust_battle(60.0f);
-                func_8010C2CC_stardust_battle(0.0f);
+            if (m265_StarMotTimeGet() >= 60.0f && m265_StarMotSpeedGet() == 1.0f) {
+                m265_StarMotTimeSet(60.0f);
+                m265_StarMotSpeedSet(0.0f);
             }
-            if (D_80114AA4_stardust_battle == 43.0f) {
-                func_8010BFE4_stardust_battle(450.0f, 30);
+            if (m265_phaseTimer == 43.0f) {
+                m265_StarHeightMove(450.0f, 30);
             }
-            if (D_80114AA4_stardust_battle > 45.0f) {
-                func_8010C1F8_stardust_battle(0, 60, 0, 4);
-                func_8010C2CC_stardust_battle(2.0f);
-                D_80114BB4_stardust_battle = 2;
-                func_801117E4_stardust_battle(D_80113D68_stardust_battle.center.x, D_80113D68_stardust_battle.center.y,
-                                              D_80113D68_stardust_battle.center.z, D_80113D68_stardust_battle.rot.x,
-                                              D_80113D68_stardust_battle.rot.y, D_80113D68_stardust_battle.rot.z,
-                                              D_80113D68_stardust_battle.zoom, 22);
-                if (D_80113DE0_stardust_battle != -1) {
-                    HuAudFXFadeOut(D_80113DE0_stardust_battle, 22);
-                    D_80113DE0_stardust_battle = -1;
+            if (m265_phaseTimer > 45.0f) {
+                m265_StarMotSet(0, 60, 0, 4);
+                m265_StarMotSpeedSet(2.0f);
+                m265_cameraMoveMode = 2;
+                m265_CameraMoveStart(m265_cameraPlayPreset.center.x, m265_cameraPlayPreset.center.y,
+                                              m265_cameraPlayPreset.center.z, m265_cameraPlayPreset.rot.x,
+                                              m265_cameraPlayPreset.rot.y, m265_cameraPlayPreset.rot.z,
+                                              m265_cameraPlayPreset.zoom, 22);
+                if (m265_introSeNo != -1) {
+                    HuAudFXFadeOut(m265_introSeNo, 22);
+                    m265_introSeNo = -1;
                 }
-                D_80114AA4_stardust_battle = 0;
-                D_80114AB8_stardust_battle++;
+                m265_phaseTimer = 0;
+                m265_phase++;
             }
             break;
         case 6:
-            if (D_80114BB0_stardust_battle == 0) {
+            if (m265_cameraMoveF == 0) {
                 GMesCreate(9);
                 HuAudFXPlay(0xE);
-                func_80108074_stardust_battle();
-                D_80114AB8_stardust_battle++;
+                m265_PlayerCameraFollowStart();
+                m265_phase++;
             }
             break;
         case 7:
             if (GMesStatGet() == 0) {
-                func_8010F400_stardust_battle(0, D_80114AB0_stardust_battle);
+                m265_TimeSet(0, m265_timer);
                 MgFlowStatSet(MG_STATE_PLAY);
-                D_80114AB8_stardust_battle++;
+                m265_phase++;
             }
             break;
         case 8:
-            D_80114AB0_stardust_battle++;
-            func_8010F400_stardust_battle(0, D_80114AB0_stardust_battle);
-            if (D_80114AB0_stardust_battle == 4470) {
-                func_8010F5B0_stardust_battle(0);
-                func_8010F5B0_stardust_battle(1);
-            } else if (D_80114AB0_stardust_battle == 4499) {
+            m265_timer++;
+            m265_TimeSet(0, m265_timer);
+            if (m265_timer == 4470) {
+                m265_TimeSlideStart(0);
+                m265_TimeSlideStart(1);
+            } else if (m265_timer == 4499) {
                 GMesCreate(0x1A, 31, 156, 32);
-            } else if (D_80114AB0_stardust_battle >= 4500) {
-                secs = 5400 - D_80114AB0_stardust_battle + 29;
+            } else if (m265_timer >= 4500) {
+                secs = 5400 - m265_timer + 29;
                 GMesTimerValueSet(secs / 30);
             }
-            if (D_80114AB0_stardust_battle >= 5400 || D_80114ACE_stardust_battle != 0 || actor->unk_06 <= 0) {
+            if (m265_timer >= 5400 || m265_playerHitF != 0 || actor->unk_06 <= 0) {
                 GMesTimerEnd();
                 GMesCreate(0x14);
                 MgFlowStatSet(MG_STATE_FINISH);
-                func_8010C06C_stardust_battle();
-                func_8010ED7C_stardust_battle();
+                m265_StarStop();
+                m265_DustKillAll();
                 HuAudSeqFadeOut(120);
-                func_801080EC_stardust_battle();
+                m265_PlayerHookClear();
                 if (actor->unk_06 <= 0) {
-                    D_80114ACC_stardust_battle = 0;
-                    secs = (5400 - D_80114AB0_stardust_battle + 29) / 30;
+                    m265_winner = 0;
+                    secs = (5400 - m265_timer + 29) / 30;
                     if (secs >= 60) {
-                        GwPlayer[D_80114AC8_stardust_battle->unk_20].bonusCoin = 3;
+                        GwPlayer[m265_playerWork->unk_20].bonusCoin = 3;
                     } else if (secs >= 40) {
-                        GwPlayer[D_80114AC8_stardust_battle->unk_20].bonusCoin = 2;
+                        GwPlayer[m265_playerWork->unk_20].bonusCoin = 2;
                     } else if (secs >= 20) {
-                        GwPlayer[D_80114AC8_stardust_battle->unk_20].bonusCoin = 1;
+                        GwPlayer[m265_playerWork->unk_20].bonusCoin = 1;
                     } else {
-                        GwPlayer[D_80114AC8_stardust_battle->unk_20].bonusCoin = 0;
+                        GwPlayer[m265_playerWork->unk_20].bonusCoin = 0;
                     }
                 } else {
-                    GwPlayer[D_80114AC8_stardust_battle->unk_20].bonusCoin = -1;
+                    GwPlayer[m265_playerWork->unk_20].bonusCoin = -1;
                 }
-                D_80114AA4_stardust_battle = 0;
-                D_80114AB8_stardust_battle++;
+                m265_phaseTimer = 0;
+                m265_phase++;
             }
             break;
         case 9:
             if (GMesStatGet() == 0 &&
-                (func_8010C508_stardust_battle() == 12 ||
-                 (D_80114AC0_stardust_battle != 0 && D_80114ACC_stardust_battle >= 0 &&
-                  D_80114AB0_stardust_battle < D_80114AB4_stardust_battle))) {
+                (m265_StarStateGet() == 12 ||
+                 (m265_recordF != 0 && m265_winner >= 0 &&
+                  m265_timer < m265_recordTime))) {
                 MgFlowStatSet(MG_STATE_RESULT);
-                func_801080B0_stardust_battle();
-                D_80114ABC_stardust_battle = 0;
-                if (D_80114AC0_stardust_battle == 0 || D_80114ACC_stardust_battle < 0 ||
-                    D_80114AB0_stardust_battle >= D_80114AB4_stardust_battle) {
-                    func_8010C0C8_stardust_battle();
+                m265_PlayerResultStart();
+                m265_resultPhase = 0;
+                if (m265_recordF == 0 || m265_winner < 0 ||
+                    m265_timer >= m265_recordTime) {
+                    m265_StarFrontMove();
                 }
-                if (D_80114AC0_stardust_battle != 0) {
-                    if (D_80114ACC_stardust_battle >= 0) {
-                        D_80113DDC_stardust_battle = func_80106690_stardust_battle;
+                if (m265_recordF != 0) {
+                    if (m265_winner >= 0) {
+                        m265_resultFunc = m265_ResultRecordWinUpdate;
                     } else {
-                        D_80113DDC_stardust_battle = func_80106A3C_stardust_battle;
+                        m265_resultFunc = m265_ResultRecordLoseUpdate;
                     }
-                } else if (D_80114ACC_stardust_battle >= 0) {
-                    D_80113DDC_stardust_battle = func_80106B60_stardust_battle;
+                } else if (m265_winner >= 0) {
+                    m265_resultFunc = m265_ResultWinUpdate;
                 } else {
-                    D_80113DDC_stardust_battle = func_80106C30_stardust_battle;
+                    m265_resultFunc = m265_ResultLoseUpdate;
                 }
-                D_80114AB8_stardust_battle++;
-                D_80114AA4_stardust_battle = 0;
+                m265_phase++;
+                m265_phaseTimer = 0;
             }
             break;
         case 10:
-            if (D_80113DDC_stardust_battle != NULL) {
-                D_80113DDC_stardust_battle(object);
+            if (m265_resultFunc != NULL) {
+                m265_resultFunc(object);
             }
             break;
         case 32:
@@ -840,227 +840,227 @@ void func_80105DA0_stardust_battle(omObjData *object) {
             HuAudSeqFadeOut(16);
             HuAudFXAllFadeOut(16);
             HuAudFXPlay(0x509);
-            D_80114AB8_stardust_battle = 99;
-            D_80114AA4_stardust_battle = 0;
+            m265_phase = 99;
+            m265_phaseTimer = 0;
             break;
         case 99:
             if (WipeStatGet() == 0) {
-                object->func = func_801065B4_stardust_battle;
+                object->func = m265_ExitObjMain;
             }
             break;
     }
-    func_801065D8_stardust_battle(object);
-    D_80114AA0_stardust_battle++;
-    D_80114AA4_stardust_battle++;
+    m265_ExitCheck(object);
+    m265_frameCnt++;
+    m265_phaseTimer++;
 }
 
-void func_801065B4_stardust_battle(omObjData *object) {
+void m265_ExitObjMain(omObjData *object) {
     HuAudSeqStop();
     omOvlReturnEx(1);
 }
 
-void func_801065D8_stardust_battle(omObjData *object) {
-    if (D_80113DE4_stardust_battle != 0) {
-        if (D_80113DE4_stardust_battle == 1) {
-            object->func = func_801065B4_stardust_battle;
+void m265_ExitCheck(omObjData *object) {
+    if (m265_exitTimer != 0) {
+        if (m265_exitTimer == 1) {
+            object->func = m265_ExitObjMain;
         }
-        D_80113DE4_stardust_battle--;
+        m265_exitTimer--;
     } else if (omSysExitReq == 1 && WipeStatGet() == 0) {
-        D_80113DE4_stardust_battle = 16;
+        m265_exitTimer = 16;
         WipeColorSet(0, 0, 0);
-        WipeCreateOut(0, D_80113DE6_stardust_battle[0]);
-        HuAudSeqFadeOut(D_80113DE6_stardust_battle[0]);
-        HuAudFXAllFadeOut(D_80113DE6_stardust_battle[0]);
+        WipeCreateOut(0, m265_exitTimerLo[0]);
+        HuAudSeqFadeOut(m265_exitTimerLo[0]);
+        HuAudFXAllFadeOut(m265_exitTimerLo[0]);
     }
 }
 
-void func_80106690_stardust_battle(void) {
-    switch (D_80114ABC_stardust_battle) {
+void m265_ResultRecordWinUpdate(void) {
+    switch (m265_resultPhase) {
         case 0:
-            if (D_80114AB0_stardust_battle < D_80114AB4_stardust_battle) {
-                D_80114ABC_stardust_battle = 2;
-            } else if (func_8010C508_stardust_battle() == 14) {
-                func_8010C498_stardust_battle();
-                D_80114ABC_stardust_battle = 16;
-                D_80114AA4_stardust_battle = 0;
+            if (m265_timer < m265_recordTime) {
+                m265_resultPhase = 2;
+            } else if (m265_StarStateGet() == 14) {
+                m265_StarDefeatStart();
+                m265_resultPhase = 16;
+                m265_phaseTimer = 0;
             }
             break;
         case 2:
-            if (D_80113DE8_stardust_battle == 2) {
-                if (func_8010C508_stardust_battle() == 12) {
-                    func_8010C0C8_stardust_battle();
-                    D_80113DE8_stardust_battle = 1;
+            if (m265_resultStarPhase == 2) {
+                if (m265_StarStateGet() == 12) {
+                    m265_StarFrontMove();
+                    m265_resultStarPhase = 1;
                 }
-            } else if (D_80113DE8_stardust_battle == 1 && func_8010C508_stardust_battle() == 14) {
-                func_8010C498_stardust_battle();
-                D_80113DE8_stardust_battle = 0;
+            } else if (m265_resultStarPhase == 1 && m265_StarStateGet() == 14) {
+                m265_StarDefeatStart();
+                m265_resultStarPhase = 0;
             }
-            if (D_80114AA4_stardust_battle > 15.0f) {
-                D_80114AB4_stardust_battle = D_80114AB0_stardust_battle;
-                GWMgRecordSet(9, (u16)D_80114AB4_stardust_battle);
-                func_8010F400_stardust_battle(0, D_80114AB0_stardust_battle);
-                func_8010F400_stardust_battle(1, D_80114AB4_stardust_battle);
-                func_8010F580_stardust_battle(1);
+            if (m265_phaseTimer > 15.0f) {
+                m265_recordTime = m265_timer;
+                GWMgRecordSet(9, (u16)m265_recordTime);
+                m265_TimeSet(0, m265_timer);
+                m265_TimeSet(1, m265_recordTime);
+                m265_TimePulseStart(1);
                 GMesCreate(0x1B);
-                D_80114AAC_stardust_battle = 99;
-                D_80114ABC_stardust_battle++;
+                m265_resultWait = 99;
+                m265_resultPhase++;
             }
             break;
         case 3:
-            if (D_80113DE8_stardust_battle == 2) {
-                if (func_8010C508_stardust_battle() == 12) {
-                    func_8010C0C8_stardust_battle();
-                    D_80113DE8_stardust_battle = 1;
+            if (m265_resultStarPhase == 2) {
+                if (m265_StarStateGet() == 12) {
+                    m265_StarFrontMove();
+                    m265_resultStarPhase = 1;
                 }
-            } else if (D_80113DE8_stardust_battle == 1 && func_8010C508_stardust_battle() == 14) {
-                func_8010C498_stardust_battle();
-                D_80113DE8_stardust_battle = 0;
+            } else if (m265_resultStarPhase == 1 && m265_StarStateGet() == 14) {
+                m265_StarDefeatStart();
+                m265_resultStarPhase = 0;
             }
             if (GMesStatGet() == 0) {
-                D_80114AA4_stardust_battle = 0;
-                D_80114ABC_stardust_battle++;
+                m265_phaseTimer = 0;
+                m265_resultPhase++;
             }
             break;
         case 4:
-            if (D_80113DE8_stardust_battle == 2) {
-                if (func_8010C508_stardust_battle() == 12) {
-                    func_8010C0C8_stardust_battle();
-                    D_80113DE8_stardust_battle = 1;
+            if (m265_resultStarPhase == 2) {
+                if (m265_StarStateGet() == 12) {
+                    m265_StarFrontMove();
+                    m265_resultStarPhase = 1;
                 }
-            } else if (D_80113DE8_stardust_battle == 1 && func_8010C508_stardust_battle() == 14) {
-                func_8010C498_stardust_battle();
-                D_80113DE8_stardust_battle = 0;
+            } else if (m265_resultStarPhase == 1 && m265_StarStateGet() == 14) {
+                m265_StarDefeatStart();
+                m265_resultStarPhase = 0;
             }
-            if (D_80114AA4_stardust_battle >= 15) {
+            if (m265_phaseTimer >= 15) {
                 HuAudSeqPlay(0x6A);
-                D_80114AC8_stardust_battle->unk_04 = 13;
-                GMesCreate(0x16, D_80114AC8_stardust_battle->character);
-                D_80114AA4_stardust_battle = 0;
-                D_80114ABC_stardust_battle++;
+                m265_playerWork->unk_04 = 13;
+                GMesCreate(0x16, m265_playerWork->character);
+                m265_phaseTimer = 0;
+                m265_resultPhase++;
             }
             break;
         case 5:
             if (GMesStatGet() == 0) {
-                D_80114AA4_stardust_battle = 0;
-                D_80114ABC_stardust_battle++;
+                m265_phaseTimer = 0;
+                m265_resultPhase++;
             }
             break;
         case 16:
-            if (D_80114AA4_stardust_battle > 60.0f) {
-                D_80114AC8_stardust_battle->unk_04 = 13;
-                GMesCreate(0x16, D_80114AC8_stardust_battle->character);
+            if (m265_phaseTimer > 60.0f) {
+                m265_playerWork->unk_04 = 13;
+                GMesCreate(0x16, m265_playerWork->character);
                 HuAudSeqPlay(0x65);
-                D_80114AAC_stardust_battle = 98;
-                D_80114ABC_stardust_battle++;
+                m265_resultWait = 98;
+                m265_resultPhase++;
             }
             break;
         case 17:
             if (GMesStatGet() == 0) {
-                D_80114AA4_stardust_battle = 0;
-                D_80114ABC_stardust_battle++;
+                m265_phaseTimer = 0;
+                m265_resultPhase++;
             }
             break;
         case 6:
         case 18:
-            if (D_80114AA4_stardust_battle >= 15) {
-                D_80114AB8_stardust_battle = 32;
-                D_80114AA4_stardust_battle = 0;
-                D_80114ABC_stardust_battle++;
+            if (m265_phaseTimer >= 15) {
+                m265_phase = 32;
+                m265_phaseTimer = 0;
+                m265_resultPhase++;
             }
             break;
     }
 }
 
-void func_80106A3C_stardust_battle(void) {
-    switch (D_80114ABC_stardust_battle) {
+void m265_ResultRecordLoseUpdate(void) {
+    switch (m265_resultPhase) {
         case 0:
-            if (func_8010C508_stardust_battle() == 14) {
-                D_80114AC8_stardust_battle->unk_04 = 14;
-                func_8010C44C_stardust_battle();
-                D_80114AA4_stardust_battle = 0;
-                D_80114ABC_stardust_battle++;
+            if (m265_StarStateGet() == 14) {
+                m265_playerWork->unk_04 = 14;
+                m265_StarWinStart();
+                m265_phaseTimer = 0;
+                m265_resultPhase++;
             }
             break;
         case 1:
-            if (D_80114AA4_stardust_battle >= 15.0f) {
+            if (m265_phaseTimer >= 15.0f) {
                 GMesCreate(0x1D);
                 HuAudSeqPlay(0x6B);
-                D_80114AAC_stardust_battle = 132;
-                D_80114AA4_stardust_battle = 0;
-                D_80114ABC_stardust_battle++;
+                m265_resultWait = 132;
+                m265_phaseTimer = 0;
+                m265_resultPhase++;
             }
             break;
         case 2:
             if (GMesStatGet() == 0) {
-                D_80114AA4_stardust_battle = 0;
-                D_80114ABC_stardust_battle++;
+                m265_phaseTimer = 0;
+                m265_resultPhase++;
             }
             break;
         case 3:
-            if (D_80114AA4_stardust_battle >= 15) {
-                D_80114AB8_stardust_battle = 32;
-                D_80114AA4_stardust_battle = 0;
-                D_80114ABC_stardust_battle++;
+            if (m265_phaseTimer >= 15) {
+                m265_phase = 32;
+                m265_phaseTimer = 0;
+                m265_resultPhase++;
             }
             break;
     }
 }
 
-void func_80106B60_stardust_battle(void) {
-    switch (D_80114ABC_stardust_battle) {
+void m265_ResultWinUpdate(void) {
+    switch (m265_resultPhase) {
         case 0:
-            func_80107F34_stardust_battle(5.0f);
-            if (func_8010C508_stardust_battle() == 14) {
-                func_8010C498_stardust_battle();
-                D_80114AA4_stardust_battle = 0;
-                D_80114ABC_stardust_battle++;
+            m265_PlayerStarFaceTurn(5.0f);
+            if (m265_StarStateGet() == 14) {
+                m265_StarDefeatStart();
+                m265_phaseTimer = 0;
+                m265_resultPhase++;
             }
             break;
         case 1:
-            func_80107F34_stardust_battle(5.0f);
-            if (D_80114AA4_stardust_battle >= 150.0f) {
-                D_80114AB8_stardust_battle = 64;
-                D_80114AA4_stardust_battle = 0;
-                D_80114ABC_stardust_battle++;
+            m265_PlayerStarFaceTurn(5.0f);
+            if (m265_phaseTimer >= 150.0f) {
+                m265_phase = 64;
+                m265_phaseTimer = 0;
+                m265_resultPhase++;
             }
             break;
     }
 }
 
-void func_80106C30_stardust_battle(void) {
-    switch (D_80114ABC_stardust_battle) {
+void m265_ResultLoseUpdate(void) {
+    switch (m265_resultPhase) {
         case 0:
-            D_80114AC8_stardust_battle->unk_04 = 14;
-            D_80114AA4_stardust_battle = 0;
-            D_80114ABC_stardust_battle++;
+            m265_playerWork->unk_04 = 14;
+            m265_phaseTimer = 0;
+            m265_resultPhase++;
             break;
         case 1:
-            if (func_8010C508_stardust_battle() == 14) {
-                func_8010C44C_stardust_battle();
-                D_80114AA4_stardust_battle = 0;
-                D_80114ABC_stardust_battle++;
+            if (m265_StarStateGet() == 14) {
+                m265_StarWinStart();
+                m265_phaseTimer = 0;
+                m265_resultPhase++;
             }
             break;
         case 2:
-            if (D_80114AA4_stardust_battle >= 30.0f) {
-                D_80114AB8_stardust_battle = 64;
-                D_80114AA4_stardust_battle = 0;
-                D_80114ABC_stardust_battle++;
+            if (m265_phaseTimer >= 30.0f) {
+                m265_phase = 64;
+                m265_phaseTimer = 0;
+                m265_resultPhase++;
             }
             break;
     }
 }
 
-void func_80106D0C_stardust_battle(void) {
-    UnkStardustBattleObj *obj;
+void m265_PlayerObjCreate(void) {
+    StardustBattlePlayerWork *obj;
     omObjData *object;
     s16 i;
 
-    obj = D_80114AC8_stardust_battle = HuMemAllocTag(sizeof(UnkStardustBattleObj), TAG_OVERLAY);
+    obj = m265_playerWork = HuMemAllocTag(sizeof(StardustBattlePlayerWork), TAG_OVERLAY);
     MgShadowAltSet(0);
     MgPlayerParamReset();
     for (i = 0; i < 4; i++) {
-        if (GwPlayer[D_80113DEC_stardust_battle[i]].group == 0) {
+        if (GwPlayer[m265_playerNoTbl[i]].group == 0) {
             break;
         }
     }
@@ -1068,12 +1068,12 @@ void func_80106D0C_stardust_battle(void) {
         i = 0;
     }
     obj->unk_00 = i;
-    obj->unk_20 = D_80113DEC_stardust_battle[i];
-    object = omAddObj(16, 11, 60, -1, func_80106EB0_stardust_battle);
+    obj->unk_20 = m265_playerNoTbl[i];
+    object = omAddObj(16, 11, 60, -1, m265_PlayerObjInit);
     mgPlayerObjTbl[mgPlayerObjNum] = object;
     mgPlayerObjNum++;
-    object->trans.x = D_80113CB0_stardust_battle[obj->unk_00].x;
-    object->trans.z = D_80113CB0_stardust_battle[obj->unk_00].z;
+    object->trans.x = m265_playerPosTbl[obj->unk_00].x;
+    object->trans.z = m265_playerPosTbl[obj->unk_00].z;
     obj->unk_2C = object->trans.x;
     obj->unk_30 = object->trans.y;
     obj->unk_34 = object->trans.z;
@@ -1082,11 +1082,11 @@ void func_80106D0C_stardust_battle(void) {
     obj->func_74 = NULL;
     obj->func_78 = NULL;
     memset(&obj->unk_3A, 0, 0x20);
-    func_80111FC0_stardust_battle(object, (u32)obj);
+    m265_WorkPtrSet(object, (u32)obj);
 }
 
-void func_80106EB0_stardust_battle(omObjData *object) {
-    UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(object);
+void m265_PlayerObjInit(omObjData *object) {
+    StardustBattlePlayerWork *obj = (StardustBattlePlayerWork *)m265_WorkPtrGet(object);
     MgPlayerWork *data;
     s16 player = obj->unk_20;
     s16 character;
@@ -1139,10 +1139,10 @@ void func_80106EB0_stardust_battle(omObjData *object) {
     MgPlayerMotLoad(object, 40, CharMotionDataNumGet(chr, 108), 0, 0);
     MgPlayerMotLoad(object, 41, CharMotionDataNumGet(chr, 155), 0, 0);
     r = rand8() & 1;
-    MgPlayerMotLoad(object, 13, CharMotionDataNumGet(chr, D_80113E1C_stardust_battle[r]), 1, 120);
-    obj->unk_18 = D_80113DFC_stardust_battle[chr] | D_80113E1C_stardust_battle[r];
+    MgPlayerMotLoad(object, 13, CharMotionDataNumGet(chr, m265_winAnimTbl[r]), 1, 120);
+    obj->unk_18 = m265_voiceChrTbl[chr] | m265_winAnimTbl[r];
     MgPlayerMotLoad(object, 14, CharMotionDataNumGet(chr, 57), 1, 60);
-    obj->unk_1C = D_80113DFC_stardust_battle[chr] | 57;
+    obj->unk_1C = m265_voiceChrTbl[chr] | 57;
     MgPlayerMotSet(object, 0);
     MgPlayerMapAttrSet(object, 0, 2);
     obj->unk_0C = 0;
@@ -1156,14 +1156,14 @@ void func_80106EB0_stardust_battle(omObjData *object) {
     obj->unk_10 = -1;
     obj->unk_12 = 0;
     obj->unk_14 = 0;
-    func_80107E84_stardust_battle(1);
-    object->func = func_801073F4_stardust_battle;
+    m265_PlayerMdlAltSet(1);
+    object->func = m265_PlayerObjMain;
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
-void func_801073F4_stardust_battle(omObjData *object) {
+void m265_PlayerObjMain(omObjData *object) {
     s16 noControl = FALSE;
-    UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(object);
+    StardustBattlePlayerWork *obj = (StardustBattlePlayerWork *)m265_WorkPtrGet(object);
     HmfModel *model = &Hu3DData[object->model[0]];
     MgPlayerWork *data = object->data;
     u16 btnDown;
@@ -1199,23 +1199,23 @@ void func_801073F4_stardust_battle(omObjData *object) {
     HuPadBtnDown[obj->pad] = btnDown;
     HuPadStkX[obj->pad] = stickX;
     HuPadStkY[obj->pad] = stickY;
-    func_80107760_stardust_battle(object, noControl);
+    m265_PlayerDustHoldUpdate(object, noControl);
     if (!noControl && obj->unk_14 == 0 && MgFlowStatGet() == MG_STATE_PLAY) {
-        obj->unk_10 = func_8010E524_stardust_battle(object, 0, NULL);
+        obj->unk_10 = m265_DustHitCheck(object, 0, NULL);
         if (obj->unk_10 != -1) {
             if (obj->unk_10 == 0xFF) {
                 obj->unk_14 = 90;
             } else {
-                D_80114ACE_stardust_battle = 1;
+                m265_playerHitF = 1;
             }
             data->unk40 = mgPlayerSpeedZero;
             data->unk38 = -(mgPlayerJumpPower * 0.65f);
             MgPlayerMotSet(object, 9);
         }
-        func_8010EA04_stardust_battle(object);
+        m265_PlayerPushOut(object);
     }
-    func_801092F0_stardust_battle(object);
-    if (func_8010929C_stardust_battle() == 1) {
+    m265_PlayerEdgeClamp(object);
+    if (m265_StageNoGet() == 1) {
         Hu3DModelAttrSet(object->model[1], 4, 4);
     }
     obj->unk_2C = object->trans.x;
@@ -1234,11 +1234,11 @@ void func_801073F4_stardust_battle(omObjData *object) {
     obj->unk_0A++;
 }
 
-void func_80107760_stardust_battle(omObjData *object, s16 noControl) {
-    UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(object);
+void m265_PlayerDustHoldUpdate(omObjData *object, s16 noControl) {
+    StardustBattlePlayerWork *obj = (StardustBattlePlayerWork *)m265_WorkPtrGet(object);
     HmfModel *model = &Hu3DData[object->model[0]];
     MgPlayerWork *data = object->data;
-    UnkStardustBattleStar *star;
+    StardustBattleDust *star;
     HuMtx4F mtx;
     f32 t;
     f32 x;
@@ -1258,9 +1258,9 @@ void func_80107760_stardust_battle(omObjData *object, s16 noControl) {
                 if (Hu3DData[object->model[0]].motIdShift != 0xFF || time < 10.0f || time > 20.0f) {
                     break;
                 }
-                obj->unk_66 = func_8010E03C_stardust_battle(object);
+                obj->unk_66 = m265_DustGrab(object);
                 if (obj->unk_66 != item) {
-                    func_80112220_stardust_battle(object, "item_hook", mtx);
+                    m265_NodeWorldMtxCalc(object, "item_hook", mtx);
                     obj->unk_6A = 1;
                     obj->unk_68 = 0;
                 }
@@ -1272,7 +1272,7 @@ void func_80107760_stardust_battle(omObjData *object, s16 noControl) {
                 }
                 break;
             default:
-                func_80112220_stardust_battle(object, "item_hook", mtx);
+                m265_NodeWorldMtxCalc(object, "item_hook", mtx);
                 if (obj->unk_6A < 5) {
                     t = obj->unk_6A / 5.0f;
                     if (t < 0.0f) {
@@ -1280,32 +1280,32 @@ void func_80107760_stardust_battle(omObjData *object, s16 noControl) {
                     } else if (t > 1.0f) {
                         t = 1.0f;
                     }
-                    star = func_8010E300_stardust_battle(obj->unk_66);
+                    star = m265_DustGet(obj->unk_66);
                     if (star != NULL) {
-                        x = func_80111DF8_stardust_battle(t, star->unk_58, mtx[3][0]);
-                        y = func_80111DF8_stardust_battle(t, star->unk_5C, mtx[3][1]);
-                        z = func_80111DF8_stardust_battle(t, star->unk_60, mtx[3][2]);
-                        func_80111DF8_stardust_battle(t, 0.0f, data->unk3C);
-                        func_8010E46C_stardust_battle(obj->unk_66, x, y, z);
+                        x = m265_InterpCalc(t, star->unk_58, mtx[3][0]);
+                        y = m265_InterpCalc(t, star->unk_5C, mtx[3][1]);
+                        z = m265_InterpCalc(t, star->unk_60, mtx[3][2]);
+                        m265_InterpCalc(t, 0.0f, data->unk3C);
+                        m265_DustPosSet(obj->unk_66, x, y, z);
                         mtx[3][0] = mtx[3][1] = mtx[3][2] = 0.0f;
-                        func_80111E70_stardust_battle((f32 *)D_80114AD0_stardust_battle, (f32 *)mtx,
+                        m265_MtxInterpCalc((f32 *)m265_identMtx, (f32 *)mtx,
                                                       (f32 *)Hu3DData[star->model[star->unk_10]].mtx, t);
-                        func_8010E4C8_stardust_battle(obj->unk_66, 0.0f, 0.0f, 0.0f);
+                        m265_DustRotSet(obj->unk_66, 0.0f, 0.0f, 0.0f);
                     } else {
-                        func_8010E46C_stardust_battle(obj->unk_66, mtx[3][0], mtx[3][1], mtx[3][2]);
-                        func_8010E4C8_stardust_battle(obj->unk_66, 0.0f, data->unk3C, 0.0f);
+                        m265_DustPosSet(obj->unk_66, mtx[3][0], mtx[3][1], mtx[3][2]);
+                        m265_DustRotSet(obj->unk_66, 0.0f, data->unk3C, 0.0f);
                         obj->unk_6A = 5;
                     }
                     obj->unk_6A++;
                 } else {
-                    func_8010E46C_stardust_battle(obj->unk_66, mtx[3][0], mtx[3][1], mtx[3][2]);
-                    star = func_8010E300_stardust_battle(obj->unk_66);
+                    m265_DustPosSet(obj->unk_66, mtx[3][0], mtx[3][1], mtx[3][2]);
+                    star = m265_DustGet(obj->unk_66);
                     if (star != NULL) {
                         mtx[3][0] = mtx[3][1] = mtx[3][2] = 0.0f;
                         mtxCopy(Hu3DData[star->model[star->unk_10]].mtx, mtx);
-                        func_8010E4C8_stardust_battle(obj->unk_66, 0.0f, 0.0f, 0.0f);
+                        m265_DustRotSet(obj->unk_66, 0.0f, 0.0f, 0.0f);
                     } else {
-                        func_8010E4C8_stardust_battle(obj->unk_66, 0.0f, data->unk3C, 0.0f);
+                        m265_DustRotSet(obj->unk_66, 0.0f, data->unk3C, 0.0f);
                     }
                 }
                 if (obj->unk_68 == 0 && model->motIdShape != object->motion[38]) {
@@ -1326,19 +1326,19 @@ void func_80107760_stardust_battle(omObjData *object, s16 noControl) {
                     }
                 } else if (model->motIdShape == object->motion[39] &&
                            model->motShapeTime >= Hu3DMotion[model->motIdShape].unk02 * 0.5f) {
-                    func_8010E4C8_stardust_battle(obj->unk_66, 0.0f, data->unk3C, 0.0f);
-                    func_8010E35C_stardust_battle(obj->unk_66);
+                    m265_DustRotSet(obj->unk_66, 0.0f, data->unk3C, 0.0f);
+                    m265_DustThrow(obj->unk_66);
                     obj->unk_66 = -2;
                 }
                 break;
         }
     } else {
         if (obj->unk_66 >= 0) {
-            star = func_8010E300_stardust_battle(obj->unk_66);
+            star = m265_DustGet(obj->unk_66);
             if (star != NULL) {
-                Hu3DModelScaleSet(EffectGroupEmit(D_80114B54_stardust_battle, star->x, star->y, star->z), 2.0f, 2.0f,
+                Hu3DModelScaleSet(EffectGroupEmit(m265_sparkEffGrp, star->x, star->y, star->z), 2.0f, 2.0f,
                                   2.0f);
-                func_8010DF70_stardust_battle(obj->unk_66);
+                m265_DustKill(obj->unk_66);
             }
             obj->unk_66 = -1;
         }
@@ -1348,27 +1348,27 @@ void func_80107760_stardust_battle(omObjData *object, s16 noControl) {
     }
 }
 
-void func_80107DCC_stardust_battle(omObjData *object, s16 mode) {
-    UnkStardustBattleObj *obj;
+void m265_PlayerStageSet(omObjData *object, s16 mode) {
+    StardustBattlePlayerWork *obj;
 
     if (object != NULL) {
-        obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(object);
+        obj = (StardustBattlePlayerWork *)m265_WorkPtrGet(object);
         if (obj->func_78 != NULL) {
             obj->func_78(object);
             obj->func_78 = NULL;
         }
-        if (D_80113E24_stardust_battle[mode] != NULL) {
-            D_80113E24_stardust_battle[mode](object);
+        if (m265_playerStageInitTbl[mode] != NULL) {
+            m265_playerStageInitTbl[mode](object);
         }
-        obj->func_70 = D_80113E30_stardust_battle[mode];
-        obj->func_74 = D_80113E3C_stardust_battle[mode];
-        obj->func_78 = D_80113E48_stardust_battle[mode];
+        obj->func_70 = m265_playerStagePreTbl[mode];
+        obj->func_74 = m265_playerStagePostTbl[mode];
+        obj->func_78 = m265_playerStageCloseTbl[mode];
     }
 }
 
-s16 func_80107E84_stardust_battle(s16 arg0) {
+s16 m265_PlayerMdlAltSet(s16 arg0) {
     omObjData *object = mgPlayerObjTbl[0];
-    UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(object);
+    StardustBattlePlayerWork *obj = (StardustBattlePlayerWork *)m265_WorkPtrGet(object);
     HmfModel *model = &Hu3DData[object->model[0]];
     HmfModel *other = &Hu3DData[object->model[9]];
     HmfData *hmf;
@@ -1383,70 +1383,70 @@ s16 func_80107E84_stardust_battle(s16 arg0) {
     return arg0;
 }
 
-void func_80107F34_stardust_battle(f32 step) {
+void m265_PlayerStarFaceTurn(f32 step) {
     MgPlayerWork *data = mgPlayerObjTbl[0]->data;
 
-    data->unk3C = func_80111C2C_stardust_battle(atan2df(D_80114B18_stardust_battle->trans.x - mgPlayerObjTbl[0]->trans.x,
-                                                        D_80114B18_stardust_battle->trans.z - mgPlayerObjTbl[0]->trans.z),
+    data->unk3C = m265_AngleStepCalc(atan2df(m265_starObj->trans.x - mgPlayerObjTbl[0]->trans.x,
+                                                        m265_starObj->trans.z - mgPlayerObjTbl[0]->trans.z),
                                                 data->unk3C, step);
 }
 
-s16 func_80107FA4_stardust_battle(void) {
-    UnkStardustBattleObj *obj;
+s16 m265_PlayerIntroStart(void) {
+    StardustBattlePlayerWork *obj;
 
     if (mgPlayerObjNum == 0) {
         return 0;
     }
 
-    obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(mgPlayerObjTbl[0]);
-    obj->func_6C = func_80108120_stardust_battle;
+    obj = (StardustBattlePlayerWork *)m265_WorkPtrGet(mgPlayerObjTbl[0]);
+    obj->func_6C = m265_PlayerIntroUpdate;
     obj->unk_3A = 0;
     return 1;
 }
 
-s16 func_80107FE8_stardust_battle(void) {
-    UnkStardustBattleObj *obj;
+s16 m265_PlayerIntroDoneCheck(void) {
+    StardustBattlePlayerWork *obj;
 
     if (mgPlayerObjNum == 0) {
         return 0;
     }
 
-    obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(mgPlayerObjTbl[0]);
-    if (obj->func_6C != func_80108120_stardust_battle || obj->unk_3A < 2 || obj->unk_3C < 22.5f) {
+    obj = (StardustBattlePlayerWork *)m265_WorkPtrGet(mgPlayerObjTbl[0]);
+    if (obj->func_6C != m265_PlayerIntroUpdate || obj->unk_3A < 2 || obj->unk_3C < 22.5f) {
         return 0;
     }
     return 1;
 }
 
-void func_80108074_stardust_battle(void) {
-    UnkStardustBattleObj *obj;
+void m265_PlayerCameraFollowStart(void) {
+    StardustBattlePlayerWork *obj;
 
     if (mgPlayerObjNum != 0) {
-        obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(mgPlayerObjTbl[0]);
-        obj->func_6C = func_801081FC_stardust_battle;
+        obj = (StardustBattlePlayerWork *)m265_WorkPtrGet(mgPlayerObjTbl[0]);
+        obj->func_6C = m265_PlayerCameraFollowUpdate;
     }
 }
 
-void func_801080B0_stardust_battle(void) {
-    UnkStardustBattleObj *obj;
+void m265_PlayerResultStart(void) {
+    StardustBattlePlayerWork *obj;
 
     if (mgPlayerObjNum != 0) {
-        obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(mgPlayerObjTbl[0]);
-        obj->func_6C = func_801082C4_stardust_battle;
+        obj = (StardustBattlePlayerWork *)m265_WorkPtrGet(mgPlayerObjTbl[0]);
+        obj->func_6C = m265_PlayerResultUpdate;
     }
 }
 
-void func_801080EC_stardust_battle(void) {
-    UnkStardustBattleObj *obj;
+void m265_PlayerHookClear(void) {
+    StardustBattlePlayerWork *obj;
 
     if (mgPlayerObjNum != 0) {
-        obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(mgPlayerObjTbl[0]);
+        obj = (StardustBattlePlayerWork *)m265_WorkPtrGet(mgPlayerObjTbl[0]);
         obj->func_6C = NULL;
     }
 }
 
-void func_80108120_stardust_battle(omObjData *object) {
-    UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(object);
+void m265_PlayerIntroUpdate(omObjData *object) {
+    StardustBattlePlayerWork *obj = (StardustBattlePlayerWork *)m265_WorkPtrGet(object);
 
     switch (obj->unk_3A) {
         case 0:
@@ -1471,7 +1471,7 @@ void func_80108120_stardust_battle(omObjData *object) {
     }
 }
 
-void func_801081FC_stardust_battle(omObjData *object) {
+void m265_PlayerCameraFollowUpdate(omObjData *object) {
     f32 x = object->trans.x;
     f32 z = object->trans.z;
 
@@ -1483,19 +1483,19 @@ void func_801081FC_stardust_battle(omObjData *object) {
     if (z > 300.0) {
         z = 300.0f;
     }
-    func_801117E4_stardust_battle(x, CAMERA_KEEP, z, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP, 1);
+    m265_CameraMoveStart(x, CAMERA_KEEP, z, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP, 1);
 }
 
-void func_801082C4_stardust_battle(omObjData *object) {
-    UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(mgPlayerObjTbl[0]);
+void m265_PlayerResultUpdate(omObjData *object) {
+    StardustBattlePlayerWork *obj = (StardustBattlePlayerWork *)m265_WorkPtrGet(mgPlayerObjTbl[0]);
     MgPlayerWork *data = object->data;
 
     if (obj->unk_04 != -1 && data->unk38 == 1000.0f && !(MgPlayerMotStatGet(object) & 0x8C00)) {
         if (obj->unk_04 == 13) {
-            if (func_80111B28_stardust_battle(0.0f, data->unk3C) < 5.0f) {
+            if (m265_AngleDiffCalc(0.0f, data->unk3C) < 5.0f) {
                 data->unk3C = 0.0f;
             } else {
-                data->unk3C = func_80111C2C_stardust_battle(0.0f, data->unk3C, 5.0f);
+                data->unk3C = m265_AngleStepCalc(0.0f, data->unk3C, 5.0f);
                 return;
             }
         }
@@ -1506,22 +1506,22 @@ void func_801082C4_stardust_battle(omObjData *object) {
     }
 }
 
-void func_80108404_stardust_battle(omObjData *object) {
+void m265_PlayerGroundInit(omObjData *object) {
     mgPlayerJumpPower = 1.47f;
     mgPlayerGravity = 0.15f;
     mgPlayerFallMax = 1.7f;
 }
 
-void func_80108444_stardust_battle(omObjData *object) {
+void m265_PlayerGroundPreUpdate(omObjData *object) {
 }
 
-void func_8010844C_stardust_battle(omObjData *object) {
+void m265_PlayerGroundPostUpdate(omObjData *object) {
 }
 
-/* Like func_80107FA4, the return value of func_80111FEC_stardust_battle is
+/* Like func_80107FA4, the return value of m265_WorkPtrGet is
    treated as a pointer. */
-void func_80108454_stardust_battle(omObjData *object) {
-    UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle();
+void m265_PlayerWaveInit(omObjData *object) {
+    StardustBattlePlayerWork *obj = (StardustBattlePlayerWork *)m265_WorkPtrGet();
 
     mgPlayerJumpPower = 1.029f;
     mgPlayerGravity = 0.105000004f;
@@ -1529,8 +1529,8 @@ void func_80108454_stardust_battle(omObjData *object) {
     obj->unk_0A = 0;
 }
 
-void func_801084B0_stardust_battle(omObjData *object) {
-    UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(object);
+void m265_PlayerWavePreUpdate(omObjData *object) {
+    StardustBattlePlayerWork *obj = (StardustBattlePlayerWork *)m265_WorkPtrGet(object);
     f32 stickX = HuPadStkX[obj->pad];
     f32 stickY = HuPadStkY[obj->pad];
     f32 scale;
@@ -1565,8 +1565,8 @@ void func_801084B0_stardust_battle(omObjData *object) {
     HuPadStkY[obj->pad] = stickY * scale * 60.0f * 0.8f;
 }
 
-void func_801086E8_stardust_battle(omObjData *object) {
-    UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(object);
+void m265_PlayerWavePostUpdate(omObjData *object) {
+    StardustBattlePlayerWork *obj = (StardustBattlePlayerWork *)m265_WorkPtrGet(object);
     s32 stickX;
     s32 stickY;
 
@@ -1581,19 +1581,19 @@ void func_801086E8_stardust_battle(omObjData *object) {
     } else {
         obj->unk_0E = 0;
     }
-    if (D_80114B14_stardust_battle != 1) {
+    if (m265_rippleF != 1) {
         if ((object->trans.y != 0.0f || !(obj->unk_30 > 0.0f)) && obj->unk_0C != 0 && obj->unk_0E == 20) {
             obj->unk_0E = 0;
         }
         if (!(obj->unk_0A & 0xF)) {
-            func_8010A04C_stardust_battle(D_80114B18_stardust_battle->trans.x, D_80114B18_stardust_battle->trans.z,
+            m265_RippleCreate(m265_starObj->trans.x, m265_starObj->trans.z,
                                           37.5f, 7.5000005f, 0.0f, 0.0f);
         }
     }
 }
 
-void func_8010882C_stardust_battle(omObjData *object) {
-    UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(object);
+void m265_PlayerCometInit(omObjData *object) {
+    StardustBattlePlayerWork *obj = (StardustBattlePlayerWork *)m265_WorkPtrGet(object);
     HmfModel *model = &Hu3DData[object->model[0]];
     HmfModel *shadow;
 
@@ -1622,10 +1622,10 @@ void func_8010882C_stardust_battle(omObjData *object) {
     mtxScaleCat(shadow->mtx, 1.0f, -1.0f, 1.0f);
 }
 
-void func_801089B4_stardust_battle(omObjData *object) {
+void m265_PlayerCometPreUpdate(omObjData *object) {
 }
 
-void func_801089BC_stardust_battle(omObjData *object) {
+void m265_PlayerCometPostUpdate(omObjData *object) {
     HmfModel *model;
     HmfModel *shadow;
     MgPlayerWork *data;
@@ -1634,7 +1634,7 @@ void func_801089BC_stardust_battle(omObjData *object) {
         return;
     }
 
-    func_80111FEC_stardust_battle(object);
+    m265_WorkPtrGet(object);
     data = object->data;
     model = &Hu3DData[object->model[0]];
     shadow = &Hu3DData[object->model[10]];
@@ -1653,8 +1653,8 @@ void func_801089BC_stardust_battle(omObjData *object) {
     shadow->unk0E = model->unk0E;
 }
 
-void func_80108AC4_stardust_battle(omObjData *object) {
-    UnkStardustBattleObj *obj = (UnkStardustBattleObj *)func_80111FEC_stardust_battle(object);
+void m265_PlayerCometClose(omObjData *object) {
+    StardustBattlePlayerWork *obj = (StardustBattlePlayerWork *)m265_WorkPtrGet(object);
     HmfModel *shadow = &Hu3DData[object->model[10]];
 
     shadow->motId = obj->unk_38;
@@ -1664,26 +1664,26 @@ void func_80108AC4_stardust_battle(omObjData *object) {
     object->model[10] = -1;
 }
 
-void func_80108B34_stardust_battle(void) {
-    UnkStardustBattleStage *stage = HuMemAllocTag(sizeof(UnkStardustBattleStage), TAG_OVERLAY);
+void m265_StageObjCreate(void) {
+    StardustBattleStageWork *stage = HuMemAllocTag(sizeof(StardustBattleStageWork), TAG_OVERLAY);
 
-    D_80114B10_stardust_battle = stage;
-    memset(stage, 0, sizeof(UnkStardustBattleStage));
+    m265_stageWork = stage;
+    memset(stage, 0, sizeof(StardustBattleStageWork));
     stage->unk_00 = -1;
     stage->unk_20 = 0;
     stage->unk_24 = NULL;
     stage->streaks = NULL;
     stage->func_30 = NULL;
     stage->func_34 = NULL;
-    mgMapObjTbl[mgMapObjNum] = omAddObj(3, 8, 0, -1, func_80108C14_stardust_battle);
+    mgMapObjTbl[mgMapObjNum] = omAddObj(3, 8, 0, -1, m265_StageObjInit);
     omSetStatBit(mgMapObjTbl[mgMapObjNum], OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    func_80111FC0_stardust_battle(mgMapObjTbl[mgMapObjNum], (u32)stage);
+    m265_WorkPtrSet(mgMapObjTbl[mgMapObjNum], (u32)stage);
     mgMapObjNum++;
     MgMapBaseSet(0);
 }
 
-void func_80108C14_stardust_battle(omObjData *object) {
-    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
+void m265_StageObjInit(omObjData *object) {
+    StardustBattleStageWork *stage = (StardustBattleStageWork *)m265_WorkPtrGet(object);
     MgMapWork *work;
     HmfData *hmf;
 
@@ -1696,7 +1696,7 @@ void func_80108C14_stardust_battle(omObjData *object) {
     MgMapFrictionSet(object, 1.0f);
     MgMapAccelSet(object, 10.0f);
     MgMapAttrSet(object, 2, 0.0f);
-    func_80109128_stardust_battle(0);
+    m265_StageSet(0);
     object->model[2] = Hu3DModelRead(0x62000A, 0x19);
     Hu3DModelScaleSet(object->model[2], 1.75f, 1.5f, 1.5f);
     Hu3DModelPosSet(object->model[2], 0.0f, -200.0f, 0.0f);
@@ -1707,11 +1707,11 @@ void func_80108C14_stardust_battle(omObjData *object) {
     stage->unk_08 = stage->unk_0C = 0.0f;
     stage->unk_10 = stage->unk_14 = 0.0f;
     stage->unk_18 = stage->unk_1C = 0.0f;
-    object->func = func_80108D84_stardust_battle;
+    object->func = m265_StageObjMain;
 }
 
-void func_80108D84_stardust_battle(omObjData *object) {
-    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
+void m265_StageObjMain(omObjData *object) {
+    StardustBattleStageWork *stage = (StardustBattleStageWork *)m265_WorkPtrGet(object);
 
     if (omPauseChk() + omAllPauseF == 0) {
         stage->unk_0C += 2.0f;
@@ -1723,15 +1723,15 @@ void func_80108D84_stardust_battle(omObjData *object) {
             stage->unk_10 += 64.0f;
         }
     }
-    func_80108EC4_stardust_battle(object->model[2], stage->unk_08, stage->unk_0C, 64, 64, stage->unk_02);
-    func_80108EC4_stardust_battle(object->model[2], stage->unk_10, stage->unk_14, 32, 32, stage->unk_04);
+    m265_MdlTexScroll(object->model[2], stage->unk_08, stage->unk_0C, 64, 64, stage->unk_02);
+    m265_MdlTexScroll(object->model[2], stage->unk_10, stage->unk_14, 32, 32, stage->unk_04);
     if (stage->func_30 != NULL) {
         stage->func_30(object);
     }
 }
 
 /* Scrolls the texture coordinates of one of the model's objects. */
-void func_80108EC4_stardust_battle(s16 model, f32 u, f32 v, s32 width, s32 height, s16 index) {
+void m265_MdlTexScroll(s16 model, f32 u, f32 v, s32 width, s32 height, s16 index) {
     HmfData *hmf = Hu3DData[model].hmf;
     u16 wrapU;
     u16 wrapV;
@@ -1769,45 +1769,45 @@ void func_80108EC4_stardust_battle(s16 model, f32 u, f32 v, s32 width, s32 heigh
     }
 }
 
-void func_80109128_stardust_battle(s16 mode) {
+void m265_StageSet(s16 mode) {
     omObjData *object;
-    UnkStardustBattleStage *stage;
+    StardustBattleStageWork *stage;
 
     if (mgMapObjNum == 0 || mgPlayerObjNum == 0) {
         return;
     }
 
     object = mgMapObjLastTbl[mgMapObjNum];
-    stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
+    stage = (StardustBattleStageWork *)m265_WorkPtrGet(object);
     if (stage->unk_00 == mode) {
         return;
     }
 
-    func_80107DCC_stardust_battle(mgPlayerObjTbl[0], mode);
+    m265_PlayerStageSet(mgPlayerObjTbl[0], mode);
     if (stage->func_34 != NULL) {
         stage->func_34(object);
         stage->func_34 = NULL;
     }
     stage->unk_00 = mode;
-    stage->func_30 = D_80113E78_stardust_battle[mode];
-    stage->func_34 = D_80113E84_stardust_battle[mode];
+    stage->func_30 = m265_stageInitTbl[mode];
+    stage->func_34 = m265_stageCloseTbl[mode];
     if (object->model[0] != -1) {
         Hu3DModelKill(object->model[0]);
     }
     if (object->model[1] != -1) {
         Hu3DModelKill(object->model[1]);
     }
-    object->model[0] = Hu3DModelRead(D_80113E60_stardust_battle[mode] | 0x620000, 0x699);
+    object->model[0] = Hu3DModelRead(m265_stageBaseMdlFileTbl[mode] | 0x620000, 0x699);
     object->model[1] =
-        Hu3DModelRead(D_80113E54_stardust_battle[mode] | 0x620000, D_80113E6C_stardust_battle[mode] | 0x299);
+        Hu3DModelRead(m265_stageMdlFileTbl[mode] | 0x620000, m265_stageMdlAttrTbl[mode] | 0x299);
     if (stage->func_30 != NULL) {
         stage->func_30(object);
     }
 }
 
-/* Like func_80107FA4, the return value of func_80111FEC_stardust_battle is
+/* Like func_80107FA4, the return value of m265_WorkPtrGet is
    treated as a pointer. */
-s16 func_8010929C_stardust_battle(void) {
+s16 m265_StageNoGet(void) {
     if (mgMapObjNum == 0) {
         return 0;
     }
@@ -1816,11 +1816,11 @@ s16 func_8010929C_stardust_battle(void) {
         return 0;
     }
 
-    return ((UnkStardustBattleStage *)func_80111FEC_stardust_battle(mgMapObjLastTbl[mgMapObjNum]))
+    return ((StardustBattleStageWork *)m265_WorkPtrGet(mgMapObjLastTbl[mgMapObjNum]))
         ->unk_00;
 }
 
-void func_801092F0_stardust_battle(omObjData *object) {
+void m265_PlayerEdgeClamp(omObjData *object) {
     MgPlayerWork *data = object->data;
     f32 dist = object->trans.x * object->trans.x + object->trans.z * object->trans.z;
     f32 radius = fabs(525.0 - data->unk48);
@@ -1839,8 +1839,8 @@ void func_801092F0_stardust_battle(omObjData *object) {
     }
 }
 
-void func_801093CC_stardust_battle(omObjData *object) {
-    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
+void m265_GroundInit(omObjData *object) {
+    StardustBattleStageWork *stage = (StardustBattleStageWork *)m265_WorkPtrGet(object);
 
     MgMapSlideSet(object, 20.0f);
     MgMapFrictionSet(object, 1.0f);
@@ -1848,11 +1848,11 @@ void func_801093CC_stardust_battle(omObjData *object) {
     stage->func_30 = NULL;
 }
 
-void func_80109424_stardust_battle(omObjData *object) {
-    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
+void m265_WaveInit(omObjData *object) {
+    StardustBattleStageWork *stage = (StardustBattleStageWork *)m265_WorkPtrGet(object);
     HmfModel *model = &Hu3DData[object->model[1]];
     HmfData *hmf = model->hmf;
-    UnkStardustBattlePoint *points;
+    StardustBattleWavePoint *points;
     Vtx *vtx;
     f32 inv;
     f32 t;
@@ -1872,8 +1872,8 @@ void func_80109424_stardust_battle(omObjData *object) {
     Hu3DModelVtxBufMake(object->model[1]);
     Hu3DModelAnimNameSet(object->model[1], "co_y02_DEF");
     hmf->unk60->unk50 |= 0x8000000;
-    points = HuMemAlloc(hmf->unk18 * sizeof(UnkStardustBattlePoint));
-    memset(points, 0, hmf->unk18 * sizeof(UnkStardustBattlePoint));
+    points = HuMemAlloc(hmf->unk18 * sizeof(StardustBattleWavePoint));
+    memset(points, 0, hmf->unk18 * sizeof(StardustBattleWavePoint));
     vtx = hmf->unk40;
     stage->unk_20 = 0;
     for (i = 0; i < hmf->unk18; i++, vtx++) {
@@ -1935,26 +1935,26 @@ void func_80109424_stardust_battle(omObjData *object) {
         }
         stage->unk_20++;
     }
-    stage->unk_24 = HuMemAllocTag(stage->unk_20 * sizeof(UnkStardustBattlePoint), TAG_OVERLAY);
-    memcpy(stage->unk_24, points, stage->unk_20 * sizeof(UnkStardustBattlePoint));
+    stage->unk_24 = HuMemAllocTag(stage->unk_20 * sizeof(StardustBattleWavePoint), TAG_OVERLAY);
+    memcpy(stage->unk_24, points, stage->unk_20 * sizeof(StardustBattleWavePoint));
     HuMemFree(points);
-    func_80109FE4_stardust_battle(object);
+    m265_RippleInit(object);
     angle = 0.0f;
     for (i = 0; i < 8; i++) {
         x = (f32)(rand8() % 100) * 0.01 * 100.0;
         z = (f32)(rand8() % 100) * 0.01 * 100.0;
-        func_8010A04C_stardust_battle(x, z, 31.25f, 7.5000005f, 1.0f, angle);
+        m265_RippleCreate(x, z, 31.25f, 7.5000005f, 1.0f, angle);
         angle += 120.000004768371582;
     }
-    stage->func_30 = func_80109B18_stardust_battle;
+    stage->func_30 = m265_WaveUpdate;
 }
 
-void func_80109B18_stardust_battle(omObjData *object) {
-    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
-    UnkStardustBattlePoint *point = stage->unk_24;
+void m265_WaveUpdate(omObjData *object) {
+    StardustBattleStageWork *stage = (StardustBattleStageWork *)m265_WorkPtrGet(object);
+    StardustBattleWavePoint *point = stage->unk_24;
     HmfModel *model = &Hu3DData[object->model[1]];
     Vtx *vtx = model->hmf->unk44[Hu3DBufNo];
-    UnkStardustBattleStreak *streak;
+    StardustBattleRipple *streak;
     f32 dx;
     f32 dz;
     f32 dist;
@@ -1970,7 +1970,7 @@ void func_80109B18_stardust_battle(omObjData *object) {
     s32 j;
 
     if (omPauseChk() + omAllPauseF == 0) {
-        func_8010A418_stardust_battle(object);
+        m265_RippleUpdate(object);
     }
     if (stage->unk_24 == NULL) {
         return;
@@ -2047,23 +2047,23 @@ void func_80109B18_stardust_battle(omObjData *object) {
     }
 }
 
-void func_80109F94_stardust_battle(omObjData *object) {
-    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
+void m265_WaveClose(omObjData *object) {
+    StardustBattleStageWork *stage = (StardustBattleStageWork *)m265_WorkPtrGet(object);
 
     if (stage->unk_24 != NULL) {
         HuMemFree(stage->unk_24);
     }
     stage->unk_24 = NULL;
-    func_8010A5A4_stardust_battle(object);
+    m265_RippleClose(object);
 }
 
-void func_80109FE4_stardust_battle(omObjData *object) {
-    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
-    UnkStardustBattleStreak *streak;
+void m265_RippleInit(omObjData *object) {
+    StardustBattleStageWork *stage = (StardustBattleStageWork *)m265_WorkPtrGet(object);
+    StardustBattleRipple *streak;
     s32 i;
 
     if (stage->streaks == NULL) {
-        streak = stage->streaks = (UnkStardustBattleStreak *)HuMemAllocTag(0xF00, TAG_OVERLAY);
+        streak = stage->streaks = (StardustBattleRipple *)HuMemAllocTag(0xF00, TAG_OVERLAY);
         memset(streak, 0, 0xF00);
 
         for (i = 0; i < 64; i++, streak++) {
@@ -2072,9 +2072,9 @@ void func_80109FE4_stardust_battle(omObjData *object) {
     }
 }
 
-s32 func_8010A04C_stardust_battle(f32 x, f32 z, f32 arg2, f32 arg3, f32 arg4, f32 arg5) {
-    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(mgMapObjTbl[0]);
-    UnkStardustBattleStreak *streak;
+s32 m265_RippleCreate(f32 x, f32 z, f32 arg2, f32 arg3, f32 arg4, f32 arg5) {
+    StardustBattleStageWork *stage = (StardustBattleStageWork *)m265_WorkPtrGet(mgMapObjTbl[0]);
+    StardustBattleRipple *streak;
     s32 i;
 
     if (stage->streaks == NULL) {
@@ -2113,9 +2113,9 @@ s32 func_8010A04C_stardust_battle(f32 x, f32 z, f32 arg2, f32 arg3, f32 arg4, f3
 
 /* Spawns a streak at the closest point of the stage's point list, if any is
    within range of the given position. */
-s16 func_8010A204_stardust_battle(f32 x, f32 z, f32 arg2, f32 arg3, f32 arg4, f32 arg5) {
-    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(mgMapObjTbl[0]);
-    UnkStardustBattlePoint *point;
+s16 m265_RipplePointCreate(f32 x, f32 z, f32 arg2, f32 arg3, f32 arg4, f32 arg5) {
+    StardustBattleStageWork *stage = (StardustBattleStageWork *)m265_WorkPtrGet(mgMapObjTbl[0]);
+    StardustBattleWavePoint *point;
     f32 dx;
     f32 dz;
     f32 best;
@@ -2135,8 +2135,8 @@ s16 func_8010A204_stardust_battle(f32 x, f32 z, f32 arg2, f32 arg3, f32 arg4, f3
         dx = point->x - x;
         dz = point->z - z;
         if (fabs(dx) < 100.0 && fabs(dz) < 100.0) {
-            D_80114940_stardust_battle[count].distSq = dx * dx + dz * dz;
-            D_80114940_stardust_battle[count].index = i;
+            m265_nearPointTbl[count].distSq = dx * dx + dz * dz;
+            m265_nearPointTbl[count].index = i;
             count++;
             if (count >= 32) {
                 break;
@@ -2144,23 +2144,23 @@ s16 func_8010A204_stardust_battle(f32 x, f32 z, f32 arg2, f32 arg3, f32 arg4, f3
         }
     }
     if (count != 0) {
-        bestIndex = D_80114940_stardust_battle[0].index;
-        best = D_80114940_stardust_battle[0].distSq;
+        bestIndex = m265_nearPointTbl[0].index;
+        best = m265_nearPointTbl[0].distSq;
         for (i = 1; i < count; i++) {
-            if (D_80114940_stardust_battle[i].distSq < best) {
-                bestIndex = D_80114940_stardust_battle[i].index;
-                best = D_80114940_stardust_battle[i].distSq;
+            if (m265_nearPointTbl[i].distSq < best) {
+                bestIndex = m265_nearPointTbl[i].index;
+                best = m265_nearPointTbl[i].distSq;
             }
         }
         x = stage->unk_24[bestIndex].x;
         z = stage->unk_24[bestIndex].z;
     }
-    return func_8010A04C_stardust_battle(x, z, arg2, arg3, arg4, arg5);
+    return m265_RippleCreate(x, z, arg2, arg3, arg4, arg5);
 }
 
-void func_8010A418_stardust_battle(omObjData *object) {
-    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
-    UnkStardustBattleStreak *streak;
+void m265_RippleUpdate(omObjData *object) {
+    StardustBattleStageWork *stage = (StardustBattleStageWork *)m265_WorkPtrGet(object);
+    StardustBattleRipple *streak;
     s32 i;
 
     if (stage->streaks == NULL) {
@@ -2200,8 +2200,8 @@ void func_8010A418_stardust_battle(omObjData *object) {
     }
 }
 
-void func_8010A5A4_stardust_battle(omObjData *object) {
-    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
+void m265_RippleClose(omObjData *object) {
+    StardustBattleStageWork *stage = (StardustBattleStageWork *)m265_WorkPtrGet(object);
 
     if (stage->streaks != NULL) {
         HuMemFree(stage->streaks);
@@ -2209,8 +2209,8 @@ void func_8010A5A4_stardust_battle(omObjData *object) {
     stage->streaks = NULL;
 }
 
-void func_8010A5E0_stardust_battle(omObjData *object) {
-    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
+void m265_CometInit(omObjData *object) {
+    StardustBattleStageWork *stage = (StardustBattleStageWork *)m265_WorkPtrGet(object);
     HmfData *hmf = Hu3DData[object->model[0]].hmf;
 
     MgMapSlideSet(object, 20.0f);
@@ -2218,11 +2218,11 @@ void func_8010A5E0_stardust_battle(omObjData *object) {
     MgMapAccelSet(object, 5.0f);
     Hu3DModelVtxBufMake(object->model[0]);
     stage->unk_2C = SearchObjectIndex(hmf, "comet-nagare");
-    stage->func_30 = func_8010A690_stardust_battle;
+    stage->func_30 = m265_CometUpdate;
 }
 
-void func_8010A690_stardust_battle(omObjData *object) {
-    UnkStardustBattleStage *stage = (UnkStardustBattleStage *)func_80111FEC_stardust_battle(object);
+void m265_CometUpdate(omObjData *object) {
+    StardustBattleStageWork *stage = (StardustBattleStageWork *)m265_WorkPtrGet(object);
 
     if (omPauseChk() + omAllPauseF == 0) {
         stage->unk_1C += 2.0f;
@@ -2230,17 +2230,17 @@ void func_8010A690_stardust_battle(omObjData *object) {
             stage->unk_1C -= 128.0f;
         }
     }
-    func_80108EC4_stardust_battle(object->model[0], stage->unk_18, stage->unk_1C, 64, 64, stage->unk_2C);
+    m265_MdlTexScroll(object->model[0], stage->unk_18, stage->unk_1C, 64, 64, stage->unk_2C);
 }
 
-void func_8010A74C_stardust_battle(void) {
+void m265_StarObjCreate(void) {
     omObjData *object;
-    UnkStardustBattleActor *actor;
+    StardustBattleStarWork *actor;
 
-    object = D_80114B18_stardust_battle = omAddObj(1, 4, 2, -1, func_8010AAC4_stardust_battle);
-    actor = D_80114B1C_stardust_battle = HuMemAllocTag(sizeof(UnkStardustBattleActor), TAG_OVERLAY);
-    memset(actor, 0, sizeof(UnkStardustBattleActor));
-    func_80111FC0_stardust_battle(object, (u32)actor);
+    object = m265_starObj = omAddObj(1, 4, 2, -1, m265_StarObjMain);
+    actor = m265_starWork = HuMemAllocTag(sizeof(StardustBattleStarWork), TAG_OVERLAY);
+    memset(actor, 0, sizeof(StardustBattleStarWork));
+    m265_WorkPtrSet(object, (u32)actor);
     object->model[0] = Hu3DModelRead(0xA0122, 0x1AA8);
     func_8008A070_main(Hu3DData[object->model[0]].mtx);
     mtxTransCat(Hu3DData[object->model[0]].mtx, 0.0f, 90.0f, 0.0f);
@@ -2255,12 +2255,12 @@ void func_8010A74C_stardust_battle(void) {
     mtxTransCat(Hu3DData[object->model[2]].mtx, 0.0f, 90.0f, 0.0f);
     object->motion[0] = Hu3DModelRead(0xA012C, 0x18);
     object->motion[1] = Hu3DModelRead(0xA0128, 0x18);
-    func_8010FE74_stardust_battle(16);
-    func_8010C538_stardust_battle();
+    m265_RayInit(16);
+    m265_DropSpotInit();
     actor->active = 0;
     actor->unk_02 = 0;
     actor->unk_04 = 0;
-    actor->unk_06 = D_80114B24_stardust_battle;
+    actor->unk_06 = m265_starHpMax;
     actor->unk_0C = 0;
     actor->unk_0E = 0;
     actor->unk_24 = 0;
@@ -2289,8 +2289,8 @@ void func_8010A74C_stardust_battle(void) {
     object->trans.y = 600.0f;
 }
 
-void func_8010AAC4_stardust_battle(omObjData *object) {
-    UnkStardustBattleActor *actor = (UnkStardustBattleActor *)func_80111FEC_stardust_battle(object);
+void m265_StarObjMain(omObjData *object) {
+    StardustBattleStarWork *actor = (StardustBattleStarWork *)m265_WorkPtrGet(object);
     Vec effectPos;
     Vec hitDir;
     Vec prevPos;
@@ -2320,7 +2320,7 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
         case 1:
             if (actor->active > 30) {
                 actor->active = 0;
-                if (D_80114AB0_stardust_battle < 5340) {
+                if (m265_timer < 5340) {
                     actor->unk_04 = 2;
                 }
             }
@@ -2342,13 +2342,13 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
             }
             break;
         case 3:
-            if (actor->unk_14 >= D_80113EA8_stardust_battle[actor->unk_0C]) {
+            if (actor->unk_14 >= m265_dustIntervalTbl[actor->unk_0C]) {
                 if (actor->unk_12 >= 10) {
-                    func_8010C5A8_stardust_battle(10, 10);
+                    m265_DropSpotShuffle(10, 10);
                     actor->unk_12 = 0;
                 }
-                func_8010DE64_stardust_battle(func_8010CA48_stardust_battle(actor->unk_12),
-                                              D_80113E98_stardust_battle[actor->unk_0C]);
+                m265_DustDrop(m265_DropSpotGet(actor->unk_12),
+                                              m265_dustSpeedTbl[actor->unk_0C]);
                 HuAudFXPlay(0x50D);
                 actor->unk_14 = 0;
                 actor->unk_12++;
@@ -2356,7 +2356,7 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
             actor->unk_14++;
             x = actor->target.x - object->trans.x;
             z = actor->target.z - object->trans.z;
-            actor->unk_1C = func_80111C2C_stardust_battle(atan2df(x, z), actor->unk_1C, 15.0f);
+            actor->unk_1C = m265_AngleStepCalc(atan2df(x, z), actor->unk_1C, 15.0f);
             object->trans.x += sindf(actor->unk_1C) * actor->unk_58;
             object->trans.z += cosdf(actor->unk_1C) * actor->unk_58;
             if (x * x + z * z < 22500.0) {
@@ -2371,7 +2371,7 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
                     actor->unk_58 -= 0.999999977648258209;
                     if (actor->unk_58 <= 0.0f) {
                         actor->unk_58 = 0.0f;
-                        func_8010BFE4_stardust_battle(100.0f, 60);
+                        m265_StarHeightMove(100.0f, 60);
                         actor->unk_0A = 1;
                         actor->active = 0;
                         actor->unk_04 = 4;
@@ -2390,7 +2390,7 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
         case 5:
             if (actor->unk_24 == 0) {
                 if (actor->active >= actor->unk_10) {
-                    func_8010BFE4_stardust_battle(450.0f, 60);
+                    m265_StarHeightMove(450.0f, 60);
                     actor->active = 0;
                     actor->unk_04 = 6;
                 }
@@ -2405,15 +2405,15 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
                 actor->target.x = sindf(z) * x;
                 actor->target.z = cosdf(z) * x;
                 actor->unk_0A = 0;
-                if (actor->unk_06 <= D_80114B28_stardust_battle[actor->unk_0C]) {
+                if (actor->unk_06 <= m265_stageHpTbl[actor->unk_0C]) {
                     actor->unk_0E = actor->unk_0C + 1;
                 }
                 actor->active = 0;
-                if (actor->unk_0C != actor->unk_0E && D_80114AC4_stardust_battle != 0 &&
-                    D_80114AB0_stardust_battle < 5250) {
+                if (actor->unk_0C != actor->unk_0E && m265_stageChangeF != 0 &&
+                    m265_timer < 5250) {
                     HuAudFXPlay(0x50E);
                     actor->unk_04 = 8;
-                } else if (D_80114AB0_stardust_battle < 5340) {
+                } else if (m265_timer < 5340) {
                     actor->unk_04 = 2;
                 } else {
                     actor->unk_04 = 1;
@@ -2435,12 +2435,12 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
             if (actor->active >= 9.99f) {
                 actor->unk_0A = 0;
                 t = actor->unk_06 / 9.0f;
-                actor->unk_68 = func_80111DF8_stardust_battle(t, 1.0f, 0.0f);
-                actor->unk_70 = func_80111DF8_stardust_battle(t, 0.0f, 1.0f);
+                actor->unk_68 = m265_InterpCalc(t, 1.0f, 0.0f);
+                actor->unk_70 = m265_InterpCalc(t, 0.0f, 1.0f);
                 object->rot.z = object->rot.x = 0.0f;
                 actor->active = 0;
                 if (actor->unk_06 != 0 && MgFlowStatGet() == MG_STATE_PLAY) {
-                    func_8010BFE4_stardust_battle(450.0f, 30);
+                    m265_StarHeightMove(450.0f, 30);
                     actor->unk_04 = 6;
                 } else {
                     actor->unk_04 = 12;
@@ -2471,7 +2471,7 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
                 object->rot.y -= 360.0f;
             }
             if (WipeStatGet() == 0) {
-                func_80109128_stardust_battle(D_80113E90_stardust_battle[actor->unk_0E]);
+                m265_StageSet(m265_stageOrderTbl[actor->unk_0E]);
                 actor->unk_0C = actor->unk_0E;
                 object->rot.y = 0.0f;
                 actor->unk_18 = 0.0f;
@@ -2497,12 +2497,12 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
             break;
         case 11:
             actor->unk_0A = 0;
-            object->rot.x = func_80111C2C_stardust_battle(0.0f, object->rot.x, 10.0f);
-            object->rot.y = func_80111C2C_stardust_battle(0.0f, object->rot.y, 10.0f);
-            object->rot.z = func_80111C2C_stardust_battle(0.0f, object->rot.z, 10.0f);
-            if (func_80111B28_stardust_battle(0.0f, object->rot.x) < 10.0f &&
-                func_80111B28_stardust_battle(0.0f, object->rot.y) < 10.0f &&
-                func_80111B28_stardust_battle(0.0f, object->rot.z) < 10.0f) {
+            object->rot.x = m265_AngleStepCalc(0.0f, object->rot.x, 10.0f);
+            object->rot.y = m265_AngleStepCalc(0.0f, object->rot.y, 10.0f);
+            object->rot.z = m265_AngleStepCalc(0.0f, object->rot.z, 10.0f);
+            if (m265_AngleDiffCalc(0.0f, object->rot.x) < 10.0f &&
+                m265_AngleDiffCalc(0.0f, object->rot.y) < 10.0f &&
+                m265_AngleDiffCalc(0.0f, object->rot.z) < 10.0f) {
                 object->rot.x = object->rot.y = object->rot.z = 0.0f;
                 actor->unk_04 = 12;
             }
@@ -2516,9 +2516,9 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
                 t = 0.0f;
             }
             t = sindf(t * 90.0f);
-            object->trans.x = func_80111DF8_stardust_battle(t, actor->start.x, actor->target.x);
-            object->trans.y = func_80111DF8_stardust_battle(t, actor->start.y, actor->target.y);
-            object->trans.z = func_80111DF8_stardust_battle(t, actor->start.z, actor->target.z);
+            object->trans.x = m265_InterpCalc(t, actor->start.x, actor->target.x);
+            object->trans.y = m265_InterpCalc(t, actor->start.y, actor->target.y);
+            object->trans.z = m265_InterpCalc(t, actor->start.z, actor->target.z);
             if (actor->active >= actor->unk_26) {
                 object->trans.x = actor->target.x;
                 object->trans.y = actor->target.y;
@@ -2561,10 +2561,10 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
                 object->trans.y =
                     actor->unk_50 - 5.00000007450580597 - (f32)(u8)(rand8() % 100) * 0.01 * 5.00000007450580597;
             }
-            func_80110758_stardust_battle(actor->unk_4C, actor->unk_50 + 80.0000011920928955, actor->unk_54);
+            m265_RayPosSet(actor->unk_4C, actor->unk_50 + 80.0000011920928955, actor->unk_54);
             if (actor->unk_16 <= 16) {
                 if ((u16)actor->unk_16 < 4) {
-                    if (actor->active >= D_80113EB0_stardust_battle[actor->unk_16]) {
+                    if (actor->active >= m265_rayDelayTbl[actor->unk_16]) {
                         HuAudFXPlay(0x50A);
                         actor->unk_16++;
                         actor->active = 0;
@@ -2574,9 +2574,9 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
                     actor->unk_16++;
                 }
                 if (actor->unk_16 < 16) {
-                    func_80110780_stardust_battle(actor->unk_16);
+                    m265_RayNumSet(actor->unk_16);
                 } else {
-                    func_801107C4_stardust_battle();
+                    m265_RayBurstStart();
                 }
             }
             if ((actor->active & 7) == 0) {
@@ -2584,13 +2584,13 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
                 effectPos.z = actor->unk_54 + (0.5 - (f32)(u8)(rand8() % 100) * 0.01) * 100.0 * 2.0;
                 effectPos.y = actor->unk_50 + (f32)(u8)(rand8() % 100) * 0.01 * 150.0;
                 Hu3DModelScaleSet(
-                    EffectGroupEmit(D_80114B54_stardust_battle, effectPos.x, effectPos.y, effectPos.z), 2.0f,
+                    EffectGroupEmit(m265_sparkEffGrp, effectPos.x, effectPos.y, effectPos.z), 2.0f,
                     2.0f, 2.0f);
             }
             break;
     }
 
-    if (actor->unk_0A != 0 && (actor->unk_08 = func_8010E524_stardust_battle(object, 1, &hitDir)) != -1) {
+    if (actor->unk_0A != 0 && (actor->unk_08 = m265_DustHitCheck(object, 1, &hitDir)) != -1) {
         if (actor->unk_06 != 0) {
             actor->unk_06--;
         }
@@ -2612,23 +2612,23 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
     if ((x - actor->unk_5C) * (x - actor->unk_5C) + (z - actor->unk_60) * (z - actor->unk_60) >
         100.000002980232267) {
         interval = 8;
-        actor->unk_64 = func_80111C2C_stardust_battle(atan2df(x - actor->unk_5C, z - actor->unk_60), actor->unk_64, 10.0f);
+        actor->unk_64 = m265_AngleStepCalc(atan2df(x - actor->unk_5C, z - actor->unk_60), actor->unk_64, 10.0f);
         actor->unk_5C += sindf(actor->unk_64) * 100.0 * 0.0666666701436042786;
         actor->unk_60 += cosdf(actor->unk_64) * 100.0 * 0.0666666701436042786;
     } else {
         interval = 16;
     }
 
-    if (D_80114B14_stardust_battle == 1 && func_8010929C_stardust_battle() == 1 && actor->unk_02 >= interval) {
+    if (m265_rippleF == 1 && m265_StageNoGet() == 1 && actor->unk_02 >= interval) {
         if (interval != 16) {
-            func_8010A04C_stardust_battle(actor->unk_5C, actor->unk_60, 43.75f, 7.5000005f, 0.125f, 50.0f);
+            m265_RippleCreate(actor->unk_5C, actor->unk_60, 43.75f, 7.5000005f, 0.125f, 50.0f);
         } else {
-            func_8010A204_stardust_battle(actor->unk_5C, actor->unk_60, 43.75f, 7.5000005f, 0.125f, 50.0f);
+            m265_RipplePointCreate(actor->unk_5C, actor->unk_60, 43.75f, 7.5000005f, 0.125f, 50.0f);
         }
         actor->unk_02 = 0;
     }
 
-    if (func_8010929C_stardust_battle() != 1 &&
+    if (m265_StageNoGet() != 1 &&
         object->trans.x * object->trans.x + object->trans.z * object->trans.z < 275625.0) {
         t = 1.0 - object->trans.y * 0.001;
         if (t < 0.2f) {
@@ -2641,7 +2641,7 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
         Hu3DModelAttrSet(object->model[1], 4, 4);
     }
 
-    if (func_8010929C_stardust_battle() == 2) {
+    if (m265_StageNoGet() == 2) {
         Hu3DModelAttrSet(object->model[2], 4, 0);
         Hu3DModelPosSet(object->model[2], object->trans.x, -object->trans.y, object->trans.z);
         Hu3DModelRotSet(object->model[2], object->rot.x, object->rot.y, object->rot.z);
@@ -2655,26 +2655,26 @@ void func_8010AAC4_stardust_battle(omObjData *object) {
     actor->unk_02++;
 }
 
-void func_8010BFE4_stardust_battle(f32 arg0, s16 arg1) {
-    UnkStardustBattleActor *actor;
+void m265_StarHeightMove(f32 arg0, s16 arg1) {
+    StardustBattleStarWork *actor;
 
-    if (D_80114B18_stardust_battle == NULL) {
+    if (m265_starObj == NULL) {
         return;
     }
 
-    actor = (UnkStardustBattleActor *)func_80111FEC_stardust_battle(D_80114B18_stardust_battle);
+    actor = (StardustBattleStarWork *)m265_WorkPtrGet(m265_starObj);
 
     if (arg1 > 0) {
         actor->unk_24 = arg1;
-        actor->velY = (arg0 - D_80114B18_stardust_battle->trans.y) / arg1;
+        actor->velY = (arg0 - m265_starObj->trans.y) / arg1;
     }
 }
 
-void func_8010C06C_stardust_battle(void) {
-    UnkStardustBattleActor *actor;
+void m265_StarStop(void) {
+    StardustBattleStarWork *actor;
 
-    if (D_80114B18_stardust_battle != NULL) {
-        actor = (UnkStardustBattleActor *)func_80111FEC_stardust_battle(D_80114B18_stardust_battle);
+    if (m265_starObj != NULL) {
+        actor = (StardustBattleStarWork *)m265_WorkPtrGet(m265_starObj);
         actor->velY = 0.0f;
         actor->unk_24 = 0;
 
@@ -2685,17 +2685,17 @@ void func_8010C06C_stardust_battle(void) {
     }
 }
 
-void func_8010C0C8_stardust_battle(void) {
-    UnkStardustBattleActor *actor;
+void m265_StarFrontMove(void) {
+    StardustBattleStarWork *actor;
     f32 dx;
     f32 dy;
     f32 dz;
 
-    if (D_80114B18_stardust_battle != NULL) {
-        actor = (UnkStardustBattleActor *)func_80111FEC_stardust_battle(D_80114B18_stardust_battle);
-        actor->start.x = D_80114B18_stardust_battle->trans.x;
-        actor->start.y = D_80114B18_stardust_battle->trans.y;
-        actor->start.z = D_80114B18_stardust_battle->trans.z;
+    if (m265_starObj != NULL) {
+        actor = (StardustBattleStarWork *)m265_WorkPtrGet(m265_starObj);
+        actor->start.x = m265_starObj->trans.x;
+        actor->start.y = m265_starObj->trans.y;
+        actor->start.z = m265_starObj->trans.z;
         actor->target.x = Center.x;
         actor->target.y = 450.0f;
         actor->target.z = Center.z + 200.0;
@@ -2712,12 +2712,12 @@ void func_8010C0C8_stardust_battle(void) {
     }
 }
 
-void func_8010C1F8_stardust_battle(s16 motion, s16 startTime, s16 endTime, u8 attr) {
-    omObjData *obj = D_80114B18_stardust_battle;
+void m265_StarMotSet(s16 motion, s16 startTime, s16 endTime, u8 attr) {
+    omObjData *obj = m265_starObj;
     HmfModel *model;
 
     if (obj != NULL) {
-        func_80111FEC_stardust_battle(obj);
+        m265_WorkPtrGet(obj);
         model = &Hu3DData[obj->model[0]];
         Hu3DMotionModelSet(obj->model[0], obj->motion[motion]);
         model->motTime = startTime;
@@ -2726,104 +2726,104 @@ void func_8010C1F8_stardust_battle(s16 motion, s16 startTime, s16 endTime, u8 at
     }
 }
 
-/* Unlike the other func_80111FEC_stardust_battle call sites, the return value
+/* Unlike the other m265_WorkPtrGet call sites, the return value
    is unused here; the stardust object is read straight from the global. */
-void func_8010C2CC_stardust_battle(f32 arg0) {
-    omObjData *obj = D_80114B18_stardust_battle;
+void m265_StarMotSpeedSet(f32 arg0) {
+    omObjData *obj = m265_starObj;
     HmfModel *model;
 
     if (obj != NULL) {
-        func_80111FEC_stardust_battle(obj);
+        m265_WorkPtrGet(obj);
         model = &Hu3DData[obj->model[0]];
         model->motSpeed = arg0;
     }
 }
 
-f32 func_8010C32C_stardust_battle(void) {
-    omObjData *obj = D_80114B18_stardust_battle;
+f32 m265_StarMotSpeedGet(void) {
+    omObjData *obj = m265_starObj;
     HmfModel *model;
 
     if (obj == NULL) {
         return 0.0f;
     }
 
-    func_80111FEC_stardust_battle(obj);
+    m265_WorkPtrGet(obj);
     model = &Hu3DData[obj->model[0]];
     return model->motSpeed;
 }
 
-void func_8010C38C_stardust_battle(f32 arg0) {
-    omObjData *obj = D_80114B18_stardust_battle;
+void m265_StarMotTimeSet(f32 arg0) {
+    omObjData *obj = m265_starObj;
     HmfModel *model;
 
     if (obj != NULL) {
-        func_80111FEC_stardust_battle(obj);
+        m265_WorkPtrGet(obj);
         model = &Hu3DData[obj->model[0]];
         model->motTime = arg0;
     }
 }
 
-f32 func_8010C3EC_stardust_battle(void) {
-    omObjData *obj = D_80114B18_stardust_battle;
+f32 m265_StarMotTimeGet(void) {
+    omObjData *obj = m265_starObj;
     HmfModel *model;
 
     if (obj == NULL) {
         return 0.0f;
     }
 
-    func_80111FEC_stardust_battle(obj);
+    m265_WorkPtrGet(obj);
     model = &Hu3DData[obj->model[0]];
     return model->motTime;
 }
 
-void func_8010C44C_stardust_battle(void) {
-    UnkStardustBattleActor *actor;
+void m265_StarWinStart(void) {
+    StardustBattleStarWork *actor;
 
-    if (D_80114B18_stardust_battle != NULL) {
-        actor = (UnkStardustBattleActor *)func_80111FEC_stardust_battle(D_80114B18_stardust_battle);
+    if (m265_starObj != NULL) {
+        actor = (StardustBattleStarWork *)m265_WorkPtrGet(m265_starObj);
         actor->active = 0;
         actor->unk_04 = 15;
-        func_8010C1F8_stardust_battle(1, 0, 0, 2);
+        m265_StarMotSet(1, 0, 0, 2);
     }
 }
 
-void func_8010C498_stardust_battle(void) {
-    UnkStardustBattleActor *actor;
+void m265_StarDefeatStart(void) {
+    StardustBattleStarWork *actor;
 
-    if (D_80114B18_stardust_battle != NULL) {
-        actor = (UnkStardustBattleActor *)func_80111FEC_stardust_battle(D_80114B18_stardust_battle);
+    if (m265_starObj != NULL) {
+        actor = (StardustBattleStarWork *)m265_WorkPtrGet(m265_starObj);
         actor->unk_18 = 0;
         actor->active = 0;
         actor->unk_04 = 17;
         HuAudFXPlay(0x50B);
-        actor->unk_4C = D_80114B18_stardust_battle->trans.x;
-        actor->unk_50 = D_80114B18_stardust_battle->trans.y;
-        actor->unk_54 = D_80114B18_stardust_battle->trans.z;
+        actor->unk_4C = m265_starObj->trans.x;
+        actor->unk_50 = m265_starObj->trans.y;
+        actor->unk_54 = m265_starObj->trans.z;
     }
 }
 
-s16 func_8010C508_stardust_battle(void) {
-    if (D_80114B18_stardust_battle == NULL) {
+s16 m265_StarStateGet(void) {
+    if (m265_starObj == NULL) {
         return 0;
     }
-    return ((UnkStardustBattleActor *)func_80111FEC_stardust_battle(D_80114B18_stardust_battle))->unk_04;
+    return ((StardustBattleStarWork *)m265_WorkPtrGet(m265_starObj))->unk_04;
 }
 
-void func_8010C538_stardust_battle(void) {
-    UnkStardustBattleSpots *spots = HuMemAllocTag(sizeof(UnkStardustBattleSpots), TAG_OVERLAY);
+void m265_DropSpotInit(void) {
+    StardustBattleDropSpotList *spots = HuMemAllocTag(sizeof(StardustBattleDropSpotList), TAG_OVERLAY);
 
-    D_80114B20_stardust_battle = spots;
-    spots->spot = HuMemAllocTag(32 * sizeof(UnkStardustBattleSpot), TAG_OVERLAY);
-    memset(spots->spot, 0, 32 * sizeof(UnkStardustBattleSpot));
+    m265_dropSpotList = spots;
+    spots->spot = HuMemAllocTag(32 * sizeof(StardustBattleDropSpot), TAG_OVERLAY);
+    memset(spots->spot, 0, 32 * sizeof(StardustBattleDropSpot));
     spots->count = 0;
     spots->max = 32;
     spots->unk_04 = 0;
-    func_8010C5A8_stardust_battle(32, 0);
+    m265_DropSpotShuffle(32, 0);
 }
 
-void func_8010C5A8_stardust_battle(s16 count, s16 arg1) {
-    UnkStardustBattleSpots *spots = D_80114B20_stardust_battle;
-    UnkStardustBattleSpot *spot = spots->spot;
+void m265_DropSpotShuffle(s16 count, s16 arg1) {
+    StardustBattleDropSpotList *spots = m265_dropSpotList;
+    StardustBattleDropSpot *spot = spots->spot;
     f32 angle[32];
     f32 dist[32];
     s32 order[32];
@@ -2834,7 +2834,7 @@ void func_8010C5A8_stardust_battle(s16 count, s16 arg1) {
     s32 i;
     s32 j;
 
-    memset(spot, 0, sizeof(UnkStardustBattleSpot) * 32);
+    memset(spot, 0, sizeof(StardustBattleDropSpot) * 32);
     spots->count = count;
     spots->unk_04 = arg1;
     if (spots->count == 0) {
@@ -2894,16 +2894,16 @@ void func_8010C5A8_stardust_battle(s16 count, s16 arg1) {
     }
 }
 
-Vec *func_8010CA48_stardust_battle(s16 index) {
-    UnkStardustBattleSpots *spots = D_80114B20_stardust_battle;
-    UnkStardustBattleSpot *spot;
+Vec *m265_DropSpotGet(s16 index) {
+    StardustBattleDropSpotList *spots = m265_dropSpotList;
+    StardustBattleDropSpot *spot;
 
     if (index >= 32) {
         index %= 32;
     }
     spot = &spots->spot[index];
     if (spots->count == 0) {
-        return &D_80113EB8_stardust_battle;
+        return &m265_dropSpotDefault;
     }
     if (spot->active == 0) {
         spot = &spots->spot[(s16)(index % spots->count)];
@@ -2916,22 +2916,22 @@ Vec *func_8010CA48_stardust_battle(s16 index) {
     return &spot->pos;
 }
 
-void func_8010CB34_stardust_battle(void) {
-    UnkStardustBattleStars *stars;
-    UnkStardustBattleStar *star;
+void m265_DustInit(void) {
+    StardustBattleDustPool *stars;
+    StardustBattleDust *star;
     s32 i;
 
-    stars = HuMemAllocTag(sizeof(UnkStardustBattleStars), TAG_OVERLAY);
-    D_80114B2C_stardust_battle = stars;
-    memset(stars, 0, sizeof(UnkStardustBattleStars));
+    stars = HuMemAllocTag(sizeof(StardustBattleDustPool), TAG_OVERLAY);
+    m265_dustPool = stars;
+    memset(stars, 0, sizeof(StardustBattleDustPool));
     stars->modelId1 = Hu3DModelRead(0x620005, 0x49D);
     stars->modelId2 = Hu3DModelRead(0x620006, 0x49D);
     stars->effectId1 = Hu3DModelRead(0, 0x149D);
     stars->effectId2 = Hu3DModelRead(0x620008, 0x189D);
     stars->count = 10;
-    star = HuMemAllocTag(sizeof(UnkStardustBattleStar) * 10, TAG_OVERLAY);
+    star = HuMemAllocTag(sizeof(StardustBattleDust) * 10, TAG_OVERLAY);
     stars->star = star;
-    memset(star, 0, stars->count * sizeof(UnkStardustBattleStar));
+    memset(star, 0, stars->count * sizeof(StardustBattleDust));
     for (i = 0; i < stars->count; i++, star++) {
         star->active = 0;
         if (i == 0) {
@@ -2968,12 +2968,12 @@ void func_8010CB34_stardust_battle(void) {
         star->state = 3;
         star->unk_1A = -1;
     }
-    omSetStatBit(omAddObj(18, 0, 0, -1, func_8010CE5C_stardust_battle), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    omSetStatBit(omAddObj(18, 0, 0, -1, m265_DustObjMain), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
-void func_8010CE5C_stardust_battle(omObjData *object) {
-    UnkStardustBattleStars *stars = D_80114B2C_stardust_battle;
-    UnkStardustBattleStar *star = stars->star;
+void m265_DustObjMain(omObjData *object) {
+    StardustBattleDustPool *stars = m265_dustPool;
+    StardustBattleDust *star = stars->star;
     Vec pos;
     Vec scale;
     f32 floorY;
@@ -2982,7 +2982,7 @@ void func_8010CE5C_stardust_battle(omObjData *object) {
     s32 done;
     s32 i;
 
-    mode = func_8010929C_stardust_battle();
+    mode = m265_StageNoGet();
     if (mode == 1) {
         floorY = 25.0f;
     } else {
@@ -3021,7 +3021,7 @@ void func_8010CE5C_stardust_battle(omObjData *object) {
                     pos.y = star->y;
                     pos.z = star->z + 50.0;
                     scale.x = scale.y = scale.z = 1.2f;
-                    func_8010F890_stardust_battle(&pos, NULL, &scale, 1.0f, D_80113EC4_stardust_battle[mode].rgba);
+                    m265_SmokeCreate(&pos, NULL, &scale, 1.0f, m265_dustLandColorTbl[mode].rgba);
                     HuAudFXPlay(0x504);
                     star->state = 2;
                     star->unk_14 = 0;
@@ -3084,7 +3084,7 @@ void func_8010CE5C_stardust_battle(omObjData *object) {
                         Hu3DModelAttrSet(star->model[star->unk_10], 4, 0);
                     }
                     if (star->unk_14 >= 90.0f) {
-                        func_8010DF70_stardust_battle(i);
+                        m265_DustKill(i);
                         done = 1;
                     }
                 }
@@ -3100,9 +3100,9 @@ void func_8010CE5C_stardust_battle(omObjData *object) {
                     pos.x = star->x;
                     pos.z = star->z;
                     pos.y = 30.000002f;
-                    func_8010FCBC_stardust_battle(&pos, NULL, 1.0f, 1);
-                    func_8010FCBC_stardust_battle(&pos, NULL, 1.0f, 2);
-                    func_8010DF70_stardust_battle(i);
+                    m265_EffMdlCreate(&pos, NULL, 1.0f, 1);
+                    m265_EffMdlCreate(&pos, NULL, 1.0f, 2);
+                    m265_DustKill(i);
                     done = 1;
                 }
                 break;
@@ -3155,7 +3155,7 @@ void func_8010CE5C_stardust_battle(omObjData *object) {
             Hu3DModelAttrSet(star->shadow, 4, 4);
         }
         if (star->y < -1000.0) {
-            func_8010DF70_stardust_battle(i);
+            m265_DustKill(i);
         }
         star->unk_14++;
     }
@@ -3163,18 +3163,18 @@ void func_8010CE5C_stardust_battle(omObjData *object) {
 
 /* Activates a free star falling from pos towards target, returning its index
    or -1 if none are free. */
-s16 func_8010DADC_stardust_battle(Vec *pos, Vec *target, f32 speed) {
-    UnkStardustBattleStars *stars;
-    UnkStardustBattleStar *star;
+s16 m265_DustCreate(Vec *pos, Vec *target, f32 speed) {
+    StardustBattleDustPool *stars;
+    StardustBattleDust *star;
     f32 y;
     f32 step;
     s32 frames;
     s32 i;
 
-    if (D_80114B2C_stardust_battle == NULL) {
+    if (m265_dustPool == NULL) {
         return -1;
     }
-    stars = D_80114B2C_stardust_battle;
+    stars = m265_dustPool;
     star = stars->star;
     for (i = 0; i < stars->count; i++, star++) {
         if (star->active == 0) {
@@ -3236,18 +3236,18 @@ s16 func_8010DADC_stardust_battle(Vec *pos, Vec *target, f32 speed) {
 }
 
 /* Spawns a star falling towards target from a randomized position above it. */
-s16 func_8010DE64_stardust_battle(Vec *target, f32 speed) {
+s16 m265_DustDrop(Vec *target, f32 speed) {
     Vec pos;
 
     pos.x = target->x + 400.0;
     pos.z = target->z + (0.5 - (f32)(u8)(rand8() % 100) * 0.01) * 100.0 * 5.0;
     pos.y = target->y + 600.0;
-    return func_8010DADC_stardust_battle(&pos, target, speed);
+    return m265_DustCreate(&pos, target, speed);
 }
 
-void func_8010DF70_stardust_battle(s16 index) {
-    UnkStardustBattleStars *stars = D_80114B2C_stardust_battle;
-    UnkStardustBattleStar *star;
+void m265_DustKill(s16 index) {
+    StardustBattleDustPool *stars = m265_dustPool;
+    StardustBattleDust *star;
 
     if (index < stars->count) {
         star = &stars->star[index];
@@ -3266,9 +3266,9 @@ void func_8010DF70_stardust_battle(s16 index) {
 
 /* Picks up the closest landed star in front of the object, returning its index
    or -1 if there is none. */
-s16 func_8010E03C_stardust_battle(omObjData *object) {
-    UnkStardustBattleStars *stars;
-    UnkStardustBattleStar *star;
+s16 m265_DustGrab(omObjData *object) {
+    StardustBattleDustPool *stars;
+    StardustBattleDust *star;
     MgPlayerWork *data;
     f32 dx;
     f32 dz;
@@ -3280,16 +3280,16 @@ s16 func_8010E03C_stardust_battle(omObjData *object) {
     s32 j;
     s32 index;
 
-    if (D_80114B2C_stardust_battle == NULL) {
+    if (m265_dustPool == NULL) {
         return -1;
     }
     // The do-while gives stars the loop weighting needed for its register.
     do {
-        stars = D_80114B2C_stardust_battle;
+        stars = m265_dustPool;
     } while (0);
     star = stars->star;
     data = object->data;
-    memset(D_80114A40_stardust_battle, 0, sizeof(D_80114A40_stardust_battle));
+    memset(m265_grabDistTbl, 0, sizeof(m265_grabDistTbl));
     count = 0;
     range = data->unk48 + 50.0 + 50.0;
     range = range * range;
@@ -3299,9 +3299,9 @@ s16 func_8010E03C_stardust_battle(omObjData *object) {
             dz = star->z - object->trans.z;
             distSq = dx * dx + dz * dz;
             angle = atan2df(dx, dz);
-            if (distSq < range && fabs(func_80111B28_stardust_battle(angle, data->unk3C)) < 40.0) {
-                D_80114A40_stardust_battle[count].index = i;
-                D_80114A40_stardust_battle[count].distSq = distSq;
+            if (distSq < range && fabs(m265_AngleDiffCalc(angle, data->unk3C)) < 40.0) {
+                m265_grabDistTbl[count].index = i;
+                m265_grabDistTbl[count].distSq = distSq;
                 count++;
             }
         }
@@ -3312,17 +3312,17 @@ s16 func_8010E03C_stardust_battle(omObjData *object) {
     if (count != 1) {
         for (i = 0; i < count - 1; i++) {
             for (j = i + 1; j < count; j++) {
-                if (D_80114A40_stardust_battle[i].distSq > D_80114A40_stardust_battle[j].distSq) {
-                    D_80114A90_stardust_battle = D_80114A40_stardust_battle[i];
-                    D_80114A40_stardust_battle[i] = D_80114A40_stardust_battle[j];
-                    D_80114A40_stardust_battle[j] = D_80114A90_stardust_battle;
+                if (m265_grabDistTbl[i].distSq > m265_grabDistTbl[j].distSq) {
+                    m265_grabDistTemp = m265_grabDistTbl[i];
+                    m265_grabDistTbl[i] = m265_grabDistTbl[j];
+                    m265_grabDistTbl[j] = m265_grabDistTemp;
                 }
             }
         }
     }
     // The do-while gives index the loop weighting needed for its register.
     do {
-        index = D_80114A40_stardust_battle[0].index;
+        index = m265_grabDistTbl[0].index;
     } while (0);
     star = &stars->star[index];
     if (star->active != 0) {
@@ -3334,14 +3334,14 @@ s16 func_8010E03C_stardust_battle(omObjData *object) {
         star->state = 4;
         star->unk_14 = 0;
     }
-    return D_80114A40_stardust_battle[0].index;
+    return m265_grabDistTbl[0].index;
 }
 
 /* Returns the indexed star, or NULL if the index is out of range or the star
    isn't in use. */
-UnkStardustBattleStar *func_8010E300_stardust_battle(s16 arg0) {
-    UnkStardustBattleStars *stars = D_80114B2C_stardust_battle;
-    UnkStardustBattleStar *star;
+StardustBattleDust *m265_DustGet(s16 arg0) {
+    StardustBattleDustPool *stars = m265_dustPool;
+    StardustBattleDust *star;
 
     if (arg0 >= stars->count) {
         return NULL;
@@ -3350,9 +3350,9 @@ UnkStardustBattleStar *func_8010E300_stardust_battle(s16 arg0) {
     return star->active ? star : NULL;
 }
 
-void func_8010E35C_stardust_battle(s16 index) {
-    UnkStardustBattleStars *stars = D_80114B2C_stardust_battle;
-    UnkStardustBattleStar *star;
+void m265_DustThrow(s16 index) {
+    StardustBattleDustPool *stars = m265_dustPool;
+    StardustBattleDust *star;
 
     if (index < stars->count) {
         star = &stars->star[index];
@@ -3366,15 +3366,15 @@ void func_8010E35C_stardust_battle(s16 index) {
                 star->unk_48 = cosdf(star->targetY) * 31.9999992847442627;
                 star->unk_44 = 10.0f;
             } else {
-                func_8010DF70_stardust_battle(index);
+                m265_DustKill(index);
             }
         }
     }
 }
 
-void func_8010E46C_stardust_battle(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
-    UnkStardustBattleStars *stars = D_80114B2C_stardust_battle;
-    UnkStardustBattleStar *star;
+void m265_DustPosSet(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    StardustBattleDustPool *stars = m265_dustPool;
+    StardustBattleDust *star;
 
     if (arg0 < stars->count) {
         star = &stars->star[arg0];
@@ -3386,9 +3386,9 @@ void func_8010E46C_stardust_battle(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
     }
 }
 
-void func_8010E4C8_stardust_battle(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
-    UnkStardustBattleStars *stars = D_80114B2C_stardust_battle;
-    UnkStardustBattleStar *star;
+void m265_DustRotSet(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
+    StardustBattleDustPool *stars = m265_dustPool;
+    StardustBattleDust *star;
 
     if (arg0 < stars->count) {
         star = &stars->star[arg0];
@@ -3400,10 +3400,10 @@ void func_8010E4C8_stardust_battle(s16 arg0, f32 arg1, f32 arg2, f32 arg3) {
     }
 }
 
-s16 func_8010E524_stardust_battle(omObjData *object, s16 mode, Vec *out) {
+s16 m265_DustHitCheck(omObjData *object, s16 mode, Vec *out) {
     MgPlayerWork *data;
-    UnkStardustBattleStars *stars;
-    UnkStardustBattleStar *star;
+    StardustBattleDustPool *stars;
+    StardustBattleDust *star;
     Vec pos;
     Vec rot;
     Vec dir;
@@ -3416,10 +3416,10 @@ s16 func_8010E524_stardust_battle(omObjData *object, s16 mode, Vec *out) {
     f32 dz;
     s32 i;
 
-    if (D_80114B2C_stardust_battle == NULL || D_80114B18_stardust_battle == NULL) {
+    if (m265_dustPool == NULL || m265_starObj == NULL) {
         return -1;
     }
-    stars = D_80114B2C_stardust_battle;
+    stars = m265_dustPool;
     star = stars->star;
     data = object->data;
     if (mode == 0) {
@@ -3465,7 +3465,7 @@ s16 func_8010E524_stardust_battle(omObjData *object, s16 mode, Vec *out) {
                 pos.x = (star->x + object->trans.x) * 0.5f;
                 pos.z = (star->z + object->trans.z) * 0.5f;
                 pos.y = (star->y + 50.0 + object->trans.y + 100.0) * 0.5;
-                func_8010FCBC_stardust_battle(&pos, NULL, 1.2f, 2);
+                m265_EffMdlCreate(&pos, NULL, 1.2f, 2);
                 HuAudFXPlay(0x505);
             } else {
                 pos.x = star->x;
@@ -3474,33 +3474,33 @@ s16 func_8010E524_stardust_battle(omObjData *object, s16 mode, Vec *out) {
                 dir.x = star->unk_40;
                 dir.y = star->unk_44;
                 dir.z = star->unk_48;
-                func_80111F38_stardust_battle(&dir, &rot.x);
+                m265_DirRotCalc(&dir, &rot.x);
                 rot.x -= 90.0f;
-                func_8010FCBC_stardust_battle(&pos, &rot, 1.0f, 0);
+                m265_EffMdlCreate(&pos, &rot, 1.0f, 0);
                 out->x = star->unk_40;
                 out->y = star->unk_44;
                 out->z = star->unk_48;
                 HuAudFXPlay(0x506);
-                func_8010DF70_stardust_battle(i);
+                m265_DustKill(i);
             }
             return i;
         }
     }
     if (mode == 0) {
-        dx = D_80114B18_stardust_battle->trans.x - object->trans.x;
-        dz = D_80114B18_stardust_battle->trans.z - object->trans.z;
-        dy = D_80114B18_stardust_battle->trans.y + 34.9999994039535522 - object->trans.y;
+        dx = m265_starObj->trans.x - object->trans.x;
+        dz = m265_starObj->trans.z - object->trans.z;
+        dy = m265_starObj->trans.y + 34.9999994039535522 - object->trans.y;
         radius = (data->unk48 + 85.000002384185791) * 0.7f;
         dist = dx * dx + dz * dz;
         radiusSq = radius * radius;
         if (dist < radiusSq && ((dy > -150.0) & (dy < height))) {
-            pos.x = (D_80114B18_stardust_battle->trans.x + object->trans.x) * 0.5f;
-            pos.z = (D_80114B18_stardust_battle->trans.z + object->trans.z) * 0.5f;
-            pos.y = (D_80114B18_stardust_battle->trans.y + 100.0 + object->trans.y + 100.0) * 0.5;
+            pos.x = (m265_starObj->trans.x + object->trans.x) * 0.5f;
+            pos.z = (m265_starObj->trans.z + object->trans.z) * 0.5f;
+            pos.y = (m265_starObj->trans.y + 100.0 + object->trans.y + 100.0) * 0.5;
             rot.x = 90.0f;
             rot.y = atan2df(dx, dz);
             rot.z = 0.0f;
-            func_8010FCBC_stardust_battle(&pos, &rot, 1.0f, 1);
+            m265_EffMdlCreate(&pos, &rot, 1.0f, 1);
             return 0xFF;
         }
     }
@@ -3509,9 +3509,9 @@ s16 func_8010E524_stardust_battle(omObjData *object, s16 mode, Vec *out) {
 
 /* Pushes the object out of any nearby stars and the stardust actor. Note that
    scale holds the squared push radius until it is first reused. */
-void func_8010EA04_stardust_battle(omObjData *object) {
-    UnkStardustBattleStars *stars;
-    UnkStardustBattleStar *star;
+void m265_PlayerPushOut(omObjData *object) {
+    StardustBattleDustPool *stars;
+    StardustBattleDust *star;
     MgPlayerWork *data;
     f32 dx;
     f32 dy;
@@ -3523,10 +3523,10 @@ void func_8010EA04_stardust_battle(omObjData *object) {
     s32 retries;
     s32 i;
 
-    if (D_80114B2C_stardust_battle == NULL || D_80114B18_stardust_battle == NULL) {
+    if (m265_dustPool == NULL || m265_starObj == NULL) {
         return;
     }
-    stars = D_80114B2C_stardust_battle;
+    stars = m265_dustPool;
     star = stars->star;
     data = object->data;
     radius = (data->unk48 + 50.0) * 0.699999988079071;
@@ -3558,9 +3558,9 @@ void func_8010EA04_stardust_battle(omObjData *object) {
             }
         }
     }
-    dx = D_80114B18_stardust_battle->trans.x - object->trans.x;
-    dz = D_80114B18_stardust_battle->trans.z - object->trans.z;
-    dy = D_80114B18_stardust_battle->trans.y + 34.99999940395355 - object->trans.y;
+    dx = m265_starObj->trans.x - object->trans.x;
+    dz = m265_starObj->trans.z - object->trans.z;
+    dy = m265_starObj->trans.y + 34.99999940395355 - object->trans.y;
     dist = dx * dx + dz * dz;
     radius = (data->unk48 + 85.00000238418579) * 0.699999988079071;
     scale = radius * radius;
@@ -3573,31 +3573,31 @@ void func_8010EA04_stardust_battle(omObjData *object) {
             dx = 0.0f;
             scale = 1.0f;
         }
-        object->trans.x = D_80114B18_stardust_battle->trans.x - dx * scale;
-        object->trans.z = D_80114B18_stardust_battle->trans.z - dz * scale;
+        object->trans.x = m265_starObj->trans.x - dx * scale;
+        object->trans.z = m265_starObj->trans.z - dz * scale;
     }
 }
 
-void func_8010ED7C_stardust_battle(void) {
-    UnkStardustBattleStars *stars;
-    UnkStardustBattleStar *star;
+void m265_DustKillAll(void) {
+    StardustBattleDustPool *stars;
+    StardustBattleDust *star;
     s32 i;
 
-    if (D_80114B2C_stardust_battle == NULL) {
+    if (m265_dustPool == NULL) {
         return;
     }
-    stars = D_80114B2C_stardust_battle;
+    stars = m265_dustPool;
     star = stars->star;
     for (i = 0; i < stars->count; i++, star++) {
         if (star->active != 0) {
-            Hu3DModelScaleSet(EffectGroupEmit(D_80114B54_stardust_battle, star->x, star->y, star->z), 2.0f, 2.0f,
+            Hu3DModelScaleSet(EffectGroupEmit(m265_sparkEffGrp, star->x, star->y, star->z), 2.0f, 2.0f,
                               2.0f);
-            func_8010DF70_stardust_battle(i);
+            m265_DustKill(i);
         }
     }
 }
 
-u16 func_8010EE38_stardust_battle(s32 dirAndFile) {
+u16 m265_SprAnimRead(s32 dirAndFile) {
     void *data = DataRead(dirAndFile);
     u16 anim = HuSprAnimRead(data);
 
@@ -3605,16 +3605,16 @@ u16 func_8010EE38_stardust_battle(s32 dirAndFile) {
     return anim;
 }
 
-void func_8010EE7C_stardust_battle(void) {
-    UnkStardustBattleScoreDisp *disp;
+void m265_TimeInit(void) {
+    StardustBattleTimeDisp *disp;
     s32 sprGrp;
     s32 i;
     s32 j;
 
-    disp = D_80114B44_stardust_battle = HuMemAllocTag(sizeof(UnkStardustBattleScoreDisp) * 2, TAG_OVERLAY);
-    memset(disp, 0, sizeof(UnkStardustBattleScoreDisp) * 2);
-    D_80114B34_stardust_battle = omAddObj(29, 0, 0, -1, func_8010F0E8_stardust_battle);
-    D_80114B34_stardust_battle->work[2] = 0;
+    disp = m265_timeDispTbl = HuMemAllocTag(sizeof(StardustBattleTimeDisp) * 2, TAG_OVERLAY);
+    memset(disp, 0, sizeof(StardustBattleTimeDisp) * 2);
+    m265_timeObj = omAddObj(29, 0, 0, -1, m265_TimeObjMain);
+    m265_timeObj->work[2] = 0;
     for (i = 0; i < 2; i++, disp++) {
         disp->active = 1;
         disp->sprGrp = -1;
@@ -3623,15 +3623,15 @@ void func_8010EE7C_stardust_battle(void) {
         disp->unk_0C = 1.0f;
         disp->scale = 1.0f;
         disp->x = disp->y = 0;
-        if (!D_80114AC0_stardust_battle && i == 1) {
+        if (!m265_recordF && i == 1) {
             disp->active = 0;
             continue;
         }
-        D_80114B30_stardust_battle[i + 3] = func_8010EE38_stardust_battle(D_80113ED0_stardust_battle[i]);
+        m265_sprTbl[i + 3] = m265_SprAnimRead(m265_timeSprFileTbl[i]);
         disp->sprGrp = sprGrp = HuSprGrpCreate(8, 0);
         for (j = 0; j < 8; j++) {
-            HuSprPosSet(sprGrp, j, D_80113CE0_stardust_battle[j], D_80113CF0_stardust_battle[i]);
-            HuSprGrpMemberSet(sprGrp, j, D_80114B30_stardust_battle[i + 3], 0);
+            HuSprPosSet(sprGrp, j, m265_timeDigitXTbl[j], m265_timeYTbl[i]);
+            HuSprGrpMemberSet(sprGrp, j, m265_sprTbl[i + 3], 0);
             HuSprPatNoSet(sprGrp, j, 0);
             HuSprAttrSet(sprGrp, j, 0x1000);
             HuSprAnimModeSet(sprGrp, j, HUSPR_ANIM_MODE_STOP);
@@ -3640,14 +3640,14 @@ void func_8010EE7C_stardust_battle(void) {
         HuSprPatNoSet(sprGrp, 2, 10);
         HuSprPatNoSet(sprGrp, 5, 11);
     }
-    func_8010F400_stardust_battle(0, D_80114AB0_stardust_battle);
-    if (D_80114AC0_stardust_battle != 0) {
-        func_8010F400_stardust_battle(1, D_80114AB4_stardust_battle);
+    m265_TimeSet(0, m265_timer);
+    if (m265_recordF != 0) {
+        m265_TimeSet(1, m265_recordTime);
     }
 }
 
-void func_8010F0E8_stardust_battle(omObjData *object) {
-    UnkStardustBattleScoreDisp *disp = D_80114B44_stardust_battle;
+void m265_TimeObjMain(omObjData *object) {
+    StardustBattleTimeDisp *disp = m265_timeDispTbl;
     u8 *digits;
     f32 scale;
     s32 center;
@@ -3663,7 +3663,7 @@ void func_8010F0E8_stardust_battle(omObjData *object) {
             continue;
         }
         sprGrp = disp->sprGrp;
-        digits = D_80114B38_stardust_battle[i];
+        digits = m265_timeDigitTbl[i];
         switch (disp->state) {
             case 0:
                 break;
@@ -3674,17 +3674,17 @@ void func_8010F0E8_stardust_battle(omObjData *object) {
                     disp->state = 0;
                 }
                 scale = disp->scale;
-                center = disp->x + D_80113CE0_stardust_battle[3] + 6;
+                center = disp->x + m265_timeDigitXTbl[3] + 6;
                 for (j = 0; j < 8; j++) {
-                    HuSprPosSet(sprGrp, j, disp->x + (center + (D_80113CE0_stardust_battle[j] - center) * scale),
-                                disp->y + D_80113CF0_stardust_battle[i]);
+                    HuSprPosSet(sprGrp, j, disp->x + (center + (m265_timeDigitXTbl[j] - center) * scale),
+                                disp->y + m265_timeYTbl[i]);
                     HuSprScaleSet(sprGrp, j, scale, scale);
                 }
                 break;
             case 2:
                 disp->x -= 3;
                 for (j = 0; j < 8; j++) {
-                    HuSprPosSet(sprGrp, j, disp->x + D_80113CE0_stardust_battle[j], disp->y + D_80113CF0_stardust_battle[i]);
+                    HuSprPosSet(sprGrp, j, disp->x + m265_timeDigitXTbl[j], disp->y + m265_timeYTbl[i]);
                 }
                 if (disp->x < -74) {
                     disp->state = 0;
@@ -3695,7 +3695,7 @@ void func_8010F0E8_stardust_battle(omObjData *object) {
             if (digits[j] >= 10) {
                 digits[j] = 9;
             }
-            HuSprPatNoSet(sprGrp, D_80113ED8_stardust_battle[j], digits[j]);
+            HuSprPatNoSet(sprGrp, m265_timeDigitMemberTbl[j], digits[j]);
         }
         disp->timer++;
     }
@@ -3703,8 +3703,8 @@ void func_8010F0E8_stardust_battle(omObjData *object) {
 
 /* Splits a frame count into minutes, seconds and hundredths, stored as the
    decimal digits of a time display. */
-void func_8010F400_stardust_battle(s16 index, s32 frames) {
-    u8 *digits = D_80114B38_stardust_battle[index];
+void m265_TimeSet(s16 index, s32 frames) {
+    u8 *digits = m265_timeDigitTbl[index];
     s32 parts[3];
 
     parts[0] = parts[1] = parts[2] = 0;
@@ -3735,35 +3735,35 @@ void func_8010F400_stardust_battle(s16 index, s32 frames) {
     digits[5] = parts[2];
 }
 
-void func_8010F580_stardust_battle(s16 index) {
-    D_80114B44_stardust_battle[index].state = 1;
-    D_80114B44_stardust_battle[index].timer = 0;
+void m265_TimePulseStart(s16 index) {
+    m265_timeDispTbl[index].state = 1;
+    m265_timeDispTbl[index].timer = 0;
 }
 
-void func_8010F5B0_stardust_battle(s16 index) {
-    D_80114B44_stardust_battle[index].state = 2;
-    D_80114B44_stardust_battle[index].timer = 0;
+void m265_TimeSlideStart(s16 index) {
+    m265_timeDispTbl[index].state = 2;
+    m265_timeDispTbl[index].timer = 0;
 }
 
-void func_8010F5E0_stardust_battle(void) {
+void m265_SmokeInit(void) {
     HuSprAnimData *sprite;
-    UnkStardustBattleEffect *effect;
+    StardustBattleEffect *effect;
     HmfModel *model;
     s32 i;
 
-    D_80114B30_stardust_battle[1] = func_8010EE38_stardust_battle(11);
-    sprite = HuSprAnimDataGet(D_80114B30_stardust_battle[1]);
-    D_80114B48_stardust_battle = omAddObj(30, 0, 0, -1, func_8010F73C_stardust_battle);
-    D_80114B4C_stardust_battle = effect = HuMemAllocTag(sizeof(UnkStardustBattleEffect) * 4, TAG_OVERLAY);
+    m265_sprTbl[1] = m265_SprAnimRead(11);
+    sprite = HuSprAnimDataGet(m265_sprTbl[1]);
+    m265_smokeObj = omAddObj(30, 0, 0, -1, m265_SmokeObjMain);
+    m265_smokeTbl = effect = HuMemAllocTag(sizeof(StardustBattleEffect) * 4, TAG_OVERLAY);
     for (i = 0; i < 4; i++, effect++) {
         if (i == 0) {
-            effect->model = func_80112980_stardust_battle(sprite, D_80113CF4_stardust_battle.rgba);
+            effect->model = m265_BillboardColorMdlCreate(sprite, m265_smokeColor.rgba);
         } else {
             effect->model =
-                func_80113568_stardust_battle(sprite, D_80114B4C_stardust_battle[0].model, D_80113CF4_stardust_battle.rgba);
+                m265_BillboardColorMdlLink(sprite, m265_smokeTbl[0].model, m265_smokeColor.rgba);
         }
         effect->active = 0;
-        effect->color = D_80113CF4_stardust_battle;
+        effect->color = m265_smokeColor;
         effect->frame = effect->speed = 0.0f;
         effect->pos.x = effect->pos.y = effect->pos.z = 0.0f;
         effect->vel.x = effect->vel.y = effect->vel.z = 0.0f;
@@ -3774,13 +3774,13 @@ void func_8010F5E0_stardust_battle(void) {
     }
 }
 
-void func_8010F73C_stardust_battle(omObjData *object) {
-    HuSprAnimData *sprite = HuSprAnimDataGet(D_80114B30_stardust_battle[1]);
-    UnkStardustBattleEffect *effect;
+void m265_SmokeObjMain(omObjData *object) {
+    HuSprAnimData *sprite = HuSprAnimDataGet(m265_sprTbl[1]);
+    StardustBattleEffect *effect;
     HmfModel *model;
     s32 i;
 
-    for (i = 0, effect = D_80114B4C_stardust_battle; i < 4; i++, effect++) {
+    for (i = 0, effect = m265_smokeTbl; i < 4; i++, effect++) {
         if (effect->active == 0) {
             continue;
         }
@@ -3797,7 +3797,7 @@ void func_8010F73C_stardust_battle(omObjData *object) {
         model->scale.x = effect->scale.x;
         model->scale.y = effect->scale.y;
         model->scale.z = effect->scale.z;
-        func_8011376C_stardust_battle(effect->model, sprite, (s32)effect->frame, effect->color.rgba);
+        m265_BillboardColorPatSet(effect->model, sprite, (s32)effect->frame, effect->color.rgba);
         effect->frame += effect->speed;
         if ((s32)effect->frame >= sprite->patNum) {
             effect->active = 0;
@@ -3807,13 +3807,13 @@ void func_8010F73C_stardust_battle(omObjData *object) {
     }
 }
 
-s32 func_8010F890_stardust_battle(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) {
-    HuSprAnimData *sprite = HuSprAnimDataGet(D_80114B30_stardust_battle[1]);
-    UnkStardustBattleEffect *effect;
+s32 m265_SmokeCreate(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) {
+    HuSprAnimData *sprite = HuSprAnimDataGet(m265_sprTbl[1]);
+    StardustBattleEffect *effect;
     HmfModel *model;
     s32 i;
 
-    for (i = 0, effect = D_80114B4C_stardust_battle; i < 4; i++, effect++) {
+    for (i = 0, effect = m265_smokeTbl; i < 4; i++, effect++) {
         if (effect->active != 0) {
             continue;
         }
@@ -3840,10 +3840,10 @@ s32 func_8010F890_stardust_battle(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 
         } else {
             effect->scale.x = effect->scale.y = effect->scale.z = 1.0f;
         }
-        memcpy(effect->color.rgba, color, sizeof(UnkStardustBattleColor));
+        memcpy(effect->color.rgba, color, sizeof(StardustBattleColor));
         effect->speed = speed;
         effect->frame = 0.0f;
-        func_8011376C_stardust_battle(effect->model, sprite, 0, effect->color.rgba);
+        m265_BillboardColorPatSet(effect->model, sprite, 0, effect->color.rgba);
         Hu3DModelAttrSet(effect->model, 4, 0);
         model->motTime = 0.0f;
         model->pos.x = effect->pos.x;
@@ -3857,14 +3857,14 @@ s32 func_8010F890_stardust_battle(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 
     return -1;
 }
 
-void func_8010FA60_stardust_battle(void) {
+void m265_EffMdlInit(void) {
     omObjData *object;
     HmfModel *model;
     s32 count = 8;
     s32 i;
     s32 j;
 
-    object = D_80114B50_stardust_battle = omAddObj(0x1E, 8, 0, -1, func_8010FBCC_stardust_battle);
+    object = m265_effMdlObj = omAddObj(0x1E, 8, 0, -1, m265_EffMdlObjMain);
     object->work[0] = 0;
     object->work[1] = 2;
     object->work[2] = 4;
@@ -3873,7 +3873,7 @@ void func_8010FA60_stardust_battle(void) {
         if (i >= object->work[j + 1]) {
             j++;
         }
-        object->model[i] = Hu3DModelRead2(D_80113EF0_stardust_battle[j], D_80113EFC_stardust_battle[i / 16] | 0x99);
+        object->model[i] = Hu3DModelRead2(m265_effMdlFileTbl[j], m265_effMdlAttrTbl[i / 16] | 0x99);
         Hu3DModelAttrSet(object->model[i], 4, 4);
         model = &Hu3DData[object->model[i]];
         model->motTime = 0.0f;
@@ -3884,7 +3884,7 @@ void func_8010FA60_stardust_battle(void) {
     }
 }
 
-void func_8010FBCC_stardust_battle(omObjData *object) {
+void m265_EffMdlObjMain(omObjData *object) {
     HmfModel *model;
     s32 count = 8;
     s32 i;
@@ -3907,8 +3907,8 @@ void func_8010FBCC_stardust_battle(omObjData *object) {
 
 /* Activates the first free model of the given group in the D_80114B50 object
    and returns its index, or -1 if none are free. */
-s32 func_8010FCBC_stardust_battle(Vec *pos, Vec *rot, f32 scale, s16 group) {
-    omObjData *object = D_80114B50_stardust_battle;
+s32 m265_EffMdlCreate(Vec *pos, Vec *rot, f32 scale, s16 group) {
+    omObjData *object = m265_effMdlObj;
     HmfModel *model;
     s32 count = 8;
     s32 i;
@@ -3954,8 +3954,8 @@ s32 func_8010FCBC_stardust_battle(Vec *pos, Vec *rot, f32 scale, s16 group) {
     return -1;
 }
 
-void func_8010FE74_stardust_battle(s16 arg0) {
-    UnkStardustBattleStard *stard;
+void m265_RayInit(s16 arg0) {
+    StardustBattleRay *stard;
     omObjData *object;
     f32 angles[16];
     f32 temp;
@@ -3964,8 +3964,8 @@ void func_8010FE74_stardust_battle(s16 arg0) {
     s32 i;
     s16 sprGrp;
 
-    stard = D_80114B5C_stardust_battle = HuMemAllocTag(sizeof(UnkStardustBattleStard) * 16, TAG_OVERLAY);
-    object = D_80114B58_stardust_battle = omAddObj(30, 1, 0, -1, func_80110364_stardust_battle);
+    stard = m265_rayTbl = HuMemAllocTag(sizeof(StardustBattleRay) * 16, TAG_OVERLAY);
+    object = m265_rayObj = omAddObj(30, 1, 0, -1, m265_RayObjMain);
     for (i = 0; i < 16; i++) {
         angles[i] = i * 22.5f;
     }
@@ -3979,7 +3979,7 @@ void func_8010FE74_stardust_battle(s16 arg0) {
         }
     }
     for (i = 0; i < 16; i++, stard++) {
-        stard->modelId = func_801122D0_stardust_battle();
+        stard->modelId = m265_RayMdlCreate();
         Hu3DModelAttrSet(stard->modelId, 4, 4);
         Hu3DModelScaleSet(stard->modelId, (f32)(rand8() % 100) * 0.01 * 1.5 + 1.0 - 0.5, 1.0f, 1.0f);
         stard->angleX = rand8() % 180;
@@ -3994,9 +3994,9 @@ void func_8010FE74_stardust_battle(s16 arg0) {
     object->model[0] = Hu3DModelRead2(0x620009, 0x1839);
     Hu3DModelAttrSet(object->model[0], 4, 4);
     object->scale.x = object->scale.y = object->scale.z = 10.0f;
-    D_80114B30_stardust_battle[2] = func_8010EE38_stardust_battle(0x62000B);
+    m265_sprTbl[2] = m265_SprAnimRead(0x62000B);
     object->work[3] = sprGrp = HuSprGrpCreate(1, 0);
-    HuSprGrpMemberSet(sprGrp, 0, D_80114B30_stardust_battle[2], 0);
+    HuSprGrpMemberSet(sprGrp, 0, m265_sprTbl[2], 0);
     HuSprAnimModeSet(sprGrp, 0, HUSPR_ANIM_MODE_STOP);
     HuSprPatNoSet(sprGrp, 0, 0);
     HuSprPosSet(sprGrp, 0, 160, 120);
@@ -4006,8 +4006,8 @@ void func_8010FE74_stardust_battle(s16 arg0) {
     HuSprPriSet(sprGrp, 0, 0xFFFF);
 }
 
-void func_80110364_stardust_battle(omObjData *object) {
-    UnkStardustBattleStard *stard = D_80114B5C_stardust_battle;
+void m265_RayObjMain(omObjData *object) {
+    StardustBattleRay *stard = m265_rayTbl;
     f32 alpha;
     s32 next;
     s32 i;
@@ -4071,8 +4071,8 @@ void func_80110364_stardust_battle(omObjData *object) {
     }
 }
 
-void func_80110758_stardust_battle(f32 x, f32 y, f32 z) {
-    omObjData *obj = D_80114B58_stardust_battle;
+void m265_RayPosSet(f32 x, f32 y, f32 z) {
+    omObjData *obj = m265_rayObj;
 
     if (obj != NULL) {
         obj->trans.x = x;
@@ -4081,8 +4081,8 @@ void func_80110758_stardust_battle(f32 x, f32 y, f32 z) {
     }
 }
 
-void func_80110780_stardust_battle(s16 arg0) {
-    UnkStardustBattleStard *stard = D_80114B5C_stardust_battle;
+void m265_RayNumSet(s16 arg0) {
+    StardustBattleRay *stard = m265_rayTbl;
     s32 i;
 
     if (stard != NULL) {
@@ -4096,8 +4096,8 @@ void func_80110780_stardust_battle(s16 arg0) {
     }
 }
 
-void func_801107C4_stardust_battle(void) {
-    omObjData *obj = D_80114B58_stardust_battle;
+void m265_RayBurstStart(void) {
+    omObjData *obj = m265_rayObj;
 
     if (obj != NULL) {
         obj->work[0] = 1;
@@ -4105,7 +4105,7 @@ void func_801107C4_stardust_battle(void) {
     }
 }
 
-void func_801107E4_stardust_battle(void) {
+void m265_CameraInit(void) {
     HuCamera *camera;
     s32 i;
 
@@ -4116,13 +4116,13 @@ void func_801107E4_stardust_battle(void) {
     CRot.y = 0.0f;
     CRot.z = 0.0f;
     CZoom = 2062.0f;
-    func_801115F8_stardust_battle(0);
-    func_801115F8_stardust_battle(1);
-    D_80114BB0_stardust_battle = 0;
-    D_80114BAC_stardust_battle = 0;
-    D_80114BA8_stardust_battle = 0;
-    D_80114BB4_stardust_battle = 0;
-    omAddObj(31, 0, 0, -1, func_80111004_stardust_battle);
+    m265_CameraKeyStore(0);
+    m265_CameraKeyStore(1);
+    m265_cameraMoveF = 0;
+    m265_cameraMoveTime = 0;
+    m265_cameraMoveTimer = 0;
+    m265_cameraMoveMode = 0;
+    omAddObj(31, 0, 0, -1, m265_CameraMoveObjMain);
     camera = gCameraList;
     for (i = 1; i < Hu3DBufNum; i++) {
         camera->viewports[i].vp.vscale[0] = camera->viewports[0].vp.vscale[0];
@@ -4134,12 +4134,12 @@ void func_801107E4_stardust_battle(void) {
     }
 }
 
-void func_80110914_stardust_battle(void) {
+void m265_CameraDebugPad(void) {
     MgCameraKey delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
     f32 speed;
 
     speed = 1.0f;
-    switch (D_80113F08_stardust_battle) {
+    switch (m265_cameraDebugMode) {
         case 1:
             if ((u16)HuPadBtn[0] & A_BUTTON) {
                 speed = 8.0f;
@@ -4189,84 +4189,84 @@ void func_80110914_stardust_battle(void) {
                 delta.rot.y += CRot.y;
                 delta.rot.z += CRot.z;
                 delta.zoom += CZoom;
-                func_801117E4_stardust_battle(delta.center.x, delta.center.y, delta.center.z, delta.rot.x,
+                m265_CameraMoveStart(delta.center.x, delta.center.y, delta.center.z, delta.rot.x,
                                               delta.rot.y, delta.rot.z, delta.zoom, 1);
             }
             sprintf(omDBGStrBuf, "CAMERA TEST_MODE");
-            print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 80,
+            print8((s16)m265_cameraDebugX + 20, (s16)m265_cameraDebugY + 80,
                    omDBGStrBuf);
             sprintf(omDBGStrBuf, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
-            print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 88,
+            print8((s16)m265_cameraDebugX + 20, (s16)m265_cameraDebugY + 88,
                    omDBGStrBuf);
             sprintf(omDBGStrBuf, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
-            print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 96,
+            print8((s16)m265_cameraDebugX + 20, (s16)m265_cameraDebugY + 96,
                    omDBGStrBuf);
             sprintf(omDBGStrBuf, " ZOOM   %3.3f ", CZoom);
-            print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 104,
+            print8((s16)m265_cameraDebugX + 20, (s16)m265_cameraDebugY + 104,
                    omDBGStrBuf);
             break;
         case 2:
             if ((HuPadBtn[0] & R_JPAD) || (HuPadBtn[0] & R_CBUTTONS)) {
-                D_80113F0C_stardust_battle++;
+                m265_cameraDebugX++;
             }
             if (HuPadBtn[0] & (L_JPAD | L_CBUTTONS)) {
-                D_80113F0C_stardust_battle--;
+                m265_cameraDebugX--;
             }
             if (HuPadBtn[0] & (D_JPAD | D_CBUTTONS)) {
-                D_80113F10_stardust_battle++;
+                m265_cameraDebugY++;
             }
             if (HuPadBtn[0] & (U_JPAD | U_CBUTTONS)) {
-                D_80113F10_stardust_battle--;
+                m265_cameraDebugY--;
             }
             fontcolor = 8;
             sprintf(omDBGStrBuf, "CAMERA TEST_MODE ");
-            print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 80,
+            print8((s16)m265_cameraDebugX + 20, (s16)m265_cameraDebugY + 80,
                    omDBGStrBuf);
             sprintf(omDBGStrBuf, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
-            print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 88,
+            print8((s16)m265_cameraDebugX + 20, (s16)m265_cameraDebugY + 88,
                    omDBGStrBuf);
             sprintf(omDBGStrBuf, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
-            print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 96,
+            print8((s16)m265_cameraDebugX + 20, (s16)m265_cameraDebugY + 96,
                    omDBGStrBuf);
             sprintf(omDBGStrBuf, " ZOOM   %3.3f ", CZoom);
-            print8((s16)D_80113F0C_stardust_battle + 20, (s16)D_80113F10_stardust_battle + 104,
+            print8((s16)m265_cameraDebugX + 20, (s16)m265_cameraDebugY + 104,
                    omDBGStrBuf);
             break;
         case 3:
-            D_80113F08_stardust_battle = 0;
+            m265_cameraDebugMode = 0;
             break;
     }
     if (HuPadBtnDown[0] & R_TRIG) {
-        if (D_80113F08_stardust_battle == 1) {
+        if (m265_cameraDebugMode == 1) {
             osSyncPrintf("CAMERA TEST_MODE \n");
             osSyncPrintf(" CENTER X>%3.3f Y>%3.3f Z>%3.3f \n", Center.x, Center.y, Center.z);
             osSyncPrintf(" ROT    X>%3.3f Y>%3.3f Z>%3.3f \n", CRot.x, CRot.y, CRot.z);
             osSyncPrintf(" ZOOM   %3.3f \n\n", CZoom);
         }
-        if (D_80113F08_stardust_battle++ >= 4) {
-            D_80113F08_stardust_battle = 0;
+        if (m265_cameraDebugMode++ >= 4) {
+            m265_cameraDebugMode = 0;
         }
     }
 }
 
-void func_80111004_stardust_battle(omObjData *object) {
+void m265_CameraMoveObjMain(omObjData *object) {
     f32 t = 0.0f;
     f32 temp;
     f32 temp2;
 
-    if (D_80114BAC_stardust_battle <= 0) {
-        func_801119D4_stardust_battle(0);
-        D_80114BB0_stardust_battle = 0;
+    if (m265_cameraMoveTime <= 0) {
+        m265_CameraPosUpdate(0);
+        m265_cameraMoveF = 0;
         return;
     }
-    if (D_80114BA8_stardust_battle == 0) {
-        Center.x = D_80114B60_stardust_battle[0].center.x;
-        Center.y = D_80114B60_stardust_battle[0].center.y;
-        Center.z = D_80114B60_stardust_battle[0].center.z;
-        CRot.x = D_80114B60_stardust_battle[0].rot.x;
-        CRot.y = D_80114B60_stardust_battle[0].rot.y;
-        CRot.z = D_80114B60_stardust_battle[0].rot.z;
-        CZoom = D_80114B60_stardust_battle[0].zoom;
+    if (m265_cameraMoveTimer == 0) {
+        Center.x = m265_cameraKeyTbl[0].center.x;
+        Center.y = m265_cameraKeyTbl[0].center.y;
+        Center.z = m265_cameraKeyTbl[0].center.z;
+        CRot.x = m265_cameraKeyTbl[0].rot.x;
+        CRot.y = m265_cameraKeyTbl[0].rot.y;
+        CRot.z = m265_cameraKeyTbl[0].rot.z;
+        CZoom = m265_cameraKeyTbl[0].zoom;
         if (CRot.x >= 360.0) {
             CRot.x -= 360.0;
         } else if (CRot.x < 0.0) {
@@ -4282,55 +4282,55 @@ void func_80111004_stardust_battle(omObjData *object) {
         } else if (CRot.z < 0.0) {
             CRot.z += 360.0;
         }
-        D_80114BAC_stardust_battle = 0;
+        m265_cameraMoveTime = 0;
     } else {
-        switch (D_80114BB4_stardust_battle) {
+        switch (m265_cameraMoveMode) {
             case 0:
-                t = (f32)D_80114BA8_stardust_battle / (f32)D_80114BAC_stardust_battle;
+                t = (f32)m265_cameraMoveTimer / (f32)m265_cameraMoveTime;
                 break;
             case 1:
-                t = (f32)D_80114BA8_stardust_battle / (f32)D_80114BAC_stardust_battle;
+                t = (f32)m265_cameraMoveTimer / (f32)m265_cameraMoveTime;
                 t = sindf(t * 90.0f);
                 break;
             case 2:
-                t = (f32)D_80114BA8_stardust_battle / (f32)D_80114BAC_stardust_battle;
+                t = (f32)m265_cameraMoveTimer / (f32)m265_cameraMoveTime;
                 t = sindf(t * 90.0f);
                 t = t * t;
                 break;
             case 3:
-                if (D_80114BA8_stardust_battle >= 6) {
-                    t = (f32)(D_80114BA8_stardust_battle - 5) / (f32)(D_80114BAC_stardust_battle - 5);
+                if (m265_cameraMoveTimer >= 6) {
+                    t = (f32)(m265_cameraMoveTimer - 5) / (f32)(m265_cameraMoveTime - 5);
                     t = sindf(t * 90.0f);
                     t = t * t;
                 } else {
-                    t = D_80113F14_stardust_battle[5 - D_80114BA8_stardust_battle];
+                    t = m265_cameraBumpTbl[5 - m265_cameraMoveTimer];
                 }
                 break;
             case 4:
-                t = (f32)D_80114BA8_stardust_battle / (f32)D_80114BAC_stardust_battle;
+                t = (f32)m265_cameraMoveTimer / (f32)m265_cameraMoveTime;
                 temp = sindf(t * 90.0f);
                 temp2 = sindf(temp * 450.0f) * t;
                 t = fabsf(temp2);
                 break;
             case 5:
-                t = (f32)D_80114BA8_stardust_battle / (f32)D_80114BAC_stardust_battle;
+                t = (f32)m265_cameraMoveTimer / (f32)m265_cameraMoveTime;
                 temp = sindf(t * 90.0f);
                 t = temp + sindf(t * 720.0f) * 0.2f;
                 break;
         }
-        Center.x = func_80111DF8_stardust_battle(t, D_80114B60_stardust_battle[0].center.x,
-                                                 D_80114B60_stardust_battle[1].center.x);
-        Center.y = func_80111DF8_stardust_battle(t, D_80114B60_stardust_battle[0].center.y,
-                                                 D_80114B60_stardust_battle[1].center.y);
-        Center.z = func_80111DF8_stardust_battle(t, D_80114B60_stardust_battle[0].center.z,
-                                                 D_80114B60_stardust_battle[1].center.z);
-        CRot.x = func_80111E10_stardust_battle(t, D_80114B60_stardust_battle[0].rot.x,
-                                               D_80114B60_stardust_battle[1].rot.x);
-        CRot.y = func_80111E10_stardust_battle(t, D_80114B60_stardust_battle[0].rot.y,
-                                               D_80114B60_stardust_battle[1].rot.y);
-        CRot.z = func_80111E10_stardust_battle(t, D_80114B60_stardust_battle[0].rot.z,
-                                               D_80114B60_stardust_battle[1].rot.z);
-        CZoom = func_80111DF8_stardust_battle(t, D_80114B60_stardust_battle[0].zoom, D_80114B60_stardust_battle[1].zoom);
+        Center.x = m265_InterpCalc(t, m265_cameraKeyTbl[0].center.x,
+                                                 m265_cameraKeyTbl[1].center.x);
+        Center.y = m265_InterpCalc(t, m265_cameraKeyTbl[0].center.y,
+                                                 m265_cameraKeyTbl[1].center.y);
+        Center.z = m265_InterpCalc(t, m265_cameraKeyTbl[0].center.z,
+                                                 m265_cameraKeyTbl[1].center.z);
+        CRot.x = m265_AngleInterpCalc(t, m265_cameraKeyTbl[0].rot.x,
+                                               m265_cameraKeyTbl[1].rot.x);
+        CRot.y = m265_AngleInterpCalc(t, m265_cameraKeyTbl[0].rot.y,
+                                               m265_cameraKeyTbl[1].rot.y);
+        CRot.z = m265_AngleInterpCalc(t, m265_cameraKeyTbl[0].rot.z,
+                                               m265_cameraKeyTbl[1].rot.z);
+        CZoom = m265_InterpCalc(t, m265_cameraKeyTbl[0].zoom, m265_cameraKeyTbl[1].zoom);
         if (CRot.x >= 360.0) {
             CRot.x -= 360.0;
         } else if (CRot.x < 0.0) {
@@ -4346,17 +4346,17 @@ void func_80111004_stardust_battle(omObjData *object) {
         } else if (CRot.z < 0.0) {
             CRot.z += 360.0;
         }
-        if (D_80114BA8_stardust_battle > 0) {
-            D_80114BA8_stardust_battle--;
+        if (m265_cameraMoveTimer > 0) {
+            m265_cameraMoveTimer--;
         } else {
-            D_80114BA8_stardust_battle++;
+            m265_cameraMoveTimer++;
         }
     }
-    D_80114BB0_stardust_battle = 1;
-    func_801119D4_stardust_battle(0);
+    m265_cameraMoveF = 1;
+    m265_CameraPosUpdate(0);
 }
 
-void func_801115F8_stardust_battle(s32 arg0) {
+void m265_CameraKeyStore(s32 arg0) {
     if (CRot.x >= 360.0) {
         CRot.x -= 360.0;
     } else if (CRot.x < 0.0) {
@@ -4372,61 +4372,61 @@ void func_801115F8_stardust_battle(s32 arg0) {
     } else if (CRot.z < 0.0) {
         CRot.z += 360.0;
     }
-    D_80114B60_stardust_battle[arg0].center.x = Center.x;
-    D_80114B60_stardust_battle[arg0].center.y = Center.y;
-    D_80114B60_stardust_battle[arg0].center.z = Center.z;
-    D_80114B60_stardust_battle[arg0].rot.x = CRot.x;
-    D_80114B60_stardust_battle[arg0].rot.y = CRot.y;
-    D_80114B60_stardust_battle[arg0].rot.z = CRot.z;
-    D_80114B60_stardust_battle[arg0].zoom = CZoom;
-    D_80114B60_stardust_battle[arg0].unk_1C = D_80114B60_stardust_battle[arg0].unk_20 = 0.0f;
+    m265_cameraKeyTbl[arg0].center.x = Center.x;
+    m265_cameraKeyTbl[arg0].center.y = Center.y;
+    m265_cameraKeyTbl[arg0].center.z = Center.z;
+    m265_cameraKeyTbl[arg0].rot.x = CRot.x;
+    m265_cameraKeyTbl[arg0].rot.y = CRot.y;
+    m265_cameraKeyTbl[arg0].rot.z = CRot.z;
+    m265_cameraKeyTbl[arg0].zoom = CZoom;
+    m265_cameraKeyTbl[arg0].unk_1C = m265_cameraKeyTbl[arg0].unk_20 = 0.0f;
 }
 
 // Passing CAMERA_KEEP for a component keeps its current value.
-void func_801117E4_stardust_battle(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames) {
+void m265_CameraMoveStart(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames) {
     if (frames > 0) {
-        D_80114BA8_stardust_battle = frames - 1;
-        D_80114BAC_stardust_battle = frames;
+        m265_cameraMoveTimer = frames - 1;
+        m265_cameraMoveTime = frames;
         if (x != CAMERA_KEEP) {
-            D_80114B60_stardust_battle[0].center.x = x;
+            m265_cameraKeyTbl[0].center.x = x;
         } else {
-            D_80114B60_stardust_battle[0].center.x = Center.x;
+            m265_cameraKeyTbl[0].center.x = Center.x;
         }
         if (y != CAMERA_KEEP) {
-            D_80114B60_stardust_battle[0].center.y = y;
+            m265_cameraKeyTbl[0].center.y = y;
         } else {
-            D_80114B60_stardust_battle[0].center.y = Center.y;
+            m265_cameraKeyTbl[0].center.y = Center.y;
         }
         if (z != CAMERA_KEEP) {
-            D_80114B60_stardust_battle[0].center.z = z;
+            m265_cameraKeyTbl[0].center.z = z;
         } else {
-            D_80114B60_stardust_battle[0].center.z = Center.z;
+            m265_cameraKeyTbl[0].center.z = Center.z;
         }
         if (rotX != CAMERA_KEEP) {
-            D_80114B60_stardust_battle[0].rot.x = rotX;
+            m265_cameraKeyTbl[0].rot.x = rotX;
         } else {
-            D_80114B60_stardust_battle[0].rot.x = CRot.x;
+            m265_cameraKeyTbl[0].rot.x = CRot.x;
         }
         if (rotY != CAMERA_KEEP) {
-            D_80114B60_stardust_battle[0].rot.y = rotY;
+            m265_cameraKeyTbl[0].rot.y = rotY;
         } else {
-            D_80114B60_stardust_battle[0].rot.y = CRot.y;
+            m265_cameraKeyTbl[0].rot.y = CRot.y;
         }
         if (rotZ != CAMERA_KEEP) {
-            D_80114B60_stardust_battle[0].rot.z = rotZ;
+            m265_cameraKeyTbl[0].rot.z = rotZ;
         } else {
-            D_80114B60_stardust_battle[0].rot.z = CRot.z;
+            m265_cameraKeyTbl[0].rot.z = CRot.z;
         }
         if (zoom != CAMERA_KEEP) {
-            D_80114B60_stardust_battle[0].zoom = zoom;
+            m265_cameraKeyTbl[0].zoom = zoom;
         } else {
-            D_80114B60_stardust_battle[0].zoom = CZoom;
+            m265_cameraKeyTbl[0].zoom = CZoom;
         }
-        func_801115F8_stardust_battle(1);
+        m265_CameraKeyStore(1);
     }
 }
 
-void func_801119D4_stardust_battle(s32 camIndex) {
+void m265_CameraPosUpdate(s32 camIndex) {
     HuCamera *camera = &gCameraList[camIndex];
     f32 rotX = CRot.x;
     f32 rotY = CRot.y;
@@ -4442,7 +4442,7 @@ void func_801119D4_stardust_battle(s32 camIndex) {
     camera->up.z = cosdf(rotY) * sindf(rotX);
 }
 
-f32 func_80111B28_stardust_battle(f32 arg0, f32 arg1) {
+f32 m265_AngleDiffCalc(f32 arg0, f32 arg1) {
     if (arg0 >= 360.0f) {
         arg0 -= 360.0f;
     } else if (arg0 < 0.0f) {
@@ -4462,7 +4462,7 @@ f32 func_80111B28_stardust_battle(f32 arg0, f32 arg1) {
     return arg0;
 }
 
-f32 func_80111C2C_stardust_battle(f32 target, f32 current, f32 step) {
+f32 m265_AngleStepCalc(f32 target, f32 current, f32 step) {
     f32 diff;
     f32 delta;
 
@@ -4500,15 +4500,15 @@ f32 func_80111C2C_stardust_battle(f32 target, f32 current, f32 step) {
     return delta;
 }
 
-f32 func_80111DF8_stardust_battle(f32 t, f32 start, f32 end) {
+f32 m265_InterpCalc(f32 t, f32 start, f32 end) {
     return start + t * (end - start);
 }
 
-f32 func_80111E10_stardust_battle(f32 arg0, f32 arg1, f32 arg2) {
-    return func_80111C2C_stardust_battle(arg2, arg1, fabsf(func_80111B28_stardust_battle(arg2, arg1) * arg0));
+f32 m265_AngleInterpCalc(f32 arg0, f32 arg1, f32 arg2) {
+    return m265_AngleStepCalc(arg2, arg1, fabsf(m265_AngleDiffCalc(arg2, arg1) * arg0));
 }
 
-void func_80111E70_stardust_battle(f32 *arg0, f32 *arg1, f32 *arg2, f32 arg3) {
+void m265_MtxInterpCalc(f32 *arg0, f32 *arg1, f32 *arg2, f32 arg3) {
     s32 i;
 
     for (i = 0; i < 16; i++) {
@@ -4516,7 +4516,7 @@ void func_80111E70_stardust_battle(f32 *arg0, f32 *arg1, f32 *arg2, f32 arg3) {
     }
 }
 
-f32 func_80111EB8_stardust_battle(f32 x, f32 y) {
+f32 m265_AngleCalc(f32 x, f32 y) {
     f32 angle = atan2df(y, x);
 
     if (angle < 0.0) {
@@ -4527,20 +4527,20 @@ f32 func_80111EB8_stardust_battle(f32 x, f32 y) {
     return angle;
 }
 
-void func_80111F38_stardust_battle(Vec *dir, f32 *rot) {
-    *rot++ = func_80111EB8_stardust_battle(sqrtf(dir->x * dir->x + dir->z * dir->z), -dir->y);
-    *rot++ = func_80111EB8_stardust_battle(dir->z, dir->x);
+void m265_DirRotCalc(Vec *dir, f32 *rot) {
+    *rot++ = m265_AngleCalc(sqrtf(dir->x * dir->x + dir->z * dir->z), -dir->y);
+    *rot++ = m265_AngleCalc(dir->z, dir->x);
     *rot = 0.0f;
 }
 
-void func_80111FC0_stardust_battle(omObjData *arg0, u32 arg1) {
+void m265_WorkPtrSet(omObjData *arg0, u32 arg1) {
     arg0->work[0] = arg1 >> 24;
     arg0->work[1] = (arg1 >> 16) & 0xFF;
     arg0->work[2] = (arg1 >> 8) & 0xFF;
     arg0->work[3] = arg1 & 0xFF;
 }
 
-u32 func_80111FEC_stardust_battle(omObjData *object, s32 arg1, u32 arg2) {
+u32 m265_WorkPtrGet(omObjData *object, s32 arg1, u32 arg2) {
     StardustBattleWorkBytes packed;
 
     packed.bytes.byte3 = (u8)object->work[0];
@@ -4550,7 +4550,7 @@ u32 func_80111FEC_stardust_battle(omObjData *object, s32 arg1, u32 arg2) {
     return packed.word;
 }
 
-void func_80112040_stardust_battle(s16 model, const char *name, HuMtx4F *out) {
+void m265_NodeMtxCalc(s16 model, const char *name, HuMtx4F *out) {
     s16 nodeMap[4];
     HmfModel *mdl = &Hu3DData[model];
     HmfData *hmf = mdl->hmf;
@@ -4588,7 +4588,7 @@ void func_80112040_stardust_battle(s16 model, const char *name, HuMtx4F *out) {
     }
 }
 
-void func_80112220_stardust_battle(omObjData *object, const char *name, HuMtx4F out) {
+void m265_NodeWorldMtxCalc(omObjData *object, const char *name, HuMtx4F out) {
     MgPlayerWork *data = object->data;
     HuMtx4F mtx;
     HuMtx4F local;
@@ -4597,11 +4597,11 @@ void func_80112220_stardust_battle(omObjData *object, const char *name, HuMtx4F 
     mtxTransCat(mtx, object->trans.x, object->trans.y, object->trans.z);
     mtxRotCat(mtx, 0.0f, data->unk3C, 0.0f);
     mtxScaleCat(mtx, object->scale.x, object->scale.y, object->scale.z);
-    func_80112040_stardust_battle(object->model[0], name, &local);
+    m265_NodeMtxCalc(object->model[0], name, &local);
     mtxCat(local, mtx, out);
 }
 
-s32 func_801122D0_stardust_battle(void) {
+s32 m265_RayMdlCreate(void) {
     Gfx *gfx;
     u8 *buffer;
     HmfData *hmf;
@@ -4617,13 +4617,13 @@ s32 func_801122D0_stardust_battle(void) {
     hmf = Hu3DData[model].hmf;
     hmf->unk60->unk50 |= 0x1010000;
     HuMemFree(hmf->unk3C);
-    hmf->unk3C = HuMemAllocTag(sizeof(UnkStardustBattleGfxData), Hu3DModelTag);
+    hmf->unk3C = HuMemAllocTag(sizeof(StardustBattleRayDL), Hu3DModelTag);
     hmf->unk18 = 10;
-    vtx = hmf->unk40 = HuMemAllocTag(sizeof(D_80114060_stardust_battle), hmf->unk0E);
-    for (j = 0, src = D_80114060_stardust_battle; j < 10; j++, vtx++, src++) {
+    vtx = hmf->unk40 = HuMemAllocTag(sizeof(m265_rayVtx), hmf->unk0E);
+    for (j = 0, src = m265_rayVtx; j < 10; j++, vtx++, src++) {
         vtx->v = *src;
     }
-    gSPDisplayList(gfx++, osVirtualToPhysical(D_80114020_stardust_battle));
+    gSPDisplayList(gfx++, osVirtualToPhysical(m265_gfxBillboardInit));
     gDPPipeSync(gfx++);
     gDPSetCycleType(gfx++, G_CYC_1CYCLE);
     gDPPipeSync(gfx++);
@@ -4644,8 +4644,8 @@ s32 func_801122D0_stardust_battle(void) {
     gDPPipeSync(gfx++);
     gSPEndDisplayList(gfx++);
     size = (u8 *)gfx - buffer;
-    ((UnkStardustBattleGfxData *)hmf->unk3C)->unk10 = HuMemAllocTag(size, hmf->unk0E);
-    bcopy(buffer, ((UnkStardustBattleGfxData *)hmf->unk3C)->unk10, size);
+    ((StardustBattleRayDL *)hmf->unk3C)->unk10 = HuMemAllocTag(size, hmf->unk0E);
+    bcopy(buffer, ((StardustBattleRayDL *)hmf->unk3C)->unk10, size);
     HuMemFree(buffer);
 
     gfx = HuMemAlloc(0x10000);
@@ -4658,8 +4658,8 @@ s32 func_801122D0_stardust_battle(void) {
     gDPPipeSync(gfx++);
     gSPEndDisplayList(gfx++);
     size = (u8 *)gfx - buffer;
-    ((UnkStardustBattleGfxData *)hmf->unk3C)->unk14 = HuMemAllocTag(size, hmf->unk0E);
-    bcopy(buffer, ((UnkStardustBattleGfxData *)hmf->unk3C)->unk14, size);
+    ((StardustBattleRayDL *)hmf->unk3C)->unk14 = HuMemAllocTag(size, hmf->unk0E);
+    bcopy(buffer, ((StardustBattleRayDL *)hmf->unk3C)->unk14, size);
     HuMemFree(buffer);
 
     gfx = HuMemAlloc(0x10000);
@@ -4669,19 +4669,19 @@ s32 func_801122D0_stardust_battle(void) {
     gDPPipeSync(gfx++);
     gSPEndDisplayList(gfx++);
     size = (u8 *)gfx - buffer;
-    ((UnkStardustBattleGfxData *)hmf->unk3C)->unk18 = HuMemAllocTag(size, hmf->unk0E);
-    bcopy(buffer, ((UnkStardustBattleGfxData *)hmf->unk3C)->unk18, size);
+    ((StardustBattleRayDL *)hmf->unk3C)->unk18 = HuMemAllocTag(size, hmf->unk0E);
+    bcopy(buffer, ((StardustBattleRayDL *)hmf->unk3C)->unk18, size);
     HuMemFree(buffer);
 
     for (i = 0; i < Hu3DBufNum; i++) {
         (hmf->unk3C->unk00 + 1)[i] = HuMemAllocTag(0x100, hmf->unk0E);
-        func_801127B8_stardust_battle(model, 1, i);
+        m265_RayMdlDLUpdate(model, 1, i);
     }
     hmf->unk3C->unk00[0] = hmf->unk3C->unk00[Hu3DBufNo + 1];
     return model;
 }
 
-void func_801127B8_stardust_battle(s16 model, s16 count, s16 buffer) {
+void m265_RayMdlDLUpdate(s16 model, s16 count, s16 buffer) {
     HmfData *hmf;
     Gfx *gfx;
     s16 index;
@@ -4700,13 +4700,13 @@ void func_801127B8_stardust_battle(s16 model, s16 count, s16 buffer) {
         gSPSegment(gfx++, 1, osVirtualToPhysical(&hmf->unk40[i * 10]));
         gSPDisplayList(gfx++, osVirtualToPhysical(hmf->unk3C->unk14));
     }
-    gSPDisplayList(gfx++, osVirtualToPhysical(((UnkStardustBattleGfxData *)hmf->unk3C)->unk18));
+    gSPDisplayList(gfx++, osVirtualToPhysical(((StardustBattleRayDL *)hmf->unk3C)->unk18));
     gDPPipeSync(gfx++);
     gSPEndDisplayList(gfx++);
     hmf->unk3C->unk00[0] = hmf->unk3C->unk00[index + 1];
 }
 
-s32 func_80112980_stardust_battle(HuSprAnimData *sprite, u8 *color) {
+s32 m265_BillboardColorMdlCreate(HuSprAnimData *sprite, u8 *color) {
     u8 *buffer;
     Gfx *gfx;
     Gfx *header;
@@ -4725,8 +4725,8 @@ s32 func_80112980_stardust_battle(HuSprAnimData *sprite, u8 *color) {
     gfx++;
     HuMemFree(data->unk3C);
     data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), Hu3DModelTag);
-    func_801138A0_stardust_battle(sprite, data, 1.0f, 0, 0);
-    gSPDisplayList(header, osVirtualToPhysical(D_80114020_stardust_battle));
+    m265_BillboardVtxCreate(sprite, data, 1.0f, 0, 0);
+    gSPDisplayList(header, osVirtualToPhysical(m265_gfxBillboardInit));
     gDPPipeSync(gfx++);
     gDPSetCycleType(gfx++, G_CYC_1CYCLE);
     gDPPipeSync(gfx++);
@@ -4816,7 +4816,7 @@ s32 func_80112980_stardust_battle(HuSprAnimData *sprite, u8 *color) {
     return model;
 }
 
-s32 func_80113568_stardust_battle(HuSprAnimData *sprite, u16 model, u8 *color) {
+s32 m265_BillboardColorMdlLink(HuSprAnimData *sprite, u16 model, u8 *color) {
     HmfModel *srcModel = Hu3DData + model;
     HmfData *srcData = srcModel->hmf;
     HmfData *data;
@@ -4846,7 +4846,7 @@ s32 func_80113568_stardust_battle(HuSprAnimData *sprite, u16 model, u8 *color) {
     return newModel;
 }
 
-void func_8011376C_stardust_battle(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
+void m265_BillboardColorPatSet(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
     Gfx *gfx = data->unk3C->unk00[Hu3DBufNo + 1];
@@ -4862,7 +4862,7 @@ void func_8011376C_stardust_battle(u16 model, HuSprAnimData *sprite, u16 frame, 
     gSPEndDisplayList(gfx + 7);
 }
 
-s32 func_801138A0_stardust_battle(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset) {
+s32 m265_BillboardVtxCreate(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset) {
     s32 capacity = 0x1000;
     s32 width, height, scaledWidth, scaledHeight;
     s32 size, slices, textureHeight, sliceHeight, vertexCount;

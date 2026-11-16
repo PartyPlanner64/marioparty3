@@ -7,9 +7,9 @@
 
 #define ABS(x) ((x) > 0.0f ? (x) : 0.0f - (x))
 
-// Per-object data allocated for each entry of D_80109B00_all_fired_up, stored at omObjData->data
+// Per-object data allocated for each entry of m241_fireObjTbl, stored at omObjData->data
 typedef struct {
-    /* 0x00 */ s8 unk00; // Index into D_80109B00_all_fired_up
+    /* 0x00 */ s8 unk00; // Index into m241_fireObjTbl
     /* 0x04 */ f32 unk04;
     /* 0x08 */ f32 unk08;
     /* 0x0C */ f32 unk0C;
@@ -20,9 +20,9 @@ typedef struct {
     /* 0x20 */ Vec pos;
     /* 0x2C */ Vec unk2C;
     /* 0x38 */ u8 unk38;
-} AllFiredUpWork; // Size 0x3C
+} AllFiredUpFireWork; // Size 0x3C
 
-// Per-player work allocated in func_80107DA4_all_fired_up, stored at MgPlayerWork->unk158
+// Per-player work allocated in m241_PlayerObjInit, stored at MgPlayerWork->unk158
 typedef struct {
     /* 0x00 */ f32 unk00;
     /* 0x04 */ f32 unk04;
@@ -33,13 +33,13 @@ typedef struct {
 typedef struct {
     /* 0x00 */ u8 unk00;
     /* 0x02 */ s16 unk02[4];
-} AllFiredUpBssAF0; // Size 0xC
+} AllFiredUpSetupWork; // Size 0xC
 
 extern s32 omCharModelNoTbl[][6];
 extern u8 omAllPauseF;
 extern f32 mgPlayerSpeedMin;
 
-u8 D_80109930_all_fired_up[24][4] = {
+u8 m241_startPermTbl[24][4] = {
     { 0, 1, 2, 3 },
     { 0, 1, 3, 2 },
     { 0, 2, 1, 3 },
@@ -65,18 +65,18 @@ u8 D_80109930_all_fired_up[24][4] = {
     { 3, 2, 0, 1 },
     { 3, 2, 1, 0 }
 };
-Vec D_80109990_all_fired_up[4] = {
+Vec m241_startPosTbl[4] = {
     { 60.0f, 0.0f, -60.0f },
     { 60.0f, 0.0f, 60.0f },
     { -60.0f, 0.0f, 60.0f },
     { -60.0f, 0.0f, -60.0f }
 };
-u16 D_801099C0_all_fired_up[4] = { 1800, 1800, 1800, 1800 };
-s8 D_801099C8_all_fired_up = 0;
-s8 D_801099C9_all_fired_up = 15;
-f32 D_801099CC_all_fired_up = 400.0f;
-s8 D_801099D0_all_fired_up = 0;
-u8 D_801099D4_all_fired_up[6][6] = {
+u16 m241_outTimeTbl[4] = { 1800, 1800, 1800, 1800 };
+s8 m241_firePhase = 0;
+s8 m241_fireNum = 15;
+f32 m241_ringRadius = 400.0f;
+s8 m241_ringMaxF = 0;
+u8 m241_patternSeqTbl[6][6] = {
     { 0, 1, 2, 1, 0, 2 },
     { 0, 2, 1, 0, 1, 2 },
     { 0, 2, 0, 1, 2, 1 },
@@ -84,65 +84,65 @@ u8 D_801099D4_all_fired_up[6][6] = {
     { 2, 0, 1, 0, 2, 1 },
     { 2, 1, 0, 2, 0, 1 }
 };
-s32 D_801099F8_all_fired_up = 0;
-s8 D_801099FC_all_fired_up = 0;
-f32 D_80109A00_all_fired_up = 1.0f;
-s8 D_80109A04_all_fired_up = 0;
-s8 D_80109A05_all_fired_up = 0;
-s8 D_80109A06_all_fired_up = -1;
-s32 D_80109A08_all_fired_up[4] = { 0 };
-s32 D_80109A18_all_fired_up[4][4] = {
+s32 m241_exitCnt = 0;
+s8 m241_exitReqF = 0;
+f32 m241_spinSpeed = 1.0f;
+s8 m241_comAliveF = 0;
+s8 m241_playerCreateNo = 0;
+s8 m241_resultMode = -1;
+s32 m241_coinSetFTbl[4] = { 0 };
+s32 m241_smokeTimerTbl[4][4] = {
     { 0, -2, -4, -6 },
     { 0, -2, -4, -6 },
     { 0, -2, -4, -6 },
     { 0, -2, -4, -6 }
 };
-f32 D_80109A58_all_fired_up[4] = { 1.0f, 1.5f, 2.0f, 2.5f };
+f32 m241_smokeScaleTbl[4] = { 1.0f, 1.5f, 2.0f, 2.5f };
 
-s32 D_80109AC0_all_fired_up BSS;
-s8 D_80109AC4_all_fired_up BSS;
-s8 D_80109AC5_all_fired_up BSS;
-MinigameFlow D_80109AC8_all_fired_up BSS;
-AllFiredUpBssAF0 allFiredUpBssAF0 BSS;
-u8 D_80109AFC_all_fired_up[4] BSS; /* Unreferenced. */
-omObjData *D_80109B00_all_fired_up[21] BSS;
-u8 D_80109B54_all_fired_up[4] BSS; /* Unreferenced. */
-Vec D_80109B58_all_fired_up[21] BSS;
-s8 D_80109C54_all_fired_up BSS;
-s16 D_80109C56_all_fired_up BSS;
-s8 D_80109C58_all_fired_up BSS;
-s8 D_80109C59_all_fired_up BSS;
+s32 m241_fireCreateNo BSS;
+s8 m241_patternNo BSS;
+s8 m241_startPosNo BSS;
+MinigameFlow m241_mgFlow BSS;
+AllFiredUpSetupWork m241_setupWork BSS;
+u8 m241_setupWorkPad[4] BSS; /* Unreferenced. */
+omObjData *m241_fireObjTbl[21] BSS;
+u8 m241_fireObjTblPad[4] BSS; /* Unreferenced. */
+Vec m241_fireStartPosTbl[21] BSS;
+s8 m241_patternType BSS;
+s16 m241_firePhaseTimer BSS;
+s8 m241_patternSeqNo BSS;
+s8 m241_patternDirF BSS;
 
-/* Fields of allFiredUpBssAF0, aliased in undefined_syms.txt. */
-extern u8 D_80109AF0_all_fired_up;
-extern s16 D_80109AF2_all_fired_up[];
+/* Fields of m241_setupWork, aliased in undefined_syms.txt. */
+extern u8 m241_startPermNo;
+extern s16 m241_smokeMdlTbl[];
 
-void func_80105C54_all_fired_up(MinigameFlow *flow);
-void func_80105CE8_all_fired_up(void);
-void func_80105E1C_all_fired_up(omObjData *object);
-void func_80105F5C_all_fired_up(void);
-void func_80106348_all_fired_up(omObjData *object);
-void func_80106584_all_fired_up(omObjData *object);
-void func_801067CC_all_fired_up(omObjData *object);
-void func_80106B7C_all_fired_up(void);
-void func_80106C68_all_fired_up(void);
-void func_801068F8_all_fired_up(void);
-void func_80106CDC_all_fired_up(omObjData *object);
-void func_80106F04_all_fired_up(omObjData *object);
-void func_80106FAC_all_fired_up(void);
-void func_80107440_all_fired_up(omObjData *object);
-void func_80107578_all_fired_up(omObjData *object);
-void func_80107BD4_all_fired_up(omObjData *object);
-void func_80107DA4_all_fired_up(omObjData *object);
-void func_801080C8_all_fired_up(omObjData *object);
-void func_801085A4_all_fired_up(omObjData *object);
-void func_80108710_all_fired_up(omObjData *object);
-void func_80108958_all_fired_up(omObjData *object);
-void func_80108AA0_all_fired_up(omObjData *object);
-void func_80109660_all_fired_up(omObjData *object, f32 dist, s8 arg2);
-void func_801097B0_all_fired_up(omObjData *object);
+void m241_FlowInit(MinigameFlow *flow);
+void m241_CameraInit(void);
+void m241_MainObjMain(omObjData *object);
+void m241_FireStartPosInit(void);
+void m241_FireObjInit(omObjData *object);
+void m241_FireObjMain(omObjData *object);
+void m241_FireDropUpdate(omObjData *object);
+void m241_FireAdd(void);
+void m241_FirePosStore(void);
+void m241_FirePhaseUpdate(void);
+void m241_FireWanderUpdate(omObjData *object);
+void m241_FireGatherUpdate(omObjData *object);
+void m241_FirePatternSet(void);
+void m241_FireSpreadUpdate(omObjData *object);
+void m241_FirePatternUpdate(omObjData *object);
+void m241_FireHitCheck(omObjData *object);
+void m241_PlayerObjInit(omObjData *object);
+void m241_PlayerObjMain(omObjData *object);
+void m241_PlayerIntroUpdate(omObjData *object);
+void m241_PlayerFlyUpdate(omObjData *object);
+void m241_SmokeUpdate(omObjData *object);
+void m241_PlayerComInput(omObjData *object);
+void m241_ComCircleAngleSet(omObjData *object, f32 dist, s8 arg2);
+void m241_MapObjInit(omObjData *object);
 
-void func_801059A0_all_fired_up(void) {
+void m241_ObjectSetup(void) {
     omObjData *object;
     s32 i;
 
@@ -155,34 +155,34 @@ void func_801059A0_all_fired_up(void) {
     mgPlayerObjNum = 0;
     mgMapObjNum = 0;
     MgFieldStatClear();
-    func_80105CE8_all_fired_up();
-    func_80105C54_all_fired_up(&D_80109AC8_all_fired_up);
-    MgFlowInit(&D_80109AC8_all_fired_up);
+    m241_CameraInit();
+    m241_FlowInit(&m241_mgFlow);
+    MgFlowInit(&m241_mgFlow);
     Hu3DGLightColorSet(1, 64, 64, 64);
     Hu3DGLightDirSet(1, 0.0f, 0.0f, 100.0f);
-    omSetStatBit(omAddObj(0, 0, 0, -1, func_80105E1C_all_fired_up), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
+    omSetStatBit(omAddObj(0, 0, 0, -1, m241_MainObjMain), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     MgMapBaseSet(mgMapObjNum);
-    object = omAddObj(0, 1, 0, -1, func_801097B0_all_fired_up);
+    object = omAddObj(0, 1, 0, -1, m241_MapObjInit);
     mgMapObjTbl[mgMapObjNum++] = object;
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    D_80109AF0_all_fired_up = (rand8() * 24) >> 8;
+    m241_startPermNo = (rand8() * 24) >> 8;
     for (i = 0; i < 4; i++) {
-        mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(1, 2, 60, -1, func_80107DA4_all_fired_up);
+        mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(1, 2, 60, -1, m241_PlayerObjInit);
     }
     for (i = 0; i < 4; i++) {
-        D_80109AF2_all_fired_up[i] = Hu3DModelRead(0x4A0003, 0x819);
-        Hu3DModelAttrSet(D_80109AF2_all_fired_up[i], 4, 4);
+        m241_smokeMdlTbl[i] = Hu3DModelRead(0x4A0003, 0x819);
+        Hu3DModelAttrSet(m241_smokeMdlTbl[i], 4, 4);
     }
-    func_80105F5C_all_fired_up();
-    D_80109C58_all_fired_up = (rand8() * 6) >> 8;
+    m241_FireStartPosInit();
+    m241_patternSeqNo = (rand8() * 6) >> 8;
     for (i = 0; i < 21; i++) {
-        D_80109B00_all_fired_up[i] = omAddObj(1, 2, 0, -1, func_80106348_all_fired_up);
+        m241_fireObjTbl[i] = omAddObj(1, 2, 0, -1, m241_FireObjInit);
     }
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     WipeCreateIn(WIPE_TYPE_PREV, 16);
 }
 
-void func_80105C54_all_fired_up(MinigameFlow *flow) {
+void m241_FlowInit(MinigameFlow *flow) {
     s32 i;
 
     mgFlowSeqTime = 0xF;
@@ -204,7 +204,7 @@ void func_80105C54_all_fired_up(MinigameFlow *flow) {
     }
 }
 
-void func_80105CE8_all_fired_up(void) {
+void m241_CameraInit(void) {
     s32 camIndex;
 
     Center.x = 0.0f;
@@ -220,9 +220,9 @@ void func_80105CE8_all_fired_up(void) {
     Hu3DCameraPerspectiveSet(camIndex, 30.0f, 80.0f, 8000.0f);
 }
 
-void func_80105E1C_all_fired_up(omObjData *object) {
+void m241_MainObjMain(omObjData *object) {
     if (omPauseChk() + omAllPauseF == 0) {
-        if (D_801099FC_all_fired_up == 0 && omSysExitReq == 1) {
+        if (m241_exitReqF == 0 && omSysExitReq == 1) {
             HuAudFXAllStop();
             if (!(HuAudStat & 4)) {
                 HuAudSeqFadeOut(30);
@@ -230,7 +230,7 @@ void func_80105E1C_all_fired_up(omObjData *object) {
                 HuAudSeqStop();
             }
             MgFlowStatSet(MG_STATE_EXIT);
-            D_801099FC_all_fired_up = 1;
+            m241_exitReqF = 1;
         }
         MgFieldStatUpdate();
         switch (MgFlowMain()) {
@@ -246,65 +246,65 @@ void func_80105E1C_all_fired_up(omObjData *object) {
             case 4:
                 break;
             case 5:
-                if (D_801099F8_all_fired_up == 0) {
+                if (m241_exitCnt == 0) {
                     WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                 } else if (WipeStatGet() == 0 && !(HuAudStat & 4)) {
                     omOvlReturnEx(1);
                 }
-                D_801099F8_all_fired_up++;
+                m241_exitCnt++;
                 break;
         }
     }
 }
 
-void func_80105F5C_all_fired_up(void) {
+void m241_FireStartPosInit(void) {
     s32 i;
 
     for (i = 0; i < 15; i++) {
-        D_80109B58_all_fired_up[i].y = (rand8() % 200) * 3 + 1200.0f;
+        m241_fireStartPosTbl[i].y = (rand8() % 200) * 3 + 1200.0f;
     }
-    D_80109B58_all_fired_up[0].x = D_80109B58_all_fired_up[0].z = 0.0f;
-    D_80109B58_all_fired_up[1].x = sindf(0.0f) * 80.0f;
-    D_80109B58_all_fired_up[1].z = cosdf(0.0f) * 80.0f;
-    D_80109B58_all_fired_up[2].x = sindf(60.0f) * 80.0f;
-    D_80109B58_all_fired_up[2].z = cosdf(60.0f) * 80.0f;
-    D_80109B58_all_fired_up[3].x = sindf(120.0f) * 80.0f;
-    D_80109B58_all_fired_up[3].z = cosdf(120.0f) * 80.0f;
-    D_80109B58_all_fired_up[4].x = sindf(180.0f) * 80.0f;
-    D_80109B58_all_fired_up[4].z = cosdf(180.0f) * 80.0f;
-    D_80109B58_all_fired_up[5].x = sindf(240.0f) * 80.0f;
-    D_80109B58_all_fired_up[5].z = cosdf(240.0f) * 80.0f;
-    D_80109B58_all_fired_up[6].x = sindf(300.0f) * 80.0f;
-    D_80109B58_all_fired_up[6].z = cosdf(300.0f) * 80.0f;
-    D_80109B58_all_fired_up[7].x = sindf(0.0f) * 80.0f * 2;
-    D_80109B58_all_fired_up[7].z = cosdf(0.0f) * 80.0f * 2;
-    D_80109B58_all_fired_up[8].x = sindf(45.0f) * 80.0f * 2;
-    D_80109B58_all_fired_up[8].z = cosdf(45.0f) * 80.0f * 2;
-    D_80109B58_all_fired_up[9].x = sindf(90.0f) * 80.0f * 2;
-    D_80109B58_all_fired_up[9].z = cosdf(90.0f) * 80.0f * 2;
-    D_80109B58_all_fired_up[10].x = sindf(135.0f) * 80.0f * 2;
-    D_80109B58_all_fired_up[10].z = cosdf(135.0f) * 80.0f * 2;
-    D_80109B58_all_fired_up[11].x = sindf(180.0f) * 80.0f * 2;
-    D_80109B58_all_fired_up[11].z = cosdf(180.0f) * 80.0f * 2;
-    D_80109B58_all_fired_up[12].x = sindf(225.0f) * 80.0f * 2;
-    D_80109B58_all_fired_up[12].z = cosdf(225.0f) * 80.0f * 2;
-    D_80109B58_all_fired_up[13].x = sindf(270.0f) * 80.0f * 2;
-    D_80109B58_all_fired_up[13].z = cosdf(270.0f) * 80.0f * 2;
-    D_80109B58_all_fired_up[14].x = sindf(315.0f) * 80.0f * 2;
-    D_80109B58_all_fired_up[14].z = cosdf(315.0f) * 80.0f * 2;
+    m241_fireStartPosTbl[0].x = m241_fireStartPosTbl[0].z = 0.0f;
+    m241_fireStartPosTbl[1].x = sindf(0.0f) * 80.0f;
+    m241_fireStartPosTbl[1].z = cosdf(0.0f) * 80.0f;
+    m241_fireStartPosTbl[2].x = sindf(60.0f) * 80.0f;
+    m241_fireStartPosTbl[2].z = cosdf(60.0f) * 80.0f;
+    m241_fireStartPosTbl[3].x = sindf(120.0f) * 80.0f;
+    m241_fireStartPosTbl[3].z = cosdf(120.0f) * 80.0f;
+    m241_fireStartPosTbl[4].x = sindf(180.0f) * 80.0f;
+    m241_fireStartPosTbl[4].z = cosdf(180.0f) * 80.0f;
+    m241_fireStartPosTbl[5].x = sindf(240.0f) * 80.0f;
+    m241_fireStartPosTbl[5].z = cosdf(240.0f) * 80.0f;
+    m241_fireStartPosTbl[6].x = sindf(300.0f) * 80.0f;
+    m241_fireStartPosTbl[6].z = cosdf(300.0f) * 80.0f;
+    m241_fireStartPosTbl[7].x = sindf(0.0f) * 80.0f * 2;
+    m241_fireStartPosTbl[7].z = cosdf(0.0f) * 80.0f * 2;
+    m241_fireStartPosTbl[8].x = sindf(45.0f) * 80.0f * 2;
+    m241_fireStartPosTbl[8].z = cosdf(45.0f) * 80.0f * 2;
+    m241_fireStartPosTbl[9].x = sindf(90.0f) * 80.0f * 2;
+    m241_fireStartPosTbl[9].z = cosdf(90.0f) * 80.0f * 2;
+    m241_fireStartPosTbl[10].x = sindf(135.0f) * 80.0f * 2;
+    m241_fireStartPosTbl[10].z = cosdf(135.0f) * 80.0f * 2;
+    m241_fireStartPosTbl[11].x = sindf(180.0f) * 80.0f * 2;
+    m241_fireStartPosTbl[11].z = cosdf(180.0f) * 80.0f * 2;
+    m241_fireStartPosTbl[12].x = sindf(225.0f) * 80.0f * 2;
+    m241_fireStartPosTbl[12].z = cosdf(225.0f) * 80.0f * 2;
+    m241_fireStartPosTbl[13].x = sindf(270.0f) * 80.0f * 2;
+    m241_fireStartPosTbl[13].z = cosdf(270.0f) * 80.0f * 2;
+    m241_fireStartPosTbl[14].x = sindf(315.0f) * 80.0f * 2;
+    m241_fireStartPosTbl[14].z = cosdf(315.0f) * 80.0f * 2;
     for (i = 15; i < 21; i++) {
-        D_80109B58_all_fired_up[i].x = D_80109B58_all_fired_up[i].y = D_80109B58_all_fired_up[i].z = 0.0f;
+        m241_fireStartPosTbl[i].x = m241_fireStartPosTbl[i].y = m241_fireStartPosTbl[i].z = 0.0f;
     }
 }
 
-void func_80106348_all_fired_up(omObjData *object) {
-    AllFiredUpWork *work;
+void m241_FireObjInit(omObjData *object) {
+    AllFiredUpFireWork *work;
     s16 model;
 
-    object->func = func_80106584_all_fired_up;
-    work = object->data = HuMemAllocTag(sizeof(AllFiredUpWork), TAG_OVERLAY);
-    memset(work, 0, sizeof(AllFiredUpWork));
-    work->unk00 = D_80109AC0_all_fired_up;
+    object->func = m241_FireObjMain;
+    work = object->data = HuMemAllocTag(sizeof(AllFiredUpFireWork), TAG_OVERLAY);
+    memset(work, 0, sizeof(AllFiredUpFireWork));
+    work->unk00 = m241_fireCreateNo;
     work->unk04 = 0.0f;
     work->unk08 = 0.0f;
     work->unk1C = 0;
@@ -313,9 +313,9 @@ void func_80106348_all_fired_up(omObjData *object) {
     work->unk10 = 0.0f;
     work->unk18 = 1.0f;
     work->unk38 = 0;
-    object->trans.x = D_80109B58_all_fired_up[work->unk00].x;
-    object->trans.y = D_80109B58_all_fired_up[work->unk00].y;
-    object->trans.z = D_80109B58_all_fired_up[work->unk00].z;
+    object->trans.x = m241_fireStartPosTbl[work->unk00].x;
+    object->trans.y = m241_fireStartPosTbl[work->unk00].y;
+    object->trans.z = m241_fireStartPosTbl[work->unk00].z;
     object->scale.x = object->scale.y = object->scale.z = 1.2f;
     model = object->model[0] = Hu3DModelRead(0xA008A, 0xAA9);
     if (work->unk00 == 0) {
@@ -331,37 +331,37 @@ void func_80106348_all_fired_up(omObjData *object) {
         Hu3DModelAttrSet(object->model[0], 4, 4);
         Hu3DModelAttrSet(object->model[1], 4, 4);
     }
-    D_80109AC0_all_fired_up++;
+    m241_fireCreateNo++;
 }
 
-void func_80106584_all_fired_up(omObjData *object) {
-    AllFiredUpWork *work;
+void m241_FireObjMain(omObjData *object) {
+    AllFiredUpFireWork *work;
 
     if (omPauseChk() + omAllPauseF == 0) {
         work = object->data;
         switch (MgFlowStatGet()) {
             case MG_STATE_OPENING:
-                func_801067CC_all_fired_up(object);
+                m241_FireDropUpdate(object);
                 break;
             case MG_STATE_PLAY:
-                if (D_801099C9_all_fired_up - 1 >= work->unk00) {
-                    func_80107BD4_all_fired_up(object);
+                if (m241_fireNum - 1 >= work->unk00) {
+                    m241_FireHitCheck(object);
                 }
                 if (work->unk00 == 0) {
-                    func_801068F8_all_fired_up();
+                    m241_FirePhaseUpdate();
                 }
-                switch (D_801099C8_all_fired_up) {
+                switch (m241_firePhase) {
                     case 0:
-                        func_80106CDC_all_fired_up(object);
+                        m241_FireWanderUpdate(object);
                         break;
                     case 1:
-                        func_80106F04_all_fired_up(object);
+                        m241_FireGatherUpdate(object);
                         break;
                     case 2:
-                        func_80107440_all_fired_up(object);
+                        m241_FireSpreadUpdate(object);
                         break;
                     case 3:
-                        func_80107578_all_fired_up(object);
+                        m241_FirePatternUpdate(object);
                         break;
                 }
                 break;
@@ -388,8 +388,8 @@ void func_80106584_all_fired_up(omObjData *object) {
     }
 }
 
-void func_801067CC_all_fired_up(omObjData *object) {
-    AllFiredUpWork *work = object->data;
+void m241_FireDropUpdate(omObjData *object) {
+    AllFiredUpFireWork *work = object->data;
 
     if (work->unk00 < 15) {
         if (MgFlowStatTimeGet() >= 16) {
@@ -413,83 +413,83 @@ void func_801067CC_all_fired_up(omObjData *object) {
     }
 }
 
-void func_801068F8_all_fired_up(void) {
+void m241_FirePhaseUpdate(void) {
     s32 i;
 
-    switch (D_801099C8_all_fired_up) {
+    switch (m241_firePhase) {
         case 0:
-            if (D_80109C56_all_fired_up == 0) {
-                if (D_80109AC4_all_fired_up > 0 && D_801099C9_all_fired_up < 21) {
-                    func_80106B7C_all_fired_up();
+            if (m241_firePhaseTimer == 0) {
+                if (m241_patternNo > 0 && m241_fireNum < 21) {
+                    m241_FireAdd();
                     for (i = 0; i < 21; i++) {
-                        ((AllFiredUpWork *)D_80109B00_all_fired_up[i]->data)->unk18 += 0.1f;
+                        ((AllFiredUpFireWork *)m241_fireObjTbl[i]->data)->unk18 += 0.1f;
                     }
                 }
-                if (D_80109C56_all_fired_up == 0) {
+                if (m241_firePhaseTimer == 0) {
                     HuAudFXPlay(0x444);
                 }
             }
-            if (D_80109C56_all_fired_up != 90) {
-                D_80109C56_all_fired_up++;
+            if (m241_firePhaseTimer != 90) {
+                m241_firePhaseTimer++;
             } else {
-                D_801099C8_all_fired_up = 1;
-                D_80109C56_all_fired_up = 0;
-                func_80106C68_all_fired_up();
+                m241_firePhase = 1;
+                m241_firePhaseTimer = 0;
+                m241_FirePosStore();
             }
             break;
         case 1:
-            if (D_80109C56_all_fired_up == 0) {
+            if (m241_firePhaseTimer == 0) {
                 HuAudFXPlay(0x443);
             }
-            if (D_80109C56_all_fired_up != 30) {
-                D_80109C56_all_fired_up++;
+            if (m241_firePhaseTimer != 30) {
+                m241_firePhaseTimer++;
             } else {
-                D_801099C8_all_fired_up = 2;
-                D_80109C56_all_fired_up = 0;
-                func_80106C68_all_fired_up();
+                m241_firePhase = 2;
+                m241_firePhaseTimer = 0;
+                m241_FirePosStore();
             }
             break;
         case 2:
-            if (D_80109C56_all_fired_up == 0) {
-                D_80109C54_all_fired_up = D_801099D4_all_fired_up[D_80109C58_all_fired_up][D_80109AC4_all_fired_up++];
-                if (D_80109AC4_all_fired_up >= 7) {
-                    D_80109AC4_all_fired_up = 0;
+            if (m241_firePhaseTimer == 0) {
+                m241_patternType = m241_patternSeqTbl[m241_patternSeqNo][m241_patternNo++];
+                if (m241_patternNo >= 7) {
+                    m241_patternNo = 0;
                 }
-                func_80106FAC_all_fired_up();
+                m241_FirePatternSet();
                 HuAudFXPlay(0x442);
             }
-            if (D_80109C56_all_fired_up != 30) {
-                D_80109C56_all_fired_up++;
+            if (m241_firePhaseTimer != 30) {
+                m241_firePhaseTimer++;
             } else {
-                D_801099C8_all_fired_up = 3;
-                D_80109C56_all_fired_up = 0;
-                D_801099CC_all_fired_up = 400.0f;
-                D_801099D0_all_fired_up = 0;
+                m241_firePhase = 3;
+                m241_firePhaseTimer = 0;
+                m241_ringRadius = 400.0f;
+                m241_ringMaxF = 0;
             }
             break;
         case 3:
-            if (D_80109C56_all_fired_up == 0) {
+            if (m241_firePhaseTimer == 0) {
                 HuAudFXPlay(0x442);
-                D_80109C56_all_fired_up++;
-            } else if (D_80109C56_all_fired_up != 150) {
-                D_80109C56_all_fired_up++;
+                m241_firePhaseTimer++;
+            } else if (m241_firePhaseTimer != 150) {
+                m241_firePhaseTimer++;
             } else {
-                D_801099C8_all_fired_up = 0;
-                D_80109C56_all_fired_up = 0;
+                m241_firePhase = 0;
+                m241_firePhaseTimer = 0;
             }
             break;
     }
 }
 
-void func_80106B7C_all_fired_up(void) {
+void m241_FireAdd(void) {
     omObjData *first;
     omObjData *object;
-    AllFiredUpWork *firstWork;
-    AllFiredUpWork *work;
+    AllFiredUpFireWork *firstWork;
+    AllFiredUpFireWork *work;
 
-    D_801099C9_all_fired_up++;
-    first = D_80109B00_all_fired_up[0];
-    object = D_80109B00_all_fired_up[D_801099C9_all_fired_up - 1];
+    m241_fireNum++;
+    first = m241_fireObjTbl[0];
+    object = m241_fireObjTbl[m241_fireNum - 1];
     firstWork = first->data;
     work = object->data;
     object->trans.x = first->trans.x;
@@ -505,22 +505,22 @@ void func_80106B7C_all_fired_up(void) {
     Hu3DModelAttrSet(object->model[1], 4, 0);
 }
 
-void func_80106C68_all_fired_up(void) {
-    AllFiredUpWork *work;
+void m241_FirePosStore(void) {
+    AllFiredUpFireWork *work;
     s32 i;
 
-    for (i = 0; i < D_801099C9_all_fired_up; i++) {
-        work = D_80109B00_all_fired_up[i]->data;
-        work->pos.x = D_80109B00_all_fired_up[i]->trans.x;
-        work->pos.y = D_80109B00_all_fired_up[i]->trans.y;
-        work->pos.z = D_80109B00_all_fired_up[i]->trans.z;
+    for (i = 0; i < m241_fireNum; i++) {
+        work = m241_fireObjTbl[i]->data;
+        work->pos.x = m241_fireObjTbl[i]->trans.x;
+        work->pos.y = m241_fireObjTbl[i]->trans.y;
+        work->pos.z = m241_fireObjTbl[i]->trans.z;
     }
 }
 
-void func_80106CDC_all_fired_up(omObjData *object) {
-    AllFiredUpWork *work = object->data;
+void m241_FireWanderUpdate(omObjData *object) {
+    AllFiredUpFireWork *work = object->data;
 
-    if (D_801099C9_all_fired_up >= work->unk00) {
+    if (m241_fireNum >= work->unk00) {
         if (object->trans.y > 0.0f) {
             object->trans.y -= 10.0f;
             if (object->trans.y < 0.0f) {
@@ -545,10 +545,10 @@ void func_80106CDC_all_fired_up(omObjData *object) {
     }
 }
 
-void func_80106F04_all_fired_up(omObjData *object) {
-    AllFiredUpWork *work = object->data;
+void m241_FireGatherUpdate(omObjData *object) {
+    AllFiredUpFireWork *work = object->data;
 
-    if (D_801099C9_all_fired_up >= work->unk00) {
+    if (m241_fireNum >= work->unk00) {
         object->trans.x += (0.0f - work->pos.x) / 30.0f;
         object->trans.y += (0.0f - work->pos.y) / 30.0f;
         object->trans.z += (0.0f - work->pos.z) / 30.0f;
@@ -556,17 +556,17 @@ void func_80106F04_all_fired_up(omObjData *object) {
     }
 }
 
-void func_80106FAC_all_fired_up(void) {
-    AllFiredUpWork *work;
+void m241_FirePatternSet(void) {
+    AllFiredUpFireWork *work;
     f32 step;
     s32 half;
     s32 i;
 
-    switch (D_80109C54_all_fired_up) {
+    switch (m241_patternType) {
         case 0:
-            step = 360.0f / D_801099C9_all_fired_up;
-            for (i = 0; i < D_801099C9_all_fired_up; i++) {
-                work = D_80109B00_all_fired_up[i]->data;
+            step = 360.0f / m241_fireNum;
+            for (i = 0; i < m241_fireNum; i++) {
+                work = m241_fireObjTbl[i]->data;
                 work->unk0C = step * work->unk00;
                 work->unk2C.x = sindf(work->unk0C) * 400.0f;
                 work->unk2C.y = 0.0f;
@@ -574,15 +574,15 @@ void func_80106FAC_all_fired_up(void) {
             }
             break;
         case 1:
-            half = D_801099C9_all_fired_up / 2;
-            if (D_801099C9_all_fired_up % 2 != 0) {
+            half = m241_fireNum / 2;
+            if (m241_fireNum % 2 != 0) {
                 step = 1400.0f / half;
             } else {
                 step = 1400.0f / (half - 1);
             }
             for (i = 0; i < half; i++) {
-                work = D_80109B00_all_fired_up[i]->data;
-                if (D_801099C9_all_fired_up % 2 != 0) {
+                work = m241_fireObjTbl[i]->data;
+                if (m241_fireNum % 2 != 0) {
                     work->unk2C.x = -700.0f + step * work->unk00 + step / 2.0f;
                 } else {
                     work->unk2C.x = -700.0f + step * work->unk00;
@@ -592,8 +592,8 @@ void func_80106FAC_all_fired_up(void) {
                 work->unk0C = atan2df(work->unk2C.x, work->unk2C.z);
                 work->unk14 = ABS(work->unk2C.x);
             }
-            for (i = half; i < D_801099C9_all_fired_up; i++) {
-                work = D_80109B00_all_fired_up[i]->data;
+            for (i = half; i < m241_fireNum; i++) {
+                work = m241_fireObjTbl[i]->data;
                 work->unk2C.x = 0.0f;
                 work->unk2C.y = 0.0f;
                 work->unk2C.z = -700.0f + step * (work->unk00 - half);
@@ -602,11 +602,11 @@ void func_80106FAC_all_fired_up(void) {
             }
             break;
         case 2:
-            step = 1400.0f / (D_801099C9_all_fired_up - 1);
-            for (i = 0; i < D_801099C9_all_fired_up; i++) {
-                work = D_80109B00_all_fired_up[i]->data;
+            step = 1400.0f / (m241_fireNum - 1);
+            for (i = 0; i < m241_fireNum; i++) {
+                work = m241_fireObjTbl[i]->data;
                 work->unk2C.x = -700.0f + step * work->unk00;
-                work->unk10 = 360.0f / (D_801099C9_all_fired_up - 1) * work->unk00;
+                work->unk10 = 360.0f / (m241_fireNum - 1) * work->unk00;
                 if (work->unk10 >= 180.0f) {
                     work->unk10 -= 180.0f;
                 }
@@ -620,11 +620,11 @@ void func_80106FAC_all_fired_up(void) {
     }
 }
 
-void func_80107440_all_fired_up(omObjData *object) {
-    AllFiredUpWork *work = object->data;
+void m241_FireSpreadUpdate(omObjData *object) {
+    AllFiredUpFireWork *work = object->data;
 
-    if (D_801099C9_all_fired_up >= work->unk00) {
-        switch (D_80109C54_all_fired_up) {
+    if (m241_fireNum >= work->unk00) {
+        switch (m241_patternType) {
             case 0:
             case 1:
                 object->trans.x += (work->unk2C.x - 0.0f) / 30.0f;
@@ -641,75 +641,75 @@ void func_80107440_all_fired_up(omObjData *object) {
     }
 }
 
-void func_80107578_all_fired_up(omObjData *object) {
-    AllFiredUpWork *work = object->data;
+void m241_FirePatternUpdate(omObjData *object) {
+    AllFiredUpFireWork *work = object->data;
     MgPlayerWork *data;
     s32 i;
 
-    if (D_801099C9_all_fired_up >= work->unk00) {
+    if (m241_fireNum >= work->unk00) {
         if (work->unk00 == 0) {
-            switch (D_80109C54_all_fired_up) {
+            switch (m241_patternType) {
                 case 0:
                     for (i = 0; i < 4; i++) {
                         data = mgPlayerObjTbl[i]->data;
                         if ((GwPlayer[data->unk59].stat & 1) && data->unk38 != 1000.0f) {
-                            D_80109A04_all_fired_up = 1;
+                            m241_comAliveF = 1;
                             break;
                         }
                     }
-                    if (D_801099CC_all_fired_up == 0.0f || D_801099CC_all_fired_up == 700.0f) {
-                        D_80109C59_all_fired_up ^= 1;
-                    } else if (D_80109A04_all_fired_up != 0) {
+                    if (m241_ringRadius == 0.0f || m241_ringRadius == 700.0f) {
+                        m241_patternDirF ^= 1;
+                    } else if (m241_comAliveF != 0) {
                         if (MgFlowStatTimeGet() % 15 == 0 && (rand8() >> 7)) {
-                            D_80109C59_all_fired_up ^= 1;
+                            m241_patternDirF ^= 1;
                         }
                     }
                     break;
                 case 2:
-                    D_80109C59_all_fired_up = 0;
+                    m241_patternDirF = 0;
                     break;
                 default:
                     if (MgFlowStatTimeGet() % 15 == 0 && (rand8() >> 7)) {
-                        D_80109C59_all_fired_up ^= 1;
+                        m241_patternDirF ^= 1;
                     }
                     break;
             }
         }
-        switch (D_80109C54_all_fired_up) {
+        switch (m241_patternType) {
             case 0:
-                if (D_80109C59_all_fired_up == 0 && D_801099D0_all_fired_up == 0 && (rand8() & 1)) {
-                    D_80109C59_all_fired_up = 1;
+                if (m241_patternDirF == 0 && m241_ringMaxF == 0 && (rand8() & 1)) {
+                    m241_patternDirF = 1;
                 }
-                if (D_80109C59_all_fired_up != 0) {
-                    D_801099CC_all_fired_up += 0.5f;
-                    if (D_801099CC_all_fired_up > 700.0f) {
-                        D_801099CC_all_fired_up = 700.0f;
-                        D_801099D0_all_fired_up = 1;
+                if (m241_patternDirF != 0) {
+                    m241_ringRadius += 0.5f;
+                    if (m241_ringRadius > 700.0f) {
+                        m241_ringRadius = 700.0f;
+                        m241_ringMaxF = 1;
                     }
                 } else {
-                    D_801099CC_all_fired_up -= 0.5f;
-                    if (D_801099CC_all_fired_up < 0.0f) {
-                        D_801099CC_all_fired_up = 0.0f;
+                    m241_ringRadius -= 0.5f;
+                    if (m241_ringRadius < 0.0f) {
+                        m241_ringRadius = 0.0f;
                     }
                 }
                 work->unk0C += 1.5f;
                 if (work->unk0C >= 360.0f) {
                     work->unk0C -= 360.0f;
                 }
-                object->trans.x = sindf(work->unk0C) * D_801099CC_all_fired_up;
-                object->trans.z = cosdf(work->unk0C) * D_801099CC_all_fired_up;
+                object->trans.x = sindf(work->unk0C) * m241_ringRadius;
+                object->trans.z = cosdf(work->unk0C) * m241_ringRadius;
                 break;
             case 1:
                 if (work->unk00 == 0 && MgFlowStatTimeGet() % 15 == 0) {
-                    D_80109A00_all_fired_up = (rand8() % 15) / 10.0f + 1.0f;
+                    m241_spinSpeed = (rand8() % 15) / 10.0f + 1.0f;
                 }
-                if (D_80109C59_all_fired_up != 0) {
-                    work->unk0C += D_80109A00_all_fired_up;
+                if (m241_patternDirF != 0) {
+                    work->unk0C += m241_spinSpeed;
                     if (work->unk0C >= 360.0f) {
                         work->unk0C -= 360.0f;
                     }
                 } else {
-                    work->unk0C -= D_80109A00_all_fired_up;
+                    work->unk0C -= m241_spinSpeed;
                     if (work->unk0C < 0.0f) {
                         work->unk0C += 360.0f;
                     }
@@ -719,9 +719,9 @@ void func_80107578_all_fired_up(omObjData *object) {
                 break;
             case 2:
                 if (work->unk00 == 0 && MgFlowStatTimeGet() % 5 == 0) {
-                    D_80109A00_all_fired_up = (rand8() % 15) / 10.0f + 1.0f;
+                    m241_spinSpeed = (rand8() % 15) / 10.0f + 1.0f;
                 }
-                work->unk0C -= D_80109A00_all_fired_up;
+                work->unk0C -= m241_spinSpeed;
                 if (work->unk0C < 0.0f) {
                     work->unk0C += 360.0f;
                 }
@@ -740,7 +740,7 @@ void func_80107578_all_fired_up(omObjData *object) {
     }
 }
 
-void func_80107BD4_all_fired_up(omObjData *object) {
+void m241_FireHitCheck(omObjData *object) {
     MgPlayerWork *data;
     omObjData *player;
     f32 dx;
@@ -759,7 +759,7 @@ void func_80107BD4_all_fired_up(omObjData *object) {
         if (dx < hitRange && dz < hitRange) {
             if (player->trans.y < object->trans.y + 36.0f && player->trans.y + 150.0f > object->trans.y - 36.0f) {
                 player->work[0] = 1;
-                D_801099C0_all_fired_up[data->unk59] = MgFlowStatTimeGet();
+                m241_outTimeTbl[data->unk59] = MgFlowStatTimeGet();
                 HuAudPlayerFXPlay(0x440, data->unk59);
                 PlayerFXPlay(0x286, data->unk59);
                 omVibrate(data->unk59, 2, 2, 20);
@@ -768,18 +768,18 @@ void func_80107BD4_all_fired_up(omObjData *object) {
     }
 }
 
-void func_80107DA4_all_fired_up(omObjData *object) {
+void m241_PlayerObjInit(omObjData *object) {
     MgPlayerWork *data;
     AllFiredUpPlayerWork *work;
     s8 chr;
     s32 model;
     s32 motion;
 
-    chr = GwPlayer[D_80109A05_all_fired_up].chr;
+    chr = GwPlayer[m241_playerCreateNo].chr;
     model = omCharModelNoTbl[chr][0];
     motion = omCharModelNoTbl[chr][1];
     MgShadowAltSet(1);
-    MgPlayerCreate(object, model, motion, D_80109A05_all_fired_up, 0x2C9, 0x2D9);
+    MgPlayerCreate(object, model, motion, m241_playerCreateNo, 0x2C9, 0x2D9);
     data = object->data;
     data->unk158 = HuMemAllocTag(sizeof(AllFiredUpPlayerWork), TAG_OVERLAY);
     memset(data->unk158, 0, sizeof(AllFiredUpPlayerWork));
@@ -791,10 +791,10 @@ void func_80107DA4_all_fired_up(omObjData *object) {
     object->rot.x = object->rot.y = object->rot.z = work->unk0C;
     object->scale.x = object->scale.y = object->scale.z = 1.2f;
     object->work[0] = 0;
-    D_80109AC5_all_fired_up = D_80109930_all_fired_up[D_80109AF0_all_fired_up][D_80109A05_all_fired_up];
-    object->trans.x = D_80109990_all_fired_up[D_80109AC5_all_fired_up].x;
-    object->trans.y = D_80109990_all_fired_up[D_80109AC5_all_fired_up].y;
-    object->trans.z = D_80109990_all_fired_up[D_80109AC5_all_fired_up].z;
+    m241_startPosNo = m241_startPermTbl[m241_startPermNo][m241_playerCreateNo];
+    object->trans.x = m241_startPosTbl[m241_startPosNo].x;
+    object->trans.y = m241_startPosTbl[m241_startPosNo].y;
+    object->trans.z = m241_startPosTbl[m241_startPosNo].z;
     MgPlayerMapAttrSet(object, 0, 2);
     Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
     Hu3DModelScaleSet(object->model[1], object->scale.x, object->scale.y, object->scale.z);
@@ -807,11 +807,11 @@ void func_80107DA4_all_fired_up(omObjData *object) {
     MgPlayerMotLoad(object, 13, CharMotionDataNumGet(chr, 0x2F), 1, 120);
     MgPlayerMotSet(object, 0);
     MgPlayerRadiusSet(object, 60.0f);
-    object->func = func_801080C8_all_fired_up;
-    D_80109A05_all_fired_up++;
+    object->func = m241_PlayerObjMain;
+    m241_playerCreateNo++;
 }
 
-void func_801080C8_all_fired_up(omObjData *object) {
+void m241_PlayerObjMain(omObjData *object) {
     MgPlayerWork *data = object->data;
     s32 character;
     s32 i;
@@ -821,19 +821,19 @@ void func_801080C8_all_fired_up(omObjData *object) {
     if (omPauseChk() + omAllPauseF == 0) {
         switch (MgFlowStatGet()) {
             case MG_STATE_OPENING:
-                func_801085A4_all_fired_up(object);
+                m241_PlayerIntroUpdate(object);
                 break;
             case MG_STATE_PLAY:
                 if (GwPlayer[data->unk59].stat & 1) {
-                    func_80108AA0_all_fired_up(object);
+                    m241_PlayerComInput(object);
                 }
                 MgPlayerObjMain(object);
                 if (object->work[0] == 1) {
                     MgPlayerMotSet(object, 14);
-                    func_80108710_all_fired_up(object);
+                    m241_PlayerFlyUpdate(object);
                     object->work[0] = 2;
                 } else if (object->work[0] == 2) {
-                    func_80108710_all_fired_up(object);
+                    m241_PlayerFlyUpdate(object);
                 }
                 if (data->unk59 == 3) {
                     count = 0;
@@ -846,22 +846,22 @@ void func_801080C8_all_fired_up(omObjData *object) {
                 }
                 break;
             case MG_STATE_FINISH:
-                if (D_80109A08_all_fired_up[data->unk59] == 0) {
+                if (m241_coinSetFTbl[data->unk59] == 0) {
                     rank = 0;
                     for (i = 0; i < 4; i++) {
-                        if (i != data->unk59 && D_801099C0_all_fired_up[data->unk59] < D_801099C0_all_fired_up[i]) {
+                        if (i != data->unk59 && m241_outTimeTbl[data->unk59] < m241_outTimeTbl[i]) {
                             rank++;
                         }
                     }
                     GwPlayer[data->unk59].bonusCoin = rank;
-                    D_80109A08_all_fired_up[data->unk59] = 1;
+                    m241_coinSetFTbl[data->unk59] = 1;
                 }
                 if (object->work[0] == 0) {
                     data->unk3C *= 0.9f;
                 }
                 MgPlayerObjMain(object);
                 if (object->work[0] == 2) {
-                    func_80108710_all_fired_up(object);
+                    m241_PlayerFlyUpdate(object);
                 }
                 break;
             case MG_STATE_RESULT:
@@ -896,12 +896,12 @@ void func_801080C8_all_fired_up(omObjData *object) {
                         }
                         HuAudCharVoicePlay((character << 16) | 0x2F);
                         MgPlayerMotSet(object, 13);
-                        D_80109A06_all_fired_up = 0;
+                        m241_resultMode = 0;
                     }
-                    if (data->unk59 == 3 && D_80109A06_all_fired_up == -1) {
-                        D_80109A06_all_fired_up = 1;
+                    if (data->unk59 == 3 && m241_resultMode == -1) {
+                        m241_resultMode = 1;
                     }
-                    switch (D_80109A06_all_fired_up) {
+                    switch (m241_resultMode) {
                         case 0:
                             count = 0;
                             for (i = 0; i < 4; i++) {
@@ -915,7 +915,7 @@ void func_801080C8_all_fired_up(omObjData *object) {
                             break;
                         case 1:
                             for (i = 0; i < 3; i++) {
-                                if (D_801099C0_all_fired_up[i] != D_801099C0_all_fired_up[i + 1]) {
+                                if (m241_outTimeTbl[i] != m241_outTimeTbl[i + 1]) {
                                     break;
                                 }
                             }
@@ -925,11 +925,11 @@ void func_801080C8_all_fired_up(omObjData *object) {
                                 }
                             }
                             HuAudSeqPlay(0x6C);
-                            D_80109A06_all_fired_up = 1;
+                            m241_resultMode = 1;
                             break;
                     }
-                } else if ((D_80109A06_all_fired_up == 0 && MgFlowStatTimeGet() >= 100) ||
-                           (D_80109A06_all_fired_up == 1 && MgFlowStatTimeGet() > 144)) {
+                } else if ((m241_resultMode == 0 && MgFlowStatTimeGet() >= 100) ||
+                           (m241_resultMode == 1 && MgFlowStatTimeGet() > 144)) {
                     MgFlowStatSet(MG_STATE_EXIT);
                 }
                 MgPlayerObjMain(object);
@@ -937,7 +937,7 @@ void func_801080C8_all_fired_up(omObjData *object) {
             default:
                 MgPlayerObjMain(object);
                 if (object->work[0] == 2) {
-                    func_80108710_all_fired_up(object);
+                    m241_PlayerFlyUpdate(object);
                 }
                 break;
         }
@@ -948,7 +948,7 @@ void func_801080C8_all_fired_up(omObjData *object) {
     }
 }
 
-void func_801085A4_all_fired_up(omObjData *object) {
+void m241_PlayerIntroUpdate(omObjData *object) {
     MgPlayerWork *data = object->data;
 
     if (MgFlowStatTimeGet() == 20) {
@@ -968,10 +968,10 @@ void func_801085A4_all_fired_up(omObjData *object) {
     Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
 }
 
-void func_80108710_all_fired_up(omObjData *object) {
+void m241_PlayerFlyUpdate(omObjData *object) {
     AllFiredUpPlayerWork *work;
 
-    func_80108958_all_fired_up(object);
+    m241_SmokeUpdate(object);
     if (object->trans.x > 0.0f) {
         object->trans.x += 28.0f;
     } else {
@@ -1001,30 +1001,30 @@ void func_80108710_all_fired_up(omObjData *object) {
     Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
 }
 
-void func_80108958_all_fired_up(omObjData *object) {
+void m241_SmokeUpdate(omObjData *object) {
     s32 player = ((MgPlayerWork *)object->data)->unk59;
     f32 scale;
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        if (D_80109A18_all_fired_up[player][i] >= 0) {
-            if (D_80109A18_all_fired_up[player][i] == 0) {
-                Hu3DModelPosSet(D_80109AF2_all_fired_up[i], object->trans.x, object->trans.y, object->trans.z);
-                Hu3DModelAttrSet(D_80109AF2_all_fired_up[i], 4, 0);
+        if (m241_smokeTimerTbl[player][i] >= 0) {
+            if (m241_smokeTimerTbl[player][i] == 0) {
+                Hu3DModelPosSet(m241_smokeMdlTbl[i], object->trans.x, object->trans.y, object->trans.z);
+                Hu3DModelAttrSet(m241_smokeMdlTbl[i], 4, 0);
             }
-            if (D_80109A18_all_fired_up[player][i] < 8) {
-                scale = D_80109A58_all_fired_up[D_80109A18_all_fired_up[player][i] / 2];
-                Hu3DModelScaleSet(D_80109AF2_all_fired_up[i], scale, scale, 1.0f);
+            if (m241_smokeTimerTbl[player][i] < 8) {
+                scale = m241_smokeScaleTbl[m241_smokeTimerTbl[player][i] / 2];
+                Hu3DModelScaleSet(m241_smokeMdlTbl[i], scale, scale, 1.0f);
             }
-            if (D_80109A18_all_fired_up[player][i] >= 8) {
-                D_80109A18_all_fired_up[player][i] = -1;
+            if (m241_smokeTimerTbl[player][i] >= 8) {
+                m241_smokeTimerTbl[player][i] = -1;
             }
         }
-        D_80109A18_all_fired_up[player][i]++;
+        m241_smokeTimerTbl[player][i]++;
     }
 }
 
-void func_80108AA0_all_fired_up(omObjData *object) {
+void m241_PlayerComInput(omObjData *object) {
     MgPlayerWork *data;
     AllFiredUpPlayerWork *work;
     omObjData *fire;
@@ -1079,8 +1079,8 @@ void func_80108AA0_all_fired_up(omObjData *object) {
         }
     }
     minDist = 1400.0f * 1400.0f;
-    for (i = 0; i < D_801099C9_all_fired_up; i++) {
-        fire = D_80109B00_all_fired_up[i];
+    for (i = 0; i < m241_fireNum; i++) {
+        fire = m241_fireObjTbl[i];
         dx = fire->trans.x - object->trans.x;
         dz = fire->trans.z - object->trans.z;
         len = dx * dx + dz * dz;
@@ -1098,27 +1098,27 @@ void func_80108AA0_all_fired_up(omObjData *object) {
         }
         sinAngle = sindf(work->unk0C);
         cosAngle = cosdf(work->unk0C);
-        for (i = 0; i < D_801099C9_all_fired_up; i++) {
-            fire = D_80109B00_all_fired_up[i];
+        for (i = 0; i < m241_fireNum; i++) {
+            fire = m241_fireObjTbl[i];
             blocked = 0;
-            if (D_80109C54_all_fired_up == 0 && D_801099C8_all_fired_up == 3) {
-                if (D_80109C59_all_fired_up != 0) {
-                    if (ABS(D_801099CC_all_fired_up - dist) < 120.0f) {
+            if (m241_patternType == 0 && m241_firePhase == 3) {
+                if (m241_patternDirF != 0) {
+                    if (ABS(m241_ringRadius - dist) < 120.0f) {
                         jump = 1;
                     }
                 } else {
-                    if (ABS(D_801099CC_all_fired_up - dist) < 140.0f) {
+                    if (ABS(m241_ringRadius - dist) < 140.0f) {
                         jump = 1;
                     }
                 }
             } else {
-                if (D_801099C8_all_fired_up == 2) {
+                if (m241_firePhase == 2) {
                     range = 250.0f;
-                } else if (D_801099C8_all_fired_up == 1) {
+                } else if (m241_firePhase == 1) {
                     range = 200.0f;
                 } else {
                     range = 100.0f;
-                    if (D_801099C8_all_fired_up == 3) {
+                    if (m241_firePhase == 3) {
                         range = 150.0f;
                     }
                 }
@@ -1134,11 +1134,11 @@ void func_80108AA0_all_fired_up(omObjData *object) {
                     }
                 }
             }
-            if (D_801099C8_all_fired_up == 3) {
+            if (m241_firePhase == 3) {
                 range = 400.0f;
             } else {
                 range = 200.0f;
-                if (D_801099C8_all_fired_up == 2) {
+                if (m241_firePhase == 2) {
                     range = 400.0f;
                 }
             }
@@ -1162,15 +1162,15 @@ void func_80108AA0_all_fired_up(omObjData *object) {
         work->unk0C += 0.022222222222222223;
     } while (tries < 8);
     len = HuSqrtf(object->trans.x * object->trans.x + object->trans.x * object->trans.x);
-    if (D_801099C8_all_fired_up == 1) {
-        if (D_80109C56_all_fired_up < 21) {
+    if (m241_firePhase == 1) {
+        if (m241_firePhaseTimer < 21) {
             work->unk0C = atan2df(object->trans.x, object->trans.z);
         } else {
             work->unk0C = atan2df(object->trans.x - nearX, object->trans.z - nearZ);
         }
-    } else if (D_80109C54_all_fired_up == 0 && D_801099C8_all_fired_up == 3) {
-        if (D_80109C59_all_fired_up != 0) {
-            if (D_801099CC_all_fired_up > 350.0f) {
+    } else if (m241_patternType == 0 && m241_firePhase == 3) {
+        if (m241_patternDirF != 0) {
+            if (m241_ringRadius > 350.0f) {
                 if (ABS(object->trans.x) < 150.0f && ABS(object->trans.z) < 150.0f) {
                     stick = 0;
                     data->unk3C = atan2df(object->trans.x, object->trans.z);
@@ -1180,7 +1180,7 @@ void func_80108AA0_all_fired_up(omObjData *object) {
             } else {
                 data->unk3C = work->unk0C = atan2df(object->trans.x, object->trans.z);
             }
-        } else if (D_801099CC_all_fired_up < 350.0f) {
+        } else if (m241_ringRadius < 350.0f) {
             data->unk3C = work->unk0C = atan2df(object->trans.x, object->trans.z);
         } else if (ABS(object->trans.x) < 150.0f && ABS(object->trans.z) < 150.0f) {
             stick = 0;
@@ -1188,8 +1188,8 @@ void func_80108AA0_all_fired_up(omObjData *object) {
         } else {
             data->unk3C = work->unk0C = atan2df(-object->trans.x, -object->trans.z);
         }
-    } else if (D_801099C8_all_fired_up == 2) {
-        if (D_80109C54_all_fired_up == 1 || D_80109C54_all_fired_up == 2) {
+    } else if (m241_firePhase == 2) {
+        if (m241_patternType == 1 || m241_patternType == 2) {
             if (ABS(object->trans.z) < 200.0f) {
                 if (object->trans.z < 0.0f) {
                     work->unk0C = 180.0f;
@@ -1206,9 +1206,9 @@ void func_80108AA0_all_fired_up(omObjData *object) {
                 work->unk0C = atan2df(object->trans.x - nearX, object->trans.z - nearZ);
             }
         }
-    } else if (D_801099C8_all_fired_up == 3) {
-        if (D_80109C54_all_fired_up == 1 || D_80109C54_all_fired_up == 2) {
-            func_80109660_all_fired_up(object, len, jump);
+    } else if (m241_firePhase == 3) {
+        if (m241_patternType == 1 || m241_patternType == 2) {
+            m241_ComCircleAngleSet(object, len, jump);
             if (mgPlayerSpeedMin <= data->unk40) {
                 x = object->trans.x + sindf(data->unk3C) * 200.0f - nearX;
                 z = object->trans.z + cosdf(data->unk3C) * 200.0f - nearZ;
@@ -1232,10 +1232,10 @@ void func_80108AA0_all_fired_up(omObjData *object) {
     }
 }
 
-void func_80109660_all_fired_up(omObjData *object, f32 dist, s8 arg2) {
+void m241_ComCircleAngleSet(omObjData *object, f32 dist, s8 arg2) {
     AllFiredUpPlayerWork *work = ((MgPlayerWork *)object->data)->unk158;
 
-    if (D_80109C59_all_fired_up != 0) {
+    if (m241_patternDirF != 0) {
         if (arg2 == 0) {
             if (dist > 600.0f) {
                 work->unk0C = atan2df(-object->trans.x, -object->trans.z) - 60.0f;
@@ -1254,7 +1254,7 @@ void func_80109660_all_fired_up(omObjData *object, f32 dist, s8 arg2) {
     }
 }
 
-void func_801097B0_all_fired_up(omObjData *object) {
+void m241_MapObjInit(omObjData *object) {
     MgMapWork *work;
     u16 sprite1;
     s16 group1;

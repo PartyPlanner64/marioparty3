@@ -8,7 +8,7 @@
 
 // Per-camera collision work buffer passed to Hu3DCameraModelHookSet. Starts with the
 // CollisionFan used by MapCullFan; the remainder is used by the custom
-// fan-culling draw in func_8010C738_fridged_bridges.
+// fan-culling draw in m236_MapCullFanBatch.
 typedef struct FridgedBridgesCamCollWork {
     /* 0x000 */ CollisionFan fan;
     /* 0x018 */ u16 dlCount[3];

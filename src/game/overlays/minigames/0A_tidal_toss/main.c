@@ -16,7 +16,7 @@ typedef struct {
     f32 unk08;
     f32 unk0C;
     u8 unk10;
-} TidalTossStruct;
+} TidalTossWave;
 
 typedef struct {
     u8 unk00[3];
@@ -79,85 +79,85 @@ typedef struct {
     f32 unk18;
     f32 unk1C;
     f32 unk20;
-} TidalTossSpriteWork;
+} TidalTossCloudWork;
 
 extern s32 omCharModelNoTbl[][6];
 extern s32 omCharMotTbl[][6];
 extern u8 Hu3DBufNo;
 
-u8 D_8010AA70_tidal_toss = 0;
-s16 D_8010AA74_tidal_toss[3][2] = { { 55, 30 }, { 198, 38 }, { 294, 24 } };
-f32 D_8010AA80_tidal_toss[3] = { 1.0f, 0.8f, 1.2f };
-s32 D_8010AA8C_tidal_toss = 0;
-u16 D_8010AA90_tidal_toss = 0;
-s32 D_8010AA94_tidal_toss = -1;
-s16 D_8010AA98_tidal_toss[2] = { 180, 0 }; /* Unreferenced. */
-u8 D_8010AA9C_tidal_toss[8] = { 0x1C, 0x1C, 0x3C, 0x3C, 0x1C, 0x1C, 0x1C, 0x3C };
-s32 D_8010AAA4_tidal_toss = 0;
-s32 D_8010AAA8_tidal_toss = 0;
-f32 D_8010AAAC_tidal_toss = 0.0f;
-u8 D_8010AAB0_tidal_toss[4][2] = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 } };
-u8 D_8010AAB8_tidal_toss = 0;
-u8 D_8010AAB9_tidal_toss = 0;
-f32 D_8010AABC_tidal_toss[4][3] = {
+u8 m210_soloNo = 0;
+s16 m210_cloudPosTbl[3][2] = { { 55, 30 }, { 198, 38 }, { 294, 24 } };
+f32 m210_cloudScaleTbl[3] = { 1.0f, 0.8f, 1.2f };
+s32 m210_phaseTimer = 0;
+u16 m210_timer = 0;
+s32 m210_winner = -1;
+s16 m210_winnerPad[2] = { 180, 0 }; /* Unreferenced. */
+u8 m210_seaVtxLimitTbl[8] = { 0x1C, 0x1C, 0x3C, 0x3C, 0x1C, 0x1C, 0x1C, 0x3C };
+s32 m210_seaGfxReadyF = 0;
+s32 m210_seaGfxBuildStep = 0;
+f32 m210_seaTexScroll = 0.0f;
+u8 m210_playerSlotTbl[4][2] = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 } };
+u8 m210_playerSlotNo = 0;
+u8 m210_teamSlotNo = 0;
+f32 m210_playerPosTbl[4][3] = {
     { 0.0f, 20.0f, -20.0f },
     { -240.0f, 0.0f, 0.0f },
     { 240.0f, 0.0f, 0.0f },
     { 0.0f, 0.0f, 240.0f },
 };
-f32 D_8010AAEC_tidal_toss[4] = { 0.0f, 90.0f, -90.0f, 180.0f };
-u32 D_8010AAFC_tidal_toss = 0x41C64E6D;
+f32 m210_playerRotTbl[4] = { 0.0f, 90.0f, -90.0f, 180.0f };
+u32 m210_randSeed = 0x41C64E6D;
 
-s16 D_8010ADE0_tidal_toss BSS;
-Mtx D_8010ADE8_tidal_toss[3] BSS;
-TidalTossSortEntry *D_8010AEA8_tidal_toss BSS;
-Vtx *D_8010AEAC_tidal_toss BSS;
-MinigameFlow D_8010AEB0_tidal_toss BSS;
-s16 D_8010AED8_tidal_toss BSS;
-s16 D_8010AEDA_tidal_toss BSS;
-u8 D_8010AEDC_tidal_toss[12] BSS; /* Unreferenced. */
-s16 D_8010AEE8_tidal_toss BSS;
-s16 D_8010AEEA_tidal_toss BSS; /* Unreferenced. */
-s16 D_8010AEEC_tidal_toss BSS;
-s16 D_8010AEEE_tidal_toss BSS;      /* Unreferenced. */
-u8 D_8010AEF0_tidal_toss[0x48] BSS; /* Unreferenced. */
-s16 D_8010AF38_tidal_toss BSS;
-s16 D_8010AF3A_tidal_toss BSS;
-Gfx *D_8010AF3C_tidal_toss BSS;
-s16 D_8010AF40_tidal_toss BSS;
-s16 D_8010AF42_tidal_toss BSS; /* Unreferenced. */
-s32 D_8010AF44_tidal_toss BSS; /* Unreferenced. */
-TidalTossStruct D_8010AF48_tidal_toss[8] BSS;
-TidalTossSpriteWork D_8010AFE8_tidal_toss[3] BSS;
-s32 D_8010B054_tidal_toss BSS; /* Unreferenced. */
-f32 D_8010B058_tidal_toss[4][4] BSS;
-f32 D_8010B098_tidal_toss[4][4] BSS;
-f32 D_8010B0D8_tidal_toss BSS;
+s16 m210_musicDelay BSS;
+Mtx m210_seaMtx[3] BSS;
+TidalTossSortEntry *m210_seaSortTbl BSS;
+Vtx *m210_seaVtxBuf BSS;
+MinigameFlow m210_mgFlow BSS;
+s16 m210_backAnim BSS;
+s16 m210_cloudAnim BSS;
+u8 m210_cloudAnimPad[12] BSS; /* Unreferenced. */
+s16 m210_backSpr BSS;
+s16 m210_backSprPad BSS; /* Unreferenced. */
+s16 m210_cloudSpr BSS;
+s16 m210_cloudSprPad BSS;      /* Unreferenced. */
+u8 m210_cloudSprPadB[0x48] BSS; /* Unreferenced. */
+s16 m210_seaMdl BSS;
+s16 m210_seaTexAnim BSS;
+Gfx *m210_seaGfx BSS;
+s16 m210_phase BSS;
+s16 m210_phasePad BSS; /* Unreferenced. */
+s32 m210_phasePadB BSS; /* Unreferenced. */
+TidalTossWave m210_waveTbl[8] BSS;
+TidalTossCloudWork m210_cloudWorkTbl[3] BSS;
+s32 m210_cloudWorkTblPad BSS; /* Unreferenced. */
+f32 m210_cameraMtx[4][4] BSS;
+f32 m210_cameraInvMtx[4][4] BSS;
+f32 m210_cameraFovTan BSS;
 
 s32 fmod(f64 x, f64 y);
-void func_80108638_tidal_toss(omObjData *);
-void func_80105B04_tidal_toss(omObjData *object);
-void func_8010600C_tidal_toss(void);
-void func_801085A4_tidal_toss(void);
-void func_80106104_tidal_toss(omObjData *);
-void func_80106480_tidal_toss(omObjData *);
-void func_80106514_tidal_toss(omObjData *);
-void func_801065AC_tidal_toss(omObjData *);
-void func_80106D24_tidal_toss(Gfx **, s32, s32);
-s32 func_8010A7F8_tidal_toss(void);
-u16 func_8010A11C_tidal_toss(omObjData *);
-void func_8010A7E4_tidal_toss(omObjData *, MgPlayerWork **, TidalTossWork **);
-void func_80105C80_tidal_toss(HuMtx4F, HuMtx4F);
-s16 func_8010A90C_tidal_toss(s32);
-s16 func_8010A954_tidal_toss(s16, s16);
-HuSprAnimPat *func_8010AA1C_tidal_toss(s16 arg0, s16 arg1);
-void func_8010961C_tidal_toss(omObjData *);
-u16 func_8010A490_tidal_toss(omObjData *arg0, f32 arg1);
-f32 func_8010A850_tidal_toss(Vec *arg0, Vec *arg1);
-f32 func_8010A8A4_tidal_toss(f32 arg0, f32 arg1);
-void func_80109180_tidal_toss(omObjData *);
+void m210_PlayerObjInit(omObjData *);
+void m210_CameraViewInit(omObjData *object);
+void m210_MapObjCreateAll(void);
+void m210_PlayerObjCreateAll(void);
+void m210_MainObjInit(omObjData *);
+void m210_IslandMapObjInit(omObjData *);
+void m210_DeepMapObjInit(omObjData *);
+void m210_MainObjMain(omObjData *);
+void m210_SeaDraw(Gfx **, s32, s32);
+s32 m210_Rand16Get(void);
+u16 m210_SoloComInput(omObjData *);
+void m210_PlayerWorkGet(omObjData *, MgPlayerWork **, TidalTossWork **);
+void m210_MtxInvert(HuMtx4F, HuMtx4F);
+s16 m210_AnimDataRead(s32);
+s16 m210_SprGrpCreate(s16, s16);
+HuSprAnimPat *m210_SprAnimPatGet(s16 arg0, s16 arg1);
+void m210_TeamObjMain(omObjData *);
+u16 m210_TeamComInput(omObjData *arg0, f32 arg1);
+f32 m210_DistXZCalc(Vec *arg0, Vec *arg1);
+f32 m210_AngleCalc(f32 arg0, f32 arg1);
+void m210_SoloObjMain(omObjData *);
 
-void func_801059A0_tidal_toss(void) {
+void m210_ObjectSetup(void) {
     omObjData *obj;
     u8 camIndex;
 
@@ -173,15 +173,15 @@ void func_801059A0_tidal_toss(void) {
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 45.0f, 80.0f, 8000.0f);
     MgFieldStatClear();
-    func_80105B04_tidal_toss(obj);
-    func_8010600C_tidal_toss();
-    memset(&D_8010AEB0_tidal_toss, 0, 0x28);
-    D_8010AEB0_tidal_toss.type = MINIGAME_BATTLE;
-    MgFlowInit(&D_8010AEB0_tidal_toss);
-    func_801085A4_tidal_toss();
+    m210_CameraViewInit(obj);
+    m210_MapObjCreateAll();
+    memset(&m210_mgFlow, 0, 0x28);
+    m210_mgFlow.type = MINIGAME_BATTLE;
+    MgFlowInit(&m210_mgFlow);
+    m210_PlayerObjCreateAll();
 }
 
-void func_80105B04_tidal_toss(omObjData *object) {
+void m210_CameraViewInit(omObjData *object) {
     HuCamera *camera;
     f32 sinFov;
     f32 cosFov;
@@ -198,19 +198,19 @@ void func_80105B04_tidal_toss(omObjData *object) {
     camera = gCameraList;
     sinFov = sindf(camera->fov / 2.0);
     cosFov = cosdf(camera->fov / 2.0);
-    D_8010B0D8_tidal_toss = sinFov / cosFov;
-    guMtxL2F(D_8010B058_tidal_toss, &camera->mtxs[0].lookAtMtx);
-    guMtxL2F(D_8010B098_tidal_toss, &camera->mtxs[0].lookAtMtx);
-    func_80105C80_tidal_toss(D_8010B098_tidal_toss, D_8010B098_tidal_toss);
+    m210_cameraFovTan = sinFov / cosFov;
+    guMtxL2F(m210_cameraMtx, &camera->mtxs[0].lookAtMtx);
+    guMtxL2F(m210_cameraInvMtx, &camera->mtxs[0].lookAtMtx);
+    m210_MtxInvert(m210_cameraInvMtx, m210_cameraInvMtx);
 }
 
-void func_80105C00_tidal_toss(HuMtx4F mtx, f32 x, f32 y, f32 z, f32 *dst) {
+void m210_MtxVecMul(HuMtx4F mtx, f32 x, f32 y, f32 z, f32 *dst) {
     dst[0] = ((x * mtx[0][0]) + (y * mtx[1][0])) + (z * mtx[2][0]);
     dst[1] = ((x * mtx[0][1]) + (y * mtx[1][1])) + (z * mtx[2][1]);
     dst[2] = ((x * mtx[0][2]) + (y * mtx[1][2])) + (z * mtx[2][2]);
 }
 
-void func_80105C80_tidal_toss(HuMtx4F src, HuMtx4F dst) {
+void m210_MtxInvert(HuMtx4F src, HuMtx4F dst) {
     f32 mtx[4][4];
     f32 t0;
     f32 t1;
@@ -248,18 +248,18 @@ void func_80105C80_tidal_toss(HuMtx4F src, HuMtx4F dst) {
         dst[0][3] = 0.0f;
         dst[3][3] = 1.0f;
 
-        func_80105C00_tidal_toss(dst, -mtx[3][0], -mtx[3][1], -mtx[3][2], dstRow3);
+        m210_MtxVecMul(dst, -mtx[3][0], -mtx[3][1], -mtx[3][2], dstRow3);
     }
 }
 
-void func_80105E70_tidal_toss(f32 *arg0, f32 *dst) {
+void m210_ScreenPosCalc(f32 *arg0, f32 *dst) {
     f32 mtx[4][4];
     f32 depth;
     f32 scale;
 
     guTranslateF(mtx, arg0[0], arg0[1], arg0[2]);
-    guMtxCatF(mtx, D_8010B058_tidal_toss, mtx);
-    depth = mtx[3][2] * D_8010B0D8_tidal_toss;
+    guMtxCatF(mtx, m210_cameraMtx, mtx);
+    depth = mtx[3][2] * m210_cameraFovTan;
     scale = __builtin_fabsf(depth);
     if (scale == 0.0) {
         return;
@@ -268,31 +268,31 @@ void func_80105E70_tidal_toss(f32 *arg0, f32 *dst) {
     dst[1] = -mtx[3][1] * 120.0f / scale;
 }
 
-void func_80105F40_tidal_toss(f32 x, f32 y, f32 z, f32 *dst) {
-    f32 depth = z + D_8010B058_tidal_toss[3][2];
-    f32 scale = __builtin_fabsf(depth * D_8010B0D8_tidal_toss);
+void m210_WorldPosCalc(f32 x, f32 y, f32 z, f32 *dst) {
+    f32 depth = z + m210_cameraMtx[3][2];
+    f32 scale = __builtin_fabsf(depth * m210_cameraFovTan);
     f32 mtx[4][4];
 
     guTranslateF(mtx, ((x + x) * scale * 1.3333334f) / 320.0f, -((y + y) * scale / 240.0f), depth);
-    guMtxCatF(mtx, D_8010B098_tidal_toss, mtx);
+    guMtxCatF(mtx, m210_cameraInvMtx, mtx);
     dst[0] = mtx[3][0];
     dst[1] = mtx[3][1];
     dst[2] = mtx[3][2];
 }
 
-void func_8010600C_tidal_toss(void) {
+void m210_MapObjCreateAll(void) {
     mgMapObjNum = 0;
     MgMapBaseSet(0);
-    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 1, 0, -1, func_80106104_tidal_toss);
-    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 1, 0, -1, func_80106480_tidal_toss);
-    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 1, 0, -1, func_80106514_tidal_toss);
-    D_8010AF40_tidal_toss = 0;
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 1, 0, -1, m210_MainObjInit);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 1, 0, -1, m210_IslandMapObjInit);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(5, 1, 0, -1, m210_DeepMapObjInit);
+    m210_phase = 0;
 }
 
-void func_80106104_tidal_toss(omObjData *object) {
+void m210_MainObjInit(omObjData *object) {
     TidalTossSetupWork *work;
-    TidalTossStruct *entry;
-    TidalTossSpriteWork *spriteWork;
+    TidalTossWave *entry;
+    TidalTossCloudWork *spriteWork;
     s16 *spriteGroup;
     s16 *setupSpriteGroup;
     s16 setupSpriteId;
@@ -311,22 +311,22 @@ void func_80106104_tidal_toss(omObjData *object) {
     MgMapAccelSet(object, 10.0f);
     MgMapCircleSet(object, 0.0f, 730.0f);
 
-    D_8010AED8_tidal_toss = func_8010A90C_tidal_toss(0x2B0000);
-    setupSpriteId = func_8010A954_tidal_toss(D_8010AED8_tidal_toss, 1);
-    setupSpriteGroup = &D_8010AEE8_tidal_toss;
+    m210_backAnim = m210_AnimDataRead(0x2B0000);
+    setupSpriteId = m210_SprGrpCreate(m210_backAnim, 1);
+    setupSpriteGroup = &m210_backSpr;
     *setupSpriteGroup = setupSpriteId;
     HuSprPosSet(*setupSpriteGroup, 0, 160, 120);
     HuSprAttrSet(*setupSpriteGroup, 0, 0x4000);
 
     model = Hu3DModelRead(0x2B0003, 0x4002CD);
     object->model[0] = model;
-    D_8010AF38_tidal_toss = model;
+    m210_seaMdl = model;
     Hu3DModelVtxBufMake(object->model[0]);
     object->model[1] = Hu3DModelRead(0x2B0004, 0x2D9);
-    object->model[2] = Hu3DHookFuncCreate(0x80, func_80106D24_tidal_toss, 2);
-    D_8010AF3A_tidal_toss = func_8010A90C_tidal_toss(0x2B0001);
+    object->model[2] = Hu3DHookFuncCreate(0x80, m210_SeaDraw, 2);
+    m210_seaTexAnim = m210_AnimDataRead(0x2B0001);
 
-    entry = D_8010AF48_tidal_toss;
+    entry = m210_waveTbl;
     zero = 0.0f;
     for (i = 0; i < 8; i++) {
         entry->unk10 = 0;
@@ -337,31 +337,31 @@ void func_80106104_tidal_toss(omObjData *object) {
         entry++;
     }
 
-    D_8010AEDA_tidal_toss = func_8010A90C_tidal_toss(0x2B0002);
-    D_8010AEEC_tidal_toss = func_8010A954_tidal_toss(D_8010AEDA_tidal_toss, 3);
-    spriteWork = D_8010AFE8_tidal_toss;
+    m210_cloudAnim = m210_AnimDataRead(0x2B0002);
+    m210_cloudSpr = m210_SprGrpCreate(m210_cloudAnim, 3);
+    spriteWork = m210_cloudWorkTbl;
     for (i = 0; i < 3; i++) {
-        spriteWork->unk04 = (f32)D_8010AA74_tidal_toss[i][0];
+        spriteWork->unk04 = (f32)m210_cloudPosTbl[i][0];
         spriteWork->unk00 = spriteWork->unk04;
-        spriteWork->unk08 = (f32)D_8010AA74_tidal_toss[i][1];
+        spriteWork->unk08 = (f32)m210_cloudPosTbl[i][1];
         spriteWork->unk02 = spriteWork->unk08;
-        scale = D_8010AA80_tidal_toss[i];
+        scale = m210_cloudScaleTbl[i];
         spriteWork->unk10 = scale;
         spriteWork->unk0C = scale;
-        spriteWork->unk14 = (f32)((f64)(f32)func_8010A7F8_tidal_toss() * 1.52587890625e-05 * 360.0);
-        spriteWork->unk18 = (f32)((f64)(f32)func_8010A7F8_tidal_toss() * 1.52587890625e-05 * 360.0);
-        spriteWork->unk1C = (f32)((f64)(f32)func_8010A7F8_tidal_toss() * 1.52587890625e-05 * 2.0 + 2.0);
-        spriteWork->unk20 = (f32)((f64)(f32)func_8010A7F8_tidal_toss() * 1.52587890625e-05 * 1.5 + 1.0);
-        spriteGroup = &D_8010AEEC_tidal_toss;
+        spriteWork->unk14 = (f32)((f64)(f32)m210_Rand16Get() * 1.52587890625e-05 * 360.0);
+        spriteWork->unk18 = (f32)((f64)(f32)m210_Rand16Get() * 1.52587890625e-05 * 360.0);
+        spriteWork->unk1C = (f32)((f64)(f32)m210_Rand16Get() * 1.52587890625e-05 * 2.0 + 2.0);
+        spriteWork->unk20 = (f32)((f64)(f32)m210_Rand16Get() * 1.52587890625e-05 * 1.5 + 1.0);
+        spriteGroup = &m210_cloudSpr;
         HuSprAttrSet(*spriteGroup, (s16)i, 0x20005808);
         HuSprPosSet(*spriteGroup, (s16)i, spriteWork->unk00, spriteWork->unk02);
         spriteWork++;
     }
 
-    object->func = func_801065AC_tidal_toss;
+    object->func = m210_MainObjMain;
 }
 
-void func_80106480_tidal_toss(omObjData *object) {
+void m210_IslandMapObjInit(omObjData *object) {
     TidalTossSetupWork *work;
 
     work = HuMemAllocTag(sizeof(TidalTossSetupWork), TAG_OVERLAY);
@@ -376,7 +376,7 @@ void func_80106480_tidal_toss(omObjData *object) {
     object->func = NULL;
 }
 
-void func_80106514_tidal_toss(omObjData *object) {
+void m210_DeepMapObjInit(omObjData *object) {
     TidalTossSetupWork *work;
 
     work = HuMemAllocTag(sizeof(TidalTossSetupWork), TAG_OVERLAY);
@@ -391,64 +391,64 @@ void func_80106514_tidal_toss(omObjData *object) {
     object->func = NULL;
 }
 
-void func_801065AC_tidal_toss(omObjData *object) {
+void m210_MainObjMain(omObjData *object) {
     s8 chars[4];
-    TidalTossStruct *entry;
-    TidalTossSpriteWork *spriteWork;
+    TidalTossWave *entry;
+    TidalTossCloudWork *spriteWork;
     HuSprite *sprite;
     s16 *spriteGroup;
     s32 i;
     s32 active;
     s32 count;
 
-    switch (D_8010AF40_tidal_toss) {
+    switch (m210_phase) {
         case 0:
             Hu3DBGColorSet(0, 0, 0);
             WipeCreateIn(0xFF, 16);
             GMesCreate(4);
             HuAudFXPlay(0x42E);
-            D_8010AA8C_tidal_toss = 45;
-            D_8010AA90_tidal_toss = 900;
-            D_8010AF40_tidal_toss++;
-            D_8010ADE0_tidal_toss = 60;
+            m210_phaseTimer = 45;
+            m210_timer = 900;
+            m210_phase++;
+            m210_musicDelay = 60;
             // fallthrough
         case 1:
-            if (--D_8010ADE0_tidal_toss == -1) {
+            if (--m210_musicDelay == -1) {
                 HuAudSeqPlay(0x2F);
             }
-            if (--D_8010AA8C_tidal_toss == -1) {
+            if (--m210_phaseTimer == -1) {
                 HuAudFXAllFadeOut(45);
             }
             if (GMesStatGet() == 0) {
                 MgFlowStatSet(MG_STATE_PLAY);
-                D_8010AF40_tidal_toss++;
-                GMesCreate(0x1A, (D_8010AA90_tidal_toss + 29) / 30, 160, 32);
+                m210_phase++;
+                GMesCreate(0x1A, (m210_timer + 29) / 30, 160, 32);
                 HuAudFXPlay(0xE);
             }
             break;
         case 2:
             active = 0;
             for (i = 0; i < 4; i++) {
-                if (i != D_8010AA70_tidal_toss) {
+                if (i != m210_soloNo) {
                     active += TIDAL_TOSS_WORK(mgPlayerObjTbl[i])->unk2F;
                 }
             }
             if (active == 0) {
-                D_8010AA94_tidal_toss = D_8010AA70_tidal_toss;
-                D_8010AF40_tidal_toss = 3;
+                m210_winner = m210_soloNo;
+                m210_phase = 3;
             }
-            D_8010AA90_tidal_toss--;
-            GMesTimerValueSet((D_8010AA90_tidal_toss + 29) / 30);
-            if (D_8010AA90_tidal_toss == 0) {
-                D_8010AF40_tidal_toss = 3;
+            m210_timer--;
+            GMesTimerValueSet((m210_timer + 29) / 30);
+            if (m210_timer == 0) {
+                m210_phase = 3;
             }
             break;
         case 3:
-            if (D_8010AA94_tidal_toss == D_8010AA70_tidal_toss) {
-                TIDAL_TOSS_WORK(mgPlayerObjTbl[D_8010AA94_tidal_toss])->unk2F = 1;
+            if (m210_winner == m210_soloNo) {
+                TIDAL_TOSS_WORK(mgPlayerObjTbl[m210_winner])->unk2F = 1;
             } else {
                 for (i = 0; i < 4; i++) {
-                    if (i != D_8010AA70_tidal_toss) {
+                    if (i != m210_soloNo) {
                         TIDAL_TOSS_WORK(mgPlayerObjTbl[i])->unk2F = 1;
                     }
                 }
@@ -456,18 +456,18 @@ void func_801065AC_tidal_toss(omObjData *object) {
             GMesTimerEnd();
             GMesCreate(0xF);
             HuAudSeqFadeOut(120);
-            D_8010AF40_tidal_toss++;
-            D_8010AA8C_tidal_toss = 15;
+            m210_phase++;
+            m210_phaseTimer = 15;
             break;
         case 4:
             if (GMesStatGet() == 0) {
-                if (--D_8010AA8C_tidal_toss == 0) {
-                    if (D_8010AA94_tidal_toss == D_8010AA70_tidal_toss) {
-                        GMesCreate(0x16, TIDAL_TOSS_WORK(mgPlayerObjTbl[D_8010AA94_tidal_toss])->unk2C);
+                if (--m210_phaseTimer == 0) {
+                    if (m210_winner == m210_soloNo) {
+                        GMesCreate(0x16, TIDAL_TOSS_WORK(mgPlayerObjTbl[m210_winner])->unk2C);
                         HuAudSeqPlay(0x65);
                     } else {
                         for (i = 0, count = 0; i < 4; i++) {
-                            if (i != D_8010AA70_tidal_toss) {
+                            if (i != m210_soloNo) {
                                 chars[count] = TIDAL_TOSS_WORK(mgPlayerObjTbl[i])->unk2C;
                                 count++;
                             }
@@ -475,40 +475,40 @@ void func_801065AC_tidal_toss(omObjData *object) {
                         GMesCreate(0x22, chars[0], chars[1], chars[2]);
                         HuAudSeqPlay(0x66);
                     }
-                    D_8010AA8C_tidal_toss = 15;
-                    D_8010AF40_tidal_toss++;
+                    m210_phaseTimer = 15;
+                    m210_phase++;
                     MgFlowStatSet(MG_STATE_RESULT);
                 }
             }
             break;
         case 5:
             if (GMesStatGet() == 0) {
-                if (--D_8010AA8C_tidal_toss == 0) {
-                    D_8010AF40_tidal_toss++;
+                if (--m210_phaseTimer == 0) {
+                    m210_phase++;
                 }
             }
             break;
         case 6:
-            if (D_8010AA8C_tidal_toss != 0) {
-                if (--D_8010AA8C_tidal_toss == 0) {
-                    D_8010AF40_tidal_toss++;
+            if (m210_phaseTimer != 0) {
+                if (--m210_phaseTimer == 0) {
+                    m210_phase++;
                 }
             } else {
                 MgFlowStatSet(MG_STATE_EXIT);
-                D_8010AA8C_tidal_toss = 16;
-                WipeCreateOut(0, D_8010AA8C_tidal_toss);
-                HuAudSeqFadeOut(D_8010AA8C_tidal_toss);
-                HuAudFXAllFadeOut((s16)D_8010AA8C_tidal_toss);
+                m210_phaseTimer = 16;
+                WipeCreateOut(0, m210_phaseTimer);
+                HuAudSeqFadeOut(m210_phaseTimer);
+                HuAudFXAllFadeOut((s16)m210_phaseTimer);
             }
             break;
         case 7:
-            HuMemFree(D_8010AF3C_tidal_toss);
+            HuMemFree(m210_seaGfx);
             HuAudSeqStop();
             omOvlReturnEx(1);
             break;
     }
 
-    entry = D_8010AF48_tidal_toss;
+    entry = m210_waveTbl;
     for (i = 0; i < 8; i++) {
         if (entry->unk10 != 0) {
             entry->unk00 += entry->unk08;
@@ -523,7 +523,7 @@ void func_801065AC_tidal_toss(omObjData *object) {
         entry++;
     }
 
-    spriteWork = D_8010AFE8_tidal_toss;
+    spriteWork = m210_cloudWorkTbl;
     for (i = 0; i < 3; i++) {
         spriteWork->unk04 = spriteWork->unk00 + sindf(spriteWork->unk14) * 8.0;
         spriteWork->unk08 = spriteWork->unk02 + sindf(spriteWork->unk18) * 6.0;
@@ -535,7 +535,7 @@ void func_801065AC_tidal_toss(omObjData *object) {
         if (spriteWork->unk18 >= 360.0) {
             spriteWork->unk18 -= 360.0;
         }
-        spriteGroup = &D_8010AEEC_tidal_toss;
+        spriteGroup = &m210_cloudSpr;
         sprite = HuSprGet(*spriteGroup, i);
         sprite->pos.x = spriteWork->unk04;
         sprite->pos.y = spriteWork->unk08;
@@ -545,17 +545,17 @@ void func_801065AC_tidal_toss(omObjData *object) {
     }
 
     if (omSysExitReq == 1 && WipeStatGet() == 0) {
-        D_8010AF40_tidal_toss = 6;
-        D_8010AA8C_tidal_toss = 0;
+        m210_phase = 6;
+        m210_phaseTimer = 0;
     }
 }
 
-void func_80106D24_tidal_toss(Gfx **gfxPos, s32 arg1, s32 arg2) {
+void m210_SeaDraw(Gfx **gfxPos, s32 arg1, s32 arg2) {
     HuMtx4F modelMtx;
     HuMtx4F mtx;
     Vtx_t saved;
     TidalTossFace faces[64];
-    HmfModel *model = &Hu3DData[D_8010AF38_tidal_toss];
+    HmfModel *model = &Hu3DData[m210_seaMdl];
     HmfData *hmf = model->hmf;
     HmfModelData_Unk64_Unk60_Struct *object = hmf->unk60;
     HmfModelData_Unk64_Unk60_Unk54_Struct *source;
@@ -563,7 +563,7 @@ void func_80106D24_tidal_toss(Gfx **gfxPos, s32 arg1, s32 arg2) {
     TidalTossSortEntry *entry;
     TidalTossSortEntry *other;
     TidalTossFace *face;
-    TidalTossStruct *wave;
+    TidalTossWave *wave;
     HuSprAnimPat *frame;
     HuSprAnimData *anim;
     Gfx *gfx;
@@ -600,19 +600,19 @@ void func_80106D24_tidal_toss(Gfx **gfxPos, s32 arg1, s32 arg2) {
     f64 absDiff;
     f64 strength;
 
-    if (D_8010AAA4_tidal_toss == 0) {
-        switch (D_8010AAA8_tidal_toss) {
+    if (m210_seaGfxReadyF == 0) {
+        switch (m210_seaGfxBuildStep) {
             case 0:
                 entry = HuMemAlloc((object->unk22 + 2) * sizeof(TidalTossSortEntry));
-                D_8010AEA8_tidal_toss = entry;
-                D_8010AEAC_tidal_toss = HuMemAlloc(hmf->unk18 * 2 * sizeof(Vtx));
-                memset(D_8010AEAC_tidal_toss, 0, hmf->unk18 * 2 * sizeof(Vtx));
-                D_8010AEA8_tidal_toss->depth = -19980.0f;
-                D_8010AEA8_tidal_toss->prev = NULL;
-                D_8010AEA8_tidal_toss->next = &D_8010AEA8_tidal_toss[object->unk22 + 1];
-                D_8010AEA8_tidal_toss[object->unk22 + 1].depth = 19980.0f;
-                D_8010AEA8_tidal_toss[object->unk22 + 1].prev = D_8010AEA8_tidal_toss;
-                D_8010AEA8_tidal_toss[object->unk22 + 1].next = NULL;
+                m210_seaSortTbl = entry;
+                m210_seaVtxBuf = HuMemAlloc(hmf->unk18 * 2 * sizeof(Vtx));
+                memset(m210_seaVtxBuf, 0, hmf->unk18 * 2 * sizeof(Vtx));
+                m210_seaSortTbl->depth = -19980.0f;
+                m210_seaSortTbl->prev = NULL;
+                m210_seaSortTbl->next = &m210_seaSortTbl[object->unk22 + 1];
+                m210_seaSortTbl[object->unk22 + 1].depth = 19980.0f;
+                m210_seaSortTbl[object->unk22 + 1].prev = m210_seaSortTbl;
+                m210_seaSortTbl[object->unk22 + 1].next = NULL;
                 entry++;
                 for (i = 0; i < object->unk22; i++, entry++) {
                     source = &object->unk54[i];
@@ -627,7 +627,7 @@ void func_80106D24_tidal_toss(Gfx **gfxPos, s32 arg1, s32 arg2) {
                         }
                     }
                     entry->depth = minDepth;
-                    other = D_8010AEA8_tidal_toss;
+                    other = m210_seaSortTbl;
                     other = other->next;
                     while (other->depth < entry->depth) {
                         other = other->next;
@@ -639,8 +639,8 @@ void func_80106D24_tidal_toss(Gfx **gfxPos, s32 arg1, s32 arg2) {
                 }
                 groupStart = 0;
                 vertexCount = 0;
-                vertexLimit = D_8010AA9C_tidal_toss[(u32)(model->attr & HU3D_ATTR_LAYER_MASK) >> HU3D_ATTR_LAYER_SHIFT];
-                entry = D_8010AEA8_tidal_toss;
+                vertexLimit = m210_seaVtxLimitTbl[(u32)(model->attr & HU3D_ATTR_LAYER_MASK) >> HU3D_ATTR_LAYER_SHIFT];
+                entry = m210_seaSortTbl;
                 for (i = 0; i < object->unk22; i++) {
                     entry = entry->next;
                     if (entry->face == NULL) {
@@ -676,7 +676,7 @@ void func_80106D24_tidal_toss(Gfx **gfxPos, s32 arg1, s32 arg2) {
                         }
                         s = source->unk0C[j] * textureWidth;
                         t = source->unk1C[j] * textureHeight;
-                        vertex = &D_8010AEAC_tidal_toss[vertexCount - 1];
+                        vertex = &m210_seaVtxBuf[vertexCount - 1];
                         for (vertexIndex = vertexCount - 1; vertexIndex >= groupStart; vertexIndex--, vertex--) {
                             if (vertex->v.ob[0] == position[0] && vertex->v.ob[1] == position[1] &&
                                 vertex->v.ob[2] == position[2] && (s8)vertex->v.cn[0] == color[0] &&
@@ -686,7 +686,7 @@ void func_80106D24_tidal_toss(Gfx **gfxPos, s32 arg1, s32 arg2) {
                             }
                         }
                         if (vertexIndex <= groupStart) {
-                            vertex = &D_8010AEAC_tidal_toss[vertexCount];
+                            vertex = &m210_seaVtxBuf[vertexCount];
                             vertex->v.ob[0] = position[0];
                             vertex->v.ob[1] = position[1];
                             vertex->v.ob[2] = position[2];
@@ -711,22 +711,22 @@ void func_80106D24_tidal_toss(Gfx **gfxPos, s32 arg1, s32 arg2) {
                     HuMemFree(hmf->unk44[i]);
                 }
                 hmf->unk40 = HuMemAllocTag(hmf->unk18 * sizeof(Vtx), hmf->unk0E);
-                bcopy(D_8010AEAC_tidal_toss, hmf->unk40, hmf->unk18 * sizeof(Vtx));
+                bcopy(m210_seaVtxBuf, hmf->unk40, hmf->unk18 * sizeof(Vtx));
                 for (i = 0; i < 3; i++) {
                     hmf->unk44[i] = HuMemAllocTag(hmf->unk18 * sizeof(Vtx), hmf->unk0E);
-                    bcopy(D_8010AEAC_tidal_toss, hmf->unk44[i], hmf->unk18 * sizeof(Vtx));
+                    bcopy(m210_seaVtxBuf, hmf->unk44[i], hmf->unk18 * sizeof(Vtx));
                 }
-                HuMemFree(D_8010AEAC_tidal_toss);
+                HuMemFree(m210_seaVtxBuf);
                 break;
             case 2:
                 gfx = HuMemAlloc(0x280 * sizeof(Gfx));
                 gfxStart = gfx;
                 groupStart = 0;
                 faceCount = 0;
-                vertexLimit = D_8010AA9C_tidal_toss[(u32)(model->attr & HU3D_ATTR_LAYER_MASK) >> HU3D_ATTR_LAYER_SHIFT];
+                vertexLimit = m210_seaVtxLimitTbl[(u32)(model->attr & HU3D_ATTR_LAYER_MASK) >> HU3D_ATTR_LAYER_SHIFT];
                 maxVertex = 0;
                 flush = 0;
-                entry = D_8010AEA8_tidal_toss;
+                entry = m210_seaSortTbl;
                 for (i = 0; i < object->unk22; i++) {
                     entry = entry->next;
                     if (entry->face == NULL) {
@@ -777,14 +777,14 @@ void func_80106D24_tidal_toss(Gfx **gfxPos, s32 arg1, s32 arg2) {
                 }
                 gSPEndDisplayList(gfx++);
                 gfxCount = gfx - gfxStart;
-                D_8010AF3C_tidal_toss = HuMemAlloc(gfxCount * sizeof(Gfx));
-                bcopy(gfxStart, D_8010AF3C_tidal_toss, gfxCount * sizeof(Gfx));
+                m210_seaGfx = HuMemAlloc(gfxCount * sizeof(Gfx));
+                bcopy(gfxStart, m210_seaGfx, gfxCount * sizeof(Gfx));
                 HuMemFree(gfxStart);
-                HuMemFree(D_8010AEA8_tidal_toss);
-                D_8010AAA4_tidal_toss++;
+                HuMemFree(m210_seaSortTbl);
+                m210_seaGfxReadyF++;
                 break;
         }
-        D_8010AAA8_tidal_toss++;
+        m210_seaGfxBuildStep++;
         return;
     }
 
@@ -805,12 +805,12 @@ void func_80106D24_tidal_toss(Gfx **gfxPos, s32 arg1, s32 arg2) {
     mtxRotCat(mtx, model->rot.x, model->rot.y, model->rot.z);
     mtxScaleCat(mtx, model->scale.x, model->scale.y, model->scale.z);
     mtxCat(model->mtx, mtx, modelMtx);
-    guMtxF2L(modelMtx, &D_8010ADE8_tidal_toss[Hu3DBufNo]);
-    gSPMatrix(gfx++, osVirtualToPhysical(&D_8010ADE8_tidal_toss[Hu3DBufNo]),
+    guMtxF2L(modelMtx, &m210_seaMtx[Hu3DBufNo]);
+    gSPMatrix(gfx++, osVirtualToPhysical(&m210_seaMtx[Hu3DBufNo]),
               G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
 
-    frame = func_8010AA1C_tidal_toss(D_8010AF3A_tidal_toss, 0);
-    anim = HuSprAnimDataGet(D_8010AF3A_tidal_toss);
+    frame = m210_SprAnimPatGet(m210_seaTexAnim, 0);
+    anim = HuSprAnimDataGet(m210_seaTexAnim);
     gDPLoadTLUT_pal16(gfx++, 0, anim->pal);
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
     gDPLoadTextureBlock_4b(gfx++, frame->data, G_IM_FMT_CI, frame->sizeX, frame->sizeY, 0, G_TX_NOMIRROR | G_TX_WRAP,
@@ -818,11 +818,11 @@ void func_80106D24_tidal_toss(Gfx **gfxPos, s32 arg1, s32 arg2) {
     gDPLoadMultiBlock_4b(gfx++, frame->data, 0, 1, G_IM_FMT_CI, frame->sizeX, frame->sizeY, 0,
                          G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
     if (Hu3DPauseF == 0) {
-        D_8010AAAC_tidal_toss += 1.0;
+        m210_seaTexScroll += 1.0;
     }
-    gDPSetTileSize(gfx++, 0, 0, (s32)(D_8010AAAC_tidal_toss * 1.5 + 7.25) & 0x1FF, (frame->sizeX - 1) << 2,
+    gDPSetTileSize(gfx++, 0, 0, (s32)(m210_seaTexScroll * 1.5 + 7.25) & 0x1FF, (frame->sizeX - 1) << 2,
                    (frame->sizeY - 1) << 2);
-    gDPSetTileSize(gfx++, 1, 16, (s32)D_8010AAAC_tidal_toss & 0x1FF, (frame->sizeX - 1) << 2, (frame->sizeY - 1) << 2);
+    gDPSetTileSize(gfx++, 1, 16, (s32)m210_seaTexScroll & 0x1FF, (frame->sizeX - 1) << 2, (frame->sizeY - 1) << 2);
     gDPSetRenderMode(gfx++, G_RM_PASS, G_RM_AA_ZB_XLU_SURF2);
     gDPSetCombineLERP(gfx++, TEXEL0, TEXEL1, PRIMITIVE, TEXEL1, 0, 0, 0, SHADE, COMBINED, 0, SHADE, 0, 0, 0, 0,
                       COMBINED);
@@ -844,7 +844,7 @@ void func_80106D24_tidal_toss(Gfx **gfxPos, s32 arg1, s32 arg2) {
         if (710.0 < dist) {
             continue;
         }
-        wave = D_8010AF48_tidal_toss;
+        wave = m210_waveTbl;
         for (j = 0; j < 8; j++, wave++) {
             if (wave->unk10 == 0) {
                 continue;
@@ -883,17 +883,17 @@ void func_80106D24_tidal_toss(Gfx **gfxPos, s32 arg1, s32 arg2) {
 
     gDPPipeSync(gfx++);
     gSPSegment(gfx++, 1, osVirtualToPhysical(hmf->unk44[Hu3DBufNo]));
-    gSPDisplayList(gfx++, D_8010AF3C_tidal_toss);
+    gSPDisplayList(gfx++, m210_seaGfx);
     gDPPipeSync(gfx++);
     gDPSetCycleType(gfx++, G_CYC_1CYCLE);
     *gfxPos = gfx;
 }
 
-void func_80108460_tidal_toss(f32 arg0) {
-    TidalTossStruct *entry;
+void m210_WaveCreate(f32 arg0) {
+    TidalTossWave *entry;
     s32 i;
 
-    entry = D_8010AF48_tidal_toss;
+    entry = m210_waveTbl;
     for (i = 0; i < 8; i++) {
         if (entry->unk10 == 0) {
             entry->unk00 = 0.0f;
@@ -922,17 +922,17 @@ void func_80108460_tidal_toss(f32 arg0) {
     }
 }
 
-void func_801085A4_tidal_toss(void) {
+void m210_PlayerObjCreateAll(void) {
     s32 i;
 
     MgPlayerParamReset();
     mgPlayerObjNum = 0;
     for (i = 0; i < 4; i++) {
-        mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(2, 0xF, 0x32, -1, func_80108638_tidal_toss);
+        mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(2, 0xF, 0x32, -1, m210_PlayerObjInit);
     }
 }
 
-void func_80108638_tidal_toss(omObjData *object) {
+void m210_PlayerObjInit(omObjData *object) {
     MgPlayerWork *data;
     TidalTossWork *work;
     u8 playerIndex;
@@ -944,8 +944,8 @@ void func_80108638_tidal_toss(omObjData *object) {
     s32 i;
     f32 scale;
 
-    playerSlot = D_8010AAB8_tidal_toss;
-    playerIndex = D_8010AAB0_tidal_toss[playerSlot][1];
+    playerSlot = m210_playerSlotNo;
+    playerIndex = m210_playerSlotTbl[playerSlot][1];
     character = (s8)GwPlayer[playerIndex].chr;
     model = omCharModelNoTbl[character][0];
     motion = omCharMotTbl[character][0];
@@ -955,11 +955,11 @@ void func_80108638_tidal_toss(omObjData *object) {
     data = object->data;
     data->unk50 &= 0xFFFE;
     data->unkEC = 0;
-    playerSlot = D_8010AAB8_tidal_toss;
-    object->trans.x = D_8010AABC_tidal_toss[playerSlot][0];
-    object->trans.y = D_8010AABC_tidal_toss[playerSlot][1];
-    object->trans.z = D_8010AABC_tidal_toss[playerSlot][2];
-    data->unk3C = D_8010AAEC_tidal_toss[playerSlot];
+    playerSlot = m210_playerSlotNo;
+    object->trans.x = m210_playerPosTbl[playerSlot][0];
+    object->trans.y = m210_playerPosTbl[playerSlot][1];
+    object->trans.z = m210_playerPosTbl[playerSlot][2];
+    data->unk3C = m210_playerRotTbl[playerSlot];
     scale = data->unkAC;
     object->scale.z = scale;
     object->scale.y = scale;
@@ -972,7 +972,7 @@ void func_80108638_tidal_toss(omObjData *object) {
     memset(data->unk158, 0, 0x64);
     work = data->unk158;
     work->unk2B = playerIndex;
-    playerSlot = D_8010AAB8_tidal_toss;
+    playerSlot = m210_playerSlotNo;
     work->unk2D = GwPlayer[playerSlot].group;
     work->unk2C = character;
     work->unk30 = GwPlayer[playerIndex].stat & 1;
@@ -984,30 +984,30 @@ void func_80108638_tidal_toss(omObjData *object) {
     work->unk08 = object->trans.z;
 
     if (work->unk2D != 0) {
-        playerSlot = D_8010AAB9_tidal_toss;
-        object->trans.x = D_8010AABC_tidal_toss[playerSlot + 1][0];
-        object->trans.y = D_8010AABC_tidal_toss[playerSlot + 1][1];
-        object->trans.z = D_8010AABC_tidal_toss[playerSlot + 1][2];
-        data->unk3C = D_8010AAEC_tidal_toss[playerSlot + 1];
+        playerSlot = m210_teamSlotNo;
+        object->trans.x = m210_playerPosTbl[playerSlot + 1][0];
+        object->trans.y = m210_playerPosTbl[playerSlot + 1][1];
+        object->trans.z = m210_playerPosTbl[playerSlot + 1][2];
+        data->unk3C = m210_playerRotTbl[playerSlot + 1];
         MgPlayerMapAttrSet(object, 0, 2);
         MgPlayerMapAttrSet(object, 1, 1);
         MgPlayerMapAttrSet(object, 2, 1);
         data->unk50 |= 0x8000;
-        object->func = func_8010961C_tidal_toss;
-        D_8010AAB9_tidal_toss++;
+        object->func = m210_TeamObjMain;
+        m210_teamSlotNo++;
     } else {
-        object->trans.x = D_8010AABC_tidal_toss[0][0];
-        object->trans.y = D_8010AABC_tidal_toss[0][1];
-        object->trans.z = D_8010AABC_tidal_toss[0][2];
-        data->unk3C = D_8010AAEC_tidal_toss[0];
+        object->trans.x = m210_playerPosTbl[0][0];
+        object->trans.y = m210_playerPosTbl[0][1];
+        object->trans.z = m210_playerPosTbl[0][2];
+        data->unk3C = m210_playerRotTbl[0];
         MgPlayerMapAttrSet(object, 0, 1);
         MgPlayerMapAttrSet(object, 1, 2);
         MgPlayerMapAttrSet(object, 2, 1);
         object->model[9] = Hu3DModelRead(0x2B0005, modelTag);
         Hu3DModelPosSet(object->model[9], object->trans.x, object->trans.y,
                         object->trans.z + 20.0);
-        D_8010AA70_tidal_toss = data->unk59;
-        object->func = func_80109180_tidal_toss;
+        m210_soloNo = data->unk59;
+        object->func = m210_SoloObjMain;
     }
 
     modelTag = 0x2DD;
@@ -1081,10 +1081,10 @@ void func_80108638_tidal_toss(omObjData *object) {
 
     MgPlayerMotSet(object, 0);
 
-    D_8010AAB8_tidal_toss++;
+    m210_playerSlotNo++;
 }
 
-void func_80108F08_tidal_toss(omObjData *object, s32 arg1, s32 arg2, u16 player, u16 tag) {
+void m210_PlayerCreate(omObjData *object, s32 arg1, s32 arg2, u16 player, u16 tag) {
     MgPlayerWork *data;
     s32 i;
     u32 character;
@@ -1143,7 +1143,7 @@ void func_80108F08_tidal_toss(omObjData *object, s32 arg1, s32 arg2, u16 player,
     }
 }
 
-void func_80109180_tidal_toss(omObjData *object) {
+void m210_SoloObjMain(omObjData *object) {
     MgPlayerWork *data;
     TidalTossWork *work;
     u8 player;
@@ -1156,10 +1156,10 @@ void func_80109180_tidal_toss(omObjData *object) {
     work = data->unk158;
     player = data->unk57;
 
-    switch (D_8010AF40_tidal_toss) {
+    switch (m210_phase) {
         case 0:
             work->unk44 = 0.0f;
-            random = func_8010A7F8_tidal_toss();
+            random = m210_Rand16Get();
             work->unk36 = (s32)((f64)(f32)random * 1.52587890625e-05 * 12.0);
             work->unk38 = 0;
             break;
@@ -1171,7 +1171,7 @@ void func_80109180_tidal_toss(omObjData *object) {
                 HuPadStkX[player] = 0;
                 HuPadBtnDown[player] = 0;
                 HuPadBtn[player] = 0;
-                func_8010A11C_tidal_toss(object);
+                m210_SoloComInput(object);
             }
             break;
         case 3:
@@ -1217,7 +1217,7 @@ void func_80109180_tidal_toss(omObjData *object) {
 
     if (status & 0x200) {
         if ((data->unk50 & 0x80) && (work->unk2A == 0)) {
-            func_80108460_tidal_toss(work->unk20);
+            m210_WaveCreate(work->unk20);
             work->unk2A++;
         }
         if (!(work->unk28 & 0x200)) {
@@ -1225,7 +1225,7 @@ void func_80109180_tidal_toss(omObjData *object) {
             work->unk2A = 0;
         }
     } else if ((work->unk28 & 0x20) && !(status & 0x20)) {
-        func_80108460_tidal_toss(100.0f);
+        m210_WaveCreate(100.0f);
         work->unk20 = 100.0f;
     }
 
@@ -1251,7 +1251,7 @@ void func_80109180_tidal_toss(omObjData *object) {
     work->unk28 = status;
 }
 
-void func_80109584_tidal_toss(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3) {
+void m210_SplashEffSet(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3) {
     s32 i;
 
     for (i = 9; i < 12; i++) {
@@ -1262,13 +1262,13 @@ void func_80109584_tidal_toss(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3) {
     }
 }
 
-void func_8010961C_tidal_toss(omObjData *object) {
+void m210_TeamObjMain(omObjData *object) {
     MgPlayerWork *data;
     TidalTossWork *work;
     u8 player;
     u32 status;
     f64 dist;
-    TidalTossStruct *entry;
+    TidalTossWave *entry;
     s32 i;
     f32 angle;
     f32 rot;
@@ -1286,12 +1286,12 @@ void func_8010961C_tidal_toss(omObjData *object) {
     work->unk14 = object->trans.z;
     dist = sqrtf(object->trans.x * object->trans.x + object->trans.z * object->trans.z);
 
-    switch (D_8010AF40_tidal_toss) {
+    switch (m210_phase) {
         case 0:
             work->unk2F = 1;
             work->unk2A = 0;
             work->unk44 = 0.0f;
-            work->unk4C = (s32)((f64)(f32)func_8010A7F8_tidal_toss() * 1.52587890625e-05 * 10.0);
+            work->unk4C = (s32)((f64)(f32)m210_Rand16Get() * 1.52587890625e-05 * 10.0);
             break;
         case 1:
             break;
@@ -1301,10 +1301,10 @@ void func_8010961C_tidal_toss(omObjData *object) {
                 HuPadStkX[player] = 0;
                 HuPadBtnDown[player] = 0;
                 HuPadBtn[player] = 0;
-                func_8010A490_tidal_toss(object, dist);
+                m210_TeamComInput(object, dist);
             }
             if (data->unkBE == 0) {
-                entry = D_8010AF48_tidal_toss;
+                entry = m210_waveTbl;
                 for (i = 0; i < 8; i++, entry++) {
                     if (entry->unk10 == 0) {
                         continue;
@@ -1316,7 +1316,7 @@ void func_8010961C_tidal_toss(omObjData *object) {
                     if (!(object->trans.y < entry->unk04)) {
                         continue;
                     }
-                    angle = func_8010A8A4_tidal_toss(object->trans.x, object->trans.z);
+                    angle = m210_AngleCalc(object->trans.x, object->trans.z);
                     if (angle > 180.0) {
                         angle -= 360.0f;
                     }
@@ -1406,7 +1406,7 @@ void func_8010961C_tidal_toss(omObjData *object) {
         object->trans.z = object->trans.z / dist * 190.0;
     }
     if ((status & 0xC00) && work->unk2A == 0) {
-        if (690.0 - data->unk48 <= dist && D_8010AF40_tidal_toss == 2) {
+        if (690.0 - data->unk48 <= dist && m210_phase == 2) {
             if (status & 0x400) {
                 data->unk40 = -24.0f;
             } else {
@@ -1431,7 +1431,7 @@ void func_8010961C_tidal_toss(omObjData *object) {
             data->unk40 = work->unk18;
         } else if (work->unk28 & 0x20) {
             if (dist <= 590.0) {
-                func_80109584_tidal_toss(object, object->trans.x, 60.0f, object->trans.z + 50.0);
+                m210_SplashEffSet(object, object->trans.x, 60.0f, object->trans.z + 50.0);
             }
         }
     }
@@ -1458,17 +1458,17 @@ void func_8010961C_tidal_toss(omObjData *object) {
         if (fabs(object->trans.y - other->trans.y) > 30.0) {
             continue;
         }
-        dist = func_8010A850_tidal_toss(&object->trans, &other->trans);
+        dist = m210_DistXZCalc(&object->trans, &other->trans);
         radius = data->unk48 + otherData->unk48;
         if (radius < dist) {
             continue;
         }
         if (data->unk40 <= otherData->unk40) {
-            angle = func_8010A8A4_tidal_toss(other->trans.x - object->trans.x, other->trans.z - object->trans.z);
+            angle = m210_AngleCalc(other->trans.x - object->trans.x, other->trans.z - object->trans.z);
             other->trans.x = object->trans.x + radius * sindf(angle);
             other->trans.z = object->trans.z + radius * cosdf(angle);
         } else {
-            angle = func_8010A8A4_tidal_toss(object->trans.x - other->trans.x, object->trans.z - other->trans.z);
+            angle = m210_AngleCalc(object->trans.x - other->trans.x, object->trans.z - other->trans.z);
             object->trans.x = other->trans.x + radius * sindf(angle);
             object->trans.z = other->trans.z + radius * cosdf(angle);
         }
@@ -1481,7 +1481,7 @@ void func_8010961C_tidal_toss(omObjData *object) {
     }
 }
 
-u16 func_8010A11C_tidal_toss(omObjData *object) {
+u16 m210_SoloComInput(omObjData *object) {
     TidalTossWork *work;
     MgPlayerWork *data;
     s16 player;
@@ -1489,7 +1489,7 @@ u16 func_8010A11C_tidal_toss(omObjData *object) {
     s32 random;
     u16 result;
 
-    func_8010A7E4_tidal_toss(object, &data, &work);
+    m210_PlayerWorkGet(object, &data, &work);
     player = data->unk57;
     status = MgPlayerMotStatGet(object);
 
@@ -1533,15 +1533,15 @@ u16 func_8010A11C_tidal_toss(omObjData *object) {
     }
 
     if (work->unk32 == 0) {
-        random = func_8010A7F8_tidal_toss();
+        random = m210_Rand16Get();
         if (random % (6 - work->unk2E) == 0) {
             work->unk38 = 5;
-            random = func_8010A7F8_tidal_toss();
+            random = m210_Rand16Get();
             if (random % (work->unk2E + 3) == 0 || work->unk36 == 0) {
                 work->unk32 = 3;
-                random = func_8010A7F8_tidal_toss();
+                random = m210_Rand16Get();
                 work->unk34 = (s32)((f64)(f32)random * 1.52587890625e-05 * 10.0) * 10 + 170;
-                random = func_8010A7F8_tidal_toss();
+                random = m210_Rand16Get();
                 work->unk36 = (s32)((f64)(f32)random * 1.52587890625e-05 * 8.0) + 8;
             } else {
                 work->unk32 = 1;
@@ -1554,10 +1554,10 @@ u16 func_8010A11C_tidal_toss(omObjData *object) {
     return result;
 }
 
-u16 func_8010A490_tidal_toss(omObjData *arg0, f32 arg1) {
+u16 m210_TeamComInput(omObjData *arg0, f32 arg1) {
     TidalTossWork *work;
     MgPlayerWork *data;
-    TidalTossStruct *entry;
+    TidalTossWave *entry;
     f32 distance;
     f64 distanceD;
     f32 absDistance;
@@ -1568,13 +1568,13 @@ u16 func_8010A490_tidal_toss(omObjData *arg0, f32 arg1) {
     s32 random;
     u16 result; // The original function returns this uninitialized value; its caller ignores it.
 
-    func_8010A7E4_tidal_toss(arg0, &data, &work);
+    m210_PlayerWorkGet(arg0, &data, &work);
     {
         f32 unused[2]; // Unused stack space retained from the original function.
     }
     player = data->unk57;
     status = MgPlayerMotStatGet(arg0);
-    entry = D_8010AF48_tidal_toss;
+    entry = m210_waveTbl;
 
     for (i = 0; i < 8; i++) {
         if (entry->unk10 != 0) {
@@ -1584,7 +1584,7 @@ u16 func_8010A490_tidal_toss(omObjData *arg0, f32 arg1) {
             radius = entry->unk08 + (7.25 - (f32)entry->unk10 + (f32)work->unk2E * 0.25) * 20.0;
             if (absDistance <= radius) {
                 if (distanceD <= 0.0) {
-                    random = (s32)((f32)func_8010A7F8_tidal_toss() * 1.52587890625e-05 * 100.0);
+                    random = (s32)((f32)m210_Rand16Get() * 1.52587890625e-05 * 100.0);
                     if (random < work->unk2E * 10 + 45) {
                         HuPadBtnDown[player] |= 0x8000;
                         switch (work->unk2E) {
@@ -1628,23 +1628,23 @@ u16 func_8010A490_tidal_toss(omObjData *arg0, f32 arg1) {
     return result;
 }
 
-void func_8010A7E4_tidal_toss(omObjData *arg0, MgPlayerWork **arg1, TidalTossWork **arg2) {
+void m210_PlayerWorkGet(omObjData *arg0, MgPlayerWork **arg1, TidalTossWork **arg2) {
     *arg1 = arg0->data;
     *arg2 = (*arg1)->unk158;
 }
 
-s32 func_8010A7F8_tidal_toss(void) {
-    D_8010AAFC_tidal_toss = D_8010AAFC_tidal_toss * 0x41C64E6D + 0x3039;
-    D_8010AAFC_tidal_toss += rand8();
-    return D_8010AAFC_tidal_toss >> 16;
+s32 m210_Rand16Get(void) {
+    m210_randSeed = m210_randSeed * 0x41C64E6D + 0x3039;
+    m210_randSeed += rand8();
+    return m210_randSeed >> 16;
 }
 
-f32 func_8010A850_tidal_toss(Vec *arg0, Vec *arg1) {
+f32 m210_DistXZCalc(Vec *arg0, Vec *arg1) {
     return sqrtf(((arg0->x - arg1->x) * (arg0->x - arg1->x)) +
                  ((arg0->z - arg1->z) * (arg0->z - arg1->z)));
 }
 
-f32 func_8010A8A4_tidal_toss(f32 arg0, f32 arg1) {
+f32 m210_AngleCalc(f32 arg0, f32 arg1) {
     f32 angle;
     f32 fullRot = 360.0f;
 
@@ -1657,7 +1657,7 @@ f32 func_8010A8A4_tidal_toss(f32 arg0, f32 arg1) {
     return angle;
 }
 
-s16 func_8010A90C_tidal_toss(s32 arg0) {
+s16 m210_AnimDataRead(s32 arg0) {
     void *temp_v0;
     s16 temp_s0;
 
@@ -1667,7 +1667,7 @@ s16 func_8010A90C_tidal_toss(s32 arg0) {
     return temp_s0;
 }
 
-s16 func_8010A954_tidal_toss(s16 arg0, s16 arg1) {
+s16 m210_SprGrpCreate(s16 arg0, s16 arg1) {
     s16 spriteId;
     s32 i;
 
@@ -1684,6 +1684,6 @@ s16 func_8010A954_tidal_toss(s16 arg0, s16 arg1) {
     return spriteId;
 }
 
-HuSprAnimPat *func_8010AA1C_tidal_toss(s16 arg0, s16 arg1) {
+HuSprAnimPat *m210_SprAnimPatGet(s16 arg0, s16 arg1) {
     return &HuSprAnimDataGet(arg0)->pat[arg1];
 }

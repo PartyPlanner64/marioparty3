@@ -15,10 +15,10 @@ typedef struct SnowballSummitCamera {
     f32 fov;
 } SnowballSummitCamera; // sizeof 0x2C
 
-typedef struct UnkSnowballSummitPath {
+typedef struct SnowballSummitBackBallPath {
     /* 0x00 */ Vec start;
     /* 0x0C */ Vec end;
-} UnkSnowballSummitPath; // sizeof 0x18
+} SnowballSummitBackBallPath; // sizeof 0x18
 
 typedef struct SnowballSummitBackdrop {
     /* 0x00 */ s32 state; // -1 when not drawn
@@ -29,7 +29,7 @@ typedef struct SnowballSummitBackdrop {
     /* 0x14 */ HuSprAnimData *rightSprite;
 } SnowballSummitBackdrop; // sizeof 0x18
 
-typedef struct UnkSnowballSummitSnowball {
+typedef struct SnowballSummitBurst {
     /* 0x00 */ s32 state; // -1 when the slot is unused, 0 when the snowball is dead, 1 or 2 while in use
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08;
@@ -37,14 +37,14 @@ typedef struct UnkSnowballSummitSnowball {
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;
     /* 0x18 */ omObjData *unk_18; // minigame object that owns the slot
-} UnkSnowballSummitSnowball;      // sizeof 0x1C
+} SnowballSummitBurst;      // sizeof 0x1C
 
-typedef struct UnkSnowballSummitSlot {
+typedef struct SnowballSummitBall {
     /* 0x00 */ s32 id; // -1 when the slot is unused
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ f32 unk_0C;
-    /* 0x10 */ s32 unk_10; // index into D_8010F9B8_snowball_summit of the object that owns the slot
+    /* 0x10 */ s32 unk_10; // index into m240_playerWorkTbl of the object that owns the slot
     /* 0x14 */ f32 unk_14;
     /* 0x18 */ s32 unk_18;
     /* 0x1C */ f32 unk_1C;
@@ -56,32 +56,32 @@ typedef struct UnkSnowballSummitSlot {
     /* 0x34 */ s32 unk_34;
     /* 0x38 */ s32 unk_38; // sound effect id, -1 when unset
     /* 0x3C */ omObjData *unk_3C;
-} UnkSnowballSummitSlot; // sizeof 0x40
+} SnowballSummitBall; // sizeof 0x40
 
-typedef struct UnkSnowballSummitRoll {
+typedef struct SnowballSummitPuff {
     /* 0x00 */ s32 state; // -1 when the slot is unused, 0 when the roll is dead, 1 or 2 while in use
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ omObjData *unk_14; // minigame object that owns the slot
-} UnkSnowballSummitRoll;          // sizeof 0x18
+} SnowballSummitPuff;          // sizeof 0x18
 
-typedef struct UnkSnowballSummitObjSlot {
+typedef struct SnowballSummitMakeEff {
     /* 0x00 */ s32 id;       // -1 when the slot is unused
     /* 0x04 */ void *unk_04; // minigame object that owns the slot
-} UnkSnowballSummitObjSlot;  // sizeof 0x8
+} SnowballSummitMakeEff;  // sizeof 0x8
 
-typedef struct UnkSnowballSummitThrow {
+typedef struct SnowballSummitBackBall {
     /* 0x00 */ s32 state; // -1 when the slot is unused
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;
-} UnkSnowballSummitThrow; // sizeof 0x18
+} SnowballSummitBackBall; // sizeof 0x18
 
-typedef struct UnkSnowballSummitMover {
+typedef struct SnowballSummitPlayer {
     /* 0x00 */ s32 id;     // -1 when the slot is unused
     /* 0x04 */ s32 unk_04; // 0 while unused, otherwise the selected model variant
     /* 0x08 */ s32 unk_08; // one of the owner's player flags
@@ -107,7 +107,7 @@ typedef struct UnkSnowballSummitMover {
     /* 0x58 */ s32 unk_58;    // set when colliding with another mover
     /* 0x5C */ s32 unk_5C[4]; // per-player collision flags
     /* 0x6C */ s32 unk_6C;
-    /* 0x70 */ s32 unk_70; // -1 when unset, else an index into D_8010FC30_snowball_summit
+    /* 0x70 */ s32 unk_70; // -1 when unset, else an index into m240_ballTbl
     /* 0x74 */ s32 unk_74;
     /* 0x78 */ omObjData *unk_78; // minigame object that owns the slot
     /* 0x7C */ s32 unk_7C;
@@ -119,118 +119,118 @@ typedef struct UnkSnowballSummitMover {
     /* 0x94 */ s16 unk_94;
     /* 0x96 */ s16 unk_96;
     /* 0x98 */ f32 unk_98;
-} UnkSnowballSummitMover; // sizeof 0x9C
+} SnowballSummitPlayer; // sizeof 0x9C
 
-typedef struct UnkSnowballSummitNode {
+typedef struct SnowballSummitRollEff {
     /* 0x00 */ s32 id; // -1 when the slot is unused, 0 when the node is dead, 1 when it is in use
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08; // sound effect id, -1 when unset
     /* 0x0C */ omObjData *unk_0C;
-} UnkSnowballSummitNode; // sizeof 0x10
+} SnowballSummitRollEff; // sizeof 0x10
 
 extern s32 omCharModelNoTbl[][6];
 
-UnkSnowballSummitPath D_8010F550_snowball_summit[3] = {
+SnowballSummitBackBallPath m240_backBallPathTbl[3] = {
     { { -50.0f, 500.0f, -800.0f }, { -1200.0f, -330.0f, -800.0f } },
     { { 700.0f, 500.0f, -800.0f }, { -900.0f, -375.0f, -800.0f } },
     { { 1100.0f, 500.0f, -800.0f }, { 200.0f, -350.0f, -800.0f } },
 };
 // x: trans.x, y: trans.z, z: rot.y
-Vec D_8010F598_snowball_summit[4] = {
+Vec m240_startPosTbl[4] = {
     { -400.0f, -400.0f, 45.0f },
     { 400.0f, -400.0f, 315.0f },
     { 400.0f, 400.0f, 225.0f },
     { -400.0f, 400.0f, 135.0f },
 };
-s32 D_8010F5C8_snowball_summit = -1;
-SnowballSummitCamera D_8010F5CC_snowball_summit[2] = {
+s32 m240_ambientSeNo = -1;
+SnowballSummitCamera m240_cameraViewTbl[2] = {
     { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 24.0f },
     { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 24.0f },
 };
 
-extern const s16 D_8010F870_snowball_summit[];
+extern const s16 m240_fontMesTbl[];
 
-s32 D_8010F880_snowball_summit BSS;
-s32 D_8010F884_snowball_summit BSS;
-u16 D_8010F888_snowball_summit BSS;
-s32 D_8010F88C_snowball_summit BSS;
-s16 D_8010F890_snowball_summit BSS;
-u8 D_8010F892_snowball_summit BSS;
-u8 D_8010F894_snowball_summit[4] BSS; /* Unreferenced. */
-s32 D_8010F898_snowball_summit[4] BSS;
-s32 D_8010F8A8_snowball_summit BSS;
-s16 D_8010F8AC_snowball_summit BSS;
-s16 D_8010F8AE_snowball_summit BSS;
-s16 D_8010F8B0_snowball_summit BSS;
-u8 D_8010F8B4_snowball_summit[0xC] BSS; /* Unreferenced. */
-SnowballSummitBackdrop snowballSummitBackdrop BSS;
-// func_80106760_snowball_summit accesses the backdrop fields as separate symbols.
-extern s32 D_8010F8C0_snowball_summit;                    // snowballSummitBackdrop.state
-extern s32 D_8010F8C8_snowball_summit;                    // snowballSummitBackdrop.hookId
-extern s16 D_8010F8CA_snowball_summit;                    // snowballSummitBackdrop.hookId (low half)
-extern HuSprAnimData *D_8010F8CC_snowball_summit; // snowballSummitBackdrop.leftSprite
-extern HuSprAnimData *D_8010F8D4_snowball_summit; // snowballSummitBackdrop.rightSprite
-UnkSnowballSummitSnowball D_8010F8D8_snowball_summit[8] BSS;
-UnkSnowballSummitMover D_8010F9B8_snowball_summit[4] BSS;
-u8 D_8010FC28_snowball_summit[8] BSS; /* Unreferenced. */
-UnkSnowballSummitSlot D_8010FC30_snowball_summit[16] BSS;
-s16 D_80110030_snowball_summit BSS;
-u8 D_80110034_snowball_summit[0x10] BSS; /* Unreferenced. */
-s32 D_80110044_snowball_summit BSS;
-UnkSnowballSummitRoll D_80110048_snowball_summit[16] BSS;
-UnkSnowballSummitObjSlot D_801101C8_snowball_summit[4] BSS;
-s32 D_801101E8_snowball_summit BSS;
-u8 D_801101EC_snowball_summit[4] BSS; /* Unreferenced. */
-s16 D_801101F0_snowball_summit BSS;
-u16 D_801101F2_snowball_summit BSS;
-f32 D_801101F4_snowball_summit BSS;
-f32 D_801101F8_snowball_summit BSS;
-u8 D_801101FC_snowball_summit[4] BSS; /* Unreferenced. */
-UnkSnowballSummitThrow D_80110200_snowball_summit[3] BSS;
-s32 D_80110248_snowball_summit BSS;
-s32 D_8011024C_snowball_summit BSS;
-UnkSnowballSummitNode D_80110250_snowball_summit[4] BSS;
-u8 D_80110290_snowball_summit[0x10] BSS; /* Unreferenced. */
+s32 m240_phase BSS;
+s32 m240_phaseStep BSS;
+u16 m240_cameraSetF BSS;
+s32 m240_phaseTimer BSS;
+s16 m240_backBallMdl BSS;
+u8 m240_backBallAnim BSS;
+u8 m240_backBallAnimPad[4] BSS; /* Unreferenced. */
+s32 m240_hitTimerTbl[4] BSS;
+s32 m240_startPosNo BSS;
+s16 m240_ballMdl BSS;
+s16 m240_makeEffMdl BSS;
+s16 m240_rollEffMdl BSS;
+u8 m240_rollEffMdlPad[0xC] BSS; /* Unreferenced. */
+SnowballSummitBackdrop m240_backdrop BSS;
+// m240_BackdropObjInit accesses the backdrop fields as separate symbols.
+extern s32 m240_backdropState;                    // m240_backdrop.state
+extern s32 m240_backdropHookId;                    // m240_backdrop.hookId
+extern s16 m240_backdropHookMdl;                    // m240_backdrop.hookId (low half)
+extern HuSprAnimData *m240_backdropLeftSpr; // m240_backdrop.leftSprite
+extern HuSprAnimData *m240_backdropRightSpr; // m240_backdrop.rightSprite
+SnowballSummitBurst m240_burstTbl[8] BSS;
+SnowballSummitPlayer m240_playerWorkTbl[4] BSS;
+u8 m240_playerWorkTblPad[8] BSS; /* Unreferenced. */
+SnowballSummitBall m240_ballTbl[16] BSS;
+s16 m240_snowMdl BSS;
+u8 m240_snowMdlPad[0x10] BSS; /* Unreferenced. */
+s32 m240_winnerF BSS;
+SnowballSummitPuff m240_puffTbl[16] BSS;
+SnowballSummitMakeEff m240_makeEffTbl[4] BSS;
+s32 m240_unusedF BSS;
+u8 m240_unusedFPad[4] BSS; /* Unreferenced. */
+s16 m240_hudSprGrp BSS;
+u16 m240_hudSpr BSS;
+f32 m240_hudX BSS;
+f32 m240_hudY BSS;
+u8 m240_hudYPad[4] BSS; /* Unreferenced. */
+SnowballSummitBackBall m240_backBallTbl[3] BSS;
+s32 m240_unusedNo BSS;
+s32 m240_ballSeF BSS;
+SnowballSummitRollEff m240_rollEffTbl[4] BSS;
+u8 m240_rollEffTblPad[0x10] BSS; /* Unreferenced. */
 
-void func_8010F42C_snowball_summit(void);
-void func_801062E0_snowball_summit(Gfx **gfxPos, s32 arg1, s32 arg2);
-void func_80106758_snowball_summit(omObjData *object);
-void func_8010B34C_snowball_summit(omObjData *object);
-void func_801070F4_snowball_summit(omObjData *object);
-void func_8010C600_snowball_summit(omObjData *object);
-void func_8010BEE8_snowball_summit(omObjData *object);
-void func_8010C168_snowball_summit(omObjData *object);
-void func_8010742C_snowball_summit(omObjData *object);
-void func_8010EEEC_snowball_summit(omObjData *object);
-void func_8010B9E4_snowball_summit(omObjData *object);
-s32 func_8010B994_snowball_summit(omObjData *object);
-void func_801061DC_snowball_summit(omObjData *);
-void func_80107230_snowball_summit(omObjData *);
-void func_80106760_snowball_summit(omObjData *);
-void func_8010683C_snowball_summit(omObjData *);
-void func_801068EC_snowball_summit(omObjData *);
-void func_80106D58_snowball_summit(omObjData *);
-void func_8010699C_snowball_summit(omObjData *object);
-void func_80107B58_snowball_summit(omObjData *object, Vec stick);
-void func_8010B250_snowball_summit(omObjData *object);
-void func_8010A940_snowball_summit(omObjData *object);
-void func_8010D86C_snowball_summit(void);
-void func_8010811C_snowball_summit(omObjData *object);
-void func_801075E0_snowball_summit(omObjData *);
-void func_80107860_snowball_summit(omObjData *);
-void func_8010775C_snowball_summit(omObjData *);
-void func_8010C4F4_snowball_summit(omObjData *);
-void func_8010BC7C_snowball_summit(omObjData *);
-void func_8010C6A8_snowball_summit(omObjData *);
-void func_8010C7F0_snowball_summit(omObjData *);
-void func_8010C000_snowball_summit(omObjData *);
-void func_8010C170_snowball_summit(omObjData *);
+void m240_ObjectSetup(void);
+void m240_BackdropDraw(Gfx **gfxPos, s32 arg1, s32 arg2);
+void m240_BackdropObjMain(omObjData *object);
+void m240_PlayerObjInit(omObjData *object);
+void m240_PuffObjMain(omObjData *object);
+void m240_SeqFinishObjMain(omObjData *object);
+void m240_MakeEffObjMain(omObjData *object);
+void m240_RollEffObjMain(omObjData *object);
+void m240_BurstObjMain(omObjData *object);
+void m240_MainObjMain(omObjData *object);
+void m240_BallObjMain(omObjData *object);
+s32 m240_BallCreate(omObjData *object);
+void m240_HudObjInit(omObjData *);
+void m240_PuffObjInit(omObjData *);
+void m240_BackdropObjInit(omObjData *);
+void m240_StageObjInit(omObjData *);
+void m240_MountainObjInit(omObjData *);
+void m240_BackBallObjInit(omObjData *);
+void m240_BackBallObjMain(omObjData *object);
+void m240_PlayerSpeedUpdate(omObjData *object, Vec stick);
+void m240_PlayerObjMain(omObjData *object);
+void m240_PlayerBallRelease(omObjData *object);
+void m240_PlayerMoveUpdate(void);
+void m240_PlayerComInput(omObjData *object);
+void m240_BurstObjInit(omObjData *);
+void m240_SnowObjInit(omObjData *);
+void m240_SnowObjMain(omObjData *);
+void m240_SeqSettleWaitObjMain(omObjData *);
+void m240_BallObjInit(omObjData *);
+void m240_SeqTimerObjMain(omObjData *);
+void m240_SeqStartWaitObjMain(omObjData *);
+void m240_MakeEffObjInit(omObjData *);
+void m240_RollEffObjInit(omObjData *);
 
-void func_801059A0_snowball_summit(void) {
-    func_8010F42C_snowball_summit();
+void m240_Executor(void) {
+    m240_ObjectSetup();
 }
 
-Gfx **func_801059BC_snowball_summit(Gfx **gfxPos) {
+Gfx **m240_GfxRectTexInit(Gfx **gfxPos) {
     u32 geometryMode = G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH;
     Gfx *gfx = *gfxPos;
 
@@ -246,7 +246,7 @@ Gfx **func_801059BC_snowball_summit(Gfx **gfxPos) {
     return gfxPos;
 }
 
-Gfx **func_80105AA0_snowball_summit(Gfx **gfxPos) {
+Gfx **m240_GfxRectXluInit(Gfx **gfxPos) {
     u32 geometryMode = G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH;
     Gfx *gfx = *gfxPos;
 
@@ -261,7 +261,7 @@ Gfx **func_80105AA0_snowball_summit(Gfx **gfxPos) {
     return gfxPos;
 }
 
-Gfx **func_80105B6C_snowball_summit(Gfx **gfxPos, s32 alpha) {
+Gfx **m240_GfxPrimAlphaSet(Gfx **gfxPos, s32 alpha) {
     Gfx *gfx = *gfxPos;
 
     gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, alpha);
@@ -269,14 +269,14 @@ Gfx **func_80105B6C_snowball_summit(Gfx **gfxPos, s32 alpha) {
     return gfxPos;
 }
 
-void func_80105B9C_snowball_summit(s32 playerIndex) {
+void m240_PadClear(s32 playerIndex) {
     HuPadBtn[GwPlayer[playerIndex].pad] = 0;
     HuPadBtnDown[GwPlayer[playerIndex].pad] = 0;
     HuPadStkX[GwPlayer[playerIndex].pad] = 0;
     HuPadStkY[GwPlayer[playerIndex].pad] = 0;
 }
 
-f32 func_80105C14_snowball_summit(f32 value) {
+f32 m240_ArcTanCalc(f32 value) {
     s32 range;
     s32 i;
     f32 fraction;
@@ -308,7 +308,7 @@ f32 func_80105C14_snowball_summit(f32 value) {
     return 0.0f;
 }
 
-void func_80105D64_snowball_summit(Vec *position, Vec *target, Vec *result) {
+void m240_PolarCalc(Vec *position, Vec *target, Vec *result) {
     Vec difference;
     Vec positionCopy;
     Vec targetCopy;
@@ -334,7 +334,7 @@ void func_80105D64_snowball_summit(Vec *position, Vec *target, Vec *result) {
         yaw = horizontalDistance;
     } else {
         if (difference.x != 0.0f && difference.z != 0.0f) {
-            yaw = func_80105C14_snowball_summit(difference.x / difference.z) * 57.2957795130823229;
+            yaw = m240_ArcTanCalc(difference.x / difference.z) * 57.2957795130823229;
         } else if (difference.z == 0.0f) {
             yaw = difference.x >= 0.0f ? 90.0f : 270.0f;
         } else {
@@ -344,7 +344,7 @@ void func_80105D64_snowball_summit(Vec *position, Vec *target, Vec *result) {
             yaw -= 180.0f;
         }
         if (horizontalDistance != 0.0f && difference.y != 0.0f) {
-            pitch = func_80105C14_snowball_summit(difference.y / horizontalDistance) * 57.2957795130823229;
+            pitch = m240_ArcTanCalc(difference.y / horizontalDistance) * 57.2957795130823229;
         } else {
             pitch = 0.0f;
         }
@@ -362,12 +362,12 @@ void func_80105D64_snowball_summit(Vec *position, Vec *target, Vec *result) {
     result->x = distance;
 }
 
-void func_801060E0_snowball_summit(u16 arg0, u16 arg1, char *arg2, u16 arg3) {
+void m240_TextPrint(u16 arg0, u16 arg1, char *arg2, u16 arg3) {
     fontcolor = arg3;
     print8(arg0, arg1, arg2);
 }
 
-f32 func_8010610C_snowball_summit(f32 y, f32 x) {
+f32 m240_AngleCalc(f32 y, f32 x) {
     f32 angle = atan2df(y, x);
 
     if (angle > 360.0) {
@@ -378,33 +378,33 @@ f32 func_8010610C_snowball_summit(f32 y, f32 x) {
     return angle;
 }
 
-void func_80106184_snowball_summit(omObjData *object) {
-    espPosSet(D_801101F2_snowball_summit, D_801101F4_snowball_summit, D_801101F8_snowball_summit);
+void m240_HudObjMain(omObjData *object) {
+    espPosSet(m240_hudSpr, m240_hudX, m240_hudY);
 }
 
-void func_801061DC_snowball_summit(omObjData *object) {
-    D_801101F4_snowball_summit = 160.0f;
-    D_801101F8_snowball_summit = 33.0f;
-    D_801101F0_snowball_summit = HuSprAnimDataRead(0x490002);
-    D_801101F2_snowball_summit = espEntry(D_801101F0_snowball_summit, 0, 0);
-    espAttrSet(D_801101F2_snowball_summit, 0x5000);
-    espPosSet(D_801101F2_snowball_summit, D_801101F4_snowball_summit, D_801101F8_snowball_summit);
-    object->func = func_80106184_snowball_summit;
+void m240_HudObjInit(omObjData *object) {
+    m240_hudX = 160.0f;
+    m240_hudY = 33.0f;
+    m240_hudSprGrp = HuSprAnimDataRead(0x490002);
+    m240_hudSpr = espEntry(m240_hudSprGrp, 0, 0);
+    espAttrSet(m240_hudSpr, 0x5000);
+    espPosSet(m240_hudSpr, m240_hudX, m240_hudY);
+    object->func = m240_HudObjMain;
 }
 
-void func_801062AC_snowball_summit(void) {
-    omAddObj(0x96, 1, 0, -1, func_801061DC_snowball_summit);
+void m240_HudObjCreate(void) {
+    omAddObj(0x96, 1, 0, -1, m240_HudObjInit);
 }
 
-void func_801062E0_snowball_summit(Gfx **gfxPos, s32 arg1, s32 arg2) {
-    SnowballSummitBackdrop *backdrop = (SnowballSummitBackdrop *)&D_8010F8C0_snowball_summit;
+void m240_BackdropDraw(Gfx **gfxPos, s32 arg1, s32 arg2) {
+    SnowballSummitBackdrop *backdrop = (SnowballSummitBackdrop *)&m240_backdropState;
     Gfx *gfx;
     s32 y;
 
     if (backdrop->state == -1) {
         return;
     }
-    gfxPos = func_801059BC_snowball_summit(gfxPos);
+    gfxPos = m240_GfxRectTexInit(gfxPos);
     gfx = *gfxPos;
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
     gDPLoadTLUT_pal256(gfx++, backdrop->leftSprite->pal);
@@ -425,56 +425,56 @@ void func_801062E0_snowball_summit(Gfx **gfxPos, s32 arg1, s32 arg2) {
     *gfxPos = gfx;
 }
 
-void func_80106758_snowball_summit(omObjData *object) {
+void m240_BackdropObjMain(omObjData *object) {
 }
 
-void func_80106760_snowball_summit(omObjData *object) {
-    D_8010F8CC_snowball_summit = HuSprAnimDataGet(HuSprAnimDataRead(0x490000));
-    D_8010F8D4_snowball_summit = HuSprAnimDataGet(HuSprAnimDataRead(0x490001));
-    D_8010F8C8_snowball_summit = Hu3DHookFuncCreate(0, func_801062E0_snowball_summit, 2);
-    Hu3DModelCameraSet(D_8010F8CA_snowball_summit, HU3D_CAM0);
-    D_8010F8C0_snowball_summit = 0;
-    object->func = func_80106758_snowball_summit;
+void m240_BackdropObjInit(omObjData *object) {
+    m240_backdropLeftSpr = HuSprAnimDataGet(HuSprAnimDataRead(0x490000));
+    m240_backdropRightSpr = HuSprAnimDataGet(HuSprAnimDataRead(0x490001));
+    m240_backdropHookId = Hu3DHookFuncCreate(0, m240_BackdropDraw, 2);
+    Hu3DModelCameraSet(m240_backdropHookMdl, HU3D_CAM0);
+    m240_backdropState = 0;
+    object->func = m240_BackdropObjMain;
 }
 
-void func_801067FC_snowball_summit(void) {
-    omObjData *object = omAddObj(0xA0, 1, 0, -1, func_80106760_snowball_summit);
+void m240_BackdropObjCreate(void) {
+    omObjData *object = omAddObj(0xA0, 1, 0, -1, m240_BackdropObjInit);
     object->work[0] = 0;
 }
 
-void func_80106834_snowball_summit(omObjData *object) {
+void m240_StageObjMain(omObjData *object) {
 }
 
-void func_8010683C_snowball_summit(omObjData *this) {
+void m240_StageObjInit(omObjData *this) {
     *this->model = Hu3DModelRead(0x490003, 0x2B9);
     this->trans.x = this->trans.z = 0.0f;
     this->trans.y = 20.0f;
     Hu3DModelCameraSet(*this->model, HU3D_CAM1);
-    this->func = func_80106834_snowball_summit;
+    this->func = m240_StageObjMain;
 }
 
-void func_801068B0_snowball_summit(void) {
-    omAddObj(0xC8, 1, 0, -1, func_8010683C_snowball_summit);
+void m240_StageObjCreate(void) {
+    omAddObj(0xC8, 1, 0, -1, m240_StageObjInit);
 }
 
-void func_801068E4_snowball_summit(omObjData *object) {
+void m240_MountainObjMain(omObjData *object) {
 }
 
-void func_801068EC_snowball_summit(omObjData *this) {
+void m240_MountainObjInit(omObjData *this) {
     *this->model = Hu3DModelRead(0x490006, 0x2B9);
     Hu3DMotionAttrSet(*this->model, 2, 2);
     this->trans.x = this->trans.z = 0.0f;
     this->trans.y = 0.0f;
     Hu3DModelCameraSet(*this->model, HU3D_CAM0);
-    this->func = func_801068E4_snowball_summit;
+    this->func = m240_MountainObjMain;
 }
 
-void func_80106968_snowball_summit(void) {
-    omAddObj(0xAA, 1, 1, -1, func_801068EC_snowball_summit);
+void m240_MountainObjCreate(void) {
+    omAddObj(0xAA, 1, 1, -1, m240_MountainObjInit);
 }
 
-void func_8010699C_snowball_summit(omObjData *object) {
-    UnkSnowballSummitThrow *throw = &D_80110200_snowball_summit[object->work[0]];
+void m240_BackBallObjMain(omObjData *object) {
+    SnowballSummitBackBall *throw = &m240_backBallTbl[object->work[0]];
     s32 variant;
 
     if (throw->state == -1) {
@@ -493,21 +493,21 @@ void func_8010699C_snowball_summit(omObjData *object) {
             variant = rand8() & 1;
             Hu3DModelAttrSet(object->model[variant], HU3D_ATTR_DISPOFF, 0);
             Hu3DModelAttrSet(object->model[variant ^ 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            object->trans.x = D_8010F550_snowball_summit[object->work[0]].start.x;
-            object->trans.y = D_8010F550_snowball_summit[object->work[0]].start.y;
-            object->trans.z = D_8010F550_snowball_summit[object->work[0]].start.z;
+            object->trans.x = m240_backBallPathTbl[object->work[0]].start.x;
+            object->trans.y = m240_backBallPathTbl[object->work[0]].start.y;
+            object->trans.z = m240_backBallPathTbl[object->work[0]].start.z;
             Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
             throw->unk_08 = (u8)(rand8() % 15) + 30;
             throw->unk_04++;
             throw->state = 2;
             break;
         case 2:
-            throw->unk_0C = (D_8010F550_snowball_summit[object->work[0]].end.x - D_8010F550_snowball_summit[object->work[0]].start.x) / throw->unk_08 * throw->unk_04;
-            throw->unk_10 = (D_8010F550_snowball_summit[object->work[0]].end.y - D_8010F550_snowball_summit[object->work[0]].start.y) / throw->unk_08 * throw->unk_04;
-            throw->unk_14 = (D_8010F550_snowball_summit[object->work[0]].end.z - D_8010F550_snowball_summit[object->work[0]].start.z) / throw->unk_08 * throw->unk_04;
-            object->trans.x = D_8010F550_snowball_summit[object->work[0]].start.x + throw->unk_0C;
-            object->trans.y = D_8010F550_snowball_summit[object->work[0]].start.y + throw->unk_10;
-            object->trans.z = D_8010F550_snowball_summit[object->work[0]].start.z + throw->unk_14;
+            throw->unk_0C = (m240_backBallPathTbl[object->work[0]].end.x - m240_backBallPathTbl[object->work[0]].start.x) / throw->unk_08 * throw->unk_04;
+            throw->unk_10 = (m240_backBallPathTbl[object->work[0]].end.y - m240_backBallPathTbl[object->work[0]].start.y) / throw->unk_08 * throw->unk_04;
+            throw->unk_14 = (m240_backBallPathTbl[object->work[0]].end.z - m240_backBallPathTbl[object->work[0]].start.z) / throw->unk_08 * throw->unk_04;
+            object->trans.x = m240_backBallPathTbl[object->work[0]].start.x + throw->unk_0C;
+            object->trans.y = m240_backBallPathTbl[object->work[0]].start.y + throw->unk_10;
+            object->trans.z = m240_backBallPathTbl[object->work[0]].start.z + throw->unk_14;
             Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
             if (throw->unk_04 >= throw->unk_08) {
                 Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -522,53 +522,53 @@ void func_8010699C_snowball_summit(omObjData *object) {
     }
 }
 
-void func_80106D58_snowball_summit(omObjData *object) {
-    UnkSnowballSummitThrow *throw;
+void m240_BackBallObjInit(omObjData *object) {
+    SnowballSummitBackBall *throw;
     void *data;
 
     if (object->work[0] == 0) {
-        object->model[0] = D_8010F890_snowball_summit = Hu3DModelRead(0x490007, 0x2B9);
+        object->model[0] = m240_backBallMdl = Hu3DModelRead(0x490007, 0x2B9);
         object->model[1] = Hu3DModelRead(0x490007, 0x2A9);
         data = DataRead(0x490008);
-        object->work[1] = D_8010F892_snowball_summit = Hu3DAnimCreate(Hu3DData[object->model[1]].hmf, data, 0, "s240_002_DEF");
+        object->work[1] = m240_backBallAnim = Hu3DAnimCreate(Hu3DData[object->model[1]].hmf, data, 0, "s240_002_DEF");
         HuMemMemoryFreePerm(data);
     } else {
-        object->model[0] = Hu3DModelLink(D_8010F890_snowball_summit);
+        object->model[0] = Hu3DModelLink(m240_backBallMdl);
         object->model[1] = Hu3DModelRead(0x490007, 0x2A9);
-        object->work[1] = Hu3DAnimLink(Hu3DData[object->model[1]].hmf, D_8010F892_snowball_summit, 0, "s240_002_DEF");
+        object->work[1] = Hu3DAnimLink(Hu3DData[object->model[1]].hmf, m240_backBallAnim, 0, "s240_002_DEF");
     }
     Hu3DAnimAttrSet(object->work[1], 1, 1);
     Hu3DModelRemakeStatic(object->model[1]);
     Hu3DModelDynamicFree(object->model[1]);
     Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    object->trans.x = D_8010F550_snowball_summit[object->work[0]].start.x;
-    object->trans.y = D_8010F550_snowball_summit[object->work[0]].start.y;
-    object->trans.z = D_8010F550_snowball_summit[object->work[0]].start.z;
+    object->trans.x = m240_backBallPathTbl[object->work[0]].start.x;
+    object->trans.y = m240_backBallPathTbl[object->work[0]].start.y;
+    object->trans.z = m240_backBallPathTbl[object->work[0]].start.z;
     Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
     Hu3DModelCameraSet(object->model[0], HU3D_CAM0);
     Hu3DModelCameraSet(object->model[1], HU3D_CAM0);
-    throw = &D_80110200_snowball_summit[object->work[0]];
+    throw = &m240_backBallTbl[object->work[0]];
     throw->state = 0;
     throw->unk_04 = (u8)(rand8() % 60) + 150;
     throw->unk_0C = throw->unk_10 = throw->unk_14 = 0.0f;
-    object->func = func_8010699C_snowball_summit;
+    object->func = m240_BackBallObjMain;
 }
 
-void func_80107000_snowball_summit(void) {
+void m240_BackBallObjCreateAll(void) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
-        omAddObj(0xB4, 2, 0, -1, func_80106D58_snowball_summit)->work[0] = i;
+        omAddObj(0xB4, 2, 0, -1, m240_BackBallObjInit)->work[0] = i;
     }
 }
 
-void func_8010705C_snowball_summit(omObjData *object, s32 arg1, f32 arg2, f32 arg3, f32 x, f32 y, f32 z) {
+void m240_PuffEmit(omObjData *object, s32 arg1, f32 arg2, f32 arg3, f32 x, f32 y, f32 z) {
     s32 i;
-    UnkSnowballSummitRoll *roll;
+    SnowballSummitPuff *roll;
 
-    for (i = 0; i < ARRAY_COUNT(D_80110048_snowball_summit); i++) {
-        roll = &D_80110048_snowball_summit[i];
+    for (i = 0; i < ARRAY_COUNT(m240_puffTbl); i++) {
+        roll = &m240_puffTbl[i];
         if (roll->state == 0) {
             roll->state = 1;
             roll->unk_14->trans.x = x + object->trans.x;
@@ -582,8 +582,8 @@ void func_8010705C_snowball_summit(omObjData *object, s32 arg1, f32 arg2, f32 ar
     }
 }
 
-void func_801070F4_snowball_summit(omObjData *object) {
-    UnkSnowballSummitRoll *roll = &D_80110048_snowball_summit[object->work[0]];
+void m240_PuffObjMain(omObjData *object) {
+    SnowballSummitPuff *roll = &m240_puffTbl[object->work[0]];
 
     if (roll->state == -1) {
         return;
@@ -616,8 +616,8 @@ void func_801070F4_snowball_summit(omObjData *object) {
     }
 }
 
-void func_80107230_snowball_summit(omObjData *object) {
-    UnkSnowballSummitRoll *roll;
+void m240_PuffObjInit(omObjData *object) {
+    SnowballSummitPuff *roll;
 
     object->model[0] = Hu3DModelRead(0x490009, 0x289);
     Hu3DModelTPLvlInit(object->model[0]);
@@ -626,8 +626,8 @@ void func_80107230_snowball_summit(omObjData *object) {
     object->trans.x = object->trans.y = object->trans.z = 0.0f;
     object->scale.x = object->scale.y = object->scale.z = 1.0f;
     Hu3DModelCameraSet(object->model[0], HU3D_CAM1);
-    object->func = func_801070F4_snowball_summit;
-    roll = &D_80110048_snowball_summit[object->work[0]];
+    object->func = m240_PuffObjMain;
+    roll = &m240_puffTbl[object->work[0]];
     roll->state = 0;
     roll->unk_04 = 255;
     roll->unk_08 = 0;
@@ -636,20 +636,20 @@ void func_80107230_snowball_summit(omObjData *object) {
     roll->unk_14 = object;
 }
 
-void func_80107330_snowball_summit(void) {
+void m240_PuffObjCreateAll(void) {
     s32 i;
 
     for (i = 0; i < 16; i++) {
-        omAddObj(0x1F4, 1, 0, -1, func_80107230_snowball_summit)->work[0] = i;
+        omAddObj(0x1F4, 1, 0, -1, m240_PuffObjInit)->work[0] = i;
     }
 }
 
-void func_8010738C_snowball_summit(omObjData *object, s32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 x, f32 y, f32 z) {
+void m240_BurstEmit(omObjData *object, s32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 x, f32 y, f32 z) {
     s32 i;
-    UnkSnowballSummitSnowball *snowball;
+    SnowballSummitBurst *snowball;
 
-    for (i = 0; i < ARRAY_COUNT(D_8010F8D8_snowball_summit); i++) {
-        snowball = &D_8010F8D8_snowball_summit[i];
+    for (i = 0; i < ARRAY_COUNT(m240_burstTbl); i++) {
+        snowball = &m240_burstTbl[i];
         if (snowball->state == 0) {
             snowball->state = 1;
             snowball->unk_18->trans.x = x + object->trans.x;
@@ -664,8 +664,8 @@ void func_8010738C_snowball_summit(omObjData *object, s32 arg1, f32 arg2, f32 ar
     }
 }
 
-void func_8010742C_snowball_summit(omObjData *object) {
-    UnkSnowballSummitSnowball *snowball = &D_8010F8D8_snowball_summit[object->work[0]];
+void m240_BurstObjMain(omObjData *object) {
+    SnowballSummitBurst *snowball = &m240_burstTbl[object->work[0]];
 
     if (snowball->state == -1) {
         return;
@@ -708,8 +708,8 @@ void func_8010742C_snowball_summit(omObjData *object) {
     }
 }
 
-void func_801075E0_snowball_summit(omObjData *object) {
-    UnkSnowballSummitSnowball *snowball;
+void m240_BurstObjInit(omObjData *object) {
+    SnowballSummitBurst *snowball;
 
     object->model[0] = Hu3DModelRead(0x49000A, 0x1689);
     Hu3DModelTPLvlInit(object->model[0]);
@@ -720,8 +720,8 @@ void func_801075E0_snowball_summit(omObjData *object) {
     object->trans.x = object->trans.y = object->trans.z = 0.0f;
     object->scale.x = object->scale.y = object->scale.z = 0.7f;
     Hu3DModelCameraSet(object->model[0], HU3D_CAM1);
-    object->func = func_8010742C_snowball_summit;
-    snowball = &D_8010F8D8_snowball_summit[object->work[0]];
+    object->func = m240_BurstObjMain;
+    snowball = &m240_burstTbl[object->work[0]];
     snowball->state = 0;
     snowball->unk_04 = 450;
     snowball->unk_08 = 0;
@@ -730,16 +730,16 @@ void func_801075E0_snowball_summit(omObjData *object) {
     snowball->unk_18 = object;
 }
 
-void func_80107700_snowball_summit(void) {
+void m240_BurstObjCreateAll(void) {
     s32 i;
 
     for (i = 0; i < 8; i++) {
-        omAddObj(0x258, 1, 1, -1, func_801075E0_snowball_summit)->work[0] = i;
+        omAddObj(0x258, 1, 1, -1, m240_BurstObjInit)->work[0] = i;
     }
 }
 
-void func_8010775C_snowball_summit(omObjData *this) {
-    s16 *model = &D_80110030_snowball_summit;
+void m240_SnowObjMain(omObjData *this) {
+    s16 *model = &m240_snowMdl;
     f32 x;
     f32 z;
     s32 i;
@@ -753,20 +753,20 @@ void func_8010775C_snowball_summit(omObjData *this) {
     }
 }
 
-void func_80107860_snowball_summit(omObjData *this) {
-    s16 *model = &D_80110030_snowball_summit;
+void m240_SnowObjInit(omObjData *this) {
+    s16 *model = &m240_snowMdl;
 
     *model = EffectModelCreate(0x49000D, 0x2A9);
     EffectParamSet(*model, 15.0f, 110.0f, 8.0f);
     Hu3DModelCameraSet(*model, HU3D_CAM1);
-    this->func = func_8010775C_snowball_summit;
+    this->func = m240_SnowObjMain;
 }
 
-void func_801078D4_snowball_summit(void) {
-    omAddObj(0x3DE, 1, 0, -1, func_80107860_snowball_summit);
+void m240_SnowObjCreate(void) {
+    omAddObj(0x3DE, 1, 0, -1, m240_SnowObjInit);
 }
 
-void func_80107908_snowball_summit(f32 targetX, f32 targetZ, f32 posX, f32 posZ, Vec *result) {
+void m240_PolarXZCalc(f32 targetX, f32 targetZ, f32 posX, f32 posZ, Vec *result) {
     Vec position;
     Vec target;
 
@@ -776,10 +776,10 @@ void func_80107908_snowball_summit(f32 targetX, f32 targetZ, f32 posX, f32 posZ,
     position.x = posX;
     position.y = 0.0f;
     position.z = posZ;
-    func_80105D64_snowball_summit(&position, &target, result);
+    m240_PolarCalc(&position, &target, result);
 }
 
-void func_80107944_snowball_summit(f32 targetX, f32 targetY, f32 targetZ, f32 posX, f32 posY, f32 posZ, Vec *result) {
+void m240_PolarXYZCalc(f32 targetX, f32 targetY, f32 targetZ, f32 posX, f32 posY, f32 posZ, Vec *result) {
     Vec position;
     Vec target;
 
@@ -789,10 +789,10 @@ void func_80107944_snowball_summit(f32 targetX, f32 targetY, f32 targetZ, f32 po
     position.x = posX;
     position.y = posY;
     position.z = posZ;
-    func_80105D64_snowball_summit(&position, &target, result);
+    m240_PolarCalc(&position, &target, result);
 }
 
-s32 func_80107988_snowball_summit(f32 arg0, f32 arg1, f32 arg2) {
+s32 m240_TurnDirGet(f32 arg0, f32 arg1, f32 arg2) {
     f32 angle = arg1 - arg0;
 
     if (angle < 0.0f) {
@@ -814,9 +814,9 @@ s32 func_80107988_snowball_summit(f32 arg0, f32 arg1, f32 arg2) {
     return 1;
 }
 
-void func_80107A18_snowball_summit(omObjData *object, Vec stick, f32 speed) {
-    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
-    s32 direction = func_80107988_snowball_summit(object->rot.y, stick.z, speed);
+void m240_PlayerTurnUpdate(omObjData *object, Vec stick, f32 speed) {
+    SnowballSummitPlayer *mover = &m240_playerWorkTbl[object->work[0]];
+    s32 direction = m240_TurnDirGet(object->rot.y, stick.z, speed);
     f32 angle;
 
     switch (mover->unk_04) {
@@ -842,9 +842,9 @@ void func_80107A18_snowball_summit(omObjData *object, Vec stick, f32 speed) {
     mover->posX = object->rot.y;
 }
 
-void func_80107B58_snowball_summit(omObjData *object, Vec stick) {
-    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
-    UnkSnowballSummitSlot *slot;
+void m240_PlayerSpeedUpdate(omObjData *object, Vec stick) {
+    SnowballSummitPlayer *mover = &m240_playerWorkTbl[object->work[0]];
+    SnowballSummitBall *slot;
     f32 velocity;
     f32 scaled;
 
@@ -855,7 +855,7 @@ void func_80107B58_snowball_summit(omObjData *object, Vec stick) {
     }
     mover->unk_10 = velocity;
     if (mover->unk_70 != -1) {
-        slot = &D_8010FC30_snowball_summit[mover->unk_70];
+        slot = &m240_ballTbl[mover->unk_70];
         scaled = velocity * 0.6;
         mover->unk_10 = velocity * 0.4 + scaled * (1.0f / slot->unk_0C);
     }
@@ -865,22 +865,22 @@ void func_80107B58_snowball_summit(omObjData *object, Vec stick) {
     mover->spawnPosZ = object->trans.z + mover->unk_28;
 }
 
-void func_80107CA4_snowball_summit(omObjData *object, s32 motion) {
-    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
+void m240_PlayerMotSet(omObjData *object, s32 motion) {
+    SnowballSummitPlayer *mover = &m240_playerWorkTbl[object->work[0]];
 
     Hu3DMotionModelSet(object->model[0], object->motion[motion]);
     Hu3DMotionAttrSet(object->model[0], 2, 2);
     mover->unk_04 = motion;
 }
 
-void func_80107D30_snowball_summit(omObjData *object, s32 motion, s16 start, s16 end) {
-    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
+void m240_PlayerMotShiftSet(omObjData *object, s32 motion, s16 start, s16 end) {
+    SnowballSummitPlayer *mover = &m240_playerWorkTbl[object->work[0]];
 
     Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[motion]].motId, start, end, 2);
     mover->unk_04 = motion;
 }
 
-void func_80107DD4_snowball_summit(UnkSnowballSummitMover *mover) {
+void m240_ComTimerSet(SnowballSummitPlayer *mover) {
     switch (mover->unk_0C) {
         case 0:
             mover->unk_90 = (u8)(rand8() % 31) + 60;
@@ -897,7 +897,7 @@ void func_80107DD4_snowball_summit(UnkSnowballSummitMover *mover) {
     }
 }
 
-s32 func_80107F80_snowball_summit(UnkSnowballSummitMover *mover) {
+s32 m240_ComTimeGet(SnowballSummitPlayer *mover) {
     switch (mover->unk_0C) {
         case 0:
             return (u8)(rand8() % 31) + 60;
@@ -910,10 +910,10 @@ s32 func_80107F80_snowball_summit(UnkSnowballSummitMover *mover) {
     }
 }
 
-void func_8010811C_snowball_summit(omObjData *object) {
-    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
-    UnkSnowballSummitMover *other;
-    UnkSnowballSummitSlot *slot;
+void m240_PlayerComInput(omObjData *object) {
+    SnowballSummitPlayer *mover = &m240_playerWorkTbl[object->work[0]];
+    SnowballSummitPlayer *other;
+    SnowballSummitBall *slot;
     omObjData *target;
     Vec result;
     f32 angle;
@@ -921,14 +921,14 @@ void func_8010811C_snowball_summit(omObjData *object) {
     f32 maxDistSq;
     s32 i;
 
-    func_80105B9C_snowball_summit(object->work[0]);
+    m240_PadClear(object->work[0]);
     if (mover->unk_70 != -1 && mover->unk_8C == 1) {
         mover->unk_8C = 0;
         mover->unk_94 = sindf(WRAP_ANGLE(rand16() % 360)) * 70.0f;
         mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(rand16() % 360)) * 70.0f);
         HuPadStkX[GwPlayer[object->work[0]].pad] = mover->unk_94;
         HuPadStkY[GwPlayer[object->work[0]].pad] = mover->unk_96;
-        func_80107DD4_snowball_summit(mover);
+        m240_ComTimerSet(mover);
         return;
     }
 
@@ -941,11 +941,11 @@ void func_8010811C_snowball_summit(omObjData *object) {
     if (mover->unk_8C == 0) {
         maxDistSq = 590.0f * 590.0f;
         if (object->trans.x * object->trans.x + object->trans.z * object->trans.z > maxDistSq) {
-            func_80107DD4_snowball_summit(mover);
-            angle = func_8010610C_snowball_summit(object->trans.x, object->trans.z);
-            offset = 180.0 - func_80107F80_snowball_summit(mover) * 0.5;
-            mover->unk_94 = sindf(WRAP_ANGLE(angle + offset + func_80107F80_snowball_summit(mover))) * 70.0f;
-            mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(angle + offset + func_80107F80_snowball_summit(mover))) * 70.0f);
+            m240_ComTimerSet(mover);
+            angle = m240_AngleCalc(object->trans.x, object->trans.z);
+            offset = 180.0 - m240_ComTimeGet(mover) * 0.5;
+            mover->unk_94 = sindf(WRAP_ANGLE(angle + offset + m240_ComTimeGet(mover))) * 70.0f;
+            mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(angle + offset + m240_ComTimeGet(mover))) * 70.0f);
             HuPadStkX[GwPlayer[object->work[0]].pad] = mover->unk_94;
             HuPadStkY[GwPlayer[object->work[0]].pad] = mover->unk_96;
             return;
@@ -954,18 +954,18 @@ void func_8010811C_snowball_summit(omObjData *object) {
 
     if (mover->unk_70 == -1) {
         if (mover->unk_90 < 30) {
-            for (i = 0; i < ARRAY_COUNT(D_8010FC30_snowball_summit); i++) {
-                slot = &D_8010FC30_snowball_summit[i];
+            for (i = 0; i < ARRAY_COUNT(m240_ballTbl); i++) {
+                slot = &m240_ballTbl[i];
                 if (slot->id > 0) {
                     target = slot->unk_3C;
-                    func_80107908_snowball_summit(object->trans.x, object->trans.z, target->trans.x, target->trans.z, &result);
+                    m240_PolarXZCalc(object->trans.x, object->trans.z, target->trans.x, target->trans.z, &result);
                     if (ABS(result.x) < mover->unk_80 && rand8() % mover->unk_88 != 0) {
                         mover->unk_94 = sindf(WRAP_ANGLE(result.z + 70.0f + (u8)(rand8() % 60))) * 70.0f;
                         mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(result.z + 70.0f + (u8)(rand8() % 60))) * 70.0f);
                         HuPadStkX[GwPlayer[object->work[0]].pad] = mover->unk_94;
                         HuPadStkY[GwPlayer[object->work[0]].pad] = mover->unk_96;
                         mover->unk_8C = 0;
-                        func_80107DD4_snowball_summit(mover);
+                        m240_ComTimerSet(mover);
                         return;
                     }
                 }
@@ -980,11 +980,11 @@ void func_8010811C_snowball_summit(omObjData *object) {
         }
     } else {
         if (mover->unk_90 < 30) {
-            for (i = 0; i < ARRAY_COUNT(D_8010FC30_snowball_summit); i++) {
-                slot = &D_8010FC30_snowball_summit[i];
+            for (i = 0; i < ARRAY_COUNT(m240_ballTbl); i++) {
+                slot = &m240_ballTbl[i];
                 if (slot->id > 0 && i != mover->unk_70) {
                     target = slot->unk_3C;
-                    func_80107908_snowball_summit(object->trans.x, object->trans.z, target->trans.x, target->trans.z, &result);
+                    m240_PolarXZCalc(object->trans.x, object->trans.z, target->trans.x, target->trans.z, &result);
                     if (ABS(result.x) < mover->unk_80) {
                         if (rand8() % mover->unk_88 != 0) {
                             if (rand8() % mover->unk_88 != 0) {
@@ -996,15 +996,15 @@ void func_8010811C_snowball_summit(omObjData *object) {
                             }
                             HuPadStkX[GwPlayer[object->work[0]].pad] = mover->unk_94;
                             HuPadStkY[GwPlayer[object->work[0]].pad] = mover->unk_96;
-                            func_80107DD4_snowball_summit(mover);
+                            m240_ComTimerSet(mover);
                             return;
                         }
                         mover->unk_94 = sindf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f;
                         mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f);
                         HuPadStkX[GwPlayer[object->work[0]].pad] = mover->unk_94;
                         HuPadStkY[GwPlayer[object->work[0]].pad] = mover->unk_96;
-                        func_80107DD4_snowball_summit(mover);
-                        if (func_80107988_snowball_summit(object->rot.y, WRAP_ANGLE(result.z + 180.0f), 20.0f) == 0) {
+                        m240_ComTimerSet(mover);
+                        if (m240_TurnDirGet(object->rot.y, WRAP_ANGLE(result.z + 180.0f), 20.0f) == 0) {
                             HuPadBtnDown[GwPlayer[object->work[0]].pad] |= A_BUTTON;
                             if (rand8() % mover->unk_88 != 0) {
                                 mover->unk_8C = 1;
@@ -1019,15 +1019,15 @@ void func_8010811C_snowball_summit(omObjData *object) {
                 }
             }
         }
-        for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
+        for (i = 0; i < ARRAY_COUNT(m240_playerWorkTbl); i++) {
             if (i == object->work[0]) {
                 continue;
             }
-            other = &D_8010F9B8_snowball_summit[i];
+            other = &m240_playerWorkTbl[i];
             if (other->id >= 0 && other->id < 90) {
                 target = other->unk_78;
-                func_80107908_snowball_summit(object->trans.x, object->trans.z, target->trans.x, target->trans.z, &result);
-                if (func_80107988_snowball_summit(object->rot.y, WRAP_ANGLE(result.z + 180.0f), 15.0f) == 0 && mover->unk_98 < D_8010FC30_snowball_summit[mover->unk_70].unk_0C && rand8() % mover->unk_88 != 0) {
+                m240_PolarXZCalc(object->trans.x, object->trans.z, target->trans.x, target->trans.z, &result);
+                if (m240_TurnDirGet(object->rot.y, WRAP_ANGLE(result.z + 180.0f), 15.0f) == 0 && mover->unk_98 < m240_ballTbl[mover->unk_70].unk_0C && rand8() % mover->unk_88 != 0) {
                     HuPadBtnDown[GwPlayer[object->work[0]].pad] |= A_BUTTON;
                     if (rand8() % mover->unk_88 != 0) {
                         mover->unk_8C = 1;
@@ -1041,40 +1041,40 @@ void func_8010811C_snowball_summit(omObjData *object) {
             }
         }
         if (mover->unk_90 < 30) {
-            for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
+            for (i = 0; i < ARRAY_COUNT(m240_playerWorkTbl); i++) {
                 if (i == object->work[0]) {
                     continue;
                 }
-                other = &D_8010F9B8_snowball_summit[i];
+                other = &m240_playerWorkTbl[i];
                 if (other->id >= 0 && other->id < 90 && other->unk_08 == 0) {
                     target = other->unk_78;
                     if (rand8() % mover->unk_84 == 0) {
-                        func_80107908_snowball_summit(object->trans.x, object->trans.z, target->trans.x, target->trans.z, &result);
+                        m240_PolarXZCalc(object->trans.x, object->trans.z, target->trans.x, target->trans.z, &result);
                         if (ABS(result.x) < mover->unk_80 * 2 && rand8() % mover->unk_88 == 0) {
                             mover->unk_94 = sindf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f;
                             mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f);
                             HuPadStkX[GwPlayer[object->work[0]].pad] = mover->unk_94;
                             HuPadStkY[GwPlayer[object->work[0]].pad] = mover->unk_96;
-                            func_80107DD4_snowball_summit(mover);
+                            m240_ComTimerSet(mover);
                             return;
                         }
                     }
                 }
             }
-            for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
+            for (i = 0; i < ARRAY_COUNT(m240_playerWorkTbl); i++) {
                 if (i == object->work[0]) {
                     continue;
                 }
-                other = &D_8010F9B8_snowball_summit[i];
+                other = &m240_playerWorkTbl[i];
                 if (other->id >= 0 && other->id < 90) {
                     target = other->unk_78;
-                    func_80107908_snowball_summit(object->trans.x, object->trans.z, target->trans.x, target->trans.z, &result);
+                    m240_PolarXZCalc(object->trans.x, object->trans.z, target->trans.x, target->trans.z, &result);
                     if (ABS(result.x) < mover->unk_80 * 2) {
                         mover->unk_94 = sindf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f;
                         mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(result.z + 180.0f)) * 70.0f);
                         HuPadStkX[GwPlayer[object->work[0]].pad] = mover->unk_94;
                         HuPadStkY[GwPlayer[object->work[0]].pad] = mover->unk_96;
-                        func_80107DD4_snowball_summit(mover);
+                        m240_ComTimerSet(mover);
                         return;
                     }
                 }
@@ -1092,28 +1092,28 @@ void func_8010811C_snowball_summit(omObjData *object) {
             mover->unk_96 = -(s16)(cosdf(WRAP_ANGLE(rand16() % 360)) * 70.0f);
             HuPadStkX[GwPlayer[object->work[0]].pad] = mover->unk_94;
             HuPadStkY[GwPlayer[object->work[0]].pad] = mover->unk_96;
-            func_80107DD4_snowball_summit(mover);
+            m240_ComTimerSet(mover);
         }
     }
 }
 
-void func_8010A0B0_snowball_summit(omObjData *object) {
-    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
+void m240_PlayerWalkUpdate(omObjData *object) {
+    SnowballSummitPlayer *mover = &m240_playerWorkTbl[object->work[0]];
     Vec stick;
 
     switch (mover->unk_04) {
         case 0:
         case 2:
             if (mover->unk_70 != -1) {
-                func_80107CA4_snowball_summit(object, 3);
+                m240_PlayerMotSet(object, 3);
             } else {
-                func_80107CA4_snowball_summit(object, 1);
+                m240_PlayerMotSet(object, 1);
             }
             break;
         case 5:
         case 6:
             if (Hu3DData[object->model[0]].motTime >= Hu3DMotion[Hu3DData[object->model[0]].motId].unk02 - 2) {
-                func_80107CA4_snowball_summit(object, 1);
+                m240_PlayerMotSet(object, 1);
             } else {
                 mover->unk_10 = 0;
                 mover->posZ = mover->unk_28 = mover->unk_10;
@@ -1122,10 +1122,10 @@ void func_8010A0B0_snowball_summit(omObjData *object) {
         case 3:
         case 4:
             if (mover->unk_70 == -1) {
-                func_80107D30_snowball_summit(object, 1, 0, 10);
+                m240_PlayerMotShiftSet(object, 1, 0, 10);
             } else {
-                if (mover->unk_04 == 3 && D_8010FC30_snowball_summit[mover->unk_70].unk_0C >= 1.7) {
-                    func_80107D30_snowball_summit(object, 4, 12, 6);
+                if (mover->unk_04 == 3 && m240_ballTbl[mover->unk_70].unk_0C >= 1.7) {
+                    m240_PlayerMotShiftSet(object, 4, 12, 6);
                 }
                 Hu3DMotionAttrSet(object->model[0], 2, 2);
                 Hu3DMotionAttrSet(object->model[0], 1, 0);
@@ -1133,14 +1133,14 @@ void func_8010A0B0_snowball_summit(omObjData *object) {
             break;
     }
 
-    func_80107908_snowball_summit(HuPadStkX[GwPlayer[object->work[0]].pad], -HuPadStkY[GwPlayer[object->work[0]].pad], 0.0f, 0.0f, &stick);
+    m240_PolarXZCalc(HuPadStkX[GwPlayer[object->work[0]].pad], -HuPadStkY[GwPlayer[object->work[0]].pad], 0.0f, 0.0f, &stick);
     if (mover->unk_70 == -1) {
-        func_80107A18_snowball_summit(object, stick, 30.0f);
+        m240_PlayerTurnUpdate(object, stick, 30.0f);
     } else {
-        func_80107A18_snowball_summit(object, stick, 1.0f / (D_8010FC30_snowball_summit[mover->unk_70].unk_0C * D_8010FC30_snowball_summit[mover->unk_70].unk_0C) * 30.0f);
+        m240_PlayerTurnUpdate(object, stick, 1.0f / (m240_ballTbl[mover->unk_70].unk_0C * m240_ballTbl[mover->unk_70].unk_0C) * 30.0f);
     }
     if (mover->unk_04 != 5 && mover->unk_04 != 6) {
-        func_80107B58_snowball_summit(object, stick);
+        m240_PlayerSpeedUpdate(object, stick);
     }
     if (mover->unk_48 == 0) {
         mover->unk_40 = 0;
@@ -1148,23 +1148,23 @@ void func_8010A0B0_snowball_summit(omObjData *object) {
     }
 }
 
-void func_8010A384_snowball_summit(omObjData *object) {
-    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
+void m240_PlayerIdleUpdate(omObjData *object) {
+    SnowballSummitPlayer *mover = &m240_playerWorkTbl[object->work[0]];
     Vec stick;
 
     switch (mover->unk_04) {
         case 1:
-            func_80107CA4_snowball_summit(object, 0);
+            m240_PlayerMotSet(object, 0);
             break;
         case 2:
             if (mover->unk_40 > 0) {
                 break;
             }
             if (mover->unk_48 == 0) {
-                func_80107D30_snowball_summit(object, 0, 0, 10);
+                m240_PlayerMotShiftSet(object, 0, 0, 10);
                 break;
             }
-            func_80107D30_snowball_summit(object, 3, 12, 10);
+            m240_PlayerMotShiftSet(object, 3, 12, 10);
             Hu3DMotionTimeSet(object->model[0], 12.0f);
             Hu3DMotionAttrSet(object->model[0], 2, 0);
             Hu3DMotionAttrSet(object->model[0], 1, 1);
@@ -1172,11 +1172,11 @@ void func_8010A384_snowball_summit(omObjData *object) {
         case 3:
         case 4:
             if (mover->unk_70 == -1) {
-                func_80107D30_snowball_summit(object, 0, 0, 10);
+                m240_PlayerMotShiftSet(object, 0, 0, 10);
                 break;
             }
-            if (mover->unk_04 == 3 && D_8010FC30_snowball_summit[mover->unk_70].unk_0C >= 1.7) {
-                func_80107D30_snowball_summit(object, 4, 12, 3);
+            if (mover->unk_04 == 3 && m240_ballTbl[mover->unk_70].unk_0C >= 1.7) {
+                m240_PlayerMotShiftSet(object, 4, 12, 3);
             }
             Hu3DMotionTimeSet(object->model[0], 12.0f);
             Hu3DMotionAttrSet(object->model[0], 2, 0);
@@ -1185,7 +1185,7 @@ void func_8010A384_snowball_summit(omObjData *object) {
         case 5:
         case 6:
             if (Hu3DData[object->model[0]].motTime >= Hu3DMotion[Hu3DData[object->model[0]].motId].unk02 - 2) {
-                func_80107CA4_snowball_summit(object, 0);
+                m240_PlayerMotSet(object, 0);
             }
             break;
     }
@@ -1193,17 +1193,17 @@ void func_8010A384_snowball_summit(omObjData *object) {
     mover->posZ = mover->unk_28 = mover->unk_10;
 
     if (ABS(HuPadStkX[GwPlayer[object->work[0]].pad]) >= 11 || ABS(HuPadStkY[GwPlayer[object->work[0]].pad]) >= 11) {
-        func_80107908_snowball_summit(HuPadStkX[GwPlayer[object->work[0]].pad], -HuPadStkY[GwPlayer[object->work[0]].pad], 0.0f, 0.0f, &stick);
+        m240_PolarXZCalc(HuPadStkX[GwPlayer[object->work[0]].pad], -HuPadStkY[GwPlayer[object->work[0]].pad], 0.0f, 0.0f, &stick);
         if (mover->unk_70 == -1) {
-            func_80107A18_snowball_summit(object, stick, 30.0f);
+            m240_PlayerTurnUpdate(object, stick, 30.0f);
         } else {
-            func_80107A18_snowball_summit(object, stick, 1.0f / (D_8010FC30_snowball_summit[mover->unk_70].unk_0C * D_8010FC30_snowball_summit[mover->unk_70].unk_0C) * 30.0f);
+            m240_PlayerTurnUpdate(object, stick, 1.0f / (m240_ballTbl[mover->unk_70].unk_0C * m240_ballTbl[mover->unk_70].unk_0C) * 30.0f);
         }
     }
 }
 
-void func_8010A71C_snowball_summit(omObjData *object) {
-    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
+void m240_PlayerBallMake(omObjData *object) {
+    SnowballSummitPlayer *mover = &m240_playerWorkTbl[object->work[0]];
 
     if (ABS(HuPadStkX[GwPlayer[object->work[0]].pad]) >= 11) {
         return;
@@ -1216,21 +1216,21 @@ void func_8010A71C_snowball_summit(omObjData *object) {
     }
 
     if (mover->unk_04 != 1 && mover->unk_04 != 2) {
-        func_80107CA4_snowball_summit(object, 2);
+        m240_PlayerMotSet(object, 2);
         mover->unk_10 = 0;
         mover->posZ = mover->unk_28 = mover->unk_10;
     } else if (mover->unk_04 != 2 && mover->unk_10 == 0.0f) {
-        func_80107CA4_snowball_summit(object, 2);
+        m240_PlayerMotSet(object, 2);
         mover->posZ = mover->unk_28 = mover->unk_10 = 0.0f;
     }
 
     mover->unk_40 = 30;
     if (++mover->unk_44 >= 10) {
-        mover->unk_70 = func_8010B994_snowball_summit(object);
+        mover->unk_70 = m240_BallCreate(object);
         mover->unk_48 = 1;
         mover->unk_40 = 0;
         mover->unk_44 = 0;
-        func_80107CA4_snowball_summit(object, 3);
+        m240_PlayerMotSet(object, 3);
         Hu3DMotionTimeSet(object->model[0], 12.0f);
         if (mover->unk_08 == 0) {
             omVibrate(object->work[0], 2, 3, 10);
@@ -1240,15 +1240,15 @@ void func_8010A71C_snowball_summit(omObjData *object) {
     }
 }
 
-void func_8010A940_snowball_summit(omObjData *object) {
-    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
-    UnkSnowballSummitSlot *slot;
+void m240_PlayerBallRelease(omObjData *object) {
+    SnowballSummitPlayer *mover = &m240_playerWorkTbl[object->work[0]];
+    SnowballSummitBall *slot;
     f32 distance;
 
     switch (mover->unk_04) {
         case 3:
-            func_80107CA4_snowball_summit(object, 5);
-            slot = &D_8010FC30_snowball_summit[mover->unk_70];
+            m240_PlayerMotSet(object, 5);
+            slot = &m240_ballTbl[mover->unk_70];
             distance = slot->unk_0C * 37.5 + mover->unk_50;
             slot->unk_3C->trans.x = sindf(mover->posX) * distance + object->trans.x;
             slot->unk_3C->trans.z = cosdf(mover->posX) * distance + object->trans.z;
@@ -1262,8 +1262,8 @@ void func_8010A940_snowball_summit(omObjData *object) {
             mover->unk_70 = -1;
             break;
         case 4:
-            func_80107CA4_snowball_summit(object, 6);
-            slot = &D_8010FC30_snowball_summit[mover->unk_70];
+            m240_PlayerMotSet(object, 6);
+            slot = &m240_ballTbl[mover->unk_70];
             distance = slot->unk_0C * 37.5 + mover->unk_50;
             slot->unk_3C->trans.x = sindf(mover->posX) * distance + object->trans.x;
             slot->unk_3C->trans.z = cosdf(mover->posX) * distance + object->trans.z;
@@ -1279,21 +1279,21 @@ void func_8010A940_snowball_summit(omObjData *object) {
     }
 }
 
-void func_8010AA78_snowball_summit(omObjData *object) {
-    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
+void m240_PlayerInputUpdate(omObjData *object) {
+    SnowballSummitPlayer *mover = &m240_playerWorkTbl[object->work[0]];
 
     if (mover->unk_04 == 5 || mover->unk_04 == 6) {
-        func_8010A384_snowball_summit(object);
+        m240_PlayerIdleUpdate(object);
     } else if ((HuPadBtnDown[GwPlayer[object->work[0]].pad] & A_BUTTON) && mover->unk_48 == 1) {
-        func_8010A940_snowball_summit(object);
+        m240_PlayerBallRelease(object);
     } else if (ABS(HuPadStkX[GwPlayer[object->work[0]].pad]) >= 31 || ABS(HuPadStkY[GwPlayer[object->work[0]].pad]) >= 31) {
-        func_8010A0B0_snowball_summit(object);
+        m240_PlayerWalkUpdate(object);
     } else {
-        func_8010A384_snowball_summit(object);
+        m240_PlayerIdleUpdate(object);
     }
 
     if ((HuPadBtnDown[GwPlayer[object->work[0]].pad] & B_BUTTON) && mover->unk_48 == 0) {
-        func_8010A71C_snowball_summit(object);
+        m240_PlayerBallMake(object);
     }
     if (mover->unk_48 == 0) {
         if (mover->unk_40 > 0) {
@@ -1304,8 +1304,8 @@ void func_8010AA78_snowball_summit(omObjData *object) {
     }
 }
 
-void func_8010AC94_snowball_summit(omObjData *object) {
-    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
+void m240_PlayerKnockMove(omObjData *object) {
+    SnowballSummitPlayer *mover = &m240_playerWorkTbl[object->work[0]];
 
     mover->posZ = sindf(WRAP_ANGLE(mover->posX + 180.0f)) * mover->unk_10;
     mover->unk_24 -= mover->unk_2C;
@@ -1319,45 +1319,45 @@ void func_8010AC94_snowball_summit(omObjData *object) {
     }
 }
 
-void func_8010AE74_snowball_summit(omObjData *object) {
-    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
+void m240_PlayerKnockUpdate(omObjData *object) {
+    SnowballSummitPlayer *mover = &m240_playerWorkTbl[object->work[0]];
 
     if (mover->unk_4C != 0) {
         if (mover->unk_04 != 8) {
-            func_80107CA4_snowball_summit(object, 8);
+            m240_PlayerMotSet(object, 8);
         }
     } else if (mover->unk_74 == 1) {
         if (mover->unk_04 != 7) {
-            func_80107CA4_snowball_summit(object, 7);
+            m240_PlayerMotSet(object, 7);
             Hu3DMotionAttrSet(object->model[0], 2, 0);
             Hu3DMotionAttrSet(object->model[0], 1, 1);
         }
     } else if (mover->unk_74 == 2) {
-        func_80107CA4_snowball_summit(object, 7);
+        m240_PlayerMotSet(object, 7);
         Hu3DMotionAttrSet(object->model[0], 1, 0);
         mover->unk_74 = 3;
     } else if (mover->unk_74 == 3) {
         if (Hu3DData[object->model[0]].motTime >= Hu3DMotion[Hu3DData[object->model[0]].motId].unk02 - 2) {
-            func_80107CA4_snowball_summit(object, 0);
+            m240_PlayerMotSet(object, 0);
             mover->unk_74 = 0;
             mover->unk_3C = 0;
         }
     }
     if (mover->unk_74 == 1 && mover->unk_3C != 0) {
-        func_8010AC94_snowball_summit(object);
+        m240_PlayerKnockMove(object);
     }
 }
 
-void func_8010B01C_snowball_summit(omObjData *object) {
-    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
-    UnkSnowballSummitSlot *slot;
+void m240_PlayerFinishUpdate(omObjData *object) {
+    SnowballSummitPlayer *mover = &m240_playerWorkTbl[object->work[0]];
+    SnowballSummitBall *slot;
 
     switch (mover->unk_3C) {
         case 0:
             if (mover->unk_04 != 0) {
-                func_80107D30_snowball_summit(object, 0, 0, 10);
+                m240_PlayerMotShiftSet(object, 0, 0, 10);
                 if (mover->unk_70 != -1) {
-                    slot = &D_8010FC30_snowball_summit[mover->unk_70];
+                    slot = &m240_ballTbl[mover->unk_70];
                     slot->id = 20;
                     slot->unk_10 = -1;
                     mover->unk_48 = 0;
@@ -1367,17 +1367,17 @@ void func_8010B01C_snowball_summit(omObjData *object) {
             break;
         case 1:
             if (object->trans.y == 0.0f && mover->unk_04 != 0) {
-                func_80107D30_snowball_summit(object, 0, 0, 10);
+                m240_PlayerMotShiftSet(object, 0, 0, 10);
                 object->rot.y = 0.0f;
                 break;
             }
-            func_8010AE74_snowball_summit(object);
+            m240_PlayerKnockUpdate(object);
             break;
         case 2:
-            func_8010AE74_snowball_summit(object);
+            m240_PlayerKnockUpdate(object);
             break;
         case 3:
-            func_8010AE74_snowball_summit(object);
+            m240_PlayerKnockUpdate(object);
             break;
     }
     if (mover->unk_04 == 0) {
@@ -1385,59 +1385,59 @@ void func_8010B01C_snowball_summit(omObjData *object) {
     }
 }
 
-void func_8010B158_snowball_summit(omObjData *object) {
-    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
+void m240_PlayerResultUpdate(omObjData *object) {
+    SnowballSummitPlayer *mover = &m240_playerWorkTbl[object->work[0]];
     s32 charBase = omCharModelNoTbl[GwPlayer[object->work[0]].chr][0];
 
-    if (D_80110044_snowball_summit != 0) {
+    if (m240_winnerF != 0) {
         if (mover->unk_3C == 0 && mover->unk_04 != 9) {
-            func_80107CA4_snowball_summit(object, 9);
+            m240_PlayerMotSet(object, 9);
             Hu3DMotionAttrSet(object->model[0], 2, 0);
             HuAudCharVoicePlay(charBase | 0x2F);
         }
     } else if (mover->unk_04 != 10) {
-        func_80107CA4_snowball_summit(object, 10);
+        m240_PlayerMotSet(object, 10);
         Hu3DMotionAttrSet(object->model[0], 2, 0);
     }
 }
 
-void func_8010B250_snowball_summit(omObjData *object) {
-    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[object->work[0]];
+void m240_PlayerObjMain(omObjData *object) {
+    SnowballSummitPlayer *mover = &m240_playerWorkTbl[object->work[0]];
 
     if (mover->id == -1) {
         return;
     }
 
-    switch (D_8010F880_snowball_summit) {
+    switch (m240_phase) {
         case 2:
             if (mover->unk_08 != 0) {
-                func_8010811C_snowball_summit(object);
+                m240_PlayerComInput(object);
             }
             if (mover->unk_3C == 0) {
-                func_8010AA78_snowball_summit(object);
+                m240_PlayerInputUpdate(object);
             } else {
-                func_8010AE74_snowball_summit(object);
+                m240_PlayerKnockUpdate(object);
             }
             break;
         case 3:
-            func_80105B9C_snowball_summit(object->work[0]);
-            func_8010B01C_snowball_summit(object);
+            m240_PadClear(object->work[0]);
+            m240_PlayerFinishUpdate(object);
             break;
         case 4:
-            func_80105B9C_snowball_summit(object->work[0]);
-            func_8010B158_snowball_summit(object);
+            m240_PadClear(object->work[0]);
+            m240_PlayerResultUpdate(object);
             break;
         case 0:
         case 1:
         case 5:
-            func_80105B9C_snowball_summit(object->work[0]);
+            m240_PadClear(object->work[0]);
             break;
     }
 }
 
-void func_8010B34C_snowball_summit(omObjData *object) {
+void m240_PlayerObjInit(omObjData *object) {
     u16 character = GwPlayer[object->work[0]].chr;
-    UnkSnowballSummitMover *mover;
+    SnowballSummitPlayer *mover;
 
     object->model[0] = Hu3DModelRead(omCharModelNoTbl[character][0] | omCharModelNoTbl[character][1], 0x2B9);
     omObjMotionRead(object, 0, CharMotionDataNumGet(character, 0));
@@ -1459,27 +1459,27 @@ void func_8010B34C_snowball_summit(omObjData *object) {
     Hu3DMotionModelSet(object->model[0], object->motion[0]);
     Hu3DMotionAttrSet(object->model[0], 2, 2);
     if (object->work[0] == 0) {
-        D_8010F8A8_snowball_summit = rand8() & 3;
-        object->trans.x = D_8010F598_snowball_summit[D_8010F8A8_snowball_summit].x;
+        m240_startPosNo = rand8() & 3;
+        object->trans.x = m240_startPosTbl[m240_startPosNo].x;
         object->trans.y = 0.0f;
-        object->trans.z = D_8010F598_snowball_summit[D_8010F8A8_snowball_summit].y;
-        object->rot.y = D_8010F598_snowball_summit[D_8010F8A8_snowball_summit].z;
+        object->trans.z = m240_startPosTbl[m240_startPosNo].y;
+        object->rot.y = m240_startPosTbl[m240_startPosNo].z;
     } else {
-        if (++D_8010F8A8_snowball_summit >= 4) {
-            D_8010F8A8_snowball_summit = 0;
+        if (++m240_startPosNo >= 4) {
+            m240_startPosNo = 0;
         }
-        object->trans.x = D_8010F598_snowball_summit[D_8010F8A8_snowball_summit].x;
+        object->trans.x = m240_startPosTbl[m240_startPosNo].x;
         object->trans.y = 0.0f;
-        object->trans.z = D_8010F598_snowball_summit[D_8010F8A8_snowball_summit].y;
-        object->rot.y = D_8010F598_snowball_summit[D_8010F8A8_snowball_summit].z;
+        object->trans.z = m240_startPosTbl[m240_startPosNo].y;
+        object->rot.y = m240_startPosTbl[m240_startPosNo].z;
     }
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
     Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y + 20.0f + 5.0f, object->trans.z);
     Hu3DModelCameraSet(object->model[0], HU3D_CAM1);
     Hu3DModelCameraSet(object->model[1], HU3D_CAM1);
-    object->func = func_8010B250_snowball_summit;
+    object->func = m240_PlayerObjMain;
 
-    mover = &D_8010F9B8_snowball_summit[object->work[0]];
+    mover = &m240_playerWorkTbl[object->work[0]];
     mover->id = 0;
     mover->unk_04 = 0;
     mover->unk_08 = GwPlayer[object->work[0]].stat & 1;
@@ -1550,13 +1550,13 @@ void func_8010B34C_snowball_summit(omObjData *object) {
     }
 }
 
-void func_8010B8E4_snowball_summit(void) {
+void m240_PlayerObjCreateAll(void) {
     omObjData *object;
     s32 player;
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        object = omAddObj(0x12C, 9, 0x3C, -1, func_8010B34C_snowball_summit);
+        object = omAddObj(0x12C, 9, 0x3C, -1, m240_PlayerObjInit);
         switch (i) {
             case 0:
                 player = 0;
@@ -1578,12 +1578,12 @@ void func_8010B8E4_snowball_summit(void) {
     }
 }
 
-s32 func_8010B994_snowball_summit(omObjData *object) {
+s32 m240_BallCreate(omObjData *object) {
     s32 i;
-    UnkSnowballSummitSlot *slot;
+    SnowballSummitBall *slot;
 
-    for (i = 0; i < ARRAY_COUNT(D_8010FC30_snowball_summit); i++) {
-        slot = &D_8010FC30_snowball_summit[i];
+    for (i = 0; i < ARRAY_COUNT(m240_ballTbl); i++) {
+        slot = &m240_ballTbl[i];
         if (slot->id == 0) {
             slot->id = 1;
             slot->unk_10 = object->work[0];
@@ -1593,15 +1593,15 @@ s32 func_8010B994_snowball_summit(omObjData *object) {
     return -1;
 }
 
-void func_8010B9E4_snowball_summit(omObjData *object) {
-    UnkSnowballSummitSlot *slot = &D_8010FC30_snowball_summit[object->work[0]];
-    UnkSnowballSummitMover *mover;
+void m240_BallObjMain(omObjData *object) {
+    SnowballSummitBall *slot = &m240_ballTbl[object->work[0]];
+    SnowballSummitPlayer *mover;
 
     if (slot->id == -1) {
         return;
     }
 
-    if (D_8010F880_snowball_summit >= 3 && slot->id > 0 && slot->unk_18 == 0) {
+    if (m240_phase >= 3 && slot->id > 0 && slot->unk_18 == 0) {
         slot->id = 20;
     }
 
@@ -1628,12 +1628,12 @@ void func_8010B9E4_snowball_summit(omObjData *object) {
                 HuAudFXStop((s16)slot->unk_38);
                 slot->unk_34 = 0;
                 slot->unk_38 = -1;
-                D_8011024C_snowball_summit = 0;
+                m240_ballSeF = 0;
             }
-            func_8010738C_snowball_summit(object, 30, 0.1f, slot->unk_0C * 0.5, slot->unk_0C * 0.5 + 0.2, 0.0f, 0.0f, 0.0f);
-            func_8010705C_snowball_summit(object, 40, slot->unk_0C * 0.1 * 0.5, slot->unk_0C * 1.2 * 0.5, 0.0f, 0.0f, 0.0f);
+            m240_BurstEmit(object, 30, 0.1f, slot->unk_0C * 0.5, slot->unk_0C * 0.5 + 0.2, 0.0f, 0.0f, 0.0f);
+            m240_PuffEmit(object, 40, slot->unk_0C * 0.1 * 0.5, slot->unk_0C * 1.2 * 0.5, 0.0f, 0.0f, 0.0f);
             if (slot->unk_10 != -1) {
-                mover = &D_8010F9B8_snowball_summit[slot->unk_10];
+                mover = &m240_playerWorkTbl[slot->unk_10];
                 mover->unk_70 = -1;
                 mover->unk_48 = 0;
                 mover->unk_40 = 0;
@@ -1655,13 +1655,13 @@ void func_8010B9E4_snowball_summit(omObjData *object) {
     }
 }
 
-void func_8010BC7C_snowball_summit(omObjData *object) {
-    UnkSnowballSummitSlot *slot;
+void m240_BallObjInit(omObjData *object) {
+    SnowballSummitBall *slot;
 
     if (object->work[0] == 0) {
-        object->model[0] = D_8010F8AC_snowball_summit = Hu3DModelRead(0x490004, 0x16B9);
+        object->model[0] = m240_ballMdl = Hu3DModelRead(0x490004, 0x16B9);
     } else {
-        object->model[0] = Hu3DModelLink(D_8010F8AC_snowball_summit);
+        object->model[0] = Hu3DModelLink(m240_ballMdl);
     }
     object->model[1] = Hu3DModelRead2(0, 0x14C9);
     Hu3DModelObjAttrSet(object->model[1], 0x80000000, 0);
@@ -1677,8 +1677,8 @@ void func_8010BC7C_snowball_summit(omObjData *object) {
     Hu3DModelScaleSet(object->model[1], object->scale.x, object->scale.y, object->scale.z);
     Hu3DModelCameraSet(object->model[0], HU3D_CAM1);
     Hu3DModelCameraSet(object->model[1], HU3D_CAM1);
-    object->func = func_8010B9E4_snowball_summit;
-    slot = &D_8010FC30_snowball_summit[object->work[0]];
+    object->func = m240_BallObjMain;
+    slot = &m240_ballTbl[object->work[0]];
     slot->id = 0;
     slot->unk_04 = 0;
     slot->unk_08 = 0;
@@ -1692,23 +1692,23 @@ void func_8010BC7C_snowball_summit(omObjData *object) {
     slot->unk_30 = 0;
 }
 
-void func_8010BE8C_snowball_summit(void) {
+void m240_BallObjCreateAll(void) {
     s32 i;
 
     for (i = 0; i < 16; i++) {
-        omAddObj(0x190, 2, 0, -1, func_8010BC7C_snowball_summit)->work[0] = i;
+        omAddObj(0x190, 2, 0, -1, m240_BallObjInit)->work[0] = i;
     }
 }
 
-void func_8010BEE8_snowball_summit(omObjData *object) {
-    UnkSnowballSummitObjSlot *slot = &D_801101C8_snowball_summit[object->work[0]];
-    UnkSnowballSummitMover *mover;
+void m240_MakeEffObjMain(omObjData *object) {
+    SnowballSummitMakeEff *slot = &m240_makeEffTbl[object->work[0]];
+    SnowballSummitPlayer *mover;
 
     if (slot->id == -1) {
         return;
     }
 
-    mover = &D_8010F9B8_snowball_summit[object->work[0]];
+    mover = &m240_playerWorkTbl[object->work[0]];
     if (mover->id == -1) {
         slot->id = 0;
     }
@@ -1734,97 +1734,97 @@ void func_8010BEE8_snowball_summit(omObjData *object) {
     object->rot.y = mover->unk_78->rot.y;
 }
 
-void func_8010C000_snowball_summit(omObjData *object) {
-    UnkSnowballSummitMover *mover;
-    UnkSnowballSummitObjSlot *slot;
+void m240_MakeEffObjInit(omObjData *object) {
+    SnowballSummitPlayer *mover;
+    SnowballSummitMakeEff *slot;
 
     if (object->work[0] == 0) {
-        object->model[0] = D_8010F8AE_snowball_summit = Hu3DModelRead(0x49000C, 0x1699);
+        object->model[0] = m240_makeEffMdl = Hu3DModelRead(0x49000C, 0x1699);
     } else {
-        object->model[0] = Hu3DModelLink(D_8010F8AE_snowball_summit);
+        object->model[0] = Hu3DModelLink(m240_makeEffMdl);
     }
     Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DMotionAttrSet(object->model[0], 2, 2);
-    mover = &D_8010F9B8_snowball_summit[object->work[0]];
+    mover = &m240_playerWorkTbl[object->work[0]];
     object->trans.x = mover->spawnPosX;
     object->trans.y = mover->spawnPosY + 40.0f;
     object->trans.z = mover->spawnPosZ;
     Hu3DModelCameraSet(object->model[0], HU3D_CAM1);
-    object->func = func_8010BEE8_snowball_summit;
-    slot = &D_801101C8_snowball_summit[object->work[0]];
+    object->func = m240_MakeEffObjMain;
+    slot = &m240_makeEffTbl[object->work[0]];
     slot->id = 0;
     slot->unk_04 = object;
 }
 
-void func_8010C10C_snowball_summit(void) {
+void m240_MakeEffObjCreateAll(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        omAddObj(0x1FE, 1, 1, -1, func_8010C000_snowball_summit)->work[0] = i;
+        omAddObj(0x1FE, 1, 1, -1, m240_MakeEffObjInit)->work[0] = i;
     }
 }
 
-void func_8010C168_snowball_summit(omObjData *object) {
+void m240_RollEffObjMain(omObjData *object) {
 }
 
-void func_8010C170_snowball_summit(omObjData *object) {
-    UnkSnowballSummitMover *mover;
-    UnkSnowballSummitNode *node;
+void m240_RollEffObjInit(omObjData *object) {
+    SnowballSummitPlayer *mover;
+    SnowballSummitRollEff *node;
 
     if (object->work[0] == 0) {
-        object->model[0] = D_8010F8B0_snowball_summit = Hu3DModelRead(0x49000B, 0x1699);
+        object->model[0] = m240_rollEffMdl = Hu3DModelRead(0x49000B, 0x1699);
     } else {
-        object->model[0] = Hu3DModelLink(D_8010F8B0_snowball_summit);
+        object->model[0] = Hu3DModelLink(m240_rollEffMdl);
     }
     Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DMotionAttrSet(object->model[0], 2, 2);
-    mover = &D_8010F9B8_snowball_summit[object->work[0]];
+    mover = &m240_playerWorkTbl[object->work[0]];
     object->trans.x = mover->spawnPosX;
     object->trans.y = mover->spawnPosY + 20.0f;
     object->trans.z = mover->spawnPosZ;
     Hu3DModelCameraSet(object->model[0], HU3D_CAM1);
-    object->func = func_8010C168_snowball_summit;
-    node = &D_80110250_snowball_summit[object->work[0]];
+    object->func = m240_RollEffObjMain;
+    node = &m240_rollEffTbl[object->work[0]];
     node->id = 0;
     node->unk_04 = 0;
     node->unk_08 = -1;
     node->unk_0C = object;
 }
 
-void func_8010C288_snowball_summit(void) {
+void m240_RollEffObjCreateAll(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        omAddObj(0x208, 1, 1, -1, func_8010C170_snowball_summit)->work[0] = i;
+        omAddObj(0x208, 1, 1, -1, m240_RollEffObjInit)->work[0] = i;
     }
 }
 
-void func_8010C2E4_snowball_summit(omObjData *arg0) {
+void m240_SeqDoneObjMain(omObjData *arg0) {
 }
 
-void func_8010C2EC_snowball_summit(omObjData *arg0) {
-    if (D_8010F88C_snowball_summit > 0) {
-        D_8010F88C_snowball_summit--;
+void m240_SeqEndObjMain(omObjData *arg0) {
+    if (m240_phaseTimer > 0) {
+        m240_phaseTimer--;
     } else {
-        D_8010F884_snowball_summit = 1;
-        arg0->func = func_8010C2E4_snowball_summit;
+        m240_phaseStep = 1;
+        arg0->func = m240_SeqDoneObjMain;
     }
 }
 
-void func_8010C328_snowball_summit(omObjData *arg0) {
+void m240_SeqResultWaitObjMain(omObjData *arg0) {
     if (GMesStatGet() & GMES_STAT_TIMEEND) {
-        D_8010F88C_snowball_summit = 0x14;
-        arg0->func = func_8010C2EC_snowball_summit;
+        m240_phaseTimer = 0x14;
+        arg0->func = m240_SeqEndObjMain;
     }
 }
 
-s32 func_8010C36C_snowball_summit(void) {
+s32 m240_WinnerGet(void) {
     s32 i = 0;
     s32 count = 0;
     s32 index = -1;
-    UnkSnowballSummitMover *mover = D_8010F9B8_snowball_summit;
+    SnowballSummitPlayer *mover = m240_playerWorkTbl;
 
-    for (; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
+    for (; i < ARRAY_COUNT(m240_playerWorkTbl); i++) {
         if ((u32)mover[i].id < 0x5A) {
             count++;
             index = i;
@@ -1832,49 +1832,49 @@ s32 func_8010C36C_snowball_summit(void) {
     }
 
     if (count == 1) {
-        D_80110044_snowball_summit = 1;
+        m240_winnerF = 1;
         return index;
     }
     return -1;
 }
 
-void func_8010C3E4_snowball_summit(s32 arg0) {
-    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[arg0];
+void m240_WinnerSet(s32 arg0) {
+    SnowballSummitPlayer *mover = &m240_playerWorkTbl[arg0];
 
     GwPlayer[mover->unk_78->work[0]].bonusCoin = 10;
     GMesCreate(0x16, GwPlayer[mover->unk_78->work[0]].chr);
     HuAudSeqPlay(0x65);
 }
 
-void func_8010C46C_snowball_summit(omObjData *object) {
+void m240_SeqResultObjMain(omObjData *object) {
     s32 index;
 
-    if (D_8010F88C_snowball_summit > 0) {
-        D_8010F88C_snowball_summit--;
+    if (m240_phaseTimer > 0) {
+        m240_phaseTimer--;
     } else {
-        index = func_8010C36C_snowball_summit();
+        index = m240_WinnerGet();
         if (index == -1) {
             GMesCreate(0x20);
             HuAudSeqPlay(0x6C);
-            D_8010F88C_snowball_summit = 0x90;
+            m240_phaseTimer = 0x90;
         } else {
-            func_8010C3E4_snowball_summit(index);
+            m240_WinnerSet(index);
         }
-        object->func = func_8010C328_snowball_summit;
+        object->func = m240_SeqResultWaitObjMain;
     }
 }
 
-void func_8010C4F4_snowball_summit(omObjData *object) {
+void m240_SeqSettleWaitObjMain(omObjData *object) {
     s32 i;
-    UnkSnowballSummitMover *mover;
+    SnowballSummitPlayer *mover;
 
-    if (D_8010F88C_snowball_summit > 0) {
-        D_8010F88C_snowball_summit--;
+    if (m240_phaseTimer > 0) {
+        m240_phaseTimer--;
         return;
     }
 
-    for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
-        mover = &D_8010F9B8_snowball_summit[i];
+    for (i = 0; i < ARRAY_COUNT(m240_playerWorkTbl); i++) {
+        mover = &m240_playerWorkTbl[i];
         if (mover->id < 0) {
             continue;
         }
@@ -1890,32 +1890,32 @@ void func_8010C4F4_snowball_summit(omObjData *object) {
         }
     }
 
-    if (i >= ARRAY_COUNT(D_8010F9B8_snowball_summit)) {
-        D_8010F884_snowball_summit = 1;
-        object->func = func_8010C46C_snowball_summit;
+    if (i >= ARRAY_COUNT(m240_playerWorkTbl)) {
+        m240_phaseStep = 1;
+        object->func = m240_SeqResultObjMain;
     }
 }
 
-void func_8010C5C0_snowball_summit(omObjData *arg0) {
+void m240_SeqFinishWaitObjMain(omObjData *arg0) {
     if (GMesStatGet() == 0) {
-        D_8010F88C_snowball_summit = 0xF;
-        arg0->func = func_8010C4F4_snowball_summit;
+        m240_phaseTimer = 0xF;
+        arg0->func = m240_SeqSettleWaitObjMain;
     }
 }
 
-void func_8010C600_snowball_summit(omObjData *arg0) {
+void m240_SeqFinishObjMain(omObjData *arg0) {
     GMesCreate(0xE);
     HuAudSeqFadeOut(0x78);
-    D_8010F88C_snowball_summit = 0x4B;
-    arg0->func = func_8010C5C0_snowball_summit;
+    m240_phaseTimer = 0x4B;
+    arg0->func = m240_SeqFinishWaitObjMain;
 }
 
-s32 func_8010C648_snowball_summit(void) {
+s32 m240_SurvivorCheck(void) {
     s32 i = 0;
     u32 count = 0;
-    UnkSnowballSummitMover *mover = D_8010F9B8_snowball_summit;
+    SnowballSummitPlayer *mover = m240_playerWorkTbl;
 
-    for (; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
+    for (; i < ARRAY_COUNT(m240_playerWorkTbl); i++) {
         // unused movers have an id of -1, so compare as unsigned
         if ((u32)mover[i].id < 0x5A) {
             count++;
@@ -1930,68 +1930,68 @@ s32 func_8010C648_snowball_summit(void) {
     return 0;
 }
 
-void func_8010C6A8_snowball_summit(omObjData *object) {
+void m240_SeqTimerObjMain(omObjData *object) {
     s32 result;
 
-    if (D_8010F88C_snowball_summit != 0) {
-        D_8010F88C_snowball_summit--;
-        GMesTimerValueSet((D_8010F88C_snowball_summit + 29) / 30);
-        result = func_8010C648_snowball_summit();
+    if (m240_phaseTimer != 0) {
+        m240_phaseTimer--;
+        GMesTimerValueSet((m240_phaseTimer + 29) / 30);
+        result = m240_SurvivorCheck();
         if (result == 1) {
             GMesTimerEnd();
-            D_8010F88C_snowball_summit = 90;
-            object->func = func_8010C600_snowball_summit;
-            D_8010F884_snowball_summit = 1;
+            m240_phaseTimer = 90;
+            object->func = m240_SeqFinishObjMain;
+            m240_phaseStep = 1;
         } else if (result == -1) {
             GMesTimerEnd();
-            D_8010F88C_snowball_summit = 90;
-            object->func = func_8010C600_snowball_summit;
+            m240_phaseTimer = 90;
+            object->func = m240_SeqFinishObjMain;
             HuAudSeqFadeOut(120);
-            D_8010F884_snowball_summit = 1;
+            m240_phaseStep = 1;
         }
     } else {
         GMesTimerEnd();
-        object->func = func_8010C600_snowball_summit;
+        object->func = m240_SeqFinishObjMain;
         HuAudSeqFadeOut(120);
-        D_8010F884_snowball_summit = 1;
+        m240_phaseStep = 1;
     }
 }
 
-void func_8010C7A4_snowball_summit(omObjData *arg0) {
+void m240_SeqTimerStartObjMain(omObjData *arg0) {
     GMesCreate(0x1A, 0x3C, 0xA0, 0x1C);
-    D_8010F88C_snowball_summit = 0x709;
-    arg0->func = func_8010C6A8_snowball_summit;
+    m240_phaseTimer = 0x709;
+    arg0->func = m240_SeqTimerObjMain;
 }
 
-void func_8010C7F0_snowball_summit(omObjData *arg0) {
+void m240_SeqStartWaitObjMain(omObjData *arg0) {
     if (GMesStatGet() == 0 || GMesStatGet() & GMES_STAT_TIMEEND) {
-        arg0->func = func_8010C7A4_snowball_summit;
-        D_8010F884_snowball_summit = 1;
+        arg0->func = m240_SeqTimerStartObjMain;
+        m240_phaseStep = 1;
         HuAudSeqPlay(0x30);
     }
 }
 
-void func_8010C850_snowball_summit(omObjData *arg0) {
+void m240_SeqStartObjMain(omObjData *arg0) {
     GMesCreate(3);
-    arg0->func = func_8010C7F0_snowball_summit;
-    D_8010F884_snowball_summit = 1;
+    arg0->func = m240_SeqStartWaitObjMain;
+    m240_phaseStep = 1;
 }
 
-void func_8010C890_snowball_summit(omObjData *object) {
+void m240_CameraViewObjMain(omObjData *object) {
     Vec position;
     Vec target;
     Vec result;
     u32 i;
 
-    if (D_8010F888_snowball_summit == 0) {
-        D_8010F888_snowball_summit = 1;
+    if (m240_cameraSetF == 0) {
+        m240_cameraSetF = 1;
         target.x = 1975.0f;
         target.y = 0.0f;
         target.z = 2700.0f;
         position.x = -40.0f;
         position.y = 0.0f;
         position.z = 45.0f;
-        func_80105D64_snowball_summit(&position, &target, &result);
+        m240_PolarCalc(&position, &target, &result);
         for (i = 0; i < 2; i++) {
             CZoomM[i] = result.x;
             CRotM[i].x = 360.0f - result.z;
@@ -2004,34 +2004,34 @@ void func_8010C890_snowball_summit(omObjData *object) {
     }
 }
 
-void func_8010C9B4_snowball_summit(omObjData *object) {
+void m240_ExitObjMain(omObjData *object) {
     osViBlack(0);
     HuAudFXStop(-1);
     omOvlReturnEx(1);
 }
 
-void func_8010C9E0_snowball_summit(omObjData *object) {
+void m240_ExitWaitObjMain(omObjData *object) {
     if (WipeStatGet() == 0) {
-        object->func = func_8010C9B4_snowball_summit;
+        object->func = m240_ExitObjMain;
     }
 }
 
-void func_8010CA18_snowball_summit(omObjData *object) {
+void m240_ExitCheckObjMain(omObjData *object) {
     if (omSysExitReq == 1) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
-        object->func = func_8010C9E0_snowball_summit;
+        object->func = m240_ExitWaitObjMain;
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
     }
 }
 
-void func_8010CA70_snowball_summit(void) {
-    D_8010F880_snowball_summit += D_8010F884_snowball_summit;
-    D_8010F884_snowball_summit = 0;
+void m240_PhaseUpdate(void) {
+    m240_phase += m240_phaseStep;
+    m240_phaseStep = 0;
 }
 
-s32 func_8010CA98_snowball_summit(UnkSnowballSummitMover *mover) {
-    UnkSnowballSummitMover *other;
+s32 m240_PlayerHitCheck(SnowballSummitPlayer *mover) {
+    SnowballSummitPlayer *other;
     Vec delta;
     f32 radius;
     f32 dist;
@@ -2044,11 +2044,11 @@ s32 func_8010CA98_snowball_summit(UnkSnowballSummitMover *mover) {
         if (mover->unk_5C[i] != 0) {
             continue;
         }
-        other = &D_8010F9B8_snowball_summit[i];
+        other = &m240_playerWorkTbl[i];
         if (other->id == -1) {
             continue;
         }
-        func_80107908_snowball_summit(mover->spawnPosX, mover->spawnPosZ, other->spawnPosX, other->spawnPosZ, &delta);
+        m240_PolarXZCalc(mover->spawnPosX, mover->spawnPosZ, other->spawnPosX, other->spawnPosZ, &delta);
         radius = mover->unk_50 + other->unk_50;
         dist = delta.x;
         if (dist < 0.0f) {
@@ -2064,7 +2064,7 @@ s32 func_8010CA98_snowball_summit(UnkSnowballSummitMover *mover) {
     return mover->unk_58 != 0;
 }
 
-s32 func_8010CC00_snowball_summit(UnkSnowballSummitMover *mover) {
+s32 m240_PlayerFallCheck(SnowballSummitPlayer *mover) {
     f32 dx = mover->unk_78->trans.x + mover->posZ;
     f32 dz = mover->unk_78->trans.z + mover->unk_28;
     f32 angle;
@@ -2072,7 +2072,7 @@ s32 func_8010CC00_snowball_summit(UnkSnowballSummitMover *mover) {
     if (dx * dx + dz * dz > 476100.0f) {
         if (mover->unk_3C == 0 || mover->unk_74 >= 2) {
             mover->spawnPosY = 20.0f;
-            angle = func_8010610C_snowball_summit(mover->spawnPosX, mover->spawnPosZ);
+            angle = m240_AngleCalc(mover->spawnPosX, mover->spawnPosZ);
             mover->spawnPosX += sindf(angle) * 30.0f;
             mover->spawnPosZ += cosdf(angle) * 30.0f;
             mover->unk_3C = 3;
@@ -2091,8 +2091,8 @@ s32 func_8010CC00_snowball_summit(UnkSnowballSummitMover *mover) {
     return mover->unk_4C;
 }
 
-void func_8010CD58_snowball_summit(UnkSnowballSummitMover *mover) {
-    UnkSnowballSummitMover *other;
+void m240_PlayerPush(SnowballSummitPlayer *mover) {
+    SnowballSummitPlayer *other;
     Vec delta;
     f32 push;
     s32 i;
@@ -2104,11 +2104,11 @@ void func_8010CD58_snowball_summit(UnkSnowballSummitMover *mover) {
         if (mover->unk_5C[i] != 1) {
             continue;
         }
-        other = &D_8010F9B8_snowball_summit[i];
+        other = &m240_playerWorkTbl[i];
         if (other->id == -1) {
             continue;
         }
-        func_80107908_snowball_summit(mover->spawnPosX, mover->spawnPosZ, other->spawnPosX, other->spawnPosZ, &delta);
+        m240_PolarXZCalc(mover->spawnPosX, mover->spawnPosZ, other->spawnPosX, other->spawnPosZ, &delta);
         if (mover->unk_3C != 0) {
             mover->spawnPosX = other->unk_78->trans.x + sindf(delta.z) * (other->unk_50 + mover->unk_50 + 1.0f);
             mover->spawnPosZ = other->unk_78->trans.z + cosdf(delta.z) * (other->unk_50 + mover->unk_50 + 1.0f);
@@ -2140,7 +2140,7 @@ void func_8010CD58_snowball_summit(UnkSnowballSummitMover *mover) {
     }
 }
 
-void func_8010D108_snowball_summit(UnkSnowballSummitMover *mover) {
+void m240_PlayerFallUpdate(SnowballSummitPlayer *mover) {
     f32 angle;
     f32 rise;
 
@@ -2159,7 +2159,7 @@ void func_8010D108_snowball_summit(UnkSnowballSummitMover *mover) {
         Hu3DModelAttrSet(mover->unk_78->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         mover->id = 90;
     } else {
-        angle = func_8010610C_snowball_summit(mover->spawnPosX, mover->spawnPosZ);
+        angle = m240_AngleCalc(mover->spawnPosX, mover->spawnPosZ);
         mover->spawnPosX += mover->unk_10 * mover->unk_10 * cosdf(mover->posY) * sindf(angle);
         mover->spawnPosZ += mover->unk_10 * mover->unk_10 * cosdf(mover->posY) * cosdf(angle);
         rise = mover->unk_14 * mover->unk_14 * sindf(mover->posY);
@@ -2175,7 +2175,7 @@ void func_8010D108_snowball_summit(UnkSnowballSummitMover *mover) {
     }
 }
 
-void func_8010D304_snowball_summit(UnkSnowballSummitMover *mover) {
+void m240_PlayerPosUpdate(SnowballSummitPlayer *mover) {
     omObjData *object = mover->unk_78;
     f32 angle;
 
@@ -2204,8 +2204,8 @@ void func_8010D304_snowball_summit(UnkSnowballSummitMover *mover) {
     if ((mover->unk_4C != 0 && object->trans.y > -2000.0f) || mover->unk_74 == 1) {
         if (mover->spawnPosY > -1900.0f) {
             if (mover->unk_6C <= 0) {
-                angle = func_8010610C_snowball_summit(mover->spawnPosX, mover->spawnPosZ);
-                func_8010705C_snowball_summit(mover->unk_78, 40, 0.1f, 1.6f, sindf(angle) * 50.0f, 60.0f, cosdf(angle) * 50.0f);
+                angle = m240_AngleCalc(mover->spawnPosX, mover->spawnPosZ);
+                m240_PuffEmit(mover->unk_78, 40, 0.1f, 1.6f, sindf(angle) * 50.0f, 60.0f, cosdf(angle) * 50.0f);
                 mover->unk_6C = 1;
             } else {
                 mover->unk_6C--;
@@ -2214,9 +2214,9 @@ void func_8010D304_snowball_summit(UnkSnowballSummitMover *mover) {
     }
 }
 
-void func_8010D55C_snowball_summit(UnkSnowballSummitMover *mover) {
+void m240_PlayerBumpCheck(SnowballSummitPlayer *mover) {
     omObjData *object = mover->unk_78;
-    UnkSnowballSummitMover *other;
+    SnowballSummitPlayer *other;
     omObjData *otherObject;
     Vec delta;
     f32 radius;
@@ -2227,7 +2227,7 @@ void func_8010D55C_snowball_summit(UnkSnowballSummitMover *mover) {
         if (i == object->work[0]) {
             continue;
         }
-        other = &D_8010F9B8_snowball_summit[i];
+        other = &m240_playerWorkTbl[i];
         if (other->id == 90) {
             continue;
         }
@@ -2235,7 +2235,7 @@ void func_8010D55C_snowball_summit(UnkSnowballSummitMover *mover) {
             continue;
         }
         otherObject = other->unk_78;
-        func_80107908_snowball_summit(object->trans.x, object->trans.z, otherObject->trans.x, otherObject->trans.z, &delta);
+        m240_PolarXZCalc(object->trans.x, object->trans.z, otherObject->trans.x, otherObject->trans.z, &delta);
         radius = mover->unk_50 + other->unk_50;
         dist = delta.x;
         if (dist < 0.0f) {
@@ -2252,8 +2252,8 @@ void func_8010D55C_snowball_summit(UnkSnowballSummitMover *mover) {
     }
 }
 
-void func_8010D86C_snowball_summit(void) {
-    UnkSnowballSummitMover *mover;
+void m240_PlayerMoveUpdate(void) {
+    SnowballSummitPlayer *mover;
     s32 iterations = 0;
     s32 resolved;
     s32 i;
@@ -2262,66 +2262,66 @@ void func_8010D86C_snowball_summit(void) {
     do {
         resolved = 1;
         iterations++;
-        for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
-            mover = &D_8010F9B8_snowball_summit[i];
+        for (i = 0; i < ARRAY_COUNT(m240_playerWorkTbl); i++) {
+            mover = &m240_playerWorkTbl[i];
             for (j = 0; j < ARRAY_COUNT(mover->unk_5C); j++) {
                 mover->unk_5C[j] = 0;
             }
             mover->unk_58 = 0;
         }
-        for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
-            mover = &D_8010F9B8_snowball_summit[i];
+        for (i = 0; i < ARRAY_COUNT(m240_playerWorkTbl); i++) {
+            mover = &m240_playerWorkTbl[i];
             if (mover->id != -1 && mover->unk_3C == 0) {
-                if (func_8010CA98_snowball_summit(mover)) {
+                if (m240_PlayerHitCheck(mover)) {
                     resolved = 0;
                 }
             }
         }
-        for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
-            mover = &D_8010F9B8_snowball_summit[i];
+        for (i = 0; i < ARRAY_COUNT(m240_playerWorkTbl); i++) {
+            mover = &m240_playerWorkTbl[i];
             if (mover->id != -1 && mover->unk_4C == 0) {
-                func_8010CC00_snowball_summit(mover);
+                m240_PlayerFallCheck(mover);
             }
         }
-        for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
-            mover = &D_8010F9B8_snowball_summit[i];
+        for (i = 0; i < ARRAY_COUNT(m240_playerWorkTbl); i++) {
+            mover = &m240_playerWorkTbl[i];
             if (mover->id != -1 && mover->unk_58 == 1 && mover->unk_3C == 0) {
-                func_8010CD58_snowball_summit(mover);
+                m240_PlayerPush(mover);
             }
         }
     } while (resolved == 0 && iterations < 10);
 
-    for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
-        mover = &D_8010F9B8_snowball_summit[i];
+    for (i = 0; i < ARRAY_COUNT(m240_playerWorkTbl); i++) {
+        mover = &m240_playerWorkTbl[i];
         if (mover->id != -1 && mover->unk_4C == 1) {
-            func_8010D108_snowball_summit(mover);
+            m240_PlayerFallUpdate(mover);
         }
     }
-    for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
-        mover = &D_8010F9B8_snowball_summit[i];
+    for (i = 0; i < ARRAY_COUNT(m240_playerWorkTbl); i++) {
+        mover = &m240_playerWorkTbl[i];
         if (mover->id != -1) {
-            func_8010D304_snowball_summit(mover);
+            m240_PlayerPosUpdate(mover);
         }
     }
-    for (i = 0; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
-        mover = &D_8010F9B8_snowball_summit[i];
+    for (i = 0; i < ARRAY_COUNT(m240_playerWorkTbl); i++) {
+        mover = &m240_playerWorkTbl[i];
         if (mover->id != -1 && mover->unk_3C == 1) {
-            func_8010D55C_snowball_summit(mover);
+            m240_PlayerBumpCheck(mover);
         }
     }
 }
 
-void func_8010DB10_snowball_summit(UnkSnowballSummitSlot *slot) {
-    UnkSnowballSummitMover *mover;
-    UnkSnowballSummitNode *node;
+void m240_BallFallCheck(SnowballSummitBall *slot) {
+    SnowballSummitPlayer *mover;
+    SnowballSummitRollEff *node;
     f32 x = slot->unk_3C->trans.x;
     f32 z = slot->unk_3C->trans.z;
     f32 angle;
 
     if (x * x + z * z > 476100.0f) {
         if (slot->unk_10 != -1) {
-            mover = &D_8010F9B8_snowball_summit[slot->unk_10];
-            node = &D_80110250_snowball_summit[slot->unk_10];
+            mover = &m240_playerWorkTbl[slot->unk_10];
+            node = &m240_rollEffTbl[slot->unk_10];
             mover->unk_70 = -1;
             mover->unk_48 = 0;
             mover->unk_40 = 0;
@@ -2338,7 +2338,7 @@ void func_8010DB10_snowball_summit(UnkSnowballSummitSlot *slot) {
         slot->unk_24 = 2.0f;
         slot->unk_10 = -1;
         slot->unk_28 = 0;
-        angle = func_8010610C_snowball_summit(slot->unk_3C->trans.x, slot->unk_3C->trans.z);
+        angle = m240_AngleCalc(slot->unk_3C->trans.x, slot->unk_3C->trans.z);
         slot->unk_3C->trans.x += sindf(angle) * (slot->unk_0C * 37.5);
         slot->unk_3C->trans.z += cosdf(angle) * (slot->unk_0C * 37.5);
         Hu3DModelAttrSet(slot->unk_3C->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -2347,8 +2347,8 @@ void func_8010DB10_snowball_summit(UnkSnowballSummitSlot *slot) {
     }
 }
 
-void func_8010DD00_snowball_summit(UnkSnowballSummitSlot *slot) {
-    UnkSnowballSummitMover *mover = &D_8010F9B8_snowball_summit[slot->unk_10];
+void m240_BallPushUpdate(SnowballSummitBall *slot) {
+    SnowballSummitPlayer *mover = &m240_playerWorkTbl[slot->unk_10];
     omObjData *object = slot->unk_3C;
     f32 distance;
 
@@ -2378,22 +2378,22 @@ void func_8010DD00_snowball_summit(UnkSnowballSummitSlot *slot) {
     object->rot.y = mover->posX;
     Hu3DModelRotSet(object->model[0], object->rot.x, object->rot.y, object->rot.z);
     if (slot->id == 2) {
-        func_8010705C_snowball_summit(object, 40, 0.1f, 1.6f, 0.0f, 0.0f, 0.0f);
+        m240_PuffEmit(object, 40, 0.1f, 1.6f, 0.0f, 0.0f, 0.0f);
     }
 }
 
-void func_8010DFD0_snowball_summit(UnkSnowballSummitSlot *slot) {
+void m240_BallRollUpdate(SnowballSummitBall *slot) {
     omObjData *object = slot->unk_3C;
     f32 speed;
     f32 x;
     f32 y;
     f32 z;
 
-    if (D_8011024C_snowball_summit == 0) {
+    if (m240_ballSeF == 0) {
         slot->unk_38 = HuAudFXPlay(0x43A);
         if (slot->unk_38 != -1) {
             slot->unk_34 = 1;
-            D_8011024C_snowball_summit = 1;
+            m240_ballSeF = 1;
         }
     }
 
@@ -2412,11 +2412,11 @@ void func_8010DFD0_snowball_summit(UnkSnowballSummitSlot *slot) {
         x = sindf(WRAP_ANGLE(object->rot.y + 180.0f)) * slot->unk_0C;
         y = object->trans.y - (object->trans.y - 120.0f);
         z = cosdf(WRAP_ANGLE(object->rot.y + 180.0f)) * slot->unk_0C;
-        func_8010705C_snowball_summit(object, 20, 0.2f, 2.0f, x, y, z);
+        m240_PuffEmit(object, 20, 0.2f, 2.0f, x, y, z);
     }
 }
 
-void func_8010E2F4_snowball_summit(UnkSnowballSummitSlot *slot) {
+void m240_BallFallUpdate(SnowballSummitBall *slot) {
     omObjData *object = slot->unk_3C;
     f32 angle;
 
@@ -2424,7 +2424,7 @@ void func_8010E2F4_snowball_summit(UnkSnowballSummitSlot *slot) {
         HuAudFXStop((s16)slot->unk_38);
         slot->unk_34 = 0;
         slot->unk_38 = -1;
-        D_8011024C_snowball_summit = 0;
+        m240_ballSeF = 0;
     }
 
     if (slot->unk_24 >= 7.0f) {
@@ -2436,7 +2436,7 @@ void func_8010E2F4_snowball_summit(UnkSnowballSummitSlot *slot) {
     if (slot->unk_28 > 0) {
         slot->unk_28--;
     } else {
-        func_8010705C_snowball_summit(object, 40, slot->unk_0C * 0.1 * 0.5, slot->unk_0C * 1.2 * 0.5, 0.0f, 0.0f, 0.0f);
+        m240_PuffEmit(object, 40, slot->unk_0C * 0.1 * 0.5, slot->unk_0C * 1.2 * 0.5, 0.0f, 0.0f, 0.0f);
         slot->unk_28 = 1;
     }
 
@@ -2451,17 +2451,17 @@ void func_8010E2F4_snowball_summit(UnkSnowballSummitSlot *slot) {
         slot->unk_10 = -1;
         slot->unk_28 = 0;
     } else {
-        angle = func_8010610C_snowball_summit(object->trans.x, object->trans.z);
+        angle = m240_AngleCalc(object->trans.x, object->trans.z);
         object->trans.x += slot->unk_24 * slot->unk_24 * cosdf(slot->unk_1C) * sindf(angle);
         object->trans.z += slot->unk_24 * slot->unk_24 * cosdf(slot->unk_1C) * cosdf(angle);
         object->trans.y += slot->unk_20 * slot->unk_20 * sindf(slot->unk_1C);
     }
 }
 
-void func_8010E52C_snowball_summit(UnkSnowballSummitSlot *slot) {
+void m240_BallPlayerHitCheck(SnowballSummitBall *slot) {
     omObjData *object = slot->unk_3C;
-    UnkSnowballSummitMover *mover;
-    UnkSnowballSummitNode *node;
+    SnowballSummitPlayer *mover;
+    SnowballSummitRollEff *node;
     omObjData *moverObject;
     Vec delta;
     s32 i;
@@ -2470,7 +2470,7 @@ void func_8010E52C_snowball_summit(UnkSnowballSummitSlot *slot) {
         if (i == slot->unk_10) {
             continue;
         }
-        mover = &D_8010F9B8_snowball_summit[i];
+        mover = &m240_playerWorkTbl[i];
         if (mover->id == 90) {
             continue;
         }
@@ -2478,16 +2478,16 @@ void func_8010E52C_snowball_summit(UnkSnowballSummitSlot *slot) {
             continue;
         }
         moverObject = mover->unk_78;
-        func_80107908_snowball_summit(object->trans.x, object->trans.z, moverObject->trans.x, moverObject->trans.z, &delta);
+        m240_PolarXZCalc(object->trans.x, object->trans.z, moverObject->trans.x, moverObject->trans.z, &delta);
         if (slot->unk_0C * 37.5 + mover->unk_50 > ABS(delta.x) && moverObject->trans.y < slot->unk_0C * 37.5 + slot->unk_0C * 37.5) {
             if (slot->unk_34 == 1 && slot->unk_38 != -1) {
                 HuAudFXStop((s16)slot->unk_38);
                 slot->unk_34 = 0;
                 slot->unk_38 = -1;
-                D_8011024C_snowball_summit = 0;
+                m240_ballSeF = 0;
             }
             if (slot->unk_10 != -1) {
-                node = &D_80110250_snowball_summit[slot->unk_10];
+                node = &m240_rollEffTbl[slot->unk_10];
                 if (node->unk_04 == 1 && node->unk_08 != -1) {
                     HuAudFXStop((s16)node->unk_08);
                     node->unk_04 = 0;
@@ -2495,7 +2495,7 @@ void func_8010E52C_snowball_summit(UnkSnowballSummitSlot *slot) {
                 }
             }
             HuAudPlayerFXPlay(0x43C, mover->unk_78->work[0]);
-            D_8010F898_snowball_summit[moverObject->work[0]] = 30;
+            m240_hitTimerTbl[moverObject->work[0]] = 30;
             slot->id = 20;
             mover->unk_74 = 1;
             mover->unk_3C = 1;
@@ -2510,7 +2510,7 @@ void func_8010E52C_snowball_summit(UnkSnowballSummitSlot *slot) {
             mover->unk_2C = 4.0f;
             mover->posX = delta.z;
             if (mover->unk_70 != -1) {
-                D_8010FC30_snowball_summit[mover->unk_70].id = 20;
+                m240_ballTbl[mover->unk_70].id = 20;
             }
             if (mover->unk_08 == 0) {
                 omVibrate(moverObject->work[0], 20, 0, 20);
@@ -2519,23 +2519,23 @@ void func_8010E52C_snowball_summit(UnkSnowballSummitSlot *slot) {
     }
 }
 
-void func_8010E824_snowball_summit(UnkSnowballSummitSlot *slot) {
+void m240_BallHitCheck(SnowballSummitBall *slot) {
     omObjData *object = slot->unk_3C;
-    UnkSnowballSummitSlot *other;
-    UnkSnowballSummitNode *node;
+    SnowballSummitBall *other;
+    SnowballSummitRollEff *node;
     Vec delta;
     s32 i;
 
-    func_8010E52C_snowball_summit(slot);
-    for (i = 0; i < ARRAY_COUNT(D_8010FC30_snowball_summit); i++) {
+    m240_BallPlayerHitCheck(slot);
+    for (i = 0; i < ARRAY_COUNT(m240_ballTbl); i++) {
         if (i == object->work[0]) {
             continue;
         }
-        other = &D_8010FC30_snowball_summit[i];
+        other = &m240_ballTbl[i];
         if (other->id <= 0) {
             continue;
         }
-        func_80107908_snowball_summit(object->trans.x, object->trans.z, other->unk_3C->trans.x, other->unk_3C->trans.z, &delta);
+        m240_PolarXZCalc(object->trans.x, object->trans.z, other->unk_3C->trans.x, other->unk_3C->trans.z, &delta);
         if (slot->unk_0C * 37.5 + other->unk_0C * 37.5 > ABS(delta.x)) {
             if (slot->unk_10 != -1) {
                 slot->id = 20;
@@ -2543,9 +2543,9 @@ void func_8010E824_snowball_summit(UnkSnowballSummitSlot *slot) {
                     HuAudFXStop((s16)slot->unk_38);
                     slot->unk_34 = 0;
                     slot->unk_38 = -1;
-                    D_8011024C_snowball_summit = 0;
+                    m240_ballSeF = 0;
                 }
-                node = &D_80110250_snowball_summit[slot->unk_10];
+                node = &m240_rollEffTbl[slot->unk_10];
                 if (node->unk_04 == 1 && node->unk_08 != -1) {
                     HuAudFXStop((s16)node->unk_08);
                     node->unk_04 = 0;
@@ -2560,7 +2560,7 @@ void func_8010E824_snowball_summit(UnkSnowballSummitSlot *slot) {
                     HuAudFXStop((s16)slot->unk_38);
                     slot->unk_34 = 0;
                     slot->unk_38 = -1;
-                    D_8011024C_snowball_summit = 0;
+                    m240_ballSeF = 0;
                 }
             } else {
                 slot->id = 20;
@@ -2568,7 +2568,7 @@ void func_8010E824_snowball_summit(UnkSnowballSummitSlot *slot) {
                     HuAudFXStop((s16)slot->unk_38);
                     slot->unk_34 = 0;
                     slot->unk_38 = -1;
-                    D_8011024C_snowball_summit = 0;
+                    m240_ballSeF = 0;
                 }
             }
             HuAudFXPlay(0x43F);
@@ -2576,52 +2576,52 @@ void func_8010E824_snowball_summit(UnkSnowballSummitSlot *slot) {
     }
 }
 
-void func_8010EA68_snowball_summit(void) {
-    UnkSnowballSummitSlot *slot;
+void m240_BallMoveUpdate(void) {
+    SnowballSummitBall *slot;
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(D_8010FC30_snowball_summit); i++) {
-        slot = &D_8010FC30_snowball_summit[i];
+    for (i = 0; i < ARRAY_COUNT(m240_ballTbl); i++) {
+        slot = &m240_ballTbl[i];
         if (slot->id > 0 && slot->unk_18 == 0) {
             if (slot->unk_10 != -1) {
-                func_8010DD00_snowball_summit(slot);
+                m240_BallPushUpdate(slot);
             } else {
-                func_8010DFD0_snowball_summit(slot);
+                m240_BallRollUpdate(slot);
             }
         }
     }
-    for (i = 0; i < ARRAY_COUNT(D_8010FC30_snowball_summit); i++) {
-        slot = &D_8010FC30_snowball_summit[i];
+    for (i = 0; i < ARRAY_COUNT(m240_ballTbl); i++) {
+        slot = &m240_ballTbl[i];
         if (slot->id > 0 && slot->unk_18 == 0) {
-            func_8010DB10_snowball_summit(slot);
+            m240_BallFallCheck(slot);
         }
     }
-    for (i = 0; i < ARRAY_COUNT(D_8010FC30_snowball_summit); i++) {
-        slot = &D_8010FC30_snowball_summit[i];
+    for (i = 0; i < ARRAY_COUNT(m240_ballTbl); i++) {
+        slot = &m240_ballTbl[i];
         if (slot->id > 0 && slot->unk_18 == 0) {
-            func_8010E824_snowball_summit(slot);
+            m240_BallHitCheck(slot);
         }
     }
-    for (i = 0; i < ARRAY_COUNT(D_8010FC30_snowball_summit); i++) {
-        slot = &D_8010FC30_snowball_summit[i];
+    for (i = 0; i < ARRAY_COUNT(m240_ballTbl); i++) {
+        slot = &m240_ballTbl[i];
         if (slot->id > 0 && slot->id < 20 && slot->unk_18 == 1) {
-            func_8010E2F4_snowball_summit(slot);
+            m240_BallFallUpdate(slot);
         }
     }
 }
 
-void func_8010EBC0_snowball_summit(void) {
-    UnkSnowballSummitNode *node;
-    UnkSnowballSummitMover *mover;
-    UnkSnowballSummitSlot *slot;
+void m240_RollEffUpdate(void) {
+    SnowballSummitRollEff *node;
+    SnowballSummitPlayer *mover;
+    SnowballSummitBall *slot;
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        node = &D_80110250_snowball_summit[i];
+        node = &m240_rollEffTbl[i];
         if (node->id == -1) {
             return;
         }
-        mover = &D_8010F9B8_snowball_summit[i];
+        mover = &m240_playerWorkTbl[i];
         if (mover->id == -1 || mover->unk_70 == -1 || mover->unk_3C != 0 || mover->unk_10 <= 0.0f) {
             node->id = 0;
         }
@@ -2656,7 +2656,7 @@ void func_8010EBC0_snowball_summit(void) {
                 break;
         }
         if (mover->unk_70 != -1) {
-            slot = &D_8010FC30_snowball_summit[mover->unk_70];
+            slot = &m240_ballTbl[mover->unk_70];
             node->unk_0C->trans.x = slot->unk_3C->trans.x;
             node->unk_0C->trans.y = slot->unk_3C->trans.y;
             node->unk_0C->trans.z = slot->unk_3C->trans.z;
@@ -2674,144 +2674,144 @@ void func_8010EBC0_snowball_summit(void) {
     }
     // Only the last node is updated here, as this is outside the loop.
     Hu3DModelPosSet(node->unk_0C->model[0], node->unk_0C->trans.x, node->unk_0C->trans.y, node->unk_0C->trans.z);
-    if (D_8010F880_snowball_summit >= 3 && node->unk_04 == 1 && node->unk_08 != -1) {
+    if (m240_phase >= 3 && node->unk_04 == 1 && node->unk_08 != -1) {
         HuAudFXStop((s16)node->unk_08);
         node->unk_04 = 0;
         node->unk_08 = -1;
     }
 }
 
-void func_8010EEEC_snowball_summit(omObjData *object) {
-    func_8010CA70_snowball_summit();
-    switch (D_8010F880_snowball_summit) {
+void m240_MainObjMain(omObjData *object) {
+    m240_PhaseUpdate();
+    switch (m240_phase) {
         case 0:
             break;
         case 1:
-            if (D_8010F5C8_snowball_summit == -1) {
-                D_8010F5C8_snowball_summit = HuAudFXPlay(0x43D);
+            if (m240_ambientSeNo == -1) {
+                m240_ambientSeNo = HuAudFXPlay(0x43D);
             }
             break;
         case 2:
         case 3:
-            func_8010D86C_snowball_summit();
-            func_8010EA68_snowball_summit();
-            func_8010EBC0_snowball_summit();
+            m240_PlayerMoveUpdate();
+            m240_BallMoveUpdate();
+            m240_RollEffUpdate();
             break;
         case 5:
             WipeCreateOut(WIPE_TYPE_NORMAL, 20);
-            object->func = func_8010C9E0_snowball_summit;
+            object->func = m240_ExitWaitObjMain;
             break;
     }
 }
 
-void func_8010EFA0_snowball_summit(void) {
+void m240_PlayerWorkInit(void) {
     s32 i;
-    UnkSnowballSummitMover *mover;
+    SnowballSummitPlayer *mover;
 
-    for (i = 0, mover = D_8010F9B8_snowball_summit; i < ARRAY_COUNT(D_8010F9B8_snowball_summit); i++) {
+    for (i = 0, mover = m240_playerWorkTbl; i < ARRAY_COUNT(m240_playerWorkTbl); i++) {
         mover[i].id = -1;
     }
 }
 
-void func_8010EFE4_snowball_summit(void) {
+void m240_BackBallWorkInit(void) {
     s32 i;
-    UnkSnowballSummitThrow *throwSlot;
+    SnowballSummitBackBall *throwSlot;
 
-    for (i = 0, throwSlot = D_80110200_snowball_summit; i < ARRAY_COUNT(D_80110200_snowball_summit); i++) {
+    for (i = 0, throwSlot = m240_backBallTbl; i < ARRAY_COUNT(m240_backBallTbl); i++) {
         throwSlot[i].state = -1;
     }
 }
 
-void func_8010F020_snowball_summit(void) {
+void m240_PuffWorkInit(void) {
     s32 i;
-    UnkSnowballSummitRoll *roll;
+    SnowballSummitPuff *roll;
 
-    for (i = 0, roll = D_80110048_snowball_summit; i < ARRAY_COUNT(D_80110048_snowball_summit); i++) {
+    for (i = 0, roll = m240_puffTbl; i < ARRAY_COUNT(m240_puffTbl); i++) {
         roll[i].state = -1;
     }
 }
 
-void func_8010F05C_snowball_summit(void) {
+void m240_BallWorkInit(void) {
     s32 i;
-    UnkSnowballSummitSlot *slot;
+    SnowballSummitBall *slot;
 
-    for (i = 0, slot = D_8010FC30_snowball_summit; i < ARRAY_COUNT(D_8010FC30_snowball_summit); i++) {
+    for (i = 0, slot = m240_ballTbl; i < ARRAY_COUNT(m240_ballTbl); i++) {
         slot[i].id = -1;
     }
 }
 
-void func_8010F090_snowball_summit(void) {
+void m240_BurstWorkInit(void) {
     s32 i;
-    UnkSnowballSummitSnowball *snowball;
+    SnowballSummitBurst *snowball;
 
-    for (i = 0, snowball = D_8010F8D8_snowball_summit; i < ARRAY_COUNT(D_8010F8D8_snowball_summit); i++) {
+    for (i = 0, snowball = m240_burstTbl; i < ARRAY_COUNT(m240_burstTbl); i++) {
         snowball[i].state = -1;
     }
 }
 
-void func_8010F0CC_snowball_summit(void) {
+void m240_MakeEffWorkInit(void) {
     s32 i;
-    UnkSnowballSummitObjSlot *slot;
+    SnowballSummitMakeEff *slot;
 
-    for (i = 0, slot = D_801101C8_snowball_summit; i < ARRAY_COUNT(D_801101C8_snowball_summit); i++) {
+    for (i = 0, slot = m240_makeEffTbl; i < ARRAY_COUNT(m240_makeEffTbl); i++) {
         slot[i].id = -1;
     }
 }
 
-void func_8010F100_snowball_summit(void) {
+void m240_RollEffWorkInit(void) {
     s32 i;
-    UnkSnowballSummitNode *node;
+    SnowballSummitRollEff *node;
 
-    for (i = 0, node = D_80110250_snowball_summit; i < ARRAY_COUNT(D_80110250_snowball_summit); i++) {
+    for (i = 0, node = m240_rollEffTbl; i < ARRAY_COUNT(m240_rollEffTbl); i++) {
         node[i].id = -1;
     }
 }
 
-void func_8010F134_snowball_summit(void) {
-    D_8010F880_snowball_summit = 0;
-    D_8010F884_snowball_summit = 0;
-    D_8010F888_snowball_summit = 0;
-    D_80110044_snowball_summit = 0;
-    D_80110248_snowball_summit = -1;
-    D_801101E8_snowball_summit = 0;
-    D_8011024C_snowball_summit = 0;
-    func_8010EFA0_snowball_summit();
-    func_8010EFE4_snowball_summit();
-    func_8010F05C_snowball_summit();
-    func_8010F020_snowball_summit();
-    func_8010F0CC_snowball_summit();
-    func_8010F100_snowball_summit();
-    func_8010F090_snowball_summit();
+void m240_WorkInitAll(void) {
+    m240_phase = 0;
+    m240_phaseStep = 0;
+    m240_cameraSetF = 0;
+    m240_winnerF = 0;
+    m240_unusedNo = -1;
+    m240_unusedF = 0;
+    m240_ballSeF = 0;
+    m240_PlayerWorkInit();
+    m240_BackBallWorkInit();
+    m240_BallWorkInit();
+    m240_PuffWorkInit();
+    m240_MakeEffWorkInit();
+    m240_RollEffWorkInit();
+    m240_BurstWorkInit();
 }
 
-void func_8010F1B8_snowball_summit(void) {
-    func_8010F134_snowball_summit();
-    func_801062AC_snowball_summit();
-    func_801067FC_snowball_summit();
-    func_80106968_snowball_summit();
-    func_80107000_snowball_summit();
-    func_801068B0_snowball_summit();
-    func_8010B8E4_snowball_summit();
-    func_8010BE8C_snowball_summit();
-    func_80107330_snowball_summit();
-    func_8010C10C_snowball_summit();
-    func_8010C288_snowball_summit();
-    func_80107700_snowball_summit();
-    func_801078D4_snowball_summit();
+void m240_ObjCreateAll(void) {
+    m240_WorkInitAll();
+    m240_HudObjCreate();
+    m240_BackdropObjCreate();
+    m240_MountainObjCreate();
+    m240_BackBallObjCreateAll();
+    m240_StageObjCreate();
+    m240_PlayerObjCreateAll();
+    m240_BallObjCreateAll();
+    m240_PuffObjCreateAll();
+    m240_MakeEffObjCreateAll();
+    m240_RollEffObjCreateAll();
+    m240_BurstObjCreateAll();
+    m240_SnowObjCreate();
 }
 
-void func_8010F234_snowball_summit(omObjData *object) {
-    func_8010F1B8_snowball_summit();
+void m240_MainObjInit(omObjData *object) {
+    m240_ObjCreateAll();
     WipeCreateIn(WIPE_TYPE_PREV, 0x10);
-    object->func = func_8010EEEC_snowball_summit;
-    omAddObj(0x64, 0, 0, -1, func_8010C890_snowball_summit);
-    omAddObj(0x384, 0, 0, -1, func_8010C850_snowball_summit);
+    object->func = m240_MainObjMain;
+    omAddObj(0x64, 0, 0, -1, m240_CameraViewObjMain);
+    omAddObj(0x384, 0, 0, -1, m240_SeqStartObjMain);
 }
 
-void func_8010F2B0_snowball_summit(void) {
+void m240_Dummy(void) {
 }
 
-void func_8010F2B8_snowball_summit(void) {
+void m240_CameraInit(void) {
     omObjData *obj;
     s32 i;
 
@@ -2821,21 +2821,21 @@ void func_8010F2B8_snowball_summit(void) {
     CamSetupInit(2);
     CamSetupMapCullAddMulti(2);
     for (i = 0; i < 2; i++) {
-        ScissorSet(i, D_8010F5CC_snowball_summit[i].scissorX, D_8010F5CC_snowball_summit[i].scissorY,
-                   D_8010F5CC_snowball_summit[i].scissorWidth, D_8010F5CC_snowball_summit[i].scissorHeight);
-        ViewportSet(i, D_8010F5CC_snowball_summit[i].viewportScale.x, D_8010F5CC_snowball_summit[i].viewportScale.y,
-                    D_8010F5CC_snowball_summit[i].viewportScale.z, D_8010F5CC_snowball_summit[i].viewportTranslate.x,
-                    D_8010F5CC_snowball_summit[i].viewportTranslate.y, D_8010F5CC_snowball_summit[i].viewportTranslate.z);
-        Hu3DCameraPerspectiveSet(i, D_8010F5CC_snowball_summit[i].fov, 80.0f, 8000.0f);
+        ScissorSet(i, m240_cameraViewTbl[i].scissorX, m240_cameraViewTbl[i].scissorY,
+                   m240_cameraViewTbl[i].scissorWidth, m240_cameraViewTbl[i].scissorHeight);
+        ViewportSet(i, m240_cameraViewTbl[i].viewportScale.x, m240_cameraViewTbl[i].viewportScale.y,
+                    m240_cameraViewTbl[i].viewportScale.z, m240_cameraViewTbl[i].viewportTranslate.x,
+                    m240_cameraViewTbl[i].viewportTranslate.y, m240_cameraViewTbl[i].viewportTranslate.z);
+        Hu3DCameraPerspectiveSet(i, m240_cameraViewTbl[i].fov, 80.0f, 8000.0f);
     }
 }
 
-void func_8010F42C_snowball_summit(void) {
+void m240_ObjectSetup(void) {
     MapCollInit(50);
     Hu3DSprModelInit(50);
     omInitObjMan(100, 0);
     omGameSysInit();
-    func_8010F2B8_snowball_summit();
+    m240_CameraInit();
     Hu3DGLightMaxSet(2);
     Hu3DGLightColorSet(0, 144, 144, 144);
     Hu3DGLightDirSet(0, -215.0f, 295.0f, 470.0f);
@@ -2844,10 +2844,10 @@ void func_8010F42C_snowball_summit(void) {
     mgItemObjNum = 0;
     mgPlayerObjNum = 0;
     mgMapObjNum = 0;
-    GMesFontMesCreate(D_8010F870_snowball_summit, 0);
-    GMesFontMesCreate(D_8010F870_snowball_summit, 1);
-    omAddObj(1000, 0, 0, -1, func_8010F234_snowball_summit);
-    omAddObj(1000, 0, 0, -1, func_8010CA18_snowball_summit);
+    GMesFontMesCreate(m240_fontMesTbl, 0);
+    GMesFontMesCreate(m240_fontMesTbl, 1);
+    omAddObj(1000, 0, 0, -1, m240_MainObjInit);
+    omAddObj(1000, 0, 0, -1, m240_ExitCheckObjMain);
 }
 
-const s16 D_8010F870_snowball_summit[] = { 0x8260, 0x8261, 0x8262, 0 };
+const s16 m240_fontMesTbl[] = { 0x8260, 0x8261, 0x8262, 0 };

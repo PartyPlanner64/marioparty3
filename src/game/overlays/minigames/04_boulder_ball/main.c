@@ -12,72 +12,72 @@ extern u16 mgHitSkipCnt;
 extern Vec mgWallNorTbl[];
 extern omObjData *mgItemObjTbl[];
 
-s32 D_80109700_boulder_ball[8] = { 2, 0, 0, 0, 0, 0, 0, 0 };
-Vec D_80109720_boulder_ball = { 320.0f, 0.0f, 1000.0f };
-Vec D_8010972C_boulder_ball = { 0.0f, 0.0f, 1000.0f };
-Vec D_80109738_boulder_ball = { -320.0f, 0.0f, 1000.0f };
-s32 D_80109744_boulder_ball[4] = { -1, -1, -1, -1 };
-f32 D_80109754_boulder_ball = 1000.0f;
-s32 D_80109758_boulder_ball = 1;
-s32 D_8010975C_boulder_ball = 0;
-MinigameFlow D_80109760_boulder_ball = {
+s32 m204_boulderStateTbl[8] = { 2, 0, 0, 0, 0, 0, 0, 0 };
+Vec m204_runnerStartPosA = { 320.0f, 0.0f, 1000.0f };
+Vec m204_runnerStartPosB = { 0.0f, 0.0f, 1000.0f };
+Vec m204_runnerStartPosC = { -320.0f, 0.0f, 1000.0f };
+s32 m204_boulderSeTbl[4] = { -1, -1, -1, -1 };
+f32 m204_stageBounceVel = 1000.0f;
+s32 m204_boulderReadyF = 1;
+s32 m204_runnerGoalF = 0;
+MinigameFlow m204_mgFlow = {
     MG_STATE_OPENING, MINIGAME_2V2, MG_TIMER_COUNT_DOWN, MG_TIME_DISP_COUNTDOWN, FALSE, MG_GAUGE_NONE, MG_RESULT_WIN_1, 0,
     { 0.0f, 0.0f, 0.0f, 0.0f },
     { 0, 0, 0, 0 },
     135, 900, -1, 75, 150
 };
-s32 D_80109788_boulder_ball[3] = { 0, 0, 0 }; /* Unreferenced. */
-s32 D_80109794_boulder_ball = 0;
-f32 D_80109798_boulder_ball = 0.0f;
-s32 D_8010979C_boulder_ball = 0; /* Unreferenced. */
-s32 D_801097A0_boulder_ball = 0;
-f32 D_801097A4_boulder_ball[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-s32 D_801097B4_boulder_ball[4] = { 0, 0, 0, 0 };
-s32 D_801097C4_boulder_ball = 0;
-s32 D_801097C8_boulder_ball = 5;
-s32 D_801097CC_boulder_ball = 0;
-s32 D_801097D0_boulder_ball = 0;
-f32 D_801097D4_boulder_ball[8] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
-s32 D_801097F4_boulder_ball = 0;
+s32 m204_mgFlowPad[3] = { 0, 0, 0 }; /* Unreferenced. */
+s32 m204_introThrowF = 0;
+f32 m204_stageBounceY = 0.0f;
+s32 m204_stageBounceYPad = 0; /* Unreferenced. */
+s32 m204_finishInitF = 0;
+f32 m204_runnerLaneXTbl[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+s32 m204_runnerComStateTbl[4] = { 0, 0, 0, 0 };
+s32 m204_runnerPlayerNo = 0;
+s32 m204_pusherComTarget = 5;
+s32 m204_pusherWinTimer = 0;
+s32 m204_boulderNum = 0;
+f32 m204_boulderSpinTbl[8] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+s32 m204_boulderNextNo = 0;
 
-f32 D_80109880_boulder_ball BSS;
-f32 D_80109884_boulder_ball BSS;
-f32 D_80109888_boulder_ball BSS;
-s32 D_8010988C_boulder_ball BSS;
-s32 D_80109890_boulder_ball BSS;
-s32 D_80109894_boulder_ball BSS;
-s32 D_80109898_boulder_ball BSS;
-s32 D_8010989C_boulder_ball BSS;
-omObjData *D_801098A0_boulder_ball BSS;
-omObjData *D_801098A4_boulder_ball BSS;
-u8 D_801098A8_boulder_ball[8] BSS; /* Unreferenced. */
+f32 m204_cameraRotXStep BSS;
+f32 m204_cameraYStep BSS;
+f32 m204_cameraZStep BSS;
+s32 m204_padBtn BSS;
+s32 m204_padBtnDown BSS;
+s32 m204_padStkX BSS;
+s32 m204_padStkY BSS;
+s32 m204_pusherPlayerNo BSS;
+omObjData *m204_boulderObj BSS;
+omObjData *m204_pusherObj BSS;
+u8 m204_pusherObjPad[8] BSS; /* Unreferenced. */
 
-void func_80105E74_boulder_ball(omObjData *object);
-void func_80105EA0_boulder_ball(void);
-void func_801060D0_boulder_ball(void);
-void func_80106410_boulder_ball(omObjData *object);
-void func_80106B58_boulder_ball(omObjData *object);
-void func_80106C8C_boulder_ball(omObjData *object);
-void func_80106DAC_boulder_ball(omObjData *object, s32 model, s32 motion, u16 player);
-s32 func_8010707C_boulder_ball(omObjData *object, omObjData *other);
-s32 func_80107194_boulder_ball(omObjData *object);
-s32 func_80107298_boulder_ball(omObjData *object);
-void func_80107924_boulder_ball(omObjData *object);
-void func_80107A20_boulder_ball(omObjData *object);
-void func_80107B0C_boulder_ball(omObjData *object);
-void func_80107C08_boulder_ball(omObjData *object);
-void func_80108000_boulder_ball(omObjData *object);
-void func_80108798_boulder_ball(omObjData *object);
-void func_801083D8_boulder_ball(omObjData *object);
-void func_80108A08_boulder_ball(omObjData *object);
-s32 func_80108CF4_boulder_ball(omObjData *object);
-void func_80108CFC_boulder_ball(omObjData *object);
-s32 func_80108E5C_boulder_ball(omObjData *object);
-void func_801093B8_boulder_ball(omObjData *object);
-s32 func_80109410_boulder_ball(omObjData *object);
-s32 func_801095A0_boulder_ball(omObjData *object);
+void m204_ExitObjMain(omObjData *object);
+void m204_CameraFollow(void);
+void m204_IntroUpdate(void);
+void m204_MainObjMain(omObjData *object);
+void m204_MapObjInit(omObjData *object);
+void m204_MapSubObjInit(omObjData *object);
+void m204_RunnerInit(omObjData *object, s32 model, s32 motion, u16 player);
+s32 m204_RunnerHit(omObjData *object, omObjData *other);
+s32 m204_RunnerGoalCheck(omObjData *object);
+s32 m204_RunnerComInput(omObjData *object);
+void m204_Runner0ObjInit(omObjData *object);
+void m204_Runner1ObjInit(omObjData *object);
+void m204_Runner2ObjInit(omObjData *object);
+void m204_PusherObjInit(omObjData *object);
+void m204_PusherComInput(omObjData *object);
+void m204_PusherWinObjMain(omObjData *object);
+void m204_PusherObjMain(omObjData *object);
+void m204_BoulderObjInit(omObjData *object);
+s32 m204_BoulderHitHook(omObjData *object);
+void m204_BoulderDustUpdate(omObjData *object);
+s32 m204_BoulderUpdate(omObjData *object);
+void m204_BoulderAccel(omObjData *object);
+s32 m204_BoulderBounce(omObjData *object);
+s32 m204_BoulderWallHit(omObjData *object);
 
-void func_801059A0_boulder_ball(void) {
+void m204_ObjectSetup(void) {
     u8 camIndex;
 
     MapCollInit(50);
@@ -99,17 +99,17 @@ void func_801059A0_boulder_ball(void) {
     MgShadowAltSet(1);
     mgPlayerFallInit = 0.0f;
     MgMapBaseSet(mgMapObjNum);
-    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 10, 0, -1, func_80106B58_boulder_ball);
-    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 5, 0, -1, func_80106C8C_boulder_ball);
-    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 10, 60, -1, func_80107924_boulder_ball);
-    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 10, 60, -1, func_80107A20_boulder_ball);
-    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 10, 60, -1, func_80107B0C_boulder_ball);
-    D_801098A4_boulder_ball = omAddObj(3, 10, 60, -1, func_80107C08_boulder_ball);
-    D_801098A0_boulder_ball = mgItemObjTbl[mgItemObjNum++] =
-        omAddObj(2, 4, 0, -1, func_80108A08_boulder_ball);
-    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 10, 0, -1, func_80108A08_boulder_ball);
-    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 10, 0, -1, func_80108A08_boulder_ball);
-    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 10, 0, -1, func_80108A08_boulder_ball);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 10, 0, -1, m204_MapObjInit);
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(1, 5, 0, -1, m204_MapSubObjInit);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 10, 60, -1, m204_Runner0ObjInit);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 10, 60, -1, m204_Runner1ObjInit);
+    mgPlayerObjTbl[mgPlayerObjNum++] = omAddObj(3, 10, 60, -1, m204_Runner2ObjInit);
+    m204_pusherObj = omAddObj(3, 10, 60, -1, m204_PusherObjInit);
+    m204_boulderObj = mgItemObjTbl[mgItemObjNum++] =
+        omAddObj(2, 4, 0, -1, m204_BoulderObjInit);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 10, 0, -1, m204_BoulderObjInit);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 10, 0, -1, m204_BoulderObjInit);
+    mgItemObjTbl[mgItemObjNum++] = omAddObj(2, 10, 0, -1, m204_BoulderObjInit);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     Center.x = 0.0f;
     Center.y = 200.0f;
@@ -118,30 +118,30 @@ void func_801059A0_boulder_ball(void) {
     CRot.y = 0.0f;
     CZoom = 1400.0f;
     WipeCreateIn(WIPE_TYPE_PREV, 16);
-    MgFlowInit(&D_80109760_boulder_ball);
+    MgFlowInit(&m204_mgFlow);
     if (GwPlayer[0].group == 0) {
-        D_8010989C_boulder_ball = 0;
+        m204_pusherPlayerNo = 0;
     }
     if (GwPlayer[1].group == 0) {
-        D_8010989C_boulder_ball = 1;
+        m204_pusherPlayerNo = 1;
     }
     if (GwPlayer[2].group == 0) {
-        D_8010989C_boulder_ball = 2;
+        m204_pusherPlayerNo = 2;
     }
     if (GwPlayer[3].group == 0) {
-        D_8010989C_boulder_ball = 3;
+        m204_pusherPlayerNo = 3;
     }
     mgFlowSeqNo = 47;
     mgFlowSeqTime = 36;
 }
 
-void func_80105E74_boulder_ball(omObjData *object) {
+void m204_ExitObjMain(omObjData *object) {
     if (WipeStatGet() == 0) {
         omOvlReturnEx(1);
     }
 }
 
-void func_80105EA0_boulder_ball(void) {
+void m204_CameraFollow(void) {
     f32 minY = 2000.0f;
     f32 maxZ = 0.0f;
     s32 i;
@@ -179,40 +179,40 @@ void func_80105EA0_boulder_ball(void) {
     }
 }
 
-void func_801060D0_boulder_ball(void) {
+void m204_IntroUpdate(void) {
     s32 time = MgFlowStatTimeGet();
-    MgPlayerWork *playerData = D_801098A4_boulder_ball->data;
-    MgItemWork *boulderData = D_801098A0_boulder_ball->data;
+    MgPlayerWork *playerData = m204_pusherObj->data;
+    MgItemWork *boulderData = m204_boulderObj->data;
 
     if (time < 5) {
         Center.x = 0.0f;
         Center.y = 800.0f;
         Center.z = -700.0f;
         CZoom = 1000.0f;
-        D_801098A0_boulder_ball->trans.x = sindf(D_801098A4_boulder_ball->rot.y) * 150.0f + 0.0f;
-        D_801098A0_boulder_ball->trans.y = 700.0f;
-        D_801098A0_boulder_ball->trans.z = cosdf(D_801098A4_boulder_ball->rot.y) * 150.0f + -900.0f;
-    } else if (time < 40 && D_80109794_boulder_ball == 0) {
-        D_801098A4_boulder_ball->rot.y -= 1.5f;
-        if (D_801098A4_boulder_ball->rot.y < -26.0f) {
-            D_801098A4_boulder_ball->rot.y = -26.0f;
+        m204_boulderObj->trans.x = sindf(m204_pusherObj->rot.y) * 150.0f + 0.0f;
+        m204_boulderObj->trans.y = 700.0f;
+        m204_boulderObj->trans.z = cosdf(m204_pusherObj->rot.y) * 150.0f + -900.0f;
+    } else if (time < 40 && m204_introThrowF == 0) {
+        m204_pusherObj->rot.y -= 1.5f;
+        if (m204_pusherObj->rot.y < -26.0f) {
+            m204_pusherObj->rot.y = -26.0f;
         }
-        if (D_801098A4_boulder_ball->rot.y == -26.0f) {
-            Hu3DMotionTimeSet(D_801098A4_boulder_ball->model[1], 0.0f);
+        if (m204_pusherObj->rot.y == -26.0f) {
+            Hu3DMotionTimeSet(m204_pusherObj->model[1], 0.0f);
             playerData->unk50 = 0;
-            D_80109758_boulder_ball = 0;
-            D_801098A0_boulder_ball->rot.y = boulderData->unk3C = D_801098A4_boulder_ball->rot.y;
+            m204_boulderReadyF = 0;
+            m204_boulderObj->rot.y = boulderData->unk3C = m204_pusherObj->rot.y;
             boulderData->unk40 = 7.0f;
             boulderData->unk78 = 0;
             boulderData->unk38 = -0.75f;
-            D_80109794_boulder_ball = 1;
-            HuAudPlayerFXPlay(0x31F, D_8010989C_boulder_ball);
+            m204_introThrowF = 1;
+            HuAudPlayerFXPlay(0x31F, m204_pusherPlayerNo);
         }
-        D_801098A0_boulder_ball->trans.x = sindf(D_801098A4_boulder_ball->rot.y) * 150.0f + 0.0f;
-        D_801098A0_boulder_ball->trans.y = 700.0f;
-        D_801098A0_boulder_ball->trans.z = cosdf(D_801098A4_boulder_ball->rot.y) * 150.0f + -900.0f;
+        m204_boulderObj->trans.x = sindf(m204_pusherObj->rot.y) * 150.0f + 0.0f;
+        m204_boulderObj->trans.y = 700.0f;
+        m204_boulderObj->trans.z = cosdf(m204_pusherObj->rot.y) * 150.0f + -900.0f;
     } else {
-        D_801098A4_boulder_ball->rot.y *= 0.8f;
+        m204_pusherObj->rot.y *= 0.8f;
         Center.y -= 6.6666665f;
         Center.z += 17.777779f;
         CZoom += 4.4444447f;
@@ -226,10 +226,10 @@ void func_801060D0_boulder_ball(void) {
             CZoom = 1500.0f;
         }
     }
-    Hu3DModelRotSet(D_801098A4_boulder_ball->model[1], 0.0f, D_801098A4_boulder_ball->rot.y, 0.0f);
+    Hu3DModelRotSet(m204_pusherObj->model[1], 0.0f, m204_pusherObj->rot.y, 0.0f);
 }
 
-void func_80106410_boulder_ball(omObjData *object) {
+void m204_MainObjMain(omObjData *object) {
     MgPlayerWork *data;
     MgPlayerWork *work;
     omObjData *player;
@@ -245,60 +245,60 @@ void func_80106410_boulder_ball(omObjData *object) {
     MgFlowStatTimeGet();
     switch (MgFlowMain()) {
         case 0:
-            func_801060D0_boulder_ball();
+            m204_IntroUpdate();
             break;
         case 2:
-            func_80105EA0_boulder_ball();
+            m204_CameraFollow();
             break;
         case 3:
-            if (D_801097A0_boulder_ball == 0) {
-                D_801098A4_boulder_ball->func = func_80108798_boulder_ball;
+            if (m204_finishInitF == 0) {
+                m204_pusherObj->func = m204_PusherWinObjMain;
                 MgMapSlideSet(mgMapObjTbl[0], 0.0f);
                 for (i = 0; i < mgItemObjNum; i++) {
                     Hu3DModelAttrSet(mgItemObjTbl[i]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     Hu3DModelAttrSet(mgItemObjTbl[i]->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                    if (D_80109744_boulder_ball[i] != -1) {
-                        HuAudFXStop((s16)D_80109744_boulder_ball[i]);
-                        D_80109744_boulder_ball[i] = -1;
+                    if (m204_boulderSeTbl[i] != -1) {
+                        HuAudFXStop((s16)m204_boulderSeTbl[i]);
+                        m204_boulderSeTbl[i] = -1;
                     }
                 }
-                if (D_8010975C_boulder_ball == 0) {
-                    D_80109760_boulder_ball.resultType = MG_RESULT_WIN_1;
-                    D_80109760_boulder_ball.winners[0] = D_8010989C_boulder_ball;
-                    Hu3DModelAttrSet(D_801098A4_boulder_ball->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-                    Hu3DModelAttrSet(D_801098A4_boulder_ball->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                    MgPlayerMotForceSet(D_801098A4_boulder_ball, 6);
-                    work = D_801098A4_boulder_ball->data;
+                if (m204_runnerGoalF == 0) {
+                    m204_mgFlow.resultType = MG_RESULT_WIN_1;
+                    m204_mgFlow.winners[0] = m204_pusherPlayerNo;
+                    Hu3DModelAttrSet(m204_pusherObj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(m204_pusherObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    MgPlayerMotForceSet(m204_pusherObj, 6);
+                    work = m204_pusherObj->data;
                     work->unk38 = -mgPlayerJumpPower;
                 } else {
-                    D_80109760_boulder_ball.resultType = MG_RESULT_WIN_3;
+                    m204_mgFlow.resultType = MG_RESULT_WIN_3;
                     for (j = 0, i = 0; i < 4; i++) {
-                        if (D_8010989C_boulder_ball != i) {
-                            D_80109760_boulder_ball.winners[j++] = i;
+                        if (m204_pusherPlayerNo != i) {
+                            m204_mgFlow.winners[j++] = i;
                         }
                     }
                 }
-                D_80109880_boulder_ball = (CRot.x - 340.0f) / 60.0f;
-                D_80109884_boulder_ball = (Center.y - 700.0f) / 60.0f;
-                D_80109888_boulder_ball = (Center.z - -800.0f) / 60.0f;
-                D_801097A0_boulder_ball = 1;
+                m204_cameraRotXStep = (CRot.x - 340.0f) / 60.0f;
+                m204_cameraYStep = (Center.y - 700.0f) / 60.0f;
+                m204_cameraZStep = (Center.z - -800.0f) / 60.0f;
+                m204_finishInitF = 1;
             }
             for (i = 0; i < 3; i++) {
                 player = mgPlayerObjTbl[i];
                 work = player->data;
                 work->unk3C *= 0.8f;
             }
-            D_801098A4_boulder_ball->rot.y *= 0.8f;
-            if (D_8010975C_boulder_ball == 0) {
-                CRot.x -= D_80109880_boulder_ball;
+            m204_pusherObj->rot.y *= 0.8f;
+            if (m204_runnerGoalF == 0) {
+                CRot.x -= m204_cameraRotXStep;
                 if (CRot.x < 340.0f) {
                     CRot.x = 340.0f;
                 }
-                Center.y -= D_80109884_boulder_ball;
+                Center.y -= m204_cameraYStep;
                 if (Center.y > 700.0f) {
                     Center.y = 700.0f;
                 }
-                Center.z -= D_80109888_boulder_ball;
+                Center.z -= m204_cameraZStep;
                 if (Center.z < -800.0f) {
                     Center.z = -800.0f;
                 }
@@ -306,7 +306,7 @@ void func_80106410_boulder_ball(omObjData *object) {
             break;
         case 4:
             if (mgFlowResultF == 1) {
-                if (D_8010975C_boulder_ball == 1) {
+                if (m204_runnerGoalF == 1) {
                     for (i = 0; i < 3; i++) {
                         player = mgPlayerObjTbl[i];
                         data = player->data;
@@ -315,18 +315,18 @@ void func_80106410_boulder_ball(omObjData *object) {
                         GwPlayer[data->unk59].bonusCoin += 10;
                     }
                 } else {
-                    GwPlayer[D_8010989C_boulder_ball].bonusCoin += 10;
+                    GwPlayer[m204_pusherPlayerNo].bonusCoin += 10;
                     for (i = 0; i < 3; i++) {
                         MgPlayerMotForceSet(mgPlayerObjTbl[i], 0xE);
                     }
-                    MgPlayerMotForceSet(D_801098A4_boulder_ball, 0xD);
-                    HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[D_8010989C_boulder_ball].chr][0] | 0x2F);
+                    MgPlayerMotForceSet(m204_pusherObj, 0xD);
+                    HuAudCharVoicePlay(omCharModelNoTbl[GwPlayer[m204_pusherPlayerNo].chr][0] | 0x2F);
                 }
             }
             break;
         case 5:
             WipeCreateOut(WIPE_TYPE_NORMAL, 20);
-            object->func = func_80105E74_boulder_ball;
+            object->func = m204_ExitObjMain;
             break;
     }
     for (i = 0; i < mgPlayerObjNum; i++) {
@@ -337,30 +337,30 @@ void func_80106410_boulder_ball(omObjData *object) {
         WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
-        object->func = func_80105E74_boulder_ball;
+        object->func = m204_ExitObjMain;
     }
-    if (D_80109754_boulder_ball != 1000.0f) {
-        velocity = D_80109754_boulder_ball;
+    if (m204_stageBounceVel != 1000.0f) {
+        velocity = m204_stageBounceVel;
         if (velocity > mgPlayerFallMax) {
             velocity = mgPlayerFallMax;
         }
         speedSq = velocity * velocity;
-        y = D_80109798_boulder_ball + speedSq * (D_80109754_boulder_ball >= 0.0f ? -36.75f : 36.75f);
-        D_80109798_boulder_ball = y;
-        D_80109754_boulder_ball = velocity = D_80109754_boulder_ball + mgPlayerGravity;
+        y = m204_stageBounceY + speedSq * (m204_stageBounceVel >= 0.0f ? -36.75f : 36.75f);
+        m204_stageBounceY = y;
+        m204_stageBounceVel = velocity = m204_stageBounceVel + mgPlayerGravity;
         if (y < 0.0f) {
-            D_80109798_boulder_ball = 0.0f;
+            m204_stageBounceY = 0.0f;
             if (velocity > 0.5f) {
-                D_80109754_boulder_ball = -velocity * 0.5f;
+                m204_stageBounceVel = -velocity * 0.5f;
             } else {
-                D_80109754_boulder_ball = 1000.0f;
+                m204_stageBounceVel = 1000.0f;
             }
         }
-        Hu3DModelPosSet(object->model[1], 0.0f, D_80109798_boulder_ball, 0.0f);
+        Hu3DModelPosSet(object->model[1], 0.0f, m204_stageBounceY, 0.0f);
     }
 }
 
-void func_80106B58_boulder_ball(omObjData *object) {
+void m204_MapObjInit(omObjData *object) {
     MgMapWork *work;
 
     mgPlayerAccel = 15.0f;
@@ -374,7 +374,7 @@ void func_80106B58_boulder_ball(omObjData *object) {
     work = HuMemAllocTag(0xB4, TAG_OVERLAY);
     object->data = work;
     memset(work, 0, 0xB4);
-    object->func = func_80106410_boulder_ball;
+    object->func = m204_MainObjMain;
     work->unk03 = 1;
     MgMapTiltOn(object);
     MgMapAttrSet(object, 1, 0.0f);
@@ -386,7 +386,7 @@ void func_80106B58_boulder_ball(omObjData *object) {
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
-void func_80106C8C_boulder_ball(omObjData *object) {
+void m204_MapSubObjInit(omObjData *object) {
     MgMapWork *work;
 
     mgPlayerAccel = 15.0f;
@@ -411,7 +411,7 @@ void func_80106C8C_boulder_ball(omObjData *object) {
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
-void func_80106DAC_boulder_ball(omObjData *object, s32 model, s32 motion, u16 player) {
+void m204_RunnerInit(omObjData *object, s32 model, s32 motion, u16 player) {
     MgPlayerWork *data;
     s32 chr;
     s32 attr1 = 0xAC9;
@@ -437,14 +437,14 @@ void func_80106DAC_boulder_ball(omObjData *object, s32 model, s32 motion, u16 pl
     MgPlayerMotRead(object, 0xE, CharMotionDataNumGet(chr, 0x36), 1, 0x78);
     data->unk4C = 0.05f;
     data->unkB4 = 0.8f;
-    data->unkEC = func_8010707C_boulder_ball;
+    data->unkEC = m204_RunnerHit;
     MgPlayerMapAttrSet(object, 0, 2);
     MgPlayerMapAttrSet(object, 1, 1);
-    MgPlayerHookSet(data, 0, func_80107298_boulder_ball);
-    MgPlayerHookSet(data, 1, func_80107194_boulder_ball);
+    MgPlayerHookSet(data, 0, m204_RunnerComInput);
+    MgPlayerHookSet(data, 1, m204_RunnerGoalCheck);
 }
 
-s32 func_8010707C_boulder_ball(omObjData *object, omObjData *other) {
+s32 m204_RunnerHit(omObjData *object, omObjData *other) {
     MgPlayerWork *data = object->data;
     f32 x, y, z;
 
@@ -467,23 +467,23 @@ s32 func_8010707C_boulder_ball(omObjData *object, omObjData *other) {
     return 1;
 }
 
-s32 func_80107194_boulder_ball(omObjData *object) {
+s32 m204_RunnerGoalCheck(omObjData *object) {
     MgPlayerWork *data = object->data;
 
     if (GwPlayer[data->unk59].stat & 1) {
-        HuPadBtnDown[data->unk57] = D_80109890_boulder_ball;
-        HuPadBtn[data->unk57] = D_8010988C_boulder_ball;
-        HuPadStkX[data->unk57] = D_80109894_boulder_ball;
-        HuPadStkY[data->unk57] = D_80109898_boulder_ball;
+        HuPadBtnDown[data->unk57] = m204_padBtnDown;
+        HuPadBtn[data->unk57] = m204_padBtn;
+        HuPadStkX[data->unk57] = m204_padStkX;
+        HuPadStkY[data->unk57] = m204_padStkY;
     }
     if (MgFlowStatGet() == MG_STATE_PLAY && object->trans.z <= -600.0f) {
         MgFlowStatSet(MG_STATE_FINISH);
-        D_8010975C_boulder_ball = 1;
+        m204_runnerGoalF = 1;
     }
     return 0;
 }
 
-s32 func_80107298_boulder_ball(omObjData *object) {
+s32 m204_RunnerComInput(omObjData *object) {
     Vec dir;
     f32 ranges[4] = { 70.0f, 80.0f, 90.0f, 100.0f };
     f32 speeds[4] = { 0.5f, 0.55f, 0.6f, 0.65f };
@@ -507,10 +507,10 @@ s32 func_80107298_boulder_ball(omObjData *object) {
     if (!(GwPlayer[player].stat & 1)) {
         return 0;
     }
-    D_80109890_boulder_ball = HuPadBtnDown[pad];
-    D_8010988C_boulder_ball = (u16)HuPadBtn[pad];
-    D_80109894_boulder_ball = HuPadStkX[pad];
-    D_80109898_boulder_ball = HuPadStkY[pad];
+    m204_padBtnDown = HuPadBtnDown[pad];
+    m204_padBtn = (u16)HuPadBtn[pad];
+    m204_padStkX = HuPadStkX[pad];
+    m204_padStkY = HuPadStkY[pad];
     HuPadStkY[pad] = 0;
     HuPadStkX[pad] = 0;
     HuPadBtnDown[pad] = 0;
@@ -522,7 +522,7 @@ s32 func_80107298_boulder_ball(omObjData *object) {
     for (i = 0; i < mgItemObjNum; i++) {
         boulder = mgItemObjTbl[i];
         boulderData = boulder->data;
-        if (D_80109700_boulder_ball[boulderData->unk56] == 3) {
+        if (m204_boulderStateTbl[boulderData->unk56] == 3) {
             x = boulder->trans.x;
             z = boulder->trans.z;
             dist = HuSqrtf(x * x + z * z);
@@ -557,7 +557,7 @@ s32 func_80107298_boulder_ball(omObjData *object) {
         dir.y = 0.0f;
         MapVecNormalize(&dir);
     }
-    switch (D_801097B4_boulder_ball[player]) {
+    switch (m204_runnerComStateTbl[player]) {
         case 0:
             HuPadStkY[pad] = 60;
             if (target == -1) {
@@ -567,7 +567,7 @@ s32 func_80107298_boulder_ball(omObjData *object) {
             z = object->trans.z - z;
             if (HuSqrtf(x * x + z * z) < data->unk48 + boulderData->unk48 + ranges[difficulty]) {
                 HuPadStkX[pad] = dir.x * 60.0f * speeds[difficulty];
-                D_801097B4_boulder_ball[player] = 1;
+                m204_runnerComStateTbl[player] = 1;
             }
             break;
         case 1:
@@ -581,21 +581,21 @@ s32 func_80107298_boulder_ball(omObjData *object) {
             z = object->trans.z - z;
             dist = HuSqrtf(x * x + z * z);
             if (target == -1) {
-                D_801097B4_boulder_ball[player] = 2;
+                m204_runnerComStateTbl[player] = 2;
             } else if (data->unk48 + boulderData->unk48 + ranges[difficulty] < dist) {
-                D_801097B4_boulder_ball[player] = 2;
+                m204_runnerComStateTbl[player] = 2;
             }
             break;
         case 2:
             HuPadStkY[pad] = 60;
-            dir.x = object->trans.x - D_801097A4_boulder_ball[player];
+            dir.x = object->trans.x - m204_runnerLaneXTbl[player];
             dir.z = 0.0f;
             dir.y = 0.0f;
             MapVecNormalize(&dir);
             HuPadStkX[pad] = -dir.x * 60.0f * speeds[difficulty];
-            if (D_801097A4_boulder_ball[player] - 50.0f < object->trans.x &&
-                object->trans.x < D_801097A4_boulder_ball[player] + 50.0f) {
-                D_801097B4_boulder_ball[player] = 0;
+            if (m204_runnerLaneXTbl[player] - 50.0f < object->trans.x &&
+                object->trans.x < m204_runnerLaneXTbl[player] + 50.0f) {
+                m204_runnerComStateTbl[player] = 0;
             }
             if (target == -1) {
                 return 0;
@@ -603,57 +603,57 @@ s32 func_80107298_boulder_ball(omObjData *object) {
             x = object->trans.x - x;
             z = object->trans.z - z;
             if (HuSqrtf(x * x + z * z) < data->unk48 + boulderData->unk48 + ranges[difficulty]) {
-                D_801097B4_boulder_ball[player] = 1;
+                m204_runnerComStateTbl[player] = 1;
             }
             break;
     }
     return 0;
 }
 
-void func_80107924_boulder_ball(omObjData *object) {
-    if (GwPlayer[D_801097C4_boulder_ball].group == 0) {
-        D_801097C4_boulder_ball++;
+void m204_Runner0ObjInit(omObjData *object) {
+    if (GwPlayer[m204_runnerPlayerNo].group == 0) {
+        m204_runnerPlayerNo++;
     }
-    func_80106DAC_boulder_ball(object, omCharModelNoTbl[GwPlayer[D_801097C4_boulder_ball].chr][0],
-                               omCharModelNoTbl[GwPlayer[D_801097C4_boulder_ball].chr][2], D_801097C4_boulder_ball);
-    D_801097A4_boulder_ball[D_801097C4_boulder_ball] = D_80109720_boulder_ball.x - 80.0f;
-    object->trans.x = D_80109720_boulder_ball.x;
-    object->trans.y = D_80109720_boulder_ball.y;
-    object->trans.z = D_80109720_boulder_ball.z;
-    D_801097C4_boulder_ball++;
+    m204_RunnerInit(object, omCharModelNoTbl[GwPlayer[m204_runnerPlayerNo].chr][0],
+                               omCharModelNoTbl[GwPlayer[m204_runnerPlayerNo].chr][2], m204_runnerPlayerNo);
+    m204_runnerLaneXTbl[m204_runnerPlayerNo] = m204_runnerStartPosA.x - 80.0f;
+    object->trans.x = m204_runnerStartPosA.x;
+    object->trans.y = m204_runnerStartPosA.y;
+    object->trans.z = m204_runnerStartPosA.z;
+    m204_runnerPlayerNo++;
 }
 
-void func_80107A20_boulder_ball(omObjData *object) {
-    if (GwPlayer[D_801097C4_boulder_ball].group == 0) {
-        D_801097C4_boulder_ball++;
+void m204_Runner1ObjInit(omObjData *object) {
+    if (GwPlayer[m204_runnerPlayerNo].group == 0) {
+        m204_runnerPlayerNo++;
     }
-    func_80106DAC_boulder_ball(object, omCharModelNoTbl[GwPlayer[D_801097C4_boulder_ball].chr][0],
-                               omCharModelNoTbl[GwPlayer[D_801097C4_boulder_ball].chr][2], D_801097C4_boulder_ball);
-    D_801097A4_boulder_ball[D_801097C4_boulder_ball] = D_8010972C_boulder_ball.x;
-    object->trans.x = D_8010972C_boulder_ball.x;
-    object->trans.y = D_8010972C_boulder_ball.y;
-    object->trans.z = D_8010972C_boulder_ball.z;
-    D_801097C4_boulder_ball++;
+    m204_RunnerInit(object, omCharModelNoTbl[GwPlayer[m204_runnerPlayerNo].chr][0],
+                               omCharModelNoTbl[GwPlayer[m204_runnerPlayerNo].chr][2], m204_runnerPlayerNo);
+    m204_runnerLaneXTbl[m204_runnerPlayerNo] = m204_runnerStartPosB.x;
+    object->trans.x = m204_runnerStartPosB.x;
+    object->trans.y = m204_runnerStartPosB.y;
+    object->trans.z = m204_runnerStartPosB.z;
+    m204_runnerPlayerNo++;
 }
 
-void func_80107B0C_boulder_ball(omObjData *object) {
-    if (GwPlayer[D_801097C4_boulder_ball].group == 0) {
-        D_801097C4_boulder_ball++;
+void m204_Runner2ObjInit(omObjData *object) {
+    if (GwPlayer[m204_runnerPlayerNo].group == 0) {
+        m204_runnerPlayerNo++;
     }
-    func_80106DAC_boulder_ball(object, omCharModelNoTbl[GwPlayer[D_801097C4_boulder_ball].chr][0],
-                               omCharModelNoTbl[GwPlayer[D_801097C4_boulder_ball].chr][2], D_801097C4_boulder_ball);
-    D_801097A4_boulder_ball[D_801097C4_boulder_ball] = D_80109738_boulder_ball.x + 80.0f;
-    object->trans.x = D_80109738_boulder_ball.x;
-    object->trans.y = D_80109738_boulder_ball.y;
-    object->trans.z = D_80109738_boulder_ball.z;
-    D_801097C4_boulder_ball++;
+    m204_RunnerInit(object, omCharModelNoTbl[GwPlayer[m204_runnerPlayerNo].chr][0],
+                               omCharModelNoTbl[GwPlayer[m204_runnerPlayerNo].chr][2], m204_runnerPlayerNo);
+    m204_runnerLaneXTbl[m204_runnerPlayerNo] = m204_runnerStartPosC.x + 80.0f;
+    object->trans.x = m204_runnerStartPosC.x;
+    object->trans.y = m204_runnerStartPosC.y;
+    object->trans.z = m204_runnerStartPosC.z;
+    m204_runnerPlayerNo++;
 }
 
-void func_80107C08_boulder_ball(omObjData *object) {
+void m204_PusherObjInit(omObjData *object) {
     MgPlayerWork *data;
     s32 effectAttr = 0x89D;
-    s32 motion = omCharModelNoTbl[GwPlayer[D_8010989C_boulder_ball].chr][2];
-    s32 model = omCharModelNoTbl[GwPlayer[D_8010989C_boulder_ball].chr][0];
+    s32 motion = omCharModelNoTbl[GwPlayer[m204_pusherPlayerNo].chr][2];
+    s32 model = omCharModelNoTbl[GwPlayer[m204_pusherPlayerNo].chr][0];
     s32 attr = 0xAD9;
     s32 chr;
     s32 i;
@@ -674,9 +674,9 @@ void func_80107C08_boulder_ball(omObjData *object) {
         data->unkE8[i].unk04 = -1;
         data->unkE8[i].unk08 = -1;
     }
-    chr = GwPlayer[D_8010989C_boulder_ball].chr;
+    chr = GwPlayer[m204_pusherPlayerNo].chr;
     object->model[0] = Hu3DModelRead(model | motion, attr | 4);
-    object->model[1] = Hu3DModelRead((GwPlayer[D_8010989C_boulder_ball].chr + 4) | 0x250000, attr);
+    object->model[1] = Hu3DModelRead((GwPlayer[m204_pusherPlayerNo].chr + 4) | 0x250000, attr);
     object->model[5] = Hu3DModelRead3(9, attr);
     object->model[2] = Hu3DModelRead(4, effectAttr);
     object->model[3] = Hu3DModelRead(4, effectAttr);
@@ -687,10 +687,10 @@ void func_80107C08_boulder_ball(omObjData *object) {
     MgPlayerMotRead(object, 6, CharMotionDataNumGet(chr, 4), 1, 0x13);
     MgPlayerMotRead(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
     MgPlayerMotRead(object, 0xD, CharMotionDataNumGet(chr, 0x2F), 1, 0x78);
-    data->unk57 = GwPlayer[D_8010989C_boulder_ball].pad;
-    data->unk59 = D_8010989C_boulder_ball;
+    data->unk57 = GwPlayer[m204_pusherPlayerNo].pad;
+    data->unk59 = m204_pusherPlayerNo;
     data->unk50 = 0;
-    object->func = func_801083D8_boulder_ball;
+    object->func = m204_PusherObjMain;
     object->trans.x = 0.0f;
     object->trans.y = 700.0f;
     object->trans.z = -900.0f;
@@ -701,7 +701,7 @@ void func_80107C08_boulder_ball(omObjData *object) {
     Hu3DModelPosSet(object->model[5], object->trans.x, object->trans.y, object->trans.z);
 }
 
-void func_80108000_boulder_ball(omObjData *object) {
+void m204_PusherComInput(omObjData *object) {
     MgPlayerWork *data = object->data;
     f32 speeds[4] = { 0.8f, 0.85f, 0.9f, 1.0f };
     f32 ranges[4] = { 100.0f, 75.0f, 50.0f, 0.0f };
@@ -719,9 +719,9 @@ void func_80108000_boulder_ball(omObjData *object) {
     }
     target = -1;
     difficulty = GwPlayer[data->unk59].cpu_difficulty;
-    D_80109894_boulder_ball = 0;
-    D_8010988C_boulder_ball = 0;
-    D_80109890_boulder_ball = 0;
+    m204_padStkX = 0;
+    m204_padBtn = 0;
+    m204_padBtnDown = 0;
     targetX = targetZ = 0.0f;
     maxY = -10.0f;
     for (i = 0; i < mgPlayerObjNum; i++) {
@@ -733,59 +733,59 @@ void func_80108000_boulder_ball(omObjData *object) {
             target = i;
         }
     }
-    if (D_801097C8_boulder_ball == 5) {
+    if (m204_pusherComTarget == 5) {
         if (maxY < ranges[difficulty] + 300.0f) {
             if (rand8() > 128) {
-                D_801097C8_boulder_ball = 3;
+                m204_pusherComTarget = 3;
             } else {
-                D_801097C8_boulder_ball = 4;
+                m204_pusherComTarget = 4;
             }
         } else {
-            D_801097C8_boulder_ball = target;
+            m204_pusherComTarget = target;
         }
     }
-    switch (D_801097C8_boulder_ball) {
+    switch (m204_pusherComTarget) {
         case 0:
         case 1:
         case 2:
             angle = atan2df(targetX, targetZ - object->trans.z);
             if (angle > 0.0f) {
-                D_80109894_boulder_ball = speeds[difficulty] * 60.0f;
+                m204_padStkX = speeds[difficulty] * 60.0f;
                 if (data->unk3C > 30.0f) {
-                    D_80109890_boulder_ball |= A_BUTTON;
+                    m204_padBtnDown |= A_BUTTON;
                 }
                 if (data->unk3C > angle) {
-                    D_80109890_boulder_ball |= A_BUTTON;
+                    m204_padBtnDown |= A_BUTTON;
                 }
             } else {
-                D_80109894_boulder_ball = speeds[difficulty] * -60.0f;
+                m204_padStkX = speeds[difficulty] * -60.0f;
                 if (data->unk3C < -30.0f) {
-                    D_80109890_boulder_ball |= A_BUTTON;
+                    m204_padBtnDown |= A_BUTTON;
                 }
                 if (data->unk3C < angle) {
-                    D_80109890_boulder_ball |= A_BUTTON;
+                    m204_padBtnDown |= A_BUTTON;
                 }
             }
             break;
         case 3:
-            D_80109894_boulder_ball = speeds[difficulty] * 60.0f;
+            m204_padStkX = speeds[difficulty] * 60.0f;
             if (data->unk3C > speeds[difficulty] * 55.0f) {
-                D_80109890_boulder_ball |= A_BUTTON;
+                m204_padBtnDown |= A_BUTTON;
             }
             break;
         case 4:
-            D_80109894_boulder_ball = speeds[difficulty] * -60.0f;
+            m204_padStkX = speeds[difficulty] * -60.0f;
             if (data->unk3C < speeds[difficulty] * -55.0f) {
-                D_80109890_boulder_ball |= A_BUTTON;
+                m204_padBtnDown |= A_BUTTON;
             }
             break;
     }
-    if (D_80109890_boulder_ball != 0) {
-        D_801097C8_boulder_ball = 5;
+    if (m204_padBtnDown != 0) {
+        m204_pusherComTarget = 5;
     }
 }
 
-void func_801083D8_boulder_ball(omObjData *object) {
+void m204_PusherObjMain(omObjData *object) {
     MgPlayerWork *data = object->data;
     s32 player = data->unk59;
     s32 pad = data->unk57;
@@ -794,16 +794,16 @@ void func_801083D8_boulder_ball(omObjData *object) {
     if (MgFlowStatGet() != MG_STATE_PLAY) {
         return;
     }
-    D_80109890_boulder_ball = HuPadBtnDown[pad];
-    D_8010988C_boulder_ball = (u16)HuPadBtn[pad];
-    D_80109894_boulder_ball = HuPadStkX[pad];
-    D_80109898_boulder_ball = HuPadStkY[pad];
+    m204_padBtnDown = HuPadBtnDown[pad];
+    m204_padBtn = (u16)HuPadBtn[pad];
+    m204_padStkX = HuPadStkX[pad];
+    m204_padStkY = HuPadStkY[pad];
     HuPadStkY[pad] = 0;
     HuPadStkX[pad] = 0;
     HuPadBtnDown[pad] = 0;
     HuPadBtn[pad] = 0;
     if (GwPlayer[player].stat & 1) {
-        func_80108000_boulder_ball(object);
+        m204_PusherComInput(object);
     }
     switch (data->unk50) {
         case 0:
@@ -814,46 +814,46 @@ void func_801083D8_boulder_ball(omObjData *object) {
             if (fabs(data->unk3C) < 1.0) {
                 data->unk3C = 0.0f;
             }
-            if (D_80109758_boulder_ball == 1) {
+            if (m204_boulderReadyF == 1) {
                 data->unk50 = 1;
             }
             break;
         case 1:
-            boulderData = D_801098A0_boulder_ball->data;
-            data->unk3C += D_80109894_boulder_ball / 15.0f;
+            boulderData = m204_boulderObj->data;
+            data->unk3C += m204_padStkX / 15.0f;
             if (data->unk3C > 60.0f) {
                 data->unk3C = 60.0f;
             }
             if (data->unk3C < -60.0f) {
                 data->unk3C = -60.0f;
             }
-            if (D_80109890_boulder_ball & A_BUTTON) {
+            if (m204_padBtnDown & A_BUTTON) {
                 Hu3DMotionTimeSet(object->model[1], 0.0f);
                 data->unk50 = 0;
-                D_80109758_boulder_ball = 0;
+                m204_boulderReadyF = 0;
                 boulderData->unk3C = data->unk3C;
                 boulderData->unk40 = rand8() / 64.0f + 7.0f;
                 boulderData->unk78 = 0;
                 boulderData->unk38 = -0.75f;
                 HuAudPlayerFXPlay(0x31F, player);
             }
-            D_801098A0_boulder_ball->trans.x = sindf(data->unk3C) * 150.0f + 0.0f;
-            D_801098A0_boulder_ball->trans.y = 700.0f;
-            D_801098A0_boulder_ball->trans.z = cosdf(data->unk3C) * 150.0f + -900.0f;
-            Hu3DModelPosSet(D_801098A0_boulder_ball->model[1], D_801098A0_boulder_ball->trans.x, 705.0f,
-                            D_801098A0_boulder_ball->trans.z);
+            m204_boulderObj->trans.x = sindf(data->unk3C) * 150.0f + 0.0f;
+            m204_boulderObj->trans.y = 700.0f;
+            m204_boulderObj->trans.z = cosdf(data->unk3C) * 150.0f + -900.0f;
+            Hu3DModelPosSet(m204_boulderObj->model[1], m204_boulderObj->trans.x, 705.0f,
+                            m204_boulderObj->trans.z);
             boulderData->unk3C = data->unk3C;
             break;
     }
     object->rot.y = data->unk3C;
     Hu3DModelRotSet(object->model[1], 0.0f, object->rot.y, 0.0f);
-    HuPadBtnDown[pad] = D_80109890_boulder_ball;
-    HuPadBtn[pad] = D_8010988C_boulder_ball;
-    HuPadStkX[pad] = D_80109894_boulder_ball;
-    HuPadStkY[pad] = D_80109898_boulder_ball;
+    HuPadBtnDown[pad] = m204_padBtnDown;
+    HuPadBtn[pad] = m204_padBtn;
+    HuPadStkX[pad] = m204_padStkX;
+    HuPadStkY[pad] = m204_padStkY;
 }
 
-void func_80108798_boulder_ball(omObjData *object) {
+void m204_PusherWinObjMain(omObjData *object) {
     MgPlayerWork *data;
     f32 y;
     f32 velocity;
@@ -879,7 +879,7 @@ void func_80108798_boulder_ball(omObjData *object) {
         }
         object->trans.y = y;
     }
-    switch (D_801097CC_boulder_ball) {
+    switch (m204_pusherWinTimer) {
         case 1:
             Hu3DModelPosSet(object->model[2], object->trans.x - 10.0f, object->trans.y + 20.0f,
                             object->trans.z + 30.0f);
@@ -899,10 +899,10 @@ void func_80108798_boulder_ball(omObjData *object) {
             break;
     }
     MgPlayerMotUpdate(object);
-    D_801097CC_boulder_ball++;
+    m204_pusherWinTimer++;
 }
 
-void func_80108A08_boulder_ball(omObjData *object) {
+void m204_BoulderObjInit(omObjData *object) {
     MgItemWork *data;
     s32 i;
 
@@ -931,7 +931,7 @@ void func_80108A08_boulder_ball(omObjData *object) {
     data->unk50 = 0;
     data->unk40 = 0.0f;
     data->unk74 = 0.5f;
-    data->unk56 = D_801097D0_boulder_ball;
+    data->unk56 = m204_boulderNum;
     data->unk54 = 1;
     for (i = 0; i < 9; i++) {
         data->unk84[i] = NULL;
@@ -943,21 +943,21 @@ void func_80108A08_boulder_ball(omObjData *object) {
     object->trans.z = -600.0f;
     object->scale.x = object->scale.y = object->scale.z = 1.0f;
     func_80088700_main(Hu3DData[object->model[1]].mtx, 2.0f, 2.0f, 2.0f);
-    D_801097D0_boulder_ball++;
-    MgItemHookSet(data, 2, func_80108CF4_boulder_ball);
-    MgItemHookSet(data, 0, func_80108E5C_boulder_ball);
+    m204_boulderNum++;
+    MgItemHookSet(data, 2, m204_BoulderHitHook);
+    MgItemHookSet(data, 0, m204_BoulderUpdate);
     // The return value of slot 1 is ignored by MgItemObjMain.
-    MgItemHookSet(data, 1, (void *)func_801093B8_boulder_ball);
-    MgItemHookSet(data, 4, func_80109410_boulder_ball);
-    MgItemHookSet(data, 5, func_801095A0_boulder_ball);
+    MgItemHookSet(data, 1, (void *)m204_BoulderAccel);
+    MgItemHookSet(data, 4, m204_BoulderBounce);
+    MgItemHookSet(data, 5, m204_BoulderWallHit);
     mgItemSpeedMax = 35.0f;
 }
 
-s32 func_80108CF4_boulder_ball(omObjData *object) {
+s32 m204_BoulderHitHook(omObjData *object) {
     return 1;
 }
 
-void func_80108CFC_boulder_ball(omObjData *object) {
+void m204_BoulderDustUpdate(omObjData *object) {
     MgItemWork *data = object->data;
     s32 slot = data->unk56;
     s32 time;
@@ -965,8 +965,8 @@ void func_80108CFC_boulder_ball(omObjData *object) {
     f32 motTime;
     s32 i;
 
-    if (D_80109700_boulder_ball[slot] < 4) {
-        if (D_80109700_boulder_ball[slot] > 0) {
+    if (m204_boulderStateTbl[slot] < 4) {
+        if (m204_boulderStateTbl[slot] > 0) {
             time = MgFlowStatTimeGet();
             switch (time) {
                 case 1:
@@ -993,7 +993,7 @@ void func_80108CFC_boulder_ball(omObjData *object) {
     }
 }
 
-s32 func_80108E5C_boulder_ball(omObjData *object) {
+s32 m204_BoulderUpdate(omObjData *object) {
     MgItemWork *data;
     s32 slot;
     s32 result = 0;
@@ -1007,7 +1007,7 @@ s32 func_80108E5C_boulder_ball(omObjData *object) {
         case MG_STATE_PLAY:
             break;
         case MG_STATE_FINISH:
-            func_80108CFC_boulder_ball(object);
+            m204_BoulderDustUpdate(object);
             return 1;
         default:
             return 1;
@@ -1015,9 +1015,9 @@ s32 func_80108E5C_boulder_ball(omObjData *object) {
     data = object->data;
     slot = data->unk56;
     func_80088800_main(Hu3DData[object->model[0]].mtx, 0.0f, 90.0f, 0.0f);
-    mtxRotCat(Hu3DData[object->model[0]].mtx, D_801097D4_boulder_ball[slot], 0.0f, 0.0f);
+    mtxRotCat(Hu3DData[object->model[0]].mtx, m204_boulderSpinTbl[slot], 0.0f, 0.0f);
     object->rot.y = data->unk3C;
-    switch (D_80109700_boulder_ball[slot]) {
+    switch (m204_boulderStateTbl[slot]) {
         case 0:
             object->trans.x = 0.0f;
             object->trans.y = 1500.0f;
@@ -1025,13 +1025,13 @@ s32 func_80108E5C_boulder_ball(omObjData *object) {
             data->unk38 = 0.0f;
             data->unk40 = 0.0f;
             data->unk3C = 0.0f;
-            D_801097D4_boulder_ball[slot] = 0.0f;
+            m204_boulderSpinTbl[slot] = 0.0f;
             Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            if (D_801097F4_boulder_ball == slot) {
+            if (m204_boulderNextNo == slot) {
                 data->unk78++;
                 if (data->unk78 >= 26) {
-                    D_80109700_boulder_ball[slot] = 1;
+                    m204_boulderStateTbl[slot] = 1;
                     data->unk78 = 0;
                     Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -1041,34 +1041,34 @@ s32 func_80108E5C_boulder_ball(omObjData *object) {
             break;
         case 1:
             if (object->trans.y == 700.0f) {
-                D_80109700_boulder_ball[slot] = 2;
-                D_80109758_boulder_ball = 1;
-                D_801098A0_boulder_ball = mgItemObjTbl[D_801097F4_boulder_ball];
-                D_80109754_boulder_ball = -mgPlayerJumpPower * 0.5f;
+                m204_boulderStateTbl[slot] = 2;
+                m204_boulderReadyF = 1;
+                m204_boulderObj = mgItemObjTbl[m204_boulderNextNo];
+                m204_stageBounceVel = -mgPlayerJumpPower * 0.5f;
                 for (i = 0; i < 4; i++) {
                     omVibrate(i, 2, 2, 20);
                 }
             }
             break;
         case 2:
-            if (D_80109758_boulder_ball == 0) {
-                D_80109700_boulder_ball[slot] = 3;
-                D_801097F4_boulder_ball++;
-                if (D_801097F4_boulder_ball == mgItemObjNum) {
-                    D_801097F4_boulder_ball = 0;
+            if (m204_boulderReadyF == 0) {
+                m204_boulderStateTbl[slot] = 3;
+                m204_boulderNextNo++;
+                if (m204_boulderNextNo == mgItemObjNum) {
+                    m204_boulderNextNo = 0;
                 }
-                D_80109744_boulder_ball[slot] = HuAudFXPlay(0x31D);
+                m204_boulderSeTbl[slot] = HuAudFXPlay(0x31D);
             }
             result = 1;
             break;
         case 3:
             spin = data->unk40 / 502.64f * 360.0f;
-            D_801097D4_boulder_ball[slot] += spin;
-            if (D_80109744_boulder_ball[slot] != -1) {
+            m204_boulderSpinTbl[slot] += spin;
+            if (m204_boulderSeTbl[slot] != -1) {
                 if (data->unk38 > 0.0f) {
-                    HuAudFXVolSet(D_80109744_boulder_ball[slot], 0x7F);
+                    HuAudFXVolSet(m204_boulderSeTbl[slot], 0x7F);
                 } else {
-                    HuAudFXVolSet(D_80109744_boulder_ball[slot], 0x60);
+                    HuAudFXVolSet(m204_boulderSeTbl[slot], 0x60);
                 }
                 pan = object->trans.x / 400.0f;
                 if (pan > 1.0f) {
@@ -1077,24 +1077,24 @@ s32 func_80108E5C_boulder_ball(omObjData *object) {
                     pan = -1.0f;
                 }
                 panning = pan * 32.0f + 64.0f;
-                HuAudFXPanning(D_80109744_boulder_ball[slot], panning);
+                HuAudFXPanning(m204_boulderSeTbl[slot], panning);
             }
             if (object->trans.z > 1400.0f) {
-                D_80109700_boulder_ball[slot] = 4;
+                m204_boulderStateTbl[slot] = 4;
                 data->unk40 = 0.0f;
-                D_801097D4_boulder_ball[slot] = 0.0f;
+                m204_boulderSpinTbl[slot] = 0.0f;
                 Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 Hu3DModelAttrSet(object->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 Hu3DModelAttrSet(object->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                HuAudFXStop((s16)D_80109744_boulder_ball[slot]);
-                D_80109744_boulder_ball[slot] = -1;
+                HuAudFXStop((s16)m204_boulderSeTbl[slot]);
+                m204_boulderSeTbl[slot] = -1;
             }
             break;
         case 4:
             data->unk78++;
             if (data->unk78 >= 11) {
-                D_80109700_boulder_ball[slot] = 0;
+                m204_boulderStateTbl[slot] = 0;
                 data->unk78 = 0;
             }
             result = 1;
@@ -1103,7 +1103,7 @@ s32 func_80108E5C_boulder_ball(omObjData *object) {
     return result;
 }
 
-void func_801093B8_boulder_ball(omObjData *arg0) {
+void m204_BoulderAccel(omObjData *arg0) {
     MgItemWork *data = arg0->data;
 
     data->unk40 += 0.3f;
@@ -1113,14 +1113,14 @@ void func_801093B8_boulder_ball(omObjData *arg0) {
     }
 }
 
-s32 func_80109410_boulder_ball(omObjData *object) {
+s32 m204_BoulderBounce(omObjData *object) {
     MgItemWork *data = object->data;
     s32 slot = data->unk56;
     f32 maxTime;
     f32 motTime;
     s32 i;
 
-    if (D_80109700_boulder_ball[slot] == 3 && data->unk38 > 0.4f) {
+    if (m204_boulderStateTbl[slot] == 3 && data->unk38 > 0.4f) {
         slot = 0;
         maxTime = 0.0f;
         for (i = 0; i < 4; i++) {
@@ -1142,7 +1142,7 @@ s32 func_80109410_boulder_ball(omObjData *object) {
     return 1;
 }
 
-s32 func_801095A0_boulder_ball(omObjData *object) {
+s32 m204_BoulderWallHit(omObjData *object) {
     MgItemWork *data = object->data;
     Vec pos;
     Vec dir;

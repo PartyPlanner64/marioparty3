@@ -15,7 +15,7 @@
 #include "game/input.h"
 #include "game/printfunc.h"
 
-typedef struct UnkSlotPlayer { // 0x30 bytes, four entries
+typedef struct SlotSynchPlayerWork { // 0x30 bytes, four entries
     s16 unk_00;
     s16 unk_02; // team
     s16 unk_04;
@@ -36,13 +36,13 @@ typedef struct UnkSlotPlayer { // 0x30 bytes, four entries
     s16 unk_2A;
     s16 unk_2C;
     s16 unk_2E;
-} UnkSlotPlayer;
+} SlotSynchPlayerWork;
 
-typedef struct UnkSlotSynch { // 0x20 bytes, two entries (one per team)
+typedef struct SlotSynchTeam { // 0x20 bytes, two entries (one per team)
     omObjData *unk_00;
     omObjData *unk_04;
-    UnkSlotPlayer *unk_08;
-    UnkSlotPlayer *unk_0C;
+    SlotSynchPlayerWork *unk_08;
+    SlotSynchPlayerWork *unk_0C;
     s16 unk_10;
     s16 unk_12;
     s16 unk_14;
@@ -51,9 +51,9 @@ typedef struct UnkSlotSynch { // 0x20 bytes, two entries (one per team)
     s16 unk_1A;
     s16 unk_1C;
     s16 unk_1E;
-} UnkSlotSynch;
+} SlotSynchTeam;
 
-typedef struct UnkSlotMachine { // 0x3C bytes, four entries (one per player)
+typedef struct SlotSynchBlock { // 0x3C bytes, four entries (one per player)
     s16 unk_00;                 // model
     u8 unk_02;
     u8 unk_03;
@@ -74,15 +74,15 @@ typedef struct UnkSlotMachine { // 0x3C bytes, four entries (one per player)
     f32 unk_30;
     f32 unk_34;
     f32 unk_38;
-} UnkSlotMachine;
+} SlotSynchBlock;
 
-typedef struct UnkSlotReelRow { // 0x94 bytes
+typedef struct SlotSynchReelRow { // 0x94 bytes
     u16 unk_00[0x48];           // vertex indices
     s16 unk_90;
     s16 unk_92; // vertex count
-} UnkSlotReelRow;
+} SlotSynchReelRow;
 
-typedef struct UnkSlotReel { // 0x20 bytes, two entries
+typedef struct SlotSynchReel { // 0x20 bytes, two entries
     s16 unk_00;              // model
     s16 unk_02;
     s16 unk_04;
@@ -93,10 +93,10 @@ typedef struct UnkSlotReel { // 0x20 bytes, two entries
     f32 unk_14;
     s16 unk_18; // row count
     char unk_1A[0x2];
-    UnkSlotReelRow *unk_1C;
-} UnkSlotReel;
+    SlotSynchReelRow *unk_1C;
+} SlotSynchReel;
 
-typedef union UnkSlotSynchBytes { // packs the top byte of each work word
+typedef union SlotSynchWorkBytes { // packs the top byte of each work word
     u32 word;
     struct {
         u32 byte3 : 8;
@@ -104,16 +104,16 @@ typedef union UnkSlotSynchBytes { // packs the top byte of each work word
         u32 byte1 : 8;
         u32 byte0 : 8;
     } bytes;
-} UnkSlotSynchBytes;
+} SlotSynchWorkBytes;
 
-typedef struct UnkSlotSpritePos { // 6 bytes
+typedef struct SlotSynchLampPos { // 6 bytes
     s16 x;
     s16 y;
     u8 unk_04;
     u8 unk_05;
-} UnkSlotSpritePos;
+} SlotSynchLampPos;
 
-typedef struct UnkSlotSprite { // 0x2C bytes, 24 entries
+typedef struct SlotSynchLamp { // 0x2C bytes, 24 entries
     s16 unk_00;
     u16 unk_02;
     u16 unk_04;
@@ -131,16 +131,16 @@ typedef struct UnkSlotSprite { // 0x2C bytes, 24 entries
     f32 unk_20;
     f32 unk_24;
     f32 unk_28;
-} UnkSlotSprite;
+} SlotSynchLamp;
 
-typedef struct UnkSlotOvlData { // 0xC bytes
+typedef struct SlotSynchLampSys { // 0xC bytes
     omObjData *unk_00;
     s16 unk_04;
     u16 unk_06;
-    UnkSlotSprite *unk_08;
-} UnkSlotOvlData;
+    SlotSynchLamp *unk_08;
+} SlotSynchLampSys;
 
-typedef struct UnkSlotLight { // 0x10 bytes, two entries
+typedef struct SlotSynchScore { // 0x10 bytes, two entries
     s16 unk_00;               // sprite group
     s16 unk_02;               // x
     s16 unk_04;               // y
@@ -148,30 +148,30 @@ typedef struct UnkSlotLight { // 0x10 bytes, two entries
     s16 unk_0A;
     s16 unk_0C;
     s16 unk_0E;
-} UnkSlotLight;
+} SlotSynchScore;
 
-typedef union UnkSlotColor {
+typedef union SlotSynchColor {
     u32 word;
     u8 rgba[4];
-} UnkSlotColor;
+} SlotSynchColor;
 
-typedef struct UnkSlotEffect { // 0x34 bytes, 8 entries
+typedef struct SlotSynchEffect { // 0x34 bytes, 8 entries
     u16 active;
     s16 model;
-    UnkSlotColor color;
+    SlotSynchColor color;
     f32 frame;
     f32 speed;
     Vec pos;
     Vec vel;
     Vec scale;
-} UnkSlotEffect;
+} SlotSynchEffect;
 
-typedef struct UnkSlotPos {
+typedef struct SlotSynchPos {
     s16 x;
     s16 y;
-} UnkSlotPos;
+} SlotSynchPos;
 
-typedef struct UnkSlotSpin { // 0x58 bytes, five entries
+typedef struct SlotSynchPrize { // 0x58 bytes, five entries
     u8 unk_00;
     u8 unk_01;
     u8 unk_02;
@@ -185,62 +185,62 @@ typedef struct UnkSlotSpin { // 0x58 bytes, five entries
     f32 unk_2C;
     f32 unk_30;
     f32 unk_34[9];
-} UnkSlotSpin;
+} SlotSynchPrize;
 
-typedef struct UnkSlotPriority {
+typedef struct SlotSynchSprPri {
     s16 unk_00;
-    u16 unk_02[4]; // sprite priorities, aliased as D_8010DF66_slot_synch
-} UnkSlotPriority;
+    u16 unk_02[4]; // sprite priorities, aliased as m220_stageSprPriTbl
+} SlotSynchSprPri;
 
 extern s32 omCharModelNoTbl[][6];
 extern u8 omAllPauseF;
 extern s16 Hu3DModelTag;
 extern u8 Hu3DBufNo;
 
-extern u16 D_8010DF66_slot_synch[4];
+extern u16 m220_stageSprPriTbl[4];
 
-Vec D_8010D7F0_slot_synch[4] = {
+Vec m220_blockPosTbl[4] = {
     { -300.0f, 0.0f, 0.0f },
     { -125.0f, 0.0f, -0.0f },
     { 125.0f, 0.0f, -0.0f },
     { 300.0f, 0.0f, 0.0f }
 };
-Vec D_8010D820_slot_synch[2] = {
+Vec m220_reelPosTbl[2] = {
     { -255.0f, 0.0f, -300.0f },
     { 255.0f, 0.0f, -300.0f }
 };
-UnkSlotPos D_8010D838_slot_synch[2] = { { 70, 40 }, { 250, 40 } };
-f32 D_8010D840_slot_synch[5] = { 0.0f, 90.0f, 180.0f, 270.0f, 0.0f };
-u8 D_8010D854_slot_synch[2][4] = { { 0, 1, 2, 3 }, { 2, 3, 1, 0 } };
-s16 D_8010D85C_slot_synch[4] = { 3, 1, 2, -1 };
-UnkSlotColor D_8010D864_slot_synch = { 0xE9DDA180 };
-UnkSlotColor D_8010D868_slot_synch = { 0xFFFFFF80 };
-UnkSlotColor D_8010D86C_slot_synch = { 0xFFFFFFFF };
-s32 D_8010D870_slot_synch[8] = {
+SlotSynchPos m220_scorePosTbl[2] = { { 70, 40 }, { 250, 40 } };
+f32 m220_blockFaceRotTbl[5] = { 0.0f, 90.0f, 180.0f, 270.0f, 0.0f };
+u8 m220_blockSymbolTbl[2][4] = { { 0, 1, 2, 3 }, { 2, 3, 1, 0 } };
+s16 m220_prizePointTbl[4] = { 3, 1, 2, -1 };
+SlotSynchColor m220_chipColor = { 0xE9DDA180 };
+SlotSynchColor m220_halfWhiteColor = { 0xFFFFFF80 };
+SlotSynchColor m220_whiteColor = { 0xFFFFFFFF };
+s32 m220_winAnimTbl[8] = {
     0x000200A5, 0x000300A5, 0x000700A5, 0x000400A5,
     0x000500A5, 0x000600A5, 0x000800A5, 0x0009001C
 };
-s32 D_8010D890_slot_synch[8] = {
+s32 m220_loseAnimTbl[8] = {
     0x000200A6, 0x000300A6, 0x000700A6, 0x000400A6,
     0x000500A6, 0x000600A6, 0x000800A6, 0x0009001D
 };
-s32 D_8010D8B0_slot_synch = 0;
-s32 D_8010D8B4_slot_synch[4] = { 0, 1, 2, 3 };
-s16 D_8010D8C4_slot_synch[4][2][2] = {
+s32 m220_exitTimer = 0;
+s32 m220_playerOrderTbl[4] = { 0, 1, 2, 3 };
+s16 m220_teamPlayerAltTbl[4][2][2] = {
     { { 0, 1 }, { 2, 3 } },
     { { 3, 0 }, { 1, 2 } },
     { { 2, 3 }, { 0, 1 } },
     { { 1, 2 }, { 3, 0 } }
 };
-s16 D_8010D8E4_slot_synch[4] = { 0x12, 0x13, 0x15, 0x14 };
-s32 D_8010D8EC_slot_synch[8] = {
+s16 m220_playerPrioTbl[4] = { 0x12, 0x13, 0x15, 0x14 };
+s32 m220_voiceChrTbl[8] = {
     0x00020000, 0x00030000, 0x00070000, 0x00040000,
     0x00050000, 0x00060000, 0x00080000, 0x00090000
 };
-s32 D_8010D90C_slot_synch[4] = { 0x2F, 0x30, 0x36, 0x37 };
-u16 D_8010D91C_slot_synch[6] = { 0, 2, 1, 3, 0, 0 };
-u16 D_8010D928_slot_synch[8] = { 3, 3, 3, 3, 2, 3, 3, 0 };
-UnkSlotSpritePos D_8010D938_slot_synch[12] = {
+s32 m220_voiceNoTbl[4] = { 0x2F, 0x30, 0x36, 0x37 };
+u16 m220_comSymbolTbl[6] = { 0, 2, 1, 3, 0, 0 };
+u16 m220_comSpinTbl[8] = { 3, 3, 3, 3, 2, 3, 3, 0 };
+SlotSynchLampPos m220_lampPos0Tbl[12] = {
     { 16, 92, 0, 0 },
     { 40, 92, 0, 1 },
     { 64, 92, 0, 2 },
@@ -254,7 +254,7 @@ UnkSlotSpritePos D_8010D938_slot_synch[12] = {
     { 64, 124, 0, 1 },
     { 88, 124, 0, 2 }
 };
-UnkSlotSpritePos D_8010D980_slot_synch[12] = {
+SlotSynchLampPos m220_lampPos1Tbl[12] = {
     { 304, 92, 0, 0 },
     { 280, 92, 0, 1 },
     { 256, 92, 0, 2 },
@@ -268,22 +268,22 @@ UnkSlotSpritePos D_8010D980_slot_synch[12] = {
     { 256, 124, 0, 1 },
     { 232, 124, 0, 2 }
 };
-s16 D_8010D9C8_slot_synch[4] = { 0, 1, 1, 0 };
-f32 D_8010D9D0_slot_synch[8] = { 150.0f, 150.0f, 150.0f, 150.0f, 150.0f, 180.0f, 150.0f, 150.0f };
-s32 D_8010D9F0_slot_synch[4] = { 0x000A0000, 0x000A00A5, 0x000A008E, 0x000A00EE };
-s32 D_8010DA00_slot_synch[4] = { 0x000A0018, 0x000A00B3, 0x000A00A0, 0x000A00FA };
-s32 D_8010DA10_slot_synch[4] = { 0x000A0002, 0x000A00A9, 0x000A0090, 0x000A00F1 };
-f32 D_8010DA20_slot_synch[4] = { 1.5f, 1.75f, 1.0f, 1.2f };
-s32 D_8010DA30_slot_synch[4] = { 0x393, 0x391, 0x392, 0x394 };
-s32 D_8010DA40_slot_synch[8] = {
+s16 m220_blockTypeTbl[4] = { 0, 1, 1, 0 };
+f32 m220_chrHeightTbl[8] = { 150.0f, 150.0f, 150.0f, 150.0f, 150.0f, 180.0f, 150.0f, 150.0f };
+s32 m220_prizeMdlTbl[4] = { 0x000A0000, 0x000A00A5, 0x000A008E, 0x000A00EE };
+s32 m220_prizeMot1Tbl[4] = { 0x000A0018, 0x000A00B3, 0x000A00A0, 0x000A00FA };
+s32 m220_prizeMot2Tbl[4] = { 0x000A0002, 0x000A00A9, 0x000A0090, 0x000A00F1 };
+f32 m220_prizeMotSpeedTbl[4] = { 1.5f, 1.75f, 1.0f, 1.2f };
+s32 m220_prizeSeTbl[4] = { 0x393, 0x391, 0x392, 0x394 };
+s32 m220_faceSprTbl[8] = {
     0x00210008, 0x00210009, 0x0021000A, 0x0021000B,
     0x0021000C, 0x0021000D, 0x0021000E, 0x0021000F
 };
-s32 D_8010DA60_slot_synch = 0;
-s32 D_8010DA64_slot_synch = 0;
-s32 D_8010DA68_slot_synch = 0;
+s32 m220_cameraDebugMode = 0;
+s32 m220_cameraDebugX = 0;
+s32 m220_cameraDebugY = 0;
 
-Gfx D_8010DA70_slot_synch[] = {
+Gfx m220_gfxRdpInit[] = {
     gsSPSegment(0x00, 0x00000000),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
@@ -311,22 +311,22 @@ Gfx D_8010DA70_slot_synch[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8010DB28_slot_synch[] = {
+Gfx m220_gfxRspInit[] = {
     gsSPClearGeometryMode(0xFFFFFFFF),
     gsSPTexture(0, 0, 0, G_TX_RENDERTILE, G_OFF),
     gsSPSetGeometryMode(G_SHADE | G_SHADING_SMOOTH),
     gsSPEndDisplayList(),
 };
 
-Gfx D_8010DB48_slot_synch[] = {
-    gsSPDisplayList(D_8010DB28_slot_synch),
-    gsSPDisplayList(D_8010DA70_slot_synch),
+Gfx m220_gfxInit[] = {
+    gsSPDisplayList(m220_gfxRspInit),
+    gsSPDisplayList(m220_gfxRdpInit),
     gsSPEndDisplayList(),
 };
 
-Gfx D_8010DB60_slot_synch[] = {
+Gfx m220_gfxBillboardInit[] = {
     gsDPPipeSync(),
-    gsSPDisplayList(D_8010DB48_slot_synch),
+    gsSPDisplayList(m220_gfxInit),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPSetGeometryMode(G_ZBUFFER | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH),
     gsDPSetBlendColor(0x00, 0x00, 0x00, 0x00),
@@ -335,100 +335,100 @@ Gfx D_8010DB60_slot_synch[] = {
     gsSPEndDisplayList(),
 };
 
-omObjData *D_8010DF40_slot_synch BSS;
-s32 D_8010DF44_slot_synch BSS;
-s32 D_8010DF48_slot_synch BSS;
-s32 D_8010DF4C_slot_synch BSS;
-s32 D_8010DF50_slot_synch BSS;
-s32 D_8010DF54_slot_synch BSS;
-s32 D_8010DF58_slot_synch BSS;
-UnkSlotSynch *D_8010DF5C_slot_synch BSS;
-UnkSlotPlayer *D_8010DF60_slot_synch BSS;
-UnkSlotPriority D_8010DF64_slot_synch BSS;
-UnkSlotOvlData D_8010DF70_slot_synch BSS;
-UnkSlotMachine *D_8010DF7C_slot_synch BSS;
-UnkSlotReel *D_8010DF80_slot_synch BSS;
-omObjData *D_8010DF84_slot_synch BSS;
-UnkSlotSpin *D_8010DF88_slot_synch BSS;
-s16 *D_8010DF8C_slot_synch BSS;
-UnkSlotLight *D_8010DF90_slot_synch BSS;
-omObjData *D_8010DF94_slot_synch BSS;
-UnkSlotEffect *D_8010DF98_slot_synch BSS;
-u8 D_8010DF9C_slot_synch[4] BSS;            /* Unreferenced. */
-MgCameraKey D_8010DFA0_slot_synch[2] BSS;   // target, origin
-s32 D_8010DFE8_slot_synch BSS;
-s32 D_8010DFEC_slot_synch BSS;
-s32 D_8010DFF0_slot_synch BSS;
-u8 D_8010DFF4_slot_synch[4] BSS; /* Unreferenced. */
-MinigameFlow D_8010DFF8_slot_synch BSS;
+omObjData *m220_mainObj BSS;
+s32 m220_flag10F BSS;
+s32 m220_frameCnt BSS;
+s32 m220_phaseTimer BSS;
+s32 m220_timer BSS;
+s32 m220_phase BSS;
+s32 m220_resultWait BSS;
+SlotSynchTeam *m220_teamTbl BSS;
+SlotSynchPlayerWork *m220_playerWorkTbl BSS;
+SlotSynchSprPri m220_winTeamNo BSS;
+SlotSynchLampSys m220_lampSys BSS;
+SlotSynchBlock *m220_blockTbl BSS;
+SlotSynchReel *m220_reelTbl BSS;
+omObjData *m220_prizeObj BSS;
+SlotSynchPrize *m220_prizeTbl BSS;
+s16 *m220_sprTbl BSS;
+SlotSynchScore *m220_scoreTbl BSS;
+omObjData *m220_smokeObj BSS;
+SlotSynchEffect *m220_smokeTbl BSS;
+u8 m220_smokeTblPad[4] BSS;            /* Unreferenced. */
+MgCameraKey m220_cameraKeyTbl[2] BSS;   // target, origin
+s32 m220_cameraMoveTimer BSS;
+s32 m220_cameraMoveTime BSS;
+s32 m220_cameraMoveF BSS;
+u8 m220_cameraMoveFPad[4] BSS; /* Unreferenced. */
+MinigameFlow m220_mgFlow BSS;
 
-void func_80105B98_slot_synch(omObjData *object);
-void func_80105C08_slot_synch(omObjData *object);
-void func_80106080_slot_synch(omObjData *object);
-void func_801060A4_slot_synch(omObjData *object);
-void func_8010614C_slot_synch(void);
-void func_80106560_slot_synch(omObjData *object);
-void func_80106878_slot_synch(omObjData *object);
-void func_80106E8C_slot_synch(omObjData *object);
-void func_80107108_slot_synch(omObjData *object);
-void func_80107794_slot_synch(omObjData *object);
-void func_80107A80_slot_synch(omObjData *object);
-void func_80107A88_slot_synch(void);
-s16 func_80107B00_slot_synch(f32 x, f32 y, u8 arg2, u8 arg3, u16 arg4);
-void func_80107BAC_slot_synch(void);
-void func_80108238_slot_synch(void);
-void func_80108428_slot_synch(omObjData *object);
-void func_80108D3C_slot_synch(void);
-void func_8010800C_slot_synch(u8 arg0, u8 arg1);
-void func_801089F8_slot_synch(s16 arg0);
-s16 func_80108AA8_slot_synch(s16 arg0);
-s16 func_80108848_slot_synch(s16 arg0);
-s16 func_80108B74_slot_synch(s16 arg0, s16 arg1);
-void func_80108D14_slot_synch(s16 arg0, s16 arg1);
-s32 func_8010AD68_slot_synch(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color);
-s16 func_80108C88_slot_synch(s16 arg0, s16 arg1);
-void func_801092B8_slot_synch(UnkSlotReel *reel);
-void func_801091D8_slot_synch(omObjData *object);
-void func_801094E0_slot_synch(s16 arg0, f32 arg1, f32 arg2);
-void func_80109754_slot_synch(omObjData *object);
-s16 func_8010C47C_slot_synch(s32 file);
-void func_8010B754_slot_synch(omObjData *object);
-void func_8010BB90_slot_synch(s32 arg0);
-void func_8010BF6C_slot_synch(s32 camIndex);
-void func_8010BD7C_slot_synch(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames);
-f32 func_8010C39C_slot_synch(f32 t, f32 start, f32 end);
-void func_8010AC14_slot_synch(omObjData *object);
-void func_80107D54_slot_synch(omObjData *object);
-void func_8010A308_slot_synch(s16 arg0, s16 arg1, f32 arg2, f32 arg3);
-s32 func_8010C4C0_slot_synch(HuSprAnimData *sprite, u8 *color);
-s32 func_8010D0A8_slot_synch(HuSprAnimData *sprite, u16 model, u8 *color);
-void func_8010D2AC_slot_synch(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color);
-void func_8010A7D0_slot_synch(omObjData *object);
-void func_80106CCC_slot_synch(s16 arg0, s32 arg1);
-void func_80106D0C_slot_synch(s16 arg0, s16 arg1);
-f32 func_8010C1C4_slot_synch(f32 target, f32 current, f32 step);
-u16 func_8010A2C4_slot_synch(s32 file);
-void func_80108CD0_slot_synch(s16 arg0);
-s16 func_80109FA4_slot_synch(s16 arg0, s16 arg1);
-s16 func_8010A178_slot_synch(s16 arg0);
-void func_8010AA9C_slot_synch(s16 arg0, s16 arg1);
-u32 func_8010C428_slot_synch(omObjData *arg0);
-void func_8010A480_slot_synch(s16 team, s16 chr0, s16 chr1, s16 arg3);
-void func_8010C3FC_slot_synch(omObjData *arg0, u32 arg1);
-s16 func_80106CF0_slot_synch(s16 arg0);
-void func_8010A1D0_slot_synch(void);
-void func_801075D4_slot_synch(void);
-void func_80109508_slot_synch(void);
-void func_8010A39C_slot_synch(void);
-void func_8010AAB8_slot_synch(void);
-void func_8010AF38_slot_synch(void);
-s16 func_80108A7C_slot_synch(s16 arg0);
-f32 func_8010C0C0_slot_synch(f32 arg0, f32 arg1);
-f32 func_8010C384_slot_synch(f32 t, f32 start, f32 end);
-f32 func_8010C1C4_slot_synch(f32 target, f32 current, f32 step);
-s32 func_8010D3E0_slot_synch(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset);
+void m220_MainObjInit(omObjData *object);
+void m220_MainObjMain(omObjData *object);
+void m220_ExitObjMain(omObjData *object);
+void m220_ExitCheck(omObjData *object);
+void m220_TeamInit(void);
+void m220_PlayerObjInit(omObjData *object);
+void m220_TeamObjMain(omObjData *object);
+void m220_PlayerObjMain(omObjData *object);
+void m220_PlayerComInput(omObjData *object);
+void m220_StageObjInit(omObjData *object);
+void m220_StageObjMain(omObjData *object);
+void m220_LampInit(void);
+s16 m220_LampCreate(f32 x, f32 y, u8 arg2, u8 arg3, u16 arg4);
+void m220_LampSprInit(void);
+void m220_BlockInit(void);
+void m220_BlockObjMain(omObjData *object);
+void m220_ReelInit(void);
+void m220_LampFlash(u8 arg0, u8 arg1);
+void m220_BlockSpinStart(s16 arg0);
+s16 m220_BlockSymbolGet(s16 arg0);
+s16 m220_BlockHitPlayerGet(s16 arg0);
+s16 m220_BlockSymbolAheadGet(s16 arg0, s16 arg1);
+void m220_BlockTargetSet(s16 arg0, s16 arg1);
+s32 m220_SmokeCreate(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color);
+s16 m220_BlockFaceSymbolGet(s16 arg0, s16 arg1);
+void m220_ReelVtxUpdate(SlotSynchReel *reel);
+void m220_ReelObjMain(omObjData *object);
+void m220_ReelScrollSet(s16 arg0, f32 arg1, f32 arg2);
+void m220_PrizeObjMain(omObjData *object);
+s16 m220_MotCreate(s32 file);
+void m220_CameraMoveObjMain(omObjData *object);
+void m220_CameraKeyStore(s32 arg0);
+void m220_CameraPosUpdate(s32 camIndex);
+void m220_CameraMoveStart(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames);
+f32 m220_AngleInterpCalc(f32 t, f32 start, f32 end);
+void m220_SmokeObjMain(omObjData *object);
+void m220_LampObjMain(omObjData *object);
+void m220_SprPosSet(s16 arg0, s16 arg1, f32 arg2, f32 arg3);
+s32 m220_BillboardColorMdlCreate(HuSprAnimData *sprite, u8 *color);
+s32 m220_BillboardColorMdlLink(HuSprAnimData *sprite, u16 model, u8 *color);
+void m220_BillboardColorPatSet(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color);
+void m220_ScoreObjMain(omObjData *object);
+void m220_TeamScoreAdd(s16 arg0, s32 arg1);
+void m220_TeamVibrate(s16 arg0, s16 arg1);
+f32 m220_AngleStepCalc(f32 target, f32 current, f32 step);
+u16 m220_SprAnimRead(s32 file);
+void m220_BlockStopStart(s16 arg0);
+s16 m220_PrizeCreate(s16 arg0, s16 arg1);
+s16 m220_PrizeDoneCheck(s16 arg0);
+void m220_ScoreSet(s16 arg0, s16 arg1);
+u32 m220_WorkPtrGet(omObjData *arg0);
+void m220_ScoreChrSet(s16 team, s16 chr0, s16 chr1, s16 arg3);
+void m220_WorkPtrSet(omObjData *arg0, u32 arg1);
+s16 m220_TeamStateGet(s16 arg0);
+void m220_PrizeClose(void);
+void m220_StageInit(void);
+void m220_PrizeInit(void);
+void m220_ScoreInit(void);
+void m220_SmokeInit(void);
+void m220_CameraInit(void);
+s16 m220_BlockStopCheck(s16 arg0);
+f32 m220_AngleDiffCalc(f32 arg0, f32 arg1);
+f32 m220_InterpCalc(f32 t, f32 start, f32 end);
+f32 m220_AngleStepCalc(f32 target, f32 current, f32 step);
+s32 m220_BillboardVtxCreate(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset);
 
-void func_801059A0_slot_synch(void) {
+void m220_ObjectSetup(void) {
     omObjData *obj;
     u8 camIndex;
 
@@ -449,80 +449,80 @@ void func_801059A0_slot_synch(void) {
     mgPlayerObjNum = 0;
     mgMapObjNum = 0;
     mgItemObjNum = 0;
-    D_8010DF50_slot_synch = 900;
-    D_8010DF4C_slot_synch = 0;
-    D_8010DF48_slot_synch = 0;
-    D_8010DF54_slot_synch = 0;
-    D_8010DF58_slot_synch = 0;
-    D_8010DF64_slot_synch.unk_00 = -1;
-    D_8010DF8C_slot_synch = HuMemAllocTag(0x40, TAG_OVERLAY);
-    D_8010DF40_slot_synch = omAddObj(0x20, 0, 0, -1, func_80105B98_slot_synch);
-    memset(&D_8010DFF8_slot_synch, 0, 0x28);
-    D_8010DFF8_slot_synch.type = MINIGAME_BATTLE;
-    MgFlowInit(&D_8010DFF8_slot_synch);
+    m220_timer = 900;
+    m220_phaseTimer = 0;
+    m220_frameCnt = 0;
+    m220_phase = 0;
+    m220_resultWait = 0;
+    m220_winTeamNo.unk_00 = -1;
+    m220_sprTbl = HuMemAllocTag(0x40, TAG_OVERLAY);
+    m220_mainObj = omAddObj(0x20, 0, 0, -1, m220_MainObjInit);
+    memset(&m220_mgFlow, 0, 0x28);
+    m220_mgFlow.type = MINIGAME_BATTLE;
+    MgFlowInit(&m220_mgFlow);
 }
 
-void func_80105B98_slot_synch(omObjData *object) {
-    object->func = func_80105C08_slot_synch;
-    func_8010A39C_slot_synch();
-    func_80109508_slot_synch();
-    func_801075D4_slot_synch();
-    func_8010AAB8_slot_synch();
-    func_8010614C_slot_synch();
-    func_8010AF38_slot_synch();
+void m220_MainObjInit(omObjData *object) {
+    object->func = m220_MainObjMain;
+    m220_ScoreInit();
+    m220_PrizeInit();
+    m220_StageInit();
+    m220_SmokeInit();
+    m220_TeamInit();
+    m220_CameraInit();
     if (_CheckFlag(10)) {
-        D_8010DF44_slot_synch = 1;
+        m220_flag10F = 1;
     }
     WipeCreateIn(0xFF, 16);
 }
 
-void func_80105C08_slot_synch(omObjData *object) {
-    UnkSlotSynch *team0 = &D_8010DF5C_slot_synch[0];
-    UnkSlotSynch *team1 = &D_8010DF5C_slot_synch[1];
+void m220_MainObjMain(omObjData *object) {
+    SlotSynchTeam *team0 = &m220_teamTbl[0];
+    SlotSynchTeam *team1 = &m220_teamTbl[1];
 
-    switch (D_8010DF54_slot_synch) {
+    switch (m220_phase) {
         case 0:
             if (WipeStatGet() == 0) {
                 GMesCreate(5);
                 HuAudFXPlay(0xE);
-                D_8010DF54_slot_synch++;
-                D_8010DF4C_slot_synch = 0;
+                m220_phase++;
+                m220_phaseTimer = 0;
             }
             break;
         case 1:
-            if (D_8010DF4C_slot_synch == 30) {
+            if (m220_phaseTimer == 30) {
                 HuAudSeqPlay(0x2E);
             }
             if (GMesStatGet() == 0) {
-                GMesCreate(0x1A, (D_8010DF50_slot_synch + 29) / 30, 156, 32);
+                GMesCreate(0x1A, (m220_timer + 29) / 30, 156, 32);
                 MgFlowStatSet(MG_STATE_PLAY);
-                D_8010DF54_slot_synch++;
+                m220_phase++;
             }
             break;
         case 2:
-            D_8010DF50_slot_synch--;
-            GMesTimerValueSet((D_8010DF50_slot_synch + 29) / 30);
-            if (D_8010DF50_slot_synch <= 0) {
+            m220_timer--;
+            GMesTimerValueSet((m220_timer + 29) / 30);
+            if (m220_timer <= 0) {
                 HuAudFXAllStop();
                 GMesTimerEnd();
                 GMesCreate(0x10);
                 MgFlowStatSet(MG_STATE_FINISH);
                 HuAudSeqFadeOut(120);
-                D_8010DF50_slot_synch = 0;
-                D_8010DF4C_slot_synch = 0;
-                D_8010DF54_slot_synch++;
+                m220_timer = 0;
+                m220_phaseTimer = 0;
+                m220_phase++;
             }
             break;
         case 3:
-            if (GMesStatGet() == 0 && func_80106CF0_slot_synch(0) == 0 && func_80106CF0_slot_synch(1) == 0) {
+            if (GMesStatGet() == 0 && m220_TeamStateGet(0) == 0 && m220_TeamStateGet(1) == 0) {
                 MgFlowStatSet(MG_STATE_RESULT);
-                func_8010A1D0_slot_synch();
-                D_8010DF4C_slot_synch = 0;
-                D_8010DF54_slot_synch++;
+                m220_PrizeClose();
+                m220_phaseTimer = 0;
+                m220_phase++;
             }
             break;
         case 4:
-            if (D_8010DF4C_slot_synch >= 15) {
+            if (m220_phaseTimer >= 15) {
                 if (team0->unk_16 > team1->unk_16) {
                     GMesCreate(0x1E, team0->unk_08->unk_20, team0->unk_0C->unk_20);
                     GwPlayer[team0->unk_08->unk_1C].bonusCoin += 10;
@@ -530,7 +530,7 @@ void func_80105C08_slot_synch(omObjData *object) {
                     team0->unk_08->unk_04 = team0->unk_0C->unk_04 = 0;
                     team1->unk_08->unk_04 = team1->unk_0C->unk_04 = 1;
                     HuAudSeqPlay(0x66);
-                    D_8010DF58_slot_synch = 140;
+                    m220_resultWait = 140;
                 } else if (team0->unk_16 < team1->unk_16) {
                     GMesCreate(0x1E, team1->unk_08->unk_20, team1->unk_0C->unk_20);
                     GwPlayer[team1->unk_08->unk_1C].bonusCoin += 10;
@@ -538,67 +538,67 @@ void func_80105C08_slot_synch(omObjData *object) {
                     team0->unk_08->unk_04 = team0->unk_0C->unk_04 = 1;
                     team1->unk_08->unk_04 = team1->unk_0C->unk_04 = 0;
                     HuAudSeqPlay(0x66);
-                    D_8010DF58_slot_synch = 140;
+                    m220_resultWait = 140;
                 } else {
                     GMesCreate(0x20);
                     team0->unk_08->unk_04 = team0->unk_0C->unk_04 = 1;
                     team1->unk_08->unk_04 = team1->unk_0C->unk_04 = 1;
                     HuAudSeqPlay(0x6C);
-                    D_8010DF58_slot_synch = 144;
+                    m220_resultWait = 144;
                 }
-                D_8010DF4C_slot_synch = 0;
-                D_8010DF54_slot_synch++;
+                m220_phaseTimer = 0;
+                m220_phase++;
             }
             break;
         case 5:
             if (GMesStatGet() == 0) {
-                D_8010DF4C_slot_synch = 0;
-                D_8010DF54_slot_synch++;
+                m220_phaseTimer = 0;
+                m220_phase++;
             }
             break;
         case 6:
-            if (D_8010DF4C_slot_synch >= 15) {
+            if (m220_phaseTimer >= 15) {
                 WipeCreateOut(WIPE_TYPE_NORMAL, 16);
                 HuAudSeqFadeOut(16);
                 HuAudFXAllFadeOut(16);
-                D_8010DF4C_slot_synch = 0;
-                D_8010DF54_slot_synch++;
+                m220_phaseTimer = 0;
+                m220_phase++;
             }
             break;
         default:
             if (WipeStatGet() == 0) {
-                object->func = func_80106080_slot_synch;
+                object->func = m220_ExitObjMain;
             }
             break;
     }
-    func_801060A4_slot_synch(object);
-    D_8010DF48_slot_synch++;
-    D_8010DF4C_slot_synch++;
+    m220_ExitCheck(object);
+    m220_frameCnt++;
+    m220_phaseTimer++;
 }
 
-void func_80106080_slot_synch(omObjData *object) {
+void m220_ExitObjMain(omObjData *object) {
     HuAudSeqStop();
     omOvlReturnEx(1);
 }
 
-void func_801060A4_slot_synch(omObjData *object) {
-    if (D_8010D8B0_slot_synch != 0) {
-        if (D_8010D8B0_slot_synch == 1) {
-            object->func = func_80106080_slot_synch;
+void m220_ExitCheck(omObjData *object) {
+    if (m220_exitTimer != 0) {
+        if (m220_exitTimer == 1) {
+            object->func = m220_ExitObjMain;
         }
-        D_8010D8B0_slot_synch--;
+        m220_exitTimer--;
     } else if (omSysExitReq == 1 && WipeStatGet() == 0) {
-        D_8010D8B0_slot_synch = 16;
-        WipeCreateOut(WIPE_TYPE_NORMAL, D_8010D8B0_slot_synch);
-        HuAudSeqFadeOut(D_8010D8B0_slot_synch);
-        HuAudFXAllFadeOut((s16)D_8010D8B0_slot_synch);
+        m220_exitTimer = 16;
+        WipeCreateOut(WIPE_TYPE_NORMAL, m220_exitTimer);
+        HuAudSeqFadeOut(m220_exitTimer);
+        HuAudFXAllFadeOut((s16)m220_exitTimer);
     }
 }
 
-void func_8010614C_slot_synch(void) {
+void m220_TeamInit(void) {
     s32 playerIds[2][2];
-    UnkSlotSynch *team;
-    UnkSlotPlayer *player;
+    SlotSynchTeam *team;
+    SlotSynchPlayerWork *player;
     omObjData *obj;
     s32 i;
     s32 j;
@@ -608,18 +608,18 @@ void func_8010614C_slot_synch(void) {
     s32 temp;
     s32 group;
 
-    team = D_8010DF5C_slot_synch = HuMemAllocTag(sizeof(UnkSlotSynch) * 2, TAG_OVERLAY);
-    D_8010DF60_slot_synch = HuMemAllocTag(sizeof(UnkSlotPlayer) * 4, TAG_OVERLAY);
-    memset(D_8010DF60_slot_synch, 0, sizeof(UnkSlotPlayer) * 4);
+    team = m220_teamTbl = HuMemAllocTag(sizeof(SlotSynchTeam) * 2, TAG_OVERLAY);
+    m220_playerWorkTbl = HuMemAllocTag(sizeof(SlotSynchPlayerWork) * 4, TAG_OVERLAY);
+    memset(m220_playerWorkTbl, 0, sizeof(SlotSynchPlayerWork) * 4);
     invalid = FALSE;
     group1Count = 0;
     group0Count = 0;
     for (i = 0; i < 4; i++) {
-        group = GwPlayer[D_8010D8B4_slot_synch[i]].group;
+        group = GwPlayer[m220_playerOrderTbl[i]].group;
         switch (group) {
             case 0:
                 if (group0Count < 2) {
-                    playerIds[group][group0Count] = D_8010D8B4_slot_synch[i];
+                    playerIds[group][group0Count] = m220_playerOrderTbl[i];
                     group0Count++;
                 } else {
                     invalid = TRUE;
@@ -627,7 +627,7 @@ void func_8010614C_slot_synch(void) {
                 break;
             case 1:
                 if (group1Count < 2) {
-                    playerIds[group][group1Count] = D_8010D8B4_slot_synch[i];
+                    playerIds[group][group1Count] = m220_playerOrderTbl[i];
                     group1Count++;
                 } else {
                     invalid = TRUE;
@@ -645,7 +645,7 @@ void func_8010614C_slot_synch(void) {
         group = rand8() & 3;
         for (i = 0; i < 2; i++) {
             for (j = 0; j < 2; j++) {
-                playerIds[i][j] = D_8010D8C4_slot_synch[group][i][j];
+                playerIds[i][j] = m220_teamPlayerAltTbl[group][i][j];
             }
         }
     } else {
@@ -663,8 +663,8 @@ void func_8010614C_slot_synch(void) {
     MgShadowAltSet(1);
     MgPlayerParamReset();
     for (i = 0; i < 2; i++, team++) {
-        obj = omAddObj(i + 16, 0, 0, -1, func_80106878_slot_synch);
-        func_8010C3FC_slot_synch(obj, (u32)team);
+        obj = omAddObj(i + 16, 0, 0, -1, m220_TeamObjMain);
+        m220_WorkPtrSet(obj, (u32)team);
         team->unk_10 = i;
         team->unk_12 = 0;
         team->unk_14 = 0;
@@ -674,15 +674,15 @@ void func_8010614C_slot_synch(void) {
         team->unk_1C = 0;
         team->unk_1E = -1;
         for (j = 0; j < 2; j++) {
-            player = &D_8010DF60_slot_synch[i * 2 + j];
+            player = &m220_playerWorkTbl[i * 2 + j];
             player->unk_00 = i * 2 + j;
             player->unk_02 = i;
             player->unk_1C = playerIds[i][j];
             obj = mgPlayerObjTbl[mgPlayerObjNum] =
-                omAddObj(D_8010D8E4_slot_synch[player->unk_00], 9, 60, -1, func_80106560_slot_synch);
+                omAddObj(m220_playerPrioTbl[player->unk_00], 9, 60, -1, m220_PlayerObjInit);
             mgPlayerObjNum++;
-            obj->trans.x = D_8010D7F0_slot_synch[player->unk_00].x;
-            obj->trans.z = D_8010D7F0_slot_synch[player->unk_00].z;
+            obj->trans.x = m220_blockPosTbl[player->unk_00].x;
+            obj->trans.z = m220_blockPosTbl[player->unk_00].z;
             if (j == 0) {
                 team->unk_00 = obj;
                 team->unk_08 = player;
@@ -690,14 +690,14 @@ void func_8010614C_slot_synch(void) {
                 team->unk_04 = obj;
                 team->unk_0C = player;
             }
-            func_8010C3FC_slot_synch(obj, (u32)player);
+            m220_WorkPtrSet(obj, (u32)player);
         }
-        func_8010A480_slot_synch(i, GwPlayer[team->unk_08->unk_1C].chr, GwPlayer[team->unk_0C->unk_1C].chr, 0);
+        m220_ScoreChrSet(i, GwPlayer[team->unk_08->unk_1C].chr, GwPlayer[team->unk_0C->unk_1C].chr, 0);
     }
 }
 
-void func_80106560_slot_synch(omObjData *object) {
-    UnkSlotPlayer *player;
+void m220_PlayerObjInit(omObjData *object) {
+    SlotSynchPlayerWork *player;
     MgPlayerWork *data;
     s16 playerIndex;
     s16 chr;
@@ -705,7 +705,7 @@ void func_80106560_slot_synch(omObjData *object) {
     s32 model;
     s32 anim;
 
-    player = (UnkSlotPlayer *)func_8010C428_slot_synch(object);
+    player = (SlotSynchPlayerWork *)m220_WorkPtrGet(object);
     playerIndex = player->unk_1C;
     chr = GwPlayer[playerIndex].chr;
     player->unk_20 = chr;
@@ -730,25 +730,25 @@ void func_80106560_slot_synch(omObjData *object) {
     MgPlayerMotLoad(object, 39, CharMotionDataNumGet(chr, 0x3A), 1, 60);
     if (chr != 5) {
         index = rand8() & 1;
-        MgPlayerMotLoad(object, 13, CharMotionDataNumGet(chr, D_8010D90C_slot_synch[index]), 1, 120);
-        player->unk_18 = D_8010D8EC_slot_synch[chr] | D_8010D90C_slot_synch[index];
+        MgPlayerMotLoad(object, 13, CharMotionDataNumGet(chr, m220_voiceNoTbl[index]), 1, 120);
+        player->unk_18 = m220_voiceChrTbl[chr] | m220_voiceNoTbl[index];
     } else {
-        MgPlayerMotLoad(object, 13, CharMotionDataNumGet(chr, D_8010D90C_slot_synch[1]), 1, 120);
-        player->unk_18 = D_8010D8EC_slot_synch[chr] | D_8010D90C_slot_synch[1];
+        MgPlayerMotLoad(object, 13, CharMotionDataNumGet(chr, m220_voiceNoTbl[1]), 1, 120);
+        player->unk_18 = m220_voiceChrTbl[chr] | m220_voiceNoTbl[1];
     }
-    MgPlayerMotLoad(object, 14, CharMotionDataNumGet(chr, D_8010D90C_slot_synch[2]), 1, 120);
+    MgPlayerMotLoad(object, 14, CharMotionDataNumGet(chr, m220_voiceNoTbl[2]), 1, 120);
     MgPlayerMotSet(object, 0);
     MgPlayerMapAttrSet(object, 0, 2);
     player->unk_04 = -1;
     player->unk_0A = 0;
     player->unk_08 = 0;
     player->unk_0C = player->unk_10 = player->unk_14 = 0.0f;
-    object->func = func_80106E8C_slot_synch;
+    object->func = m220_PlayerObjMain;
 }
 
-void func_80106878_slot_synch(omObjData *object) {
-    UnkSlotSynch *team = (UnkSlotSynch *)func_8010C428_slot_synch(object);
-    UnkSlotMachine *machine;
+void m220_TeamObjMain(omObjData *object) {
+    SlotSynchTeam *team = (SlotSynchTeam *)m220_WorkPtrGet(object);
+    SlotSynchBlock *machine;
     MgPlayerWork *data0;
     MgPlayerWork *data1;
     s16 result0;
@@ -757,9 +757,9 @@ void func_80106878_slot_synch(omObjData *object) {
     switch (team->unk_12) {
         case 0:
             if (MgFlowStatGet() == MG_STATE_PLAY) {
-                func_801089F8_slot_synch(team->unk_08->unk_00);
-                func_801089F8_slot_synch(team->unk_0C->unk_00);
-                machine = &D_8010DF7C_slot_synch[team->unk_08->unk_00];
+                m220_BlockSpinStart(team->unk_08->unk_00);
+                m220_BlockSpinStart(team->unk_0C->unk_00);
+                machine = &m220_blockTbl[team->unk_08->unk_00];
                 if (machine->unk_20 != -1) {
                     HuAudFXStop((s16)machine->unk_20);
                     machine->unk_20 = -1;
@@ -768,8 +768,8 @@ void func_80106878_slot_synch(omObjData *object) {
                 team->unk_14 = 0;
                 team->unk_12 = 1;
             } else if (MgFlowStatGet() == MG_STATE_FINISH || MgFlowStatGet() == MG_STATE_RESULT) {
-                func_80108CD0_slot_synch(team->unk_08->unk_00);
-                func_80108CD0_slot_synch(team->unk_0C->unk_00);
+                m220_BlockStopStart(team->unk_08->unk_00);
+                m220_BlockStopStart(team->unk_0C->unk_00);
             }
             break;
         case 1:
@@ -785,27 +785,27 @@ void func_80106878_slot_synch(omObjData *object) {
             }
             break;
         case 2:
-            if (func_80108A7C_slot_synch(team->unk_08->unk_00) && func_80108A7C_slot_synch(team->unk_0C->unk_00)) {
+            if (m220_BlockStopCheck(team->unk_08->unk_00) && m220_BlockStopCheck(team->unk_0C->unk_00)) {
                 if (MgFlowStatGet() == MG_STATE_PLAY) {
-                    machine = &D_8010DF7C_slot_synch[team->unk_08->unk_00];
+                    machine = &m220_blockTbl[team->unk_08->unk_00];
                     if (machine->unk_20 != -1) {
                         HuAudFXStop((s16)machine->unk_20);
                         machine->unk_20 = -1;
                     }
                 }
                 team->unk_1C = 0;
-                result0 = func_80108AA8_slot_synch(team->unk_08->unk_00);
-                result1 = func_80108AA8_slot_synch(team->unk_0C->unk_00);
+                result0 = m220_BlockSymbolGet(team->unk_08->unk_00);
+                result1 = m220_BlockSymbolGet(team->unk_0C->unk_00);
                 if (MgFlowStatGet() == MG_STATE_FINISH) {
-                    func_80108CD0_slot_synch(team->unk_08->unk_00);
-                    func_80108CD0_slot_synch(team->unk_0C->unk_00);
+                    m220_BlockStopStart(team->unk_08->unk_00);
+                    m220_BlockStopStart(team->unk_0C->unk_00);
                 }
                 if (result0 == result1) {
                     team->unk_1A = result0;
                 } else {
                     team->unk_1A = 4;
                 }
-                team->unk_18 = func_80109FA4_slot_synch(team->unk_10, team->unk_1A);
+                team->unk_18 = m220_PrizeCreate(team->unk_10, team->unk_1A);
                 team->unk_14 = 0;
                 team->unk_12 = 3;
             } else if (MgFlowStatGet() != MG_STATE_PLAY) {
@@ -814,8 +814,8 @@ void func_80106878_slot_synch(omObjData *object) {
                 data1 = team->unk_04->data;
                 if (data0->unk38 == 1000.0f && data1->unk38 == 1000.0f) {
                     if (MgFlowStatGet() == MG_STATE_FINISH) {
-                        func_80108CD0_slot_synch(team->unk_08->unk_00);
-                        func_80108CD0_slot_synch(team->unk_0C->unk_00);
+                        m220_BlockStopStart(team->unk_08->unk_00);
+                        m220_BlockStopStart(team->unk_0C->unk_00);
                     }
                     team->unk_14 = 0;
                     team->unk_12 = 0;
@@ -823,9 +823,9 @@ void func_80106878_slot_synch(omObjData *object) {
             }
             break;
         case 3:
-            if (func_8010A178_slot_synch(team->unk_18)) {
+            if (m220_PrizeDoneCheck(team->unk_18)) {
                 if (team->unk_1A != 4) {
-                    func_8010800C_slot_synch(team->unk_1A, team->unk_10);
+                    m220_LampFlash(team->unk_1A, team->unk_10);
                 }
                 if (team->unk_1A != 3 && team->unk_1A != 4) {
                     MgPlayerMotSet(team->unk_00, 38);
@@ -853,22 +853,22 @@ void func_80106878_slot_synch(omObjData *object) {
     } else if (team->unk_16 < 0) {
         team->unk_16 = 0;
     }
-    func_8010AA9C_slot_synch(team->unk_10, team->unk_16);
+    m220_ScoreSet(team->unk_10, team->unk_16);
 }
 
-void func_80106CCC_slot_synch(s16 arg0, s32 arg1) {
-    UnkSlotSynch *slot = &D_8010DF5C_slot_synch[arg0];
+void m220_TeamScoreAdd(s16 arg0, s32 arg1) {
+    SlotSynchTeam *slot = &m220_teamTbl[arg0];
     slot->unk_16 += arg1;
 }
 
-s16 func_80106CF0_slot_synch(s16 arg0) {
-    UnkSlotSynch *slot = &D_8010DF5C_slot_synch[arg0];
+s16 m220_TeamStateGet(s16 arg0) {
+    SlotSynchTeam *slot = &m220_teamTbl[arg0];
 
     return slot->unk_12;
 }
 
-void func_80106D0C_slot_synch(s16 arg0, s16 arg1) {
-    UnkSlotSynch *team = &D_8010DF5C_slot_synch[arg0];
+void m220_TeamVibrate(s16 arg0, s16 arg1) {
+    SlotSynchTeam *team = &m220_teamTbl[arg0];
 
     switch (arg1) {
         case 1:
@@ -898,28 +898,28 @@ void func_80106D0C_slot_synch(s16 arg0, s16 arg1) {
     }
 }
 
-void func_80106E8C_slot_synch(omObjData *object) {
+void m220_PlayerObjMain(omObjData *object) {
     s16 done = TRUE;
-    UnkSlotPlayer *player = (UnkSlotPlayer *)func_8010C428_slot_synch(object);
-    UnkSlotSynch *team = &D_8010DF5C_slot_synch[player->unk_02];
+    SlotSynchPlayerWork *player = (SlotSynchPlayerWork *)m220_WorkPtrGet(object);
+    SlotSynchTeam *team = &m220_teamTbl[player->unk_02];
     u16 btn;
     u16 btnDown;
     s16 stickX;
     s16 stickY;
 
     if (player->unk_22 != 0) {
-        func_80107108_slot_synch(object);
+        m220_PlayerComInput(object);
     }
     if (player->unk_04 != -1) {
         switch (player->unk_04) {
             case 0:
                 MgPlayerMotSet(object, 13);
-                CharAnimCreate(object->model[0], 2, player->unk_20, D_8010D870_slot_synch[player->unk_20]);
+                CharAnimCreate(object->model[0], 2, player->unk_20, m220_winAnimTbl[player->unk_20]);
                 HuAudCharVoicePlayPlayer(player->unk_18, -1, player->unk_1C);
                 break;
             case 1:
                 MgPlayerMotSet(object, 14);
-                CharAnimCreate(object->model[0], 2, player->unk_20, D_8010D890_slot_synch[player->unk_20]);
+                CharAnimCreate(object->model[0], 2, player->unk_20, m220_loseAnimTbl[player->unk_20]);
                 break;
         }
         player->unk_04 = -1;
@@ -927,7 +927,7 @@ void func_80106E8C_slot_synch(omObjData *object) {
     player->unk_0C = object->trans.x;
     player->unk_10 = object->trans.y;
     player->unk_14 = object->trans.z;
-    if (func_80108A7C_slot_synch(player->unk_00) != 0) {
+    if (m220_BlockStopCheck(player->unk_00) != 0) {
         done = FALSE;
     }
     if (team->unk_1C == 0 || !done) {
@@ -954,10 +954,10 @@ void func_80106E8C_slot_synch(omObjData *object) {
     player->unk_0A++;
 }
 
-void func_80107108_slot_synch(omObjData *object) {
-    UnkSlotPlayer *player = (UnkSlotPlayer *)func_8010C428_slot_synch(object);
-    UnkSlotSynch *team = &D_8010DF5C_slot_synch[player->unk_02];
-    UnkSlotPlayer *partner;
+void m220_PlayerComInput(omObjData *object) {
+    SlotSynchPlayerWork *player = (SlotSynchPlayerWork *)m220_WorkPtrGet(object);
+    SlotSynchTeam *team = &m220_teamTbl[player->unk_02];
+    SlotSynchPlayerWork *partner;
     u16 spin;
     s16 result;
     s16 index;
@@ -969,7 +969,7 @@ void func_80107108_slot_synch(omObjData *object) {
     }
     HuPadBtn[player->unk_1E] = 0;
     HuPadBtnDown[player->unk_1E] = 0;
-    spin = D_8010D928_slot_synch[player->unk_20];
+    spin = m220_comSpinTbl[player->unk_20];
     switch (team->unk_12) {
         case 0:
             if (player->unk_2C != -1) {
@@ -977,7 +977,7 @@ void func_80107108_slot_synch(omObjData *object) {
             }
             if (partner->unk_22 == 0) {
                 player->unk_2A = 150;
-                player->unk_2C = D_8010D91C_slot_synch[(u8)(rand8() % 3)];
+                player->unk_2C = m220_comSymbolTbl[(u8)(rand8() % 3)];
                 break;
             }
             if ((u8)(rand8() % 100) < player->unk_24 * 15 + 60) {
@@ -989,7 +989,7 @@ void func_80107108_slot_synch(omObjData *object) {
             if (team->unk_1E == -1) {
                 index = (u8)(rand8() % 100) * (1.0f - player->unk_24 * 0.075f);
                 index /= 25;
-                team->unk_1E = player->unk_2C = D_8010D91C_slot_synch[index];
+                team->unk_1E = player->unk_2C = m220_comSymbolTbl[index];
             } else {
                 player->unk_2C = team->unk_1E;
                 if (abs(player->unk_2A - partner->unk_2A) < 9.0f) {
@@ -1005,27 +1005,27 @@ void func_80107108_slot_synch(omObjData *object) {
             player->unk_0A = 0;
             break;
         case 2:
-            if (func_80108A7C_slot_synch(player->unk_00) == 0) {
-                func_80108AA8_slot_synch(player->unk_00);
+            if (m220_BlockStopCheck(player->unk_00) == 0) {
+                m220_BlockSymbolGet(player->unk_00);
                 if (player->unk_0A > player->unk_2A) {
                     if (player->unk_28 == 0) {
-                        result = func_80108B74_slot_synch(player->unk_00, spin);
+                        result = m220_BlockSymbolAheadGet(player->unk_00, spin);
                         if (result == player->unk_2C) {
-                            func_80108D14_slot_synch(player->unk_00, result);
+                            m220_BlockTargetSet(player->unk_00, result);
                             HuPadBtnDown[player->unk_1E] |= A_BUTTON;
                         }
-                    } else if (func_80108B74_slot_synch(player->unk_00, spin) != player->unk_2C) {
+                    } else if (m220_BlockSymbolAheadGet(player->unk_00, spin) != player->unk_2C) {
                         HuPadBtnDown[player->unk_1E] |= A_BUTTON;
                     }
-                } else if (partner->unk_22 == 0 && func_80108A7C_slot_synch(partner->unk_00)) {
+                } else if (partner->unk_22 == 0 && m220_BlockStopCheck(partner->unk_00)) {
                     player->unk_0A = 0;
-                    if (func_80108B74_slot_synch(player->unk_00, spin) == func_80108AA8_slot_synch(partner->unk_00)) {
-                        func_80108D14_slot_synch(player->unk_00, func_80108AA8_slot_synch(partner->unk_00));
+                    if (m220_BlockSymbolAheadGet(player->unk_00, spin) == m220_BlockSymbolGet(partner->unk_00)) {
+                        m220_BlockTargetSet(player->unk_00, m220_BlockSymbolGet(partner->unk_00));
                         HuPadBtnDown[player->unk_1E] |= A_BUTTON;
                     }
                 }
             }
-            player->unk_26 = func_80108AA8_slot_synch(player->unk_00);
+            player->unk_26 = m220_BlockSymbolGet(player->unk_00);
             break;
         case 3:
             if (player->unk_2C != -1) {
@@ -1037,40 +1037,40 @@ void func_80107108_slot_synch(omObjData *object) {
     }
 }
 
-void func_801075D4_slot_synch(void) {
+void m220_StageInit(void) {
     s16 i;
     s16 count;
     s32 priority = 0xFFFF;
 
-    func_80107A88_slot_synch();
-    func_80108238_slot_synch();
-    func_80108D3C_slot_synch();
-    D_8010DF66_slot_synch[0] = priority;
+    m220_LampInit();
+    m220_BlockInit();
+    m220_ReelInit();
+    m220_stageSprPriTbl[0] = priority;
     priority--;
-    D_8010DF66_slot_synch[1] = priority;
+    m220_stageSprPriTbl[1] = priority;
     priority--;
     count = 12;
     for (i = 0; i < count; i++) {
-        func_80107B00_slot_synch(D_8010D938_slot_synch[i].x, D_8010D938_slot_synch[i].y, D_8010D938_slot_synch[i].unk_05, 0,
+        m220_LampCreate(m220_lampPos0Tbl[i].x, m220_lampPos0Tbl[i].y, m220_lampPos0Tbl[i].unk_05, 0,
                                  priority);
         priority--;
     }
     count = 12;
     for (i = 0; i < count; i++) {
-        func_80107B00_slot_synch(D_8010D980_slot_synch[i].x, D_8010D980_slot_synch[i].y, D_8010D980_slot_synch[i].unk_05, 1,
+        m220_LampCreate(m220_lampPos1Tbl[i].x, m220_lampPos1Tbl[i].y, m220_lampPos1Tbl[i].unk_05, 1,
                                  priority);
         priority--;
     }
-    D_8010DF66_slot_synch[2] = priority;
+    m220_stageSprPriTbl[2] = priority;
     priority--;
-    D_8010DF66_slot_synch[3] = priority;
+    m220_stageSprPriTbl[3] = priority;
     priority--;
-    func_80107BAC_slot_synch();
-    mgMapObjTbl[mgMapObjNum++] = omAddObj(0x1D, 16, 0, -1, func_80107794_slot_synch);
+    m220_LampSprInit();
+    mgMapObjTbl[mgMapObjNum++] = omAddObj(0x1D, 16, 0, -1, m220_StageObjInit);
     MgMapBaseSet(0);
 }
 
-void func_80107794_slot_synch(omObjData *object) {
+void m220_StageObjInit(omObjData *object) {
     MgMapWork *work;
     s16 group;
 
@@ -1084,57 +1084,57 @@ void func_80107794_slot_synch(omObjData *object) {
     MgMapAccelSet(object, 10.0f);
     MgMapBoxSet(object, 0.0f, -2000.0f, -2000.0f, 2000.0f, 2000.0f);
     group = HuSprGrpCreate(4, 0);
-    D_8010DF8C_slot_synch[3] = func_8010A2C4_slot_synch(0x350007);
-    HuSprGrpMemberSet(group, 0, D_8010DF8C_slot_synch[3], 0);
+    m220_sprTbl[3] = m220_SprAnimRead(0x350007);
+    HuSprGrpMemberSet(group, 0, m220_sprTbl[3], 0);
     HuSprPosSet(group, 0, 0, 0);
     HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_STOP);
     HuSprPatNoSet(group, 0, 0);
     HuSprAttrSet(group, 0, 0x580C);
-    HuSprPriSet(group, 0, D_8010DF66_slot_synch[0]);
-    D_8010DF8C_slot_synch[8] = func_8010A2C4_slot_synch(0x350008);
-    HuSprGrpMemberSet(group, 1, D_8010DF8C_slot_synch[8], 0);
+    HuSprPriSet(group, 0, m220_stageSprPriTbl[0]);
+    m220_sprTbl[8] = m220_SprAnimRead(0x350008);
+    HuSprGrpMemberSet(group, 1, m220_sprTbl[8], 0);
     HuSprPosSet(group, 1, 0, 84);
     HuSprAnimModeSet(group, 1, HUSPR_ANIM_MODE_STOP);
     HuSprPatNoSet(group, 1, 0);
     HuSprAttrSet(group, 1, 0x580C);
-    HuSprPriSet(group, 1, D_8010DF66_slot_synch[1]);
-    D_8010DF8C_slot_synch[9] = func_8010A2C4_slot_synch(0x350009);
-    HuSprGrpMemberSet(group, 2, D_8010DF8C_slot_synch[9], 0);
+    HuSprPriSet(group, 1, m220_stageSprPriTbl[1]);
+    m220_sprTbl[9] = m220_SprAnimRead(0x350009);
+    HuSprGrpMemberSet(group, 2, m220_sprTbl[9], 0);
     HuSprPosSet(group, 2, 160, 0);
     HuSprAnimModeSet(group, 2, HUSPR_ANIM_MODE_STOP);
     HuSprPatNoSet(group, 2, 0);
     HuSprAttrSet(group, 2, 0x580C);
-    HuSprPriSet(group, 2, D_8010DF66_slot_synch[2]);
-    D_8010DF8C_slot_synch[0] = func_8010A2C4_slot_synch(0x35000A);
-    HuSprGrpMemberSet(group, 3, D_8010DF8C_slot_synch[0], 0);
+    HuSprPriSet(group, 2, m220_stageSprPriTbl[2]);
+    m220_sprTbl[0] = m220_SprAnimRead(0x35000A);
+    HuSprGrpMemberSet(group, 3, m220_sprTbl[0], 0);
     HuSprPosSet(group, 3, 0, 138);
     HuSprAnimModeSet(group, 3, HUSPR_ANIM_MODE_STOP);
     HuSprPatNoSet(group, 3, 0);
     HuSprAttrSet(group, 3, 0x580C);
-    HuSprPriSet(group, 3, D_8010DF66_slot_synch[3]);
-    object->func = func_80107A80_slot_synch;
+    HuSprPriSet(group, 3, m220_stageSprPriTbl[3]);
+    object->func = m220_StageObjMain;
 }
 
-void func_80107A80_slot_synch(omObjData *object) {
+void m220_StageObjMain(omObjData *object) {
 }
 
-void func_80107A88_slot_synch(void) {
-    memset(&D_8010DF70_slot_synch, 0, sizeof(D_8010DF70_slot_synch));
-    D_8010DF70_slot_synch.unk_06 = 0;
-    D_8010DF70_slot_synch.unk_08 = HuMemAllocTag(0x420, TAG_OVERLAY);
-    memset(D_8010DF70_slot_synch.unk_08, 0, 0x420);
-    D_8010DF70_slot_synch.unk_00 = omAddObj(0x1C, 0, 0, -1, NULL);
+void m220_LampInit(void) {
+    memset(&m220_lampSys, 0, sizeof(m220_lampSys));
+    m220_lampSys.unk_06 = 0;
+    m220_lampSys.unk_08 = HuMemAllocTag(0x420, TAG_OVERLAY);
+    memset(m220_lampSys.unk_08, 0, 0x420);
+    m220_lampSys.unk_00 = omAddObj(0x1C, 0, 0, -1, NULL);
 }
 
-s16 func_80107B00_slot_synch(f32 x, f32 y, u8 arg2, u8 arg3, u16 arg4) {
-    UnkSlotSprite *sprite;
+s16 m220_LampCreate(f32 x, f32 y, u8 arg2, u8 arg3, u16 arg4) {
+    SlotSynchLamp *sprite;
     s16 index;
 
-    if (D_8010DF70_slot_synch.unk_00->func != NULL || D_8010DF70_slot_synch.unk_06 >= 24) {
+    if (m220_lampSys.unk_00->func != NULL || m220_lampSys.unk_06 >= 24) {
         return -1;
     }
-    index = D_8010DF70_slot_synch.unk_06;
-    sprite = &D_8010DF70_slot_synch.unk_08[index];
+    index = m220_lampSys.unk_06;
+    sprite = &m220_lampSys.unk_08[index];
     sprite->unk_00 = index;
     sprite->unk_06 = arg2;
     sprite->unk_07 = arg3;
@@ -1147,40 +1147,40 @@ s16 func_80107B00_slot_synch(f32 x, f32 y, u8 arg2, u8 arg3, u16 arg4) {
     sprite->unk_0B = 0;
     sprite->unk_0C = 0;
     sprite->unk_10 = 0;
-    D_8010DF70_slot_synch.unk_06++;
+    m220_lampSys.unk_06++;
     return index;
 }
 
-void func_80107BAC_slot_synch(void) {
+void m220_LampSprInit(void) {
     s16 anims[4];
-    UnkSlotSprite *sprite;
+    SlotSynchLamp *sprite;
     s16 i;
     s16 group;
 
-    anims[0] = D_8010DF8C_slot_synch[4] = func_8010A2C4_slot_synch(0x350003);
-    anims[1] = D_8010DF8C_slot_synch[5] = func_8010A2C4_slot_synch(0x350005);
-    anims[2] = D_8010DF8C_slot_synch[6] = func_8010A2C4_slot_synch(0x350004);
-    anims[3] = D_8010DF8C_slot_synch[7] = func_8010A2C4_slot_synch(0x350006);
-    group = D_8010DF70_slot_synch.unk_04 = HuSprGrpCreate(D_8010DF70_slot_synch.unk_06, 0);
-    sprite = D_8010DF70_slot_synch.unk_08;
-    for (i = 0; i < D_8010DF70_slot_synch.unk_06; i++, sprite++) {
+    anims[0] = m220_sprTbl[4] = m220_SprAnimRead(0x350003);
+    anims[1] = m220_sprTbl[5] = m220_SprAnimRead(0x350005);
+    anims[2] = m220_sprTbl[6] = m220_SprAnimRead(0x350004);
+    anims[3] = m220_sprTbl[7] = m220_SprAnimRead(0x350006);
+    group = m220_lampSys.unk_04 = HuSprGrpCreate(m220_lampSys.unk_06, 0);
+    sprite = m220_lampSys.unk_08;
+    for (i = 0; i < m220_lampSys.unk_06; i++, sprite++) {
         HuSprScaleSet(group, sprite->unk_00, 0.75f, 0.75f);
         HuSprGrpMemberSet(group, sprite->unk_00, anims[sprite->unk_06], 0);
-        func_8010A308_slot_synch(group, sprite->unk_00, sprite->unk_24, sprite->unk_28);
+        m220_SprPosSet(group, sprite->unk_00, sprite->unk_24, sprite->unk_28);
         HuSprAnimModeSet(group, sprite->unk_00, HUSPR_ANIM_MODE_STOP);
         HuSprPatNoSet(group, sprite->unk_00, 0);
         HuSprAttrSet(group, sprite->unk_00, 0x4000580C);
         HuSprPriSet(group, sprite->unk_00, sprite->unk_02);
     }
-    D_8010DF70_slot_synch.unk_00->func = func_80107D54_slot_synch;
+    m220_lampSys.unk_00->func = m220_LampObjMain;
 }
 
-void func_80107D54_slot_synch(omObjData *object) {
-    UnkSlotSprite *sprite = D_8010DF70_slot_synch.unk_08;
+void m220_LampObjMain(omObjData *object) {
+    SlotSynchLamp *sprite = m220_lampSys.unk_08;
     s16 i;
     f32 bounce;
 
-    for (i = 0; i < D_8010DF70_slot_synch.unk_06; i++, sprite++) {
+    for (i = 0; i < m220_lampSys.unk_06; i++, sprite++) {
         sprite->unk_1C = sprite->unk_24;
         sprite->unk_20 = sprite->unk_28;
         switch (sprite->unk_08) {
@@ -1197,7 +1197,7 @@ void func_80107D54_slot_synch(omObjData *object) {
                 } else if ((--sprite->unk_0A & 0x7F) == 0) {
                     sprite->unk_0A = 0x80;
                 }
-                HuSprPatNoSet(D_8010DF70_slot_synch.unk_04, sprite->unk_00, (s16)(u8)(sprite->unk_0A & 2));
+                HuSprPatNoSet(m220_lampSys.unk_04, sprite->unk_00, (s16)(u8)(sprite->unk_0A & 2));
                 bounce = sindf(sprite->unk_04 * 25);
                 sprite->unk_24 = sprite->unk_14;
                 sprite->unk_28 = sprite->unk_18 - fabs(bounce) * sprite->unk_10;
@@ -1216,10 +1216,10 @@ void func_80107D54_slot_synch(omObjData *object) {
                     } else if ((--sprite->unk_0A & 0x7F) == 0) {
                         sprite->unk_0A = 0x80;
                     }
-                    HuSprPatNoSet(D_8010DF70_slot_synch.unk_04, sprite->unk_00, (s16)(u8)(sprite->unk_0A & 2));
+                    HuSprPatNoSet(m220_lampSys.unk_04, sprite->unk_00, (s16)(u8)(sprite->unk_0A & 2));
                     sprite->unk_28 += 1.0f;
                 } else {
-                    HuSprPatNoSet(D_8010DF70_slot_synch.unk_04, sprite->unk_00, 0);
+                    HuSprPatNoSet(m220_lampSys.unk_04, sprite->unk_00, 0);
                     sprite->unk_28 = sprite->unk_18;
                     sprite->unk_04 = 0;
                     sprite->unk_08 = 0;
@@ -1228,18 +1228,18 @@ void func_80107D54_slot_synch(omObjData *object) {
                 break;
         }
         if (sprite->unk_09 != 0) {
-            func_8010A308_slot_synch(D_8010DF70_slot_synch.unk_04, sprite->unk_00, sprite->unk_24, sprite->unk_28);
+            m220_SprPosSet(m220_lampSys.unk_04, sprite->unk_00, sprite->unk_24, sprite->unk_28);
             sprite->unk_09 = 0;
         }
         sprite->unk_04++;
     }
 }
 
-void func_8010800C_slot_synch(u8 arg0, u8 arg1) {
-    UnkSlotSprite *sprite = D_8010DF70_slot_synch.unk_08;
+void m220_LampFlash(u8 arg0, u8 arg1) {
+    SlotSynchLamp *sprite = m220_lampSys.unk_08;
     s16 i;
 
-    for (i = 0; i < D_8010DF70_slot_synch.unk_06; i++, sprite++) {
+    for (i = 0; i < m220_lampSys.unk_06; i++, sprite++) {
         if (sprite->unk_06 == arg0 && sprite->unk_07 == arg1 && sprite->unk_08 == 0) {
             sprite->unk_08 = 1;
             sprite->unk_04 = 0;
@@ -1251,16 +1251,16 @@ void func_8010800C_slot_synch(u8 arg0, u8 arg1) {
     }
 }
 
-void func_80108238_slot_synch(void) {
-    UnkSlotMachine *machine;
+void m220_BlockInit(void) {
+    SlotSynchBlock *machine;
     s16 i;
     s16 model1 = -1;
     s16 model0 = -1;
 
-    machine = D_8010DF7C_slot_synch = HuMemAllocTag(sizeof(UnkSlotMachine) * 4, TAG_OVERLAY);
-    memset(machine, 0, sizeof(UnkSlotMachine) * 4);
+    machine = m220_blockTbl = HuMemAllocTag(sizeof(SlotSynchBlock) * 4, TAG_OVERLAY);
+    memset(machine, 0, sizeof(SlotSynchBlock) * 4);
     for (i = 0; i < 4; i++, machine++) {
-        machine->unk_03 = D_8010D9C8_slot_synch[i];
+        machine->unk_03 = m220_blockTypeTbl[i];
         if (machine->unk_03 == 0) {
             if (model0 != -1) {
                 machine->unk_00 = Hu3DModelLink(model0);
@@ -1286,17 +1286,17 @@ void func_80108238_slot_synch(void) {
         machine->unk_18 = 0.5f;
         machine->unk_1C = 14.0f;
         machine->unk_20 = -1;
-        machine->unk_24 = D_8010D7F0_slot_synch[i].x;
-        machine->unk_2C = D_8010D7F0_slot_synch[i].z;
+        machine->unk_24 = m220_blockPosTbl[i].x;
+        machine->unk_2C = m220_blockPosTbl[i].z;
         machine->unk_28 = 280.0f;
         machine->unk_30 = 0.0f;
         machine->unk_34 = machine->unk_38 = 0.0f;
     }
-    omAddObj(0x1A, 0, 0, -1, func_80108428_slot_synch);
+    omAddObj(0x1A, 0, 0, -1, m220_BlockObjMain);
 }
 
-void func_80108428_slot_synch(omObjData *object) {
-    UnkSlotMachine *machine = D_8010DF7C_slot_synch;
+void m220_BlockObjMain(omObjData *object) {
+    SlotSynchBlock *machine = m220_blockTbl;
     Vec pos;
     f32 angle;
     s32 i;
@@ -1330,7 +1330,7 @@ void func_80108428_slot_synch(omObjData *object) {
                 pos.x = machine->unk_24;
                 pos.y = machine->unk_28;
                 pos.z = machine->unk_2C;
-                func_8010AD68_slot_synch(&pos, NULL, NULL, 1.0f, D_8010D86C_slot_synch.rgba);
+                m220_SmokeCreate(&pos, NULL, NULL, 1.0f, m220_whiteColor.rgba);
                 machine->unk_0C = 5;
                 break;
             case 5:
@@ -1346,16 +1346,16 @@ void func_80108428_slot_synch(omObjData *object) {
         if (machine->unk_05 >= 4) {
             machine->unk_05 -= 4;
         }
-        machine->unk_06 = func_80108C88_slot_synch(machine->unk_02, machine->unk_05);
+        machine->unk_06 = m220_BlockFaceSymbolGet(machine->unk_02, machine->unk_05);
         machine->unk_30 += machine->unk_14;
         if (machine->unk_30 >= 360.0f) {
             machine->unk_30 -= 360.0f;
         }
-        if (func_80108848_slot_synch(machine->unk_02) != -1 && (machine->unk_0C == 1 || machine->unk_0C == 2)) {
+        if (m220_BlockHitPlayerGet(machine->unk_02) != -1 && (machine->unk_0C == 1 || machine->unk_0C == 2)) {
             HuAudPlayerFXPlay(0x38E, i);
             if (machine->unk_08 == -1) {
                 machine->unk_14 = 0.0f;
-                machine->unk_30 = D_8010D840_slot_synch[machine->unk_05];
+                machine->unk_30 = m220_blockFaceRotTbl[machine->unk_05];
             } else {
                 machine->unk_14 = 0.0f;
                 for (j = 0; j < 4; j++) {
@@ -1370,7 +1370,7 @@ void func_80108428_slot_synch(omObjData *object) {
                     if (machine->unk_05 >= 4) {
                         machine->unk_05 -= 4;
                     }
-                    machine->unk_06 = func_80108C88_slot_synch(machine->unk_02, machine->unk_05);
+                    machine->unk_06 = m220_BlockFaceSymbolGet(machine->unk_02, machine->unk_05);
                     if (machine->unk_06 == machine->unk_08) {
                         break;
                     }
@@ -1388,10 +1388,10 @@ void func_80108428_slot_synch(omObjData *object) {
     }
 }
 
-s16 func_80108848_slot_synch(s16 arg0) {
-    UnkSlotMachine *machine = &D_8010DF7C_slot_synch[arg0];
+s16 m220_BlockHitPlayerGet(s16 arg0) {
+    SlotSynchBlock *machine = &m220_blockTbl[arg0];
     MgPlayerWork *data;
-    UnkSlotPlayer *player;
+    SlotSynchPlayerWork *player;
     omObjData *obj;
     f32 height;
     s32 i;
@@ -1399,18 +1399,18 @@ s16 func_80108848_slot_synch(s16 arg0) {
     for (i = 0; i < 4; i++) {
         obj = mgPlayerObjTbl[i];
         data = obj->data;
-        player = (UnkSlotPlayer *)func_8010C428_slot_synch(obj);
+        player = (SlotSynchPlayerWork *)m220_WorkPtrGet(obj);
         // The original checks the x distance twice.
         if (fabs(obj->trans.x - machine->unk_24) > 50.0 || fabs(obj->trans.x - machine->unk_24) > 50.0) {
             continue;
         }
         if (machine->unk_0C == 1 || machine->unk_0C == 2) {
-            height = D_8010D9D0_slot_synch[player->unk_20];
+            height = m220_chrHeightTbl[player->unk_20];
         } else {
-            height = D_8010D9D0_slot_synch[player->unk_20] + 50.0;
+            height = m220_chrHeightTbl[player->unk_20] + 50.0;
         }
         if (height + obj->trans.y >= machine->unk_28 && height + player->unk_10 <= machine->unk_28) {
-            obj->trans.y = machine->unk_28 - D_8010D9D0_slot_synch[player->unk_20] * 1.1;
+            obj->trans.y = machine->unk_28 - m220_chrHeightTbl[player->unk_20] * 1.1;
             data->unk38 = 0.0f;
             return i;
         }
@@ -1418,26 +1418,26 @@ s16 func_80108848_slot_synch(s16 arg0) {
     return -1;
 }
 
-void func_801089F8_slot_synch(s16 arg0) {
-    UnkSlotMachine *machine = &D_8010DF7C_slot_synch[arg0];
+void m220_BlockSpinStart(s16 arg0) {
+    SlotSynchBlock *machine = &m220_blockTbl[arg0];
     f32 t;
 
-    if (func_80108A7C_slot_synch(arg0)) {
-        t = D_8010DF50_slot_synch / 900.0f;
-        machine->unk_1C = func_8010C384_slot_synch(t, 30.0f, 14.0f);
+    if (m220_BlockStopCheck(arg0)) {
+        t = m220_timer / 900.0f;
+        machine->unk_1C = m220_InterpCalc(t, 30.0f, 14.0f);
         machine->unk_0C = 1;
         machine->unk_0A = 0;
     }
 }
 
-s16 func_80108A7C_slot_synch(s16 arg0) {
-    UnkSlotMachine *machine = &D_8010DF7C_slot_synch[arg0];
+s16 m220_BlockStopCheck(s16 arg0) {
+    SlotSynchBlock *machine = &m220_blockTbl[arg0];
 
     return machine->unk_0C == 0;
 }
 
-s16 func_80108AA8_slot_synch(s16 arg0) {
-    UnkSlotMachine *machine = &D_8010DF7C_slot_synch[arg0];
+s16 m220_BlockSymbolGet(s16 arg0) {
+    SlotSynchBlock *machine = &m220_blockTbl[arg0];
     f32 angle = machine->unk_30 + 45.0f;
     s16 quadrant;
 
@@ -1447,11 +1447,11 @@ s16 func_80108AA8_slot_synch(s16 arg0) {
         angle += 360.0f;
     }
     quadrant = angle / 90.0f;
-    return func_80108C88_slot_synch(arg0, quadrant);
+    return m220_BlockFaceSymbolGet(arg0, quadrant);
 }
 
-s16 func_80108B74_slot_synch(s16 arg0, s16 arg1) {
-    UnkSlotMachine *machine = &D_8010DF7C_slot_synch[arg0];
+s16 m220_BlockSymbolAheadGet(s16 arg0, s16 arg1) {
+    SlotSynchBlock *machine = &m220_blockTbl[arg0];
     s16 quadrant;
     f32 angle = machine->unk_30 + arg1 * machine->unk_14 + 45.0f;
 
@@ -1462,17 +1462,17 @@ s16 func_80108B74_slot_synch(s16 arg0, s16 arg1) {
         angle += 360.0f;
     }
     quadrant = angle / 90.0f;
-    return func_80108C88_slot_synch(arg0, quadrant);
+    return m220_BlockFaceSymbolGet(arg0, quadrant);
 }
 
-s16 func_80108C88_slot_synch(s16 arg0, s16 arg1) {
-    UnkSlotMachine *machine = &D_8010DF7C_slot_synch[arg0];
+s16 m220_BlockFaceSymbolGet(s16 arg0, s16 arg1) {
+    SlotSynchBlock *machine = &m220_blockTbl[arg0];
 
-    return D_8010D854_slot_synch[machine->unk_03][arg1];
+    return m220_blockSymbolTbl[machine->unk_03][arg1];
 }
 
-void func_80108CD0_slot_synch(s16 arg0) {
-    UnkSlotMachine *machine = &D_8010DF7C_slot_synch[arg0];
+void m220_BlockStopStart(s16 arg0) {
+    SlotSynchBlock *machine = &m220_blockTbl[arg0];
 
     if (machine->unk_0C != 4 && machine->unk_0C != 5) {
         machine->unk_0C = 4;
@@ -1480,16 +1480,16 @@ void func_80108CD0_slot_synch(s16 arg0) {
     }
 }
 
-void func_80108D14_slot_synch(s16 arg0, s16 arg1) {
-    UnkSlotMachine *machine = &D_8010DF7C_slot_synch[arg0];
+void m220_BlockTargetSet(s16 arg0, s16 arg1) {
+    SlotSynchBlock *machine = &m220_blockTbl[arg0];
 
     machine->unk_08 = arg1;
 }
 
-void func_80108D3C_slot_synch(void) {
+void m220_ReelInit(void) {
     s16 heights[256];
-    UnkSlotReel *reel;
-    UnkSlotReelRow *row;
+    SlotSynchReel *reel;
+    SlotSynchReelRow *row;
     HmfData *hmf;
     Vtx *vtx;
     s16 i;
@@ -1498,12 +1498,12 @@ void func_80108D3C_slot_synch(void) {
     s16 count;
     s16 temp;
 
-    reel = D_8010DF80_slot_synch = HuMemAllocTag(sizeof(UnkSlotReel) * 2, TAG_OVERLAY);
-    memset(reel, 0, sizeof(UnkSlotReel) * 2);
+    reel = m220_reelTbl = HuMemAllocTag(sizeof(SlotSynchReel) * 2, TAG_OVERLAY);
+    memset(reel, 0, sizeof(SlotSynchReel) * 2);
     for (i = 0; i < 2; i++, reel++) {
         reel->unk_00 = Hu3DModelRead(0x350002, 0xB9);
-        Hu3DModelPosSet(reel->unk_00, D_8010D820_slot_synch[i].x, D_8010D820_slot_synch[i].y,
-                        D_8010D820_slot_synch[i].z);
+        Hu3DModelPosSet(reel->unk_00, m220_reelPosTbl[i].x, m220_reelPosTbl[i].y,
+                        m220_reelPosTbl[i].z);
         Hu3DModelScaleSet(reel->unk_00, 1.0f, 0.85f, 1.0f);
         Hu3DModelVtxBufMake(reel->unk_00);
         hmf = Hu3DData[reel->unk_00].hmf;
@@ -1540,7 +1540,7 @@ void func_80108D3C_slot_synch(void) {
                 }
             }
             reel->unk_18 = count;
-            row = reel->unk_1C = HuMemAllocTag(count * sizeof(UnkSlotReelRow), TAG_OVERLAY);
+            row = reel->unk_1C = HuMemAllocTag(count * sizeof(SlotSynchReelRow), TAG_OVERLAY);
             for (j = 0; j < reel->unk_18; j++, row++) {
                 row->unk_90 = heights[j];
                 row->unk_92 = 0;
@@ -1560,15 +1560,15 @@ void func_80108D3C_slot_synch(void) {
                 }
             }
         } else {
-            reel->unk_18 = D_8010DF80_slot_synch->unk_18;
-            reel->unk_1C = D_8010DF80_slot_synch->unk_1C;
+            reel->unk_18 = m220_reelTbl->unk_18;
+            reel->unk_1C = m220_reelTbl->unk_1C;
         }
     }
-    omSetStatBit(omAddObj(0x1B, 0, 0, -1, func_801091D8_slot_synch), 0xA0);
+    omSetStatBit(omAddObj(0x1B, 0, 0, -1, m220_ReelObjMain), 0xA0);
 }
 
-void func_801091D8_slot_synch(omObjData *object) {
-    UnkSlotReel *reel = D_8010DF80_slot_synch;
+void m220_ReelObjMain(omObjData *object) {
+    SlotSynchReel *reel = m220_reelTbl;
     s32 i;
 
     for (i = 0; i < 2; i++, reel++) {
@@ -1579,12 +1579,12 @@ void func_801091D8_slot_synch(omObjData *object) {
                 reel->unk_04 = 0;
             }
         }
-        func_801092B8_slot_synch(reel);
+        m220_ReelVtxUpdate(reel);
     }
 }
 
-void func_801092B8_slot_synch(UnkSlotReel *reel) {
-    UnkSlotReelRow *row = reel->unk_1C;
+void m220_ReelVtxUpdate(SlotSynchReel *reel) {
+    SlotSynchReelRow *row = reel->unk_1C;
     HmfData *hmf = Hu3DData[reel->unk_00].hmf;
     Vtx *src = hmf->unk40;
     Vtx *dst = hmf->unk44[Hu3DBufNo];
@@ -1619,21 +1619,21 @@ void func_801092B8_slot_synch(UnkSlotReel *reel) {
     }
 }
 
-void func_801094E0_slot_synch(s16 arg0, f32 arg1, f32 arg2) {
-    UnkSlotReel *reel = &D_8010DF80_slot_synch[arg0];
+void m220_ReelScrollSet(s16 arg0, f32 arg1, f32 arg2) {
+    SlotSynchReel *reel = &m220_reelTbl[arg0];
 
     reel->unk_04 = 1;
     reel->unk_08 = arg1;
     reel->unk_14 = arg2;
 }
 
-void func_80109508_slot_synch(void) {
-    UnkSlotSpin *spin;
+void m220_PrizeInit(void) {
+    SlotSynchPrize *spin;
     s32 i;
     s32 j;
 
-    spin = D_8010DF88_slot_synch = HuMemAllocTag(sizeof(UnkSlotSpin) * 5, TAG_OVERLAY);
-    memset(spin, 0, sizeof(UnkSlotSpin) * 5);
+    spin = m220_prizeTbl = HuMemAllocTag(sizeof(SlotSynchPrize) * 5, TAG_OVERLAY);
+    memset(spin, 0, sizeof(SlotSynchPrize) * 5);
     for (i = 0; i < 5; i++, spin++) {
         spin->unk_00 = 0;
         spin->unk_01 = 0;
@@ -1646,31 +1646,31 @@ void func_80109508_slot_synch(void) {
         spin->unk_30 = 0;
         if (i == 0) {
             for (j = 0; j < 4; j++) {
-                spin->unk_04[j] = Hu3DModelRead(D_8010D9F0_slot_synch[j], 0x299);
+                spin->unk_04[j] = Hu3DModelRead(m220_prizeMdlTbl[j], 0x299);
                 Hu3DModelAttrSet(spin->unk_04[j], 4, 4);
                 spin->unk_0C[j][0] = Hu3DData[spin->unk_04[j]].motId;
-                spin->unk_0C[j][1] = func_8010C47C_slot_synch(D_8010DA00_slot_synch[j]);
-                spin->unk_0C[j][2] = func_8010C47C_slot_synch(D_8010DA10_slot_synch[j]);
+                spin->unk_0C[j][1] = m220_MotCreate(m220_prizeMot1Tbl[j]);
+                spin->unk_0C[j][2] = m220_MotCreate(m220_prizeMot2Tbl[j]);
             }
             spin->unk_24 = Hu3DModelRead(9, 0x99);
             Hu3DModelAttrSet(spin->unk_24, 4, 4);
         } else {
             for (j = 0; j < 4; j++) {
-                spin->unk_04[j] = Hu3DModelLink(D_8010DF88_slot_synch->unk_04[j]);
+                spin->unk_04[j] = Hu3DModelLink(m220_prizeTbl->unk_04[j]);
                 Hu3DModelAttrSet(spin->unk_04[j], 4, 4);
-                spin->unk_0C[j][0] = D_8010DF88_slot_synch->unk_0C[j][0];
-                spin->unk_0C[j][1] = D_8010DF88_slot_synch->unk_0C[j][1];
-                spin->unk_0C[j][2] = D_8010DF88_slot_synch->unk_0C[j][2];
+                spin->unk_0C[j][0] = m220_prizeTbl->unk_0C[j][0];
+                spin->unk_0C[j][1] = m220_prizeTbl->unk_0C[j][1];
+                spin->unk_0C[j][2] = m220_prizeTbl->unk_0C[j][2];
             }
-            spin->unk_24 = Hu3DModelLink(D_8010DF88_slot_synch->unk_24);
+            spin->unk_24 = Hu3DModelLink(m220_prizeTbl->unk_24);
             Hu3DModelAttrSet(spin->unk_24, 4, 4);
         }
     }
-    D_8010DF84_slot_synch = omAddObj(0x19, 0, 6, -1, func_80109754_slot_synch);
+    m220_prizeObj = omAddObj(0x19, 0, 6, -1, m220_PrizeObjMain);
 }
 
-void func_80109754_slot_synch(omObjData *object) {
-    UnkSlotSpin *spin;
+void m220_PrizeObjMain(omObjData *object) {
+    SlotSynchPrize *spin;
     HmfModel *model;
     Vec pos;
     Vec vel;
@@ -1682,10 +1682,10 @@ void func_80109754_slot_synch(omObjData *object) {
     s32 i;
     s32 j;
 
-    if (D_8010DF88_slot_synch == NULL) {
+    if (m220_prizeTbl == NULL) {
         return;
     }
-    for (spin = D_8010DF88_slot_synch, i = 0; i < 5; i++, spin++) {
+    for (spin = m220_prizeTbl, i = 0; i < 5; i++, spin++) {
         if (spin->unk_00 == 0) {
             continue;
         }
@@ -1715,16 +1715,16 @@ void func_80109754_slot_synch(omObjData *object) {
                         vel.z = cosdf(angle) * 100.0 * 0.100000001490116119;
                         vel.y = 10.0f;
                         scale.x = scale.y = scale.z = 0.5f;
-                        func_8010AD68_slot_synch(&pos, &vel, &scale, 1.0f, D_8010D868_slot_synch.rgba);
+                        m220_SmokeCreate(&pos, &vel, &scale, 1.0f, m220_halfWhiteColor.rgba);
                     }
                     HuAudFXPlay(0x390);
                 }
                 if (spin->unk_34[1] >= 255.000007152557373) {
-                    HuAudPlayerFXPlay(D_8010DA30_slot_synch[spin->unk_26], spin->unk_01);
+                    HuAudPlayerFXPlay(m220_prizeSeTbl[spin->unk_26], spin->unk_01);
                     if (spin->unk_26 == 3) {
-                        func_80106D0C_slot_synch(spin->unk_01, 4);
+                        m220_TeamVibrate(spin->unk_01, 4);
                     } else {
-                        func_80106D0C_slot_synch(spin->unk_01, 3);
+                        m220_TeamVibrate(spin->unk_01, 3);
                     }
                     spin->unk_34[1] = 255.0f;
                     spin->unk_2C = 20.0f;
@@ -1748,9 +1748,9 @@ void func_80109754_slot_synch(omObjData *object) {
                     pos.x = spin->unk_34[0];
                     pos.y = spin->unk_34[1];
                     pos.z = spin->unk_34[2];
-                    func_8010AD68_slot_synch(&pos, NULL, NULL, 1.0f, D_8010D864_slot_synch.rgba);
+                    m220_SmokeCreate(&pos, NULL, NULL, 1.0f, m220_chipColor.rgba);
                     Hu3DMotionShiftSet(modelId, spin->unk_0C[spin->unk_26][0], 0, 5, 2);
-                    func_80106CCC_slot_synch(spin->unk_01, D_8010D85C_slot_synch[spin->unk_26]);
+                    m220_TeamScoreAdd(spin->unk_01, m220_prizePointTbl[spin->unk_26]);
                     spin->unk_02 = 1;
                     spin->unk_34[1] = 0.0f;
                     spin->unk_2A = 0;
@@ -1760,7 +1760,7 @@ void func_80109754_slot_synch(omObjData *object) {
             case 2:
                 if (spin->unk_2A >= 7.5f) {
                     Hu3DMotionShiftSet(modelId, spin->unk_0C[spin->unk_26][2], 0, 5, 2);
-                    model->motSpeed = D_8010DA20_slot_synch[spin->unk_26];
+                    model->motSpeed = m220_prizeMotSpeedTbl[spin->unk_26];
                     spin->unk_30 = 0.0f;
                     spin->unk_2A = 0;
                     spin->unk_28++;
@@ -1773,10 +1773,10 @@ void func_80109754_slot_synch(omObjData *object) {
                 }
                 if (!(spin->unk_01 & 1)) {
                     spin->unk_34[0] -= spin->unk_30;
-                    spin->unk_34[4] = func_8010C1C4_slot_synch(-90.0f, spin->unk_34[4], 15.0f);
+                    spin->unk_34[4] = m220_AngleStepCalc(-90.0f, spin->unk_34[4], 15.0f);
                 } else {
                     spin->unk_34[0] += spin->unk_30;
-                    spin->unk_34[4] = func_8010C1C4_slot_synch(90.0f, spin->unk_34[4], 15.0f);
+                    spin->unk_34[4] = m220_AngleStepCalc(90.0f, spin->unk_34[4], 15.0f);
                 }
                 if (fabs(spin->unk_34[0]) >= 600.0) {
                     spin->unk_2A = 0;
@@ -1791,11 +1791,11 @@ void func_80109754_slot_synch(omObjData *object) {
                     pos.z = spin->unk_34[2];
                     vel.x = vel.z = 0.0f;
                     vel.y = 10.0f;
-                    func_8010AD68_slot_synch(&pos, &vel, NULL, 1.0f, D_8010D86C_slot_synch.rgba);
+                    m220_SmokeCreate(&pos, &vel, NULL, 1.0f, m220_whiteColor.rgba);
                     spin->unk_34[1] = 255.0f;
                     spin->unk_2C = 20.0f;
-                    func_80106D0C_slot_synch(spin->unk_01, 2);
-                    func_80106CCC_slot_synch(spin->unk_01, 0);
+                    m220_TeamVibrate(spin->unk_01, 2);
+                    m220_TeamScoreAdd(spin->unk_01, 0);
                     spin->unk_02 = 1;
                     spin->unk_2A = 0;
                     spin->unk_28 = 64;
@@ -1821,16 +1821,16 @@ void func_80109754_slot_synch(omObjData *object) {
     }
 }
 
-s16 func_80109FA4_slot_synch(s16 arg0, s16 arg1) {
-    UnkSlotSpin *spin;
+s16 m220_PrizeCreate(s16 arg0, s16 arg1) {
+    SlotSynchPrize *spin;
     HmfModel *model;
     s16 modelId;
     s32 i;
 
-    if (D_8010DF88_slot_synch == NULL) {
+    if (m220_prizeTbl == NULL) {
         return -1;
     }
-    for (spin = D_8010DF88_slot_synch, i = 0; i < 5; i++, spin++) {
+    for (spin = m220_prizeTbl, i = 0; i < 5; i++, spin++) {
         if (spin->unk_00 != 0) {
             continue;
         }
@@ -1841,9 +1841,9 @@ s16 func_80109FA4_slot_synch(s16 arg0, s16 arg1) {
         spin->unk_26 = arg1;
         spin->unk_2A = 0;
         spin->unk_2C = 0;
-        spin->unk_34[0] = D_8010D820_slot_synch[spin->unk_01].x;
-        spin->unk_34[2] = D_8010D820_slot_synch[spin->unk_01].z;
-        spin->unk_34[1] = D_8010D820_slot_synch[spin->unk_01].y - 20.0000002980232239;
+        spin->unk_34[0] = m220_reelPosTbl[spin->unk_01].x;
+        spin->unk_34[2] = m220_reelPosTbl[spin->unk_01].z;
+        spin->unk_34[1] = m220_reelPosTbl[spin->unk_01].y - 20.0000002980232239;
         spin->unk_34[3] = spin->unk_34[4] = spin->unk_34[5] = 0.0f;
         spin->unk_34[6] = spin->unk_34[7] = spin->unk_34[8] = 0.1f;
         if (spin->unk_26 != 4) {
@@ -1858,19 +1858,19 @@ s16 func_80109FA4_slot_synch(s16 arg0, s16 arg1) {
         } else {
             spin->unk_28 = 16;
         }
-        func_801094E0_slot_synch(spin->unk_01, spin->unk_34[1], 20.0f);
+        m220_ReelScrollSet(spin->unk_01, spin->unk_34[1], 20.0f);
         return i;
     }
     return -1;
 }
 
-s16 func_8010A178_slot_synch(s16 arg0) {
-    UnkSlotSpin *spin;
+s16 m220_PrizeDoneCheck(s16 arg0) {
+    SlotSynchPrize *spin;
 
-    if (D_8010DF88_slot_synch == NULL) {
+    if (m220_prizeTbl == NULL) {
         return 1;
     }
-    spin = &D_8010DF88_slot_synch[arg0];
+    spin = &m220_prizeTbl[arg0];
     if (spin->unk_00 == 0) {
         goto ret_one;
     }
@@ -1883,8 +1883,8 @@ ret_zero:
     return 0;
 }
 
-void func_8010A1D0_slot_synch(void) {
-    UnkSlotSpin *spin = D_8010DF88_slot_synch;
+void m220_PrizeClose(void) {
+    SlotSynchPrize *spin = m220_prizeTbl;
     s32 i;
     s32 j;
 
@@ -1899,13 +1899,13 @@ void func_8010A1D0_slot_synch(void) {
             }
             Hu3DModelKill(spin->unk_24);
         }
-        HuMemFree(D_8010DF88_slot_synch);
-        D_8010DF88_slot_synch = NULL;
-        D_8010DF84_slot_synch->func = NULL;
+        HuMemFree(m220_prizeTbl);
+        m220_prizeTbl = NULL;
+        m220_prizeObj->func = NULL;
     }
 }
 
-u16 func_8010A2C4_slot_synch(s32 file) {
+u16 m220_SprAnimRead(s32 file) {
     void *data = DataRead(file);
     u16 sprite = HuSprAnimRead(data);
 
@@ -1913,7 +1913,7 @@ u16 func_8010A2C4_slot_synch(s32 file) {
     return sprite;
 }
 
-void func_8010A308_slot_synch(s16 arg0, s16 arg1, f32 arg2, f32 arg3) {
+void m220_SprPosSet(s16 arg0, s16 arg1, f32 arg2, f32 arg3) {
     HuSprGrp *grp = HuSprGrpData[arg0];
     HuSprite *spr = HuSprGet(arg0, arg1);
 
@@ -1924,65 +1924,65 @@ void func_8010A308_slot_synch(s16 arg0, s16 arg1, f32 arg2, f32 arg3) {
     }
 }
 
-void func_8010A39C_slot_synch(void) {
-    UnkSlotLight *light;
+void m220_ScoreInit(void) {
+    SlotSynchScore *light;
     s32 i;
 
-    D_8010DF8C_slot_synch[10] = func_8010A2C4_slot_synch(0x35000C);
-    D_8010DF8C_slot_synch[11] = func_8010A2C4_slot_synch(0x35000B);
-    D_8010DF8C_slot_synch[12] = func_8010A2C4_slot_synch(0x2D);
-    light = D_8010DF90_slot_synch = HuMemAllocTag(sizeof(UnkSlotLight) * 2, TAG_OVERLAY);
+    m220_sprTbl[10] = m220_SprAnimRead(0x35000C);
+    m220_sprTbl[11] = m220_SprAnimRead(0x35000B);
+    m220_sprTbl[12] = m220_SprAnimRead(0x2D);
+    light = m220_scoreTbl = HuMemAllocTag(sizeof(SlotSynchScore) * 2, TAG_OVERLAY);
     for (i = 0; i < 2; i++, light++) {
         light->unk_00 = -1;
-        light->unk_02 = D_8010D838_slot_synch[i].x;
-        light->unk_04 = D_8010D838_slot_synch[i].y;
+        light->unk_02 = m220_scorePosTbl[i].x;
+        light->unk_04 = m220_scorePosTbl[i].y;
         light->unk_06[0] = 0;
         light->unk_06[1] = 0;
         light->unk_0A = 0;
         light->unk_0C = 0;
         light->unk_0E = 0;
     }
-    omAddObj(0x1E, 0, 0, -1, func_8010A7D0_slot_synch);
+    omAddObj(0x1E, 0, 0, -1, m220_ScoreObjMain);
 }
 
-void func_8010A480_slot_synch(s16 team, s16 chr0, s16 chr1, s16 arg3) {
-    UnkSlotLight *light = &D_8010DF90_slot_synch[team];
+void m220_ScoreChrSet(s16 team, s16 chr0, s16 chr1, s16 arg3) {
+    SlotSynchScore *light = &m220_scoreTbl[team];
     s32 group;
     s32 i;
 
-    D_8010DF8C_slot_synch[team * 2 + 13] = func_8010A2C4_slot_synch(D_8010DA40_slot_synch[chr0]);
-    D_8010DF8C_slot_synch[team * 2 + 14] = func_8010A2C4_slot_synch(D_8010DA40_slot_synch[chr1]);
+    m220_sprTbl[team * 2 + 13] = m220_SprAnimRead(m220_faceSprTbl[chr0]);
+    m220_sprTbl[team * 2 + 14] = m220_SprAnimRead(m220_faceSprTbl[chr1]);
     group = HuSprGrpCreate(6, 0);
     light->unk_00 = group;
     light->unk_06[0] = -8;
     light->unk_06[1] = 8;
     light->unk_0A = light->unk_0C = light->unk_0E = 0;
-    func_8010AA9C_slot_synch(team, arg3);
+    m220_ScoreSet(team, arg3);
     for (i = 0; i < 6; i++) {
         switch (i) {
             case 0:
                 HuSprAttrSet(group, i, HUSPR_ATTR_DISPOFF);
             case 1:
-                HuSprGrpMemberSet(group, i, D_8010DF8C_slot_synch[12], 0);
+                HuSprGrpMemberSet(group, i, m220_sprTbl[12], 0);
                 HuSprPosSet(group, i, light->unk_02 + light->unk_06[i], light->unk_04);
                 break;
             case 2:
                 HuSprPosSet(group, i, light->unk_02 - 26, light->unk_04 - 9);
-                HuSprGrpMemberSet(group, i, D_8010DF8C_slot_synch[team * 2 + 13], 0);
+                HuSprGrpMemberSet(group, i, m220_sprTbl[team * 2 + 13], 0);
                 break;
             case 3:
                 HuSprPosSet(group, i, light->unk_02 - 26, light->unk_04 + 8);
-                HuSprGrpMemberSet(group, i, D_8010DF8C_slot_synch[team * 2 + 14], 0);
+                HuSprGrpMemberSet(group, i, m220_sprTbl[team * 2 + 14], 0);
                 break;
             case 4:
                 HuSprPosSet(group, i, light->unk_02 + 27, light->unk_04);
-                HuSprGrpMemberSet(group, i, D_8010DF8C_slot_synch[11], 0);
+                HuSprGrpMemberSet(group, i, m220_sprTbl[11], 0);
                 break;
             case 5:
                 HuSprPosSet(group, i, light->unk_02, light->unk_04);
                 HuSprScaleSet(group, i, 1.0f, 1.0f);
                 HuSprColorTPLvlSet(group, i, 0, 0, 255, 160);
-                HuSprGrpMemberSet(group, i, D_8010DF8C_slot_synch[10], 0);
+                HuSprGrpMemberSet(group, i, m220_sprTbl[10], 0);
                 break;
         }
         HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_STOP);
@@ -1992,8 +1992,8 @@ void func_8010A480_slot_synch(s16 team, s16 chr0, s16 chr1, s16 arg3) {
     }
 }
 
-void func_8010A7D0_slot_synch(omObjData *object) {
-    UnkSlotLight *light = D_8010DF90_slot_synch;
+void m220_ScoreObjMain(omObjData *object) {
+    SlotSynchScore *light = m220_scoreTbl;
     u16 digits[2];
     f32 scale;
     s32 i;
@@ -2036,30 +2036,30 @@ void func_8010A7D0_slot_synch(omObjData *object) {
     }
 }
 
-void func_8010AA9C_slot_synch(s16 arg0, s16 arg1) {
-    UnkSlotLight *light = &D_8010DF90_slot_synch[arg0];
+void m220_ScoreSet(s16 arg0, s16 arg1) {
+    SlotSynchScore *light = &m220_scoreTbl[arg0];
 
     light->unk_0C = arg1;
 }
 
-void func_8010AAB8_slot_synch(void) {
+void m220_SmokeInit(void) {
     HuSprAnimData *sprite;
-    UnkSlotEffect *effect;
+    SlotSynchEffect *effect;
     HmfModel *model;
     s32 i;
 
-    D_8010DF8C_slot_synch[1] = func_8010A2C4_slot_synch(11);
-    sprite = HuSprAnimDataGet(D_8010DF8C_slot_synch[1]);
-    D_8010DF94_slot_synch = omAddObj(30, 0, 0, -1, func_8010AC14_slot_synch);
-    D_8010DF98_slot_synch = effect = HuMemAllocTag(sizeof(UnkSlotEffect) * 8, TAG_OVERLAY);
+    m220_sprTbl[1] = m220_SprAnimRead(11);
+    sprite = HuSprAnimDataGet(m220_sprTbl[1]);
+    m220_smokeObj = omAddObj(30, 0, 0, -1, m220_SmokeObjMain);
+    m220_smokeTbl = effect = HuMemAllocTag(sizeof(SlotSynchEffect) * 8, TAG_OVERLAY);
     for (i = 0; i < 8; i++, effect++) {
         if (i == 0) {
-            effect->model = func_8010C4C0_slot_synch(sprite, D_8010D868_slot_synch.rgba);
+            effect->model = m220_BillboardColorMdlCreate(sprite, m220_halfWhiteColor.rgba);
         } else {
-            effect->model = func_8010D0A8_slot_synch(sprite, D_8010DF98_slot_synch[0].model, D_8010D868_slot_synch.rgba);
+            effect->model = m220_BillboardColorMdlLink(sprite, m220_smokeTbl[0].model, m220_halfWhiteColor.rgba);
         }
         effect->active = 0;
-        effect->color = D_8010D868_slot_synch;
+        effect->color = m220_halfWhiteColor;
         effect->frame = effect->speed = 0.0f;
         effect->pos.x = effect->pos.y = effect->pos.z = 0.0f;
         effect->vel.x = effect->vel.y = effect->vel.z = 0.0f;
@@ -2070,13 +2070,13 @@ void func_8010AAB8_slot_synch(void) {
     }
 }
 
-void func_8010AC14_slot_synch(omObjData *object) {
-    HuSprAnimData *sprite = HuSprAnimDataGet(D_8010DF8C_slot_synch[1]);
-    UnkSlotEffect *effect;
+void m220_SmokeObjMain(omObjData *object) {
+    HuSprAnimData *sprite = HuSprAnimDataGet(m220_sprTbl[1]);
+    SlotSynchEffect *effect;
     HmfModel *model;
     s32 i;
 
-    for (i = 0, effect = D_8010DF98_slot_synch; i < 8; i++, effect++) {
+    for (i = 0, effect = m220_smokeTbl; i < 8; i++, effect++) {
         if (effect->active == 0) {
             continue;
         }
@@ -2093,7 +2093,7 @@ void func_8010AC14_slot_synch(omObjData *object) {
         model->scale.x = effect->scale.x;
         model->scale.y = effect->scale.y;
         model->scale.z = effect->scale.z;
-        func_8010D2AC_slot_synch(effect->model, sprite, (s32)effect->frame, effect->color.rgba);
+        m220_BillboardColorPatSet(effect->model, sprite, (s32)effect->frame, effect->color.rgba);
         effect->frame += effect->speed;
         if ((s32)effect->frame >= sprite->patNum) {
             effect->active = 0;
@@ -2103,13 +2103,13 @@ void func_8010AC14_slot_synch(omObjData *object) {
     }
 }
 
-s32 func_8010AD68_slot_synch(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) {
-    HuSprAnimData *sprite = HuSprAnimDataGet(D_8010DF8C_slot_synch[1]);
-    UnkSlotEffect *effect;
+s32 m220_SmokeCreate(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) {
+    HuSprAnimData *sprite = HuSprAnimDataGet(m220_sprTbl[1]);
+    SlotSynchEffect *effect;
     HmfModel *model;
     s32 i;
 
-    for (i = 0, effect = D_8010DF98_slot_synch; i < 8; i++, effect++) {
+    for (i = 0, effect = m220_smokeTbl; i < 8; i++, effect++) {
         if (effect->active != 0) {
             continue;
         }
@@ -2136,10 +2136,10 @@ s32 func_8010AD68_slot_synch(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *colo
         } else {
             effect->scale.x = effect->scale.y = effect->scale.z = 1.0f;
         }
-        memcpy(effect->color.rgba, color, sizeof(UnkSlotColor));
+        memcpy(effect->color.rgba, color, sizeof(SlotSynchColor));
         effect->speed = speed;
         effect->frame = 0.0f;
-        func_8010D2AC_slot_synch(effect->model, sprite, 0, effect->color.rgba);
+        m220_BillboardColorPatSet(effect->model, sprite, 0, effect->color.rgba);
         Hu3DModelAttrSet(effect->model, 4, 0);
         model->motTime = 0.0f;
         model->pos.x = effect->pos.x;
@@ -2153,7 +2153,7 @@ s32 func_8010AD68_slot_synch(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *colo
     return -1;
 }
 
-void func_8010AF38_slot_synch(void) {
+void m220_CameraInit(void) {
     HuCamera *camera;
     s32 i;
 
@@ -2164,12 +2164,12 @@ void func_8010AF38_slot_synch(void) {
     CRot.y = 0.0f;
     CRot.z = 0.0f;
     CZoom = 2000.0f;
-    func_8010BB90_slot_synch(0);
-    func_8010BB90_slot_synch(1);
-    D_8010DFF0_slot_synch = 0;
-    D_8010DFEC_slot_synch = 0;
-    D_8010DFE8_slot_synch = 0;
-    omAddObj(31, 0, 0, -1, func_8010B754_slot_synch);
+    m220_CameraKeyStore(0);
+    m220_CameraKeyStore(1);
+    m220_cameraMoveF = 0;
+    m220_cameraMoveTime = 0;
+    m220_cameraMoveTimer = 0;
+    omAddObj(31, 0, 0, -1, m220_CameraMoveObjMain);
     camera = gCameraList;
     for (i = 1; i < Hu3DBufNum; i++) {
         camera->viewports[i].vp.vscale[0] = camera->viewports[0].vp.vscale[0];
@@ -2181,12 +2181,12 @@ void func_8010AF38_slot_synch(void) {
     }
 }
 
-void func_8010B064_slot_synch(void) {
+void m220_CameraDebugPad(void) {
     MgCameraKey delta = { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 0.0f, 0.0f, 0.0f };
     f32 speed;
 
     speed = 1.0f;
-    switch (D_8010DA60_slot_synch) {
+    switch (m220_cameraDebugMode) {
         case 1:
             if ((u16)HuPadBtn[0] & A_BUTTON) {
                 speed = 8.0f;
@@ -2236,82 +2236,82 @@ void func_8010B064_slot_synch(void) {
                 delta.rot.y += CRot.y;
                 delta.rot.z += CRot.z;
                 delta.zoom += CZoom;
-                func_8010BD7C_slot_synch(delta.center.x, delta.center.y, delta.center.z, delta.rot.x,
+                m220_CameraMoveStart(delta.center.x, delta.center.y, delta.center.z, delta.rot.x,
                                          delta.rot.y, delta.rot.z, delta.zoom, 1);
             }
             sprintf(omDBGStrBuf, "CAMERA TEST_MODE");
-            print8((s16)D_8010DA64_slot_synch + 20, (s16)D_8010DA68_slot_synch + 80,
+            print8((s16)m220_cameraDebugX + 20, (s16)m220_cameraDebugY + 80,
                    omDBGStrBuf);
             sprintf(omDBGStrBuf, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
-            print8((s16)D_8010DA64_slot_synch + 20, (s16)D_8010DA68_slot_synch + 88,
+            print8((s16)m220_cameraDebugX + 20, (s16)m220_cameraDebugY + 88,
                    omDBGStrBuf);
             sprintf(omDBGStrBuf, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
-            print8((s16)D_8010DA64_slot_synch + 20, (s16)D_8010DA68_slot_synch + 96,
+            print8((s16)m220_cameraDebugX + 20, (s16)m220_cameraDebugY + 96,
                    omDBGStrBuf);
             sprintf(omDBGStrBuf, " ZOOM   %3.3f ", CZoom);
-            print8((s16)D_8010DA64_slot_synch + 20, (s16)D_8010DA68_slot_synch + 104,
+            print8((s16)m220_cameraDebugX + 20, (s16)m220_cameraDebugY + 104,
                    omDBGStrBuf);
             break;
         case 2:
             if ((HuPadBtn[0] & R_JPAD) || (HuPadBtn[0] & R_CBUTTONS)) {
-                D_8010DA64_slot_synch++;
+                m220_cameraDebugX++;
             }
             if (HuPadBtn[0] & (L_JPAD | L_CBUTTONS)) {
-                D_8010DA64_slot_synch--;
+                m220_cameraDebugX--;
             }
             if (HuPadBtn[0] & (D_JPAD | D_CBUTTONS)) {
-                D_8010DA68_slot_synch++;
+                m220_cameraDebugY++;
             }
             if (HuPadBtn[0] & (U_JPAD | U_CBUTTONS)) {
-                D_8010DA68_slot_synch--;
+                m220_cameraDebugY--;
             }
             fontcolor = 8;
             sprintf(omDBGStrBuf, "CAMERA TEST_MODE ");
-            print8((s16)D_8010DA64_slot_synch + 20, (s16)D_8010DA68_slot_synch + 80,
+            print8((s16)m220_cameraDebugX + 20, (s16)m220_cameraDebugY + 80,
                    omDBGStrBuf);
             sprintf(omDBGStrBuf, " CENTER X>%3.3f Y>%3.3f Z>%3.3f ", Center.x, Center.y, Center.z);
-            print8((s16)D_8010DA64_slot_synch + 20, (s16)D_8010DA68_slot_synch + 88,
+            print8((s16)m220_cameraDebugX + 20, (s16)m220_cameraDebugY + 88,
                    omDBGStrBuf);
             sprintf(omDBGStrBuf, " ROT    X>%3.3f Y>%3.3f Z>%3.3f ", CRot.x, CRot.y, CRot.z);
-            print8((s16)D_8010DA64_slot_synch + 20, (s16)D_8010DA68_slot_synch + 96,
+            print8((s16)m220_cameraDebugX + 20, (s16)m220_cameraDebugY + 96,
                    omDBGStrBuf);
             sprintf(omDBGStrBuf, " ZOOM   %3.3f ", CZoom);
-            print8((s16)D_8010DA64_slot_synch + 20, (s16)D_8010DA68_slot_synch + 104,
+            print8((s16)m220_cameraDebugX + 20, (s16)m220_cameraDebugY + 104,
                    omDBGStrBuf);
             break;
         case 3:
-            D_8010DA60_slot_synch = 0;
+            m220_cameraDebugMode = 0;
             break;
     }
     if (HuPadBtnDown[0] & R_TRIG) {
-        if (D_8010DA60_slot_synch == 1) {
+        if (m220_cameraDebugMode == 1) {
             osSyncPrintf("CAMERA TEST_MODE \n");
             osSyncPrintf(" CENTER X>%3.3f Y>%3.3f Z>%3.3f \n", Center.x, Center.y, Center.z);
             osSyncPrintf(" ROT    X>%3.3f Y>%3.3f Z>%3.3f \n", CRot.x, CRot.y, CRot.z);
             osSyncPrintf(" ZOOM   %3.3f \n\n", CZoom);
         }
-        if (D_8010DA60_slot_synch++ >= 4) {
-            D_8010DA60_slot_synch = 0;
+        if (m220_cameraDebugMode++ >= 4) {
+            m220_cameraDebugMode = 0;
         }
     }
 }
 
-void func_8010B754_slot_synch(omObjData *object) {
+void m220_CameraMoveObjMain(omObjData *object) {
     f32 t;
 
-    if (D_8010DFEC_slot_synch <= 0) {
-        func_8010BF6C_slot_synch(0);
-        D_8010DFF0_slot_synch = 0;
+    if (m220_cameraMoveTime <= 0) {
+        m220_CameraPosUpdate(0);
+        m220_cameraMoveF = 0;
         return;
     }
-    if (D_8010DFE8_slot_synch == 0) {
-        Center.x = D_8010DFA0_slot_synch[0].center.x;
-        Center.y = D_8010DFA0_slot_synch[0].center.y;
-        Center.z = D_8010DFA0_slot_synch[0].center.z;
-        CRot.x = D_8010DFA0_slot_synch[0].rot.x;
-        CRot.y = D_8010DFA0_slot_synch[0].rot.y;
-        CRot.z = D_8010DFA0_slot_synch[0].rot.z;
-        CZoom = D_8010DFA0_slot_synch[0].zoom;
+    if (m220_cameraMoveTimer == 0) {
+        Center.x = m220_cameraKeyTbl[0].center.x;
+        Center.y = m220_cameraKeyTbl[0].center.y;
+        Center.z = m220_cameraKeyTbl[0].center.z;
+        CRot.x = m220_cameraKeyTbl[0].rot.x;
+        CRot.y = m220_cameraKeyTbl[0].rot.y;
+        CRot.z = m220_cameraKeyTbl[0].rot.z;
+        CZoom = m220_cameraKeyTbl[0].zoom;
         if (CRot.x >= 360.0) {
             CRot.x -= 360.0;
         } else if (CRot.x < 0.0) {
@@ -2327,23 +2327,23 @@ void func_8010B754_slot_synch(omObjData *object) {
         } else if (CRot.z < 0.0) {
             CRot.z += 360.0;
         }
-        D_8010DFEC_slot_synch = 0;
+        m220_cameraMoveTime = 0;
     } else {
-        t = (f32)D_8010DFE8_slot_synch / (f32)D_8010DFEC_slot_synch;
-        Center.x = func_8010C384_slot_synch(t, D_8010DFA0_slot_synch[0].center.x,
-                                            D_8010DFA0_slot_synch[1].center.x);
-        Center.y = func_8010C384_slot_synch(t, D_8010DFA0_slot_synch[0].center.y,
-                                            D_8010DFA0_slot_synch[1].center.y);
-        Center.z = func_8010C384_slot_synch(t, D_8010DFA0_slot_synch[0].center.z,
-                                            D_8010DFA0_slot_synch[1].center.z);
-        CRot.x = func_8010C39C_slot_synch(t, D_8010DFA0_slot_synch[0].rot.x,
-                                          D_8010DFA0_slot_synch[1].rot.x);
-        CRot.y = func_8010C39C_slot_synch(t, D_8010DFA0_slot_synch[0].rot.y,
-                                          D_8010DFA0_slot_synch[1].rot.y);
-        CRot.z = func_8010C39C_slot_synch(t, D_8010DFA0_slot_synch[0].rot.z,
-                                          D_8010DFA0_slot_synch[1].rot.z);
-        CZoom = func_8010C384_slot_synch(t, D_8010DFA0_slot_synch[0].zoom,
-                                         D_8010DFA0_slot_synch[1].zoom);
+        t = (f32)m220_cameraMoveTimer / (f32)m220_cameraMoveTime;
+        Center.x = m220_InterpCalc(t, m220_cameraKeyTbl[0].center.x,
+                                            m220_cameraKeyTbl[1].center.x);
+        Center.y = m220_InterpCalc(t, m220_cameraKeyTbl[0].center.y,
+                                            m220_cameraKeyTbl[1].center.y);
+        Center.z = m220_InterpCalc(t, m220_cameraKeyTbl[0].center.z,
+                                            m220_cameraKeyTbl[1].center.z);
+        CRot.x = m220_AngleInterpCalc(t, m220_cameraKeyTbl[0].rot.x,
+                                          m220_cameraKeyTbl[1].rot.x);
+        CRot.y = m220_AngleInterpCalc(t, m220_cameraKeyTbl[0].rot.y,
+                                          m220_cameraKeyTbl[1].rot.y);
+        CRot.z = m220_AngleInterpCalc(t, m220_cameraKeyTbl[0].rot.z,
+                                          m220_cameraKeyTbl[1].rot.z);
+        CZoom = m220_InterpCalc(t, m220_cameraKeyTbl[0].zoom,
+                                         m220_cameraKeyTbl[1].zoom);
         if (CRot.x >= 360.0) {
             CRot.x -= 360.0;
         } else if (CRot.x < 0.0) {
@@ -2359,17 +2359,17 @@ void func_8010B754_slot_synch(omObjData *object) {
         } else if (CRot.z < 0.0) {
             CRot.z += 360.0;
         }
-        if (D_8010DFE8_slot_synch > 0) {
-            D_8010DFE8_slot_synch--;
+        if (m220_cameraMoveTimer > 0) {
+            m220_cameraMoveTimer--;
         } else {
-            D_8010DFE8_slot_synch++;
+            m220_cameraMoveTimer++;
         }
     }
-    D_8010DFF0_slot_synch = 1;
-    func_8010BF6C_slot_synch(0);
+    m220_cameraMoveF = 1;
+    m220_CameraPosUpdate(0);
 }
 
-void func_8010BB90_slot_synch(s32 arg0) {
+void m220_CameraKeyStore(s32 arg0) {
     if (CRot.x >= 360.0) {
         CRot.x -= 360.0;
     } else if (CRot.x < 0.0) {
@@ -2385,61 +2385,61 @@ void func_8010BB90_slot_synch(s32 arg0) {
     } else if (CRot.z < 0.0) {
         CRot.z += 360.0;
     }
-    D_8010DFA0_slot_synch[arg0].center.x = Center.x;
-    D_8010DFA0_slot_synch[arg0].center.y = Center.y;
-    D_8010DFA0_slot_synch[arg0].center.z = Center.z;
-    D_8010DFA0_slot_synch[arg0].rot.x = CRot.x;
-    D_8010DFA0_slot_synch[arg0].rot.y = CRot.y;
-    D_8010DFA0_slot_synch[arg0].rot.z = CRot.z;
-    D_8010DFA0_slot_synch[arg0].zoom = CZoom;
-    D_8010DFA0_slot_synch[arg0].unk_1C = D_8010DFA0_slot_synch[arg0].unk_20 = 0.0f;
+    m220_cameraKeyTbl[arg0].center.x = Center.x;
+    m220_cameraKeyTbl[arg0].center.y = Center.y;
+    m220_cameraKeyTbl[arg0].center.z = Center.z;
+    m220_cameraKeyTbl[arg0].rot.x = CRot.x;
+    m220_cameraKeyTbl[arg0].rot.y = CRot.y;
+    m220_cameraKeyTbl[arg0].rot.z = CRot.z;
+    m220_cameraKeyTbl[arg0].zoom = CZoom;
+    m220_cameraKeyTbl[arg0].unk_1C = m220_cameraKeyTbl[arg0].unk_20 = 0.0f;
 }
 
 // Passing CAMERA_KEEP for a component keeps its current value.
-void func_8010BD7C_slot_synch(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames) {
+void m220_CameraMoveStart(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32 zoom, s32 frames) {
     if (frames > 0) {
-        D_8010DFE8_slot_synch = frames - 1;
-        D_8010DFEC_slot_synch = frames;
+        m220_cameraMoveTimer = frames - 1;
+        m220_cameraMoveTime = frames;
         if (x != CAMERA_KEEP) {
-            D_8010DFA0_slot_synch[0].center.x = x;
+            m220_cameraKeyTbl[0].center.x = x;
         } else {
-            D_8010DFA0_slot_synch[0].center.x = Center.x;
+            m220_cameraKeyTbl[0].center.x = Center.x;
         }
         if (y != CAMERA_KEEP) {
-            D_8010DFA0_slot_synch[0].center.y = y;
+            m220_cameraKeyTbl[0].center.y = y;
         } else {
-            D_8010DFA0_slot_synch[0].center.y = Center.y;
+            m220_cameraKeyTbl[0].center.y = Center.y;
         }
         if (z != CAMERA_KEEP) {
-            D_8010DFA0_slot_synch[0].center.z = z;
+            m220_cameraKeyTbl[0].center.z = z;
         } else {
-            D_8010DFA0_slot_synch[0].center.z = Center.z;
+            m220_cameraKeyTbl[0].center.z = Center.z;
         }
         if (rotX != CAMERA_KEEP) {
-            D_8010DFA0_slot_synch[0].rot.x = rotX;
+            m220_cameraKeyTbl[0].rot.x = rotX;
         } else {
-            D_8010DFA0_slot_synch[0].rot.x = CRot.x;
+            m220_cameraKeyTbl[0].rot.x = CRot.x;
         }
         if (rotY != CAMERA_KEEP) {
-            D_8010DFA0_slot_synch[0].rot.y = rotY;
+            m220_cameraKeyTbl[0].rot.y = rotY;
         } else {
-            D_8010DFA0_slot_synch[0].rot.y = CRot.y;
+            m220_cameraKeyTbl[0].rot.y = CRot.y;
         }
         if (rotZ != CAMERA_KEEP) {
-            D_8010DFA0_slot_synch[0].rot.z = rotZ;
+            m220_cameraKeyTbl[0].rot.z = rotZ;
         } else {
-            D_8010DFA0_slot_synch[0].rot.z = CRot.z;
+            m220_cameraKeyTbl[0].rot.z = CRot.z;
         }
         if (zoom != CAMERA_KEEP) {
-            D_8010DFA0_slot_synch[0].zoom = zoom;
+            m220_cameraKeyTbl[0].zoom = zoom;
         } else {
-            D_8010DFA0_slot_synch[0].zoom = CZoom;
+            m220_cameraKeyTbl[0].zoom = CZoom;
         }
-        func_8010BB90_slot_synch(1);
+        m220_CameraKeyStore(1);
     }
 }
 
-void func_8010BF6C_slot_synch(s32 camIndex) {
+void m220_CameraPosUpdate(s32 camIndex) {
     HuCamera *camera = &gCameraList[camIndex];
     f32 rotX = CRot.x;
     f32 rotY = CRot.y;
@@ -2455,7 +2455,7 @@ void func_8010BF6C_slot_synch(s32 camIndex) {
     camera->up.z = cosdf(rotY) * sindf(rotX);
 }
 
-f32 func_8010C0C0_slot_synch(f32 arg0, f32 arg1) {
+f32 m220_AngleDiffCalc(f32 arg0, f32 arg1) {
     if (arg0 >= 360.0f) {
         arg0 -= 360.0f;
     } else if (arg0 < 0.0f) {
@@ -2475,7 +2475,7 @@ f32 func_8010C0C0_slot_synch(f32 arg0, f32 arg1) {
     return arg0;
 }
 
-f32 func_8010C1C4_slot_synch(f32 target, f32 current, f32 step) {
+f32 m220_AngleStepCalc(f32 target, f32 current, f32 step) {
     f32 diff;
     f32 delta;
 
@@ -2510,23 +2510,23 @@ f32 func_8010C1C4_slot_synch(f32 target, f32 current, f32 step) {
     return delta;
 }
 
-f32 func_8010C384_slot_synch(f32 t, f32 start, f32 end) {
+f32 m220_InterpCalc(f32 t, f32 start, f32 end) {
     return start + t * (end - start);
 }
 
-f32 func_8010C39C_slot_synch(f32 arg0, f32 arg1, f32 arg2) {
-    return func_8010C1C4_slot_synch(arg2, arg1, fabsf(func_8010C0C0_slot_synch(arg2, arg1) * arg0));
+f32 m220_AngleInterpCalc(f32 arg0, f32 arg1, f32 arg2) {
+    return m220_AngleStepCalc(arg2, arg1, fabsf(m220_AngleDiffCalc(arg2, arg1) * arg0));
 }
 
-void func_8010C3FC_slot_synch(omObjData *arg0, u32 arg1) {
+void m220_WorkPtrSet(omObjData *arg0, u32 arg1) {
     arg0->work[0] = arg1 >> 24;
     arg0->work[1] = (arg1 >> 16) & 0xFF;
     arg0->work[2] = (arg1 >> 8) & 0xFF;
     arg0->work[3] = arg1 & 0xFF;
 }
 
-u32 func_8010C428_slot_synch(omObjData *arg0) {
-    UnkSlotSynchBytes packed;
+u32 m220_WorkPtrGet(omObjData *arg0) {
+    SlotSynchWorkBytes packed;
 
     packed.bytes.byte3 = (u8)arg0->work[0];
     packed.bytes.byte2 = (u8)arg0->work[1];
@@ -2535,7 +2535,7 @@ u32 func_8010C428_slot_synch(omObjData *arg0) {
     return packed.word;
 }
 
-s16 func_8010C47C_slot_synch(s32 file) {
+s16 m220_MotCreate(s32 file) {
     s16 motion = Hu3DMotionCreate(DataRead(file), 0x18);
 
     if (motion >= 0) {
@@ -2544,7 +2544,7 @@ s16 func_8010C47C_slot_synch(s32 file) {
     return -1;
 }
 
-s32 func_8010C4C0_slot_synch(HuSprAnimData *sprite, u8 *color) {
+s32 m220_BillboardColorMdlCreate(HuSprAnimData *sprite, u8 *color) {
     u8 *buffer;
     Gfx *gfx;
     Gfx *header;
@@ -2563,8 +2563,8 @@ s32 func_8010C4C0_slot_synch(HuSprAnimData *sprite, u8 *color) {
     gfx++;
     HuMemFree(data->unk3C);
     data->unk3C = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk3C_Struct), Hu3DModelTag);
-    func_8010D3E0_slot_synch(sprite, data, 1.0f, 0, 0);
-    gSPDisplayList(header, osVirtualToPhysical(D_8010DB60_slot_synch));
+    m220_BillboardVtxCreate(sprite, data, 1.0f, 0, 0);
+    gSPDisplayList(header, osVirtualToPhysical(m220_gfxBillboardInit));
     gDPPipeSync(gfx++);
     gDPSetCycleType(gfx++, G_CYC_1CYCLE);
     gDPPipeSync(gfx++);
@@ -2654,7 +2654,7 @@ s32 func_8010C4C0_slot_synch(HuSprAnimData *sprite, u8 *color) {
     return model;
 }
 
-s32 func_8010D0A8_slot_synch(HuSprAnimData *sprite, u16 model, u8 *color) {
+s32 m220_BillboardColorMdlLink(HuSprAnimData *sprite, u16 model, u8 *color) {
     HmfModel *srcModel = Hu3DData + model;
     HmfData *srcData = srcModel->hmf;
     HmfData *data;
@@ -2684,7 +2684,7 @@ s32 func_8010D0A8_slot_synch(HuSprAnimData *sprite, u16 model, u8 *color) {
     return newModel;
 }
 
-void func_8010D2AC_slot_synch(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
+void m220_BillboardColorPatSet(u16 model, HuSprAnimData *sprite, u16 frame, u8 *color) {
     HmfModel *modelData = Hu3DData + model;
     HmfData *data = modelData->hmf;
     Gfx *gfx = data->unk3C->unk00[Hu3DBufNo + 1];
@@ -2700,7 +2700,7 @@ void func_8010D2AC_slot_synch(u16 model, HuSprAnimData *sprite, u16 frame, u8 *c
     gSPEndDisplayList(gfx + 7);
 }
 
-s32 func_8010D3E0_slot_synch(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset) {
+s32 m220_BillboardVtxCreate(HuSprAnimData *sprite, HmfData *data, f32 scale, s16 xOffset, s16 yOffset) {
     s32 capacity = 0x1000;
     s32 width, height, scaledWidth, scaledHeight;
     s32 size, slices, textureHeight, sliceHeight, vertexCount;

@@ -1,16 +1,16 @@
 #include "common.h"
 
-void func_801059D0_duelcall(void);
-void func_80105A44_duelcall(void);
-void func_80105A98_duelcall(void);
+void duelcall_Start(void);
+void duelcall_Exec(void);
+void duelcall_ObjectSetup(void);
 
-OvlEntrypoint D_80105AE0_duelcall[] = {
-    { 0, func_801059D0_duelcall },
-    { 1, func_80105A44_duelcall },
-    { 2, func_80105A98_duelcall },
+OvlEntrypoint duelcall_ovlEntryTbl[] = {
+    { 0, duelcall_Start },
+    { 1, duelcall_Exec },
+    { 2, duelcall_ObjectSetup },
     { -1, NULL }
 };
 
-void func_801059A0_duelcall(void) {
-    ovlEventCall(D_80105AE0_duelcall, omovlevtno);
+void duelcall_Executor(void) {
+    ovlEventCall(duelcall_ovlEntryTbl, omovlevtno);
 }

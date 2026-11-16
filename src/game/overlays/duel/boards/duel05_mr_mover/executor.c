@@ -1,18 +1,18 @@
 #include "common_duel.h"
 
-void func_80105B64_duel05(void);
-void func_80105BA0_duel05(void);
-void func_8010DA94_duel05(void);
-void func_8010DB10_duel05(void);
+void MBD5_BoardInit(void);
+void MBD5_SaveInit(void);
+void MBD5_Create(void);
+void MBD5_BoardReload(void);
 
-OvlEntrypoint D_80115680_duel05[] = {
-    { 0, func_80105B64_duel05 },
-    { 1, func_80105BA0_duel05 },
-    { 2, func_8010DA94_duel05 },
-    { 3, func_8010DB10_duel05 },
+OvlEntrypoint mbd5_ovlEntryTbl[] = {
+    { 0, MBD5_BoardInit },
+    { 1, MBD5_SaveInit },
+    { 2, MBD5_Create },
+    { 3, MBD5_BoardReload },
     { -1, NULL }
 };
 
-void func_801059A0_duel05(void) {
-    ovlEventCall(D_80115680_duel05, omovlevtno);
+void MBD5_Executor(void) {
+    ovlEventCall(mbd5_ovlEntryTbl, omovlevtno);
 }

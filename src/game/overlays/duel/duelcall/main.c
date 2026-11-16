@@ -3,7 +3,7 @@
 void MBDOvlCallInit(void);
 void MBDOvlCallExec(void);
 
-void func_801059D0_duelcall(void) {
+void duelcall_Start(void) {
     if (_CheckFlag(0)) {
         GWBoardFlagSet(1);
     } else {
@@ -15,19 +15,19 @@ void func_801059D0_duelcall(void) {
     omOvlHisChg(0, 0x5A, 1, 0x4190);
 }
 
-void func_80105A44_duelcall(void) {
+void duelcall_Exec(void) {
     omInitObjMan(0xA, 0);
     MBDOvlCallExec();
 }
 
-void func_80105A6C_duelcall(void) {
+void duelcall_ReturnProc(void) {
     omOvlReturnEx(1);
     omOvlKill();
     HuPrcVSleep();
 }
 
-void func_80105A98_duelcall(void) {
+void duelcall_ObjectSetup(void) {
     omInitObjMan(0xA, 0xA);
     omGameSysInit();
-    omAddPrcObj(func_80105A6C_duelcall, 0x1005, 0, 0);
+    omAddPrcObj(duelcall_ReturnProc, 0x1005, 0, 0);
 }

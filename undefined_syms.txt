@@ -529,21 +529,21 @@ mbTelopPlayerAnim = mbTelopPlayerGrp + 0x2; /* SharedBoardBss2D38.sprAnims */
 mbItemMasuGive1 = mbItemMasuGiveTbl + 0x4; /* [1] */
 mbItemMasuGive2 = mbItemMasuGiveTbl + 0x8; /* [2] */
 
-/* duel03: func_8011454C_duel03 (INCLUDE_ASM) */
-D_80117664_duel03 = D_80117654_duel03 + 0x10; /* [2] */
+/* duel03: MBD3_ComBranch2Lv3PlayerCheck (INCLUDE_ASM) */
+D_80117664_duel03 = mbd3_comLinkIdxTbl + 0x10; /* [2] */
 
-/* duel04: func_80115DA8_duel04, func_801163C0_duel04 (INCLUDE_ASM) */
-D_80119EC2_duel04 = D_80119EC4_duel04 - 0x2;
-D_80119ECA_duel04 = D_80119ECC_duel04 - 0x2;
-D_80119ED2_duel04 = D_80119ED4_duel04 - 0x2;
-D_80119EDA_duel04 = D_80119EDC_duel04 - 0x2;
-D_80119EE2_duel04 = D_80119EE4_duel04 - 0x2;
-D_80119EEA_duel04 = D_80119EEC_duel04 - 0x2;
-D_80119EF2_duel04 = D_80119EF4_duel04 - 0x2;
-D_80119EFA_duel04 = D_80119EFC_duel04 - 0x2;
+/* duel04: MBD4_ComBlowhardBranchFrom19Sel2Lv3Check, MBD4_ComBlowhardBranchFrom13Sel2Lv3Check (INCLUDE_ASM) */
+D_80119EC2_duel04 = mbd4_comLink0IdxTbl - 0x2;
+D_80119ECA_duel04 = mbd4_comLink0RevIdxTbl - 0x2;
+D_80119ED2_duel04 = mbd4_comLink1IdxTbl - 0x2;
+D_80119EDA_duel04 = mbd4_comLink1RevIdxTbl - 0x2;
+D_80119EE2_duel04 = mbd4_comLink2IdxTbl - 0x2;
+D_80119EEA_duel04 = mbd4_comLink2RevIdxTbl - 0x2;
+D_80119EF2_duel04 = mbd4_comLink3IdxTbl - 0x2;
+D_80119EFA_duel04 = mbd4_comLink3RevIdxTbl - 0x2;
 
 /* duel06: misaligned BSS */
-D_80114D72_duel06 = D_80114D68_duel06 + 0xA;
+mbd6_switchMot = mbd6_switchMdlTbl + 0xA;
 
 /* chancetime: chanceTimeBssFE78 and chanceTimeBss00DC fields, D_8010FED0_chancetime[2] fields. */
 D_8010FE78_chancetime = chanceTimeBssFE78;

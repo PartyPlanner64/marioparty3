@@ -859,7 +859,7 @@ void m204_PusherWinObjMain(omObjData *object) {
     f32 velocity;
     f32 speedSq;
 
-    if (MgPlayerMotStatGet(object) & 0x20) {
+    if (MgPlayerMotStatGet(object) & MGPLAYER_MOTSTAT_JUMP) {
         data = object->data;
         velocity = data->unk38;
         y = object->trans.y;

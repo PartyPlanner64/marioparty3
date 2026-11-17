@@ -54,7 +54,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ Vec pos;
     /* 0x0C */ Vec prevPos;
-    /* 0x18 */ u16 buttons;
+    /* 0x18 */ u16 motStat;
     /* 0x1C */ s32 unk1C;
     /* 0x20 */ u8 player;
     /* 0x21 */ u8 index;
@@ -991,7 +991,7 @@ void m258_PlayerObjMain(omObjData *object) {
     omObjData *other;
     u8 pad;
     u8 canCatch;
-    u16 buttons;
+    u16 motStat;
     f32 angle;
     f32 mag;
     f32 range;
@@ -1059,8 +1059,8 @@ void m258_PlayerObjMain(omObjData *object) {
         case 9:
             return;
     }
-    buttons = HuPadBtnDown[pad]; // Overwritten immediately, but needed to match.
-    buttons = MgPlayerMotStatGet(object);
+    motStat = HuPadBtnDown[pad]; // Overwritten immediately, but needed to match.
+    motStat = MgPlayerMotStatGet(object);
     work->prevPos.x = object->trans.x;
     work->prevPos.y = object->trans.y;
     work->prevPos.z = object->trans.z;
@@ -1070,7 +1070,7 @@ void m258_PlayerObjMain(omObjData *object) {
         Hu3DData[object->model[0]].motIdShape = 0xFF;
     }
     MgPlayerObjMain(object);
-    if (buttons & 0x40) {
+    if (motStat & MGPLAYER_MOTSTAT_PUNCH) {
         if (Hu3DData[object->model[0]].motTime >= 16.0 && Hu3DData[object->model[0]].motTime <= 20.0) {
             canCatch = 1;
         }
@@ -1134,7 +1134,7 @@ void m258_PlayerObjMain(omObjData *object) {
         object->trans.z = range * cosdf(angle);
     }
     m258_WallPush(object, data->unk48);
-    work->buttons = buttons;
+    work->motStat = motStat;
 }
 
 void m258_SplashEffSet(omObjData *object, f32 x, f32 y, f32 z) {

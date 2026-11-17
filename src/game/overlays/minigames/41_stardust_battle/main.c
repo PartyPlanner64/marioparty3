@@ -1454,7 +1454,7 @@ void m265_PlayerIntroUpdate(omObjData *object) {
             obj->unk_3A++;
             break;
         case 1:
-            if (MgPlayerMotStatGet(object) == 1) {
+            if (MgPlayerMotStatGet(object) == MGPLAYER_MOTSTAT_DONE) {
                 MgPlayerMotSet(object, 41);
                 obj->unk_3A++;
                 obj->unk_3C = 0;
@@ -1462,7 +1462,7 @@ void m265_PlayerIntroUpdate(omObjData *object) {
             break;
         case 2:
             obj->unk_3C++;
-            if (MgPlayerMotStatGet(object) == 1) {
+            if (MgPlayerMotStatGet(object) == MGPLAYER_MOTSTAT_DONE) {
                 obj->func_6C = NULL;
                 obj->unk_3C = 0;
                 obj->unk_3A = 0;

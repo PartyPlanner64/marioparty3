@@ -1602,7 +1602,7 @@ void MgPlayerObjMain(omObjData *arg0) {
         pressed = 0;
     }
     state = MgPlayerMotStatGet(arg0);
-    if (state & 1) {
+    if (state & MGPLAYER_MOTSTAT_DONE) {
         idle = 1;
         if (data->unk38 == 1000.0f) {
             if (MgPlayerGroundMove(arg0, data->unk3C, x, y, z) != 65536.0f && (pressed & A_BUTTON)) {
@@ -1666,11 +1666,11 @@ void MgPlayerObjMain(omObjData *arg0) {
                 MgPlayerJumpStart(arg0, data);
             }
         } else if (data->unk40 == mgPlayerSpeedZero) {
-            if (state & 0x400) {
+            if (state & MGPLAYER_MOTSTAT_KNOCKBACK_BACK) {
                 MgPlayerMotSet(arg0, 0x21);
             } else if (state & 0x10) {
                 MgPlayerMotSet(arg0, 0x12);
-            } else if (state & 0x800) {
+            } else if (state & MGPLAYER_MOTSTAT_KNOCKBACK_FRONT) {
                 MgPlayerMotSet(arg0, 0x22);
             } else if (state & 8) {
                 MgPlayerMotSet(arg0, 0x13);
@@ -1718,7 +1718,7 @@ void MgPlayerObjMain(omObjData *arg0) {
                     MgPlayerMotSet(arg0, 0x12);
                 } else if (state & 8) {
                     MgPlayerMotSet(arg0, 0x13);
-                } else if (!(state & 0xC00)) {
+                } else if (!(state & (MGPLAYER_MOTSTAT_KNOCKBACK_BACK | MGPLAYER_MOTSTAT_KNOCKBACK_FRONT))) {
                     MgPlayerMotSet(arg0, 0);
                 }
             }
@@ -1791,7 +1791,7 @@ void MgPlayerObjMain(omObjData *arg0) {
             }
         }
         data->unkC6 = 0;
-    } else if (state & 0x320) {
+    } else if (state & (MGPLAYER_MOTSTAT_JUMP | MGPLAYER_MOTSTAT_KICK | MGPLAYER_MOTSTAT_HIPDROP)) {
         f32 time;
         f32 vy;
         f32 dist;
@@ -1801,7 +1801,7 @@ void MgPlayerObjMain(omObjData *arg0) {
             time = Hu3DData[model].motTime;
         }
         vy = data->unk38;
-        if (!(state & 0x300)) {
+        if (!(state & (MGPLAYER_MOTSTAT_KICK | MGPLAYER_MOTSTAT_HIPDROP))) {
             if (((time > 5.0f) & (time < 7.0f)) && !(held & A_BUTTON) && (!(data->unk50 & 8) & (vy < 0.0f))) {
                 data->unk38 = -mgPlayerJumpPower * 0.2f;
             }
@@ -1835,13 +1835,13 @@ void MgPlayerObjMain(omObjData *arg0) {
             if (time > 26.0f) {
                 newY = y + vy * vy * (data->unk38 >= 0.0f ? -35.0f : 35.0f);
                 data->unk38 += mgPlayerGravity * 2.0f;
-            } else if (state & 0x100) {
+            } else if (state & MGPLAYER_MOTSTAT_KICK) {
                 newY = y + vy * vy * (data->unk38 >= 0.0f ? -35.0f : 35.0f);
                 data->unk38 += mgPlayerGravity / 2.0f;
             } else {
                 newY = y;
             }
-            if (state & 0x100) {
+            if (state & MGPLAYER_MOTSTAT_KICK) {
                 MgPlayerAirAttackUpdate(arg0, x, newY, z);
             }
         }
@@ -1851,7 +1851,7 @@ void MgPlayerObjMain(omObjData *arg0) {
             otherData = other->data;
             if (otherData->unk03 == 2) {
                 MgPlayerSinkStart(arg0, x, other->trans.y, z);
-            } else if (state & 0x200) {
+            } else if (state & MGPLAYER_MOTSTAT_HIPDROP) {
                 if (!(data->unk50 & 0x80) && data->unkBE == 0) {
                     MgPlayerHipDropLand(arg0, data, otherData, x, y, z);
                 } else {
@@ -1862,7 +1862,7 @@ void MgPlayerObjMain(omObjData *arg0) {
             }
         }
         data->unkC6 = 0;
-    } else if (state & 0xC0) {
+    } else if (state & (MGPLAYER_MOTSTAT_PUNCH | MGPLAYER_MOTSTAT_THROW)) {
         MgPlayerAttackUpdate(arg0, state, x, y, z);
         if (data->unk38 == 1000.0f) {
             if (data->unk40 < mgPlayerSpeedZero) {
@@ -1914,7 +1914,7 @@ void MgPlayerObjMain(omObjData *arg0) {
             }
         }
         data->unkC6 = 0;
-    } else if (state & 6) {
+    } else if (state & (MGPLAYER_MOTSTAT_IDLE | MGPLAYER_MOTSTAT_WALK)) {
         avg = MgPlayerStickAvgGet(arg0, stickX, stickY);
         avgX = avg >> 16;
         avgY = avg;
@@ -1953,7 +1953,7 @@ void MgPlayerObjMain(omObjData *arg0) {
         newY = MgPlayerGroundMove(arg0, data->unk3C, x, y, z);
         if (newY != 65536.0f) {
             y = newY;
-            if (!(MgPlayerMotStatGet(arg0) & 0xC00)) {
+            if (!(MgPlayerMotStatGet(arg0) & (MGPLAYER_MOTSTAT_KNOCKBACK_BACK | MGPLAYER_MOTSTAT_KNOCKBACK_FRONT))) {
                 if (pressed & A_BUTTON) {
                     MgPlayerJumpStart(arg0, data);
                 } else if (pressed & B_BUTTON) {

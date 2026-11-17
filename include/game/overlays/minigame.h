@@ -188,6 +188,19 @@ typedef struct MgGauge {
 #define MG_TIME_DISP_RECORD 1    // elapsed time with the saved best record
 #define MG_TIME_DISP_COUNTDOWN 2 // seconds left in timer
 
+// MgPlayerMotStatGet return flags; one bit per group of player motion numbers.
+// Names follow MP5's MGPLAYER_MOT_* where the motions correspond.
+#define MGPLAYER_MOTSTAT_DONE (1 << 0)             // queued motions have finished
+#define MGPLAYER_MOTSTAT_IDLE (1 << 1)             // motions 0, 11, 24
+#define MGPLAYER_MOTSTAT_WALK (1 << 2)             // motions 1-4: walk, run, landing
+#define MGPLAYER_MOTSTAT_JUMP (1 << 5)             // motion 6
+#define MGPLAYER_MOTSTAT_PUNCH (1 << 6)            // motion 5: grounded attack, MgPlayerAttack
+#define MGPLAYER_MOTSTAT_THROW (1 << 7)            // motion 20: item throw
+#define MGPLAYER_MOTSTAT_KICK (1 << 8)             // motion 7: air attack, MgPlayerAirAttack
+#define MGPLAYER_MOTSTAT_HIPDROP (1 << 9)          // motion 8: MgPlayerHipDrop
+#define MGPLAYER_MOTSTAT_KNOCKBACK_BACK (1 << 10)  // motions 9, 12, 29: knocked backward
+#define MGPLAYER_MOTSTAT_KNOCKBACK_FRONT (1 << 11) // motions 10, 23: knocked forward
+
 // MinigameFlow.gauge: layout in the high nibble, segment count in the low nibble.
 #define MG_GAUGE_LAYOUT_MASK 0xF0
 #define MG_GAUGE_LENGTH_MASK 0x0F
@@ -379,7 +392,7 @@ void MgPlayerHipDropEnd(omObjData *arg0, MgPlayerWork *arg1, MgMapWork *arg2, f3
 void MgPlayerAirAttack(omObjData *arg0, MgPlayerWork *arg1);
 void MgPlayerAirAttackUpdate(omObjData *arg0, f32 arg1, f32 arg2, f32 arg3);
 void MgPlayerAttack(omObjData *arg0, MgPlayerWork *arg1);
-void MgPlayerAttackUpdate(omObjData *arg0, s32 arg1, f32 arg2, f32 arg3, f32 arg4);
+void MgPlayerAttackUpdate(omObjData *arg0, s32 motStat, f32 arg2, f32 arg3, f32 arg4);
 void MgPlayerPoundHit(omObjData *arg0, f32 x, f32 y, f32 z);
 void MgPlayerSwingHit(omObjData *arg0, f32 x, f32 y, f32 z);
 s32 MgPlayerAttackCheck(omObjData *arg0, omObjData *arg1);

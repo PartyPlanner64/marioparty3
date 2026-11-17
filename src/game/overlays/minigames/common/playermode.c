@@ -142,13 +142,13 @@ void MgPlayerAttack(omObjData *arg0, MgPlayerWork *arg1) {
     }
 }
 
-void MgPlayerAttackUpdate(omObjData *arg0, s32 arg1, f32 arg2, f32 arg3, f32 arg4) {
+void MgPlayerAttackUpdate(omObjData *arg0, s32 motStat, f32 arg2, f32 arg3, f32 arg4) {
     MgPlayerWork *data = arg0->data;
 
     if (data->unk104[9] != NULL && data->unk104[9](arg0) == 1) {
         return;
     }
-    if (arg1 & 0x80) {
+    if (motStat & MGPLAYER_MOTSTAT_THROW) {
         MgPlayerThrowRelease(arg0);
     } else {
         MgPlayerPunchHit(arg0, arg2, arg3, arg4);

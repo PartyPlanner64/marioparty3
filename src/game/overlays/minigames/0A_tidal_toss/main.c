@@ -1207,7 +1207,7 @@ void m210_SoloObjMain(omObjData *object) {
     work->unk0C = object->trans.x;
     work->unk10 = object->trans.y;
     work->unk14 = object->trans.z;
-    if (status & 0x20) {
+    if (status & MGPLAYER_MOTSTAT_JUMP) {
         HuPadStkY[player] = 0;
         HuPadStkX[player] = 0;
     }
@@ -1215,16 +1215,16 @@ void m210_SoloObjMain(omObjData *object) {
     MgPlayerObjMain(object);
     Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 
-    if (status & 0x200) {
+    if (status & MGPLAYER_MOTSTAT_HIPDROP) {
         if ((data->unk50 & 0x80) && (work->unk2A == 0)) {
             m210_WaveCreate(work->unk20);
             work->unk2A++;
         }
-        if (!(work->unk28 & 0x200)) {
+        if (!(work->unk28 & MGPLAYER_MOTSTAT_HIPDROP)) {
             work->unk20 = object->trans.y - 20.0;
             work->unk2A = 0;
         }
-    } else if ((work->unk28 & 0x20) && !(status & 0x20)) {
+    } else if ((work->unk28 & MGPLAYER_MOTSTAT_JUMP) && !(status & MGPLAYER_MOTSTAT_JUMP)) {
         m210_WaveCreate(100.0f);
         work->unk20 = 100.0f;
     }
@@ -1242,7 +1242,7 @@ void m210_SoloObjMain(omObjData *object) {
     }
 
     Hu3DModelPosSet(object->model[9], 0.0f, y, 0.0f);
-    if (!(status & 0x220)) {
+    if (!(status & (MGPLAYER_MOTSTAT_JUMP | MGPLAYER_MOTSTAT_HIPDROP))) {
         object->trans.y = y;
     }
     zero = 0.0f;
@@ -1328,12 +1328,12 @@ void m210_TeamObjMain(omObjData *object) {
                         MgPlayerMotSet(object, 10);
                         data->unk3C = angle;
                         data->unk40 = entry->unk0C;
-                        status |= 0x800;
+                        status |= MGPLAYER_MOTSTAT_KNOCKBACK_FRONT;
                     } else {
                         MgPlayerMotSet(object, 9);
                         data->unk3C = angle + 180.0;
                         data->unk40 = -entry->unk0C;
-                        status |= 0x400;
+                        status |= MGPLAYER_MOTSTAT_KNOCKBACK_BACK;
                     }
                     data->unk38 = -0.735f;
                     data->unkBE = 94;
@@ -1405,9 +1405,9 @@ void m210_TeamObjMain(omObjData *object) {
         object->trans.x = object->trans.x / dist * 190.0;
         object->trans.z = object->trans.z / dist * 190.0;
     }
-    if ((status & 0xC00) && work->unk2A == 0) {
+    if ((status & (MGPLAYER_MOTSTAT_KNOCKBACK_BACK | MGPLAYER_MOTSTAT_KNOCKBACK_FRONT)) && work->unk2A == 0) {
         if (690.0 - data->unk48 <= dist && m210_phase == 2) {
-            if (status & 0x400) {
+            if (status & MGPLAYER_MOTSTAT_KNOCKBACK_BACK) {
                 data->unk40 = -24.0f;
             } else {
                 data->unk40 = 24.0f;
@@ -1424,12 +1424,12 @@ void m210_TeamObjMain(omObjData *object) {
         if (data->unk40 > 4.0) {
             data->unk40 = 4.0f;
         }
-        if (status & 0x20) {
-            if (!(work->unk28 & 0x20)) {
+        if (status & MGPLAYER_MOTSTAT_JUMP) {
+            if (!(work->unk28 & MGPLAYER_MOTSTAT_JUMP)) {
                 work->unk18 = data->unk40;
             }
             data->unk40 = work->unk18;
-        } else if (work->unk28 & 0x20) {
+        } else if (work->unk28 & MGPLAYER_MOTSTAT_JUMP) {
             if (dist <= 590.0) {
                 m210_SplashEffSet(object, object->trans.x, 60.0f, object->trans.z + 50.0);
             }
@@ -1498,7 +1498,7 @@ u16 m210_SoloComInput(omObjData *object) {
             if (work->unk2E == 0) {
                 HuPadBtn[player] |= A_BUTTON;
             }
-            if (status & 0x20) {
+            if (status & MGPLAYER_MOTSTAT_JUMP) {
                 work->unk32++;
             } else {
                 HuPadBtnDown[player] |= A_BUTTON;
@@ -1508,12 +1508,12 @@ u16 m210_SoloComInput(omObjData *object) {
             if (work->unk2E == 0) {
                 HuPadBtn[player] |= A_BUTTON;
             }
-            if (!(status & 0x20)) {
+            if (!(status & MGPLAYER_MOTSTAT_JUMP)) {
                 work->unk32 = 0;
             }
             break;
         case 3:
-            if (status & 2) {
+            if (status & MGPLAYER_MOTSTAT_IDLE) {
                 HuPadBtnDown[player] |= A_BUTTON;
                 work->unk32++;
             }
@@ -1526,7 +1526,7 @@ u16 m210_SoloComInput(omObjData *object) {
             }
             break;
         case 5:
-            if (status & 2) {
+            if (status & MGPLAYER_MOTSTAT_IDLE) {
                 work->unk32 = 0;
             }
             break;
@@ -1620,7 +1620,7 @@ u16 m210_TeamComInput(omObjData *arg0, f32 arg1) {
         HuPadBtn[player] |= A_BUTTON;
     }
 
-    if (240.0 < arg1 && !(status & 0x20)) {
+    if (240.0 < arg1 && !(status & MGPLAYER_MOTSTAT_JUMP)) {
         HuPadStkX[player] = (work->unk2E * 4.0 + 53.0) * -arg0->trans.x / arg1;
         HuPadStkY[player] = (work->unk2E * 4.0 + 53.0) * arg0->trans.z / arg1;
     }

@@ -23,14 +23,14 @@ u32 MgPlayerMotStatGet(omObjData *arg0) {
     s32 flag;
 
     if (data->unkD0 == 0xFFFF) {
-        return 1;
+        return MGPLAYER_MOTSTAT_DONE;
     }
     anim = MgPlayerMotNoGet(arg0);
     switch (anim) {
         case 0:
         case 11:
         case 24:
-            flag = 2;
+            flag = MGPLAYER_MOTSTAT_IDLE;
             break;
         case 16:
             flag = 0x20000;
@@ -39,7 +39,7 @@ u32 MgPlayerMotStatGet(omObjData *arg0) {
         case 2:
         case 3:
         case 4:
-            flag = 4;
+            flag = MGPLAYER_MOTSTAT_WALK;
             break;
         case 25:
         case 27:
@@ -49,19 +49,19 @@ u32 MgPlayerMotStatGet(omObjData *arg0) {
             flag = 0x10;
             break;
         case 6:
-            flag = 0x20;
+            flag = MGPLAYER_MOTSTAT_JUMP;
             break;
         case 20:
-            flag = 0x80;
+            flag = MGPLAYER_MOTSTAT_THROW;
             break;
         case 5:
-            flag = 0x40;
+            flag = MGPLAYER_MOTSTAT_PUNCH;
             break;
         case 7:
-            flag = 0x100;
+            flag = MGPLAYER_MOTSTAT_KICK;
             break;
         case 8:
-            flag = 0x200;
+            flag = MGPLAYER_MOTSTAT_HIPDROP;
             break;
         case 21:
             flag = 0x10000;
@@ -78,11 +78,11 @@ u32 MgPlayerMotStatGet(omObjData *arg0) {
         case 9:
         case 12:
         case 29:
-            flag = 0x400;
+            flag = MGPLAYER_MOTSTAT_KNOCKBACK_BACK;
             break;
         case 10:
         case 23:
-            flag = 0x800;
+            flag = MGPLAYER_MOTSTAT_KNOCKBACK_FRONT;
             break;
         case 13:
         case 14:

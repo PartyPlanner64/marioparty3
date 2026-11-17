@@ -607,7 +607,7 @@ void m218_PlayerObjMain(omObjData *object) {
     }
     Hu3DModelPosSet(object->model[2], object->trans.x, object->trans.y, object->trans.z);
     Hu3DModelRotSet(object->model[2], object->rot.x, data->unk3C, object->rot.z);
-    if (MgPlayerMotStatGet(object) == 2) {
+    if (MgPlayerMotStatGet(object) == MGPLAYER_MOTSTAT_IDLE) {
         Hu3DMotionAttrSet(object->model[2], 2, 1);
     } else {
         Hu3DMotionAttrSet(object->model[2], 2, 2);

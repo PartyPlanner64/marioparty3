@@ -396,7 +396,7 @@ void m211_PlayerObjMain(omObjData *object) {
         case 2:
             work = data->unk158;
             player = data->unk57;
-            if ((frameStatus & 0xFFFF) == 2) {
+            if ((frameStatus & 0xFFFF) == MGPLAYER_MOTSTAT_IDLE) {
                 MgPlayerMotSet(object, 0x10);
             }
             if (work->unk35 == 0) {
@@ -427,7 +427,7 @@ void m211_PlayerObjMain(omObjData *object) {
                 data->unk40 = 16.0f;
             }
             if (data->unk40 != 0.0) {
-                if ((frameStatus & 0xFFFF) == 2) {
+                if ((frameStatus & 0xFFFF) == MGPLAYER_MOTSTAT_IDLE) {
                     MgPlayerMotSet(object, 0x10);
                 }
                 if (work->unk35 == 0) {

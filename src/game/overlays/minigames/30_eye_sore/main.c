@@ -971,7 +971,7 @@ void m248_PlayerObjInit(omObjData *obj) {
         Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
         Hu3DModelRemakeStatic(obj->model[1]);
         Hu3DModelDynamicFree(obj->model[1]);
-        func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 0.0f, 0.0f);
+        HuTranslateF(Hu3DData[obj->model[1]].mtx, 0.0f, 0.0f, 0.0f);
         m248_linkMdlTbl[0] = obj->model[1];
     } else {
         obj->model[1] = Hu3DModelLink(m248_linkMdlTbl[0]);

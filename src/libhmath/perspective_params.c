@@ -1,6 +1,6 @@
 #include "humath.h"
 
-void func_8008D5D0_main(HuMtx4F mtx, u16 *perspNorm, const PerspectiveParams *params) {
+void HuMtxPerspectiveF(HuMtx4F mtx, u16 *perspNorm, const PerspectiveParams *params) {
     f32 sincos[2];
     f32 cotangent;
     f32 depthScale;

@@ -1,7 +1,7 @@
 #include "humath.h"
 
 // Builds a floating-point Euler rotation matrix.
-void func_80088910_main(HuMtx4F mtx, f32 r, f32 p, f32 h) {
+void HuRotateRPYF(HuMtx4F mtx, f32 r, f32 p, f32 h) {
     f32 sin_x, cos_x, sin_y, cos_y, sin_z, cos_z;
 
     sincosdf(r, &sin_x, &cos_x);
@@ -22,7 +22,7 @@ void func_80088910_main(HuMtx4F mtx, f32 r, f32 p, f32 h) {
 }
 
 // Builds a fixed-point Euler rotation matrix.
-void func_80088A70_main(Mtx *mtx, f32 r, f32 p, f32 h) {
+void HuRotateRPY(Mtx *mtx, f32 r, f32 p, f32 h) {
     f32 sin_x, cos_x, sin_y, cos_y, sin_z, cos_z;
     s32 value, value2;
     f32 row01, row02, row10, row11, row12, row20, row21, row22;

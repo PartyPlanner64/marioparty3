@@ -1269,7 +1269,7 @@ void SceneLoad(HmfData *hmf) {
     }
     if (ModeTop[0x1C] == 0x45) {
         hmf->unkD4 = mtxRotCat;
-        hmf->unkD8 = func_80088910_main;
+        hmf->unkD8 = HuRotateRPYF;
     } else {
         hmf->unkD4 = mtxRotCatZXY;
         hmf->unkD8 = mtxRotZXY;

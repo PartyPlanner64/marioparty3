@@ -1004,7 +1004,7 @@ void m263_NodePosGet(s16 model, Vec *pos, HuMtx4F mtx) {
     HuMtx4F local;
     HuMtx4F result;
 
-    func_80088800_main(local, hmf->pos.x, hmf->pos.y, hmf->pos.z);
+    HuTranslateF(local, hmf->pos.x, hmf->pos.y, hmf->pos.z);
     mtxRotCat(local, hmf->rot.x, hmf->rot.y, hmf->rot.z);
     mtxScaleCat(local, hmf->scale.x, hmf->scale.y, hmf->scale.z);
     mtxCat(mtx, local, result);

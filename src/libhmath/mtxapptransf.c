@@ -1,7 +1,7 @@
 #include "humath.h"
 
 // Apply translation to a float matrix.
-void func_8008CBF0_main(const HuMtx4F src, f32 *translation, HuMtx4F dst) {
+void HuMtxTransCatF(const HuMtx4F src, f32 *translation, HuMtx4F dst) {
     // Initialize before loading the vector to preserve instruction order.
     s32 i = 0;
     f32 x, y, z, w;

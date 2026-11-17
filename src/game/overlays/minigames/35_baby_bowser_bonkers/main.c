@@ -645,7 +645,7 @@ void m253_PlayerObjMain(omObjData *object) {
     player->unk_1C.y = object->trans.y - player->unk_14;
     player->unk_1C.z = object->trans.z - player->unk_18;
     data->unk3C = m253_AngleStepCalc(data->unk3C, prevRot, 30.0f);
-    func_80088910_main(Hu3DData[object->model[0]].mtx, 0.0f, data->unk3C, 0.0f);
+    HuRotateRPYF(Hu3DData[object->model[0]].mtx, 0.0f, data->unk3C, 0.0f);
 }
 
 void m253_PlayerComInput(omObjData *object) {

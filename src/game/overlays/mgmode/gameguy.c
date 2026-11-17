@@ -934,7 +934,7 @@ void mgmode_GambleRewardExec(void) {
     Hu3DModelPosSet(model, 2.0f, 500.0f, -382.0f);
     EffectPosSet(camera, 2.0f, 500.0f, -332.0f);
     Hu3DModelRotSet(model, 30.0f, 80.0f, 3.0f);
-    func_80088800_main(Hu3DData[model].mtx, 0.0f, 0.0f, 20.0f);
+    HuTranslateF(Hu3DData[model].mtx, 0.0f, 0.0f, 20.0f);
     scale = 1.0f;
     HuAudFXPlay(0x249);
     for (i = 0; i < 51; i++) {

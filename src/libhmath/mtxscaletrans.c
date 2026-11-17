@@ -1,7 +1,7 @@
 #include "humath.h"
 
 // Build a float scale matrix.
-void func_8008A5C0_main(HuMtx4F mtx, f32 *scale) {
+void HuMtxScaleF(HuMtx4F mtx, f32 *scale) {
     f32 x = scale[0];
     f32 y = scale[1];
     f32 z = scale[2];
@@ -15,7 +15,7 @@ void func_8008A5C0_main(HuMtx4F mtx, f32 *scale) {
 }
 
 // Build a fixed-point scale matrix.
-void func_8008A620_main(Mtx *mtx, f32 *scale) {
+void HuMtxScale(Mtx *mtx, f32 *scale) {
     u32 x = (s32)(scale[0] * 65536.0f);
     u32 y = (s32)(scale[1] * 65536.0f);
     u32 z = (s32)(scale[2] * 65536.0f);
@@ -39,7 +39,7 @@ void func_8008A620_main(Mtx *mtx, f32 *scale) {
 }
 
 // Build a float translation matrix.
-void func_8008A6D0_main(HuMtx4F mtx, f32 *translation) {
+void HuMtxTransF(HuMtx4F mtx, f32 *translation) {
     f32 x = translation[0];
     f32 y = translation[1];
     f32 z = translation[2];
@@ -53,7 +53,7 @@ void func_8008A6D0_main(HuMtx4F mtx, f32 *translation) {
 }
 
 // Build a fixed-point translation matrix.
-void func_8008A730_main(Mtx *mtx, const f32 *translation) {
+void HuMtxTrans(Mtx *mtx, const f32 *translation) {
     u32 x = (s32)(translation[0] * 65536.0f);
     u32 y = (s32)(translation[1] * 65536.0f);
     u32 z = (s32)(translation[2] * 65536.0f);

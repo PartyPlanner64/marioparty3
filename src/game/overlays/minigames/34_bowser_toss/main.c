@@ -1563,11 +1563,11 @@ void m252_KoopaObjMain(omObjData *object) {
         }
         Hu3DModelPosSet(bowser->unk_04, bowser->unk_30, bowser->unk_34, bowser->unk_38);
         Hu3DModelRotSet(bowser->unk_04, bowser->unk_3C, bowser->unk_40, 0.0f);
-        func_8008A070_main(Hu3DData[bowser->unk_04].mtx);
+        HuMtxIdentF(Hu3DData[bowser->unk_04].mtx);
         mtxRotCat(Hu3DData[bowser->unk_04].mtx, 0.0f, 0.0f, bowser->unk_44);
         Hu3DModelPosSet(bowser->unk_06, bowser->unk_30, bowser->unk_34, bowser->unk_38);
         Hu3DModelRotSet(bowser->unk_06, bowser->unk_3C, bowser->unk_40, 0.0f);
-        func_8008A070_main(Hu3DData[bowser->unk_06].mtx);
+        HuMtxIdentF(Hu3DData[bowser->unk_06].mtx);
         mtxRotCat(Hu3DData[bowser->unk_06].mtx, 0.0f, 0.0f, bowser->unk_44);
         Hu3DModelPosSet(bowser->unk_08, bowser->unk_30, 0.0f, bowser->unk_38);
         bowser->unk_0C++;
@@ -1576,7 +1576,7 @@ void m252_KoopaObjMain(omObjData *object) {
 
 void m252_ObjMtxCalc(omObjData *object, f32 angle, HuMtx4F mtx) {
     fmod(object->rot.y + angle, 360.0);
-    func_8008A070_main(mtx);
+    HuMtxIdentF(mtx);
     mtxTransCat(mtx, object->trans.x, object->trans.y, object->trans.z);
     mtxRotCat(mtx, object->rot.x, angle, object->rot.z);
     mtxScaleCat(mtx, object->scale.x, object->scale.y, object->scale.z);

@@ -620,9 +620,9 @@ void MgMapMtxUpdate(omObjData *obj) {
     MgMapWork *data = obj->data;
 
     if (obj->trans.x != 0.0f || obj->trans.y != 0.0f || obj->trans.z != 0.0f) {
-        func_80088800_main(data->unk18, obj->trans.x, obj->trans.y, obj->trans.z);
+        HuTranslateF(data->unk18, obj->trans.x, obj->trans.y, obj->trans.z);
     } else {
-        func_8008A070_main(data->unk18);
+        HuMtxIdentF(data->unk18);
     }
     if (obj->rot.x != 0.0f || obj->rot.y != 0.0f || obj->rot.z != 0.0f) {
         mtxRotCat(data->unk18, obj->rot.x, obj->rot.y, obj->rot.z);
@@ -651,9 +651,9 @@ void MgMapPosLocalGet(HuMtx4F mtx, HuMtx4F result, Vec *pos, omObjData *obj) {
         mtxCopy(result, data->unk58);
     } else {
         if (transX != 0.0f || transY != 0.0f || transZ != 0.0f) {
-            func_80088800_main(mtx, transX, transY, transZ);
+            HuTranslateF(mtx, transX, transY, transZ);
         } else {
-            func_8008A070_main(mtx);
+            HuMtxIdentF(mtx);
         }
         if (rotX != 0.0f || rotY != 0.0f || rotZ != 0.0f) {
             mtxRotCat(mtx, rotX, rotY, rotZ);

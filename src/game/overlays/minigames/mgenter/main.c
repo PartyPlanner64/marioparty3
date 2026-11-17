@@ -510,7 +510,7 @@ void mgenter_OptionProc(void) {
         }
         mgenter_optionState = -1;
         if (prevSel != mgenter_optionNo) {
-            dir = -func_80089750_main(prevSel - mgenter_optionNo);
+            dir = -HuSignF(prevSel - mgenter_optionNo);
             if ((mgenter_optionNo == 2 && prevSel == 0) || (mgenter_optionNo == 0 && prevSel == 2)) {
                 dir = -dir;
             }
@@ -521,7 +521,7 @@ void mgenter_OptionProc(void) {
                 for (j = 0; j < 3; j++) {
                     Hu3DModelPosSet(models[j], sindf(j * 120 + baseAngle + i * 12 * dir) * 500.0f, 0.0f,
                                     cosdf(j * 120 + baseAngle + i * 12 * dir) * 500.0f);
-                    func_8008A2A0_main(Hu3DData[models[j]].mtx, rotAngle);
+                    HuMtxRotYF(Hu3DData[models[j]].mtx, rotAngle);
                 }
                 alpha = i * 25;
                 for (j = 0; j < gMes[prevSel].subMode; j++) {
@@ -544,7 +544,7 @@ void mgenter_OptionProc(void) {
             baseAngle = mgenter_optionNo * 120;
         }
         for (j = 0; j < 3; j++) {
-            func_8008A2A0_main(Hu3DData[models[j]].mtx, rotAngle);
+            HuMtxRotYF(Hu3DData[models[j]].mtx, rotAngle);
         }
         rotAngle += 3.0f;
         HuPrcVSleep();

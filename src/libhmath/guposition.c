@@ -1,7 +1,7 @@
 #include "humath.h"
 
 // Builds a floating-point position matrix from Euler rotation, scale, and translation.
-void func_80088CB0_main(HuMtx4F mtx, f32 r, f32 p, f32 h, f32 s, f32 x, f32 y, f32 z) {
+void HuPositionF(HuMtx4F mtx, f32 r, f32 p, f32 h, f32 s, f32 x, f32 y, f32 z) {
     f32 sinR, cosR, sinP, cosP, sinH, cosH;
 
     sincosdf(r, &sinR, &cosR);
@@ -27,7 +27,7 @@ void func_80088CB0_main(HuMtx4F mtx, f32 r, f32 p, f32 h, f32 s, f32 x, f32 y, f
 }
 
 // Builds a fixed-point position matrix from Euler rotation, scale, and translation.
-void func_80088E50_main(Mtx *m, f32 r, f32 p, f32 h, f32 s, f32 x, f32 y, f32 z) {
+void HuPosition(Mtx *m, f32 r, f32 p, f32 h, f32 s, f32 x, f32 y, f32 z) {
     f32 sinR, cosR, sinP, cosP, sinH, cosH;
     // Four rows of three 16.16 elements: rotation/scale followed by translation.
     s32 fixed[12];
@@ -68,7 +68,7 @@ void func_80088E50_main(Mtx *m, f32 r, f32 p, f32 h, f32 s, f32 x, f32 y, f32 z)
 }
 
 // Builds a floating-point matrix that aligns the negative Z axis to a direction.
-void func_80089190_main(HuMtx4F mtx, f32 angle, f32 x, f32 y, f32 z) {
+void HuAlignF(HuMtx4F mtx, f32 angle, f32 x, f32 y, f32 z) {
     f32 sine, cosine;
     f32 len;
     f32 inv;

@@ -964,7 +964,7 @@ void m241_PlayerIntroUpdate(omObjData *object) {
         }
         MgPlayerMotUpdate(object);
     }
-    func_80088910_main(Hu3DData[object->model[0]].mtx, 0.0f, data->unk3C, 0.0f);
+    HuRotateRPYF(Hu3DData[object->model[0]].mtx, 0.0f, data->unk3C, 0.0f);
     Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
 }
 

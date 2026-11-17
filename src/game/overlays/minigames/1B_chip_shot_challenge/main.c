@@ -1153,7 +1153,7 @@ void m227_BallObjMain(omObjData *object) {
     f32 floorY;
     u8 bounce = TRUE;
 
-    func_80088800_main(Hu3DData[object->model[0]].mtx, 0.0f, 30.0f, 0.0f);
+    HuTranslateF(Hu3DData[object->model[0]].mtx, 0.0f, 30.0f, 0.0f);
     if (MgFlowStatGet() != MG_STATE_PLAY) {
         return;
     }

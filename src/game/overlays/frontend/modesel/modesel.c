@@ -2046,7 +2046,7 @@ void modesel_StageCreate(void) {
         for (i = 0; i < 6; i++) {
             if (MgStoryRankGet(i) < 0) {
                 node = Hu3DModelObjPtrGet(modelId, names[i]);
-                func_80088800_main(node->unk58, 0.0f, -4000.0f, 0.0f);
+                HuTranslateF(node->unk58, 0.0f, -4000.0f, 0.0f);
             }
         }
     }
@@ -2187,11 +2187,11 @@ void modesel_StarNodeUpdate(s32 arg0) {
     s32 index = arg0 - 7;
     f32 shadowY;
 
-    func_80088800_main(modesel_starNodeTbl[index].star->unk58, modesel_starNodeTbl[index].x,
+    HuTranslateF(modesel_starNodeTbl[index].star->unk58, modesel_starNodeTbl[index].x,
                        modesel_starNodeTbl[index].y, modesel_starNodeTbl[index].z);
     mtxRotYCat(modesel_starNodeTbl[index].star->unk58, modesel_starNodeTbl[index].rot.angle);
     shadowY = (8.0f < modesel_starNodeTbl[index].y) ? 4.0f : -200.0f;
-    func_80088800_main(modesel_starNodeTbl[index].shadow->unk58, modesel_starNodeTbl[index].x, shadowY,
+    HuTranslateF(modesel_starNodeTbl[index].shadow->unk58, modesel_starNodeTbl[index].x, shadowY,
                        modesel_starNodeTbl[index].z);
     mtxRotYCat(modesel_starNodeTbl[index].shadow->unk58, modesel_starNodeTbl[index].rot.angle);
 }

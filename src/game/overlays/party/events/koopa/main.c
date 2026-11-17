@@ -1002,7 +1002,7 @@ void koopa_SpellEffExec(s32 modelFile) {
     scale = 1.0f;
     for (i = 0; scale < 12.0f; scale += 0.25) {
         HuVecCopyXYZ(&object->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[object->omObj1->model[0]].mtx, angle);
+        HuMtxRotZF(Hu3DData[object->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         if (i == 5) {
             HuAudFXPlay(0x12D);
@@ -1012,7 +1012,7 @@ void koopa_SpellEffExec(s32 modelFile) {
     }
     for (i = 0; scale >= 1.0f; scale -= 0.25) {
         HuVecCopyXYZ(&object->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[object->omObj1->model[0]].mtx, angle);
+        HuMtxRotZF(Hu3DData[object->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         if (i == 32) {
             HuAudFXPlay(0x13E);

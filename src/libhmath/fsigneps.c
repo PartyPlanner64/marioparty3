@@ -1,11 +1,11 @@
 #include "humath.h"
 
 // Returns the sign of a value using the global epsilon threshold.
-s32 func_800897D0_main(f32 value) {
-    if (value < -mainUnkF32) {
+s32 HuSignEpsF(f32 value) {
+    if (value < -HuMathEpsilon) {
         return -1;
     }
-    if (mainUnkF32 < value) {
+    if (HuMathEpsilon < value) {
         return 1;
     }
     return 0;

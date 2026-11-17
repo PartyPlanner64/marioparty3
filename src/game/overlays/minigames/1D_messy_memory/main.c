@@ -1809,7 +1809,7 @@ void m229_PlayerObjInit(omObjData *obj) {
     Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[1]);
     Hu3DModelDynamicFree(obj->model[1]);
-    func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 15.0f, 0.0f);
+    HuTranslateF(Hu3DData[obj->model[1]].mtx, 0.0f, 15.0f, 0.0f);
     omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0));
     omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 1));
     omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, 2));
@@ -2500,7 +2500,7 @@ void m229_MoverObjInit(omObjData *obj) {
     Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[1]);
     Hu3DModelDynamicFree(obj->model[1]);
-    func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 15.0f, 0.0f);
+    HuTranslateF(Hu3DData[obj->model[1]].mtx, 0.0f, 15.0f, 0.0f);
     Hu3DMotionModelSet(*obj->model, mainObj->motion[2]);
     Hu3DMotionAttrSet(*obj->model, 2, 2);
     Hu3DMotionTimeSet(*obj->model, 0.0f);

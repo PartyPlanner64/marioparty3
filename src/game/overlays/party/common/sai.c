@@ -1143,7 +1143,7 @@ static void MBKakusiStarProc(void) {
     MBPlayerPosMoveCreate(temp_a2, &sp10, temp_a2, 0x28);
 
     for (i = 0; i < 0x28; i++) {
-        func_8008A2A0_main(Hu3DData[temp_v0->omObj1->model[0]].mtx, var_f22);
+        HuMtxRotYF(Hu3DData[temp_v0->omObj1->model[0]].mtx, var_f22);
         var_f22 += 20.0f;
         var_f20 -= 0.05f;
         
@@ -1395,7 +1395,7 @@ static void MBKakusiCoinEffProc(void) {
         HuPrcVSleep();
         temp_v0->velocity.x += 3.0f;
         var_f20 += 40.0f;
-        func_8008A2A0_main(Hu3DData[temp_v0->omObj1->model[0]].mtx, var_f20);
+        HuMtxRotYF(Hu3DData[temp_v0->omObj1->model[0]].mtx, var_f20);
     }
 
     MBModelKill(temp_v0);

@@ -2,7 +2,7 @@
 #include "mtxpack.h"
 
 // Concatenate a fixed-point Z-axis rotation with a matrix.
-void func_8008C5E0_main(Mtx *src, f32 angle, Mtx *dst) {
+void HuMtxRotZCat(Mtx *src, f32 angle, Mtx *dst) {
     HuMtx4F input, output;
     f32 sincos[2];
     s32 e[2];

@@ -404,9 +404,9 @@ void HuSprGrpMemberInit(HuSprGrp *group, u16 count) {
         sprite->unk_118 = sprite->unk_11C = NULL;
         sprite->unk_128[0] = sprite->unk_128[1] = sprite->unk_128[2] = NULL;
         sprite->unk_134[0] = sprite->unk_134[1] = sprite->unk_134[2] = NULL;
-        func_8008A0D0_main(&sprite->unk_140[0]);
-        func_8008A0D0_main(&sprite->unk_140[1]);
-        func_8008A0D0_main(&sprite->unk_140[2]);
+        HuMtxIdent(&sprite->unk_140[0]);
+        HuMtxIdent(&sprite->unk_140[1]);
+        HuMtxIdent(&sprite->unk_140[2]);
         sprite->unk_120 = 0;
         sprite->unk_124 = NULL;
         sprite->scissorX = sprite->scissorY = 0;
@@ -942,7 +942,7 @@ void HuSprPrimDepthSet(s16 group, s16 member, s16 arg2) {
 void HuSprMtxXformVec4(Mtx *m, f32 x, f32 y, f32 z, f32 w, f32 *ox, f32 *oy, f32 *oz, f32 *ow) {
     HuMtx4F mf;
 
-    func_80089980_main(mf, m);
+    HuMtxL2F(mf, m);
     *ox = x * mf[0][0] + y * mf[1][0] + z * mf[2][0] + mf[3][0];
     *oy = x * mf[0][1] + y * mf[1][1] + z * mf[2][1] + mf[3][1];
     *oz = x * mf[0][2] + y * mf[1][2] + z * mf[2][2] + mf[3][2];

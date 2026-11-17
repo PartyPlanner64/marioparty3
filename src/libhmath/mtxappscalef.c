@@ -1,7 +1,7 @@
 #include "humath.h"
 
 // Apply scale to a float matrix.
-void func_8008CB30_main(HuMtx4F src, f32 *scale, HuMtx4F dst) {
+void HuMtxScaleCatF(HuMtx4F src, f32 *scale, HuMtx4F dst) {
     // Initialize before loading the vector to preserve instruction order.
     s32 i = 0;
     f32 x, y, z;

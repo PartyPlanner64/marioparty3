@@ -1049,7 +1049,7 @@ void m270_PlayerObjMain(omObjData *object) {
     m270_waterScrollV += (object->trans.z - z) * 32.0f / 1000.0f;
     m270_PlayerTiltUpdate(object, x, z);
     speed = work->unk40;
-    func_80088910_main(Hu3DData[object->model[0]].mtx, 0.0f, work->unk3C, 0.0f);
+    HuRotateRPYF(Hu3DData[object->model[0]].mtx, 0.0f, work->unk3C, 0.0f);
     MgObjPosSet(object, x, y - 40.0f, z);
     m270_WakeUpdate(object, m270_throttle);
     if (m270_bumpPower != 0.0f) {

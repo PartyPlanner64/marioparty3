@@ -1,7 +1,7 @@
 #include "humath.h"
 
 // Returns the sign of a value.
-s32 func_80089750_main(f32 value) {
+s32 HuSignF(f32 value) {
     if (value < 0.0f) {
         return -1;
     }
@@ -12,7 +12,7 @@ s32 func_80089750_main(f32 value) {
 }
 
 // Returns the sign of a value using a caller-supplied threshold.
-s32 func_80089790_main(f32 value, f32 threshold) {
+s32 HuSignThreshF(f32 value, f32 threshold) {
     if (value < -threshold) {
         return -1;
     }

@@ -435,7 +435,7 @@ void m259_WheelObjCreate(void) {
 void m259_WheelObjMain(omObjData *obj) {
     WinnersWheelWheel *wheel = obj->data;
 
-    func_80088910_main(Hu3DData[obj->model[0]].mtx, 0.0f, 0.0f, -wheel->angle);
+    HuRotateRPYF(Hu3DData[obj->model[0]].mtx, 0.0f, 0.0f, -wheel->angle);
     omSetRot(obj, wheel->rot, 0.0f, 0.0f);
     Hu3DModelRotSet(obj->model[1], wheel->rot, 180.0f, 180.0f);
     Hu3DModelRotSet(obj->model[2], wheel->rot, 0.0f, 0.0f);
@@ -709,7 +709,7 @@ void m259_PanelObjMain(omObjData *obj) {
         panels->x[i] = sindf(panels->angle[i] + wheel->angle) * 70.0f * wheel->scale;
         panels->y[i] = cosdf(panels->angle[i] + wheel->angle) * 70.0f * wheel->scale * panels->unk_90;
         panels->z[i] = panels->unk_94 * 5.0f;
-        func_80088910_main(Hu3DData[obj->model[i]].mtx, 0.0f, 0.0f, -panels->angle[i] - wheel->angle);
+        HuRotateRPYF(Hu3DData[obj->model[i]].mtx, 0.0f, 0.0f, -panels->angle[i] - wheel->angle);
         if (i == 0) {
             omSetTra(obj, panels->x[0], panels->y[0], panels->z[0]);
             omSetRot(obj, panels->rot[0], 0.0f, 0.0f);
@@ -1220,7 +1220,7 @@ void m259_FrameObjMain(omObjData *obj) {
     s32 i;
 
     for (i = 0; i < 6; i++) {
-        func_80088910_main(Hu3DData[obj->model[i]].mtx, 0.0f, 0.0f, -frames->angle[i]);
+        HuRotateRPYF(Hu3DData[obj->model[i]].mtx, 0.0f, 0.0f, -frames->angle[i]);
         if (i == 0) {
             omSetRot(obj, frames->rot[0], 0.0f, 0.0f);
             omSetSca(obj, wheel->scale, wheel->scale, 1.0f);

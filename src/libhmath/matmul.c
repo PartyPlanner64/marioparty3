@@ -1,6 +1,6 @@
 #include "humath.h"
 
-void func_8008CCC0_main(const HuMtx4F a, const HuMtx4F b, HuMtx4F result) {
+void HuMtxCatF(const HuMtx4F a, const HuMtx4F b, HuMtx4F result) {
     HuMtx4F temp;
     s32 i, j;
 
@@ -16,17 +16,17 @@ void func_8008CCC0_main(const HuMtx4F a, const HuMtx4F b, HuMtx4F result) {
     }
 }
 
-void func_8008CD90_main(Mtx *a, Mtx *b, Mtx *result) {
+void HuMtxCat(Mtx *a, Mtx *b, Mtx *result) {
     HuMtx4F tempA, tempB;
 
-    func_80089980_main(tempA, a);
-    func_80089980_main(tempB, b);
-    func_8008CCC0_main(tempA, tempB, tempA);
-    func_800898F0_main(tempA, result);
+    HuMtxL2F(tempA, a);
+    HuMtxL2F(tempB, b);
+    HuMtxCatF(tempA, tempB, tempA);
+    HuMtxF2L(tempA, result);
 }
 
 // Multiply by an affine matrix, preserving the fourth column.
-void func_8008CE00_main(const HuMtx4F a, const HuMtx4F b, HuMtx4F result) {
+void HuMtxCatAffineF(const HuMtx4F a, const HuMtx4F b, HuMtx4F result) {
     HuMtx4F temp;
     s32 i, j;
 
@@ -43,24 +43,24 @@ void func_8008CE00_main(const HuMtx4F a, const HuMtx4F b, HuMtx4F result) {
     }
 }
 
-void func_8008CEE0_main(Mtx *a, const Mtx *b, Mtx *result) {
+void HuMtxCatAffine(Mtx *a, const Mtx *b, Mtx *result) {
     HuMtx4F tempA, tempB;
     s32 i, j;
     const u16 *row;
 
-    func_80089980_main(tempA, a);
+    HuMtxL2F(tempA, a);
     row = (const u16 *)b->m;
     for (i = 0; i < 4; row += 4, i++) {
         for (j = 0; j < 3; j++) {
             tempB[i][j] = (s32)(((u32)row[j] << 16) | row[j + 16]) * (1.0f / 65536.0f);
         }
     }
-    func_8008CE00_main(tempA, tempB, tempA);
-    func_800898F0_main(tempA, result);
+    HuMtxCatAffineF(tempA, tempB, tempA);
+    HuMtxF2L(tempA, result);
 }
 
 // Multiply by the upper-left 3x3 matrix, preserving the fourth column.
-void func_8008CFA0_main(const HuMtx4F a, const HuMtx4F b, HuMtx4F result) {
+void HuMtxCatRotF(const HuMtx4F a, const HuMtx4F b, HuMtx4F result) {
     HuMtx4F temp;
     s32 i, j;
 
@@ -77,24 +77,24 @@ void func_8008CFA0_main(const HuMtx4F a, const HuMtx4F b, HuMtx4F result) {
     }
 }
 
-void func_8008D070_main(Mtx *a, const Mtx *b, Mtx *result) {
+void HuMtxCatRot(Mtx *a, const Mtx *b, Mtx *result) {
     HuMtx4F tempA, tempB;
     s32 i, j;
     const u16 *row;
 
-    func_80089980_main(tempA, a);
+    HuMtxL2F(tempA, a);
     row = (const u16 *)b->m;
     for (i = 0; i < 3; row += 4, i++) {
         for (j = 0; j < 3; j++) {
             tempB[i][j] = (s32)(((u32)row[j] << 16) | row[j + 16]) * (1.0f / 65536.0f);
         }
     }
-    func_8008CFA0_main(tempA, tempB, tempA);
-    func_800898F0_main(tempA, result);
+    HuMtxCatRotF(tempA, tempB, tempA);
+    HuMtxF2L(tempA, result);
 }
 
 // Multiply by a translation-only matrix.
-void func_8008D130_main(const HuMtx4F a, const HuMtx4F b, HuMtx4F result) {
+void HuMtxCatTransF(const HuMtx4F a, const HuMtx4F b, HuMtx4F result) {
     HuMtx4F temp;
     s32 i, j;
 
@@ -111,15 +111,15 @@ void func_8008D130_main(const HuMtx4F a, const HuMtx4F b, HuMtx4F result) {
     }
 }
 
-void func_8008D1F0_main(Mtx *a, Mtx *b, Mtx *result) {
+void HuMtxCatTrans(Mtx *a, Mtx *b, Mtx *result) {
     HuMtx4F tempA, tempB;
     u16 (*integer)[4] = (u16 (*)[4])b->m;
     u16 (*fraction)[4] = (u16 (*)[4])&b->m[2];
 
-    func_80089980_main(tempA, a);
+    HuMtxL2F(tempA, a);
     tempB[3][0] = (s32)(((u32)integer[3][0] << 16) | fraction[3][0]) * (1.0f / 65536.0f);
     tempB[3][1] = (s32)(((u32)integer[3][1] << 16) | fraction[3][1]) * (1.0f / 65536.0f);
     tempB[3][2] = (s32)(((u32)integer[3][2] << 16) | fraction[3][2]) * (1.0f / 65536.0f);
-    func_8008D130_main(tempA, tempB, tempA);
-    func_800898F0_main(tempA, result);
+    HuMtxCatTransF(tempA, tempB, tempA);
+    HuMtxF2L(tempA, result);
 }

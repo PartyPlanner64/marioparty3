@@ -1,7 +1,7 @@
 #include "humath.h"
 
 // Build a float rotation matrix from Euler angles.
-void func_8008A7F0_main(HuMtx4F mtx, const f32 *rot) {
+void HuMtxRotF(HuMtx4F mtx, const f32 *rot) {
     f32 sin_x, cos_x, sin_y, cos_y, sin_z, cos_z;
 
     sincosdf(rot[0], &sin_x, &cos_x);

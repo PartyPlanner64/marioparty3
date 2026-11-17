@@ -858,7 +858,7 @@ void m235_PlayerObjMain(omObjData *object) {
     m235_PlayerTiltUpdate(object, x, z);
     speed = work->unk40;
     object->trans.x -= m235_throttleTbl[player] * 50.0f;
-    func_80088910_main(Hu3DData[object->model[0]].mtx, 0.0f, work->unk3C, 0.0f);
+    HuRotateRPYF(Hu3DData[object->model[0]].mtx, 0.0f, work->unk3C, 0.0f);
     MgObjPosSet(object, x, y - 40.0f, z);
     m235_WakeUpdate(object, m235_throttleTbl[player]);
     if (m235_bumpPowerTbl[player] != 0.0f) {

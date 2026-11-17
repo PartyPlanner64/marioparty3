@@ -678,7 +678,7 @@ void m225_PuckObjMain(omObjData *object) {
         MgObjPosSet(object, x + mgMoveOfsX, y, z + mgMoveOfsZ);
         m225_puckRotTbl[work->unk56] += work->unk40 / 5.0f;
         m225_puckRotTbl[work->unk56] = HuAngleWrap(m225_puckRotTbl[work->unk56]);
-        func_80088910_main(Hu3DData[object->model[0]].mtx, 0.0f, m225_puckRotTbl[work->unk56], 0.0f);
+        HuRotateRPYF(Hu3DData[object->model[0]].mtx, 0.0f, m225_puckRotTbl[work->unk56], 0.0f);
     }
 }
 

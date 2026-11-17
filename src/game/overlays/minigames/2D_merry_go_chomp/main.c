@@ -1170,7 +1170,7 @@ void m245_PlayerObjInit(omObjData *obj) {
     Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[1]);
     Hu3DModelDynamicFree(obj->model[1]);
-    func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 0.0f, 0.0f);
+    HuTranslateF(Hu3DData[obj->model[1]].mtx, 0.0f, 0.0f, 0.0f);
     omSetTra(obj, m245_queuePosXTbl[obj->work[1]], 505.0f, m245_queuePosZTbl[obj->work[1]]);
     omSetRot(obj, 0.0f, 330.0f, 0.0f);
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
@@ -1624,7 +1624,7 @@ void m245_WanwanObjInit(omObjData *obj) {
     Hu3DModelObjAttrSet(obj->model[6], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[6]);
     Hu3DModelDynamicFree(obj->model[6]);
-    func_80088800_main(Hu3DData[obj->model[6]].mtx, 0.0f, 0.0f, 0.0f);
+    HuTranslateF(Hu3DData[obj->model[6]].mtx, 0.0f, 0.0f, 0.0f);
     Hu3DModelScaleSet(obj->model[6], 2.5f, 1.0f, 2.5f);
     for (i = 7; i < 12; i++) {
         obj->model[i] = Hu3DModelLink(shadow);

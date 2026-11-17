@@ -150,8 +150,8 @@
 // void mtxRotYCat(Mtx*, f32);
 // u16 HuProfCpuBegin(s32, s32, s32);
 // void HuProfCpuEnd(s16);
-// void func_800898F0_main(Mtx*, Mtx*);
-// void func_80089980_main(Mtx*, Mtx*);
+// void HuMtxF2L(Mtx*, Mtx*);
+// void HuMtxL2F(Mtx*, Mtx*);
 // void MBCameraPos3DGet(Vec2f*);
 // s16 MBMasuBlockGet(u16, u8);
 // void MBDebugPrintShadow(u16 arg0, u16 arg1, char* arg2, u8 arg3, u8 arg4);

@@ -2139,7 +2139,7 @@ void MB1Ev_StarGuideIn(void) {
 
     angle = 0.0f;
     while (1) {
-        func_8008A2A0_main(Hu3DData[star->omObj1->model[0]].mtx, angle);
+        HuMtxRotYF(Hu3DData[star->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         if (angle >= 360.0f) {
             angle -= 360.0f;
@@ -2162,7 +2162,7 @@ void MB1Ev_StarGuideIn(void) {
         HuPrcVSleep();
     }
 
-    func_8008A2A0_main(Hu3DData[star->omObj1->model[0]].mtx, 0.0f);
+    HuMtxRotYF(Hu3DData[star->omObj1->model[0]].mtx, 0.0f);
     EffectStop(light);
     mb1ev_starGuideInProc = 0;
     omDelPrcObj(NULL);
@@ -2334,7 +2334,7 @@ void MB1Ev_StarGet(void) {
     MBPlayerPosMoveCreate(coords, &sp10, coords, 40);
 
     for (i = 0; i < 40; i++) {
-        func_8008A2A0_main(Hu3DData[star->omObj1->model[0]].mtx, angle);
+        HuMtxRotYF(Hu3DData[star->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         scale -= 0.05f;
         if (scale < 0.0f) {
@@ -4896,7 +4896,7 @@ void MB1Ev_TeresaCoin(void) {
             break;
         }
         angle += 40.0f;
-        func_8008A2A0_main(Hu3DData[coin->omObj1->model[0]].mtx, angle);
+        HuMtxRotYF(Hu3DData[coin->omObj1->model[0]].mtx, angle);
     }
     MBModelKill(coin);
     omDelPrcObj(NULL);
@@ -5858,7 +5858,7 @@ void MB1Ev_KSuitStart(void) {
 
     for (var_f22 = 0.0f, var_f20 = 1.0f; var_f20 < 10.0f; var_f22 += 20.0f, HuPrcVSleep(), var_f20 += 0.5) {
         HuVecCopyXYZ(&obj->scale, var_f20, var_f20, var_f20);
-        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, var_f22);
+        HuMtxRotZF(Hu3DData[obj->omObj1->model[0]].mtx, var_f22);
     }
     
     MBModelDispOff(player->player_obj);
@@ -5866,7 +5866,7 @@ void MB1Ev_KSuitStart(void) {
 
     for (; var_f20 >= 1.0f; var_f22 += 20.0f, HuPrcVSleep(), var_f20 -= 0.5) {
         HuVecCopyXYZ(&obj->scale, var_f20, var_f20, var_f20);
-        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, var_f22);
+        HuMtxRotZF(Hu3DData[obj->omObj1->model[0]].mtx, var_f22);
     }
 
     MBModelKill(obj);
@@ -5900,7 +5900,7 @@ void MB1Ev_KSuitEnd(void) {
 
     for (var_f22 = 0.0f, var_f20 = 1.0f; var_f20 < 10.0f; var_f22 += 20.0f, HuPrcVSleep(), var_f20 += 0.5) {
         HuVecCopyXYZ(&obj->scale, var_f20, var_f20, var_f20);
-        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, var_f22);
+        HuMtxRotZF(Hu3DData[obj->omObj1->model[0]].mtx, var_f22);
     }
     
     MBModelDispOn(player->player_obj);
@@ -5908,7 +5908,7 @@ void MB1Ev_KSuitEnd(void) {
     
     for (; var_f20 >= 1.0f; var_f22 += 20.0f, HuPrcVSleep(), var_f20 -= 0.5) {
         HuVecCopyXYZ(&obj->scale, var_f20, var_f20, var_f20);
-        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, var_f22);
+        HuMtxRotZF(Hu3DData[obj->omObj1->model[0]].mtx, var_f22);
     }
     MBModelKill(obj);
 }
@@ -6630,7 +6630,7 @@ void MB1Ev_KoopaCardCoinProc(void) {
             break;
         }
         angle += 40.0f;
-        func_8008A2A0_main(Hu3DData[modelObj->omObj1->model[0]].mtx, angle);
+        HuMtxRotYF(Hu3DData[modelObj->omObj1->model[0]].mtx, angle);
     }
 
     MBModelKill(modelObj);
@@ -7594,26 +7594,26 @@ void MB1Ev_After5Effect(void) {
 
     for (spin = 0.0f, scale = 1.0f; scale < 18.0f; scale += 0.8) {
         HuVecCopyXYZ(&obj->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, spin);
+        HuMtxRotZF(Hu3DData[obj->omObj1->model[0]].mtx, spin);
         spin += 20.0f;
         HuPrcVSleep();
     }
 
     while (*state != 1) {
-        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, spin);
+        HuMtxRotZF(Hu3DData[obj->omObj1->model[0]].mtx, spin);
         spin += 20.0f;
         HuPrcVSleep();
     }
 
     for (; scale < 40.0f; scale += 0.8) {
         HuVecCopyXYZ(&obj->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, spin);
+        HuMtxRotZF(Hu3DData[obj->omObj1->model[0]].mtx, spin);
         spin += 20.0f;
         HuPrcVSleep();
     }
 
     while (*state != 2) {
-        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, spin);
+        HuMtxRotZF(Hu3DData[obj->omObj1->model[0]].mtx, spin);
         spin += 20.0f;
         HuPrcVSleep();
     }

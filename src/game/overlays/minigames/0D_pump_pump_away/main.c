@@ -675,7 +675,7 @@ void m213_GroundObjInit(omObjData *obj) {
         Hu3DModelObjAttrSet(obj->model[i], 0x80000000, 0);
         Hu3DModelRemakeStatic(obj->model[i]);
         Hu3DModelDynamicFree(obj->model[i]);
-        func_80088800_main(Hu3DData[obj->model[i]].mtx, 0.0f, 1.0f, 0.0f);
+        HuTranslateF(Hu3DData[obj->model[i]].mtx, 0.0f, 1.0f, 0.0f);
         Hu3DModelScaleSet(obj->model[i], 3.0f, 3.0f, 3.0f);
         Hu3DModelPosSet(obj->model[i], m213_rocketPosTbl[i - 1].x,
                         obj->trans.y + 1.0, m213_rocketPosTbl[i - 1].z + 0.0f);
@@ -2557,7 +2557,7 @@ void m213_PlayerObjInit(omObjData *obj) {
     Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[1]);
     Hu3DModelDynamicFree(obj->model[1]);
-    func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 5.0f, 0.0f);
+    HuTranslateF(Hu3DData[obj->model[1]].mtx, 0.0f, 5.0f, 0.0f);
     if (obj->work[1] == 0) {
         obj->trans.x = m213_playerPosTbl[obj->work[1] + m213_team0SlotCnt].x;
         obj->trans.y = m213_playerPosTbl[obj->work[1] + m213_team0SlotCnt].y;

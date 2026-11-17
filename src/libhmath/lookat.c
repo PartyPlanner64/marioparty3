@@ -1,7 +1,7 @@
 #include "humath.h"
 
 // Build a view matrix from camera[0..2] (eye, target, up), returning its basis vectors.
-void func_8008D450_main(HuMtx4F mtx, Vec *camera, Vec *basis) {
+void HuMtxLookAtBasisF(HuMtx4F mtx, Vec *camera, Vec *basis) {
     HuVecSubtract(&basis[2], &camera[0], &camera[1]);
     HuVecNormalize3F(&basis[2]);
     HuVecCross(&basis[0], &camera[2], &basis[2]);

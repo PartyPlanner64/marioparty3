@@ -653,7 +653,7 @@ void Hu3DDraw(HmfData *arg0, HuMtx4F arg1, HuMtx4F arg2) {
             objBillboardCheck(arg0, 0, arg1, mtx);
             mtxCat(arg2, mtx, arg1);
         }
-        func_800898F0_main(arg1, &MTXBuf[MTXBufNum]);
+        HuMtxF2L(arg1, &MTXBuf[MTXBufNum]);
         Hu3DDrawEntryAdd(arg0, 0, &MTXBuf[MTXBufNum++], arg1);
         return;
     }
@@ -733,7 +733,7 @@ void objCallSkeleton(HmfData *arg0, s16 arg1) {
     if (arg0->unk8C == NULL) {
         mtxCat(node->unk4C, Hu3DObjMtxStack[0], mtx);
     } else {
-        func_8008A070_main(mtx);
+        HuMtxIdentF(mtx);
         if (node->pos.x != 0.0f || node->pos.y != 0.0f || node->pos.z != 0.0f) {
             mtxTransCat(mtx, node->pos.x, node->pos.y, node->pos.z);
             transformed = 1;
@@ -744,7 +744,7 @@ void objCallSkeleton(HmfData *arg0, s16 arg1) {
         }
         if (node->scale.x != 1.0f || node->scale.y != 1.0f || node->scale.z != 1.0f) {
             mtxScaleCat(mtx, node->scale.x, node->scale.y, node->scale.z);
-            func_8008A070_main(temp);
+            HuMtxIdentF(temp);
             mtxScaleCat(temp, node->scale.x, node->scale.y, node->scale.z);
             Hu3DSubMtxStackIdx++;
             mtxCat(temp, Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx], Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx + 1]);
@@ -762,7 +762,7 @@ void objCallSkeleton(HmfData *arg0, s16 arg1) {
             objBillboardCheck(node->unk48, objectIndex, mtx, temp);
             mtxCat(Hu3DSubMtxStack[Hu3DSubMtxStackIdx], temp, mtx);
         }
-        func_800898F0_main(mtx, &MTXBuf[MTXBufNum]);
+        HuMtxF2L(mtx, &MTXBuf[MTXBufNum]);
         Hu3DDrawEntryAdd(node->unk48, objectIndex, &MTXBuf[MTXBufNum], mtx);
         MTXBufNum++;
     }
@@ -804,14 +804,14 @@ void objCall(HmfData *arg0, s16 arg1) {
     if (arg0->unk8C == NULL) {
         mtxCat(node->unk58, Hu3DObjMtxStack[0], mtx);
         if (node->baseScale.x != 1.0f || node->baseScale.y != 1.0f || node->baseScale.z != 1.0f) {
-            func_80088700_main(temp, node->baseScale.x, node->baseScale.y, node->baseScale.z);
+            HuScaleF(temp, node->baseScale.x, node->baseScale.y, node->baseScale.z);
             Hu3DSubMtxStackIdx++;
             mtxCat(temp, Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx], Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx + 1]);
             scaled = 1;
         }
     } else {
         if (node->pos.x != 0.0f || node->pos.y != 0.0f || node->pos.z != 0.0f) {
-            func_80088800_main(mtx, node->pos.x, node->pos.y, node->pos.z);
+            HuTranslateF(mtx, node->pos.x, node->pos.y, node->pos.z);
             transformed = 1;
         }
         if (node->rot.x != 0.0f || node->rot.y != 0.0f || node->rot.z != 0.0f) {
@@ -827,9 +827,9 @@ void objCall(HmfData *arg0, s16 arg1) {
             if (transformed) {
                 mtxScaleCat(mtx, node->scale.x, node->scale.y, node->scale.z);
             } else {
-                func_80088700_main(mtx, node->scale.x, node->scale.y, node->scale.z);
+                HuScaleF(mtx, node->scale.x, node->scale.y, node->scale.z);
             }
-            func_80088700_main(temp, node->scale.x, node->scale.y, node->scale.z);
+            HuScaleF(temp, node->scale.x, node->scale.y, node->scale.z);
             matrixIndex = ++Hu3DSubMtxStackIdx;
             mtxCat(temp, Hu3DSubMtxStackPrev[matrixIndex], Hu3DSubMtxStackPrev[matrixIndex + 1]);
             scaled = 1;
@@ -844,7 +844,7 @@ void objCall(HmfData *arg0, s16 arg1) {
         }
         mtxCat(Hu3DObjMtxStack[Hu3DObjMtxStackIdx], Hu3DObjMtxStack[0], mtx);
     }
-    func_800898F0_main(mtx, &MTXBuf[MTXBufNum]);
+    HuMtxF2L(mtx, &MTXBuf[MTXBufNum]);
     matrixIndex = MTXBufNum++;
     count = node->unk00;
     indices = node->unk50;
@@ -863,7 +863,7 @@ void objCall(HmfData *arg0, s16 arg1) {
             if (object->unk50 & 0x70000000) {
                 objBillboardCheck(node->unk54, objectIndex, mtx, temp);
                 mtxCat(Hu3DSubMtxStack[Hu3DSubMtxStackIdx], temp, mtx);
-                func_800898F0_main(mtx, &MTXBuf[MTXBufNum]);
+                HuMtxF2L(mtx, &MTXBuf[MTXBufNum]);
                 matrixIndex = MTXBufNum++;
             }
             Hu3DDrawEntryAdd(node->unk54, objectIndex, &MTXBuf[matrixIndex], mtx);
@@ -898,12 +898,12 @@ void objCallNoAnim(HmfData *arg0, s16 arg1) {
     scaled = 0;
     mtxCat(node->unk58, Hu3DObjMtxStack[0], mtx);
     if (node->baseScale.x != 1.0f || node->baseScale.y != 1.0f || node->baseScale.z != 1.0f) {
-        func_80088700_main(temp, node->baseScale.x, node->baseScale.y, node->baseScale.z);
+        HuScaleF(temp, node->baseScale.x, node->baseScale.y, node->baseScale.z);
         Hu3DSubMtxStackIdx++;
         mtxCat(temp, Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx], Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx + 1]);
         scaled = 1;
     }
-    func_800898F0_main(mtx, &MTXBuf[MTXBufNum]);
+    HuMtxF2L(mtx, &MTXBuf[MTXBufNum]);
     matrixIndex = MTXBufNum++;
     indices = node->unk50;
     i = 0;
@@ -923,7 +923,7 @@ void objCallNoAnim(HmfData *arg0, s16 arg1) {
             if (object->unk50 & 0x70000000) {
                 objBillboardCheck(node->unk54, objectIndex, mtx, temp);
                 mtxCat(Hu3DSubMtxStack[Hu3DSubMtxStackIdx], temp, mtx);
-                func_800898F0_main(mtx, &MTXBuf[MTXBufNum]);
+                HuMtxF2L(mtx, &MTXBuf[MTXBufNum]);
                 matrixIndex = MTXBufNum++;
             }
             Hu3DDrawEntryAdd(node->unk54, objectIndex, &MTXBuf[matrixIndex], mtx);
@@ -961,13 +961,13 @@ void objCallLink(HmfData *arg0, s16 arg1) {
     if (arg0->unk8C == NULL) {
         mtxCat(node->unk58, Hu3DObjMtxStack[0], mtx);
         if (flags && (node->baseScale.x != 1.0f || node->baseScale.y != 1.0f || node->baseScale.z != 1.0f)) {
-            func_80088700_main(temp, node->baseScale.x, node->baseScale.y, node->baseScale.z);
+            HuScaleF(temp, node->baseScale.x, node->baseScale.y, node->baseScale.z);
             Hu3DSubMtxStackIdx++;
             mtxCat(temp, Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx], Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx + 1]);
         }
     } else {
         if (node->pos.x != 0.0f || node->pos.y != 0.0f || node->pos.z != 0.0f) {
-            func_80088800_main(mtx, node->pos.x, node->pos.y, node->pos.z);
+            HuTranslateF(mtx, node->pos.x, node->pos.y, node->pos.z);
             transformed = 1;
         }
         if (node->rot.x != 0.0f || node->rot.y != 0.0f || node->rot.z != 0.0f) {
@@ -983,10 +983,10 @@ void objCallLink(HmfData *arg0, s16 arg1) {
             if (transformed) {
                 mtxScaleCat(mtx, node->scale.x, node->scale.y, node->scale.z);
             } else {
-                func_80088700_main(mtx, node->scale.x, node->scale.y, node->scale.z);
+                HuScaleF(mtx, node->scale.x, node->scale.y, node->scale.z);
             }
             if (flags) {
-                func_80088700_main(temp, node->scale.x, node->scale.y, node->scale.z);
+                HuScaleF(temp, node->scale.x, node->scale.y, node->scale.z);
                 Hu3DSubMtxStackIdx++;
                 mtxCat(temp, Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx], Hu3DSubMtxStackPrev[Hu3DSubMtxStackIdx + 1]);
             }
@@ -1001,12 +1001,12 @@ void objCallLink(HmfData *arg0, s16 arg1) {
         }
         mtxCat(Hu3DObjMtxStack[Hu3DObjMtxStackIdx], Hu3DObjMtxStack[0], mtx);
     }
-    func_800898F0_main(mtx, &MTXBuf[MTXBufNum]);
+    HuMtxF2L(mtx, &MTXBuf[MTXBufNum]);
     matrixIndex = MTXBufNum++;
     if (object->unk50 & 0x70000000) {
         objBillboardCheck(node->unk54, objectIndex, mtx, temp);
         mtxCat(Hu3DSubMtxStack[Hu3DSubMtxStackIdx], temp, mtx);
-        func_800898F0_main(mtx, &MTXBuf[MTXBufNum]);
+        HuMtxF2L(mtx, &MTXBuf[MTXBufNum]);
         matrixIndex = MTXBufNum++;
     }
     Hu3DDrawEntryAdd(node->unk54, objectIndex, &MTXBuf[matrixIndex], mtx);
@@ -1086,7 +1086,7 @@ void objMesh(HmfData *arg0, s16 arg1, HmfDrawObject *arg2) {
 void Hu3DDrawEntryAddL(HmfData *arg0, s16 arg1, Mtx *arg2) {
     HuMtx4F mtx;
 
-    func_80089980_main(mtx, arg2);
+    HuMtxL2F(mtx, arg2);
     Hu3DDrawEntryAdd(arg0, arg1, arg2, mtx);
 }
 
@@ -2404,7 +2404,7 @@ void Hu3DMtxCalc(HmfData *hmf) {
     if (hmf->unk14 != 0) {
         Hu3DSubMtxStackIdx = 0;
         Hu3DObjMtxStackIdx = 0;
-        func_8008A070_main(Hu3DObjMtxStack[0]);
+        HuMtxIdentF(Hu3DObjMtxStack[0]);
         if (hmf->unk80 == (HmfMotionNode *)-1) {
             if (hmf->unk64 != 0) {
                 objMtxCalcSkeleton(hmf, 0);
@@ -2425,7 +2425,7 @@ void objMtxCalcSkeleton(HmfData *hmf, s16 nodeIndex) {
     node = &hmf->unk68[nodeIndex];
     scaled = 0;
     changed = 0;
-    func_8008A070_main(mtx);
+    HuMtxIdentF(mtx);
     if (hmf->unk8C == NULL) {
         if (node->unk08.x != 0.0f || node->unk08.y != 0.0f || node->unk08.z != 0.0f) {
             mtxTransCat(mtx, node->unk08.x, node->unk08.y, node->unk08.z);
@@ -2472,7 +2472,7 @@ void objMtxCalcMotion(HmfData *hmf, s16 nodeIndex) {
     node = &hmf->unk80[nodeIndex];
     scaled = 0;
     changed = 0;
-    func_8008A070_main(mtx);
+    HuMtxIdentF(mtx);
     if (node->basePos.x != 0.0f || node->basePos.y != 0.0f || node->basePos.z != 0.0f) {
         mtxTransCat(mtx, node->basePos.x, node->basePos.y, node->basePos.z);
         changed = 1;

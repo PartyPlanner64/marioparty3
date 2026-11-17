@@ -2112,7 +2112,7 @@ void MgPlayerObjMain(omObjData *arg0) {
     speed *= (prevVy != 1000.0f) ? data->unk4C * data->unkB4 : data->unkB4;
     x += sindf(data->unk3C) * speed + mgMoveOfsX;
     z += cosdf(data->unk3C) * speed + mgMoveOfsZ;
-    func_80088910_main(Hu3DData[arg0->model[0]].mtx, 0.0f, data->unk3C, 0.0f);
+    HuRotateRPYF(Hu3DData[arg0->model[0]].mtx, 0.0f, data->unk3C, 0.0f);
     MgObjPosSet(arg0, x, y, z);
     if (data->unk104[1] != NULL) {
         data->unk104[1](arg0);

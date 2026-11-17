@@ -1455,7 +1455,7 @@ void m240_PlayerObjInit(omObjData *object) {
     Hu3DModelObjAttrSet(object->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(object->model[1]);
     Hu3DModelDynamicFree(object->model[1]);
-    func_80088800_main(Hu3DData[object->model[1]].mtx, 0.0f, 10.0f, 0.0f);
+    HuTranslateF(Hu3DData[object->model[1]].mtx, 0.0f, 10.0f, 0.0f);
     Hu3DMotionModelSet(object->model[0], object->motion[0]);
     Hu3DMotionAttrSet(object->model[0], 2, 2);
     if (object->work[0] == 0) {
@@ -1667,7 +1667,7 @@ void m240_BallObjInit(omObjData *object) {
     Hu3DModelObjAttrSet(object->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(object->model[1]);
     Hu3DModelDynamicFree(object->model[1]);
-    func_80088800_main(Hu3DData[object->model[1]].mtx, 0.0f, 10.0f, 0.0f);
+    HuTranslateF(Hu3DData[object->model[1]].mtx, 0.0f, 10.0f, 0.0f);
     Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     object->trans.x = object->trans.y = object->trans.z = 0.0f;

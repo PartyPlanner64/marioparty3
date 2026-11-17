@@ -118,7 +118,7 @@ static void MBItemMasuBoxObjMain(omObjData *obj) {
         mbItemMasuBoxRot -= 360.0f;
     }
 
-    func_8008A430_main(Hu3DData[mbItemMasuBoxMdl->omObj1->model[0]].mtx, mbItemMasuBoxRot);
+    HuMtxRotZF(Hu3DData[mbItemMasuBoxMdl->omObj1->model[0]].mtx, mbItemMasuBoxRot);
 }
 
 static s32 MBItemMasuChoiceGet(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {

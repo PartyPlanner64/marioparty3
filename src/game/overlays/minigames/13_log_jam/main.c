@@ -659,7 +659,7 @@ void m219_TeamObjMain(omObjData *object) {
             Hu3DModelAttrSet(team->unk_1C, 4, 4);
             done = TRUE;
         }
-        func_8008A070_main(Hu3DData[team->unk_1C].mtx);
+        HuMtxIdentF(Hu3DData[team->unk_1C].mtx);
         mtxTransCat(Hu3DData[team->unk_1C].mtx, 0.0f, -50.0f, 0.0f);
         mtxRotCat(Hu3DData[team->unk_1C].mtx, team->unk_30, 0.0f, 0.0f);
         team->unk_20++;
@@ -1191,7 +1191,7 @@ void m219_ChopperUpdate(omObjData *object, LogJamTeam *team) {
             m219_NodeWorldMtxCalc(object, "item_hook", mtx);
             team->unk_1C = object->model[2];
             if (team->unk_1C != -1) {
-                func_8008A070_main(Hu3DData[team->unk_1C].mtx);
+                HuMtxIdentF(Hu3DData[team->unk_1C].mtx);
                 mtxTransCat(Hu3DData[team->unk_1C].mtx, 0.0f, -50.0f, 0.0f);
                 Hu3DModelAttrSet(team->unk_1C, 0x4000, 0);
                 team->unk_20 = 0;
@@ -2641,7 +2641,7 @@ void m219_NodeWorldMtxCalc(omObjData *object, const char *name, HuMtx4F out) {
     HuMtx4F mtx;
     HuMtx4F local;
 
-    func_8008A070_main(mtx);
+    HuMtxIdentF(mtx);
     mtxTransCat(mtx, object->trans.x, object->trans.y, object->trans.z);
     mtxRotCat(mtx, object->rot.x, object->rot.y, object->rot.z);
     mtxScaleCat(mtx, object->scale.x, object->scale.y, object->scale.z);

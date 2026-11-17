@@ -972,7 +972,7 @@ void msetup_ModelMtxPosGet(s16 model, Vec *worldPos, HuMtx4F nodeTransform) {
     HuMtx4F combined;
     HmfModel *entry = &Hu3DData[model];
 
-    func_80088800_main(transform, entry->pos.x, entry->pos.y, entry->pos.z);
+    HuTranslateF(transform, entry->pos.x, entry->pos.y, entry->pos.z);
     mtxRotCat(transform, entry->rot.x, entry->rot.y, entry->rot.z);
     mtxScaleCat(transform, entry->scale.x, entry->scale.y, entry->scale.z);
     mtxCat(nodeTransform, transform, combined);

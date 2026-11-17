@@ -1,7 +1,7 @@
 #include "humath.h"
 
 // Build a fixed-point Euler rotation matrix with scale and translation.
-void func_8008AD60_main(Mtx *m, const f32 *rot, const f32 *scale, const f32 *translation) {
+void HuMtxSRT(Mtx *m, const f32 *rot, const f32 *scale, const f32 *translation) {
     f32 sinR, cosR, sinP, cosP, sinH, cosH;
     // Four rows of three 16.16 elements: rotation/scale followed by translation.
     s32 fixed[12];
@@ -42,7 +42,7 @@ void func_8008AD60_main(Mtx *m, const f32 *rot, const f32 *scale, const f32 *tra
 }
 
 // Build a floating-point matrix that aligns the negative Z axis to a direction.
-void func_8008B0E0_main(HuMtx4F mtx, f32 angle, const f32 *axis) {
+void HuMtxAlignF(HuMtx4F mtx, f32 angle, const f32 *axis) {
     f32 sine, cosine;
     f32 len;
     f32 xz;

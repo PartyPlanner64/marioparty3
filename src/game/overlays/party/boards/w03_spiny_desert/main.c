@@ -2087,7 +2087,7 @@ void MB3Ev_StarGuideIn(void) {
 
     angle = 0.0f;
     while (1) {
-        func_8008A2A0_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        HuMtxRotYF(Hu3DData[model->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         if (angle >= 360.0f) {
             angle -= 360.0f;
@@ -2109,7 +2109,7 @@ void MB3Ev_StarGuideIn(void) {
         HuPrcVSleep();
     }
 
-    func_8008A2A0_main(Hu3DData[model->omObj1->model[0]].mtx, 0.0f);
+    HuMtxRotYF(Hu3DData[model->omObj1->model[0]].mtx, 0.0f);
     EffectStop(obj);
     mb3ev_starGuideInProc = 0;
     omDelPrcObj(NULL);
@@ -2289,7 +2289,7 @@ void MB3Ev_StarGet(void) {
     MBPlayerPosMoveCreate(&model->coords, &camPos, &model->coords, 40);
 
     for (i = 0; i < 40; i++) {
-        func_8008A2A0_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        HuMtxRotYF(Hu3DData[model->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         scale -= 0.05f;
         if (scale < 0.0f) {
@@ -4859,7 +4859,7 @@ void MB3Ev_TeresaCoin(void) {
             break;
         }
         angle += 40.0f;
-        func_8008A2A0_main(Hu3DData[obj->omObj1->model[0]].mtx, angle);
+        HuMtxRotYF(Hu3DData[obj->omObj1->model[0]].mtx, angle);
     }
     MBModelKill(obj);
     omDelPrcObj(NULL);
@@ -5847,7 +5847,7 @@ void MB3Ev_KSuitStart(void) {
     angle = 0.0f;
     for (scale = 1.0f; scale < 10.0f; scale = (f32)((f64)scale + 0.5)) {
         HuVecCopyXYZ(&model->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        HuMtxRotZF(Hu3DData[model->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         HuPrcVSleep();
     }
@@ -5857,7 +5857,7 @@ void MB3Ev_KSuitStart(void) {
 
     for (; scale >= 1.0f; scale = (f32)((f64)scale - 0.5)) {
         HuVecCopyXYZ(&model->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        HuMtxRotZF(Hu3DData[model->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         HuPrcVSleep();
     }
@@ -5894,7 +5894,7 @@ void MB3Ev_KSuitEnd(void) {
     angle = 0.0f;
     for (scale = 1.0f; scale < 10.0f; scale = (f32)((f64)scale + 0.5)) {
         HuVecCopyXYZ(&model->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        HuMtxRotZF(Hu3DData[model->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         HuPrcVSleep();
     }
@@ -5904,7 +5904,7 @@ void MB3Ev_KSuitEnd(void) {
 
     for (; scale >= 1.0f; scale = (f32)((f64)scale - 0.5)) {
         HuVecCopyXYZ(&model->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        HuMtxRotZF(Hu3DData[model->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         HuPrcVSleep();
     }
@@ -6631,7 +6631,7 @@ void MB3Ev_KoopaCardCoinProc(void) {
             break;
         }
         angle += 40.0f;
-        func_8008A2A0_main(Hu3DData[obj->omObj1->model[0]].mtx, angle);
+        HuMtxRotYF(Hu3DData[obj->omObj1->model[0]].mtx, angle);
     }
     MBModelKill(obj);
     omDelPrcObj(NULL);
@@ -7596,7 +7596,7 @@ void MB3Ev_After5Effect(void) {
     angle = 0.0f;
     for (scale = 1.0f; scale < 18.0f; scale = (f32)((f64)scale + 0.8)) {
         HuVecCopyXYZ(&model->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        HuMtxRotZF(Hu3DData[model->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         HuPrcVSleep();
     }
@@ -7604,7 +7604,7 @@ void MB3Ev_After5Effect(void) {
     if (*state != 1) {
         wait_angle_step = 20.0f;
         while (*state != 1) {
-            func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+            HuMtxRotZF(Hu3DData[model->omObj1->model[0]].mtx, angle);
             angle += wait_angle_step;
             HuPrcVSleep();
         }
@@ -7612,7 +7612,7 @@ void MB3Ev_After5Effect(void) {
 
     for (; scale < 40.0f; scale = (f32)((f64)scale + 0.8)) {
         HuVecCopyXYZ(&model->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        HuMtxRotZF(Hu3DData[model->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         HuPrcVSleep();
     }
@@ -7620,7 +7620,7 @@ void MB3Ev_After5Effect(void) {
     if (*state != 2) {
         scale = 20.0f;
         while (*state != 2) {
-            func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+            HuMtxRotZF(Hu3DData[model->omObj1->model[0]].mtx, angle);
             angle += scale;
             HuPrcVSleep();
         }

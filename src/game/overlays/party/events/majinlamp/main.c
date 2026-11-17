@@ -454,7 +454,7 @@ void majinlamp_LampBoardExec(void) {
     }
     HuVecCopyXYZ(&majinlamp_lampMdl->coords, -1600.0f, -100.0f, 1600.0f);
     majinlamp_lampBobF = 1;
-    func_8008A120_main(Hu3DData[majinlamp_lampMdl->omObj1->model[0]].mtx, 60.0f);
+    HuMtxRotXF(Hu3DData[majinlamp_lampMdl->omObj1->model[0]].mtx, 60.0f);
     majinlamp_lampMdl->rot.x = sindf(45.0f);
     majinlamp_lampMdl->rot.z = cosdf(45.0f);
     var_f20 = 50.0f;
@@ -493,8 +493,8 @@ void majinlamp_LampBoardExec(void) {
     majinlamp_ArcMoveCreate((s32)majinlamp_lampMdl, &sp38, 0x1E, &sp48);
     var_f20 = 60.0f;
     for (i = 0; i < 0x1E; i++) {
-        func_8008A120_main(Hu3DData[majinlamp_lampMdl->omObj1->model[0]].mtx, var_f20);
-        func_8008A120_main(Hu3DData[majinlamp_gwPlayer->player_obj->omObj1->model[0]].mtx,
+        HuMtxRotXF(Hu3DData[majinlamp_lampMdl->omObj1->model[0]].mtx, var_f20);
+        HuMtxRotXF(Hu3DData[majinlamp_gwPlayer->player_obj->omObj1->model[0]].mtx,
                            var_f20 - 60.0f);
         var_f20 -= 2.0f;
         HuPrcVSleep();
@@ -528,8 +528,8 @@ void majinlamp_TunnelFlyExec(void) {
     majinlamp_cam1Fov = 100.0f;
     majinlamp_cam1Near = 10.0f;
     majinlamp_cam1Far = 20000.0f;
-    func_8008A120_main(Hu3DData[majinlamp_lampMdl->omObj1->model[0]].mtx, 60.0f);
-    func_8008A120_main(Hu3DData[majinlamp_gwPlayer->player_obj->omObj1->model[0]].mtx, 0.0f);
+    HuMtxRotXF(Hu3DData[majinlamp_lampMdl->omObj1->model[0]].mtx, 60.0f);
+    HuMtxRotXF(Hu3DData[majinlamp_gwPlayer->player_obj->omObj1->model[0]].mtx, 0.0f);
     HuVecCopy3F(&majinlamp_gwPlayer->player_obj->coords, &majinlamp_flyPosTbl[0]);
     HuVecCopy3F(&majinlamp_lampMdl->coords, &majinlamp_flyPosTbl[0]);
     MBMotionSet(majinlamp_gwPlayer->player_obj, -1, 2);

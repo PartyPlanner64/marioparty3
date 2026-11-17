@@ -2,7 +2,7 @@
 #include "mtxpack.h"
 
 // Concatenate a fixed-point X-axis rotation with a matrix.
-void func_8008B840_main(Mtx *src, f32 angle, Mtx *dst) {
+void HuMtxRotXCat(Mtx *src, f32 angle, Mtx *dst) {
     HuMtx4F input, output;
     f32 sincos[2];
     s32 e[2];
@@ -47,7 +47,7 @@ void func_8008B840_main(Mtx *src, f32 angle, Mtx *dst) {
 }
 
 // Concatenate a float Y-axis rotation with a matrix.
-void func_8008BD90_main(const HuMtx4F src, f32 angle, HuMtx4F dst) {
+void HuMtxRotYCatF(const HuMtx4F src, f32 angle, HuMtx4F dst) {
     f32 sine, cosine;
 
     sincosdf(angle, &sine, &cosine);

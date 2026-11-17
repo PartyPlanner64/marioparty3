@@ -1564,14 +1564,14 @@ static void MBMasuDraw(Gfx **arg0, Mtx *arg1, s32 arg2) {
                         break;
                     }
                     temp_s0 = MBMasuGet(spaceId);
-                    func_80089980_main(sp10, &sp5C[1]);
+                    HuMtxL2F(sp10, &sp5C[1]);
                     mtxTransCat(sp10, temp_s0->coords.x, temp_s0->coords.y, temp_s0->coords.z);
                     if ((i == 0xD) && (var_s5 < mbMasuArrowAngleNum)) {
                         mtxRotYCat(sp10, mbMasuArrowAngleTbl[var_s5++]);
                     }
                     mtxScaleCat(sp10, temp_s0->rot.x, 1.0f, temp_s0->rot.z);
                     temp_s0_3 = &MTXBuf[MTXBufNum++];
-                    func_800898F0_main(sp10, temp_s0_3);
+                    HuMtxF2L(sp10, temp_s0_3);
                     gSPMatrix((*gfxPos)++, OS_K0_TO_PHYSICAL(temp_s0_3), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                     gSPVertex((*gfxPos)++, sp64, 4, 0);
                     gSP1Quadrangle((*gfxPos)++, 0, 1, 2, 3, 0);

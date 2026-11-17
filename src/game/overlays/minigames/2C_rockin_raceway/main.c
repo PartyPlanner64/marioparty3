@@ -1423,7 +1423,7 @@ void m244_RacerMove(omObjData *object) {
     racer->unk44 = m244_TrackPosCalc(racer->unk2E, racer->unk30, racer->unk44, speed, &racer->unk4C,
                                                 &racer->unk50, &racer->pos, &racer->rot);
     if (racer->unk3C > 0.0f) {
-        func_8008A070_main(mtx);
+        HuMtxIdentF(mtx);
         mtxRotCat(mtx, racer->unk3C, 0.0f, 0.0f);
         mtxTransCat(mtx, 0.0f, 0.0f, 47.0f);
         racer->unk54 = mtx[3][2];
@@ -3040,7 +3040,7 @@ void m244_ScreenPosCalc(s32 camIndex, f32 *pos, f32 *screen, f32 *normalized) {
 
     guLookAt(&lookAt, camera->pos.x, camera->pos.y, camera->pos.z, camera->at.x, camera->at.y, camera->at.z,
              camera->up.x, camera->up.y, camera->up.z);
-    func_80088850_main(&mtx, pos[0], pos[1], pos[2]);
+    HuTranslate(&mtx, pos[0], pos[1], pos[2]);
     guMtxCatL(&mtx, &lookAt, &mtx);
     viewX = (s32)(((u32)integer[3][0] << 16) | fraction[3][0]) >> 16;
     viewY = (s32)(((u32)integer[3][1] << 16) | fraction[3][1]) >> 16;

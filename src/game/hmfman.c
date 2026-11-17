@@ -301,7 +301,7 @@ skip:
     modelP->cameraBit = HU3D_CAM_ALL;
     modelP->unk00 = 0;
     modelP->unkB4 = 0;
-    func_8008A070_main(modelP->mtx);
+    HuMtxIdentF(modelP->mtx);
     Hu3DModelNum++;
     return modelId;
 }
@@ -347,7 +347,7 @@ s32 Hu3DModelLink(s16 linkMdlId) {
     modelP->rot.x = modelP->rot.y = modelP->rot.z = 0.0f;
     modelP->scale.x = modelP->scale.y = modelP->scale.z = 1.0f;
     modelP->cameraBit = HU3D_CAM_ALL;
-    func_8008A070_main(modelP->mtx);
+    HuMtxIdentF(modelP->mtx);
     Hu3DModelNum++;
     return modelId;
 }
@@ -395,7 +395,7 @@ s32 Hu3DModelDLCreate(u32 flags, void *dl, s32 mode) {
     modelP->scale.x = modelP->scale.y = modelP->scale.z = 1.0f;
     switch (mode & 6) {
         case 4:
-            func_8008A070_main(modelP->mtx);
+            HuMtxIdentF(modelP->mtx);
             hmf->unk3C = HuMemAllocTag(4, Hu3DModelTag);
             hmf->unk3C->unk00[0] = dl;
             hmf->unk60 = HuMemAllocTag(sizeof(HmfModelData_Unk64_Unk60_Struct), Hu3DModelTag);
@@ -410,7 +410,7 @@ s32 Hu3DModelDLCreate(u32 flags, void *dl, s32 mode) {
             hmf->unkB4 = NULL;
             hmf->unk0A = 0;
             hmf->unkD4 = mtxRotCat;
-            hmf->unkD8 = func_80088910_main;
+            hmf->unkD8 = HuRotateRPYF;
             hmf->unk60->boundsMin[0] = hmf->unk60->boundsMin[1] = hmf->unk60->boundsMin[2] = -0x8000;
             hmf->unk60->boundsMax[0] = hmf->unk60->boundsMax[1] = hmf->unk60->boundsMax[2] = -0x8000;
         case 0:
@@ -657,7 +657,7 @@ void Hu3DExec(void *arg0, u16 arg1) {
                         scaleMtx[1][3] = scaleMtx[2][0] = scaleMtx[2][1] = scaleMtx[2][3] = scaleMtx[3][0] =
                             scaleMtx[3][1] = scaleMtx[3][2] = 0.0f;
                 } else {
-                    func_8008A070_main(scaleMtx);
+                    HuMtxIdentF(scaleMtx);
                 }
                 mtxCat(model->mtx, camMtx, mtx);
             } else {
@@ -678,7 +678,7 @@ void Hu3DExec(void *arg0, u16 arg1) {
                         scaleMtx[1][3] = scaleMtx[2][0] = scaleMtx[2][1] = scaleMtx[2][3] = scaleMtx[3][0] =
                             scaleMtx[3][1] = scaleMtx[3][2] = 0.0f;
                 } else {
-                    func_8008A070_main(scaleMtx);
+                    HuMtxIdentF(scaleMtx);
                 }
             }
             hmf->unkD0 = model->unkB4;
@@ -719,7 +719,7 @@ void Hu3DExec(void *arg0, u16 arg1) {
                 hmf->unk8C = hmf->unk90 = hmf->unk94 = NULL;
             }
             if (Hu3DCurAttr & 0x4000) {
-                func_80089980_main(mtx, DrawObjData[Hu3DDrawList[model->unk68->unk00][model->unk68->unk60[model->unk0A].unk1D].objectIndex].fixedMtx);
+                HuMtxL2F(mtx, DrawObjData[Hu3DDrawList[model->unk68->unk00][model->unk68->unk60[model->unk0A].unk1D].objectIndex].fixedMtx);
             }
             Hu3DDraw(hmf, mtx, scaleMtx);
             hmf->unk0C++;

@@ -472,7 +472,7 @@ void m217_AnimMdlUpdate(void) {
     for (i = 0; i < 16; i++, work++) {
         if (work->unk_00 != 0 && work->unk_08 != -1) {
             model = &Hu3DData[work->unk_0C];
-            func_80088910_main(model->mtx, work->unk_1C.x, work->unk_1C.y, work->unk_1C.z);
+            HuRotateRPYF(model->mtx, work->unk_1C.x, work->unk_1C.y, work->unk_1C.z);
             if (work->unk_08 != 0) {
                 if (model->motTime >= Hu3DMotion[Hu3DData[work->unk_0C].motId].unk02) {
                     model->motTime = 0;

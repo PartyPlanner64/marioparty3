@@ -449,7 +449,7 @@ void m223_PlaneObjInit(omObjData *object) {
 void m223_PlaneMdlUpdate(omObjData *object) {
     AceHighPlayer *player = object->data;
 
-    func_80088910_main(Hu3DData[object->model[0]].mtx, player->unk_38, 0.0f, player->unk_3C + player->unk_44);
+    HuRotateRPYF(Hu3DData[object->model[0]].mtx, player->unk_38, 0.0f, player->unk_3C + player->unk_44);
     omSetRot(object, 0.0f, object->rot.y, 0.0f);
     if (player->unk_90 == 0) {
         Hu3DModelAttrSet(object->model[0], 4, 4);
@@ -459,11 +459,11 @@ void m223_PlaneMdlUpdate(omObjData *object) {
     if (player->unk_56 == 1) {
         Hu3DModelPosSet(object->model[1], object->trans.x + player->unk_60, object->trans.y + player->unk_68,
                         object->trans.z + player->unk_64);
-        func_80088910_main(Hu3DData[object->model[1]].mtx, player->unk_38, 0.0f, player->unk_3C + player->unk_44);
+        HuRotateRPYF(Hu3DData[object->model[1]].mtx, player->unk_38, 0.0f, player->unk_3C + player->unk_44);
         Hu3DModelRotSet(object->model[1], 0.0f, object->rot.y, 0.0f);
         Hu3DModelPosSet(object->model[2], object->trans.x + player->unk_60, object->trans.y + player->unk_68,
                         object->trans.z + player->unk_64);
-        func_80088910_main(Hu3DData[object->model[2]].mtx, player->unk_38, 0.0f, player->unk_3C + player->unk_44);
+        HuRotateRPYF(Hu3DData[object->model[2]].mtx, player->unk_38, 0.0f, player->unk_3C + player->unk_44);
         Hu3DModelRotSet(object->model[2], 0.0f, object->rot.y, 0.0f);
         if (player->unk_58 == 0) {
             Hu3DModelAttrSet(object->model[2], 4, 4);
@@ -509,7 +509,7 @@ void m223_PlaneSubMdlUpdate(omObjData *object) {
     if (model >= 0) {
         Hu3DModelAttrSet(model, 4, 0);
         Hu3DModelPosSet(model, object->trans.x, object->trans.y, object->trans.z);
-        func_80088910_main(Hu3DData[model].mtx, player->unk_38, 0.0f, player->unk_3C + player->unk_44);
+        HuRotateRPYF(Hu3DData[model].mtx, player->unk_38, 0.0f, player->unk_3C + player->unk_44);
         Hu3DModelRotSet(model, 0.0f, object->rot.y, 0.0f);
     }
     if (player->unk_90 == 0) {
@@ -2339,7 +2339,7 @@ void m223_MissileObjMain(omObjData *object) {
             object->trans.x += shot->dir.x * shot->speed;
             object->trans.y += shot->dir.y * shot->speed;
             object->trans.z += shot->dir.z * shot->speed;
-            func_80088910_main(Hu3DData[object->model[0]].mtx, -shot->unk_2C, 0.0f, 0.0f);
+            HuRotateRPYF(Hu3DData[object->model[0]].mtx, -shot->unk_2C, 0.0f, 0.0f);
             object->rot.y = shot->unk_30;
             shot->unk_08 -= shot->speed;
             if (shot->unk_08 < 0.0f) {

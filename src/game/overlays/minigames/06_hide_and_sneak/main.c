@@ -809,7 +809,7 @@ void m206_SeekerObjInit(omObjData *object) {
     Hu3DModelObjAttrSet(object->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(object->model[1]);
     Hu3DModelDynamicFree(object->model[1]);
-    func_80088800_main(Hu3DData[object->model[1]].mtx, 0.0f, 0.0f, 0.0f);
+    HuTranslateF(Hu3DData[object->model[1]].mtx, 0.0f, 0.0f, 0.0f);
     object->trans.x = 0.0f;
     object->trans.y = 0.0f;
     object->trans.z = 0.0f;
@@ -1877,7 +1877,7 @@ void m206_HiderObjInit(omObjData *object) {
     Hu3DModelObjAttrSet(object->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(object->model[1]);
     Hu3DModelDynamicFree(object->model[1]);
-    func_80088800_main(Hu3DData[object->model[1]].mtx, 0.0f, 0.0f, 0.0f);
+    HuTranslateF(Hu3DData[object->model[1]].mtx, 0.0f, 0.0f, 0.0f);
     switch (object->work[1]) {
         case 0:
             object->trans.x = -220.0f;

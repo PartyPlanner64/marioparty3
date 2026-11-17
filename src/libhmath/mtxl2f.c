@@ -1,7 +1,7 @@
 #include "humath.h"
 
 // Likely equivalent to guMtxL2F.
-void func_80089980_main(HuMtx4F mf, Mtx *m) {
+void HuMtxL2F(HuMtx4F mf, Mtx *m) {
     s32 i, j;
     s32 e1, e2;
     u16 *intPart = (u16 *)m;

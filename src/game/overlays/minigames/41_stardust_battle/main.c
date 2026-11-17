@@ -2242,7 +2242,7 @@ void m265_StarObjCreate(void) {
     memset(actor, 0, sizeof(StardustBattleStarWork));
     m265_WorkPtrSet(object, (u32)actor);
     object->model[0] = Hu3DModelRead(0xA0122, 0x1AA8);
-    func_8008A070_main(Hu3DData[object->model[0]].mtx);
+    HuMtxIdentF(Hu3DData[object->model[0]].mtx);
     mtxTransCat(Hu3DData[object->model[0]].mtx, 0.0f, 90.0f, 0.0f);
     AuraCreate(object->model[0]);
     AuraParamSet(object->model[0], 0.0f, 0.0f, 1.0f);
@@ -3129,7 +3129,7 @@ void m265_DustObjMain(omObjData *object) {
                 star->unk_74 -= 360.0f;
             }
             Hu3DModelRotSet(star->effect, star->unk_70 + 180.0f, star->unk_74, 0.0f);
-            func_8008A070_main(Hu3DData[star->effect].mtx);
+            HuMtxIdentF(Hu3DData[star->effect].mtx);
             mtxRotCat(Hu3DData[star->effect].mtx, 0.0f, star->unk_78, 0.0f);
             if (star->unk_68 > 1.0f) {
                 star->unk_68 = 1.0f;
@@ -3221,13 +3221,13 @@ s16 m265_DustCreate(Vec *pos, Vec *target, f32 speed) {
             Hu3DModelPosSet(star->model[0], star->x, star->y, star->z);
             Hu3DModelPosSet(star->reflection[0], star->x, -star->y, star->z);
             Hu3DModelPosSet(star->shadow, star->x, 0.0f, star->z);
-            func_8008A070_main(Hu3DData[star->model[0]].mtx);
-            func_8008A070_main(Hu3DData[star->model[1]].mtx);
+            HuMtxIdentF(Hu3DData[star->model[0]].mtx);
+            HuMtxIdentF(Hu3DData[star->model[1]].mtx);
             Hu3DModelPosSet(star->effect, star->x, star->y + 34.99999940395355, star->z);
             Hu3DModelScaleSet(star->effect, 0.75f, 0.75f, 0.75f);
             Hu3DModelVtxMorph(star->effect, stars->effectId2, star->unk_68);
             Hu3DModelRotSet(star->effect, star->unk_70 + 180.0f, star->unk_74, 0.0f);
-            func_8008A070_main(Hu3DData[star->effect].mtx);
+            HuMtxIdentF(Hu3DData[star->effect].mtx);
             mtxRotCat(Hu3DData[star->effect].mtx, 0.0f, star->unk_78, 0.0f);
             return i;
         }
@@ -4593,7 +4593,7 @@ void m265_NodeWorldMtxCalc(omObjData *object, const char *name, HuMtx4F out) {
     HuMtx4F mtx;
     HuMtx4F local;
 
-    func_8008A070_main(mtx);
+    HuMtxIdentF(mtx);
     mtxTransCat(mtx, object->trans.x, object->trans.y, object->trans.z);
     mtxRotCat(mtx, 0.0f, data->unk3C, 0.0f);
     mtxScaleCat(mtx, object->scale.x, object->scale.y, object->scale.z);

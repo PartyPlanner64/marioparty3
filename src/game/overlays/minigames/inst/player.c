@@ -209,13 +209,13 @@ void inst_PlayerOpen(omObjData *object) {
     duration = Hu3DMotion[Hu3DData[object->model[5]].motId].unk02 - 20.0f;
     models = inst_hookTbl[inst_mgType][0];
     for (i = 0; i < models->count; i++) {
-        func_8008A120_main(rotation, (1.0f / duration) * inst_cameraTilt);
+        HuMtxRotXF(rotation, (1.0f / duration) * inst_cameraTilt);
         mtxCopy(matrix, Hu3DData[object->model[i + 1]].mtx);
         mtxCat(rotation, matrix, Hu3DData[object->model[i + 1]].mtx);
     }
     models = inst_hookTbl[inst_mgType][1];
     for (i = 0; i < models->count; i++) {
-        func_8008A120_main(rotation, (1.0f / duration) * inst_cameraTilt);
+        HuMtxRotXF(rotation, (1.0f / duration) * inst_cameraTilt);
         mtxCopy(matrix, Hu3DData[object->model[i + 10]].mtx);
         mtxCat(rotation, matrix, Hu3DData[object->model[i + 10]].mtx);
     }
@@ -306,13 +306,13 @@ void inst_PlayerClose(omObjData *object) {
     duration = Hu3DMotion[Hu3DData[object->model[5]].motId].unk02 - 20.0f;
     models = inst_hookTbl[inst_mgType][0];
     for (i = 0; i < models->count; i++) {
-        func_8008A120_main(rotation, (1.0f / duration) * inst_cameraTilt);
+        HuMtxRotXF(rotation, (1.0f / duration) * inst_cameraTilt);
         mtxCopy(matrix, Hu3DData[object->model[i + 1]].mtx);
         mtxCat(rotation, matrix, Hu3DData[object->model[i + 1]].mtx);
     }
     models = inst_hookTbl[inst_mgType][1];
     for (i = 0; i < models->count; i++) {
-        func_8008A120_main(rotation, (1.0f / duration) * inst_cameraTilt);
+        HuMtxRotXF(rotation, (1.0f / duration) * inst_cameraTilt);
         mtxCopy(matrix, Hu3DData[object->model[i + 10]].mtx);
         mtxCat(rotation, matrix, Hu3DData[object->model[i + 10]].mtx);
     }
@@ -355,13 +355,13 @@ void inst_PlayerOpenNow(omObjData *object) {
     }
     models = inst_hookTbl[inst_mgType][0];
     for (i = 0; i < models->count; i++) {
-        func_8008A120_main(rotation, inst_cameraTilt);
+        HuMtxRotXF(rotation, inst_cameraTilt);
         mtxCopy(matrix, Hu3DData[object->model[i + 1]].mtx);
         mtxCat(rotation, matrix, Hu3DData[object->model[i + 1]].mtx);
     }
     models = inst_hookTbl[inst_mgType][1];
     for (i = 0; i < models->count; i++) {
-        func_8008A120_main(rotation, inst_cameraTilt);
+        HuMtxRotXF(rotation, inst_cameraTilt);
         mtxCopy(matrix, Hu3DData[object->model[i + 10]].mtx);
         mtxCat(rotation, matrix, Hu3DData[object->model[i + 10]].mtx);
     }

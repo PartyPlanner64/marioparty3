@@ -1004,7 +1004,7 @@ void m234_PlayerObjInit(omObjData *obj) {
         Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
         Hu3DModelRemakeStatic(obj->model[1]);
         Hu3DModelDynamicFree(obj->model[1]);
-        func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 0.0f, 0.0f);
+        HuTranslateF(Hu3DData[obj->model[1]].mtx, 0.0f, 0.0f, 0.0f);
         obj->model[2] = Hu3DModelRead(0x430004, 0x288);
         Hu3DModelRemakeStatic(obj->model[2]);
         Hu3DModelDynamicFree(obj->model[2]);
@@ -1254,7 +1254,7 @@ void m234_ActorObjInit(omObjData *obj) {
         Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
         Hu3DModelRemakeStatic(obj->model[1]);
         Hu3DModelDynamicFree(obj->model[1]);
-        func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 0.0f, 0.0f);
+        HuTranslateF(Hu3DData[obj->model[1]].mtx, 0.0f, 0.0f, 0.0f);
         m234_linkMdlTbl[1] = obj->model[1];
     } else {
         obj->model[1] = Hu3DModelLink(m234_linkMdlTbl[1]);
@@ -1307,7 +1307,7 @@ void m234_HostObjInit(omObjData *obj) {
     Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[1]);
     Hu3DModelDynamicFree(obj->model[1]);
-    func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 0.0f, 0.0f);
+    HuTranslateF(Hu3DData[obj->model[1]].mtx, 0.0f, 0.0f, 0.0f);
     obj->trans.x = -450.0f;
     obj->trans.y = 125.0f;
     obj->trans.z = -350.0f;

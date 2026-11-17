@@ -1188,7 +1188,7 @@ void m221_FireUpdate(omObjData *object) {
             Hu3DModelPosSet(model, x + object->trans.x, y, m221_fireBeltPosTbl[i].y);
             Hu3DModelRotSet(model, CRot.x, 0.0f, 0.0f);
             Hu3DModelScaleSet(model, scale, scale, scale);
-            func_80088910_main(Hu3DData[model].mtx, 0.0f, 0.0f, rot);
+            HuRotateRPYF(Hu3DData[model].mtx, 0.0f, 0.0f, rot);
             node = Hu3DModelObjPtrGet(model, m221_fireEyesName);
             node->baseRot.y = node->rot.y = angle;
             m221_fireScaleRot += 5.0f;
@@ -1198,7 +1198,7 @@ void m221_FireUpdate(omObjData *object) {
             Hu3DModelAttrSet(model, 4, 0);
             Hu3DModelPosSet(model, x + object->trans.x, y - 3.0f, m221_fireBeltPosTbl[i].y);
             Hu3DModelScaleSet(model, scale, scale, scale);
-            func_80088910_main(Hu3DData[model].mtx, 0.0f, 0.0f, rot);
+            HuRotateRPYF(Hu3DData[model].mtx, 0.0f, 0.0f, rot);
         } else {
             Hu3DModelAttrSet(object->model[10 + i], 4, 4);
             Hu3DModelAttrSet(object->model[13 + i], 4, 4);

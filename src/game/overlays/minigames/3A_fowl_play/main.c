@@ -1818,7 +1818,7 @@ void m258_HookPosGet(s16 model, char *hook, s16 time, Vec *pos) {
 
     Hu3DModelObjMtxFrameGet(model, time, hook, &hookTransform);
     modelData = &Hu3DData[model];
-    func_80088800_main(transform, modelData->pos.x, modelData->pos.y, modelData->pos.z);
+    HuTranslateF(transform, modelData->pos.x, modelData->pos.y, modelData->pos.z);
     mtxRotCat(transform, modelData->rot.x, modelData->rot.y, modelData->rot.z);
     mtxScaleCat(transform, modelData->scale.x, modelData->scale.y, modelData->scale.z);
     mtxCat(hookTransform, transform, result);

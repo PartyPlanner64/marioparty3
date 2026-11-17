@@ -2,7 +2,7 @@
 
 // Keep separate negated comparisons to reject NaNs and preserve the matching branches.
 // Vec3 near-equal test with an explicit epsilon.
-s32 func_80089E90_main(Vec *a, Vec *b, f32 epsilon) {
+s32 HuVecNearEq(Vec *a, Vec *b, f32 epsilon) {
     f32 dx;
     f32 dy;
     f32 dz;
@@ -34,14 +34,14 @@ s32 func_80089E90_main(Vec *a, Vec *b, f32 epsilon) {
 }
 
 // Vec3 near-equal test using the default epsilon.
-s32 func_80089F30_main(Vec *a, Vec *b) {
+s32 HuVecNearEqEps(Vec *a, Vec *b) {
     f32 dx;
     f32 dy;
     f32 dz;
     f32 epsilon;
     f32 negEpsilon;
 
-    epsilon = mainUnkF32;
+    epsilon = HuMathEpsilon;
     negEpsilon = -epsilon;
     dx = a->x - b->x;
     if (!(negEpsilon <= dx)) {
@@ -68,8 +68,8 @@ s32 func_80089F30_main(Vec *a, Vec *b) {
 }
 
 // Look-at convenience wrapper using a stack scratch buffer.
-void func_80089FD0_main(HuMtx4F mtx, Vec *camera) {
+void HuMtxLookAtF(HuMtx4F mtx, Vec *camera) {
     Vec basis[3];
 
-    func_8008D450_main(mtx, camera, basis);
+    HuMtxLookAtBasisF(mtx, camera, basis);
 }

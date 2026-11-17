@@ -386,7 +386,7 @@ void m203_ScreenPosCalc(s16 camIndex, f32 x, f32 y, f32 z, f32 *screenPos) {
     f32 depth;
     s16 vpIndex;
 
-    func_80088850_main(&mtx, x, y, z);
+    HuTranslate(&mtx, x, y, z);
     guMtxCatL(&mtx, lookAt, &mtx);
     viewX = (s32)(((u32)integer[3][0] << 16) | fraction[3][0]) >> 16;
     viewY = (s32)(((u32)integer[3][1] << 16) | fraction[3][1]) >> 16;
@@ -1638,7 +1638,7 @@ void m203_OperatorObjInit(omObjData *obj) {
     Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[1]);
     Hu3DModelDynamicFree(obj->model[1]);
-    func_80088800_main(Hu3DData[obj->model[1]].mtx, 0, 0, 0);
+    HuTranslateF(Hu3DData[obj->model[1]].mtx, 0, 0, 0);
     Hu3DModelCameraSet(obj->model[0], HU3D_CAM0);
     Hu3DModelCameraSet(obj->model[1], HU3D_CAM0);
 

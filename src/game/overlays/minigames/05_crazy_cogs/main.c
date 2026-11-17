@@ -803,7 +803,7 @@ void m205_CrankObjInit(omObjData *arg0) {
     Hu3DModelObjAttrSet(arg0->model[2], 0x80000000, 0);
     Hu3DModelRemakeStatic(arg0->model[2]);
     Hu3DModelDynamicFree(arg0->model[2]);
-    func_80088800_main(Hu3DData[arg0->model[2]].mtx, 0.0f, 0.0f, 0.0f);
+    HuTranslateF(Hu3DData[arg0->model[2]].mtx, 0.0f, 0.0f, 0.0f);
     Hu3DModelCameraSet(arg0->model[0], HU3D_CAM0);
     Hu3DModelCameraSet(arg0->model[1], HU3D_CAM0);
     Hu3DModelCameraSet(arg0->model[2], HU3D_CAM0);
@@ -872,7 +872,7 @@ void m205_TeamDummyObjInit(omObjData *arg0) {
     Hu3DModelObjAttrSet(arg0->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(arg0->model[1]);
     Hu3DModelDynamicFree(arg0->model[1]);
-    func_80088800_main(Hu3DData[arg0->model[1]].mtx, 0.0f, 0.0f, 0.0f);
+    HuTranslateF(Hu3DData[arg0->model[1]].mtx, 0.0f, 0.0f, 0.0f);
     Hu3DModelCameraSet(arg0->model[0], HU3D_CAM0);
     Hu3DModelCameraSet(arg0->model[1], HU3D_CAM0);
     angle = m205_AngleAdd(0.0f, (s16)cog->timer * 120);
@@ -1315,7 +1315,7 @@ void m205_BlastObjInit(omObjData *arg0) {
     Hu3DModelObjAttrSet(arg0->model[0], 0x80000000, 0);
     Hu3DModelRemakeStatic(arg0->model[0]);
     Hu3DModelDynamicFree(arg0->model[0]);
-    func_80088800_main(Hu3DData[arg0->model[0]].mtx, 0.0f, 0.0f, 0.0f);
+    HuTranslateF(Hu3DData[arg0->model[0]].mtx, 0.0f, 0.0f, 0.0f);
     arg0->trans.x = arg0->trans.z = arg0->trans.y = 1000.0f;
     Hu3DModelPosSet(arg0->model[0], arg0->trans.x, arg0->trans.y, arg0->trans.z);
     arg0->scale.x = arg0->scale.y = arg0->scale.z = 2.0f;
@@ -1635,7 +1635,7 @@ void m205_KillerObjInit(omObjData *arg0) {
         Hu3DModelObjAttrSet(arg0->model[1], 0x80000000, 0);
         Hu3DModelRemakeStatic(arg0->model[1]);
         Hu3DModelDynamicFree(arg0->model[1]);
-        func_80088800_main(Hu3DData[arg0->model[1]].mtx, 0.0f, 0.0f, 0.0f);
+        HuTranslateF(Hu3DData[arg0->model[1]].mtx, 0.0f, 0.0f, 0.0f);
         m205_killerMdlTbl[0] = arg0->model[0];
         m205_killerMdlTbl[1] = arg0->model[1];
     } else {

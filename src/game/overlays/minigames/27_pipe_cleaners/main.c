@@ -776,7 +776,7 @@ void m239_PlayerObjInit(omObjData *obj) {
     Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
     Hu3DModelRemakeStatic(obj->model[1]);
     Hu3DModelDynamicFree(obj->model[1]);
-    func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 10.0f, 50.0f);
+    HuTranslateF(Hu3DData[obj->model[1]].mtx, 0.0f, 10.0f, 50.0f);
     obj->trans.x = 0;
     obj->trans.y = 0;
     obj->trans.z = 0;

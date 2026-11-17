@@ -1958,7 +1958,7 @@ void MBD1_KoopaJrChangeExec(Object *obj, s32 swap) {
     angle = 0.0f;
     for (scale = 1.0f; scale < 10.0f; scale = scale + 1.0) {
         HuVecCopyXYZ(&model->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        HuMtxRotZF(Hu3DData[model->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         HuPrcVSleep();
     }
@@ -1972,7 +1972,7 @@ void MBD1_KoopaJrChangeExec(Object *obj, s32 swap) {
 
     for (; scale >= 1.0f; scale = scale - 1.0) {
         HuVecCopyXYZ(&model->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        HuMtxRotZF(Hu3DData[model->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         HuPrcVSleep();
     }
@@ -1998,7 +1998,7 @@ void MBD1_KoopaJrChangeEndExec(Object *obj) {
     angle = 0.0f;
     for (scale = 1.0f; scale < 10.0f; scale = scale + 1.0) {
         HuVecCopyXYZ(&model->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        HuMtxRotZF(Hu3DData[model->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         HuPrcVSleep();
     }
@@ -2011,7 +2011,7 @@ void MBD1_KoopaJrChangeEndExec(Object *obj) {
 
     for (; scale >= 1.0f; scale = scale - 1.0) {
         HuVecCopyXYZ(&model->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[model->omObj1->model[0]].mtx, angle);
+        HuMtxRotZF(Hu3DData[model->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         HuPrcVSleep();
     }
@@ -3984,7 +3984,7 @@ void MBD1Ev_TurnStart(void) {
         MBDVecRotLerpCreate(&partner->rot, &rot, &partner->rot, 8);
         HuPrcSleep(8);
         for (i = 0; i < 31; i += 5) {
-            func_8008A120_main(Hu3DData[partner->omObj1->model[0]].mtx, -i);
+            HuMtxRotXF(Hu3DData[partner->omObj1->model[0]].mtx, -i);
             partner->velocity.x += 1.0f;
             HuPrcVSleep();
         }
@@ -3999,7 +3999,7 @@ void MBD1Ev_TurnStart(void) {
                         scale = 1.0f;
                     }
                     HuVecCopyXYZ(&coin->scale, scale, scale, scale);
-                    func_8008A2A0_main(Hu3DData[coin->omObj1->model[0]].mtx, j * 40);
+                    HuMtxRotYF(Hu3DData[coin->omObj1->model[0]].mtx, j * 40);
                     HuPrcVSleep();
                 }
             } else {
@@ -4030,7 +4030,7 @@ void MBD1Ev_TurnStart(void) {
                     scale = 1.0f;
                 }
                 HuVecCopyXYZ(&coin->scale, scale, scale, scale);
-                func_8008A2A0_main(Hu3DData[coin->omObj1->model[0]].mtx, j * 40);
+                HuMtxRotYF(Hu3DData[coin->omObj1->model[0]].mtx, j * 40);
                 HuPrcVSleep();
             }
         }
@@ -4041,14 +4041,14 @@ void MBD1Ev_TurnStart(void) {
                 scale = 1.0f;
             }
             HuVecCopyXYZ(&coin->scale, scale, scale, scale);
-            func_8008A2A0_main(Hu3DData[coin->omObj1->model[0]].mtx, j * 40);
+            HuMtxRotYF(Hu3DData[coin->omObj1->model[0]].mtx, j * 40);
             HuPrcVSleep();
         }
         MBDCoinTakeCreate(index, 1);
         MBDModelKill(coin);
         MBDMotionSet(partner, -1, 2);
         for (i = 30; i >= 0; i -= 10) {
-            func_8008A120_main(Hu3DData[partner->omObj1->model[0]].mtx, -i);
+            HuMtxRotXF(Hu3DData[partner->omObj1->model[0]].mtx, -i);
             partner->velocity.x -= 2.0f;
             HuPrcVSleep();
         }
@@ -4282,7 +4282,7 @@ void MBD1Ev_HatenaMasuOwnerSwap(void) {
     angle = 0.0f;
     for (scale = 1.0f; scale < 20.0f; scale += 0.5) {
         HuVecCopyXYZ(&obj->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, angle);
+        HuMtxRotZF(Hu3DData[obj->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         HuPrcVSleep();
     }
@@ -4291,7 +4291,7 @@ void MBD1Ev_HatenaMasuOwnerSwap(void) {
     MBDMasuTypeListCreate();
     while (scale >= 1.0f) {
         HuVecCopyXYZ(&obj->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, angle);
+        HuMtxRotZF(Hu3DData[obj->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         HuPrcVSleep();
         scale -= 0.5;
@@ -4494,7 +4494,7 @@ void MBD1Ev_HatenaMasuOwnerClear(void) {
     angle = 0.0f;
     for (scale = 1.0f; scale < 20.0f; scale += 0.5) {
         HuVecCopyXYZ(&obj->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, angle);
+        HuMtxRotZF(Hu3DData[obj->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         HuPrcVSleep();
     }
@@ -4502,7 +4502,7 @@ void MBD1Ev_HatenaMasuOwnerClear(void) {
     MBDMasuTypeListCreate();
     while (scale >= 1.0f) {
         HuVecCopyXYZ(&obj->scale, scale, scale, scale);
-        func_8008A430_main(Hu3DData[obj->omObj1->model[0]].mtx, angle);
+        HuMtxRotZF(Hu3DData[obj->omObj1->model[0]].mtx, angle);
         angle += 20.0f;
         HuPrcVSleep();
         scale -= 0.5;

@@ -1,7 +1,7 @@
 #include "ultra64.h"
 #include "types.h"
 
-void func_8008A070_main(HuMtx4F mtx) {
+void HuMtxIdentF(HuMtx4F mtx) {
     f32 one = 1.0f;
 
     mtx[0][1] = mtx[0][2] = mtx[0][3] =

@@ -1,7 +1,7 @@
 #include "humath.h"
 
 // Build a float rotation matrix around the X axis.
-void func_8008A120_main(HuMtx4F mtx, f32 angle) {
+void HuMtxRotXF(HuMtx4F mtx, f32 angle) {
     sincosdf(angle, &mtx[1][2], &mtx[1][1]);
     mtx[2][1] = -mtx[1][2];
     mtx[2][2] = mtx[1][1];

@@ -942,7 +942,7 @@ void m204_BoulderObjInit(omObjData *object) {
     object->trans.y = 700.0f;
     object->trans.z = -600.0f;
     object->scale.x = object->scale.y = object->scale.z = 1.0f;
-    func_80088700_main(Hu3DData[object->model[1]].mtx, 2.0f, 2.0f, 2.0f);
+    HuScaleF(Hu3DData[object->model[1]].mtx, 2.0f, 2.0f, 2.0f);
     m204_boulderNum++;
     MgItemHookSet(data, 2, m204_BoulderHitHook);
     MgItemHookSet(data, 0, m204_BoulderUpdate);
@@ -1014,7 +1014,7 @@ s32 m204_BoulderUpdate(omObjData *object) {
     }
     data = object->data;
     slot = data->unk56;
-    func_80088800_main(Hu3DData[object->model[0]].mtx, 0.0f, 90.0f, 0.0f);
+    HuTranslateF(Hu3DData[object->model[0]].mtx, 0.0f, 90.0f, 0.0f);
     mtxRotCat(Hu3DData[object->model[0]].mtx, m204_boulderSpinTbl[slot], 0.0f, 0.0f);
     object->rot.y = data->unk3C;
     switch (m204_boulderStateTbl[slot]) {

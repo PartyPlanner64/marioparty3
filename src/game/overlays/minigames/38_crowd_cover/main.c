@@ -837,7 +837,7 @@ void m256_PlayerObjMain(omObjData *object) {
     }
     mtx = &Hu3DData[object->model[0]].mtx;
     guMtxIdentF(*mtx);
-    func_8008A120_main(*mtx, -50.0f);
+    HuMtxRotXF(*mtx, -50.0f);
     mtxRotCat(*mtx, 0.0f, rot, 0.0f);
     data->unk3C = rot;
     MgPlayerMotUpdate(object);
@@ -2280,10 +2280,10 @@ Gfx *m256_BillboardEntryDraw(Gfx *gfx, CrowdCoverBillboard *crowd, HuMtx4F lookA
     mtxScaleCat(mtx, crowd->unk_4C.x, crowd->unk_4C.y, crowd->unk_4C.z);
     switch (crowd->unk_1A) {
         case 1:
-            func_8008A120_main(mtx, rot->x);
+            HuMtxRotXF(mtx, rot->x);
             break;
         case 2:
-            func_8008A2A0_main(mtx, rot->y);
+            HuMtxRotYF(mtx, rot->y);
             break;
         case 4:
             break;

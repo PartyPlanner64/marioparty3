@@ -1218,7 +1218,7 @@ void m250_HookPosGet(s16 model, char *hook, s16 time, Vec *pos) {
 
     Hu3DModelObjMtxFrameGet(model, time, hook, &hookTransform);
     modelData = &Hu3DData[model];
-    func_80088800_main(transform, modelData->pos.x, modelData->pos.y, modelData->pos.z);
+    HuTranslateF(transform, modelData->pos.x, modelData->pos.y, modelData->pos.z);
     mtxRotCat(transform, modelData->rot.x, modelData->rot.y, modelData->rot.z);
     mtxScaleCat(transform, modelData->scale.x, modelData->scale.y, modelData->scale.z);
     mtxCat(hookTransform, transform, result);
@@ -2279,10 +2279,10 @@ Gfx *m250_BillboardEntryDraw(Gfx *gfx, PopgunPickoffBillboard *player, HuMtx4F l
     mtxScaleCat(mtx, player->unk_4C.x, player->unk_4C.y, player->unk_4C.z);
     switch (player->unk_1A) {
         case 1:
-            func_8008A120_main(mtx, rot->x);
+            HuMtxRotXF(mtx, rot->x);
             break;
         case 2:
-            func_8008A2A0_main(mtx, rot->y);
+            HuMtxRotYF(mtx, rot->y);
             break;
         case 4:
             break;

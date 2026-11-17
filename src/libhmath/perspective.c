@@ -1,6 +1,6 @@
 #include "humath.h"
 
-void func_8008D2C0_main(HuMtx4F mtx, u16 *perspNorm, f32 fov, f32 aspect, f32 near, f32 far, f32 scale) {
+void HuPerspectiveF(HuMtx4F mtx, u16 *perspNorm, f32 fov, f32 aspect, f32 near, f32 far, f32 scale) {
     f32 sincos[2];
     f32 cotangent;
     f32 depthScale;

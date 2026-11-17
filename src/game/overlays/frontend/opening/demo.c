@@ -2172,7 +2172,7 @@ void op_DemoEvent(void) {
         op_ModelScaleSet(0x12, 1.0f, 1.0f, 1.0f);
         op_MotionFlagSet(0x12, 1);
         temp_v0_12 = Hu3DModelObjPtrGet(op_ModelIdGet(0x12), "tree_kage");
-        func_80088700_main(temp_v0_12->unk58, 0.0f, 0.0f, 0.0f);
+        HuScaleF(temp_v0_12->unk58, 0.0f, 0.0f, 0.0f);
         temp_f24 = 0.0f;
         temp_v0_12->scale.x = temp_v0_12->scale.y = temp_v0_12->scale.z = temp_f24;
         temp_v0_12->baseScale.x = temp_v0_12->baseScale.y = temp_v0_12->baseScale.z = temp_f24;
@@ -2551,12 +2551,12 @@ void op_DemoEvent(void) {
         op_MotionTimeSet(0x16, 0U);
         op_MotionFlagSet(0x16, 1);
         temp_v0_13 = op_ModelIdGet(0x16);
-        func_80088800_main(((HmfMotionNode *)Hu3DModelObjPtrGet(temp_v0_13, "mario"))->unk58, 0.0f, -4000.0f, 0.0f);
-        func_80088800_main(((HmfMotionNode *)Hu3DModelObjPtrGet(temp_v0_13, "luigi"))->unk58, 0.0f, -4000.0f, 0.0f);
-        func_80088800_main(((HmfMotionNode *)Hu3DModelObjPtrGet(temp_v0_13, "peach"))->unk58, 0.0f, -4000.0f, 0.0f);
-        func_80088800_main(((HmfMotionNode *)Hu3DModelObjPtrGet(temp_v0_13, "yoshi"))->unk58, 0.0f, -4000.0f, 0.0f);
-        func_80088800_main(((HmfMotionNode *)Hu3DModelObjPtrGet(temp_v0_13, "wario"))->unk58, 0.0f, -4000.0f, 0.0f);
-        func_80088800_main(((HmfMotionNode *)Hu3DModelObjPtrGet(temp_v0_13, "donkey"))->unk58, 0.0f, -4000.0f, 0.0f);
+        HuTranslateF(((HmfMotionNode *)Hu3DModelObjPtrGet(temp_v0_13, "mario"))->unk58, 0.0f, -4000.0f, 0.0f);
+        HuTranslateF(((HmfMotionNode *)Hu3DModelObjPtrGet(temp_v0_13, "luigi"))->unk58, 0.0f, -4000.0f, 0.0f);
+        HuTranslateF(((HmfMotionNode *)Hu3DModelObjPtrGet(temp_v0_13, "peach"))->unk58, 0.0f, -4000.0f, 0.0f);
+        HuTranslateF(((HmfMotionNode *)Hu3DModelObjPtrGet(temp_v0_13, "yoshi"))->unk58, 0.0f, -4000.0f, 0.0f);
+        HuTranslateF(((HmfMotionNode *)Hu3DModelObjPtrGet(temp_v0_13, "wario"))->unk58, 0.0f, -4000.0f, 0.0f);
+        HuTranslateF(((HmfMotionNode *)Hu3DModelObjPtrGet(temp_v0_13, "donkey"))->unk58, 0.0f, -4000.0f, 0.0f);
         HuVecCopyXYZ(&sp3C8, 0.0f, 0.0f, -200.0f);
         sp3C8.z -= 8.0f;
         op_ModelCreate(0x17, 0xD0003, 0x2A9);
@@ -3802,10 +3802,10 @@ void op_DemoStarWaitCreate(s32 index, s32 modelId, f32 x, f32 y, f32 z, f32 arg5
 }
 
 void op_DemoJumpNodeSet(s32 index, Vec *pos1, Vec *pos2, f32 scale, f32 angle) {
-    func_80088800_main(op_demoObjBodyNode[index][0]->unk58, pos1->x, pos1->y, pos1->z);
+    HuTranslateF(op_demoObjBodyNode[index][0]->unk58, pos1->x, pos1->y, pos1->z);
     mtxScaleCat(op_demoObjBodyNode[index][0]->unk58, scale, 1.0f, scale);
     mtxRotYCat(op_demoObjBodyNode[index][0]->unk58, angle);
-    func_80088800_main(op_demoObjShadowNode[index][0]->unk58, pos2->x, pos2->y + 4.0f, pos2->z);
+    HuTranslateF(op_demoObjShadowNode[index][0]->unk58, pos2->x, pos2->y + 4.0f, pos2->z);
     mtxScaleCat(op_demoObjShadowNode[index][0]->unk58, scale, 1.0f, scale);
     mtxRotYCat(op_demoObjShadowNode[index][0]->unk58, angle);
 }

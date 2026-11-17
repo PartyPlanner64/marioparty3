@@ -407,7 +407,7 @@ void duelresult_IntroExec(void) {
         HuVecCopyXYZ(&duelresult_gwPlayerTbl[i]->player_obj->coords, 0.0f, 150.0f, 0.0f);
         HuVecCopy3F(&targets[i], &duelresult_introPlayerPos);
         targets[i].y += 400.0f;
-        func_8008A120_main(Hu3DData[duelresult_gwPlayerTbl[i]->player_obj->omObj1->model[0]].mtx, -30.0f);
+        HuMtxRotXF(Hu3DData[duelresult_gwPlayerTbl[i]->player_obj->omObj1->model[0]].mtx, -30.0f);
         MBDModelDispOn(duelresult_gwPlayerTbl[i]->player_obj);
         MBDPlayerPosMoveCreate(&duelresult_gwPlayerTbl[i]->player_obj->coords, &targets[i],
                               &duelresult_gwPlayerTbl[i]->player_obj->coords, 5);
@@ -886,7 +886,7 @@ void duelresult_ResultExec(void) {
         HuVecCopyXYZ(&duelresult_gwPlayerTbl[i]->player_obj->scale, 1.0f, 1.0f, 1.0f);
         HuVecCopy3F(&duelresult_gwPlayerTbl[i]->player_obj->coords, &duelresult_playerPosTbl[i]);
         MBDVecForwardSet(&duelresult_gwPlayerTbl[i]->player_obj->rot);
-        func_8008A120_main(Hu3DData[duelresult_gwPlayerTbl[i]->player_obj->omObj1->model[0]].mtx, 0.0f);
+        HuMtxRotXF(Hu3DData[duelresult_gwPlayerTbl[i]->player_obj->omObj1->model[0]].mtx, 0.0f);
     }
 
     for (i = 0; i < 3; i++) {

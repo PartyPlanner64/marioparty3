@@ -820,7 +820,7 @@ void m217_ItemUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
             if (item->spin < 0.0f) {
                 item->spin += 360.0f;
             }
-            func_80088910_main(Hu3DData[item->model].mtx, 0.0f, 0.0f, item->spin);
+            HuRotateRPYF(Hu3DData[item->model].mtx, 0.0f, 0.0f, item->spin);
         }
         if (m217_gameWork->unk_00 & 4) {
             m217_FuncSet((s8)slot->unk_00->work[1], 0xFFF, 0, m217_ItemEndUpdate, 0);

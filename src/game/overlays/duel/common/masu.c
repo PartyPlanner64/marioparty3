@@ -186,11 +186,11 @@ void MBDMasuDraw(Gfx **arg0, Mtx *arg1, s32 arg2) {
                         break;
                     }
                     space = MBDMasuGet(spaceId);
-                    func_80089980_main(sp10, &camMtx[1]);
+                    HuMtxL2F(sp10, &camMtx[1]);
                     mtxTransCat(sp10, space->coords.x, space->coords.y, space->coords.z);
                     mtxScaleCat(sp10, space->rot.x * 0.8f, 1.0f, space->rot.z * 0.8f);
                     mtx = &MTXBuf[MTXBufNum++];
-                    func_800898F0_main(sp10, mtx);
+                    HuMtxF2L(sp10, mtx);
                     gSPMatrix((*gfxPos)++, OS_K0_TO_PHYSICAL(mtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                     gSPVertex((*gfxPos)++, vtx, 4, 0);
                     gSP1Quadrangle((*gfxPos)++, 0, 1, 2, 3, 0);

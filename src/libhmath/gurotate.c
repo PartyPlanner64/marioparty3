@@ -1,7 +1,7 @@
 #include "humath.h"
 
 // Builds a floating-point axis-angle rotation matrix.
-void func_80088570_main(HuMtx4F mtx, f32 angle, f32 x, f32 y, f32 z) {
+void HuRotateF(HuMtx4F mtx, f32 angle, f32 x, f32 y, f32 z) {
     f32 sine, cosine;
     f32 xx, yy, zz;
     f32 xy, yz, zx;
@@ -42,7 +42,7 @@ void func_80088570_main(HuMtx4F mtx, f32 angle, f32 x, f32 y, f32 z) {
 }
 
 // Builds a floating-point scaling matrix.
-void func_80088700_main(HuMtx4F mtx, f32 x, f32 y, f32 z) {
+void HuScaleF(HuMtx4F mtx, f32 x, f32 y, f32 z) {
     mtx[0][1] = mtx[0][2] = mtx[0][3] = mtx[1][0] = mtx[1][2] = mtx[1][3] =
         mtx[2][0] = mtx[2][1] = mtx[2][3] = mtx[3][0] = mtx[3][1] = mtx[3][2] = 0.0f;
     mtx[0][0] = x;
@@ -52,7 +52,7 @@ void func_80088700_main(HuMtx4F mtx, f32 x, f32 y, f32 z) {
 }
 
 // Builds a fixed-point scaling matrix.
-void func_80088750_main(Mtx *mtx, f32 x, f32 y, f32 z) {
+void HuScale(Mtx *mtx, f32 x, f32 y, f32 z) {
     f32 scaledX = x * 65536.0f;
     f32 scaledY = y * 65536.0f;
     f32 scaledZ = z * 65536.0f;
@@ -79,7 +79,7 @@ void func_80088750_main(Mtx *mtx, f32 x, f32 y, f32 z) {
 }
 
 // Builds a floating-point translation matrix.
-void func_80088800_main(HuMtx4F mtx, f32 x, f32 y, f32 z) {
+void HuTranslateF(HuMtx4F mtx, f32 x, f32 y, f32 z) {
     mtx[3][0] = x;
     mtx[3][1] = y;
     mtx[3][2] = z;
@@ -89,7 +89,7 @@ void func_80088800_main(HuMtx4F mtx, f32 x, f32 y, f32 z) {
 }
 
 // Builds a fixed-point translation matrix.
-void func_80088850_main(Mtx *mtx, const f32 x, const f32 y, const f32 z) {
+void HuTranslate(Mtx *mtx, const f32 x, const f32 y, const f32 z) {
     const f32 scaledX = x * 65536.0f;
     const f32 scaledY = y * 65536.0f;
     const f32 scaledZ = z * 65536.0f;

@@ -32,7 +32,7 @@ void *HuGfxUcodeTbl[] = {
 s32 mainResvVal = 1000; // unreferenced
 
 s32 mainFramePending = 0;
-f32 mainUnkF32 = 0.0f;
+f32 HuMathEpsilon = 0.0f;
 
 extern s32 Hu3DExecCnt;
 extern u8 HuGfxBufNum;

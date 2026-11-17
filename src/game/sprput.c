@@ -398,7 +398,7 @@ void HuSprDisp(Gfx **gfx, HuSprite *sprite, s32 arg2) {
         HuMtx2DRotTrans(transform, sprite->unk_04 - 160.0f, 120.0f - sprite->unk_08, sprite->unk_20);
         mtxScaleCat(transform, scaleX, scaleY, 1.0f);
         mtxTransCat(transform, originX, originY, 0.0f);
-        func_800898F0_main(transform, &sprite->unk_140[Hu3DBufNo]);
+        HuMtxF2L(transform, &sprite->unk_140[Hu3DBufNo]);
         gSPMatrix(gdl++, osVirtualToPhysical(&sprite->unk_140[Hu3DBufNo]), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
     }
     if (sprite->dispAttr & 0x8000000) {

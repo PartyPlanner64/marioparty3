@@ -60,8 +60,8 @@ void Hu3DCamInit(u32 arg0) {
         gCameraList[var_s3].unkA8 = NULL;
         gCameraList[var_s3].unkAC = NULL;
         for (var_s2 = 0; var_s2 < Hu3DBufNum; var_s2++) {
-            func_8008A0D0_main(&gCameraList[var_s3].mtxs[var_s2].perspMtx);
-            func_8008A0D0_main(&gCameraList[var_s3].mtxs[var_s2].lookAtMtx);
+            HuMtxIdent(&gCameraList[var_s3].mtxs[var_s2].perspMtx);
+            HuMtxIdent(&gCameraList[var_s3].mtxs[var_s2].lookAtMtx);
         }
     }
     Hu3DCurCamera = gCameraList;

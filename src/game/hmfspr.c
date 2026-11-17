@@ -481,7 +481,7 @@ void objMtxCalcFrame(HmfData *hmf, s16 nodeIdx, s16 target) {
     s16 pushed = FALSE;
     s16 i;
 
-    func_8008A070_main(mtx);
+    HuMtxIdentF(mtx);
     if (node->pos.x != 0.0f || node->pos.y != 0.0f || node->pos.z != 0.0f) {
         mtxTransCat(mtx, node->pos.x, node->pos.y, node->pos.z);
         pushed = TRUE;
@@ -550,7 +550,7 @@ void Hu3DMotionBakeMtxGet(s16 model, HmfModelSet *set, HuMtx4F mtx, s16 frame) {
     if (frame < 0) {
         frame = 0;
     }
-    func_8008A070_main(mtx);
+    HuMtxIdentF(mtx);
     if (modelP->pos.x != 0.0f || modelP->pos.y != 0.0f || modelP->pos.z != 0.0f) {
         mtxTransCat(mtx, modelP->pos.x, modelP->pos.y, modelP->pos.z);
     }

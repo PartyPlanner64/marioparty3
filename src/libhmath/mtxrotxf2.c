@@ -1,7 +1,7 @@
 #include "humath.h"
 
 // Concatenate a float X-axis rotation with a matrix.
-void func_8008B6B0_main(const HuMtx4F src, f32 angle, HuMtx4F dst) {
+void HuMtxRotXCatF(const HuMtx4F src, f32 angle, HuMtx4F dst) {
     f32 sine, cosine;
 
     sincosdf(angle, &sine, &cosine);

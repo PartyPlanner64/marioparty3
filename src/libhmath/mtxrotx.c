@@ -1,7 +1,7 @@
 #include "humath.h"
 
 // Build a fixed-point rotation matrix around the X axis.
-void func_8008A1B0_main(Mtx *mtx, f32 angle) {
+void HuMtxRotX(Mtx *mtx, f32 angle) {
     f32 sincos[4];
     u32 fixedCosine, fixedSine;
 

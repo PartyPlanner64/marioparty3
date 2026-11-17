@@ -1104,7 +1104,7 @@ void m243_ChrObjInit(omObjData *obj) {
     }
     obj->model[1] = Hu3DModelRead2(0, 0xC9);
     Hu3DModelObjAttrSet(obj->model[1], 0x80000000, 0);
-    func_80088800_main(Hu3DData[obj->model[1]].mtx, 0.0f, 15.0f, 0.0f);
+    HuTranslateF(Hu3DData[obj->model[1]].mtx, 0.0f, 15.0f, 0.0f);
     if (obj->work[0] == 2) {
         Hu3DModelTPLvlInit(obj->model[1]);
         Hu3DModelTPLvlSet(obj->model[1], m243_teresaAlphaLo);

@@ -9271,30 +9271,6 @@ void MB3Ev_QuicksandStruggleProc(void) {
     omDelPrcObj(NULL);
 }
 
-#ifdef NON_MATCHING
-// Matches except for the if/else right after the hatena space search loop: the
-// target tests *hatena != -1 (-> 0x47 branch), reloads *hatena, and tests it
-// again (== -1 -> 0x48 branch, no extra `li -1`); we emit a single test.
-// RTL analysis (-O1): the second test survives only if, at CSE time, a label
-// separates it from the first test (CSE blocks end at labels); the pre-CSE
-// thread_jumps pass creates exactly such a label when it threads the loop
-// entry test through the first test. The label must then vanish before the
-// final jump pass (post-loop thread_jumps redirecting the entry test on to
-// the 0x48 branch, which needs the second test to be RTL-identical to the
-// entry test by then), so that the final jump pass deletes the second test's
-// redundant `li -1` (find_equiv_reg). So the source must have two tests in
-// `if (T1 || T2)` shape, T1 == entry test, and T2 differing before CSE but
-// identical after CSE. Closest forms (both meaningless, not acceptable):
-//     if (mb3ev_quicksand1HatenaMasuTbl[hatena - mb3ev_quicksand1HatenaMasuTbl] != -1 || *hatena != -1)
-//         -> 220: v0/v1 swapped in 2nd test, entry branch lands on 1st test
-//     if (*hatena != -1 || mb3ev_quicksand1HatenaMasuTbl[hatena - mb3ev_quicksand1HatenaMasuTbl] != -1)
-//         -> 2325: right threading, but extra `li v0,-1` and `li a0,0x47`
-// Identical-operand forms (||, &&, nested else-if, goto, casts, hatena[0],
-// *(hatena + 0), (u16)/+1 variants, a copy pointer in T2) are folded by the
-// tree folder, threaded pre-CSE or CSE'd into one test. Also tried: for/while/
-// do-while/continue/goto/compound-condition search loops, an if-wrapped
-// do-while, index-based loops (break strength reduction), switch, ternaries,
-// flag variables.
 void MB3Ev_Quicksand(void) {
     Vec pos;
     UnkVibrateProcess *vibrate[4];
@@ -9324,7 +9300,9 @@ void MB3Ev_Quicksand(void) {
             break;
         }
     }
-    if (*hatena != -1) {
+    // Preserve the redundant sentinel reload and test in the original code.
+    // The self-assignment keeps GCC from folding the two tests together.
+    if (*hatena != -1 || *(hatena = hatena) != -1) {
         mb3ev_quicksandMdl = MBModelCreate(0x47, NULL);
         space = MBMasuGet(0x80);
         masuList = mb3ev_quicksand1MasuTbl;
@@ -9529,9 +9507,6 @@ void MB3Ev_Quicksand(void) {
     mbItemBtnF = 1;
     omDelPrcObj(NULL);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/overlays/party/boards/w03_spiny_desert/main", MB3Ev_Quicksand);
-#endif
 
 void MB3Ev_SandPitBranch(void) {
     GW_SYSTEM *sys = &GwSystem;

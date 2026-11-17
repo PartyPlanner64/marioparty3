@@ -7982,24 +7982,24 @@ validChoice:
             HuPrcVSleep();
         }
         MBModelKill(coinModel);
-        WipeCreateOut(9, 0x10);
+        WipeCreateOut(WIPE_GAME_GUY, 0x10);
         HuPrcSleep(0x11);
         MBCameraFocusModeSet(1);
         MBCameraPos3DSet(&MBPlayerGet(-1)->player_obj->coords);
         HuPrcSleep(5);
-        WipeCreateIn(9, 0x10);
+        WipeCreateIn(WIPE_GAME_GUY, 0x10);
         HuPrcSleep(0x11);
         return;
     }
 
     if (MBPlayerComCheck((s16)choice) != 0 && system->show_com_minigames != 0) {
-        WipeCreateOut(9, 0x10);
+        WipeCreateOut(WIPE_GAME_GUY, 0x10);
         HuPrcSleep(0x11);
         MBModelKill(coinModel);
         MBModelJumpSet(playerObj, 0, 0);
         playerObj->velocity.x = 0.0f;
         HuPrcSleep(5);
-        WipeCreateIn(9, 0x10);
+        WipeCreateIn(WIPE_GAME_GUY, 0x10);
         HuPrcSleep(0x11);
         randomValue = MBRand(100.0f) + 1;
         for (rewardIndex = 0; rewardIndex < 7; rewardIndex++) {
@@ -8023,12 +8023,12 @@ validChoice:
             MBDlgWinExec(-1, 0x2F04);
         }
         HuPrcSleep(10);
-        WipeCreateOut(9, 0x10);
+        WipeCreateOut(WIPE_GAME_GUY, 0x10);
         HuPrcSleep(0x11);
         MBCameraFocusModeSet(1);
         MBCameraPos3DSet(&MBPlayerGet(-1)->player_obj->coords);
         HuPrcSleep(5);
-        WipeCreateIn(9, 0x10);
+        WipeCreateIn(WIPE_GAME_GUY, 0x10);
         HuPrcSleep(0x11);
         return;
     }
@@ -9214,7 +9214,7 @@ void MB6Ev_BridgeSwapExec(s32 arg0) {
         MBModelMotionWait(model);
     }
 
-    WipeCreateOut(4, 0x10);
+    WipeCreateOut(WIPE_QUESTION, 0x10);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -9223,7 +9223,7 @@ void MB6Ev_BridgeSwapExec(s32 arg0) {
     masu = MBMasuGet(masuIds[index]);
     HuVecCopy3F(&cameraPos, &masu->coords);
     HuPrcSleep(2);
-    WipeCreateIn(4, 0x10);
+    WipeCreateIn(WIPE_QUESTION, 0x10);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -9246,13 +9246,13 @@ void MB6Ev_BridgeSwapExec(s32 arg0) {
     if (MBKettouPlayerBitGet(0) == 0) {
         MBCameraFocusModeSet(3);
     } else {
-        WipeCreateOut(4, 0x10);
+        WipeCreateOut(WIPE_QUESTION, 0x10);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
         MBCameraFocusModeSet(1);
         HuPrcSleep(2);
-        WipeCreateIn(4, 0x10);
+        WipeCreateIn(WIPE_QUESTION, 0x10);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }

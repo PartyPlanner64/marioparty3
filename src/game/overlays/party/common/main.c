@@ -540,7 +540,7 @@ void MBObjectSetup(s32 arg0, s16 arg1, s32 arg2, s32 unused) {
     HuWinInit();
     MBDlgWinParamReset();
     mbExitFlag = -1;
-    mbWipeType = 0;
+    mbWipeType = WIPE_TYPE_NORMAL;
     mbExitMusFadeF = 0;
     MBScissorFullSet();
     mbExitHook = NULL;
@@ -1331,7 +1331,7 @@ void MBKettouComResultSet(void) {
     GW_SYSTEM *system = &GwSystem;
     s32 var_s1;
 
-    WipeCreateOut(8, 0x10);
+    WipeCreateOut(WIPE_GOOMBA, 0x10);
     HuPrcSleep(17);
     HuPrcSleep(5);
     var_s1 = GwSystem.unk_58;
@@ -1383,7 +1383,7 @@ void MBKettouComResultSet(void) {
     mbSubMusNo = -1;
     mbSeqPlayF = 0;
     omPrcSetStatBit(omAddPrcObj(MBSubMusStopProc, 0, 0, 0), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    WipeCreateIn(8, 0x10);
+    WipeCreateIn(WIPE_GOOMBA, 0x10);
     HuPrcSleep(17);
 }
 
@@ -1672,7 +1672,7 @@ s32 MBKettouExec(GW_PLAYER *arg0, s32 arg1) {
 
     mbExitFlag = 2;
     mbExitMusFadeF = 1;
-    mbWipeType = 8;
+    mbWipeType = WIPE_GOOMBA;
     return 1;
 }
 
@@ -2170,13 +2170,13 @@ void MBTurnHelpKill(void) {
 
 void MBGameModeWarpSet(void) {
     mbGameMode = 0xA;
-    mbWipeType = 8;
+    mbWipeType = WIPE_GOOMBA;
     MBTurnHelpKill();
 }
 
 void MBGameModeKettouSet(void) {
     mbGameMode = 0xC;
-    mbWipeType = 8;
+    mbWipeType = WIPE_GOOMBA;
     MBTurnHelpKill();
 }
 
@@ -2184,7 +2184,7 @@ void MBGameModeMgSet(void) {
     mbGameMode = 0xD;
     mbExitFlag = 2;
     mbExitMusFadeF = 1;
-    mbWipeType = 9;
+    mbWipeType = WIPE_GAME_GUY;
     MBTurnHelpKill();
 }
 
@@ -2196,14 +2196,14 @@ void MBGameModeMajinLampSet(void) {
 
 void MBGameModeReloadSet(void) {
     mbGameMode = 0xF;
-    mbWipeType = 0xB;
+    mbWipeType = WIPE_FADE;
     mbExitMusFadeF = 0;
     MBTurnHelpKill();
 }
 
 void MBGameModeKoopaSet(void) {
     mbGameMode = 0xE;
-    mbWipeType = 3;
+    mbWipeType = WIPE_BOWSER;
     MBTurnHelpKill();
 }
 
@@ -3023,10 +3023,10 @@ static void MBMain(void) {
                                     goto label1d70;
                                 }
                                 // COM item minigame logic
-                                WipeCreateOut(6, 0x10);
+                                WipeCreateOut(WIPE_TOAD, 0x10);
                                 HuPrcSleep(0x11);
                                 HuPrcSleep(5);
-                                WipeCreateIn(6, 0x10);
+                                WipeCreateIn(WIPE_TOAD, 0x10);
                                 HuPrcSleep(0x11);
 
                                 temp_s2 = MBRandCheck100(66) ? 0 : 1;
@@ -3106,7 +3106,7 @@ static void MBMain(void) {
                                 mbGameMode = 0x11;
                                 mbExitFlag = 2;
                                 mbExitMusFadeF = 1;
-                                mbWipeType = 6;
+                                mbWipeType = WIPE_TOAD;
                                 HuPrcSleep(-1);
                                 goto label2444;
                         }
@@ -3128,7 +3128,7 @@ static void MBMain(void) {
                             mbGameMode = 0x12;
                             mbExitFlag = 2;
                             mbExitMusFadeF = 1;
-                            mbWipeType = 8;
+                            mbWipeType = WIPE_GOOMBA;
                             HuPrcSleep(-1);
                         }
 
@@ -3208,13 +3208,13 @@ static void MBMain(void) {
 
                         if (MBPlayerComCheck(-1) != 0 && system->show_com_minigames != 0) {
                             // COM game guy - immediate result
-                            WipeCreateOut(9, 0x10);
+                            WipeCreateOut(WIPE_GAME_GUY, 0x10);
                             HuPrcSleep(0x11);
                             MBModelKill(temp_v0_22);
                             MBModelJumpSet(temp_v0_4->player_obj, 0, 0);
                             temp_v0_4->player_obj->velocity.x = 0.0f;
                             HuPrcSleep(5);
-                            WipeCreateIn(9, 0x10);
+                            WipeCreateIn(WIPE_GAME_GUY, 0x10);
                             HuPrcSleep(0x11);
 
                             // Weighted random multiplier
@@ -3264,7 +3264,7 @@ static void MBMain(void) {
                             mbGameMode = 0x13;
                             mbExitFlag = 2;
                             mbExitMusFadeF = 1;
-                            mbWipeType = 9;
+                            mbWipeType = WIPE_GAME_GUY;
 
                             for (i = 0; i < 4; i++) {
                                 GwPlayer[i].group = 1;
@@ -3345,7 +3345,7 @@ static void MBMain(void) {
                             mbExitFlag = 3;
                         }
                         mbExitMusFadeF = 1;
-                        mbWipeType = 0xA;
+                        mbWipeType = WIPE_TUMBLE;
 
                         for (var_s0_2 = 0; var_s0_2 < 4; var_s0_2++) {
                             MBStatusColorGet(var_s0_2);
@@ -3498,7 +3498,7 @@ void MBStart(u32 arg0) {
                     break;
                 default:
                     if (mbWipeTypeNext != -1) {
-                        if (mbWipeTypeNext == 0) {
+                        if (mbWipeTypeNext == WIPE_TYPE_NORMAL) {
                             WipeColorSet(255, 255, 255);
                         } else {
                             WipeColorSet(0, 0, 0);

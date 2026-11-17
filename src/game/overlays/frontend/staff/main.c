@@ -45,7 +45,7 @@ void staff_ObjectSetup(void) {
     }
     omAddPrcObj(staff_MainProc, 0x3F00, 0x1000, 0);
     WipeColorSet(0, 0, 0);
-    staff_wipeType = 11;
+    staff_wipeType = WIPE_FADE;
     staff_wipeTime = 20;
 }
 

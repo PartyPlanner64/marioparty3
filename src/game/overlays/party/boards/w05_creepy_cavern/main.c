@@ -7782,24 +7782,24 @@ validChoice:
             HuPrcVSleep();
         }
         MBModelKill(coinModel);
-        WipeCreateOut(9, 0x10);
+        WipeCreateOut(WIPE_GAME_GUY, 0x10);
         HuPrcSleep(0x11);
         MBCameraFocusModeSet(1);
         MBCameraPos3DSet(&MBPlayerGet(-1)->player_obj->coords);
         HuPrcSleep(5);
-        WipeCreateIn(9, 0x10);
+        WipeCreateIn(WIPE_GAME_GUY, 0x10);
         HuPrcSleep(0x11);
         return;
     }
 
     if (MBPlayerComCheck((s16)choice) != 0 && system->show_com_minigames != 0) {
-        WipeCreateOut(9, 0x10);
+        WipeCreateOut(WIPE_GAME_GUY, 0x10);
         HuPrcSleep(0x11);
         MBModelKill(coinModel);
         MBModelJumpSet(playerObj, 0, 0);
         playerObj->velocity.x = 0.0f;
         HuPrcSleep(5);
-        WipeCreateIn(9, 0x10);
+        WipeCreateIn(WIPE_GAME_GUY, 0x10);
         HuPrcSleep(0x11);
         randomValue = MBRand(100.0f) + 1;
         for (rewardIndex = 0; rewardIndex < 7; rewardIndex++) {
@@ -7823,12 +7823,12 @@ validChoice:
             MBDlgWinExec(-1, 0x2F04);
         }
         HuPrcSleep(10);
-        WipeCreateOut(9, 0x10);
+        WipeCreateOut(WIPE_GAME_GUY, 0x10);
         HuPrcSleep(0x11);
         MBCameraFocusModeSet(1);
         MBCameraPos3DSet(&MBPlayerGet(-1)->player_obj->coords);
         HuPrcSleep(5);
-        WipeCreateIn(9, 0x10);
+        WipeCreateIn(WIPE_GAME_GUY, 0x10);
         HuPrcSleep(0x11);
         return;
     }
@@ -10572,7 +10572,7 @@ void MB5Ev_CartRunExec(s32 arg0, SpaceData *space) {
 
     player = MBPlayerGet(-1);
     mbTauntOffF = 1;
-    WipeCreateOut(4, 16);
+    WipeCreateOut(WIPE_QUESTION, 16);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -10637,7 +10637,7 @@ void MB5Ev_CartRunExec(s32 arg0, SpaceData *space) {
     HuPrcChildLink(HuPrcCurrentGet(), MBVecSpeedMoveCreate(&model->coords, &endSpace->coords, &model->coords, 2.0f));
     omAddPrcObj(MB5Ev_CartSeProc, 0x4800, 0, 0)->user_data = (void *)arg0;
     omAddPrcObj(MB5Ev_CartBlockPushProc, 0x4800, 0, 0)->user_data = (void *)arg0;
-    WipeCreateIn(4, 16);
+    WipeCreateIn(WIPE_QUESTION, 16);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }

@@ -205,7 +205,7 @@ void MBDObjectSetup(s32 arg0, s16 arg1, s32 arg2) {
     MBDDlgWinParamReset();
 
     mbdExitFlag = -1;
-    mbWipeType = 0;
+    mbWipeType = WIPE_TYPE_NORMAL;
     mbdExitMusFadeF = 0;
     MBDScissorFullSet();
     mbdExitHook = NULL;
@@ -758,7 +758,7 @@ void MBDTurnHelpKill(void) {
 
 void MBDGameModeWarpSet(void) {
     mbGameMode = 7;
-    mbWipeType = 8;
+    mbWipeType = WIPE_GOOMBA;
     MBDTurnHelpKill();
 }
 
@@ -777,7 +777,7 @@ void MBDGameModeMgSet(void) {
     mbGameMode = 10;
     mbdExitFlag = 2;
     mbdExitMusFadeF = 1;
-    mbWipeType = 10;
+    mbWipeType = WIPE_TUMBLE;
     GwPlayer[0].group = 0;
     GwPlayer[1].group = 1;
     GwPlayer[2].group = 2;
@@ -1373,19 +1373,19 @@ void MBDMain(void) {
                                 GwPlayer[system->current_player_index].bonusCoin = 64;
                             }
 
-                            WipeCreateOut(9, 16);
+                            WipeCreateOut(WIPE_GAME_GUY, 16);
                             HuPrcSleep(17);
                             MBDModelKill(gameGuy);
                             MBDModelJumpSet(player->player_obj, 0.0f, 0.0f);
                             player->player_obj->velocity.x = 0.0f;
                             HuPrcSleep(5);
-                            WipeCreateIn(9, 16);
+                            WipeCreateIn(WIPE_GAME_GUY, 16);
                             HuPrcSleep(17);
                         } else {
                             mbGameMode = 8;
                             mbdExitFlag = 2;
                             mbdExitMusFadeF = 1;
-                            mbWipeType = 9;
+                            mbWipeType = WIPE_GAME_GUY;
                             GwPlayer[(s8)(system->current_player_index ^ 1)].group = 1;
                             GwPlayer[2].group = 1;
                             GwPlayer[3].group = 1;
@@ -1570,7 +1570,7 @@ void MBDMain(void) {
                     GwSystem.boardData.halfWordBytes[1] = MBDMasuOwnerNumGet(1);
                     mbdExitFlag = 0x20;
                     mbdExitMusFadeF = 1;
-                    mbWipeType = 2;
+                    mbWipeType = WIPE_STARS;
                     HuPrcSleep(-1);
                 }
 
@@ -1686,7 +1686,7 @@ void MBDStart(u32 arg0) {
                     break;
                 default:
                     if (mbWipeTypeNext != -1) {
-                        if (mbWipeTypeNext == 0) {
+                        if (mbWipeTypeNext == WIPE_TYPE_NORMAL) {
                             WipeColorSet(255, 255, 255);
                         } else {
                             WipeColorSet(0, 0, 0);

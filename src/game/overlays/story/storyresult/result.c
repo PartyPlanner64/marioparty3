@@ -578,7 +578,7 @@ void storyresult_FinalResultProc(void) {
     MBDBackArcInit(hvq_data_ROM_START);
     MBDBackLoad(0x20);
     MBDCameraNearFarSet(1000.0f, 10000.0f);
-    storyresult_wipeType = 0xB;
+    storyresult_wipeType = WIPE_FADE;
     WipeCreateIn(WIPE_FADE, 0x10);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
@@ -587,7 +587,7 @@ void storyresult_FinalResultProc(void) {
     while (sp10 >= -1) {
         HuPrcVSleep();
     }
-    storyresult_wipeType = 0xB;
+    storyresult_wipeType = WIPE_FADE;
     storyresult_wipeTime = 0x36;
     storyresult_musFadeNo = 2;
     storyresult_exitCnt = 1;

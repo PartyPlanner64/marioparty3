@@ -88,14 +88,14 @@ void WipeExecAlways(Gfx **gfx) {
             case WIPE_TYPE_CROSS:
                 WipeFrameStill(gfx);
                 break;
-            case WIPE_STRIPES2:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-            case 10:
+            case WIPE_BOWSER:
+            case WIPE_QUESTION:
+            case WIPE_EXCLAMATION:
+            case WIPE_TOAD:
+            case WIPE_KOOPA:
+            case WIPE_GOOMBA:
+            case WIPE_GAME_GUY:
+            case WIPE_TUMBLE:
                 WipeBlindDraw(gfx, 1.0f);
                 break;
             default:
@@ -127,14 +127,14 @@ void WipeExecAlways(Gfx **gfx) {
                     wipeStat = WipeShape2In(gfx);
                     break;
                 case WIPE_TYPE_NORMAL:
-                case WIPE_STRIPES2:
-                case 4:
-                case 5:
-                case 6:
-                case 7:
-                case 8:
-                case 9:
-                case 10:
+                case WIPE_BOWSER:
+                case WIPE_QUESTION:
+                case WIPE_EXCLAMATION:
+                case WIPE_TOAD:
+                case WIPE_KOOPA:
+                case WIPE_GOOMBA:
+                case WIPE_GAME_GUY:
+                case WIPE_TUMBLE:
                     wipeStat = WipeBlindExec(gfx);
                     break;
             }
@@ -177,28 +177,28 @@ void WipeExecAlways(Gfx **gfx) {
                 case WIPE_BOO:
                     wipeStat = WipeShape2Out(gfx);
                     break;
-                case WIPE_STRIPES2:
+                case WIPE_BOWSER:
                     wipeStat = WipeImageOut(gfx, 18);
                     break;
-                case 4:
+                case WIPE_QUESTION:
                     wipeStat = WipeImageOut(gfx, 19);
                     break;
-                case 5:
+                case WIPE_EXCLAMATION:
                     wipeStat = WipeImageOut(gfx, 20);
                     break;
-                case 6:
+                case WIPE_TOAD:
                     wipeStat = WipeImageOut(gfx, 21);
                     break;
-                case 7:
+                case WIPE_KOOPA:
                     wipeStat = WipeImageOut(gfx, 22);
                     break;
-                case 8:
+                case WIPE_GOOMBA:
                     wipeStat = WipeImageOut(gfx, 17);
                     break;
-                case 9:
+                case WIPE_GAME_GUY:
                     wipeStat = WipeImageOut(gfx, 16);
                     break;
-                case 10:
+                case WIPE_TUMBLE:
                     wipeStat = WipeImageOut(gfx, 15);
                     break;
             }

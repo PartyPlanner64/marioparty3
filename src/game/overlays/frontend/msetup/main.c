@@ -176,7 +176,7 @@ void msetup_ObjectSetup(void) {
     } else {
         WipeColorSet(0, 0, 0);
     }
-    msetup_wipeType = 11;
+    msetup_wipeType = WIPE_FADE;
     msetup_wipeTime = 20;
 }
 
@@ -206,9 +206,9 @@ void msetup_ExitCheckObjMain(omObjData *object) {
 createWipe:
     if (msetup_setupMode == 4) {
         WipeColorSet(255, 255, 255);
-        msetup_wipeType = 11;
+        msetup_wipeType = WIPE_FADE;
     } else {
-        msetup_wipeType = 2;
+        msetup_wipeType = WIPE_STARS;
     }
     if (msetup_wipeType >= 0) {
         WipeCreateOut(msetup_wipeType, msetup_wipeTime);

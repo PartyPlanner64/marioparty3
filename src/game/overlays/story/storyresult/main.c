@@ -94,7 +94,7 @@ void storyresult_ObjectSetup(void) {
             break;
     }
     WipeColorSet(0, 0, 0);
-    storyresult_wipeType = 2;
+    storyresult_wipeType = WIPE_STARS;
     storyresult_wipeTime = 20;
 }
 

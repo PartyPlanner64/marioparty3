@@ -7419,24 +7419,24 @@ loop:
                 HuPrcVSleep();
             } 
         MBModelKill(temp_v0);
-        WipeCreateOut(9, 0x10);
+        WipeCreateOut(WIPE_GAME_GUY, 0x10);
         HuPrcSleep(0x11);
         MBCameraFocusModeSet(1);
         MBCameraPos3DSet(&MBPlayerGet(CUR_PLAYER)->player_obj->coords);
         HuPrcSleep(5);
-        WipeCreateIn(9, 0x10);
+        WipeCreateIn(WIPE_GAME_GUY, 0x10);
         HuPrcSleep(0x11);
         return;
     }
     
     if ((MBPlayerComCheck(sel) != 0) && (system->show_com_minigames != 0)) {
-        WipeCreateOut(9, 0x10);
+        WipeCreateOut(WIPE_GAME_GUY, 0x10);
         HuPrcSleep(0x11);
         MBModelKill(temp_v0);
         MBModelJumpSet(temp_s3, 0.0f, 0.0f);
         temp_s3->velocity.x = 0.0f;
         HuPrcSleep(5);
-        WipeCreateIn(9, 0x10);
+        WipeCreateIn(WIPE_GAME_GUY, 0x10);
         HuPrcSleep(0x11);
         temp_a0 = MBRand(100.0f) + 1;
         for (i = 0; i < 7; i++) {
@@ -7462,12 +7462,12 @@ loop:
             MBDlgWinExec(-1, 0x2F04);
         }
         HuPrcSleep(0xA);
-        WipeCreateOut(9, 0x10);
+        WipeCreateOut(WIPE_GAME_GUY, 0x10);
         HuPrcSleep(0x11);
         MBCameraFocusModeSet(1);
         MBCameraPos3DSet(&MBPlayerGet(CUR_PLAYER)->player_obj->coords);
         HuPrcSleep(5);
-        WipeCreateIn(9, 0x10);
+        WipeCreateIn(WIPE_GAME_GUY, 0x10);
         HuPrcSleep(0x11);
     } else {
         if (MBSaiTypeGet(system->current_player_index) == 3) {
@@ -9460,7 +9460,7 @@ void MB1Ev_SnowmanStart(void) {
     MBStatusHideAll();
     MBSaiNumKill(system->current_player_index);
     MBPlayerMotionSet(-1, -1, 2);
-    WipeCreateOut(4, 16);
+    WipeCreateOut(WIPE_QUESTION, 16);
     while (WipeStatGet()) {
         HuPrcVSleep();
     }
@@ -9509,14 +9509,14 @@ void MB1Ev_SnowmanStart(void) {
             player->player_obj->coords.z += 15.0f;
         }
     }
-    WipeCreateIn(4, 16);
+    WipeCreateIn(WIPE_QUESTION, 16);
     while (WipeStatGet()) {
         HuPrcVSleep();
     }
 
     if (MB1Ev_SnowmanPathPairGet(path) == 0) {
         MBDlgResultWinExec(0x200);
-        WipeCreateOut(4, 16);
+        WipeCreateOut(WIPE_QUESTION, 16);
         while (WipeStatGet()) {
             HuPrcVSleep();
         }
@@ -9524,7 +9524,7 @@ void MB1Ev_SnowmanStart(void) {
         MBCameraFocusModeSet(1);
         MBCameraZoomSet(1.3f);
         MBMasuDispOn();
-        WipeCreateIn(4, 16);
+        WipeCreateIn(WIPE_QUESTION, 16);
         while (WipeStatGet()) {
             HuPrcVSleep();
         }
@@ -9533,7 +9533,7 @@ void MB1Ev_SnowmanStart(void) {
         HuPrcSleep(20);
         mb1ev_snowmanRollF = 1;
         HuPrcSleep(38);
-        WipeCreateOut(4, 16);
+        WipeCreateOut(WIPE_QUESTION, 16);
         while (WipeStatGet()) {
             HuPrcVSleep();
         }
@@ -9542,7 +9542,7 @@ void MB1Ev_SnowmanStart(void) {
         HuVecCopy3F(&pos, &MBMasuGet(mb1ev_snowmanStartMasuTbl[path])->coords);
         MBCameraFocusModeSet(4);
         MBCameraFocusVecSet(&pos);
-        WipeCreateIn(4, 16);
+        WipeCreateIn(WIPE_QUESTION, 16);
         while (WipeStatGet()) {
             HuPrcVSleep();
         }
@@ -9742,7 +9742,7 @@ void MB1Ev_SnowmanStart(void) {
             mb1ev_snowmanHitTbl[0] = -1;
         }
 
-        WipeCreateOut(4, 16);
+        WipeCreateOut(WIPE_QUESTION, 16);
         space = MBMasuGet(mb1ev_snowmanDirMasuTbl[path]);
         prevSpace = MBMasuGet(mb1ev_snowmanDirMasuTbl[path - 1]);
         while (WipeStatGet()) {
@@ -9762,7 +9762,7 @@ void MB1Ev_SnowmanStart(void) {
         mb1ev_snowmanRollF = 0;
         MBMasuDispOn();
         MBBackThreadPriHighSet();
-        WipeCreateIn(4, 16);
+        WipeCreateIn(WIPE_QUESTION, 16);
         while (WipeStatGet()) {
             HuPrcVSleep();
         }

@@ -13,7 +13,15 @@ typedef enum
 {
     WIPE_CIRCLE = 1,
     WIPE_STARS = 2,
-    WIPE_STRIPES2 = 3,
+    // Blind wipes: black stripes revealing a centered image
+    WIPE_BOWSER = 3,
+    WIPE_QUESTION = 4,
+    WIPE_EXCLAMATION = 5,
+    WIPE_TOAD = 6,
+    WIPE_KOOPA = 7,
+    WIPE_GOOMBA = 8,
+    WIPE_GAME_GUY = 9,
+    WIPE_TUMBLE = 10,
     WIPE_FADE = 11,
     WIPE_BOO = 12,
 } EWipeType;

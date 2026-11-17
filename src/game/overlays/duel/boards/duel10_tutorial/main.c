@@ -2968,20 +2968,20 @@ void MBD10Ev_PlayerWalkExecEx(s32 maxSteps, s32 steps) {
         MBDMasuCurSet(masuId);
 
         switch (space->space_type) {
-            case 2:
-            case 3:
-            case 5:
-            case 6:
-            case 8:
-            case 10:
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-            case 15:
-            case 16:
-            case 17:
-            case 18:
+            case MBD_MASU_TYPE_HAPPENING:
+            case MBD_MASU_TYPE_GAMEGUY:
+            case MBD_MASU_TYPE_REVERSE:
+            case MBD_MASU_TYPE_BASIC:
+            case MBD_MASU_TYPE_MINIGAME:
+            case MBD_MASU_TYPE_POWERUP:
+            case MBD_MASU_TYPE_CHR(CHAR_MARIO):
+            case MBD_MASU_TYPE_CHR(CHAR_LUIGI):
+            case MBD_MASU_TYPE_CHR(CHAR_PEACH):
+            case MBD_MASU_TYPE_CHR(CHAR_YOSHI):
+            case MBD_MASU_TYPE_CHR(CHAR_WARIO):
+            case MBD_MASU_TYPE_CHR(CHAR_DK):
+            case MBD_MASU_TYPE_CHR(CHAR_WALUIGI):
+            case MBD_MASU_TYPE_CHR(CHAR_DAISY):
                 MBDSaiNumCountDown(system->current_player_index);
                 walkNum--;
                 maxSteps--;
@@ -3023,19 +3023,19 @@ void MBD10Ev_MasuCoinExec(void) {
     masuId = MBDMasuLinkMasuIdGet(player->clink, player->cidx);
     space = MBDMasuGet(masuId);
     switch (space->space_type) {
-        case 11:
-        case 12:
-        case 13:
-        case 14:
-        case 15:
-        case 16:
-        case 17:
-        case 18:
+        case MBD_MASU_TYPE_CHR(CHAR_MARIO):
+        case MBD_MASU_TYPE_CHR(CHAR_LUIGI):
+        case MBD_MASU_TYPE_CHR(CHAR_PEACH):
+        case MBD_MASU_TYPE_CHR(CHAR_YOSHI):
+        case MBD_MASU_TYPE_CHR(CHAR_WARIO):
+        case MBD_MASU_TYPE_CHR(CHAR_DK):
+        case MBD_MASU_TYPE_CHR(CHAR_WALUIGI):
+        case MBD_MASU_TYPE_CHR(CHAR_DAISY):
             // The do-while (0) blocks keep GwSystem reads from being CSE'd with system.
             do {
                 coins = MBDTurnCoinGet();
             } while (0);
-            if (space->space_type - 11 == GwPlayer[GwSystem.current_player_index].chr) {
+            if (space->space_type - MBD_MASU_TYPE_CHR_BASE == GwPlayer[GwSystem.current_player_index].chr) {
                 do {
                     MBDCoinChangeCreate(GwSystem.current_player_index, coins);
                 } while (0);
@@ -3080,7 +3080,7 @@ void MBD10Ev_MasuCoinExec(void) {
                 }
             }
             break;
-        case 6:
+        case MBD_MASU_TYPE_BASIC:
             HuPrcSleep(8);
             MBDMasuOwnerAdd(masuId, system->current_player_index);
             MBDMasuOwnerTypeUpdate();
@@ -3423,8 +3423,8 @@ void MBD10Ev_TutorialProc(void) {
     HuWinAttrSet(mbd10ev_guide->win_id, 0x40, 0x40);
     MBD10Ev_ComSetAll();
     MBD10Ev_PlayerColorReset();
-    MBDMasuTypeSet(5, 0xC);
-    MBDMasuTypeSet(6, 0xB);
+    MBDMasuTypeSet(5, MBD_MASU_TYPE_CHR(CHAR_LUIGI));
+    MBDMasuTypeSet(6, MBD_MASU_TYPE_CHR(CHAR_MARIO));
     MBDMasuTypeListCreate();
     MBDPlayerPartyMotionSet(-1, -1, 2);
     Hu3DMotionReset(MBDPlayerGet(1)->player_obj->omObj1->model[0]);
@@ -3662,7 +3662,7 @@ void MBD10Ev_TutorialProc(void) {
     MBDPartnerPosFix(1);
     MBDStatusFrontUpdate(0);
     MBDStatusBackUpdate(1);
-    MBDMasuTypeSet(9, 5);
+    MBDMasuTypeSet(9, MBD_MASU_TYPE_REVERSE);
     MBDMasuTypeListCreate();
     system->current_player_index = 0;
     MBD10Ev_CameraRefresh(0);
@@ -3767,9 +3767,9 @@ void MBD10Ev_TutorialProc(void) {
     MBDStatusBackDispOff(0);
     MBDStatusFrontDispOff(1);
     MBDStatusBackDispOff(1);
-    MBDMasuTypeSet(6, 0xC);
-    MBDMasuTypeSet(5, 0xB);
-    MBDMasuTypeSet(0, 6);
+    MBDMasuTypeSet(6, MBD_MASU_TYPE_CHR(CHAR_LUIGI));
+    MBDMasuTypeSet(5, MBD_MASU_TYPE_CHR(CHAR_MARIO));
+    MBDMasuTypeSet(0, MBD_MASU_TYPE_BASIC);
     MBDMasuTypeListCreate();
     system->current_player_index = 1;
     MBD10Ev_CameraRefresh(0);

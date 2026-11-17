@@ -4996,7 +4996,7 @@ s32 MBD1_ComGate1PayLv3Check(void) {
                         return 1;
                     }
                 }
-                return MBDMasuGet(0x13)->space_type - 11 == GwPlayer[curIndex].chr;
+                return MBDMasuGet(0x13)->space_type - MBD_MASU_TYPE_CHR_BASE == GwPlayer[curIndex].chr;
             }
             if (walkNum == 6 || walkNum == 7) {
                 return 1;
@@ -5195,13 +5195,13 @@ s32 MBD1_ComGate1PayLv3Check(void) {
                 } else {
                     space = MBDMasuGet(0x13);
                     if (walkNum == 1) {
-                        if (space->space_type - 11 == GwPlayer[curIndex].chr) {
+                        if (space->space_type - MBD_MASU_TYPE_CHR_BASE == GwPlayer[curIndex].chr) {
                             if (MBDPartnerCostGet(curIndex) == 0) {
                                 coins = 100;
                             } else {
                                 coins = (GwPlayer[curIndex].coin - 5 + MBDTurnCoinGet()) / (MBDPartnerCostGet(curIndex) * 2);
                             }
-                        } else if (space->space_type == 6) {
+                        } else if (space->space_type == MBD_MASU_TYPE_BASIC) {
                             if (MBDPartnerCostGet(curIndex) == 0) {
                                 coins = 100;
                             } else {
@@ -5710,7 +5710,7 @@ s32 MBD1_ComGate2PayLv3Check(void) {
                         return 1;
                     }
                 }
-                return MBDMasuGet(0xF)->space_type - 11 == GwPlayer[curIndex].chr;
+                return MBDMasuGet(0xF)->space_type - MBD_MASU_TYPE_CHR_BASE == GwPlayer[curIndex].chr;
             }
             if (walkNum == 3) {
                 return MBDRand(100.0f) < 50;
@@ -5909,13 +5909,13 @@ s32 MBD1_ComGate2PayLv3Check(void) {
                 } else {
                     space = MBDMasuGet(0xF);
                     if (walkNum == 1) {
-                        if (space->space_type - 11 == GwPlayer[curIndex].chr) {
+                        if (space->space_type - MBD_MASU_TYPE_CHR_BASE == GwPlayer[curIndex].chr) {
                             if (MBDPartnerCostGet(curIndex) == 0) {
                                 coins = 100;
                             } else {
                                 coins = (GwPlayer[curIndex].coin - 5 + MBDTurnCoinGet()) / (MBDPartnerCostGet(curIndex) * 2);
                             }
-                        } else if (space->space_type == 6) {
+                        } else if (space->space_type == MBD_MASU_TYPE_BASIC) {
                             if (MBDPartnerCostGet(curIndex) == 0) {
                                 coins = 100;
                             } else {

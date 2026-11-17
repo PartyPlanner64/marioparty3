@@ -515,57 +515,53 @@ void MBDExitProc(void) {
     }
 }
 
-void MBDMasuPassSePlay(s16 arg0) {
-    arg0 -= 2;
-
-    switch (arg0) {
-        case 0:
-        case 1:
-        case 3:
-        case 4:
-        case 6:
-        case 8:
-        case 9:
-        case 10:
-        case 11:
-        case 12:
-        case 13:
-        case 14:
-        case 15:
-        case 16:
+void MBDMasuPassSePlay(s16 spaceType) {
+    switch (spaceType) {
+        case MBD_MASU_TYPE_HAPPENING:
+        case MBD_MASU_TYPE_GAMEGUY:
+        case MBD_MASU_TYPE_REVERSE:
+        case MBD_MASU_TYPE_BASIC:
+        case MBD_MASU_TYPE_MINIGAME:
+        case MBD_MASU_TYPE_POWERUP:
+        case MBD_MASU_TYPE_CHR(CHAR_MARIO):
+        case MBD_MASU_TYPE_CHR(CHAR_LUIGI):
+        case MBD_MASU_TYPE_CHR(CHAR_PEACH):
+        case MBD_MASU_TYPE_CHR(CHAR_YOSHI):
+        case MBD_MASU_TYPE_CHR(CHAR_WARIO):
+        case MBD_MASU_TYPE_CHR(CHAR_DK):
+        case MBD_MASU_TYPE_CHR(CHAR_WALUIGI):
+        case MBD_MASU_TYPE_CHR(CHAR_DAISY):
             HuAudFXPlay(0x101);
             break;
     }
 }
 
-void MBDMasuLandSePlay(s16 arg0) {
-    arg0 -= 2;
-
-    switch (arg0) {
-        case 3:
+void MBDMasuLandSePlay(s16 spaceType) {
+    switch (spaceType) {
+        case MBD_MASU_TYPE_REVERSE:
             if (GwSystem.current_board_index == 5) {
                 HuAudFXPlay(0x1D4);
             } else {
                 HuAudFXPlay(0x1D3);
             }
             break;
-        case 8:
+        case MBD_MASU_TYPE_POWERUP:
             HuAudFXPlay(0x1D2);
             break;
-        case 1:
+        case MBD_MASU_TYPE_GAMEGUY:
             HuAudFXPlay(0x12E);
             break;
-        case 0:
-        case 4:
-        case 6:
-        case 9:
-        case 10:
-        case 11:
-        case 12:
-        case 13:
-        case 14:
-        case 15:
-        case 16:
+        case MBD_MASU_TYPE_HAPPENING:
+        case MBD_MASU_TYPE_BASIC:
+        case MBD_MASU_TYPE_MINIGAME:
+        case MBD_MASU_TYPE_CHR(CHAR_MARIO):
+        case MBD_MASU_TYPE_CHR(CHAR_LUIGI):
+        case MBD_MASU_TYPE_CHR(CHAR_PEACH):
+        case MBD_MASU_TYPE_CHR(CHAR_YOSHI):
+        case MBD_MASU_TYPE_CHR(CHAR_WARIO):
+        case MBD_MASU_TYPE_CHR(CHAR_DK):
+        case MBD_MASU_TYPE_CHR(CHAR_WALUIGI):
+        case MBD_MASU_TYPE_CHR(CHAR_DAISY):
             HuAudFXPlay(0x108);
     }
 }
@@ -1042,20 +1038,20 @@ void MBDMain(void) {
                     MBDMasuCurSet(masuId);
 
                     switch (space->space_type) {
-                        case 2:
-                        case 3:
-                        case 5:
-                        case 6:
-                        case 8:
-                        case 10:
-                        case 11:
-                        case 12:
-                        case 13:
-                        case 14:
-                        case 15:
-                        case 16:
-                        case 17:
-                        case 18:
+                        case MBD_MASU_TYPE_HAPPENING:
+                        case MBD_MASU_TYPE_GAMEGUY:
+                        case MBD_MASU_TYPE_REVERSE:
+                        case MBD_MASU_TYPE_BASIC:
+                        case MBD_MASU_TYPE_MINIGAME:
+                        case MBD_MASU_TYPE_POWERUP:
+                        case MBD_MASU_TYPE_CHR(CHAR_MARIO):
+                        case MBD_MASU_TYPE_CHR(CHAR_LUIGI):
+                        case MBD_MASU_TYPE_CHR(CHAR_PEACH):
+                        case MBD_MASU_TYPE_CHR(CHAR_YOSHI):
+                        case MBD_MASU_TYPE_CHR(CHAR_WARIO):
+                        case MBD_MASU_TYPE_CHR(CHAR_DK):
+                        case MBD_MASU_TYPE_CHR(CHAR_WALUIGI):
+                        case MBD_MASU_TYPE_CHR(CHAR_DAISY):
                             MBDSaiNumCountDown(system->current_player_index);
                             mbWalkNum--;
                             MBDMasuBounceCreate(masuId);
@@ -1159,15 +1155,15 @@ void MBDMain(void) {
                 masuId = MBDMasuLinkMasuIdGet(player->clink, player->cidx);
 
                 switch (MBDMasuGet(masuId)->space_type) {
-                    case 2:
+                    case MBD_MASU_TYPE_HAPPENING:
                         MBDPlayerVibrate(-1, 2);
                         GwSystem.boardData.halfWordBytes[2 + player->turn]++;
                         break;
-                    case 3:
+                    case MBD_MASU_TYPE_GAMEGUY:
                         MBDPlayerVibrate(-1, 3);
                         GwSystem.boardData.halfWordBytes[4 + player->turn]++;
                         break;
-                    case 5:
+                    case MBD_MASU_TYPE_REVERSE:
                         if (system->current_board_index != 5) {
                             MBDPlayerVibrate(-1, 1);
                         } else {
@@ -1175,11 +1171,11 @@ void MBDMain(void) {
                         }
                         GwSystem.boardData.halfWordBytes[6 + player->turn]++;
                         break;
-                    case 8:
+                    case MBD_MASU_TYPE_MINIGAME:
                         MBDPlayerVibrate(-1, 0);
                         GwSystem.boardData.halfWordBytes[8 + player->turn]++;
                         break;
-                    case 10:
+                    case MBD_MASU_TYPE_POWERUP:
                         MBDPlayerVibrate(-1, 2);
                         GwSystem.boardData.halfWordBytes[10 + player->turn]++;
                         break;
@@ -1221,17 +1217,17 @@ void MBDMain(void) {
 
                 // Cast to s32 since this switch has a case -1 (unreachable for a u8 space type).
                 switch ((s32)space->space_type) {
-                    case 11:
-                    case 12:
-                    case 13:
-                    case 14:
-                    case 15:
-                    case 16:
-                    case 17:
-                    case 18:
+                    case MBD_MASU_TYPE_CHR(CHAR_MARIO):
+                    case MBD_MASU_TYPE_CHR(CHAR_LUIGI):
+                    case MBD_MASU_TYPE_CHR(CHAR_PEACH):
+                    case MBD_MASU_TYPE_CHR(CHAR_YOSHI):
+                    case MBD_MASU_TYPE_CHR(CHAR_WARIO):
+                    case MBD_MASU_TYPE_CHR(CHAR_DK):
+                    case MBD_MASU_TYPE_CHR(CHAR_WALUIGI):
+                    case MBD_MASU_TYPE_CHR(CHAR_DAISY):
                         coins = MBDTurnCoinGet();
 
-                        if (space->space_type - 11 == GwPlayer[system->current_player_index].chr) {
+                        if (space->space_type - MBD_MASU_TYPE_CHR_BASE == GwPlayer[system->current_player_index].chr) {
                             MBDPlayerVibrate(-1, 1);
                             MBDCoinChangeCreate(system->current_player_index, coins);
                             MBDCoinTakeCreate(system->current_player_index, coins);
@@ -1290,7 +1286,7 @@ void MBDMain(void) {
                         HuPrcSleep(30);
                         break;
 
-                    case 6:
+                    case MBD_MASU_TYPE_BASIC:
                         HuPrcSleep(8);
                         MBDMasuOwnerAdd(masuId, system->current_player_index);
                         MBDMasuOwnerTypeUpdate();
@@ -1298,7 +1294,7 @@ void MBDMain(void) {
                         HuAudFXPlay(0x201);
                         break;
 
-                    case 2:
+                    case MBD_MASU_TYPE_HAPPENING:
                         if (mbdHatenaFunc == NULL) {
                             break;
                         }
@@ -1306,7 +1302,7 @@ void MBDMain(void) {
                         HuPrcChildWatch();
                         break;
 
-                    case 3: {
+                    case MBD_MASU_TYPE_GAMEGUY: {
                         Object *gameGuy;
                         Process *gameGuyProc;
                         s32 rand;
@@ -1448,7 +1444,7 @@ void MBDMain(void) {
                         }
                         goto spaceEventEnd;
 
-                    case 8:
+                    case MBD_MASU_TYPE_MINIGAME:
                         HuPrcSleep(8);
                         MBDStatusShrink(-1);
                         MBDAuraAltCreate(&player->player_obj->coords);
@@ -1461,7 +1457,7 @@ void MBDMain(void) {
                         HuPrcSleep(30);
                         break;
 
-                    case 10: {
+                    case MBD_MASU_TYPE_POWERUP: {
                         Object *partnerObj[2];
 
                         if (player->stats.partners.frontID == -1 && player->stats.partners.backID == -1) {
@@ -1520,7 +1516,7 @@ void MBDMain(void) {
                         break;
                     }
 
-                    case 5:
+                    case MBD_MASU_TYPE_REVERSE:
                         if (system->current_board_index == 5) {
                             break;
                         }

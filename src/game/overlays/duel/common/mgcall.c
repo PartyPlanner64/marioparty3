@@ -666,12 +666,12 @@ void MBDMgCallListCreate(s32 arg0) {
                         }
                         break;
                     case 10:
-                        if (MBDMasuTypeNumGet(GwPlayer[GwSystem.current_player_index].chr + 11) != 0) {
+                        if (MBDMasuTypeNumGet(MBD_MASU_TYPE_CHR(GwPlayer[GwSystem.current_player_index].chr)) != 0) {
                             break;
                         }
                         /* fallthrough */
                     case 6:
-                        if (MBDMasuTypeNumGet(GwPlayer[(s8)(GwSystem.current_player_index ^ 1)].chr + 11) == 0) {
+                        if (MBDMasuTypeNumGet(MBD_MASU_TYPE_CHR(GwPlayer[(s8)(GwSystem.current_player_index ^ 1)].chr)) == 0) {
                             continue;
                         }
                         break;
@@ -813,12 +813,12 @@ void MBDMgCallListCreateProc(void) {
                         }
                         break;
                     case 10:
-                        if (MBDMasuTypeNumGet(GwPlayer[GwSystem.current_player_index].chr + 11) != 0) {
+                        if (MBDMasuTypeNumGet(MBD_MASU_TYPE_CHR(GwPlayer[GwSystem.current_player_index].chr)) != 0) {
                             break;
                         }
                         /* fallthrough */
                     case 6:
-                        if (MBDMasuTypeNumGet(GwPlayer[(s8)(GwSystem.current_player_index ^ 1)].chr + 11) == 0) {
+                        if (MBDMasuTypeNumGet(MBD_MASU_TYPE_CHR(GwPlayer[(s8)(GwSystem.current_player_index ^ 1)].chr)) == 0) {
                             continue;
                         }
                         break;

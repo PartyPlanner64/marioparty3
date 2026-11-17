@@ -8,8 +8,8 @@
 extern u16 mbdMasuNum;
 extern SpaceData *mbdMasuTbl;
 extern LinkData *mbdMasuLinkTbl;
-extern MasuBmp *mbdMasuBmpDataTbl[19];
-extern u8 mbdMasuTypeNumTbl[19];
+extern MasuBmp *mbdMasuBmpDataTbl[MBD_MASU_TYPE_MAX];
+extern u8 mbdMasuTypeNumTbl[MBD_MASU_TYPE_MAX];
 extern f32 mbdMasuArrowAngleTbl[8];
 extern s32 mbdMasuArrowAngleNum;
 extern s16 mbdMasuBlockExtTbl[255];
@@ -31,13 +31,13 @@ extern s16 MTXBufNum;
 
 void *mbdMasuData = NULL;
 u8 *mbdMasuTypeListTbl = NULL;
-s32 mbdMasuBmpTbl[0x13] = {
+s32 mbdMasuBmpTbl[MBD_MASU_TYPE_MAX] = {
     0, 0, 0x13022E, 0x13022C, 0,
     0x13022F, 0x13022B, 0, 0x13022D, 0,
     0x130230, 0x130231, 0x130232, 0x130233, 0x130234,
     0x130235, 0x130236, 0x130237, 0x130238
 };
-s32 mbdMasuBmpAltTbl[0x13] = {
+s32 mbdMasuBmpAltTbl[MBD_MASU_TYPE_MAX] = {
     0, 0, 0x13022E, 0x13022C, 0,
     0x130239, 0x13022B, 0, 0x13022D, 0,
     0x130230, 0x130231, 0x130232, 0x130233, 0x130234,
@@ -87,7 +87,7 @@ void MBDMasuBmpCreate(s16 arg0) {
         dirs = mbdMasuBmpTbl;
     }
 
-    for (i = 0; i < 0x13; i++) {
+    for (i = 0; i < MBD_MASU_TYPE_MAX; i++) {
         if (dirs[i] != 0) {
             mbdMasuBmpDataTbl[i] = DataRead(dirs[i]);
         } else {
@@ -99,7 +99,7 @@ void MBDMasuBmpCreate(s16 arg0) {
 void MBDMasuBmpKill(void) {
     s32 i;
 
-    for (i = 0; i < 0x13; i++) {
+    for (i = 0; i < MBD_MASU_TYPE_MAX; i++) {
         if (mbdMasuBmpDataTbl[i] != 0) {
             DataClose(mbdMasuBmpDataTbl[i]);
         }
@@ -167,7 +167,7 @@ void MBDMasuDraw(Gfx **arg0, Mtx *arg1, s32 arg2) {
         MBDCameraPos3DGet(&sp50);
         vtx = (Vtx *)OS_K0_TO_PHYSICAL(mbdMasuVtx);
 
-        for (i = 0; i < 0x13; i++) {
+        for (i = 0; i < MBD_MASU_TYPE_MAX; i++) {
             if (mbdMasuBmpDataTbl[i] != NULL) {
                 if (mbdMasuBmpDataTbl[i]->palCount <= 16) {
                     gDPLoadTLUT_pal16((*gfxPos)++, 0, mbdMasuBmpDataTbl[i]->data);
@@ -181,7 +181,7 @@ void MBDMasuDraw(Gfx **arg0, Mtx *arg1, s32 arg2) {
                                         G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                 }
                 for (j = 0; j < mbdMasuNum; j++) {
-                    s32 spaceId = *(i * 128 + mbdMasuTypeListTbl + j);
+                    s32 spaceId = *(i * SPACES_MAX + mbdMasuTypeListTbl + j);
                     if (spaceId == 0xFF) {
                         break;
                     }
@@ -359,7 +359,7 @@ void MBDPlayerStartMasuSet(void) {
         space = chain->spaces;
 
         for (j = 0; j < chain->chainIndicies; j++) {
-            if (MBDMasuGet(*space)->space_type == 9) {
+            if (MBDMasuGet(*space)->space_type == MBD_MASU_TYPE_START_BLUE) {
                 for (k = 0; k < MBD_MAX_PLAYERS; k++) {
                     MBDMoveMasuSet(k, i, j);
                 }
@@ -554,7 +554,7 @@ void MBDMasuOwnerTypeUpdate(void) {
 
     for (i = 0; i < 0x13; i++) {
         if (GwSystem.unk_2A[i] != 0) {
-            MBDMasuTypeSet(GwSystem.unk_17[i], GwPlayer[GwSystem.unk_2A[i] - 1].chr + 0xB);
+            MBDMasuTypeSet(GwSystem.unk_17[i], MBD_MASU_TYPE_CHR(GwPlayer[GwSystem.unk_2A[i] - 1].chr));
         }
     }
 }
@@ -585,7 +585,7 @@ void MBDMasuOwnerClear(void) {
 
     for (i = 0; i < 0x13; i++) {
         if (GwSystem.unk_2A[i] != 0) {
-            MBDMasuTypeSet(GwSystem.unk_17[i], 6);
+            MBDMasuTypeSet(GwSystem.unk_17[i], MBD_MASU_TYPE_BASIC);
             GwSystem.unk_2A[i] = 0;
         }
     }
@@ -611,17 +611,17 @@ void MBDMasuTypeListCreate(void) {
     if (mbdMasuTypeListTbl != NULL) {
         HuMemMemoryFreeTemp(mbdMasuTypeListTbl);
     }
-    mbdMasuTypeListTbl = HuMemMemoryAllocTemp(0x980);
+    mbdMasuTypeListTbl = HuMemMemoryAllocTemp(MBD_MASU_TYPE_MAX * SPACES_MAX);
 
-    for (i = 0; i < 0x13; i++) {
+    for (i = 0; i < MBD_MASU_TYPE_MAX; i++) {
         n = 0;
         for (j = 0; j < mbdMasuNum; j++) {
             if (MBDMasuGet(j)->space_type == i) {
-                *(i * 128 + mbdMasuTypeListTbl + n) = j;
+                *(i * SPACES_MAX + mbdMasuTypeListTbl + n) = j;
                 n++;
             }
         }
-        *(i * 128 + mbdMasuTypeListTbl + n) = 0xFF;
+        *(i * SPACES_MAX + mbdMasuTypeListTbl + n) = 0xFF;
         mbdMasuTypeNumTbl[i] = n;
     }
 }
@@ -637,5 +637,5 @@ s32 MBDMasuTypeNumGet(s32 spaceType) {
 }
 
 u8 MBDMasuTypeListGet(s32 spaceType, s32 index) {
-    return *(spaceType * 128 + mbdMasuTypeListTbl + index);
+    return *(spaceType * SPACES_MAX + mbdMasuTypeListTbl + index);
 }

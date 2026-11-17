@@ -138,10 +138,10 @@ u16 mbdMasuLinkNum BSS;
 SpaceData *mbdMasuTbl BSS;
 LinkData *mbdMasuLinkTbl BSS;
 u8 mbdMasuLinkPad[4] BSS; /* Unreferenced. */
-MasuBmp *mbdMasuBmpDataTbl[19] BSS;
+MasuBmp *mbdMasuBmpDataTbl[MBD_MASU_TYPE_MAX] BSS;
 s16 mbdMasuBmpMode BSS;
 u16 mbdMasuDispF BSS;
-u8 mbdMasuTypeNumTbl[19] BSS;
+u8 mbdMasuTypeNumTbl[MBD_MASU_TYPE_MAX] BSS;
 event_list_entry *mbdMasuEventBoardStartTbl BSS;
 event_list_entry *mbdMasuEventRoundEndTbl BSS;
 event_list_entry *mbdMasuEventTurnStartTbl BSS;

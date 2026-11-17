@@ -5,6 +5,21 @@
 
 #include "common.h"
 
+// Duel board space types (SpaceData.space_type). These differ from the party board SPACE_* values.
+#define MBD_MASU_TYPE_UNK1 1
+#define MBD_MASU_TYPE_HAPPENING 2
+#define MBD_MASU_TYPE_GAMEGUY 3
+#define MBD_MASU_TYPE_UNK4 4 // seen on spaces that have events
+#define MBD_MASU_TYPE_REVERSE 5
+#define MBD_MASU_TYPE_BASIC 6 // basic space without an owner
+#define MBD_MASU_TYPE_START_RED 7
+#define MBD_MASU_TYPE_MINIGAME 8
+#define MBD_MASU_TYPE_START_BLUE 9
+#define MBD_MASU_TYPE_POWERUP 10
+#define MBD_MASU_TYPE_CHR_BASE 11 // basic spaces owned by a character, one per CHAR_* value
+#define MBD_MASU_TYPE_CHR(chr) ((chr) + MBD_MASU_TYPE_CHR_BASE)
+#define MBD_MASU_TYPE_MAX 19
+
 // The duel overlay's copy of the board model code adds a motion count at 0x44,
 // shifting the board layout's unk44/unk46 to 0x46/0x48.
 struct Object_s {

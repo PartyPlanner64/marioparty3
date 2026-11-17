@@ -1941,25 +1941,14 @@ void modesel_HostLookAtUpdate(void) {
     modesel_ModelRotSet(0xA, 0.0f, modesel_LookAtAngleCalc(pos.x - modelPos.x, pos.z - modelPos.z), 0.0f);
 }
 
-#ifdef NON_MATCHING
-// Only float register allocation differs: the target puts t (and the int->float temp) in $f6, the
-// t * 400.0f product in $f0 and the y result in $f2. Our t is a block-local pseudo dying at the
-// multiply, so local-alloc ties the product to t. In the target t must be a global-alloc pseudo
-// (product then ties to the 400.0f constant; an artificial early `if (...) return;` reproduces
-// everything except t landing in $f2) and also conflict with $f2, i.e. stay live past the
-// modesel_hostJumpPosTbl[1].y load, yet no visible later use exists. Tried: t = timer; t *= k,
-// 400.0f * t, constants/products in variables, separate x/y/z locals, a float timer local,
-// pointer to modesel_hostJumpPosTbl[1], pos.y = ...; pos.y -= ..., struct copy, an inline helper,
-// identical if/else arms (not cross-jumped), and do-while(0) around every statement combination.
 void modesel_HostFallObjMain(omObjData *obj) {
     Vec pos;
     s32 model = 10;
     s32 timer = obj->work[0];
     f32 t = timer * (1.0f / 255.0f);
+    // Retain the unused jump interpolation clamp for matching register allocation.
+    f32 s = (t < 1.0) ? t : 1.0f;
 
-    // The empty loop ends the CSE block, so the model id stays in a saved register.
-    do {
-    } while (0);
     pos.x = modesel_hostJumpPosTbl[1].x;
     pos.y = modesel_hostJumpPosTbl[1].y - t * 400.0f;
     pos.z = modesel_hostJumpPosTbl[1].z;
@@ -1972,9 +1961,6 @@ void modesel_HostFallObjMain(omObjData *obj) {
     }
     obj->work[0] = timer;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/overlays/frontend/modesel/modesel", modesel_HostFallObjMain);
-#endif
 
 void modesel_HostWaitObjMain(omObjData *obj) {
     s32 timer = obj->work[0];

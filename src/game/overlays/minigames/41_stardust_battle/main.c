@@ -868,7 +868,7 @@ void m265_ExitCheck(omObjData *object) {
     } else if (omSysExitReq == 1 && WipeStatGet() == 0) {
         m265_exitTimer = 16;
         WipeColorSet(0, 0, 0);
-        WipeCreateOut(0, m265_exitTimerLo[0]);
+        WipeCreateOut(WIPE_TYPE_NORMAL, m265_exitTimerLo[0]);
         HuAudSeqFadeOut(m265_exitTimerLo[0]);
         HuAudFXAllFadeOut(m265_exitTimerLo[0]);
     }
@@ -1171,7 +1171,7 @@ void m265_PlayerObjMain(omObjData *object) {
     s16 stickY;
 
     if (omPauseChk() + omAllPauseF != 0) {
-        Hu3DModelAttrSet(object->model[0], 4, 0);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         return;
     }
     if (obj->func_6C != NULL) {
@@ -1216,19 +1216,19 @@ void m265_PlayerObjMain(omObjData *object) {
     }
     m265_PlayerEdgeClamp(object);
     if (m265_StageNoGet() == 1) {
-        Hu3DModelAttrSet(object->model[1], 4, 4);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     obj->unk_2C = object->trans.x;
     obj->unk_30 = object->trans.y;
     obj->unk_34 = object->trans.z;
     if (obj->unk_14 != 0) {
         if (obj->unk_0A & 1) {
-            Hu3DModelAttrSet(object->model[0], 4, 4);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         } else {
-            Hu3DModelAttrSet(object->model[0], 4, 0);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
         if (--obj->unk_14 == 0) {
-            Hu3DModelAttrSet(object->model[0], 4, 0);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
     }
     obj->unk_0A++;
@@ -2248,7 +2248,7 @@ void m265_StarObjCreate(void) {
     AuraParamSet(object->model[0], 0.0f, 0.0f, 1.0f);
     object->model[1] = Hu3DModelRead(0, 0x149D);
     object->model[2] = Hu3DModelRead(0xA0122, 0x688);
-    Hu3DModelAttrSet(object->model[2], 4, 4);
+    Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     AuraCreate(object->model[2]);
     mtxRotCat(Hu3DData[object->model[2]].mtx, 180.0f, 0.0f, 0.0f);
     mtxRotCat(Hu3DData[object->model[2]].mtx, 0.0f, 180.0f, 0.0f);
@@ -2458,7 +2458,7 @@ void m265_StarObjMain(omObjData *object) {
                 }
                 if (actor->active >= 45.0f) {
                     WipeColorSet(255, 255, 255);
-                    WipeCreateOut(11, 30);
+                    WipeCreateOut(WIPE_FADE, 30);
                     actor->active = 0;
                     actor->unk_04 = 9;
                     HuAudFXPlay(0x509);
@@ -2476,7 +2476,7 @@ void m265_StarObjMain(omObjData *object) {
                 object->rot.y = 0.0f;
                 actor->unk_18 = 0.0f;
                 WipeColorSet(255, 255, 255);
-                WipeCreateIn(11, 15);
+                WipeCreateIn(WIPE_FADE, 15);
                 switch (actor->unk_0C) {
                     case 1:
                         HuAudFXPlay(0x50F);
@@ -2634,21 +2634,21 @@ void m265_StarObjMain(omObjData *object) {
         if (t < 0.2f) {
             t = 0.2f;
         }
-        Hu3DModelAttrSet(object->model[1], 4, 0);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
         Hu3DModelScaleSet(object->model[1], t * 1.5f, 1.0f, t * 1.5f);
     } else {
-        Hu3DModelAttrSet(object->model[1], 4, 4);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 
     if (m265_StageNoGet() == 2) {
-        Hu3DModelAttrSet(object->model[2], 4, 0);
+        Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(object->model[2], object->trans.x, -object->trans.y, object->trans.z);
         Hu3DModelRotSet(object->model[2], object->rot.x, object->rot.y, object->rot.z);
         Hu3DData[object->model[2]].motId = Hu3DData[object->model[0]].motId;
         Hu3DData[object->model[2]].motTime = Hu3DData[object->model[0]].motTime;
     } else {
-        Hu3DModelAttrSet(object->model[2], 4, 4);
+        Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 
     actor->active++;
@@ -2947,11 +2947,11 @@ void m265_DustInit(void) {
             star->reflection[1] = Hu3DModelLink(stars->modelId2);
             star->shadow = Hu3DModelLink(stars->effectId1);
         }
-        Hu3DModelAttrSet(star->model[0], 4, 4);
-        Hu3DModelAttrSet(star->reflection[0], 4, 4);
-        Hu3DModelAttrSet(star->model[1], 4, 4);
-        Hu3DModelAttrSet(star->reflection[1], 4, 4);
-        Hu3DModelAttrSet(star->shadow, 4, 4);
+        Hu3DModelAttrSet(star->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(star->reflection[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(star->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(star->reflection[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(star->shadow, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         mtxRotCat(Hu3DData[star->reflection[0]].mtx, 180.0f, 0.0f, 0.0f);
         mtxRotCat(Hu3DData[star->reflection[0]].mtx, 0.0f, 180.0f, 0.0f);
         mtxRotCat(Hu3DData[star->reflection[1]].mtx, 180.0f, 0.0f, 0.0f);
@@ -2997,7 +2997,7 @@ void m265_DustObjMain(omObjData *object) {
                 Hu3DModelVtxMorph(star->effect, stars->effectId2, star->unk_68);
             }
             if (star->state == 3) {
-                Hu3DModelAttrSet(star->model[star->unk_10], 4, 0);
+                Hu3DModelAttrSet(star->model[star->unk_10], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
             continue;
         }
@@ -3048,7 +3048,7 @@ void m265_DustObjMain(omObjData *object) {
                 break;
             case 2:
                 if (star->unk_14 >= 30) {
-                    Hu3DModelAttrSet(star->model[1], 4, 0);
+                    Hu3DModelAttrSet(star->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     star->unk_10 = 1;
                     star->unk_18 = 0;
                     star->state = 3;
@@ -3068,10 +3068,10 @@ void m265_DustObjMain(omObjData *object) {
                 }
                 if (star->unk_14 >= 15.0f) {
                     if (star->unk_14 & 1) {
-                        Hu3DModelAttrSet(star->model[0], 4, 0);
+                        Hu3DModelAttrSet(star->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         star->unk_10 = 0;
                     } else {
-                        Hu3DModelAttrSet(star->model[1], 4, 0);
+                        Hu3DModelAttrSet(star->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         star->unk_10 = 1;
                     }
                 }
@@ -3079,9 +3079,9 @@ void m265_DustObjMain(omObjData *object) {
             case 3:
                 if (star->unk_14 >= 60.0f) {
                     if (star->unk_14 & 1) {
-                        Hu3DModelAttrSet(star->model[star->unk_10], 4, 4);
+                        Hu3DModelAttrSet(star->model[star->unk_10], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     } else {
-                        Hu3DModelAttrSet(star->model[star->unk_10], 4, 0);
+                        Hu3DModelAttrSet(star->model[star->unk_10], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     }
                     if (star->unk_14 >= 90.0f) {
                         m265_DustKill(i);
@@ -3110,19 +3110,19 @@ void m265_DustObjMain(omObjData *object) {
         if (done) {
             continue;
         }
-        Hu3DModelAttrSet(star->model[(s16)(star->unk_10 ^ 1)], 4, 4);
-        Hu3DModelAttrSet(star->reflection[(s16)(star->unk_10 ^ 1)], 4, 4);
+        Hu3DModelAttrSet(star->model[(s16)(star->unk_10 ^ 1)], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(star->reflection[(s16)(star->unk_10 ^ 1)], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DModelPosSet(star->model[star->unk_10], star->x, star->y, star->z);
         Hu3DModelRotSet(star->model[star->unk_10], star->targetX, star->targetY, star->targetZ);
         if (mode != 2 || star->y <= -50.0 || star->x * star->x + star->z * star->z > 275625.0) {
-            Hu3DModelAttrSet(star->reflection[star->unk_10], 4, 4);
+            Hu3DModelAttrSet(star->reflection[star->unk_10], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         } else {
-            Hu3DModelAttrSet(star->reflection[star->unk_10], 4, 0);
+            Hu3DModelAttrSet(star->reflection[star->unk_10], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelPosSet(star->reflection[star->unk_10], star->x, -star->y, star->z);
             Hu3DModelRotSet(star->reflection[star->unk_10], star->targetX, star->targetY, star->targetZ);
         }
         if (star->unk_18 != 0) {
-            Hu3DModelAttrSet(star->effect, 4, 0);
+            Hu3DModelAttrSet(star->effect, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelPosSet(star->effect, star->x, star->y + 34.99999940395355, star->z);
             star->unk_78 += 20.0f;
             if (star->unk_78 >= 360.0f) {
@@ -3141,18 +3141,18 @@ void m265_DustObjMain(omObjData *object) {
             }
             star->unk_6C = star->unk_68;
         } else {
-            Hu3DModelAttrSet(star->effect, 4, 4);
+            Hu3DModelAttrSet(star->effect, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
         if (mode != 1 && star->x * star->x + star->z * star->z < 275625.0) {
             temp = 1.0 - star->y * 0.001;
             if (temp < 0.2f) {
                 temp = 0.2f;
             }
-            Hu3DModelAttrSet(star->shadow, 4, 0);
+            Hu3DModelAttrSet(star->shadow, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelPosSet(star->shadow, star->x, 0.0f, star->z);
             Hu3DModelScaleSet(star->shadow, temp * 0.8f, 1.0f, temp * 0.8f);
         } else {
-            Hu3DModelAttrSet(star->shadow, 4, 4);
+            Hu3DModelAttrSet(star->shadow, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
         if (star->y < -1000.0) {
             m265_DustKill(i);
@@ -3179,8 +3179,8 @@ s16 m265_DustCreate(Vec *pos, Vec *target, f32 speed) {
     for (i = 0; i < stars->count; i++, star++) {
         if (star->active == 0) {
             star->active = 1;
-            Hu3DModelAttrSet(star->model[0], 4, 0);
-            Hu3DModelAttrSet(star->effect, 4, 0);
+            Hu3DModelAttrSet(star->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(star->effect, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             star->state = 0;
             star->unk_14 = 0;
             star->unk_18 = 1;
@@ -3254,12 +3254,12 @@ void m265_DustKill(s16 index) {
         if (star->active != 0) {
             star->active = 0;
             star->x = star->targetX = star->unk_40 = 0.0f;
-            Hu3DModelAttrSet(star->model[0], 4, 4);
-            Hu3DModelAttrSet(star->model[1], 4, 4);
-            Hu3DModelAttrSet(star->reflection[0], 4, 4);
-            Hu3DModelAttrSet(star->reflection[1], 4, 4);
-            Hu3DModelAttrSet(star->shadow, 4, 4);
-            Hu3DModelAttrSet(star->effect, 4, 4);
+            Hu3DModelAttrSet(star->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(star->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(star->reflection[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(star->reflection[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(star->shadow, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(star->effect, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
 }
@@ -3326,7 +3326,7 @@ s16 m265_DustGrab(omObjData *object) {
     } while (0);
     star = &stars->star[index];
     if (star->active != 0) {
-        Hu3DModelAttrSet(star->model[star->unk_10], 4, 0);
+        Hu3DModelAttrSet(star->model[star->unk_10], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         star->unk_58 = star->x;
         star->unk_5C = star->y;
         star->unk_60 = star->z;
@@ -3636,7 +3636,7 @@ void m265_TimeInit(void) {
             HuSprAttrSet(sprGrp, j, 0x1000);
             HuSprAnimModeSet(sprGrp, j, HUSPR_ANIM_MODE_STOP);
         }
-        HuSprAttrSet(sprGrp, 0, 0x8000);
+        HuSprDispOff(sprGrp, 0);
         HuSprPatNoSet(sprGrp, 2, 10);
         HuSprPatNoSet(sprGrp, 5, 11);
     }
@@ -3768,7 +3768,7 @@ void m265_SmokeInit(void) {
         effect->pos.x = effect->pos.y = effect->pos.z = 0.0f;
         effect->vel.x = effect->vel.y = effect->vel.z = 0.0f;
         effect->scale.x = effect->scale.y = effect->scale.z = 0.0f;
-        Hu3DModelAttrSet(effect->model, 4, 4);
+        Hu3DModelAttrSet(effect->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         model = &Hu3DData[effect->model];
         model->motTime = 0.0f;
     }
@@ -3844,7 +3844,7 @@ s32 m265_SmokeCreate(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) {
         effect->speed = speed;
         effect->frame = 0.0f;
         m265_BillboardColorPatSet(effect->model, sprite, 0, effect->color.rgba);
-        Hu3DModelAttrSet(effect->model, 4, 0);
+        Hu3DModelAttrSet(effect->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         model->motTime = 0.0f;
         model->pos.x = effect->pos.x;
         model->pos.y = effect->pos.y;
@@ -3874,7 +3874,7 @@ void m265_EffMdlInit(void) {
             j++;
         }
         object->model[i] = Hu3DModelRead2(m265_effMdlFileTbl[j], m265_effMdlAttrTbl[i / 16] | 0x99);
-        Hu3DModelAttrSet(object->model[i], 4, 4);
+        Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         model = &Hu3DData[object->model[i]];
         model->motTime = 0.0f;
         model->motSpeed = 0.0f;
@@ -3895,7 +3895,7 @@ void m265_EffMdlObjMain(omObjData *object) {
             continue;
         }
         if (Hu3DMotion[model->motId].unk02 <= model->motTime) {
-            Hu3DModelAttrSet(object->model[i], 4, 4);
+            Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             model->motTime = 0.0f;
             model->motSpeed = 0.0f;
             if (model->hmf->unk98 != NULL) {
@@ -3921,7 +3921,7 @@ s32 m265_EffMdlCreate(Vec *pos, Vec *rot, f32 scale, s16 group) {
         if (!(model->attr & 4)) {
             continue;
         }
-        Hu3DModelAttrSet(object->model[i], 4, 0);
+        Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         if (pos != NULL) {
             model->pos.x = pos->x;
             model->pos.y = pos->y;
@@ -3980,7 +3980,7 @@ void m265_RayInit(s16 arg0) {
     }
     for (i = 0; i < 16; i++, stard++) {
         stard->modelId = m265_RayMdlCreate();
-        Hu3DModelAttrSet(stard->modelId, 4, 4);
+        Hu3DModelAttrSet(stard->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DModelScaleSet(stard->modelId, (f32)(rand8() % 100) * 0.01 * 1.5 + 1.0 - 0.5, 1.0f, 1.0f);
         stard->angleX = rand8() % 180;
         stard->angleY = rand8() % 180;
@@ -3992,7 +3992,7 @@ void m265_RayInit(s16 arg0) {
         stard->worldX = stard->worldY = stard->worldZ = 0.0f;
     }
     object->model[0] = Hu3DModelRead2(0x620009, 0x1839);
-    Hu3DModelAttrSet(object->model[0], 4, 4);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     object->scale.x = object->scale.y = object->scale.z = 10.0f;
     m265_sprTbl[2] = m265_SprAnimRead(0x62000B);
     object->work[3] = sprGrp = HuSprGrpCreate(1, 0);
@@ -4030,7 +4030,7 @@ void m265_RayObjMain(omObjData *object) {
         stard->worldX = sindf(stard->angleX) * stard->radius + stard->x;
         stard->worldY = sindf(stard->angleX) * stard->radius2 + stard->y;
         stard->worldZ = stard->z;
-        Hu3DModelAttrSet(stard->modelId, 4, 0);
+        Hu3DModelAttrSet(stard->modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(stard->modelId, object->trans.x, object->trans.y, object->trans.z);
         Hu3DModelRotSet(stard->modelId, stard->worldX, stard->worldY, stard->worldZ);
     }
@@ -4040,7 +4040,7 @@ void m265_RayObjMain(omObjData *object) {
                 object->work[0]++;
                 object->work[1] = 0;
                 object->work[2] = 0;
-                Hu3DModelAttrSet(object->model[0], 4, 0);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 object->scale.x = object->scale.y = object->scale.z = 0.1f;
             }
             break;
@@ -4059,7 +4059,7 @@ void m265_RayObjMain(omObjData *object) {
     if (object->work[2] >= 2) {
         alpha = object->work[2] / 255.0f;
         next = object->work[2];
-        HuSprAttrReset(object->work[3], 0, 0x8000);
+        HuSprDispOn(object->work[3], 0);
         HuSprColorTPLvlSet(object->work[3], 0, 255, 255, 255, alpha * 255.0f);
         next += 10;
         if (next >= 255) {

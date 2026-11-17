@@ -570,7 +570,7 @@ void m212_ScoreUpdate(void) {
 void m212_TimerUpdate(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideFunc *handler) {
     if ((s8)handler->unk_04 == 0) {
         handler->unk_10 = 0;
-        GMesCreate(26, m212_gameWork->unk_04 / 30.0f, 160, 28);
+        GMesCreate(GMES_MES_TIMER, m212_gameWork->unk_04 / 30.0f, 160, 28);
         handler->unk_04 = 1;
     }
     m212_gameWork->unk_04 -= 1.0f;
@@ -684,7 +684,7 @@ void m212_WinExec(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideFunc *handle
             character1 = m212_playerTbl[m212_teamTbl[handler->unk_0C].players[0]].unk_02;
             character2 = m212_playerTbl[m212_teamTbl[handler->unk_0C].players[1]].unk_02;
             HuAudSeqPlay(102);
-            GMesCreate(30, character1, character2);
+            GMesCreate(GMES_MES_MG_WINNERS_2, character1, character2);
             GwPlayer[m212_teamTbl[handler->unk_0C].players[0]].bonusCoin += 10;
             GwPlayer[m212_teamTbl[handler->unk_0C].players[1]].bonusCoin += 10;
             m212_resultF = 1;
@@ -723,7 +723,7 @@ void m212_DrawExec(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideFunc *handl
         }
     } else {
         if (++handler->unk_1C == 15) {
-            GMesCreate(32);
+            GMesCreate(GMES_MES_MG_DRAW);
             HuAudSeqPlay(108);
             m212_resultF = 1;
         }

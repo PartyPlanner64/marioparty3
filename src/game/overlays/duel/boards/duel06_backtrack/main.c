@@ -1961,7 +1961,7 @@ void MBD6_KoopaFireObjMain(omObjData *object) {
             data->life[i] -= 2.0f;
             if (data->life[i] <= 0.0f) {
                 data->active[i] = 0;
-                Hu3DModelAttrSet(data->modelId[i], 4, 4);
+                Hu3DModelAttrSet(data->modelId[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 Hu3DSprModelAttrSet(data->sprId[i], 0, 0x80);
             }
             data->scale[i] += 0.02f;
@@ -1993,7 +1993,7 @@ void MBD6_KoopaFireObjMain(omObjData *object) {
                 data->pos[i].y = mbd6_koopaMdl->coords.y + 6.0f;
                 data->life[i] = 15.0f;
                 data->scale[i] = 0.1f;
-                Hu3DModelAttrSet(data->modelId[i], 4, 0);
+                Hu3DModelAttrSet(data->modelId[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DSprModelReset(data->sprId[i]);
                 Hu3DModelPosSet(data->modelId[i], data->pos[i].x, data->pos[i].y, data->pos[i].z);
                 Hu3DModelScaleSet(data->modelId[i], data->scale[i], data->scale[i], data->scale[i]);
@@ -3782,7 +3782,7 @@ void MBD6Ev_TurnStart(void) {
             comKeys[GwPlayer[index].pad] = -1;
             HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
         } else {
-            if (GwPlayer[index].chr == 5) {
+            if (GwPlayer[index].chr == CHAR_DK) {
                 comKeys[GwPlayer[index].pad] = 0x400;
                 HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], MBDMesWaitGet());
             }
@@ -3807,7 +3807,7 @@ void MBD6Ev_TurnStart(void) {
             comKeys[GwPlayer[index].pad] = -1;
             HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
         } else {
-            if (GwPlayer[index].chr == 5) {
+            if (GwPlayer[index].chr == CHAR_DK) {
                 comKeys[GwPlayer[index].pad] = 0x400;
                 HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], MBDMesWaitGet());
             }
@@ -3841,7 +3841,7 @@ void MBD6Ev_TurnStart(void) {
             comKeys[GwPlayer[index].pad] = -1;
             HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
         } else {
-            if (GwPlayer[index].chr == 5) {
+            if (GwPlayer[index].chr == CHAR_DK) {
                 comKeys[GwPlayer[index].pad] = 0x400;
                 HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], MBDMesWaitGet());
             }
@@ -3866,7 +3866,7 @@ void MBD6Ev_TurnStart(void) {
             comKeys[GwPlayer[index].pad] = -1;
             HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
         } else {
-            if (GwPlayer[index].chr == 5) {
+            if (GwPlayer[index].chr == CHAR_DK) {
                 comKeys[GwPlayer[index].pad] = 0x400;
                 HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], MBDMesWaitGet());
             }

@@ -131,12 +131,12 @@ void MBDItemWarpBlockSwap(void) {
     }
     MBDModelKill(effect);
 
-    WipeCreateOut(0, 16);
+    WipeCreateOut(WIPE_TYPE_NORMAL, 16);
     HuPrcSleep(16);
     MBDBackRefresh(&obj1->coords, 1);
     MBDPlayerPosFixSet(0, 1);
     MBDPlayerPosFixSet(1, 1);
-    WipeCreateIn(0, 16);
+    WipeCreateIn(WIPE_TYPE_NORMAL, 16);
     HuPrcSleep(16);
 
     HuAudFXPlay(0x1F5);
@@ -162,10 +162,10 @@ void MBDItemWarpBlockSwap(void) {
 
     if (mbdItemWarpPlayerA != MBDPlayerTurnGet()) {
         HuPrcSleep(15);
-        WipeCreateOut(0, 16);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 16);
         HuPrcSleep(16);
         MBDBackRefresh(&MBDPlayerGet(-1)->player_obj->coords, 1);
-        WipeCreateIn(0, 16);
+        WipeCreateIn(WIPE_TYPE_NORMAL, 16);
         HuPrcSleep(16);
     }
     HuPrcSleep(15);
@@ -277,7 +277,7 @@ void MBDWarpMasuProc(void) {
         player->bidx = tempIdx;
     }
 
-    WipeCreateOut(0, 16);
+    WipeCreateOut(WIPE_TYPE_NORMAL, 16);
     HuPrcSleep(16);
     omDelPrcObj(process);
     MBDAuraHoverStop();
@@ -285,7 +285,7 @@ void MBDWarpMasuProc(void) {
     MBDBackRefresh(&obj->coords, 1);
     MBDPlayerPosFixSet(0, 1);
     MBDPlayerPosFixSet(1, 1);
-    WipeCreateIn(0, 16);
+    WipeCreateIn(WIPE_TYPE_NORMAL, 16);
     HuPrcSleep(16);
     omAddPrcObj(MBDWarpEffProc, 10, 0, 0);
     HuPrcSleep(10);

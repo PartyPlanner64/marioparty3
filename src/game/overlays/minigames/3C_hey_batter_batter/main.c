@@ -668,7 +668,7 @@ void m260_PlayerObjMain(omObjData *object) {
         switch (m260_playerActPhase) {
             case 0:
                 m260_effReqTbl[1] = 1;
-                if (GwPlayer[m260_playerNo].chr == 5 && m260_playerMotNo == 4) {
+                if (GwPlayer[m260_playerNo].chr == CHAR_DK && m260_playerMotNo == 4) {
                     m260_playerMotNo = 8;
                 } else {
                     m260_playerMotNo = 0;

@@ -167,7 +167,7 @@ void m208_ObjectSetup(void) {
     object->work[0] = 2;
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     GMesFontMesCreate(m208_fontMesTbl, 1);
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
     m208_mgFlow.type = MINIGAME_2V2;
     m208_mgFlow.startDelay = -1;
     m208_mgFlow.startDelay = 75;
@@ -291,8 +291,8 @@ void m208_MainObjMain(omObjData *object) {
                         m208_winJumpVelXTbl[i] = (m208_winner != 0) ? (1 - i) * 1.5 : 0.0;
                         m208_winJumpVelYTbl[i] = 38.0f;
                         m208_winJumpVelZTbl[i] = 20.0f;
-                        Hu3DModelAttrSet(winner->model[i + 1], 4, 4);
-                        Hu3DModelAttrSet(winner->model[i + 39], 4, 0);
+                        Hu3DModelAttrSet(winner->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        Hu3DModelAttrSet(winner->model[i + 39], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         Hu3DModelPosSet(winner->model[i + 39], m208_winJumpXTbl[i], m208_winJumpYTbl[i],
                                         m208_winJumpZTbl[i]);
                         Hu3DModelRotSet(winner->model[i + 39], 0.0f, 0.0f, 0.0f);
@@ -506,16 +506,16 @@ void m208_StageObjMain(omObjData *object) {
         if (m208_winZoomRate == 1.0f) {
             object = m208_sideObjTbl[1 - m208_winner];
             other = 1 - m208_winner;
-            Hu3DModelAttrSet(object->model[7], 4, 4);
+            Hu3DModelAttrSet(object->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             for (i = 0; i < other * 2 + 1; i++) {
-                Hu3DModelAttrSet(object->model[i + 1], 4, 4);
+                Hu3DModelAttrSet(object->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             for (i = 0; i < 3; i++) {
-                Hu3DModelAttrSet(object->model[i + 4], 4, 4);
+                Hu3DModelAttrSet(object->model[i + 4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             for (i = 0; i < 4; i++) {
-                Hu3DModelAttrSet(object->model[i + 12], 4, 4);
-                Hu3DModelAttrSet(object->model[i + 18], 4, 4);
+                Hu3DModelAttrSet(object->model[i + 12], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[i + 18], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
         }
     } else if (m208_animCnt < 100) {
@@ -758,12 +758,12 @@ void m208_HudDraw(Gfx **gfxPos, s32 arg1, s32 arg2) {
         group = order[i];
         sprite = HuSprGet(esprite[m208_sprTbl[2 + m208_groupPlayerTbl[group]->chr]].unk04, 0);
         frame = &sprite->data->pat[sprite->patNo];
-        if (m208_groupPlayerTbl[group]->chr == 7) {
+        if (m208_groupPlayerTbl[group]->chr == CHAR_DAISY) {
             gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
         } else {
             gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
         }
-        if (m208_groupPlayerTbl[group]->chr == 7) {
+        if (m208_groupPlayerTbl[group]->chr == CHAR_DAISY) {
             gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_CI, G_IM_SIZ_8b, 18, 18, 0, 0, 18, 18, 0,
                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                                G_TX_NOLOD);
@@ -1029,7 +1029,7 @@ void m208_SideInit(omObjData *object, s8 group) {
         object->model[i + 24] = Hu3DModelRead((group == 0) ? 0x29000E : 0x29000F, attr);
         Hu3DModelCameraSet(object->model[i + 24], (group != 0) ? 2 : 1);
     }
-    Hu3DModelAttrSet(object->model[24], 4, 0);
+    Hu3DModelAttrSet(object->model[24], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelPosSet(object->model[24], 0.0f, 0.0f, -315.0f);
 
     object->model[11] = Hu3DModelRead((group == 0) ? 0x290010 : 0x290011, 0x4D9);
@@ -1125,7 +1125,7 @@ void m208_SideObjMain(omObjData *object) {
             visible[i] =
                 (Hu3DData[object->model[30 + m208_promptOrderTbl[group][m208_promptNoTbl[group]]]].attr & 4) !=
                 0;
-            Hu3DModelAttrSet(object->model[30 + i], 4, 4);
+            Hu3DModelAttrSet(object->model[30 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
         m208_promptTimerTbl[group]++;
         if (m208_promptLockTbl[group] == 1 && m208_promptTimerTbl[group] >= 20) {
@@ -1139,7 +1139,7 @@ void m208_SideObjMain(omObjData *object) {
                 if (visible[m208_promptOrderTbl[group][m208_promptNoTbl[group]]]) {
                     HuAudFXPlay((group != 0) ? 0x33F : 0x33E);
                 }
-                Hu3DModelAttrSet(object->model[30 + m208_promptOrderTbl[group][m208_promptNoTbl[group]]], 4, 0);
+                Hu3DModelAttrSet(object->model[30 + m208_promptOrderTbl[group][m208_promptNoTbl[group]]], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
             j = group + m208_promptOrderTbl[group][m208_promptNoTbl[group]] * group;
             if (m208_groupPlayerTbl[j]->cpuDifficulty == 3 && m208_promptNoTbl[group] == 2 &&
@@ -1176,7 +1176,7 @@ void m208_SideObjMain(omObjData *object) {
                 if (visible[m208_promptOrderTbl[group][m208_promptNoTbl[group]]]) {
                     HuAudFXPlay((group != 0) ? 0x33F : 0x33E);
                 }
-                Hu3DModelAttrSet(object->model[30 + m208_promptOrderTbl[group][m208_promptNoTbl[group]]], 4, 0);
+                Hu3DModelAttrSet(object->model[30 + m208_promptOrderTbl[group][m208_promptNoTbl[group]]], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
         }
         for (j = group; j < group * 3 + 1; j++) {
@@ -1214,7 +1214,7 @@ void m208_SideObjMain(omObjData *object) {
             m208_throwTimerTbl[group] = 1;
             m208_rockStateTbl[group] = 1;
             Hu3DMotionModelSet(object->model[33], m208_sideObjTbl[0]->motion[18]);
-            Hu3DModelAttrSet(object->model[35], 4, 0);
+            Hu3DModelAttrSet(object->model[35], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelAttrSet(object->model[35], 0x4000, 0);
             Hu3DModelTPLvlSet(object->model[35], 255);
         }
@@ -1243,7 +1243,7 @@ void m208_SideObjMain(omObjData *object) {
             }
             if (m208_throwTimerTbl[group] == 16) {
                 Hu3DMotionModelSet(object->model[33], m208_sideObjTbl[0]->motion[19]);
-                Hu3DModelAttrSet(object->model[35], 4, 0);
+                Hu3DModelAttrSet(object->model[35], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DModelHookSet(object->model[35], object->model[33], "srowman-item_fook");
                 Hu3DModelAttrSet(object->model[35], 0x4000, 0x4000);
                 Hu3DModelTPLvlSet(object->model[35], 255);
@@ -1264,9 +1264,9 @@ void m208_SideObjMain(omObjData *object) {
             if (m208_throwTimerTbl[group] == 26) {
                 m208_rockStateTbl[group] = 2;
                 Hu3DModelAttrSet(object->model[35], 0x4000, 0);
-                Hu3DModelAttrSet(object->model[35], 4, 4);
-                Hu3DModelAttrSet(object->model[34], 4, 0);
-                Hu3DModelAttrSet(object->model[38], 4, 0);
+                Hu3DModelAttrSet(object->model[35], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[34], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(object->model[38], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 m208_rockXTbl[group][0] = Hu3DData[object->model[33]].pos.x + -105.0f;
                 m208_rockYTbl[group][0] = Hu3DData[object->model[33]].pos.y + 219.0f;
                 m208_rockZTbl[group][0] = Hu3DData[object->model[33]].pos.z + -18.0f + m208_distTbl[group];
@@ -1311,8 +1311,8 @@ void m208_SideObjMain(omObjData *object) {
                                 HuAudFXVolSet(seNo, (s32)vol + 127);
                             }
                         }
-                        Hu3DModelAttrSet(object->model[34], 4, 4);
-                        Hu3DModelAttrSet(object->model[38], 4, 4);
+                        Hu3DModelAttrSet(object->model[34], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        Hu3DModelAttrSet(object->model[38], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         m208_rockXTbl[group][3] = m208_rockXTbl[group][0];
                         m208_rockYTbl[group][3] = m208_rockYTbl[group][0];
                         m208_rockZTbl[group][3] = m208_rockZTbl[group][0];
@@ -1347,9 +1347,9 @@ void m208_SideObjMain(omObjData *object) {
                                 m208_rockYTbl[group][0] + m208_rockVelYTbl[group][k] * 2.0f;
                             m208_rockZTbl[group][k] =
                                 m208_rockZTbl[group][0] + m208_rockVelZTbl[group][k] * 2.0f;
-                            Hu3DModelAttrSet(object->model[34], 4, 4);
-                            Hu3DModelAttrSet(object->model[35], 4, 4);
-                            Hu3DModelAttrSet(object->model[36], 4, 0);
+                            Hu3DModelAttrSet(object->model[34], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                            Hu3DModelAttrSet(object->model[35], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                            Hu3DModelAttrSet(object->model[36], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                             Hu3DModelPosSet(object->model[36], m208_rockXTbl[group][0],
                                             m208_rockYTbl[group][0] + 100.0f,
                                             m208_rockZTbl[group][0] - m208_distTbl[group]);
@@ -1363,22 +1363,22 @@ void m208_SideObjMain(omObjData *object) {
             if (m208_throwTimerTbl[group] == 76) {
                 m208_throwTimerTbl[group] = 0;
                 m208_rockStateTbl[group] = 0;
-                Hu3DModelAttrSet(object->model[34], 4, 4);
-                Hu3DModelAttrSet(object->model[35], 4, 4);
+                Hu3DModelAttrSet(object->model[34], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[35], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             if (m208_rockStateTbl[group] >= 2 &&
                 m208_rockZTbl[group][0] - m208_distTbl[group] + 35.0f >= 378.0f) {
                 m208_throwTimerTbl[group] = 0;
                 m208_rockStateTbl[group] = 0;
-                Hu3DModelAttrSet(object->model[34], 4, 4);
-                Hu3DModelAttrSet(object->model[35], 4, 4);
-                Hu3DModelAttrSet(object->model[38], 4, 4);
-                Hu3DModelAttrSet(object->model[36], 4, 4);
+                Hu3DModelAttrSet(object->model[34], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[35], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[38], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[36], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             m208_throwTimerTbl[group] += (m208_throwTimerTbl[group] != 0) ? 1 : 0;
         }
         m208_rockBreakTimerTbl[group] += (m208_rockBreakTimerTbl[group] != 0) ? 1 : 0;
-        Hu3DModelAttrSet(object->model[36], 4, (m208_rockBreakTimerTbl[group] == 0) ? 4 : 0);
+        Hu3DModelAttrSet(object->model[36], HU3D_ATTR_DISPOFF, (m208_rockBreakTimerTbl[group] == 0) ? HU3D_ATTR_DISPOFF : HU3D_ATTR_NONE);
         m208_hopTimerTbl[group] += (m208_hopTimerTbl[group] != 0) ? 1 : 0;
         if (m208_hopTimerTbl[group] > 20) {
             m208_hopTimerTbl[group] = 0;
@@ -1420,7 +1420,7 @@ void m208_SideObjMain(omObjData *object) {
                 if (Hu3DData[object->model[i + 4]].pos.y > 0.0f && height <= 0.0f) {
                     m208_shakeTimerTbl[group] = 4;
                     HuAudFXPlay((group != 0) ? 0x337 : 0x336);
-                    Hu3DModelAttrSet(object->model[i + 49], 4, 0);
+                    Hu3DModelAttrSet(object->model[i + 49], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     m208_MotTimeSet(object->model[i + 49], 6);
                     m208_landTimerTbl[group][i] = 27;
                     m208_landZTbl[group][i] = m208_distTbl[group];
@@ -1441,12 +1441,12 @@ void m208_SideObjMain(omObjData *object) {
                         m208_shakeTimerTbl[group] = 2;
                         HuAudFXPlay((group != 0) ? 0x337 : 0x336);
                     }
-                    Hu3DModelAttrSet(object->model[i + 49], 4, 0);
+                    Hu3DModelAttrSet(object->model[i + 49], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     m208_MotTimeSet(object->model[i + 49], 0);
                     m208_dustZTbl[group][m208_dustNoTbl[group]] = m208_distTbl[group] - 300.0f;
                     m208_dustTimerTbl[group][m208_dustNoTbl[group]] = 0;
                     m208_dustTimerTbl[group][(m208_dustNoTbl[group] + 1) % 2] = 1;
-                    Hu3DModelAttrSet(object->model[m208_dustNoTbl[group] + 24], 4, 0);
+                    Hu3DModelAttrSet(object->model[m208_dustNoTbl[group] + 24], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     m208_MotTimeSet(object->model[m208_dustNoTbl[group] + 24], 0);
                     m208_landTimerTbl[group][i] = 22;
                     m208_landZTbl[group][i] = m208_distTbl[group];
@@ -1475,7 +1475,7 @@ void m208_SideObjMain(omObjData *object) {
                             Hu3DData[object->model[i + 4]].pos.z + m208_landZTbl[group][i] -
                                 m208_distTbl[group]);
             if (m208_landTimerTbl[group][i] == 1) {
-                Hu3DModelAttrSet(object->model[i + 49], 4, 4);
+                Hu3DModelAttrSet(object->model[i + 49], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             m208_landTimerTbl[group][i] -= (m208_landTimerTbl[group][i] != 0) ? 1 : 0;
         }
@@ -1484,16 +1484,16 @@ void m208_SideObjMain(omObjData *object) {
                 Hu3DMotionShiftSet(object->model[i + 1], Hu3DData[object->motion[i + 3]].motId, 0, 20, 1);
             }
             m208_stunTimerTbl[i + group] -= (m208_stunTimerTbl[i + group] != 0) ? 1 : 0;
-            Hu3DModelAttrSet(object->model[i + 1], 4,
+            Hu3DModelAttrSet(object->model[i + 1], HU3D_ATTR_DISPOFF,
                                ((m208_stunTimerTbl[i + group] & 1) ||
                                 (m208_winner == group && m208_winZoomRate > 0.0f))
-                                   ? 4
-                                   : 0);
-            Hu3DModelAttrSet(object->model[i + 42], 4,
+                                   ? HU3D_ATTR_DISPOFF
+                                   : HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(object->model[i + 42], HU3D_ATTR_DISPOFF,
                                ((m208_stunTimerTbl[i + group] & 1) &&
                                 !(m208_winner == group && m208_winZoomRate != 0.0f))
-                                   ? 4
-                                   : 0);
+                                   ? HU3D_ATTR_DISPOFF
+                                   : HU3D_ATTR_NONE);
         }
         if (group == 1) {
             i = rand8() & 1;
@@ -1517,7 +1517,7 @@ void m208_SideObjMain(omObjData *object) {
                 Hu3DModelPosSet(object->model[j + 24], 0.0f, 0.0f,
                                 m208_dustZTbl[group][j] - m208_distTbl[group] - 0.0f);
                 if (m208_dustTimerTbl[group][j] < 60 && m208_dustTimerTbl[group][j] + 1 >= 60) {
-                    Hu3DModelAttrSet(object->model[j + 24], 4, 4);
+                    Hu3DModelAttrSet(object->model[j + 24], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     Hu3DMotionTimeSet(object->model[j + 24], 0.0f);
                 }
                 m208_dustTimerTbl[group][j] +=
@@ -1618,11 +1618,11 @@ void m208_SideObjMain(omObjData *object) {
             Hu3DModelScaleSet(object->model[i + 8], 1.0f, dist / 500.0, 1.0f);
             Hu3DMotionBakeApply(object->model[i + 8], m208_pullMotBake, frac * 60.0f);
         }
-        Hu3DModelAttrSet(object->model[16], 4, 4);
-        Hu3DModelAttrSet(object->model[22], 4, 4);
-        Hu3DModelAttrSet(object->model[17], 4, 4);
-        Hu3DModelAttrSet(object->model[23], 4, 4);
-        Hu3DModelAttrSet(object->model[33], 4, 4);
+        Hu3DModelAttrSet(object->model[16], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[22], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[17], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[23], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[33], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         for (i = 0; i < 4; i++) {
             f32 rem = (m208_distTbl[group] - 3000.0f) -
                       (s32)((m208_distTbl[group] - 3000.0f) / 1000.0f) * 1000;
@@ -1633,7 +1633,7 @@ void m208_SideObjMain(omObjData *object) {
                     f32 z = (500 - i * 1000) - rem;
 
                     if (z + 750.0f > -3000.0f) {
-                        Hu3DModelAttrSet(object->model[33], 4, 0);
+                        Hu3DModelAttrSet(object->model[33], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         Hu3DModelPosSet(object->model[33], -515.0f, 85.0f, z - 250.0f);
                         switch (m208_rockStateTbl[group]) {
                             case 1:
@@ -1656,17 +1656,17 @@ void m208_SideObjMain(omObjData *object) {
                         }
                     }
                 }
-                Hu3DModelAttrSet(object->model[i + 12], 4, 4);
-                Hu3DModelAttrSet(object->model[i + 18], 4, 4);
+                Hu3DModelAttrSet(object->model[i + 12], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[i + 18], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 seg = (seg == 0) ? 16 : (seg == -11) ? 17
                                                      : i + 12;
                 if (m208_winZoomRate < 1.0f || m208_winner == group) {
-                    Hu3DModelAttrSet(object->model[seg], 4, 0);
+                    Hu3DModelAttrSet(object->model[seg], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 }
                 Hu3DModelPosSet(object->model[seg], 0.0f, 0.0f, (500 - i * 1000) - rem);
                 seg = (seg == 45) ? i + 18 : seg + 6;
                 if (m208_winZoomRate < 1.0f || m208_winner == group) {
-                    Hu3DModelAttrSet(object->model[seg], 4, 0);
+                    Hu3DModelAttrSet(object->model[seg], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 }
                 Hu3DModelPosSet(object->model[seg], 0.0f, 0.0f, (500 - i * 1000) - rem);
             }
@@ -1688,11 +1688,11 @@ void m208_SideObjMain(omObjData *object) {
                               Hu3DData[object->model[i + 4]].scale.z + lightScaleXZ[group][i]);
             if (m208_winZoomRate == 0.0f && CRotM[group].x == -16.0f &&
                 Hu3DData[object->model[i + 4]].rot.z == 0.0f) {
-                Hu3DModelAttrSet(object->model[i + 46], 4, 0);
-                Hu3DModelAttrSet(object->model[i + 4], 4, 4);
+                Hu3DModelAttrSet(object->model[i + 46], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(object->model[i + 4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             } else {
-                Hu3DModelAttrSet(object->model[i + 4], 4, 0);
-                Hu3DModelAttrSet(object->model[i + 46], 4, 4);
+                Hu3DModelAttrSet(object->model[i + 4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(object->model[i + 46], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
         }
     }

@@ -88,7 +88,7 @@ void WipeExecAlways(Gfx **gfx) {
             case WIPE_TYPE_CROSS:
                 WipeFrameStill(gfx);
                 break;
-            case 3:
+            case WIPE_STRIPES2:
             case 4:
             case 5:
             case 6:
@@ -111,23 +111,23 @@ void WipeExecAlways(Gfx **gfx) {
     switch (wipeMode) {
         case WIPE_MODE_IN:
             switch (wipeType) {
-                case 11:
+                case WIPE_FADE:
                     wipeStat = WipeFadeIn(gfx);
                     break;
                 case WIPE_TYPE_CROSS:
                     wipeStat = WipeCrossFadeIn(gfx);
                     break;
-                case 1:
+                case WIPE_CIRCLE:
                     wipeStat = WipeShapeIn(gfx);
                     break;
-                case 2:
+                case WIPE_STARS:
                     wipeStat = WipeTileIn(gfx);
                     break;
-                case 12:
+                case WIPE_BOO:
                     wipeStat = WipeShape2In(gfx);
                     break;
                 case WIPE_TYPE_NORMAL:
-                case 3:
+                case WIPE_STRIPES2:
                 case 4:
                 case 5:
                 case 6:
@@ -162,22 +162,22 @@ void WipeExecAlways(Gfx **gfx) {
                 case WIPE_TYPE_NORMAL:
                     wipeStat = WipeImageOut(gfx, 0);
                     break;
-                case 11:
+                case WIPE_FADE:
                     wipeStat = WipeFadeOut(gfx);
                     break;
                 case WIPE_TYPE_CROSS:
                     wipeStat = WipeCrossFadeOut(gfx);
                     break;
-                case 1:
+                case WIPE_CIRCLE:
                     wipeStat = WipeShapeOut(gfx);
                     break;
-                case 2:
+                case WIPE_STARS:
                     wipeStat = WipeTileOut(gfx);
                     break;
-                case 12:
+                case WIPE_BOO:
                     wipeStat = WipeShape2Out(gfx);
                     break;
-                case 3:
+                case WIPE_STRIPES2:
                     wipeStat = WipeImageOut(gfx, 18);
                     break;
                 case 4:

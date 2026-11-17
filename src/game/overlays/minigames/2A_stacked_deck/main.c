@@ -1437,9 +1437,9 @@ void m242_CardObjMain(omObjData *object) {
                             break;
                     }
                     m242_dealCnt++;
-                    Hu3DModelAttrSet(object->model[0], 4, 0);
-                    Hu3DModelAttrSet(object->model[1], 4, 0);
-                    Hu3DModelAttrSet(object->model[2], 4, 0);
+                    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     card->unk_04[1] = 1;
                     card->unk_04[2] = 1;
                     break;
@@ -2090,7 +2090,7 @@ void m242_CardObjMain(omObjData *object) {
                 }
                 if (object->trans.y <= 0.0f) {
                     object->trans.y = 0.0f;
-                    Hu3DModelAttrSet(object->model[1], 4, 4);
+                    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     card->unk_18[4] = 1.0f;
                     switch (object->work[1]) {
                         case 1:
@@ -2125,8 +2125,8 @@ void m242_CardObjMain(omObjData *object) {
                 card->unk_04[6] -= 15;
                 if (card->unk_18[2] < 0.1f) {
                     card->unk_18[2] = 0.1f;
-                    Hu3DModelAttrSet(object->model[0], 4, 4);
-                    Hu3DModelAttrSet(object->model[2], 4, 4);
+                    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     card->unk_04[0] = 0;
                     card->unk_04[1] = 0;
                     m242_slotUsedTbl[card->unk_04[3]] = 0;
@@ -2238,9 +2238,9 @@ void m242_CardObjInit(omObjData *object) {
     Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
     Hu3DModelPosSet(object->model[1], object->trans.x + card->unk_18[5], -4.0f, object->trans.z + card->unk_18[6]);
     Hu3DModelPosSet(object->model[2], object->trans.x, object->trans.y, object->trans.z);
-    Hu3DModelAttrSet(object->model[0], 4, 4);
-    Hu3DModelAttrSet(object->model[1], 4, 4);
-    Hu3DModelAttrSet(object->model[2], 4, 4);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     object->func = m242_CardObjMain;
 }
 
@@ -2295,8 +2295,8 @@ void m242_CardChrObjMain(omObjData *object) {
                         m242_smokeState = 1;
                         HuAudFXPlay(0x446);
                     }
-                    Hu3DModelAttrSet(object->model[0], 4, 0);
-                    Hu3DModelAttrSet(object->model[1], 4, 0);
+                    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     card->unk_18[0] = 20.0f;
                     card->unk_18[4] = 1.0f;
                     card->unk_04[0] = 2;
@@ -2345,8 +2345,8 @@ void m242_CardChrObjMain(omObjData *object) {
                     }
                     if (object->trans.x < -1000.0f || object->trans.x > 1000.0f) {
                         card->unk_04[3] = 0;
-                        Hu3DModelAttrSet(object->model[0], 4, 4);
-                        Hu3DModelAttrSet(object->model[1], 4, 4);
+                        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         card->unk_04[0] = 5;
                     }
                     break;
@@ -2389,8 +2389,8 @@ void m242_CardChrObjMain(omObjData *object) {
                         m242_smokeState = 1;
                         HuAudFXPlay(0x446);
                     }
-                    Hu3DModelAttrSet(object->model[0], 4, 0);
-                    Hu3DModelAttrSet(object->model[1], 4, 0);
+                    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     card->unk_18[0] = 20.0f;
                     card->unk_18[4] = card->unk_18[5];
                     card->unk_04[0] = 2;
@@ -2457,8 +2457,8 @@ void m242_CardChrObjMain(omObjData *object) {
                     object->trans.x += card->unk_18[2];
                     object->trans.z += card->unk_18[3];
                     if (object->trans.x < -2000.0f || object->trans.x > 2000.0f || object->trans.z > 2000.0f) {
-                        Hu3DModelAttrSet(object->model[0], 4, 4);
-                        Hu3DModelAttrSet(object->model[1], 4, 4);
+                        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         card->unk_04[0] = 5;
                         card->unk_18[2] = 0.0f;
                         card->unk_18[3] = 0.0f;
@@ -2506,8 +2506,8 @@ void m242_CardChrObjMain(omObjData *object) {
                         m242_smokeState = 1;
                         HuAudFXPlay(0x446);
                     }
-                    Hu3DModelAttrSet(object->model[0], 4, 0);
-                    Hu3DModelAttrSet(object->model[1], 4, 0);
+                    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     card->unk_18[0] = 20.0f;
                     card->unk_18[4] = 1.0f;
                     card->unk_04[0] = 2;
@@ -2571,8 +2571,8 @@ void m242_CardChrObjMain(omObjData *object) {
                     }
                     if (object->trans.x < -1000.0f || object->trans.x > 1000.0f) {
                         card->unk_04[3] = 0;
-                        Hu3DModelAttrSet(object->model[0], 4, 4);
-                        Hu3DModelAttrSet(object->model[1], 4, 4);
+                        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         Hu3DMotionSpeedSet(object->model[0], 1.0f);
                         card->unk_18[2] = 0.0f;
                         card->unk_18[3] = 0.0f;
@@ -2671,8 +2671,8 @@ void m242_CardChrObjInit(omObjData *object) {
     card->unk_18[4] = 1.0f;
     Hu3DModelScaleSet(object->model[0], object->scale.x, object->scale.y, object->scale.z);
     Hu3DModelScaleSet(object->model[1], card->unk_18[4], object->scale.y, card->unk_18[4]);
-    Hu3DModelAttrSet(object->model[0], 4, 4);
-    Hu3DModelAttrSet(object->model[1], 4, 4);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     object->func = m242_CardChrObjMain;
 }
 
@@ -2771,12 +2771,12 @@ void m242_HitEffObjMain(omObjData *object) {
             break;
         case 2:
             if (effect->unk_04[1] < 5) {
-                Hu3DModelAttrSet(object->model[0], 4, 0);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 effect->unk_04[1]++;
             } else {
                 m242_hitEffState = 0;
                 effect->unk_04[1] = 0;
-                Hu3DModelAttrSet(object->model[0], 4, 4);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             break;
     }
@@ -2797,7 +2797,7 @@ void m242_HitEffObjInit(omObjData *object) {
     Hu3DMotionSpeedSet(object->model[0], 3.0f);
     object->scale.x = object->scale.y = object->scale.z = 5.0f;
     Hu3DModelScaleSet(object->model[0], object->scale.x, object->scale.y, object->scale.z);
-    Hu3DModelAttrSet(object->model[0], 4, 4);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     object->func = m242_HitEffObjMain;
 }
 
@@ -2926,7 +2926,7 @@ void m242_DecoObjInit(omObjData *object) {
     object->scale.z = 1.0f;
     Hu3DModelScaleSet(object->model[0], object->scale.x, object->scale.y, object->scale.z);
     card->unk_18[0] = 0.0f;
-    Hu3DModelAttrSet(object->model[0], 4, 0);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     object->func = m242_DecoObjMain;
 }
 
@@ -2980,7 +2980,7 @@ void m242_ExitWaitObjMain(omObjData *object) {
 
 void m242_ExitCheckObjMain(omObjData *object) {
     if (omSysExitReq == 1) {
-        WipeCreateOut(0, 20);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         object->func = m242_ExitWaitObjMain;
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
@@ -3158,7 +3158,7 @@ void m242_MainObjMain(omObjData *object) {
             break;
         case 17:
             if (m242_timer == 0) {
-                WipeCreateOut(0, 20);
+                WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                 object->func = m242_ExitWaitObjMain;
                 m242_timer++;
             }

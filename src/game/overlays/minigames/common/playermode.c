@@ -324,8 +324,8 @@ void MgPlayerShadowSet(omObjData *arg0, f32 x, f32 y, f32 z, f32 groundY, Vec *n
             Hu3DModelPosSet(arg0->model[1], x, groundY, z);
         }
         MgShadowSlopeSet(arg0->model[1], normal);
-        Hu3DModelAttrSet(arg0->model[1], 4, 0);
+        Hu3DModelAttrSet(arg0->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     } else {
-        Hu3DModelAttrSet(arg0->model[1], 4, 4);
+        Hu3DModelAttrSet(arg0->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 }

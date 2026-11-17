@@ -1840,7 +1840,7 @@ void MBD10_KoopaFireObjMain(omObjData *object) {
             data->life[i] -= 2.0f;
             if (data->life[i] <= 0.0f) {
                 data->active[i] = 0;
-                Hu3DModelAttrSet(data->modelId[i], 4, 4);
+                Hu3DModelAttrSet(data->modelId[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 Hu3DSprModelAttrSet(data->sprId[i], 0, 0x80);
             }
             data->scale[i] += 0.02f;
@@ -1872,7 +1872,7 @@ void MBD10_KoopaFireObjMain(omObjData *object) {
                 data->pos[i].y = mbd10_koopaMdl->coords.y + 6.0f;
                 data->life[i] = 15.0f;
                 data->scale[i] = 0.1f;
-                Hu3DModelAttrSet(data->modelId[i], 4, 0);
+                Hu3DModelAttrSet(data->modelId[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DSprModelReset(data->sprId[i]);
                 Hu3DModelPosSet(data->modelId[i], data->pos[i].x, data->pos[i].y, data->pos[i].z);
                 Hu3DModelScaleSet(data->modelId[i], data->scale[i], data->scale[i], data->scale[i]);
@@ -2788,7 +2788,7 @@ void MBD10_PauseProc(void) {
             if (MBD10_PauseQuitCheck(i)) {
                 GwSystem.message_speed = mbd10_mesSpeedSave;
                 HuAudSeqFadeOut(0x5A);
-                WipeCreateOut(0, 0x10);
+                WipeCreateOut(WIPE_TYPE_NORMAL, 0x10);
                 HuPrcSleep(0x11);
                 MBDExit();
                 MBDBoardReturnOff();
@@ -3411,7 +3411,7 @@ void MBD10Ev_TutorialProc(void) {
     MBDCameraZoomSet(1.4f);
     MBDCameraPos3DSet(&MBDPlayerGet(-1)->player_obj->coords);
     HuPrcSleep(1);
-    WipeCreateIn(2, 0x10);
+    WipeCreateIn(WIPE_STARS, 0x10);
     MBDBackThreadPriLowSet();
     mbd10ev_guide = MBDGuideCreate((s32)mbd10ev_guideMot, 0);
     HuVecCopyXYZ(&mbd10ev_guide->obj->scale, 1.1f, 1.1f, 1.1f);
@@ -4085,7 +4085,7 @@ void MBD10Ev_TutorialProc(void) {
     HuPrcSleep(30);
     GwSystem.message_speed = mbd10_mesSpeedSave;
     HuAudSeqFadeOut(0x3C);
-    WipeCreateOut(2, 0x10);
+    WipeCreateOut(WIPE_STARS, 0x10);
     HuPrcSleep(16);
     MBDGuideKill(mbd10ev_guide);
     MBDExit();

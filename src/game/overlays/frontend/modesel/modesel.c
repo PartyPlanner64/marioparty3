@@ -936,14 +936,14 @@ void modesel_MainProc(void) {
         if (omovlevtno == 2) {
             WipeColorSet(0xFF, 0xFF, 0xFF);
         }
-        WipeCreateIn(0xB, 0x10);
+        WipeCreateIn(WIPE_FADE, 0x10);
         modelId = modesel_ModelIdGet(0xB);
         Hu3DModelPosSet(modelId, 0.0f, 0.0f, 0.0f);
         Hu3DCameraMotionSet(modelId, 0);
         HuPrcSleep(0x10);
     } else {
         WipeColorSet(0xFF, 0xFF, 0xFF);
-        WipeCreateIn(0xB, 0x10);
+        WipeCreateIn(WIPE_FADE, 0x10);
         modesel_FileInfoDispOff();
         HuPrcSleep(1);
         modesel_MotionTimeSet(0xD, 0);
@@ -1087,7 +1087,7 @@ void modesel_MainProc(void) {
     if (result == 16) {
         WipeColorSet(0xFF, 0xFF, 0xFF);
     }
-    WipeCreateOut(0xB, 0x14);
+    WipeCreateOut(WIPE_FADE, 0x14);
     HuAudSeqFadeOut(0x14);
     HuPrcSleep(0x14);
     modesel_WinKill(0);

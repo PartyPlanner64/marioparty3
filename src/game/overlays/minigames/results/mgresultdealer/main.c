@@ -147,14 +147,14 @@ void mgresultdealer_MainObjMain(omObjData *unused) {
             PlayerFXPlay(0x274, mgresultdealer_playerOrderTbl[0]);
             HuAudFXPlay(0x516);
             if (mgresultdealer_bet * mgresultdealer_payoutRate >= 100) {
-                Hu3DModelAttrSet(obj->model[4], 4, 0);
-                Hu3DModelAttrSet(obj->model[5], 4, 0);
-                Hu3DModelAttrSet(obj->model[6], 4, 0);
+                Hu3DModelAttrSet(obj->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(obj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(obj->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             } else if (mgresultdealer_bet * mgresultdealer_payoutRate >= 50) {
-                Hu3DModelAttrSet(obj->model[4], 4, 0);
-                Hu3DModelAttrSet(obj->model[6], 4, 0);
+                Hu3DModelAttrSet(obj->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(obj->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             } else {
-                Hu3DModelAttrSet(obj->model[5], 4, 0);
+                Hu3DModelAttrSet(obj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
             mgresultdealer_ConfettiStart();
             state++;

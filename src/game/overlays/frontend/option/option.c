@@ -481,7 +481,7 @@ void option_RoomProc(void) {
     switch (omovlevtno) {
         case 0:
             HuAudSubSeqPlay(7);
-            WipeCreateIn(11, 16);
+            WipeCreateIn(WIPE_FADE, 16);
             pos = option_roomStartPos;
             at = option_roomCenterAt;
             {
@@ -498,7 +498,7 @@ void option_RoomProc(void) {
         case 1:
             HuAudSubSeqPlay(7);
             WipeColorSet(255, 255, 255);
-            WipeCreateIn(11, 16);
+            WipeCreateIn(WIPE_FADE, 16);
             {
                 Vec pos = option_roomFromLPos;
                 Vec at = option_roomFromAt;
@@ -521,7 +521,7 @@ void option_RoomProc(void) {
         case 2:
             HuAudSubSeqPlay(7);
             WipeColorSet(255, 255, 255);
-            WipeCreateIn(11, 16);
+            WipeCreateIn(WIPE_FADE, 16);
             {
                 Vec pos = option_roomFromRPos;
                 Vec at = option_roomFromAt;
@@ -543,7 +543,7 @@ void option_RoomProc(void) {
             break;
         case 3:
             WipeColorSet(255, 255, 255);
-            WipeCreateIn(11, 16);
+            WipeCreateIn(WIPE_FADE, 16);
             {
                 Vec pos = option_roomFromRecordPos;
                 Vec at = option_roomFromAt;
@@ -571,7 +571,7 @@ void option_RoomProc(void) {
             break;
         default:
             HuAudSubSeqPlay(7);
-            WipeCreateIn(11, 16);
+            WipeCreateIn(WIPE_FADE, 16);
             {
                 Vec pos = option_roomStartPos;
                 Vec at = option_roomCenterAt;
@@ -594,7 +594,7 @@ void option_RoomProc(void) {
             option_MenuMotEndWait(0);
             option_CameraMove(&pos, &at, 20);
             option_RumbleStart();
-            WipeCreateOut(11, 20);
+            WipeCreateOut(WIPE_FADE, 20);
             HuPrcSleep(20);
             break;
         case 1:
@@ -609,7 +609,7 @@ void option_RoomProc(void) {
             at.z -= 200.0f;
             option_CameraMove(&pos, &at, 20);
             option_RumbleStart();
-            WipeCreateOut(11, 20);
+            WipeCreateOut(WIPE_FADE, 20);
             HuAudSeqFadeOut(20);
             HuPrcSleep(20);
             break;
@@ -626,7 +626,7 @@ void option_RoomProc(void) {
             at.z -= 200.0f;
             option_CameraMove(&pos, &at, 20);
             option_RumbleStart();
-            WipeCreateOut(11, 20);
+            WipeCreateOut(WIPE_FADE, 20);
             HuAudSeqFadeOut(20);
             HuPrcSleep(20);
             break;
@@ -644,7 +644,7 @@ void option_RoomProc(void) {
             option_CameraMove(&pos, &at, 20);
             option_RumbleStart();
             WipeColorSet(255, 255, 255);
-            WipeCreateOut(11, 20);
+            WipeCreateOut(WIPE_FADE, 20);
             HuAudSeqFadeOut(20);
             HuPrcSleep(20);
             break;
@@ -1134,7 +1134,7 @@ void option_SoundRoomProc(void) {
     Hu3DBGColorSet(0, 64, 64);
     option_SoundRoomInit();
     HuAudSeqPlay(0x4A);
-    WipeCreateIn(0xB, 16);
+    WipeCreateIn(WIPE_FADE, 16);
     HuPrcSleep(16);
     selection = option_SoundRoomChoice();
     option_MenuSprDispOff(0);
@@ -1173,7 +1173,7 @@ void option_SoundRoomProc(void) {
             result = selection;
             option_RumbleStart();
             WipeColorSet(255, 255, 255);
-            WipeCreateOut(0xB, 20);
+            WipeCreateOut(WIPE_FADE, 20);
             HuAudSeqFadeOut(20);
             HuPrcSleep(20);
             break;
@@ -1875,7 +1875,7 @@ void option_RecordRoomProc(void) {
     Hu3DBGColorSet(0, 64, 64);
     option_RecordRoomInit();
     HuAudSeqVolSet(0x60);
-    WipeCreateIn(0xB, 16);
+    WipeCreateIn(WIPE_FADE, 16);
     HuPrcSleep(16);
     selection = option_RecordRoomChoice();
     option_MenuSprDispOff(0);
@@ -1895,7 +1895,7 @@ void option_RecordRoomProc(void) {
             result = selection;
             option_RumbleStart();
             WipeColorSet(255, 255, 255);
-            WipeCreateOut(0xB, 20);
+            WipeCreateOut(WIPE_FADE, 20);
             HuAudSeqVolSet(0x7F);
             HuPrcSleep(20);
             break;

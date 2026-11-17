@@ -41,12 +41,12 @@ void boot_SkipObjectSetup(void) {
 void boot_ExitCheckObjMain(omObjData *arg0) {
     if (((omSysExitReq != 0) || (boot_exitF != 0)) && (WipeStatGet() == 0)) {
         WipeColorSet(0, 0, 0U);
-        WipeCreateOut(0xB, 9);
+        WipeCreateOut(WIPE_FADE, 9);
         arg0->func = &boot_ExitObjMain;
 
         if ((omSysExitReq != 0) && (WipeStatGet() == 0)) {
             WipeColorSet(0, 0, 0U);
-            WipeCreateOut(0xB, 9);
+            WipeCreateOut(WIPE_FADE, 9);
             arg0->func = &boot_ExitObjMain;
         }
     }
@@ -87,14 +87,14 @@ void boot_LogoProc(void) {
     espPosSet(temp_v0_2, 0xA0, 0x78);
     espDispOn(temp_v0_2);
     espPriSet(temp_v0_2, 0xFFFF);
-    WipeCreateIn(0xB, 30);
+    WipeCreateIn(WIPE_FADE, 30);
 
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
 
     HuPrcSleep(37);
-    WipeCreateOut(0xB, 9);
+    WipeCreateOut(WIPE_FADE, 9);
 
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
@@ -108,14 +108,14 @@ void boot_LogoProc(void) {
     espPosSet(temp_v0_4, 0xA0, 0x78);
     espDispOn(temp_v0_4);
     espPriSet(temp_v0_4, 0xFFFF);
-    WipeCreateIn(0xB, 9);
+    WipeCreateIn(WIPE_FADE, 9);
 
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
 
     HuPrcSleep(37);
-    WipeCreateOut(0xB, 9);
+    WipeCreateOut(WIPE_FADE, 9);
 
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
@@ -128,7 +128,7 @@ void boot_LogoProc(void) {
     espPosSet(temp_s0_3, 0xA0, 0x78);
     espDispOn(temp_s0_3);
     espPriSet(temp_s0_3, 0xFFFF);
-    WipeCreateIn(0xB, 9);
+    WipeCreateIn(WIPE_FADE, 9);
 
     while (WipeStatGet() != 0) {
         HuPrcVSleep();

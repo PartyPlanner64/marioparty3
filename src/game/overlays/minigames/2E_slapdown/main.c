@@ -583,7 +583,7 @@ void m246_PlayerObjMain(omObjData *obj) {
                                     PlayerFXPlay(0x286, obj->work[0]);
                                 }
                                 obj->rot.y = m246_AngleAdd(obj->rot.y, 20.0f);
-                                if (GwPlayer[obj->work[0]].chr != 5) {
+                                if (GwPlayer[obj->work[0]].chr != CHAR_DK) {
                                     obj->trans.x += m246_knockVelTbl[obj->work[1]].x;
                                     obj->trans.z += m246_knockVelTbl[obj->work[1]].y;
                                 } else {
@@ -614,7 +614,7 @@ void m246_PlayerObjMain(omObjData *obj) {
                             PlayerFXPlay(0x286, obj->work[0]);
                         }
                         obj->rot.y = m246_AngleAdd(obj->rot.y, 20.0f);
-                        if (GwPlayer[obj->work[0]].chr != 5) {
+                        if (GwPlayer[obj->work[0]].chr != CHAR_DK) {
                             obj->trans.x += m246_knockVelTbl[obj->work[1]].x;
                             obj->trans.z += m246_knockVelTbl[obj->work[1]].y;
                         } else {
@@ -640,7 +640,7 @@ void m246_PlayerObjMain(omObjData *obj) {
                 switch (entry->unk_0C) {
                     case 0:
                         obj->rot.y = m246_AngleAdd(obj->rot.y, 20.0f);
-                        if (GwPlayer[obj->work[0]].chr != 5) {
+                        if (GwPlayer[obj->work[0]].chr != CHAR_DK) {
                             obj->trans.x += m246_knockVelTbl[obj->work[1]].x;
                             obj->trans.z += m246_knockVelTbl[obj->work[1]].y;
                         } else {
@@ -670,7 +670,7 @@ void m246_PlayerObjMain(omObjData *obj) {
                 switch (entry->unk_0C) {
                     case 0:
                         obj->rot.y = m246_AngleAdd(obj->rot.y, 20.0f);
-                        if (GwPlayer[obj->work[0]].chr != 5) {
+                        if (GwPlayer[obj->work[0]].chr != CHAR_DK) {
                             obj->trans.x += m246_knockVelTbl[obj->work[1]].x;
                             obj->trans.z += m246_knockVelTbl[obj->work[1]].y;
                         } else {
@@ -1482,7 +1482,7 @@ void m246_ExitWaitObjMain(omObjData *obj) {
 
 void m246_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq == 1) {
-        WipeCreateOut(0, 20);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         obj->func = m246_ExitWaitObjMain;
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
@@ -1608,7 +1608,7 @@ void m246_MainObjMain(omObjData *obj) {
             break;
         case 9:
             if (m246_timer == 0) {
-                WipeCreateOut(0, 20);
+                WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                 obj->func = m246_ExitWaitObjMain;
                 m246_timer++;
             }
@@ -1619,7 +1619,7 @@ void m246_MainObjMain(omObjData *obj) {
 void m246_MainObjInit(omObjData *obj) {
     s16 i;
 
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
     m246_CameraViewInit();
     m246_BackObjCreate();
     m246_TargetObjCreate();

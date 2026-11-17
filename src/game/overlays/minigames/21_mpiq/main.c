@@ -202,12 +202,12 @@ void m233_ObjectSetup(void) {
     HuAudCharVoiceInit();
     omGameSysInit();
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutView);
-    omSetStatBit(obj, 0xA0);
+    omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     m233_CameraInit(2000.0f, 0.0f, 0.0f, 0.0f, 0.0f, 420.0f, 0.0f);
     omOutView(obj);
     Hu3DBGColorSet(0, 0, 0);
     MgFlowInit(&m233_mgFlow);
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
     mgMapObjNum = 0;
     mgPlayerObjNum = 0;
     MgPlayerParamReset();
@@ -219,7 +219,7 @@ void m233_ObjectSetup(void) {
     m233_StageCreate();
     m233_StandCreateAll();
     m233_questionWin = -1;
-    omSetStatBit(omAddObj(0x5000, 0, 0, -1, m233_WinPauseObjMain), 0xA0);
+    omSetStatBit(omAddObj(0x5000, 0, 0, -1, m233_WinPauseObjMain), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     omAddObj(4, 10, 60, -1, m233_Player0ObjInit);
     omAddObj(4, 10, 60, -1, m233_Player1ObjInit);
     omAddObj(4, 10, 60, -1, m233_Player2ObjInit);
@@ -732,11 +732,11 @@ void m233_BlockObjMain(omObjData *obj) {
     }
     if (work->flags & 0x10) {
         if (--work->timer == 12) {
-            Hu3DModelAttrSet(obj->model[0], 4, 4);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
         model = obj->model[2];
         if (Hu3DData[model].motTime >= Hu3DMotion[Hu3DData[model].motId].unk02) {
-            Hu3DModelAttrSet(model, 4, 4);
+            Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             work->flags &= ~0x10;
         }
     }
@@ -748,7 +748,7 @@ void m233_BlockObjMain(omObjData *obj) {
         work->scale += 0.2f;
         work->counter -= 35;
         if (work->timer == 0) {
-            Hu3DModelAttrSet(obj->model[1], 4, 4);
+            Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             work->flags &= ~0x20;
         }
     }
@@ -770,7 +770,7 @@ void m233_BlockObjMain(omObjData *obj) {
             }
             work->flags |= 0x20;
             work->timer = 7;
-            Hu3DModelAttrSet(obj->model[1], 4, 0);
+            Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             work->scale = 1.0f;
             work->counter = 255;
         }
@@ -808,7 +808,7 @@ void m233_BlockEffStartAll(void) {
         work->timer = 15;
         Hu3DModelPosSet(m233_blockObjTbl[i]->model[2], x, y, z);
         Hu3DModelScaleSet(m233_blockObjTbl[i]->model[2], 1.0f, 1.0f, 1.0f);
-        Hu3DModelAttrSet(m233_blockObjTbl[i]->model[2], 4, 0);
+        Hu3DModelAttrSet(m233_blockObjTbl[i]->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
 }
 
@@ -831,7 +831,7 @@ void m233_HitEffObjMain(omObjData *obj) {
     if (*flags & 1) {
         model = obj->model[0];
         if (Hu3DData[model].motTime >= Hu3DMotion[Hu3DData[model].motId].unk02) {
-            Hu3DModelAttrSet(model, 4, 4);
+            Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             *flags &= ~1;
         }
     }
@@ -842,7 +842,7 @@ void m233_HitEffStart(f32 x, f32 y, f32 z) {
     s32 *flags = obj->data;
 
     *flags |= 1;
-    Hu3DModelAttrSet(obj->model[0], 4, 0);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DMotionTimeSet(m233_hitEffObj->model[0], 0.0f);
     omSetTra(m233_hitEffObj, x, y, z);
 }
@@ -876,7 +876,7 @@ void m233_StunStart(s32 index) {
 
     work->flags |= 1;
     if (work->timer == 0) {
-        Hu3DModelAttrSet(obj->model[0], 4, 0);
+        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DMotionTimeSet(m233_stunObj->model[0], 0.0f);
         Hu3DMotionAttrSet(m233_stunObj->model[0], 2, 2);
     }
@@ -971,7 +971,7 @@ void m233_MeterAdd(s32 index) {
 
     work->flags |= 1;
     work->index = index;
-    Hu3DModelAttrSet(m233_meterObjTbl[index]->model[work->stage + 1], 4, 0);
+    Hu3DModelAttrSet(m233_meterObjTbl[index]->model[work->stage + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     _HuAudPlayerFXPlay(0x410, index);
     omVibrate(index, 10, 0, 10);
 }

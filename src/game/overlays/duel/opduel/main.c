@@ -336,7 +336,7 @@ void opduel_SkipCheckObjMain(omObjData *obj) {
     if (i != 2) {
         opduel_skipF = 1;
         WipeColorSet(255, 255, 255);
-        WipeCreateOut(11, 16);
+        WipeCreateOut(WIPE_FADE, 16);
         HuAudSeqFadeOut(32);
         msmSeFadeOut(32);
         obj->func = opduel_SkipObjMain;
@@ -421,7 +421,7 @@ void opduel_ArriveProc(void) {
     EffectParamSet(opduel_effNo, 2.0f, 20.0f, 1.0f);
     EffectRangeSet(opduel_effNo, 40.0f);
     Hu3DParticleAttrSet(opduel_effNo, 1, 0);
-    WipeCreateIn(2, 16);
+    WipeCreateIn(WIPE_STARS, 16);
     HuPrcSleep(17);
     opduel_skipObj = omAddObj(0x1000, 0, 0, -1, opduel_SkipCheckObjMain);
     HuAudSeqPlay(110);
@@ -471,7 +471,7 @@ void opduel_ArriveProc(void) {
         HuPrcVSleep();
         if (i == 5) {
             WipeColorSet(255, 255, 255);
-            WipeCreateOut(11, 16);
+            WipeCreateOut(WIPE_FADE, 16);
         }
     }
     while (WipeStatGet() != 0) {
@@ -524,7 +524,7 @@ void opduel_StarTalkExec(void) {
         effects[i] = opduel_SpiralEffCreate(0xB0004, 0x689);
     }
     WipeColorSet(255, 255, 255);
-    WipeCreateIn(11, 16);
+    WipeCreateIn(WIPE_FADE, 16);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -1092,7 +1092,7 @@ void opduel_ExitObjMain(omObjData *obj) {
 
 void opduel_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq != 0) {
-        WipeCreateOut(2, 20);
+        WipeCreateOut(WIPE_STARS, 20);
         HuAudSeqFadeOut(60);
         obj->func = opduel_ExitObjMain;
     }

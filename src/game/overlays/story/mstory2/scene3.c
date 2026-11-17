@@ -445,8 +445,8 @@ void mstory2_Scene3EventExec(omObjData *obj) {
     s16 i;
     f32 t;
 
-    Hu3DModelAttrSet(mstory2_scene3WorkTbl[4].obj->model[1], 4, 0);
-    Hu3DModelAttrSet(mstory2_scene3WorkTbl[4].obj->model[2], 4, 0);
+    Hu3DModelAttrSet(mstory2_scene3WorkTbl[4].obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(mstory2_scene3WorkTbl[4].obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DParticleAttrSet(mstory2_scene3WorkTbl[4].obj->model[2], 1, 1);
     HuAudFXPlay(0x215);
     paths[0] = mstory2_Scene3PathCreate(mstory2_scene3StampPathA, 0);
@@ -478,8 +478,8 @@ void mstory2_Scene3EventExec(omObjData *obj) {
     }
     HuAudFXVolSet(CharFXPlay(0x2BD, mstory2_scene3RivalChr), 80);
     HuPrcSleep(30);
-    Hu3DModelAttrSet(mstory2_scene3WorkTbl[1].obj->model[1], 4, 0);
-    Hu3DModelAttrSet(mstory2_scene3WorkTbl[1].obj->model[2], 4, 0);
+    Hu3DModelAttrSet(mstory2_scene3WorkTbl[1].obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(mstory2_scene3WorkTbl[1].obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     mstory2_BackMotionStart();
     HuPrcSleep(10);
     mstory2_scene3WorkTbl[0].func = mstory2_Scene3PlayerCardHide;
@@ -598,8 +598,8 @@ void mstory2_Scene3EventExec(omObjData *obj) {
         HuPrcVSleep();
     }
     mstory2_Scene3PathKill(paths[1]);
-    Hu3DModelAttrSet(mstory2_scene3WorkTbl[4].obj->model[1], 4, 4);
-    Hu3DModelAttrSet(mstory2_scene3WorkTbl[4].obj->model[2], 4, 4);
+    Hu3DModelAttrSet(mstory2_scene3WorkTbl[4].obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(mstory2_scene3WorkTbl[4].obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DParticleAttrSet(mstory2_scene3WorkTbl[4].obj->model[2], 1, 0);
     HuPrcSleep(5);
     mstory2_HmfAnimSet(mstory2_scene3WorkTbl[2].obj->model[1], mstory2_scene3TumbleFaceSlot, mstory2_scene3TumbleFaceAnimTbl[2]);
@@ -680,8 +680,8 @@ void mstory2_Scene3PlayerProc(void) {
     obj->model[2] = Hu3DModelLink(mstory2_scene3ShadowMdl);
     obj->model[3] = Hu3DModelRead(0x1D000A, 0x2B9);
     obj->model[4] = Hu3DModelRead(0x83, 0x2B9);
-    Hu3DModelAttrSet(obj->model[3], 4, 4);
-    Hu3DModelAttrSet(obj->model[4], 4, 4);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     omObjMotionRead(obj, 0, CharMotionDataNumGet(mstory2_scene3PlayerChr, 0));
     omObjMotionRead(obj, 1, CharMotionDataNumGet(mstory2_scene3PlayerChr, 1));
     omObjMotionRead(obj, 2, CharMotionDataNumGet(mstory2_scene3PlayerChr, 2));
@@ -737,7 +737,7 @@ void mstory2_Scene3PlayerCardShow(omObjData *obj) {
     HuPrcSleep(20);
     Hu3DModelAttrSet(obj->model[3], 0x4000, 0x4000);
     Hu3DModelHookSet(obj->model[3], obj->model[1], mstory2_scene3ItemHookName);
-    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, 0);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[3]].motId, 0, 10, 0);
     mstory2_MotionEndWait(model);
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[4]].motId, 0, 10, 0);
@@ -768,7 +768,7 @@ void mstory2_Scene3PlayerCardHide(omObjData *obj) {
     Hu3DMotionSpeedSet(model, 1.0f);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[0]].motId, 0, 10, 2);
     Hu3DModelAttrSet(obj->model[3], 0x4000, 0);
-    Hu3DModelAttrSet(obj->model[3], 4, 4);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     mstory2_scene3WorkTbl[0].func = mstory2_Scene3PlayerRivalFace;
 }
 
@@ -801,7 +801,7 @@ void mstory2_Scene3PlayerKnockBack(omObjData *obj) {
     mstory2_HmfAnimSet(obj->model[1], mstory2_scene3PlayerFaceSlot, mstory2_scene3PlayerFaceAnimTbl[1]);
     Hu3DModelRotSet(obj->model[1], 0.0f, 0.0f, 0.0f);
     Hu3DModelPosSet(obj->model[4], Hu3DData[obj->model[1]].pos.x, Hu3DData[obj->model[1]].pos.y, Hu3DData[obj->model[1]].pos.z);
-    Hu3DModelAttrSet(obj->model[4], 4, 0);
+    Hu3DModelAttrSet(obj->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[6]].motId, 0, 10, 0);
     mstory2_ObjPosMoveV(obj, &target, 10);
     mstory2_MotionEndWait(obj->model[1]);
@@ -861,9 +861,9 @@ void mstory2_Scene3RivalProc(void) {
     obj->model[1] = Hu3DModelRead(idx == 0 ? 0x600A0 : 0x300A0, 0x2A9);
     obj->model[2] = Hu3DModelLink(mstory2_scene3ShadowMdl);
     obj->model[3] = Hu3DModelRead(0x83, 0x2B9);
-    Hu3DModelAttrSet(obj->model[1], 4, 4);
-    Hu3DModelAttrSet(obj->model[2], 4, 4);
-    Hu3DModelAttrSet(obj->model[3], 4, 4);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     omObjMotionRead(obj, 0, CharMotionDataNumGet(chrs[idx], 0));
     omObjMotionRead(obj, 1, CharMotionDataNumGet(chrs[idx], 1));
     omObjMotionRead(obj, 2, CharMotionDataNumGet(chrs[idx], 2));
@@ -934,7 +934,7 @@ void mstory2_Scene3RivalKnockBack(omObjData *obj) {
     mstory2_HmfAnimSet(obj->model[1], mstory2_scene3RivalFaceSlot, mstory2_scene3RivalFaceAnimTbl[1]);
     Hu3DModelRotSet(obj->model[1], 0.0f, 0.0f, 0.0f);
     Hu3DModelPosSet(obj->model[3], Hu3DData[obj->model[1]].pos.x, Hu3DData[obj->model[1]].pos.y, Hu3DData[obj->model[1]].pos.z);
-    Hu3DModelAttrSet(obj->model[3], 4, 0);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[6]].motId, 0, 10, 0);
     mstory2_ObjPosMoveV(obj, &target, 10);
     mstory2_MotionEndWait(obj->model[1]);
@@ -1194,14 +1194,14 @@ void mstory2_Scene3StampProc(void) {
     mstory2_scene3WorkTbl[4].func = mstory2_Scene3ObjIdle;
     obj->model[1] = Hu3DModelRead(0x1D0005, 0x20299);
     obj->model[2] = EffectCreate(0xB0004, 0x6A9);
-    Hu3DModelAttrSet(obj->model[1], 4, 4);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DMotionAttrSet(obj->model[1], 2, 2);
     mstory2_scene3StampPos = mstory2_scene3StampStartPos;
     Hu3DModelPosSet(obj->model[1], mstory2_scene3StampPos.x, mstory2_scene3StampPos.y, mstory2_scene3StampPos.z);
     EffectParamSet(obj->model[2], 4.0f, 20.0f, 4.0f);
     EffectRangeSet(obj->model[2], 60.0f);
     Hu3DParticleAttrSet(obj->model[2], 1, 0);
-    Hu3DModelAttrSet(obj->model[2], 4, 4);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     omPrcSetDestructor(0, mstory2_Scene3StampDestroy);
     while (1) {
         mstory2_scene3WorkTbl[4].func(obj);

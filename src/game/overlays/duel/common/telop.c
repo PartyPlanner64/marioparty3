@@ -420,8 +420,8 @@ void MBDTelopTitleCharProc(void) {
     s32 idx = ((UnkOvl81_1 *)HuPrcCurrentGet()->user_data)->unk_00;
     s32 i;
 
-    HuSprAttrReset(mbdTelopTitleSpr->unk_0A, idx, 0x8000);
-    HuSprAttrReset(mbdTelopTitleShadowSpr->unk_0A, idx, 0x8000);
+    HuSprDispOn(mbdTelopTitleSpr->unk_0A, idx);
+    HuSprDispOn(mbdTelopTitleShadowSpr->unk_0A, idx);
     for (i = 0; i < 93; i += 23) {
         HuSprScaleSet(mbdTelopTitleSpr->unk_0A, idx, (120 - i) / 20.0f + 1.0f, (120 - i) / 20.0f + 1.0f);
         HuSprScaleSet(mbdTelopTitleShadowSpr->unk_0A, idx, (120 - i) / 20.0f + 1.0f, (120 - i) / 20.0f + 1.0f);
@@ -458,7 +458,7 @@ void MBDTelopTitleProc(void) {
         HuSprPriSet(mbdTelopTitleSpr->unk_0A, i, 1);
         HuSprAttrSet(mbdTelopTitleSpr->unk_0A, i, 0x1000);
         HuSprPosSet(mbdTelopTitleSpr->unk_0A, i, mbdTelopTitleXTbl[i], 92);
-        HuSprAttrSet(mbdTelopTitleSpr->unk_0A, i, 0x8000);
+        HuSprDispOff(mbdTelopTitleSpr->unk_0A, i);
     }
     DataClose(data);
 
@@ -471,7 +471,7 @@ void MBDTelopTitleProc(void) {
         HuSprAttrSet(mbdTelopTitleShadowSpr->unk_0A, i, 0x1000);
         HuSprPosSet(mbdTelopTitleShadowSpr->unk_0A, i, mbdTelopTitleXTbl[i], 92);
         HuSprColorSet(mbdTelopTitleShadowSpr->unk_0A, i, 0, 21, 233);
-        HuSprAttrSet(mbdTelopTitleShadowSpr->unk_0A, i, 0x8000);
+        HuSprDispOff(mbdTelopTitleShadowSpr->unk_0A, i);
     }
     DataClose(data);
 
@@ -510,7 +510,7 @@ void MBDTelopTitleProc(void) {
         HuPrcVSleep();
     }
 
-    HuSprAttrSet(sprite->unk_0A, 0, 0x8000);
+    HuSprDispOff(sprite->unk_0A, 0);
     HuPrcSleep(15);
     MBDSprGrpKill(mbdTelopTitleSpr);
     MBDSprGrpKill(mbdTelopTitleShadowSpr);

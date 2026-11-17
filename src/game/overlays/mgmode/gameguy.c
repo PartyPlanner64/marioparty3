@@ -168,7 +168,7 @@ void mgmode_GambleRoomProc(void) {
         Hu3DMotionSet(mgmode_mdlTbl[4], mgmode_motTbl5);
         Hu3DMotionAttrSet(mgmode_mdlTbl[4], 2, 2);
         mgmode_CameraPresetSet(0);
-        WipeCreateIn(0xFF, 0);
+        WipeCreateIn(WIPE_TYPE_PREV, 0);
         node = Hu3DModelObjPtrGet(mgmode_mdlTbl[0], "door");
         RepeatVibrator(mgmode_padNo, 5, 0, 5);
         HuAudFXPlay(0x2EB);
@@ -505,7 +505,7 @@ s32 mgmode_GambleResultExec(void) {
     Hu3DModelPosSet(mgmode_mdlTbl[8], 2.0f, 0.0f, -332.0f);
     Hu3DModelAttrSet(mgmode_mdlTbl[17], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelPosSet(mgmode_mdlTbl[17], 2.0f, 63.75f, -332.0f);
-    WipeCreateIn(0xFF, 10);
+    WipeCreateIn(WIPE_TYPE_PREV, 10);
     Hu3DModelAttrSet(mgmode_mdlTbl[18], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();

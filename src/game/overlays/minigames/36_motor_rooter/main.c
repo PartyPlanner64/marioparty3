@@ -1699,7 +1699,7 @@ void m254_StartExec(FuncContext *ctx) {
             }
             break;
         case 110:
-            GMesCreate(6);
+            GMesCreate(GMES_MES_MG_START);
             HuAudFXPlay(14);
             HuAudSeqPlay(0x37);
             break;

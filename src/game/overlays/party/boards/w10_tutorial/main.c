@@ -386,7 +386,7 @@ void MB10_CameraProc(void) {
     MBPlayerPosFixSet(1, 1);
     MBPlayerPosFixSet(2, 1);
     MBPlayerPosFixSet(3, 1);
-    WipeCreateIn(2, 0x10);
+    WipeCreateIn(WIPE_STARS, 0x10);
     WipeColorSet(0xFF, 0xFF, 0xFF);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
@@ -1852,7 +1852,7 @@ void MB10Ev_TutorialProc(void) {
     MBGuideFaceSet(mb10ev_guide->obj, mb10ev_guideFaceEndTbl[0]);
     HuPrcSleep(30);
     HuAudSeqFadeOut(60);
-    WipeCreateOut(2, 16);
+    WipeCreateOut(WIPE_STARS, 16);
     WipeColorSet(0xFF, 0xFF, 0xFF);
     HuPrcSleep(16);
     MBGuideKill(mb10ev_guide);
@@ -1985,7 +1985,7 @@ void MB10_PauseProc(void) {
             Hu3DPauseF = 1;
             if (MB10_PauseQuitCheck(i)) {
                 HuAudSeqFadeOut(0x5A);
-                WipeCreateOut(0, 0x10);
+                WipeCreateOut(WIPE_TYPE_NORMAL, 0x10);
                 HuPrcSleep(0x11);
                 omDelPrcObj(mb10_starGuideHoverProc);
                 MBExit();

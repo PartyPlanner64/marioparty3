@@ -281,7 +281,7 @@ void m268_MainObjInit(omObjData *object) {
     m268_boxObj = omAddObj(5, 10, 10, -1, m268_BoxObjInit);
     m268_koopaJrObj = omAddObj(6, 10, 10, -1, m268_KoopaJrObjInit);
     m268_box2Obj = omAddObj(7, 10, 10, -1, m268_Box2ObjInit);
-    WipeCreateIn(0xFF, 0x10);
+    WipeCreateIn(WIPE_TYPE_PREV, 0x10);
     object->func = m268_MainObjMain;
 }
 
@@ -841,7 +841,7 @@ void m268_BoxSelectUpdate(void) {
 
     switch (m268_selectState) {
         case 0:
-            GMesCreate(26, 10, 156, 56);
+            GMesCreate(GMES_MES_TIMER, 10, 156, 56);
             m268_selectNo = 0;
             m268_selectPrev = 0;
             m268_selectState = 10;

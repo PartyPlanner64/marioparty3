@@ -437,7 +437,7 @@ void majinlamp_LampBoardExec(void) {
     mbSubMusNo = HuAudSubSeqPlay(0x3C);
     HuAudFXPlay(0x129);
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreateIn(0xB, 0x10);
+    WipeCreateIn(WIPE_FADE, 0x10);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -501,7 +501,7 @@ void majinlamp_LampBoardExec(void) {
     }
     HuPrcSleep(5);
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreateOut(0xB, 2);
+    WipeCreateOut(WIPE_FADE, 2);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -539,7 +539,7 @@ void majinlamp_TunnelFlyExec(void) {
     majinlamp_playerRideF = 1;
     majinlamp_playerTiltF = 1;
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreateIn(0xB, 0x10);
+    WipeCreateIn(WIPE_FADE, 0x10);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -596,7 +596,7 @@ void majinlamp_TunnelFlyExec(void) {
                                                             &majinlamp_lampMdl->coords, 0x14));
     HuPrcSleep(0xA);
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreateOut(0xB, 0x14);
+    WipeCreateOut(WIPE_FADE, 0x14);
     HuPrcChildWatch();
 }
 

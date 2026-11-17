@@ -866,10 +866,10 @@ void m206_HiderHideCheck(omObjData *object) {
         if (m206_spotOpenTbl[i] != 0) {
             if (m206_spotXTbl[i] - 150.0f < object->trans.x && object->trans.x < m206_spotXTbl[i] + 150.0f && m206_spotZTbl[i] - 20.0f < object->trans.z &&
                 object->trans.z < m206_spotZTbl[i] + 100.0f) {
-                Hu3DModelAttrSet(object->model[0], 4, 4);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 break;
             }
-            Hu3DModelAttrSet(object->model[0], 4, 0);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
     }
 }
@@ -1745,8 +1745,8 @@ s8 m206_HiderOutUpdate(omObjData *object) {
         }
         if (abs(object->trans.x) > 1000) {
             work->unk_04 = 2;
-            Hu3DModelAttrSet(object->model[0], 4, 4);
-            Hu3DModelAttrSet(object->model[1], 4, 4);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             m206_hiderFoundTbl[object->work[1]] = 0;
             return 1;
         }
@@ -1803,7 +1803,7 @@ void m206_HiderObjMain(omObjData *object) {
             break;
         case 3:
             if (work->unk_08 == -1) {
-                Hu3DModelAttrSet(object->model[0], 4, 0);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 m206_HiderMotSet(object, 2);
                 object->trans.x = m206_hiderOutXTbl[m206_slotOrderTbl[m206_slotOrderNo][index]];
                 object->trans.z = m206_hiderOutZTbl[m206_slotOrderTbl[m206_slotOrderNo][index]];
@@ -1819,12 +1819,12 @@ void m206_HiderObjMain(omObjData *object) {
                 object->trans.z = m206_spotZTbl[spot];
                 m206_HiderMotSet(object, 3);
                 Hu3DMotionSpeedSet(object->model[0], 0.0f);
-                Hu3DModelAttrSet(object->model[0], 4, 4);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 object->rot.y = 0.0f;
             }
             break;
         case 4:
-            Hu3DModelAttrSet(object->model[0], 4, 0);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             if (work->unk_08 == m206_seekerSpotNo) {
                 if (work->unk_0C == 40) {
                     Hu3DMotionSpeedSet(object->model[0], 1.0f);
@@ -2280,7 +2280,7 @@ void m206_RoundUpdate(void) {
             } else {
                 GMesTimerEnd();
                 m206_timer = 30;
-                Hu3DModelAttrSet(object->model[0], 4, 0);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DMotionSpeedSet(object->model[0], 1.0f);
                 m206_SpotClear();
                 m206_SpotCount();
@@ -2309,7 +2309,7 @@ void m206_RoundUpdate(void) {
             if ((s32)Hu3DData[object->model[0]].motTime <= 0) {
                 Hu3DMotionTimeSet(object->model[0], 0.0f);
                 Hu3DMotionSpeedSet(object->model[0], 0.0f);
-                Hu3DModelAttrSet(object->model[0], 4, 4);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             if (m206_timer > 0) {
                 m206_timer--;
@@ -2333,7 +2333,7 @@ void m206_RoundUpdate(void) {
             if ((s32)Hu3DData[object->model[0]].motTime <= 0) {
                 Hu3DMotionTimeSet(object->model[0], 0.0f);
                 Hu3DMotionSpeedSet(object->model[0], 0.0f);
-                Hu3DModelAttrSet(object->model[0], 4, 4);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             if (m206_roundDoneBits != 0 && m206_SpotHiddenCheck() && m206_spotFadeMode == 2) {
                 m206_spotFadeMode = 0;
@@ -2363,7 +2363,7 @@ void m206_RoundUpdate(void) {
             if ((s32)Hu3DData[object->model[0]].motTime <= 0) {
                 Hu3DMotionTimeSet(object->model[0], 0.0f);
                 Hu3DMotionSpeedSet(object->model[0], 0.0f);
-                Hu3DModelAttrSet(object->model[0], 4, 4);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             if (m206_timer > 0) {
                 m206_timer--;

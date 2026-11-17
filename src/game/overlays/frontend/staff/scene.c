@@ -501,35 +501,35 @@ s16 staff_CastShow(Process *prc, s16 *model, s16 *motion, Vec *pos) {
     switch (work->unk_34) {
         case 4:
             Hu3DModelPosSet(work->unk_1C, x - work->unk_36, y, z);
-            Hu3DModelAttrSet(work->unk_1C, 4, 0);
+            Hu3DModelAttrSet(work->unk_1C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelPosSet(work->unk_28[0], x + work->unk_36, y, z);
-            Hu3DModelAttrSet(work->unk_28[0], 4, 0);
+            Hu3DModelAttrSet(work->unk_28[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             break;
         case 7:
             Hu3DModelPosSet(work->unk_1C, x, y, z);
-            Hu3DModelAttrSet(work->unk_1C, 4, 0);
+            Hu3DModelAttrSet(work->unk_1C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             for (i = 0; i < 4; i++) {
                 member = work->unk_28[i];
                 Hu3DModelPosSet(member, x + staff_castGroupOfsTbl[i], y, z);
-                Hu3DModelAttrSet(member, 4, 0);
+                Hu3DModelAttrSet(member, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
             break;
         case 8:
             Hu3DModelPosSet(work->unk_1C, x - work->unk_36, y, z);
-            Hu3DModelAttrSet(work->unk_1C, 4, 0);
+            Hu3DModelAttrSet(work->unk_1C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelPosSet(work->unk_28[0], x + work->unk_36, y, z);
-            Hu3DModelAttrSet(work->unk_28[0], 4, 0);
+            Hu3DModelAttrSet(work->unk_28[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             break;
         case 10:
             Hu3DModelPosSet(work->unk_1C, x - work->unk_36, y, z);
-            Hu3DModelAttrSet(work->unk_1C, 4, 0);
+            Hu3DModelAttrSet(work->unk_1C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelPosSet(work->unk_28[0], x + work->unk_36, y, z);
-            Hu3DModelAttrSet(work->unk_28[0], 4, 0);
+            Hu3DModelAttrSet(work->unk_28[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             break;
         case 0:
         default:
             Hu3DModelPosSet(work->unk_1C, x, y, z);
-            Hu3DModelAttrSet(work->unk_1C, 4, 0);
+            Hu3DModelAttrSet(work->unk_1C, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             break;
     }
     if (++staff->unk_08 >= 3) {

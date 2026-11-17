@@ -343,19 +343,19 @@ void m270_WaterWaveUpdate(omObjData *object) {
         Hu3DModelPosSet(object->model[1], boatX, 0.0f, boatZ);
     }
     Hu3DModelTexScroll(object->model[1], m270_waterScrollU, m270_waterScrollV, 32, 32);
-    if (HuPadBtn[1] & 8) {
+    if (HuPadBtn[1] & U_CBUTTONS) {
         m270_wavePeriodA += 0.001f;
     }
-    if (HuPadBtn[1] & 4) {
+    if (HuPadBtn[1] & D_CBUTTONS) {
         m270_wavePeriodA -= 0.001f;
     }
     if (m270_wavePeriodA < 0.01f) {
         m270_wavePeriodA = 0.01f;
     }
-    if (HuPadBtn[1] & 1) {
+    if (HuPadBtn[1] & R_CBUTTONS) {
         m270_waveLenA += 0.1f;
     }
-    if (HuPadBtn[1] & 2) {
+    if (HuPadBtn[1] & L_CBUTTONS) {
         m270_waveLenA -= 0.1f;
     }
     if (HuPadBtn[1] & R_TRIG) {
@@ -423,8 +423,8 @@ void m270_LakituLeaveUpdate(omObjData *object) {
         Hu3DModelPosSet(object->model[3], x, y, z);
         Hu3DModelPosSet(object->model[2], x, y + 77.65f, z + 140.0f);
     } else {
-        Hu3DModelAttrSet(object->model[3], 4, 4);
-        Hu3DModelAttrSet(object->model[2], 4, 4);
+        Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 }
 
@@ -443,7 +443,7 @@ void m270_ObstacleDispUpdate(omObjData *object) {
     count1 = 0;
     count0 = 0;
     for (i = 0; i < 30; i++) {
-        Hu3DModelAttrSet(object->model[i + 9], 4, 4);
+        Hu3DModelAttrSet(object->model[i + 9], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     for (i = 0;; i++) {
         switch (m270_courseNo) {
@@ -487,7 +487,7 @@ void m270_ObstacleDispUpdate(omObjData *object) {
                         Hu3DModelPosSet(object->model[count0 + 9], x, y, z);
                         Hu3DModelRotSet(object->model[count0 + 9], rotX, rotY, rotZ);
                         Hu3DModelScaleSet(object->model[count0 + 9], 1.5f, 1.5f, 1.5f);
-                        Hu3DModelAttrSet(object->model[count0 + 9], 4, 0);
+                        Hu3DModelAttrSet(object->model[count0 + 9], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         count0++;
                     }
                     break;
@@ -496,7 +496,7 @@ void m270_ObstacleDispUpdate(omObjData *object) {
                         Hu3DModelPosSet(object->model[count1 + 19], x, y, z);
                         Hu3DModelRotSet(object->model[count1 + 19], rotX, rotY, rotZ);
                         Hu3DModelScaleSet(object->model[count1 + 19], 1.5f, 1.5f, 1.5f);
-                        Hu3DModelAttrSet(object->model[count1 + 19], 4, 0);
+                        Hu3DModelAttrSet(object->model[count1 + 19], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         count1++;
                     }
                     break;
@@ -510,7 +510,7 @@ void m270_ObstacleDispUpdate(omObjData *object) {
                         Hu3DModelPosSet(object->model[count2 + 29], x, y, z);
                         Hu3DModelRotSet(object->model[count2 + 29], rotX, rotY, rotZ);
                         Hu3DModelScaleSet(object->model[count2 + 29], scale, scale, scale);
-                        Hu3DModelAttrSet(object->model[count2 + 29], 4, 0);
+                        Hu3DModelAttrSet(object->model[count2 + 29], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         count2++;
                     }
                     break;
@@ -872,14 +872,14 @@ void m270_WakeUpdate(omObjData *object, f32 speed) {
                 Hu3DModelPosSet(object->model[i + 1], leftX + m270_wakePosTbl[i].x,
                                 m270_wakePosTbl[i].y, leftZ + m270_wakePosTbl[i].z);
                 Hu3DModelScaleSet(object->model[i + 1], scale, scale, scale);
-                Hu3DModelAttrSet(object->model[i + 1], 4, 0);
+                Hu3DModelAttrSet(object->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DModelPosSet(object->model[i + 7], rightX + m270_wakePosTbl[i].x,
                                 m270_wakePosTbl[i].y, rightZ + m270_wakePosTbl[i].z);
                 Hu3DModelScaleSet(object->model[i + 7], scale, scale, scale);
-                Hu3DModelAttrSet(object->model[i + 7], 4, 0);
+                Hu3DModelAttrSet(object->model[i + 7], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             } else {
-                Hu3DModelAttrSet(object->model[i + 1], 4, 4);
-                Hu3DModelAttrSet(object->model[i + 7], 4, 4);
+                Hu3DModelAttrSet(object->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[i + 7], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
         }
     } else {
@@ -893,9 +893,9 @@ void m270_WakeUpdate(omObjData *object, f32 speed) {
                 m270_wakeScaleTbl[i] *= 1.3f;
                 scale = speed * m270_wakeScaleTbl[i];
                 Hu3DModelScaleSet(object->model[i + 1], scale, scale, scale);
-                Hu3DModelAttrSet(object->model[i + 1], 4, 0);
+                Hu3DModelAttrSet(object->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             } else {
-                Hu3DModelAttrSet(object->model[i + 1], 4, 4);
+                Hu3DModelAttrSet(object->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
         }
     }

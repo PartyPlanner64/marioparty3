@@ -411,16 +411,16 @@ void m256_StageObjMain(omObjData *object) {
     s16 sounds[3] = { 0x4B8, 0x4B9, 0x4BA };
 
     if (Hu3DPauseF) {
-        HuSprAttrSet(m256_sprGrpTbl[1], 0, 0x8000);
+        HuSprDispOff(m256_sprGrpTbl[1], 0);
         return;
     }
-    HuSprAttrReset(m256_sprGrpTbl[1], 0, 0x8000);
+    HuSprDispOn(m256_sprGrpTbl[1], 0);
     switch (m256_phase) {
         case 0:
             Hu3DHookFuncCreate(0xC0, m256_BillboardDraw, 2);
             m256_pictureTPLvl = 0;
             HuSprTPLvlSet(m256_sprGrpTbl[1], 0, 0);
-            GMesCreate(6);
+            GMesCreate(GMES_MES_MG_START);
             m256_timer = 900;
             m256_phase++;
             HuAudFXPlay(sounds[m256_stageNo]);
@@ -504,7 +504,7 @@ void m256_StageObjMain(omObjData *object) {
                 break;
             }
             if (m256_phaseTimer == 15) {
-                HuSprAttrReset(m256_sprGrpTbl[5], 0, 0x8000);
+                HuSprDispOn(m256_sprGrpTbl[5], 0);
                 if (m256_missChoiceNo == 0) {
                     HuAudFXPlay(m256_winner == -1 ? 0x4B6 : 0x4B5);
                     HuSprPosSet(m256_sprGrpTbl[5], 0, m256_choicePosTbl[m256_answerNo][0],
@@ -641,7 +641,7 @@ void m256_PlayerObjInit(omObjData *object) {
         Hu3DModelHookSet(object->model[slot], object->model[0], "item_hook");
         Hu3DModelAttrSet(object->model[slot], 0x4000, 0x4000);
     }
-    Hu3DModelAttrSet(object->model[2], 4, 0);
+    Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     object->model[9] = Hu3DModelRead2(7, 0x2DD);
     object->func = m256_PlayerObjMain;
     MgPlayerMotLoad(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
@@ -768,19 +768,19 @@ void m256_PlayerObjMain(omObjData *object) {
         case 3:
             if (work->unk32 != 0) {
                 HuAudFXPlay(0x4B4);
-                Hu3DModelAttrSet(object->model[2], 4, 4);
-                Hu3DModelAttrSet(object->model[work->unk32 + 1], 4, 0);
+                Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[work->unk32 + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             } else {
                 MgPlayerMotSet(object, 0);
                 model = object->model[9];
                 m256_HookPosGet(object->model[0], "item_hook", Hu3DData[object->model[0]].motTime, &pos);
-                Hu3DModelAttrSet(model, 4, 0);
+                Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DModelPosSet(model, pos.x, pos.y, pos.z + 10.0);
                 Hu3DModelScaleSet(model, 0.4f, 0.4f, 0.4f);
                 Hu3DMotionTimeSet(model, 0.0f);
                 Hu3DMotionSpeedSet(model, 2.0f);
                 Hu3DMotionAttrSet(model, 1, 0);
-                Hu3DModelAttrSet(object->model[2], 4, 4);
+                Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
         case 4:
             if (rot > 0.0) {
@@ -804,13 +804,13 @@ void m256_PlayerObjMain(omObjData *object) {
             if (work->unk32 != 0) {
                 model = object->model[9];
                 m256_HookPosGet(object->model[0], "item_hook", Hu3DData[object->model[0]].motTime, &pos);
-                Hu3DModelAttrSet(model, 4, 0);
+                Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DModelPosSet(model, pos.x, pos.y, pos.z + 10.0);
                 Hu3DModelScaleSet(model, 0.4f, 0.4f, 0.4f);
                 Hu3DMotionTimeSet(model, 0.0f);
                 Hu3DMotionSpeedSet(model, 2.0f);
                 Hu3DMotionAttrSet(model, 1, 0);
-                Hu3DModelAttrSet(object->model[work->unk32 + 1], 4, 4);
+                Hu3DModelAttrSet(object->model[work->unk32 + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             if (work->unk2C) {
                 GwPlayer[data->unk59].bonusCoin += 10;
@@ -877,7 +877,7 @@ s16 m256_EffSprCreate(s16 spriteId, s16 x, s16 y, f32 rot) {
     HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_PAT_LOOP);
     HuSprPosSet(group, i, x, y);
     HuSprZRotSet(group, i, rot);
-    HuSprAttrReset(group, i, 0x8000);
+    HuSprDispOn(group, i);
     return i;
 }
 
@@ -1039,10 +1039,10 @@ void m256_CrowdObjMain(omObjData *object) {
                         m256_BillboardScaleSet(member->crowdIndex, scale, scale, 1.0f);
                         if (member->unk07 >= 8) {
                             m256_BillboardAttrSet(member->crowdIndex, 0x8000);
-                            Hu3DModelAttrSet(member->model, 4, 4);
+                            Hu3DModelAttrSet(member->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                             model = member->unk34;
                             HuAudFXPlay(0x4B7);
-                            Hu3DModelAttrSet(model, 4, 0);
+                            Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                             Hu3DModelPosSet(model, member->pos.x, member->pos.y + 40.0, member->pos.z);
                             Hu3DModelScaleSet(model, object->scale.x, object->scale.y, object->scale.z);
                             Hu3DMotionTimeSet(model, 0.0f);
@@ -1078,7 +1078,7 @@ void m256_CrowdObjMain(omObjData *object) {
                 continue;
             case 6:
                 m256_BillboardAttrSet(member->crowdIndex, 0x8000);
-                Hu3DModelAttrSet(member->model, 4, 4);
+                Hu3DModelAttrSet(member->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 continue;
         }
         member->pos.x += member->vel.x;

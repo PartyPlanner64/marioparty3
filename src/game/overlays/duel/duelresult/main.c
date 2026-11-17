@@ -311,7 +311,7 @@ void duelresult_IntroExec(void) {
         MBDModelTempAllocFree(duelresult_gwPlayerTbl[i]->player_obj);
     }
 
-    WipeCreateIn(2, 16);
+    WipeCreateIn(WIPE_STARS, 16);
     HuPrcSleep(17);
     MBDBackTPLvlSet(0);
     HuAudFXPlay(0x173);
@@ -419,7 +419,7 @@ void duelresult_IntroExec(void) {
         }
     }
 
-    WipeCreateOut(2, 8);
+    WipeCreateOut(WIPE_STARS, 8);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -926,7 +926,7 @@ void duelresult_ResultExec(void) {
     EffectParamSet(effect, 10.0f, 30.0f, 8.0f);
     Hu3DParticleAttrSet(effect, 1, 0);
     HuAudSeqPlay(0xF);
-    WipeCreateIn(2, 8);
+    WipeCreateIn(WIPE_STARS, 8);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -1440,7 +1440,7 @@ void duelresult_ExitObjMain(omObjData *obj) {
 
 void duelresult_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq != 0) {
-        WipeCreateOut(2, 20);
+        WipeCreateOut(WIPE_STARS, 20);
         msmSeFadeOut(40);
         obj->func = duelresult_ExitObjMain;
     }

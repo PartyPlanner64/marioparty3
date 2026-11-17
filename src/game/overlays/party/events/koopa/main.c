@@ -1219,7 +1219,7 @@ void koopa_MainProc(void) {
     koopa_RouletteInit();
     koopa_RouletteCreate();
     HuAudSeqPlay(0x24);
-    WipeCreateIn(3, 16);
+    WipeCreateIn(WIPE_STRIPES2, 16);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -1293,7 +1293,7 @@ void koopa_ExitObjMain(omObjData *obj) {
 
 void koopa_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq != 0) {
-        WipeCreateOut(3, 20);
+        WipeCreateOut(WIPE_STRIPES2, 20);
         HuAudSeqFadeOut(60);
         obj->func = koopa_ExitObjMain;
     }

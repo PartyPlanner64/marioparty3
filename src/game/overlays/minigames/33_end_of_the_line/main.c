@@ -531,25 +531,25 @@ void m251_SceneSet(omObjData *arg0, omObjData *arg1, s32 arg2) {
     EndOfTheLineStage *data = OM_GET_DATA_PTR(arg0, EndOfTheLineStage);
     s32 i;
 
-    Hu3DModelAttrSet(arg0->model[idx * 2], 4, 4);
-    Hu3DModelAttrSet(arg0->model[idx * 2 + 1], 4, 4);
-    Hu3DModelAttrSet(arg0->model[4 + idx], 4, 4);
-    Hu3DModelAttrSet(arg0->model[12 + idx], 4, 4);
-    Hu3DModelAttrSet(arg0->model[14 + idx], 4, 4);
-    Hu3DModelAttrSet(arg0->model[16 + idx], 4, 4);
-    Hu3DModelAttrSet(arg0->model[18 + idx], 4, 4);
+    Hu3DModelAttrSet(arg0->model[idx * 2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(arg0->model[idx * 2 + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(arg0->model[4 + idx], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(arg0->model[12 + idx], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(arg0->model[14 + idx], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(arg0->model[16 + idx], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(arg0->model[18 + idx], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     for (i = 0; i < 5; i++) {
-        Hu3DModelAttrSet(arg0->model[20 + i * 2 + idx], 4, 4);
+        Hu3DModelAttrSet(arg0->model[20 + i * 2 + idx], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
-    Hu3DModelAttrSet(arg0->model[6 + idx * 3], 4, 4);
-    Hu3DModelAttrSet(arg0->model[6 + idx * 3 + 1], 4, 4);
-    Hu3DModelAttrSet(arg0->model[6 + idx * 3 + 2], 4, 4);
-    Hu3DModelAttrSet(arg1->model[0], 4, 4);
-    Hu3DModelAttrSet(arg1->model[1], 4, 4);
-    Hu3DModelAttrSet(arg1->model[2], 4, 4);
-    Hu3DModelAttrSet(arg1->model[3], 4, 4);
-    Hu3DModelAttrSet(arg1->model[4], 4, 4);
-    Hu3DModelAttrSet(arg1->model[5], 4, 4);
+    Hu3DModelAttrSet(arg0->model[6 + idx * 3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(arg0->model[6 + idx * 3 + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(arg0->model[6 + idx * 3 + 2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(arg1->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(arg1->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(arg1->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(arg1->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(arg1->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(arg1->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     espDispOff(data->esprites[idx]);
     espDispOff(player->esprites[0]);
     espDispOff(player->esprites[1]);
@@ -561,10 +561,10 @@ void m251_SceneSet(omObjData *arg0, omObjData *arg1, s32 arg2) {
     switch ((s16)arg2) {
         case 0:
             Hu3DGLightDirSet(1, 44.0f, 82.0f, -74.0f);
-            Hu3DModelAttrSet(arg0->model[16 + idx], 4, 0);
-            Hu3DModelAttrSet(arg1->model[0], 4, 0);
-            Hu3DModelAttrSet(arg1->model[1], 4, 0);
-            Hu3DModelAttrSet(arg1->model[2], 4, 0);
+            Hu3DModelAttrSet(arg0->model[16 + idx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(arg1->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(arg1->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(arg1->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             omSetTra(arg1, 0.0f, 0.0f, 2000.0f);
             omSetRot(arg1, 0.0f, 180.0f, 0.0f);
             player->pos.x = 0.0f;
@@ -585,22 +585,22 @@ void m251_SceneSet(omObjData *arg0, omObjData *arg1, s32 arg2) {
             Hu3DModelRotSet(arg1->model[2], player->rot2.x, player->rot2.y, player->rot2.z);
             espDispOn(data->esprites[idx]);
             for (i = 0; i < 5; i++) {
-                Hu3DModelAttrSet(arg0->model[20 + i * 2 + idx], 4, 0);
+                Hu3DModelAttrSet(arg0->model[20 + i * 2 + idx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
-            Hu3DModelAttrSet(arg0->model[18 + idx], 4, 0);
+            Hu3DModelAttrSet(arg0->model[18 + idx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelPosSet(arg0->model[18 + idx], -1000.0f, 4000.0f, 0.0f);
             Hu3DModelScaleSet(arg0->model[18 + idx], 4.5f, 4.5f, 4.5f);
             break;
         case 1:
-            Hu3DModelAttrSet(arg0->model[idx * 2], 4, 0);
-            Hu3DModelAttrSet(arg0->model[4 + idx], 4, 0);
-            Hu3DModelAttrSet(arg0->model[6 + idx * 3 + player->unk16], 4, 0);
+            Hu3DModelAttrSet(arg0->model[idx * 2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(arg0->model[4 + idx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(arg0->model[6 + idx * 3 + player->unk16], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelPosSet(arg0->model[idx * 2], 0.0f, 0.0f, 0.0f);
             Hu3DModelPosSet(arg0->model[4 + idx], 0.0f, 0.0f, -3300.0f);
             Hu3DModelPosSet(arg0->model[6 + idx * 3 + player->unk16], 0.0f, 0.0f, -3150.0f);
-            Hu3DModelAttrSet(arg1->model[0], 4, 0);
-            Hu3DModelAttrSet(arg1->model[1], 4, 0);
-            Hu3DModelAttrSet(arg1->model[2], 4, 0);
+            Hu3DModelAttrSet(arg1->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(arg1->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(arg1->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             omSetTra(arg1, 0.0f, 0.0f, 0.0f);
             omSetRot(arg1, 0.0f, 180.0f, 0.0f);
             player->pos.x = 0.0f;
@@ -617,7 +617,7 @@ void m251_SceneSet(omObjData *arg0, omObjData *arg1, s32 arg2) {
             Hu3DModelRotSet(arg1->model[2], 0.0f, 180.0f, 0.0f);
             Hu3DModelPosSet(arg1->model[4], player->pos.x - sindf(player->rot.y) * 20.0f, player->pos2.y + 100.0f,
                             player->pos.z - cosdf(player->rot.y) * 20.0f);
-            Hu3DModelAttrSet(arg1->model[4], 4, 0);
+            Hu3DModelAttrSet(arg1->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             espDispOn(data->esprites[idx]);
             espPosSet(data->esprites[player->playerIdx],
                       m251_splitOfsXTbl[player->playerIdx] + m251_splitX, 0x78);
@@ -637,7 +637,7 @@ void m251_SceneSet(omObjData *arg0, omObjData *arg1, s32 arg2) {
             }
             break;
         case 2:
-            Hu3DModelAttrSet(arg0->model[14 + idx], 4, 0);
+            Hu3DModelAttrSet(arg0->model[14 + idx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelPosSet(arg0->model[14 + idx], 0.0f, 0.0f, -1650.0f);
             omSetTra(arg1, 0.0f, 0.0f, 0.0f);
             omSetRot(arg1, 0.0f, 180.0f, 0.0f);
@@ -654,15 +654,15 @@ void m251_SceneSet(omObjData *arg0, omObjData *arg1, s32 arg2) {
         case 3:
             player->unk88 = 0;
             player->unk54 = 345.0f;
-            Hu3DModelAttrSet(arg1->model[0], 4, 0);
-            Hu3DModelAttrSet(arg1->model[1], 4, 0);
-            Hu3DModelAttrSet(arg1->model[2], 4, 0);
+            Hu3DModelAttrSet(arg1->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(arg1->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(arg1->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             for (i = 0; i < 5; i++) {
-                Hu3DModelAttrSet(arg0->model[20 + i * 2 + idx], 4, 0);
+                Hu3DModelAttrSet(arg0->model[20 + i * 2 + idx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
-            Hu3DModelAttrSet(arg0->model[12 + idx], 4, 0);
+            Hu3DModelAttrSet(arg0->model[12 + idx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelPosSet(arg0->model[12 + idx], 0.0f, 0.0f, 0.0f);
-            Hu3DModelAttrSet(arg0->model[18 + idx], 4, 0);
+            Hu3DModelAttrSet(arg0->model[18 + idx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelPosSet(arg0->model[18 + idx], 1000.0f, 2500.0f, 900.0f);
             Hu3DModelScaleSet(arg0->model[18 + idx], 5.0f, 5.0f, 5.0f);
             omSetTra(arg1, -500.0f, -sindf(player->unk54) * 447.5f, -500.0f);
@@ -684,9 +684,9 @@ void m251_SceneSet(omObjData *arg0, omObjData *arg1, s32 arg2) {
             player->unk0C = 48.0f;
             break;
         case 4:
-            Hu3DModelAttrSet(arg1->model[0], 4, 0);
-            Hu3DModelAttrSet(arg1->model[1], 4, 0);
-            Hu3DModelAttrSet(arg1->model[2], 4, 0);
+            Hu3DModelAttrSet(arg1->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(arg1->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(arg1->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             omSetTra(arg1, 0.0f, 0.0f, 950.0f);
             omSetRot(arg1, 0.0f, 180.0f, 0.0f);
             player->pos.x = 0.0f;
@@ -702,7 +702,7 @@ void m251_SceneSet(omObjData *arg0, omObjData *arg1, s32 arg2) {
             Hu3DModelRotSet(arg1->model[2], 0.0f, 180.0f, 0.0f);
             Hu3DModelPosSet(arg1->model[4], player->pos.x - sindf(player->rot.y) * 20.0f, player->pos.y + 100.0f,
                             player->pos.z - cosdf(player->rot.y) * 20.0f);
-            Hu3DModelAttrSet(arg1->model[4], 4, 0);
+            Hu3DModelAttrSet(arg1->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             espDispOn(data->esprites[idx + 6]);
             if (idx == 0) {
                 espPosSet(data->esprites[6], 0, 0x78);
@@ -715,15 +715,15 @@ void m251_SceneSet(omObjData *arg0, omObjData *arg1, s32 arg2) {
             }
             break;
         case 5:
-            Hu3DModelAttrSet(arg0->model[idx * 2], 4, 0);
-            Hu3DModelAttrSet(arg0->model[idx * 2 + 1], 4, 0);
+            Hu3DModelAttrSet(arg0->model[idx * 2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(arg0->model[idx * 2 + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             data->unk18[idx][0] = 1650.0f;
             data->unk18[idx][1] = -1650.0f;
             Hu3DModelPosSet(arg0->model[idx * 2], 0.0f, 0.0f, data->unk18[idx][0]);
             Hu3DModelPosSet(arg0->model[idx * 2 + 1], 0.0f, 0.0f, data->unk18[idx][1]);
-            Hu3DModelAttrSet(arg1->model[0], 4, 0);
-            Hu3DModelAttrSet(arg1->model[1], 4, 0);
-            Hu3DModelAttrSet(arg1->model[2], 4, 0);
+            Hu3DModelAttrSet(arg1->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(arg1->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(arg1->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             omSetTra(arg1, 0.0f, 0.0f, 0.0f);
             omSetRot(arg1, 0.0f, 180.0f, 0.0f);
             player->pos.x = 0.0f;
@@ -742,16 +742,16 @@ void m251_SceneSet(omObjData *arg0, omObjData *arg1, s32 arg2) {
             player->rot2.z = 0.0f;
             Hu3DModelPosSet(arg1->model[2], player->pos2.x, player->pos2.y, player->pos2.z);
             Hu3DModelRotSet(arg1->model[2], player->rot2.x, player->rot2.y, player->rot2.z);
-            Hu3DModelAttrSet(arg1->model[4], 4, 0);
+            Hu3DModelAttrSet(arg1->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelPosSet(arg1->model[4], player->pos2.x, 100.0f, player->pos2.z);
             player->unk6C = 0.1f;
             espDispOn(data->esprites[idx]);
             m251_stageObj->func = m251_StageGoalObjMain;
             break;
         case 6:
-            Hu3DModelAttrSet(arg1->model[0], 4, 0);
-            Hu3DModelAttrSet(arg1->model[1], 4, 0);
-            Hu3DModelAttrSet(arg1->model[2], 4, 0);
+            Hu3DModelAttrSet(arg1->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(arg1->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(arg1->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             omSetTra(arg1, 0.0f, 0.0f, 950.0f);
             omSetRot(arg1, 0.0f, 180.0f, 0.0f);
             player->pos.x = 0.0f;
@@ -767,7 +767,7 @@ void m251_SceneSet(omObjData *arg0, omObjData *arg1, s32 arg2) {
             Hu3DModelRotSet(arg1->model[2], 0.0f, 180.0f, 0.0f);
             Hu3DModelPosSet(arg1->model[4], player->pos.x - sindf(player->rot.y) * 20.0f, player->pos.y + 100.0f,
                             player->pos.z - cosdf(player->rot.y) * 20.0f);
-            Hu3DModelAttrSet(arg1->model[4], 4, 0);
+            Hu3DModelAttrSet(arg1->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             espDispOn(data->esprites[idx + 8]);
             if (idx == 0) {
                 espPosSet(data->esprites[6], 0, 0x78);
@@ -821,7 +821,7 @@ void m251_SmokeObjMain(omObjData *obj) {
             }
         }
         if (i != 3) {
-            Hu3DModelAttrSet(obj->model[i], 4, 0);
+            Hu3DModelAttrSet(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DMotionTimeSet(obj->model[i], 0.0f);
             Hu3DModelScaleSet(obj->model[i], 2.0f, 2.0f, 2.0f);
             work->pos[i].x = work->target->trans.x;
@@ -840,7 +840,7 @@ void m251_SmokeObjMain(omObjData *obj) {
             work->pos[i].y += work->velY[i];
             work->velY[i] *= 0.97f;
             if (--work->timers[i] == 0) {
-                Hu3DModelAttrSet(obj->model[i], 4, 4);
+                Hu3DModelAttrSet(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
         }
     }
@@ -942,11 +942,11 @@ void m251_PlayerIntroObjMain(omObjData *obj) {
 
     if (player->pos2.y > 600.0f) {
         for (i = 0; i < 5; i++) {
-            Hu3DModelAttrSet(m251_stageObj->model[20 + i * 2 + player->playerIdx], 4, 0);
+            Hu3DModelAttrSet(m251_stageObj->model[20 + i * 2 + player->playerIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
     } else {
         for (i = 0; i < 5; i++) {
-            Hu3DModelAttrSet(m251_stageObj->model[20 + i * 2 + player->playerIdx], 4, 4);
+            Hu3DModelAttrSet(m251_stageObj->model[20 + i * 2 + player->playerIdx], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
     if (player->unk8A == 0) {
@@ -982,7 +982,7 @@ void m251_PlayerIntroObjMain(omObjData *obj) {
         player->unk74 = 80.0f;
         player->unk8A = 10000;
         Hu3DMotionShiftSet(obj->model[2], Hu3DData[obj->motion[4]].motId, 0, 6, 2);
-        Hu3DModelAttrSet(obj->model[5], 4, 0);
+        Hu3DModelAttrSet(obj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelScaleSet(obj->model[5], 1.8f, 1.8f, 1.8f);
         player->unk1E = 7;
     }
@@ -1023,7 +1023,7 @@ void m251_PlayerIntroObjMain(omObjData *obj) {
         if (player->unk1E != 0) {
             Hu3DModelRotSet(obj->model[5], 0.0f, 0.0f, (rand8() / 256.0f) * 360.0f);
             if (--player->unk1E == 0) {
-                Hu3DModelAttrSet(obj->model[5], 4, 4);
+                Hu3DModelAttrSet(obj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
         }
     }
@@ -1054,7 +1054,7 @@ void m251_PlayerDropObjMain(omObjData *obj) {
                 player->unk74 = 40.0f;
                 player->unk5C = 1;
                 player->unk6C = 1.0f;
-                Hu3DModelAttrSet(obj->model[3], 4, 0);
+                Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DModelPosSet(obj->model[3], player->pos2.x, player->pos2.y, player->pos2.z);
                 Hu3DMotionTimeSet(obj->model[3], 0.0f);
                 m251_startObj->work[0] = 1;
@@ -1278,7 +1278,7 @@ void m251_PlayerRideObjMain(omObjData *obj) {
             player->pos2.y = 0.0f;
             player->unk1C = 7;
             Hu3DMotionAttrSet(obj->model[2], 1, 0);
-            Hu3DModelAttrSet(obj->model[3], 4, 0);
+            Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DMotionTimeSet(obj->model[3], 0.0f);
         }
     } else if (player->unk1A == 2) {
@@ -1649,7 +1649,7 @@ void m251_StartObjMain(omObjData *obj) {
 
     switch (m251_startPhase) {
         case 0:
-            WipeCreateIn(0xFF, 16);
+            WipeCreateIn(WIPE_TYPE_PREV, 16);
             m251_startPhase = 1;
             break;
         case 1:
@@ -1971,7 +1971,7 @@ void m251_GoalEffStart(omObjData *obj) {
 
     omSetTra(m251_goalEffObjTbl[idx], obj->trans.x + 150.0f, obj->trans.y + 50.0f, obj->trans.z + 100.0f);
     omSetSca(m251_goalEffObjTbl[idx], 3.0f, 3.0f, 3.0f);
-    Hu3DModelAttrSet(m251_goalEffObjTbl[idx]->model[0], 4, 0);
+    Hu3DModelAttrSet(m251_goalEffObjTbl[idx]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelCameraSet(m251_goalEffObjTbl[idx]->model[0], m251_cameraMaskTbl[idx]);
     Hu3DMotionAttrSet(m251_goalEffObjTbl[idx]->model[0], 2, 2);
     m251_goalEffObjTbl[idx]->func = m251_GoalEffObjMain;

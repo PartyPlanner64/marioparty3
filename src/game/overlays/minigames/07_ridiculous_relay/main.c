@@ -188,7 +188,7 @@ void m207_ObjectSetup(void) {
     object->work[0] = 2;
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     GMesFontMesCreate(m207_fontMesTbl, 1);
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
     m207_mgFlow.type = MINIGAME_2V2;
     m207_mgFlow.startDelay = -1;
     m207_mgFlow.startDelay = 45;
@@ -429,7 +429,7 @@ void m207_StageObjInit(omObjData *object) {
         Hu3DModelScaleSet(object->model[10 + i], 0.7565625f, 0.7565625f, 0.7565625f);
     }
     object->model[4] = m207_SprMdlCreate(0xB, &m207_sprMdlTbl[7], 0x639);
-    Hu3DModelAttrSet(object->model[4], 4, 4);
+    Hu3DModelAttrSet(object->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelScaleSet(object->model[4], 1.6549804f, 0.9457031f, 0.9457031f);
     Hu3DModelCameraSet(object->model[4], 1);
     for (i = 0; i < 18; i++) {
@@ -438,27 +438,27 @@ void m207_StageObjInit(omObjData *object) {
         } else {
             object->model[17 + i] = Hu3DModelLink(object->model[17]);
         }
-        Hu3DModelAttrSet(object->model[17 + i], 4, 4);
+        Hu3DModelAttrSet(object->model[17 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DModelObjAttrSet(object->model[17 + i], 0x70000000, 0x70000000);
         Hu3DModelScaleSet(object->model[17 + i], 0.15625f, 0.15625f, 0.15625f);
         Hu3DModelCameraSet(object->model[17 + i], 2);
     }
     object->model[6] = Hu3DModelRead(0x28000C, 0x4B9);
-    Hu3DModelAttrSet(object->model[6], 4, 4);
+    Hu3DModelAttrSet(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DMotionAttrSet(object->model[6], 2, 2);
     Hu3DModelScaleSet(object->model[6], 0.15625f, 0.15625f, 0.15625f);
     Hu3DModelCameraSet(object->model[6], 2);
     object->model[7] = Hu3DModelRead(0x28000D, 0x4B9);
-    Hu3DModelAttrSet(object->model[7], 4, 4);
+    Hu3DModelAttrSet(object->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelScaleSet(object->model[7], 0.15625f, 0.15625f, 0.15625f);
     Hu3DModelCameraSet(object->model[7], 2);
     object->model[8] = Hu3DModelLink(object->model[7]);
-    Hu3DModelAttrSet(object->model[8], 4, 4);
+    Hu3DModelAttrSet(object->model[8], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelScaleSet(object->model[8], 0.15625f, 0.15625f, 0.15625f);
     Hu3DModelCameraSet(object->model[8], 2);
     Hu3DMotionAttrSet(object->model[8], 2, 2);
     object->model[9] = Hu3DModelRead(0x28000D, 0x839);
-    Hu3DModelAttrSet(object->model[9], 4, 4);
+    Hu3DModelAttrSet(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelScaleSet(object->model[9], 0.15625f, 0.15625f, 0.15625f);
     Hu3DModelCameraSet(object->model[9], 2);
     Hu3DMotionAttrSet(object->model[9], 2, 2);
@@ -847,12 +847,12 @@ void m207_HudDraw(Gfx **gfxPos, s32 arg1, s32 arg2) {
     for (i = 0; i < 4; i++) {
         sprite = HuSprGet(esprite[m207_sprTbl[9 + m207_groupPlayerTbl[i]->chr]].unk04, 0);
         frame = &sprite->data->pat[sprite->patNo];
-        if (m207_groupPlayerTbl[i]->chr == 7) {
+        if (m207_groupPlayerTbl[i]->chr == CHAR_DAISY) {
             gDPLoadTLUT_pal256(gMainGfxPos++, sprite->data->pal);
         } else {
             gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
         }
-        if (m207_groupPlayerTbl[i]->chr == 7) {
+        if (m207_groupPlayerTbl[i]->chr == CHAR_DAISY) {
             gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_CI, G_IM_SIZ_8b, 18, 18, 0, 0, 18, 18, 0,
                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                                G_TX_NOLOD);
@@ -922,7 +922,7 @@ void m207_PlayerInit(omObjData *object, s8 group) {
             omObjMotionRead(object, 5, CharMotionDataNumGet(chr, 4));
             omObjMotionRead(object, 6, CharMotionDataNumGet(chr, 0x1F));
             if (group == 3) {
-                Hu3DModelAttrSet(object->model[0], 4, 4);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             Hu3DMotionAttrSet(object->model[0], 1, 1);
             break;
@@ -937,7 +937,7 @@ void m207_PlayerInit(omObjData *object, s8 group) {
         case 2:
             omObjMotionRead(object, 1, CharMotionDataNumGet(chr, 0x7F));
             omObjMotionRead(object, 2, CharMotionDataNumGet(chr, 0x80));
-            Hu3DModelAttrSet(object->model[0], 4, 4);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             object->model[2] = Hu3DModelRead(0x280004, 0x4B9);
             Hu3DModelScaleSet(object->model[2], 0.15625f, 0.15625f, 0.15625f);
             Hu3DMotionAttrSet(object->model[2], 1, 1);
@@ -1025,12 +1025,12 @@ void m207_PlayerObjMain(omObjData *object) {
             visY[visCount] = (hurdleLane[i] * 200.0 + waves[i % 3] + m207_hurdleHitTbl[i] * 10.5) * 0.125;
             Hu3DModelPosSet(m207_stageObj->model[visCount + 12], visX[visCount], visY[visCount], -250.0f);
             Hu3DModelPosSet(m207_stageObj->model[visCount + 12], visX[visCount], visY[visCount], 0.0f);
-            Hu3DModelAttrSet(m207_stageObj->model[visCount + 12], 4, 0);
+            Hu3DModelAttrSet(m207_stageObj->model[visCount + 12], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             visCount++;
         }
     }
     for (i = visCount; i < 5; i++) {
-        Hu3DModelAttrSet(m207_stageObj->model[i + 12], 4, 4);
+        Hu3DModelAttrSet(m207_stageObj->model[i + 12], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 
     for (j = 0; j < 2; j++) {
@@ -1078,10 +1078,10 @@ void m207_PlayerObjMain(omObjData *object) {
                                                                                          : (s32)((1250.0 - m207_distTbl[0]) / 1000.0 * 20.0);
         }
         if (m207_shotXTbl[j] <= -1000.0f) {
-            Hu3DModelAttrSet(m207_stageObj->model[j + 10], 4, 4);
+            Hu3DModelAttrSet(m207_stageObj->model[j + 10], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         } else {
             Hu3DModelPosSet(m207_stageObj->model[j + 10], m207_shotXTbl[j], m207_shotYTbl[j], 0.0f);
-            Hu3DModelAttrSet(m207_stageObj->model[j + 10], 4, 0);
+            Hu3DModelAttrSet(m207_stageObj->model[j + 10], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
     }
 
@@ -1092,11 +1092,11 @@ void m207_PlayerObjMain(omObjData *object) {
     if (m207_goalCntTbl[0] != 0 && m207_goalCntTbl[0] < 100 && m207_distTbl[0] > 1900.0) {
         m207_goalCntTbl[0] = 100;
         Hu3DModelPosSet(m207_stageObj->model[4], obj->trans.x + 12.5, obj->trans.y - 3.125, obj->trans.z);
-        Hu3DModelAttrSet(m207_stageObj->model[4], 4, 0);
-        Hu3DModelAttrSet(obj->model[1], 4, 4);
+        Hu3DModelAttrSet(m207_stageObj->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     if (m207_goalCntTbl[0] >= 100) {
-        Hu3DModelAttrSet(obj->model[0], 4, 0);
+        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         if (m207_goalCntTbl[0] == 100) {
             m207_soloGoalX = obj->trans.x;
             m207_soloGoalY = obj->trans.y;
@@ -1268,7 +1268,7 @@ void m207_PlayerObjMain(omObjData *object) {
                         Hu3DModelPosSet(m207_stageObj->model[5], x * 0.5 + obj->trans.x * 0.5, y * 0.5 + obj->trans.y * 0.5 + 5.0, 0.0f);
                         Hu3DModelRotSet(m207_stageObj->model[5], 0.0f, 0.0f, rand8() / 256.0 * 360.0);
                         Hu3DModelScaleSet(m207_stageObj->model[5], 0.1875f, 0.1875f, 0.1875f);
-                        Hu3DModelAttrSet(m207_stageObj->model[5], 4, 0);
+                        Hu3DModelAttrSet(m207_stageObj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         Hu3DModelTPLvlSet(m207_stageObj->model[5], 0xFF);
                         obj->trans.y += -0.75;
                         omVibrate(m207_groupPlayerTbl[0]->playerNo, 20, 0, 20);
@@ -1291,7 +1291,7 @@ void m207_PlayerObjMain(omObjData *object) {
                               i ? 0.28125f : 0.34375f);
             obj->trans.x += i ? 0.5 : -0.75;
         } else if (m207_motTimerTbl[0] == 54) {
-            Hu3DModelAttrSet(m207_stageObj->model[5], 4, 4);
+            Hu3DModelAttrSet(m207_stageObj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             obj->trans.x += 0.25;
         }
         if (m207_motTimerTbl[0] != 0) {
@@ -1309,10 +1309,10 @@ void m207_PlayerObjMain(omObjData *object) {
                 m207_distTbl[0] -= (1.0f - sindf((60 - m207_soloStunTimer) / 30.0 * 90.0)) / 2.0f * (m207_soloShotHitF ? 4.0 : 2.5);
             }
             if (m207_soloStunTimer < 31) {
-                Hu3DModelAttrSet(obj->model[0], 4, (m207_soloStunTimer % 2) * 4);
+                Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, (m207_soloStunTimer % 2) * HU3D_ATTR_DISPOFF);
             }
         } else {
-            Hu3DModelAttrSet(obj->model[0], 4, 0);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
         for (i = 0; i < 18; i++) {
             m207_hurdleHitTbl[i] += (m207_hurdleHitTbl[i] != 0 || m207_phase >= 3) && m207_hurdleHitTbl[i] < 0xFFFF;
@@ -1365,10 +1365,10 @@ void m207_PlayerObjMain(omObjData *object) {
             m207_cameraStep = prevCenter[1] - m207_cameraPrevXTbl[1];
             CenterM[1].x = camX;
         }
-        Hu3DModelAttrSet(obj->model[0], 4, 0);
+        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         omSetTra(obj, 2.0 * m207_distTbl[1], m207_waveY * 100.0f * 0.125 + -25.0, 0.0f);
         omSetRot(obj, 0.0f, 90.0f, 0.0f);
-        Hu3DModelAttrSet(obj->model[1], 4, 0);
+        Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
         Hu3DModelRotSet(obj->model[1], obj->rot.x, obj->rot.y, obj->rot.z);
         {
@@ -1386,12 +1386,12 @@ void m207_PlayerObjMain(omObjData *object) {
             m207_promptXTbl[m207_strokeTbl[1]] = obj->trans.x;
         }
     } else {
-        Hu3DModelAttrSet(obj->model[0], 4, 4);
-        Hu3DModelAttrSet(obj->model[1], 4, 4);
-        Hu3DModelAttrSet(obj->model[2], 4, 4);
+        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     if (m207_splashTimerTbl[0] == 1) {
-        Hu3DModelAttrSet(m207_stageObj->model[7], 4, 4);
+        Hu3DModelAttrSet(m207_stageObj->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     m207_splashTimerTbl[0] -= (m207_splashTimerTbl[0] != 0) ? 1 : 0;
     m207_progressTbl[1] = (m207_relayLegNo != 0)        ? 1.0f
@@ -1419,11 +1419,11 @@ void m207_PlayerObjMain(omObjData *object) {
                 m207_motTimerTbl[2] = 50;
                 m207_speedTbl[2] = 53.0f;
                 if (m207_relayLegNo == 1) {
-                    Hu3DModelAttrSet(m207_stageObj->model[8], 4, 0);
+                    Hu3DModelAttrSet(m207_stageObj->model[8], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DModelScaleSet(m207_stageObj->model[8], 0.234375f, 0.234375f, 0.234375f);
                     Hu3DMotionTimeSet(m207_stageObj->model[8], 0.0f);
                     Hu3DMotionSpeedSet(m207_stageObj->model[8], 1.5f);
-                    Hu3DModelAttrSet(m207_stageObj->model[9], 4, 0);
+                    Hu3DModelAttrSet(m207_stageObj->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DModelScaleSet(m207_stageObj->model[9], 0.234375f, 0.234375f, 0.234375f);
                     Hu3DMotionTimeSet(m207_stageObj->model[9], 0.0f);
                     Hu3DMotionSpeedSet(m207_stageObj->model[9], 1.5f);
@@ -1478,8 +1478,8 @@ void m207_PlayerObjMain(omObjData *object) {
                 CenterM[1].x = camX;
             }
         }
-        Hu3DModelAttrSet(obj->model[0], 4, 0);
-        Hu3DModelAttrSet(obj->model[2], 4, 0);
+        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         m207_swimMotBlend = (m207_swimMotPrev == m207_swimMotCur) ? 0 : m207_swimMotBlend + 1;
         if (m207_swimMotBlend > m207_swimMotBlendLen) {
             u8 prevAnim = m207_swimMotPrev;
@@ -1496,7 +1496,7 @@ void m207_PlayerObjMain(omObjData *object) {
         }
         omSetTra(obj, 2.0 * m207_distTbl[2], m207_waveY * 100.0f * 0.125 + -25.0 + 25.0, 0.0f);
         omSetRot(obj, 0.0f, 90.0f, 0.0f);
-        Hu3DModelAttrSet(obj->model[1], 4, 0);
+        Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
         Hu3DModelRotSet(obj->model[1], obj->rot.x, obj->rot.y, obj->rot.z);
         obj->trans.x -= ROWER_OFFSET() * 0.125 * 1.25;
@@ -1527,7 +1527,7 @@ void m207_PlayerObjMain(omObjData *object) {
         }
         if (m207_swimMotPrev == 4 && (m207_swimMotBlend == 0 || m207_swimMotBlend == 4)) {
             for (i = (m207_swimMotBlend != 0) ? 9 : 0; i < ((m207_swimMotBlend == 0) ? 9 : 18); i++) {
-                Hu3DModelAttrSet(m207_stageObj->model[i + 17], 4, 0);
+                Hu3DModelAttrSet(m207_stageObj->model[i + 17], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 m207_dropXTbl[i] = Hu3DData[obj->model[1]].pos.x + ((m207_swimMotBlend == 0) ? -31.25 : 27.5);
                 m207_dropYTbl[i] = m207_waveY * 100.0f * 0.125 + -25.0;
                 m207_dropVelXTbl[i] = (rand8() / 256.0 * 30.0 - 10.0) * 0.125 * ((m207_swimMotBlend != 0) ? 1 : -1);
@@ -1536,13 +1536,13 @@ void m207_PlayerObjMain(omObjData *object) {
             }
         }
     } else {
-        Hu3DModelAttrSet(obj->model[0], 4, 4);
-        Hu3DModelAttrSet(obj->model[1], 4, 4);
-        Hu3DModelAttrSet(obj->model[2], 4, 4);
+        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     if (m207_splashTimerTbl[1] == 1) {
-        Hu3DModelAttrSet(m207_stageObj->model[8], 4, 4);
-        Hu3DModelAttrSet(m207_stageObj->model[9], 4, 4);
+        Hu3DModelAttrSet(m207_stageObj->model[8], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(m207_stageObj->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     m207_splashTimerTbl[1] -= (m207_splashTimerTbl[1] != 0) ? 1 : 0;
     m207_progressTbl[2] = (m207_relayLegNo >= 2)        ? 1.0f
@@ -1559,7 +1559,7 @@ void m207_PlayerObjMain(omObjData *object) {
         m207_dropYTbl[i] += m207_dropVelYTbl[i];
         m207_dropVelYTbl[i] -= 0.625;
         if (m207_dropVelYTbl[i] < 0.0f && m207_dropYTbl[i] < m207_waveY * 100.0f * 0.125 + -25.0) {
-            Hu3DModelAttrSet(m207_stageObj->model[i + 17], 4, 4);
+            Hu3DModelAttrSet(m207_stageObj->model[i + 17], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             m207_dropYTbl[i] = -1000.0f;
         } else {
             Hu3DModelPosSet(m207_stageObj->model[i + 17], m207_dropXTbl[i], m207_dropYTbl[i], 0.0f);
@@ -1614,10 +1614,10 @@ void m207_PlayerObjMain(omObjData *object) {
             }
         }
         m207_strokeTbl[3] = m207_strokeTbl[3] * 0.875 + m207_speedTbl[3] / 50.0 * 10.0 * 1000.0 * 0.125;
-        Hu3DModelAttrSet(obj->model[0], 4, 0);
+        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         omSetTra(obj, 2.0 * m207_distTbl[3], m207_waveY * 100.0f * 0.125 + -25.0, 0.0f);
         omSetRot(obj, 0.0f, 90.0f, m207_strokeTbl[3] / 1000.0);
-        Hu3DModelAttrSet(obj->model[1], 4, 0);
+        Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
         Hu3DModelRotSet(obj->model[1], obj->rot.x, obj->rot.y, obj->rot.z);
         m207_motTimerTbl[3] += ABS(m207_speedTbl[3]) / 50.0 * 350.0;
@@ -1627,7 +1627,7 @@ void m207_PlayerObjMain(omObjData *object) {
                                           : m207_bikeBounce - 4.0 / 47.5;
         m207_bikeBounce = (m207_bikeBounce < 0.0f) ? 0.0f : m207_bikeBounce;
         Hu3DMotionTimeSet(obj->model[1], m207_motTimerTbl[3] / 100.0);
-        Hu3DModelAttrSet(m207_stageObj->model[6], 4, 0);
+        Hu3DModelAttrSet(m207_stageObj->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(m207_stageObj->model[6], obj->trans.x - (m207_bikeBounce * 40.0f + 200.0f) * 1.25 * 0.125,
                         obj->trans.y + m207_bikeBounce * 100.0f * 1.25 * 0.125, obj->trans.z);
         Hu3DModelScaleSet(m207_stageObj->model[6], m207_bikeBounce * 1.25 * 0.125 * 1.3,
@@ -1681,8 +1681,8 @@ void m207_PlayerObjMain(omObjData *object) {
             m207_promptXTbl[6] = obj->trans.x;
         }
     } else {
-        Hu3DModelAttrSet(obj->model[0], 4, 4);
-        Hu3DModelAttrSet(obj->model[1], 4, 4);
+        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     m207_progressTbl[3] = (m207_relayLegNo >= 3)        ? 1.0f
                                      : (m207_distTbl[3] < 0.0f) ? 0.0f

@@ -97,7 +97,7 @@ void mstory4_ObjectSetup(void) {
     } else {
         _SetFlag(mstory4_sceneFlagTbl[chapter]);
     }
-    WipeCreateIn(2, 16);
+    WipeCreateIn(WIPE_STARS, 16);
 }
 
 void (*const mstory4_sceneCreateTbl[])(void) = { mstory4_Scene0Create, mstory4_Scene1Create };

@@ -433,7 +433,7 @@ void m252_MainObjMain(omObjData *object) {
             }
             break;
         case 1:
-            GMesCreate(6);
+            GMesCreate(GMES_MES_MG_START);
             HuAudFXPlay(0xE);
             HuAudSeqPlay(0x30);
             m252_resultWait = 0;
@@ -1343,8 +1343,8 @@ void m252_KoopaObjMain(omObjData *object) {
                 bowser->unk_3C = 360.0f - bowser->unk_2C * 85.0f;
                 bowser->unk_40 = 90.0f;
                 bowser->unk_44 = 0.0f;
-                Hu3DModelAttrSet(bowser->unk_04, 4, 4);
-                Hu3DModelAttrSet(bowser->unk_06, 4, 0);
+                Hu3DModelAttrSet(bowser->unk_04, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(bowser->unk_06, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 bowser->unk_48 = fabs(cosdf(bowser->unk_3C)) * bowser->unk_28 * 75.99999904632568;
                 bowser->unk_4C = fabs(sindf(bowser->unk_3C)) * bowser->unk_28 * 75.99999904632568;
                 bowser->unk_50 = 0;
@@ -1456,8 +1456,8 @@ void m252_KoopaObjMain(omObjData *object) {
                 bowser->unk_3C = 45.0f;
                 bowser->unk_40 = 90.0f;
                 bowser->unk_44 = 0.0f;
-                Hu3DModelAttrSet(bowser->unk_04, 4, 4);
-                Hu3DModelAttrSet(bowser->unk_06, 4, 0);
+                Hu3DModelAttrSet(bowser->unk_04, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(bowser->unk_06, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 bowser->unk_4C = 0.0f;
                 bowser->unk_0A = 4;
             case 4:
@@ -1654,7 +1654,7 @@ void m252_SmokeInit(void) {
         effect->unk_0C.x = effect->unk_0C.y = effect->unk_0C.z = 0.0f;
         effect->unk_18.x = effect->unk_18.y = effect->unk_18.z = 0.0f;
         effect->unk_24.x = effect->unk_24.y = effect->unk_24.z = 0.0f;
-        Hu3DModelAttrSet(effect->unk_02, 4, 4);
+        Hu3DModelAttrSet(effect->unk_02, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         model = &Hu3DData[effect->unk_02];
         model->motTime = 0.0f;
     }
@@ -1731,7 +1731,7 @@ s32 m252_SmokeCreate(Vec *pos, Vec *vel, Vec *scale, f32 speed, s16 camera) {
         effect->unk_08 = speed;
         effect->unk_04 = 0.0f;
         m252_BillboardColorPatSet(effect->unk_02, sprite, 0, m252_smokeColor);
-        Hu3DModelAttrSet(effect->unk_02, 4, 0);
+        Hu3DModelAttrSet(effect->unk_02, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelCameraSet(effect->unk_02, 1 << (u16)camera);
         model->motTime = 0.0f;
         model->pos.x = effect->unk_0C.x;
@@ -1838,18 +1838,18 @@ void m252_StageObjMain(omObjData *object) {
             start = 0;
         }
         if (start >= 2) {
-            Hu3DModelAttrSet(object->model[base + j], 4, 4);
+            Hu3DModelAttrSet(object->model[base + j], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         } else {
-            Hu3DModelAttrSet(object->model[base + j], 4, 0);
+            Hu3DModelAttrSet(object->model[base + j], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
         j++;
         for (k = 0; k < 5; k++) {
             parity = (start & 1) ? 1 : 0;
             index = start + k;
             if (CenterM[i].x == Center.x) {
-                Hu3DModelAttrSet(object->model[base + j + m252_decoSwapTbl[parity][k]], 4, 4);
+                Hu3DModelAttrSet(object->model[base + j + m252_decoSwapTbl[parity][k]], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             } else {
-                Hu3DModelAttrSet(object->model[base + j + m252_decoSwapTbl[parity][k]], 4, 0);
+                Hu3DModelAttrSet(object->model[base + j + m252_decoSwapTbl[parity][k]], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DModelPosSet(object->model[base + j + m252_decoSwapTbl[parity][k]],
                                 (s16)index * 704.502487182617188 + 955.695037841796875, 0.0f, 0.0f);
             }
@@ -1868,12 +1868,12 @@ void m252_StageObjMain(omObjData *object) {
             frame = first + k - 1;
             if (frame >= 20) {
                 frame = 19;
-                Hu3DModelAttrSet(object->model[base + j + k], 4, 4);
+                Hu3DModelAttrSet(object->model[base + j + k], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             } else if (frame < 0) {
                 frame = 0;
-                Hu3DModelAttrSet(object->model[base + j + k], 4, 0);
+                Hu3DModelAttrSet(object->model[base + j + k], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             } else {
-                Hu3DModelAttrSet(object->model[base + j + k], 4, 0);
+                Hu3DModelAttrSet(object->model[base + j + k], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
             m252_BillboardColorPatSet(object->model[base + j + k], sprite, frame, m252_decoAnimColor);
         }

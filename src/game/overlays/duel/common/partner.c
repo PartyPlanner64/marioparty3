@@ -1209,7 +1209,7 @@ void MBDCoinScatterProc(void) {
                         HuSprGrpMemberSet(sprite->unk_0A, i, sprite->unk_0C[i], count - (count / 10) * 10);
                     } else {
                         HuSprGrpMemberSet(sprite->unk_0A, i, sprite->unk_0C[i], 0);
-                        HuSprAttrSet(sprite->unk_0A, i, 0x8000);
+                        HuSprDispOff(sprite->unk_0A, i);
                     }
                     break;
             }

@@ -138,7 +138,7 @@ void mgresultdealer_CoinRain(omObjData *obj) {
                 entry = &Hu3DSprModelData[mgresultdealer_coinTbl[i].unk_02];
                 animSet = &Hu3DAnimSetData[(u16)entry->unk_02];
                 rot = &animSet->rot[entry->pointIdx];
-                Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 if (mgresultdealer_coinNum >= 20) {
                     max = (rand8() & 1) + 1;
                 } else {
@@ -178,7 +178,7 @@ void mgresultdealer_CoinRain(omObjData *obj) {
             if (y <= 152.5f) {
                 mgresultdealer_coinTbl[i].unk_00 = 0;
                 Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                Hu3DModelAttrSet(obj->model[i + 41], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(obj->model[i + 41], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DModelPosSet(obj->model[i + 41], x, y, z);
                 Hu3DMotionTimeSet(obj->model[i + 41], 0);
                 Hu3DSprModelFrameSet(mgresultdealer_coinEffTbl[i].unk_02, 0);
@@ -255,7 +255,7 @@ void mgresultdealer_FadeProc(void) {
     sprite = HuSprAnimDataRead(0x190001);
     mgresultdealer_fadeSprData = sprite;
     group = HuSprGrpCreate(1, 0);
-    HuSprAttrSet(group, 0, 0x8000);
+    HuSprDispOff(group, 0);
     HuSprGrpMemberSet(group, 0, sprite, 0);
     mgresultdealer_fadeSpr = HuSprGet(group, 0);
     mgresultdealer_fadeTex = mgresultdealer_fadeSpr->data->pat->data;

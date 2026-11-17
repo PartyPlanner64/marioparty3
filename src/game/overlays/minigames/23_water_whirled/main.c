@@ -712,9 +712,9 @@ void m235_WakeUpdate(omObjData *object, f32 speed) {
             m235_wakeScaleTbl[player][i] *= 1.3f;
             scale = speed * m235_wakeScaleTbl[player][i];
             Hu3DModelScaleSet(object->model[i + 1], scale, scale, scale);
-            Hu3DModelAttrSet(object->model[i + 1], 4, 0);
+            Hu3DModelAttrSet(object->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         } else {
-            Hu3DModelAttrSet(object->model[i + 1], 4, 4);
+            Hu3DModelAttrSet(object->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
 }

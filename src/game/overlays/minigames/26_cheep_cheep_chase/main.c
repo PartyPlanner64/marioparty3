@@ -350,7 +350,7 @@ void m238_MainObjInit(omObjData *object) {
         m238_AnimMdlCreate(0x47, 6, 1.0f, attr);
     }
     m238_FuncSet(1, 0, -1, 0, NULL, m238_StartExec, TRUE, FALSE);
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
     object->func = m238_MainObjMain;
 }
 
@@ -541,7 +541,7 @@ void m238_PlayerObjInit(omObjData *object) {
     motion = omCharModelNoTbl[chr][2];
     MgPlayerCreate(object, model, motion, mgPlayerObjNum, attr, 0x2BD);
     object->model[9] = Hu3DModelRead(0x47000A, 0x2B9);
-    Hu3DModelAttrSet(object->model[9], 4, 4);
+    Hu3DModelAttrSet(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     MgPlayerMotLoad(object, 0, CharMotionDataNumGet(chr, 0), 1, 0);
     MgPlayerMotLoad(object, 1, CharMotionDataNumGet(chr, 1), 1, 0);
     MgPlayerMotLoad(object, 0x26, CharMotionDataNumGet(chr, 0xD), 1, 0);
@@ -557,7 +557,7 @@ void m238_PlayerObjInit(omObjData *object) {
     object->rot.y = 180.0f;
     MgPlayerMotSet(object, 0x2A);
     Hu3DModelPosSet(object->model[1], 0.0f, 0.0f, 0.0f);
-    Hu3DModelAttrSet(object->model[1], 4, 4);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     mgPlayerObjNum++;
     data = object->data;
     m238_playerTbl[object->work[0]].padId = data->unk57;
@@ -1076,7 +1076,7 @@ void m238_RiverInit(FuncContext *ctx) {
         m238_gameWork->unk_24 = ctx->param;
         Hu3DModelScaleSet(ctx->param, 1.4f, 1.4f, 1.4f);
         Hu3DModelPosSet(ctx->param, 0.0f, -100.0f, 0.0f);
-        Hu3DModelAttrSet(ctx->param, 4, 0);
+        Hu3DModelAttrSet(ctx->param, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DData[ctx->param].motSpeed = 0.0f;
         Hu3DData[ctx->param].motTime = 0.0f;
         m238_FuncReset(2, ctx);
@@ -2408,7 +2408,7 @@ void m238_SprDispOn(s16 spriteId, s32 posX, s32 posY) {
 
     if (sprite->state != SPRITE_STATE_NOTSET) {
         HuSprPatNoSet(sprite->groupId, 0, 0);
-        HuSprAttrReset(sprite->groupId, 0, 0x8000);
+        HuSprDispOn(sprite->groupId, 0);
         HuSprPosSet(sprite->groupId, 0, posX, posY);
         sprite->state = SPRITE_STATE_VISIBLE;
     }

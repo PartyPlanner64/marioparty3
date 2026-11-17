@@ -298,7 +298,7 @@ void inst_MainObjMain(omObjData *object) {
             break;
         case 9:
             WipeColorSet(255, 255, 255);
-            WipeCreateOut(11, 20);
+            WipeCreateOut(WIPE_FADE, 20);
             HuAudSeqFadeOut(30);
             HuAudFXPlay(0x154);
             inst_mainState++;

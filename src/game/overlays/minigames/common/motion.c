@@ -148,7 +148,7 @@ void MgPlayerEffSet(omObjData *arg0, u8 arg1, f32 x, f32 y, f32 z, f32 rotX, f32
                 }
                 Hu3DMotionTimeSet(model, 0.0f);
             }
-            Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelPosSet(model, x, y, z);
             Hu3DModelRotSet(model, rotX, rotY, 0.0f);
         }

@@ -179,7 +179,7 @@ void mgmode_BattleRoomProc(void) {
     for (i = 0; i < 4; i++) {
         model = mgmode_mdlTbl[i + 7];
         Hu3DModelCameraSet(model, 2);
-        Hu3DModelAttrSet(model, 4, 4);
+        Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DModelScaleSet(model, 0.7f, 0.7f, 0.7f);
         Hu3DModelScaleSet(model, 0.7f, 0.7f, 0.7f);
         mgmode_battlePlayerAnimTbl[i] = CharAnimCreate(model, 1, mgmode_battlePlayerChrTbl[i],
@@ -196,7 +196,7 @@ void mgmode_BattleRoomProc(void) {
         Hu3DMotionSet(mgmode_mdlTbl[4], mgmode_motTbl5);
         Hu3DMotionAttrSet(mgmode_mdlTbl[4], 2, 2);
         mgmode_CameraPresetSet(0);
-        WipeCreateIn(0xFF, 0);
+        WipeCreateIn(WIPE_TYPE_PREV, 0);
         RepeatVibrator(mgmode_padNo, 5, 0, 5);
         HuAudFXPlay(0x2EB);
         for (i = 0; i < 19; i++) {
@@ -790,9 +790,9 @@ void mgmode_BattlePlayerPosSet(s16 arg0) {
         }
     }
     for (i = 0; i < count; i++) {
-        Hu3DModelAttrSet(mgmode_mdlTbl7[i], 4, 0);
+        Hu3DModelAttrSet(mgmode_mdlTbl7[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(mgmode_mdlTbl7[i], pos[i].x, pos[i].y, pos[i].z);
-        Hu3DModelAttrSet(mgmode_mdlTbl32[i], 4, 0);
+        Hu3DModelAttrSet(mgmode_mdlTbl32[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(mgmode_mdlTbl32[i], pos[i].x, pos[i].y, pos[i].z);
     }
 }
@@ -832,10 +832,10 @@ void mgmode_BattlePlayerEnterExec(s16 arg0) {
     for (i = 0; i < count; i++) {
         delta[i].x = 400.0f - pos[i].x;
         delta[i].z = 900.0f - pos[i].z;
-        Hu3DModelAttrSet(mgmode_mdlTbl[i + 7], 4, 0);
+        Hu3DModelAttrSet(mgmode_mdlTbl[i + 7], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DMotionSet(mgmode_mdlTbl[i + 7], mgmode_motTbl11[i]);
         Hu3DMotionAttrSet(mgmode_mdlTbl[i + 7], 2, 2);
-        Hu3DModelAttrSet(mgmode_mdlTbl[i + 32], 4, 0);
+        Hu3DModelAttrSet(mgmode_mdlTbl[i + 32], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         angle[i] = atan2df(delta[i].x, delta[i].z) + 180.0f;
         Hu3DModelRotSet(mgmode_mdlTbl[i + 7], 0.0f, angle[i], 0.0f);
     }
@@ -899,7 +899,7 @@ void mgmode_BattlePlayerExitExec(s16 arg0) {
         pos[i].z = Hu3DData[mgmode_mdlTbl[i + 7]].pos.z;
         delta[i].x = 400.0f - pos[i].x;
         delta[i].z = 900.0f - pos[i].z;
-        Hu3DModelAttrSet(mgmode_mdlTbl[i + 7], 4, 0);
+        Hu3DModelAttrSet(mgmode_mdlTbl[i + 7], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DMotionShiftSet(mgmode_mdlTbl[i + 7], mgmode_motTbl11[i], 0, 8, 2);
         angle[i] = atan2df(delta[i].x, delta[i].z);
     }
@@ -925,8 +925,8 @@ void mgmode_BattlePlayerExitExec(s16 arg0) {
         HuPrcVSleep();
     }
     for (i = 0; i < count; i++) {
-        Hu3DModelAttrSet(mgmode_mdlTbl[i + 7], 4, 4);
-        Hu3DModelAttrSet(mgmode_mdlTbl[i + 32], 4, 4);
+        Hu3DModelAttrSet(mgmode_mdlTbl[i + 7], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(mgmode_mdlTbl[i + 32], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     Hu3DMotionShiftSet(mgmode_mdlTbl[4], mgmode_motTbl4, 0, 8, 2);
 }
@@ -1009,7 +1009,7 @@ s32 mgmode_BattleResultExec(void) {
     espAttrSet(mgmode_battleMgPicSpr, 0x4008);
     espPosSet(mgmode_battleMgPicSpr, 180, 134);
     mgmode_MgPicLoad(mgDataTbl[mgModeMgNo].flags & 0x7FF);
-    WipeCreateIn(0xB, 0xA);
+    WipeCreateIn(WIPE_FADE, 0xA);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -1097,7 +1097,7 @@ s32 mgmode_BattleResultExec(void) {
                 break;
         }
         if (mesId != -1) {
-            while (!(GMesStatGet() & 2)) {
+            while (!(GMesStatGet() & GMES_STAT_TIMEEND)) {
                 HuPrcVSleep();
             }
         }

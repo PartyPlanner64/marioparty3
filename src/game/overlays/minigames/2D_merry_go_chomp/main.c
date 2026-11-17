@@ -418,9 +418,9 @@ void m245_CarouselObjMain(omObjData *obj) {
                     if (obj->trans.y > -650.0f) {
                         obj->trans.y -= 15.0f;
                     } else {
-                        Hu3DModelAttrSet(obj->model[entry->unk_04], 4, 4);
+                        Hu3DModelAttrSet(obj->model[entry->unk_04], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         entry->unk_04++;
-                        Hu3DModelAttrSet(obj->model[entry->unk_04], 4, 0);
+                        Hu3DModelAttrSet(obj->model[entry->unk_04], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         entry->unk_06 = 1;
                         if (m245_roundNo == 0) {
                             obj->rot.y = 0.0f;
@@ -456,9 +456,9 @@ void m245_CarouselObjInit(omObjData *obj) {
     obj->model[0] = Hu3DModelRead(0x4E0006, 0x2B9);
     obj->model[1] = Hu3DModelRead(0x4E0007, 0x2B9);
     obj->model[2] = Hu3DModelRead(0x4E0008, 0x2B9);
-    Hu3DModelAttrSet(obj->model[2], 4, 4);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->model[3] = Hu3DModelRead(0x4E0009, 0x2B9);
-    Hu3DModelAttrSet(obj->model[3], 4, 4);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     m245_objWorkTbl[25].unk_04 = 1;
     obj->trans.x = 0.0f;
     obj->trans.y = 500.0f;
@@ -852,7 +852,7 @@ void m245_PlayerReturnUpdate(omObjData *obj) {
             break;
         case 4:
             m245_PlayerMotChange(obj, 2);
-            Hu3DModelAttrSet(obj->model[1], 4, 4);
+            Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             obj->rot.y = 210.0f;
             if (obj->trans.y < 630.0f) {
                 obj->trans.y += 10.0f;
@@ -870,7 +870,7 @@ void m245_PlayerReturnUpdate(omObjData *obj) {
             if (move->unk_1D == 0) {
                 PlayerFXPlay(0x3A, obj->work[0]);
             }
-            Hu3DModelAttrSet(obj->model[1], 4, 0);
+            Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             m245_PlayerVelApply(obj);
             move->unk_1F = 1;
             obj->trans.y += m245_jumpYTbl[move->unk_1D];
@@ -1456,7 +1456,7 @@ void m245_WanwanObjMain(omObjData *obj) {
                     Hu3DMotionSpeedSet(obj->model[0], 0.0f);
                 }
                 if (chomp->unk_04 == 10) {
-                    Hu3DModelAttrSet(star->model[0], 4, 0);
+                    Hu3DModelAttrSet(star->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DMotionSpeedSet(star->model[0], 1.0f);
                     Hu3DMotionTimeSet(star->model[0], 0.0f);
                     star->scale.x = star->scale.y = star->scale.z = 2.5f;
@@ -1501,7 +1501,7 @@ void m245_WanwanObjMain(omObjData *obj) {
                 }
                 star->scale.z = star->scale.y = star->scale.x -= 0.49;
                 if (star->scale.x < 0.1) {
-                    Hu3DModelAttrSet(star->model[0], 4, 4);
+                    Hu3DModelAttrSet(star->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
             }
             m245_ChaseVelCalc(chomp->unk_20, chomp->unk_24, obj->trans.x, obj->trans.z, &chomp->unk_18,
@@ -1644,8 +1644,8 @@ void m245_WanwanObjInit(omObjData *obj) {
         Hu3DModelPosSet(obj->model[i + 6], m245_chainPosTbl[i].x, 5.0f, m245_chainPosTbl[i].y);
         Hu3DModelScaleSet(obj->model[i + 6], 0.8f, 1.0f, 0.8f);
     }
-    Hu3DModelAttrSet(obj->model[5], 4, 4);
-    Hu3DModelAttrSet(obj->model[11], 4, 4);
+    Hu3DModelAttrSet(obj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[11], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->func = m245_WanwanObjMain;
 }
 
@@ -1660,7 +1660,7 @@ void m245_BiteEffObjMain(omObjData *obj) {
 
 void m245_BiteEffObjInit(omObjData *obj) {
     obj->model[0] = Hu3DModelRead(0x4E0003, 0x2B9);
-    Hu3DModelAttrSet(obj->model[0], 4, 4);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DMotionSpeedSet(obj->model[0], 0.0f);
     obj->scale.x = obj->scale.y = obj->scale.z = 2.5f;
     obj->rot.y = 270.0f;
@@ -1934,7 +1934,7 @@ void m245_ExitWaitObjMain(omObjData *obj) {
 
 void m245_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq == 1) {
-        WipeCreateOut(0, 20);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         obj->func = m245_ExitWaitObjMain;
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
@@ -1977,7 +1977,7 @@ void m245_MainObjMain(omObjData *obj) {
                     m245_PlayerMotChange(m245_winnerObj, 9);
                 }
                 if (m245_timer == 113) {
-                    WipeCreateOut(0, 20);
+                    WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                     obj->func = m245_ExitWaitObjMain;
                 }
             }
@@ -2003,7 +2003,7 @@ void m245_MainObjInit(omObjData *obj) {
     m245_CarouselObjCreate();
     m245_StageObjCreate();
     m245_BiteEffObjCreate();
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
     obj->func = m245_MainObjMain;
 }
 

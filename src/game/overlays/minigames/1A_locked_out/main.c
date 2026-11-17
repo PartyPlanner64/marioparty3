@@ -398,7 +398,7 @@ void m226_MainObjMain(omObjData *object) {
                 }
             }
             if (m226_survivorNum >= 2) {
-                WipeCreateOut(0xC, 0x1E);
+                WipeCreateOut(WIPE_BOO, 0x1E);
                 m226_phase = 4;
                 m226_firstRoundF = 0;
             } else {
@@ -458,7 +458,7 @@ void m226_MainObjMain(omObjData *object) {
             m226_keyCreateCnt = 0;
             m226_KeyObjCreateAll();
             GMesTimerValueSet(10);
-            WipeCreateIn(0xC, 0x1E);
+            WipeCreateIn(WIPE_BOO, 0x1E);
             m226_phase++;
             break;
         case 5:

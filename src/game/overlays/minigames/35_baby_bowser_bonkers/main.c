@@ -324,7 +324,7 @@ void m253_MainObjMain(omObjData *object) {
             break;
         case 0:
             if (WipeStatGet() == 0) {
-                GMesCreate(6);
+                GMesCreate(GMES_MES_MG_START);
                 HuAudFXPlay(0xE);
                 HuAudSeqPlay(0x36);
                 m253_phase++;
@@ -1593,7 +1593,7 @@ void m253_ScoreCreate(s32 index, s32 chr) {
     for (i = 0; i < 4; i++) {
         switch (i) {
             case 0:
-                HuSprAttrSet(group, i, 0x8000);
+                HuSprDispOff(group, i);
             case 1:
                 HuSprGrpMemberSet(group, i, m253_sprTbl[0], 0);
                 HuSprPosSet(group, i, entry->unk_04 + entry->unk_08[i], y);

@@ -346,7 +346,7 @@ void m231_ObjectSetup(void) {
     omPrcSetStatBit(omAddPrcObj(m231_CursorDispProc, 0x4001, 0x800, 0), 0xA0);
     MgFlowInit(&m231_mgFlow);
     mgFlowSeqNo = 56;
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
 }
 
 void m231_ExitProc(void) {
@@ -358,7 +358,7 @@ void m231_ExitProc(void) {
         }
         if (done) {
             m231_exitF = 1;
-            WipeCreateOut(0, 20);
+            WipeCreateOut(WIPE_TYPE_NORMAL, 20);
             HuAudSeqFadeOut(30);
             HuAudFXAllFadeOut(30);
             while (WipeStatGet()) {
@@ -981,7 +981,7 @@ void m231_ChainDispProc(void) {
     HuSprTPLvlSet(group, 5, 255);
     HuSprParentSet(group, 5, 0);
     HuSprGrpMemberSet(group, 0, m231_chainLabelAnimLo, 0);
-    HuSprAttrSet(group, 0, 0x8000);
+    HuSprDispOff(group, 0);
     HuSprParentSet(group, 0, -1);
     HuSprPosSet(group, 0, m231_fieldPosTbl[board][0] + 42, m231_fieldPosTbl[board][1] - 70);
     HuSprScaleSet(group, 0, scale, scale);
@@ -1019,13 +1019,13 @@ void m231_ChainDispProc(void) {
             HuSprTPLvlSet(group, 1, 128);
         }
         for (i = 2; i < 5; i++) {
-            HuSprAttrSet(group, i, 0x8000);
+            HuSprDispOff(group, i);
         }
         for (i = 4, divisor = 100, started = FALSE; i >= 2; divisor /= 10) {
             digit = (m231_chainScoreTbl[board] / divisor) % 10;
             if (digit > 0 || divisor == 1 || started) {
                 started = TRUE;
-                HuSprAttrReset(group, i, 0x8000);
+                HuSprDispOn(group, i);
                 HuSprGrpMemberSet(group, i, m231_chainDigitAnimLo, digit);
                 x += 18;
                 HuSprPosSet(group, i, x, 0);

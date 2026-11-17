@@ -78,7 +78,7 @@ void mstory5_ObjectSetup(void) {
     } else {
         _SetFlag(mstory5_sceneFlagTbl[chapter]);
     }
-    WipeCreateIn(2, 16);
+    WipeCreateIn(WIPE_STARS, 16);
 }
 
 void (*const mstory5_sceneCreateTbl[])(void) = { mstory5_Scene0Create, mstory5_Scene1Create };
@@ -104,7 +104,7 @@ void mstory5_SceneObjMain(omObjData *obj) {
             }
             break;
         case 3:
-            WipeCreateOut(2, 20);
+            WipeCreateOut(WIPE_STARS, 20);
             HuAudSeqFadeOut(30);
             state++;
             break;
@@ -122,7 +122,7 @@ void mstory5_SceneObjMain(omObjData *obj) {
 void mstory5_ExitObjMain(omObjData *obj) {
     if (omSysExitReq == 1) {
         if (mstory5_exitF == 0) {
-            WipeCreateOut(2, 20);
+            WipeCreateOut(WIPE_STARS, 20);
             HuAudSeqFadeOut(30);
             mstory5_exitF = 1;
         } else if (WipeStatGet() == 0) {

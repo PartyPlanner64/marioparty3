@@ -1790,7 +1790,7 @@ void m229_PlayerObjMain(omObjData *obj) {
             }
             break;
     }
-    if (GwPlayer[obj->work[0]].chr != 5) {
+    if (GwPlayer[obj->work[0]].chr != CHAR_DK) {
         Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y - 5.0f, obj->trans.z);
     } else {
         Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y - 10.0f, obj->trans.z + 30.0f);
@@ -2825,7 +2825,7 @@ void m229_ExitWaitObjMain(omObjData *obj) {
 
 void m229_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq == 1) {
-        WipeCreateOut(0, 20);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         obj->func = m229_ExitWaitObjMain;
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
@@ -3060,7 +3060,7 @@ void m229_MainObjMain(omObjData *obj) {
             if (m229_timer > 0) {
                 m229_timer--;
             } else {
-                WipeCreateOut(0, 20);
+                WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                 obj->func = m229_ExitWaitObjMain;
             }
             break;
@@ -3152,7 +3152,7 @@ void m229_MainObjInit(omObjData *obj) {
     m229_PlayerObjCreateAll();
     m229_ScoreObjCreateAll();
     m229_ItemMarkObjCreateAll();
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
     obj->func = m229_MainObjMain;
 }
 

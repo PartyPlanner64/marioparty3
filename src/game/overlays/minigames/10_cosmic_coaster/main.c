@@ -335,9 +335,9 @@ void m216_TrackPosUpdate(s16 car) {
         Hu3DModelPosSet(m216_hudObj->model[car * 4 + frame], 0.0f, 0.0f,
                         hud->trackOffset[car] - i * 3000.0f);
         if (++count >= 23) {
-            Hu3DModelAttrSet(m216_hudObj->model[car * 4 + frame], 4, 4);
+            Hu3DModelAttrSet(m216_hudObj->model[car * 4 + frame], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         } else {
-            Hu3DModelAttrSet(m216_hudObj->model[car * 4 + frame], 4, 0);
+            Hu3DModelAttrSet(m216_hudObj->model[car * 4 + frame], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
         if (++frame >= 4) {
             frame -= 4;
@@ -547,11 +547,11 @@ void m216_CarObjMain(omObjData *object) {
             Hu3DMotionShiftSet(object->model[3 + i], Hu3DData[object->motion[2 + i]].motId, 0, 6, 0);
         }
         if (car->visible[i] != 0) {
-            Hu3DModelAttrSet(object->model[1 + i], 4, 0);
-            Hu3DModelAttrSet(object->model[3 + i], 4, 0);
+            Hu3DModelAttrSet(object->model[1 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(object->model[3 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         } else {
-            Hu3DModelAttrSet(object->model[1 + i], 4, 4);
-            Hu3DModelAttrSet(object->model[3 + i], 4, 4);
+            Hu3DModelAttrSet(object->model[1 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[3 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
     hits = m216_StageHitCheck(found, car, car->progress, car->prevProgress, 1);
@@ -640,8 +640,8 @@ void m216_CarWinObjMain(omObjData *object) {
                     } else {
                         m216_winCameraObj = omAddObj(40, 0, 0, -1, m216_WinCameraObjMain);
                         car->endPhase = 2;
-                        Hu3DModelAttrSet(object->model[3 + i], 4, 4);
-                        Hu3DModelAttrSet(object->model[7 + i], 4, 0);
+                        Hu3DModelAttrSet(object->model[3 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        Hu3DModelAttrSet(object->model[7 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         tmp = object->model[3 + i];
                         object->model[3 + i] = object->model[7 + i];
                         object->model[7 + i] = tmp;
@@ -690,7 +690,7 @@ void m216_CarWinObjMain(omObjData *object) {
                     Hu3DMotionModelSet(object->model[4], object->motion[9]);
                 }
                 Hu3DModelPosSet(object->model[3 + i], car->x[i], car->y[i], offsets[i]);
-                Hu3DModelAttrSet(object->model[5 + i], 4, 0);
+                Hu3DModelAttrSet(object->model[5 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DModelPosSet(object->model[5 + i], car->x[i], 125.0f, offsets[i]);
             }
             break;
@@ -876,7 +876,7 @@ void m216_IntroCameraObjMain(omObjData *object) {
 
     switch (m216_introPhase) {
         case 0:
-            WipeCreateIn(0xFF, 16);
+            WipeCreateIn(WIPE_TYPE_PREV, 16);
             m216_introPhase = 1;
             break;
         case 1:

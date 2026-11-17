@@ -288,7 +288,7 @@ void m258_ObjectSetup(void) {
     m258_chickenNum = 0;
     m258_ChickenObjCreate();
     Hu3DBGColorSet(0, 0, 0);
-    WipeCreateIn(0xFF, 0x10);
+    WipeCreateIn(WIPE_TYPE_PREV, 0x10);
 }
 
 void m258_CameraViewInit(omObjData *object) {
@@ -547,7 +547,7 @@ void m258_StageObjMain(omObjData *object) {
     switch (m258_phase) {
         case 0:
             Hu3DModelCameraSet(Hu3DHookFuncCreate(0xC0, m258_BillboardDraw, 2), 3);
-            GMesCreate(6);
+            GMesCreate(GMES_MES_MG_START);
             m258_bgSeNo = HuAudFXPlay(0x4BF);
             m258_timer = 1800;
             m258_phase++;
@@ -1516,7 +1516,7 @@ void m258_ChickenObjMain(omObjData *object) {
                 Hu3DModelHookSet(object->model[0], work->target->model[0], "item_hook");
                 Hu3DModelAttrSet(object->model[0], 0x4000, 0x4000);
             }
-            Hu3DModelAttrSet(object->model[1], 4, 4);
+            Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             work->unk08 = 0.0f;
             if (m258_phase == 6) {
                 m258_HookPosGet(work->target->model[0], "item_hook", 0, &object->trans);

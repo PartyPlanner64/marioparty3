@@ -319,7 +319,7 @@ void MBDStatusCharSprCreate(s32 playerIndex) {
     HuSprPriSet(group, 1, playerIndex * 5 + 0x4790);
     HuSprAttrSet(group, 1, 0);
     HuSprPosSet(group, 1, mbdStatusSprOfsPtrTbl[playerIndex][1][0], mbdStatusSprOfsPtrTbl[playerIndex][1][1]);
-    if (playerIndex != 0 && GwPlayer[playerIndex].chr != 1 && GwPlayer[playerIndex].chr != 6) {
+    if (playerIndex != 0 && GwPlayer[playerIndex].chr != CHAR_LUIGI && GwPlayer[playerIndex].chr != CHAR_WALUIGI) {
         HuSprAttrSet(group, 1, 1);
     }
 }

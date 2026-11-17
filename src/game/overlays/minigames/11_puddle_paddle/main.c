@@ -568,7 +568,7 @@ void m217_ScoreUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
 void m217_TimerUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     if (handler->unk_04 == 0) {
         m217_gameWork->timer = 900.0f;
-        GMesCreate(26, m217_gameWork->timer / 30.0f, 160, 28);
+        GMesCreate(GMES_MES_TIMER, m217_gameWork->timer / 30.0f, 160, 28);
         handler->unk_04 = 1;
     }
     m217_gameWork->timer -= 1.0f;

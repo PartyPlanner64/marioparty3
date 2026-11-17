@@ -388,9 +388,9 @@ void mstory1_Scene1PlayerProc(void) {
         Hu3DModelScaleSet(obj->model[2], 1.5f, 1.0f, 1.5f);
     }
     obj->model[3] = Hu3DModelRead(0x1D000A, 0x2B9);
-    Hu3DModelAttrSet(obj->model[3], 4, 4);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->model[4] = Hu3DModelRead(0x83, 0x2B9);
-    Hu3DModelAttrSet(obj->model[4], 4, 4);
+    Hu3DModelAttrSet(obj->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0));
     omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 0x9C));
     omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, 0x2F));
@@ -493,7 +493,7 @@ void mstory1_Scene1PlayerStampExec(omObjData *obj) {
     HuPrcSleep(10);
     Hu3DModelAttrSet(obj->model[3], 0x4000, 0x4000);
     Hu3DModelHookSet(obj->model[3], model, "item_hook");
-    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, 0);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     mstory1_MotionEndWait(model);
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[5]].motId, 0, 10, 0);
     mstory1_MotionEndWait(model);
@@ -564,7 +564,7 @@ void mstory1_Scene1PlayerStampExec(omObjData *obj) {
     mstory1_scene1WorkTbl[1].func = mstory1_Scene1TumbleHop;
     HuAudFXPlay(0x219);
     HuAudFXStop(fx);
-    Hu3DModelAttrSet(obj->model[4], HU3D_ATTR_DISPOFF, 0);
+    Hu3DModelAttrSet(obj->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[4]].motId, 0, 10, 0);
     CharAnimSet(obj->model[1], 2, GwStory.unk1, mstory1_scene1PlayerFaceAnimTbl[3]);
     mstory1_ObjRotMoveV(other, &mstory1_scene1StarDestRot1, 3);
@@ -853,8 +853,8 @@ void mstory1_Scene1KoopaProc(void) {
     omObjMotionRead(obj, 3, 0x1D0035);
     Hu3DMotionModelSet(obj->model[1], obj->motion[1]);
     Hu3DMotionAttrSet(obj->model[1], 2, 2);
-    Hu3DModelAttrSet(obj->model[1], 4, 4);
-    Hu3DModelAttrSet(obj->model[2], 4, 4);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
@@ -879,8 +879,8 @@ void mstory1_Scene1KoopaExec(omObjData *obj) {
 
     HuPrcSleep(60);
     model = obj->model[1];
-    Hu3DModelAttrSet(model, 4, 0);
-    Hu3DModelAttrSet(obj->model[2], 4, 0);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     HuAudSeqPlay(0x21);
     HuAudFXPlay(0x29D);
     mstory1_WinOpen();
@@ -945,8 +945,8 @@ void mstory1_Scene1KoopaJrAProc(void) {
     omObjMotionRead(obj, 2, 0xA00F0);
     Hu3DMotionModelSet(obj->model[1], obj->motion[1]);
     Hu3DMotionAttrSet(obj->model[1], 2, 2);
-    Hu3DModelAttrSet(obj->model[1], 4, 4);
-    Hu3DModelAttrSet(obj->model[2], 4, 4);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
@@ -969,8 +969,8 @@ void mstory1_Scene1KoopaJrADestroy(void) {
 void mstory1_Scene1KoopaJrAExec(omObjData *obj) {
     s16 model = obj->model[1];
 
-    Hu3DModelAttrSet(model, 4, 0);
-    Hu3DModelAttrSet(obj->model[2], 4, 0);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     mstory1_ObjPosMoveV(obj, &mstory1_scene1KoopaJrADestPos0, 30);
     mstory1_ObjRotMoveV(obj, &mstory1_scene1KoopaJrADestRot0, 10);
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[0]].motId, 0, 10, 2);
@@ -1022,8 +1022,8 @@ void mstory1_Scene1KoopaJrBProc(void) {
     obj->model[2] = Hu3DModelLink(mstory1_scene1ShadowMdl);
     Hu3DMotionModelSet(obj->model[1], src->motion[1]);
     Hu3DMotionAttrSet(obj->model[1], 2, 2);
-    Hu3DModelAttrSet(obj->model[1], 4, 4);
-    Hu3DModelAttrSet(obj->model[2], 4, 4);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
@@ -1044,8 +1044,8 @@ void mstory1_Scene1KoopaJrBExec(omObjData *obj) {
     omObjData *src = mstory1_scene1WorkTbl[4].obj;
     s16 model = obj->model[1];
 
-    Hu3DModelAttrSet(model, 4, 0);
-    Hu3DModelAttrSet(obj->model[2], 4, 0);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     mstory1_ObjPosMoveV(obj, &mstory1_scene1KoopaJrBDestPos0, 30);
     mstory1_ObjRotMoveV(obj, &mstory1_scene1KoopaJrBDestRot0, 10);
     Hu3DMotionShiftSet(model, Hu3DData[src->motion[0]].motId, 0, 10, 2);
@@ -1205,7 +1205,7 @@ void mstory1_Scene1StampProc(void) {
     mstory1_scene1WorkTbl[7].unk_0C = 0;
     obj->model[1] = Hu3DModelRead(mstory1_scene1StampMdlTbl[1], 0x20299);
     Hu3DMotionAttrSet(obj->model[1], 2, 2);
-    Hu3DModelAttrSet(obj->model[1], 4, 4);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
@@ -1217,7 +1217,7 @@ void mstory1_Scene1StampProc(void) {
     EffectParamSet(mstory1_scene1StampEff, 4.0f, 20.0f, 4.0f);
     EffectRangeSet(mstory1_scene1StampEff, 60.0f);
     Hu3DParticleAttrSet(mstory1_scene1StampEff, 1, 0);
-    Hu3DModelAttrSet(mstory1_scene1StampEff, 4, 4);
+    Hu3DModelAttrSet(mstory1_scene1StampEff, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     omPrcSetDestructor(0, mstory1_Scene1StampDestroy);
     mstory1_scene1WorkTbl[7].func = mstory1_Scene1ObjIdle;
     while (1) {
@@ -1238,8 +1238,8 @@ void mstory1_Scene1StampFlyExec(omObjData *obj) {
 
     paths[0] = mstory1_Scene1PathCreate(mstory1_scene1StampPathA, 0);
     paths[1] = mstory1_Scene1PathCreate(mstory1_scene1StampPathB, 0);
-    Hu3DModelAttrSet(obj->model[1], 4, 0);
-    Hu3DModelAttrSet(mstory1_scene1StampEff, 4, 0);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(mstory1_scene1StampEff, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DParticleAttrSet(mstory1_scene1StampEff, 1, 1);
     HuAudFXPlay(0x215);
     for (i = 0; i < 50; i++) {
@@ -1264,8 +1264,8 @@ void mstory1_Scene1StampFlyExec(omObjData *obj) {
         EffectPosSet(mstory1_scene1StampEff, pos.x, pos.y - 40.0f, pos.z);
         HuPrcVSleep();
     }
-    Hu3DModelAttrSet(obj->model[1], 4, 4);
-    Hu3DModelAttrSet(mstory1_scene1StampEff, 4, 4);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(mstory1_scene1StampEff, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     HuAudFXPlay(0x21A);
     mstory1_Scene1PathKill(paths[0]);
     mstory1_Scene1PathKill(paths[1]);

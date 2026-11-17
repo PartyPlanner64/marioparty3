@@ -171,7 +171,7 @@ void m241_ObjectSetup(void) {
     }
     for (i = 0; i < 4; i++) {
         m241_smokeMdlTbl[i] = Hu3DModelRead(0x4A0003, 0x819);
-        Hu3DModelAttrSet(m241_smokeMdlTbl[i], 4, 4);
+        Hu3DModelAttrSet(m241_smokeMdlTbl[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     m241_FireStartPosInit();
     m241_patternSeqNo = (rand8() * 6) >> 8;
@@ -328,8 +328,8 @@ void m241_FireObjInit(omObjData *object) {
     object->model[1] = Hu3DModelRead(0x4A0004, 0x2D9);
     Hu3DModelPosSet(object->model[1], object->trans.x, 0.0f, object->trans.z);
     if (work->unk00 >= 15) {
-        Hu3DModelAttrSet(object->model[0], 4, 4);
-        Hu3DModelAttrSet(object->model[1], 4, 4);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     m241_fireCreateNo++;
 }
@@ -499,10 +499,10 @@ void m241_FireAdd(void) {
     work->unk0C = firstWork->unk0C;
     work->unk14 = firstWork->unk14;
     work->unk10 = firstWork->unk10;
-    Hu3DModelAttrSet(object->model[0], 4, 0);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
     Hu3DModelScaleSet(object->model[1], work->unk08, work->unk08, work->unk08);
-    Hu3DModelAttrSet(object->model[1], 4, 0);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }
 
 void m241_FirePosStore(void) {
@@ -984,7 +984,7 @@ void m241_PlayerFlyUpdate(omObjData *object) {
     }
     if (ABS(object->trans.x) > 700.0f) {
         MgPlayerMapAttrSet(object, 0, 1);
-        Hu3DModelAttrSet(object->model[1], 4, 4);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         if (object->trans.y < -2000.0f) {
             object->work[0] = 3;
         }
@@ -1010,7 +1010,7 @@ void m241_SmokeUpdate(omObjData *object) {
         if (m241_smokeTimerTbl[player][i] >= 0) {
             if (m241_smokeTimerTbl[player][i] == 0) {
                 Hu3DModelPosSet(m241_smokeMdlTbl[i], object->trans.x, object->trans.y, object->trans.z);
-                Hu3DModelAttrSet(m241_smokeMdlTbl[i], 4, 0);
+                Hu3DModelAttrSet(m241_smokeMdlTbl[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
             if (m241_smokeTimerTbl[player][i] < 8) {
                 scale = m241_smokeScaleTbl[m241_smokeTimerTbl[player][i] / 2];

@@ -404,7 +404,7 @@ void m210_MainObjMain(omObjData *object) {
     switch (m210_phase) {
         case 0:
             Hu3DBGColorSet(0, 0, 0);
-            WipeCreateIn(0xFF, 16);
+            WipeCreateIn(WIPE_TYPE_PREV, 16);
             GMesCreate(4);
             HuAudFXPlay(0x42E);
             m210_phaseTimer = 45;
@@ -496,7 +496,7 @@ void m210_MainObjMain(omObjData *object) {
             } else {
                 MgFlowStatSet(MG_STATE_EXIT);
                 m210_phaseTimer = 16;
-                WipeCreateOut(0, m210_phaseTimer);
+                WipeCreateOut(WIPE_TYPE_NORMAL, m210_phaseTimer);
                 HuAudSeqFadeOut(m210_phaseTimer);
                 HuAudFXAllFadeOut((s16)m210_phaseTimer);
             }
@@ -1476,7 +1476,7 @@ void m210_TeamObjMain(omObjData *object) {
     work->unk28 = status;
     for (i = 9; i < 12; i++) {
         if (Hu3DData[object->model[i]].motTime >= Hu3DMotion[Hu3DData[object->model[i]].motId].unk02) {
-            Hu3DModelAttrSet(object->model[i], 4, 4);
+            Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
 }

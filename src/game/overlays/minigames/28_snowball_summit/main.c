@@ -491,7 +491,7 @@ void m240_BackBallObjMain(omObjData *object) {
             break;
         case 1:
             variant = rand8() & 1;
-            Hu3DModelAttrSet(object->model[variant], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(object->model[variant], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelAttrSet(object->model[variant ^ 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             object->trans.x = m240_backBallPathTbl[object->work[0]].start.x;
             object->trans.y = m240_backBallPathTbl[object->work[0]].start.y;
@@ -593,7 +593,7 @@ void m240_PuffObjMain(omObjData *object) {
         case 0:
             break;
         case 1:
-            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             roll->state = 2;
             break;
         case 2:
@@ -675,7 +675,7 @@ void m240_BurstObjMain(omObjData *object) {
         case 0:
             break;
         case 1:
-            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DMotionAttrSet(object->model[0], 1, 0);
             object->scale.x = object->scale.y = object->scale.z = snowball->unk_14;
             snowball->state = 2;
@@ -1609,8 +1609,8 @@ void m240_BallObjMain(omObjData *object) {
         case 0:
             break;
         case 1:
-            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, 0);
-            Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             slot->unk_0C = 1.0f;
             slot->id = 2;
             break;
@@ -1721,7 +1721,7 @@ void m240_BallMakeEffObjMain(omObjData *object) {
             }
             break;
         case 1:
-            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             if (mover->unk_04 != 2) {
                 slot->id = 0;
             }
@@ -2638,7 +2638,7 @@ void m240_RollEffUpdate(void) {
                 }
                 break;
             case 1:
-                Hu3DModelAttrSet(node->unk_0C->model[0], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(node->unk_0C->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 if (node->unk_04 != 1 && node->unk_08 == -1) {
                     node->unk_08 = HuAudPlayerFXPlay(0x439, mover->unk_78->work[0]);
                     if (node->unk_08 != -1) {

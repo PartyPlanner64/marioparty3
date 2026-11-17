@@ -262,7 +262,7 @@ void m264_ComInit(void) {
 void m264_MainObjMain(omObjData *object) {
     switch (m264_phase) {
         case 0:
-            WipeCreateIn(0xFF, 16);
+            WipeCreateIn(WIPE_TYPE_PREV, 16);
             m264_phase++;
             break;
         case 1:

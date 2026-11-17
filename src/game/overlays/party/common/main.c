@@ -2890,7 +2890,7 @@ static void MBMain(void) {
                 }
 
                 // HAPPENING SPACE: Check for duel minigame
-                if (space->space_type == 4) {
+                if (space->space_type == SPACE_HAPPENING) {
                     goto label;
                 } else {
                     short temp_v0_15;

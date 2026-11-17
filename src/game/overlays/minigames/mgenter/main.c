@@ -76,7 +76,7 @@ void mgenter_ObjectSetup(void) {
     Center.z = 13.0f;
     Hu3DCameraPerspectiveSet(0, mgenter_cameraFov, mgenter_cameraNear, mgenter_cameraFar);
     omPrcSetStatBit(omAddPrcObj(mgenter_CameraProc, 0x1100, 0x800, 0), 0xA0);
-    WipeCreateIn(0xFF, 0x10);
+    WipeCreateIn(WIPE_TYPE_PREV, 0x10);
     Hu3DScreenClearF = 1;
     Hu3DBGColorSet(0xFF, 0xFF, 0xFF);
     mgenter_padNo = GameManFirstPad;
@@ -153,13 +153,13 @@ void mgenter_StageMainProc(void) {
         mgenter_arrowDispF = 1;
         while (TRUE) {
             mgenter_DpadStickSet();
-            if (HuPadStkX[mgenter_padNo] >= 31 || (HuPadBtnDown[mgenter_padNo] & 1)) {
+            if (HuPadStkX[mgenter_padNo] >= 31 || (HuPadBtnDown[mgenter_padNo] & R_CBUTTONS)) {
                 HuAudFXPlay(1);
                 mgenter_stageScrollDir = 1;
                 mgenter_arrowDispF = 0;
                 HuPrcSleep(10);
                 mgenter_arrowDispF = 1;
-            } else if (HuPadStkX[mgenter_padNo] < -30 || (HuPadBtnDown[mgenter_padNo] & 2)) {
+            } else if (HuPadStkX[mgenter_padNo] < -30 || (HuPadBtnDown[mgenter_padNo] & L_CBUTTONS)) {
                 HuAudFXPlay(1);
                 mgenter_stageScrollDir = -1;
                 mgenter_arrowDispF = 0;
@@ -196,7 +196,7 @@ void mgenter_StageMainProc(void) {
         }
         while (TRUE) {
             mgenter_DpadStickSet();
-            if (HuPadStkX[mgenter_padNo] >= 31 || (HuPadBtnDown[mgenter_padNo] & 1)) {
+            if (HuPadStkX[mgenter_padNo] >= 31 || (HuPadBtnDown[mgenter_padNo] & R_CBUTTONS)) {
                 HuAudFXPlay(1);
                 if (++mgenter_optionNo >= 3) {
                     mgenter_optionNo = 0;
@@ -204,7 +204,7 @@ void mgenter_StageMainProc(void) {
                 mgenter_arrowDispF = 0;
                 HuPrcSleep(10);
                 mgenter_arrowDispF = 1;
-            } else if (HuPadStkX[mgenter_padNo] < -30 || (HuPadBtnDown[mgenter_padNo] & 2)) {
+            } else if (HuPadStkX[mgenter_padNo] < -30 || (HuPadBtnDown[mgenter_padNo] & L_CBUTTONS)) {
                 HuAudFXPlay(1);
                 if (--mgenter_optionNo < 0) {
                     mgenter_optionNo = 2;
@@ -436,7 +436,7 @@ void mgenter_OptionProc(void) {
     for (i = 0; i < 3; i++) {
         models[i] = Hu3DModelRead(charIds[i] | 0x670000, 0x2BD);
         model = models[i];
-        Hu3DModelAttrSet(model, 4, 4);
+        Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DMotionAttrSet(model, 1, 1);
         Hu3DMotionTimeSet(model, Hu3DMotion[Hu3DData[model].motId].unk02 / 2);
         Hu3DModelPosSet(model, sindf(i * 120) * 500.0f, 0.0f, cosdf(i * 120) * 500.0f);
@@ -477,9 +477,9 @@ void mgenter_OptionProc(void) {
                 }
                 for (i = 0; i < 3; i++) {
                     if (Hu3DData[models[i]].pos.z > 0.0f) {
-                        Hu3DModelAttrSet(models[i], 4, 0);
+                        Hu3DModelAttrSet(models[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     } else {
-                        Hu3DModelAttrSet(models[i], 4, 4);
+                        Hu3DModelAttrSet(models[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
                 }
                 for (i = 0; i < 6; i++) {
@@ -492,9 +492,9 @@ void mgenter_OptionProc(void) {
                 break;
             case 1:
                 for (i = 0; i < 3; i++) {
-                    Hu3DModelAttrSet(models[i], 4, 4);
+                    Hu3DModelAttrSet(models[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
-                Hu3DModelAttrSet(models[mgenter_optionNo], 4, 0);
+                Hu3DModelAttrSet(models[mgenter_optionNo], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 for (i = 0; i < 6; i++) {
                     alpha = i * 51.0f;
                     for (j = 0; j < gMes[mgenter_optionNo].subMode; j++) {
@@ -504,7 +504,7 @@ void mgenter_OptionProc(void) {
                 }
                 HuPrcSleep(5);
                 for (i = 0; i < 3; i++) {
-                    Hu3DModelAttrSet(models[i], 4, 4);
+                    Hu3DModelAttrSet(models[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
                 break;
         }
@@ -515,7 +515,7 @@ void mgenter_OptionProc(void) {
                 dir = -dir;
             }
             for (i = 0; i < 3; i++) {
-                Hu3DModelAttrSet(models[i], 4, 0);
+                Hu3DModelAttrSet(models[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
             for (i = 1; i < 11; i++) {
                 for (j = 0; j < 3; j++) {
@@ -536,9 +536,9 @@ void mgenter_OptionProc(void) {
             prevSel = mgenter_optionNo;
             for (i = 0; i < 3; i++) {
                 if (Hu3DData[models[i]].pos.z > 0.0f) {
-                    Hu3DModelAttrSet(models[i], 4, 0);
+                    Hu3DModelAttrSet(models[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 } else {
-                    Hu3DModelAttrSet(models[i], 4, 4);
+                    Hu3DModelAttrSet(models[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
             }
             baseAngle = mgenter_optionNo * 120;

@@ -2195,7 +2195,7 @@ void MB1Ev_StarMapView(void) {
     MBGuideFaceCreate(guide->obj, 2, 0xF, mb1ev_starGuideFaceTbl[0]);
     MBPlayerIconMdlSet();
     MBModelDispOff(GET_STAR_MODEL());
-    WipeCreateIn(2, 0x10);
+    WipeCreateIn(WIPE_STARS, 0x10);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -2259,7 +2259,7 @@ void MB1Ev_StarMapView(void) {
 
     HuAudSeqFadeOut(0x5A);
     HuPrcSleep(30);
-    WipeCreateOut(2, 0x10);
+    WipeCreateOut(WIPE_STARS, 0x10);
     HuPrcSleep(0x11);
     mbTurnUnkF = 1;
     MBPlayerIconMdlReset();
@@ -6259,7 +6259,7 @@ void MB1Ev_ItemStarYoke(void) {
         if ((star->velocity.x > 300.0f) & (wiped != 0)) {
             wiped = 0;
             WipeColorSet(0xFF, 0xFF, 0xFF);
-            WipeCreateOut(0xB, 0x32);
+            WipeCreateOut(WIPE_FADE, 0x32);
             HuAudFXPlay(0x128);
         }
         HuPrcVSleep();
@@ -6282,7 +6282,7 @@ void MB1Ev_ItemStarYoke(void) {
     star->coords.x -= dir.x * 20.0f;
     star->coords.z -= dir.z * 20.0f;
     HuAudFXPlay(0x129);
-    WipeCreateIn(0xB, 0x32);
+    WipeCreateIn(WIPE_FADE, 0x32);
 
     for (star->velocity.x = 100.0f; star->velocity.x > 30.0f; star->velocity.x -= 3.0f) {
         HuPrcVSleep();
@@ -7765,7 +7765,7 @@ void MB1Ev_ItemAfter5(void) {
 
     HuAudFXPlay(0x129);
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreateOut(0xB, 0x32);
+    WipeCreateOut(WIPE_FADE, 0x32);
     MBPlayerVibrateObjKill(temp_s1_2);
 
     for (var_f20 = 0.0f; WipeStatGet() != 0; var_f20 += 0.1f) {
@@ -7783,7 +7783,7 @@ void MB1Ev_ItemAfter5(void) {
         HuSprAnimKill(sp18[i]);
     }
 
-    WipeCreateIn(0xB, 0x5A);
+    WipeCreateIn(WIPE_FADE, 0x5A);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -9243,7 +9243,7 @@ void MB1Ev_ActionTimeSpr(void) {
         if (mb1ev_snowmanHitTbl[i] != 0) {
             HuSprAttrSet(grp, 0, 8);
         } else {
-            HuSprAttrSet(grp, 0, 0x8000);
+            HuSprDispOff(grp, 0);
         }
         HuSprPriSet(grp, 0, 0x1000);
         HuSprParentSet(grp, 0, -1);
@@ -9253,7 +9253,7 @@ void MB1Ev_ActionTimeSpr(void) {
         if (mb1ev_snowmanHitTbl[i] != 0) {
             HuSprAttrSet(grp, 1, 8);
         } else {
-            HuSprAttrSet(grp, 1, 0x8000);
+            HuSprDispOff(grp, 1);
         }
         HuSprPriSet(grp, 1, 0x1000);
         HuSprPosSet(grp, 1, 0, -9);
@@ -9265,7 +9265,7 @@ void MB1Ev_ActionTimeSpr(void) {
             if (mb1ev_snowmanHitTbl[i] == j + 1) {
                 HuSprAttrSet(grp, j + 2, 8);
             } else {
-                HuSprAttrSet(grp, j + 2, 0x8000);
+                HuSprDispOff(grp, j + 2);
             }
             HuSprPriSet(grp, j + 2, 0x1000);
             HuSprPosSet(grp, j + 2, 0, 9);
@@ -9309,44 +9309,44 @@ void MB1Ev_ActionTimeSpr(void) {
             switch (mb1ev_snowmanHitTbl[i]) {
                 case 0:
                     for (j = 0; j < 6; j++) {
-                        HuSprAttrSet(grpId[i], j, 0x8000);
+                        HuSprDispOff(grpId[i], j);
                     }
                     break;
                 case 1:
                     for (j = 0; j < 6; j++) {
-                        HuSprAttrReset(grpId[i], j, 0x8000);
+                        HuSprDispOn(grpId[i], j);
                     }
                     for (j = 0; j < 4; j++) {
-                        HuSprAttrSet(grpId[i], j + 2, 0x8000);
+                        HuSprDispOff(grpId[i], j + 2);
                     }
-                    HuSprAttrReset(grpId[i], 2, 0x8000);
+                    HuSprDispOn(grpId[i], 2);
                     break;
                 case 2:
                     for (j = 0; j < 6; j++) {
-                        HuSprAttrReset(grpId[i], j, 0x8000);
+                        HuSprDispOn(grpId[i], j);
                     }
                     for (j = 0; j < 4; j++) {
-                        HuSprAttrSet(grpId[i], j + 2, 0x8000);
+                        HuSprDispOff(grpId[i], j + 2);
                     }
-                    HuSprAttrReset(grpId[i], 3, 0x8000);
+                    HuSprDispOn(grpId[i], 3);
                     break;
                 case 3:
                     for (j = 0; j < 6; j++) {
-                        HuSprAttrReset(grpId[i], j, 0x8000);
+                        HuSprDispOn(grpId[i], j);
                     }
                     for (j = 0; j < 4; j++) {
-                        HuSprAttrSet(grpId[i], j + 2, 0x8000);
+                        HuSprDispOff(grpId[i], j + 2);
                     }
-                    HuSprAttrReset(grpId[i], 4, 0x8000);
+                    HuSprDispOn(grpId[i], 4);
                     break;
                 case 4:
                     for (j = 0; j < 6; j++) {
-                        HuSprAttrReset(grpId[i], j, 0x8000);
+                        HuSprDispOn(grpId[i], j);
                     }
                     for (j = 0; j < 4; j++) {
-                        HuSprAttrSet(grpId[i], j + 2, 0x8000);
+                        HuSprDispOff(grpId[i], j + 2);
                     }
-                    HuSprAttrReset(grpId[i], 5, 0x8000);
+                    HuSprDispOn(grpId[i], 5);
                     break;
                 default:
                     goto end;
@@ -10001,7 +10001,7 @@ void MB1Ev_LakeIceBreakProc(void) {
 
     HuPrcSleep(0x32);
     HuPrcSleep(0xA);
-    WipeCreateOut(0xB, 0x10);
+    WipeCreateOut(WIPE_FADE, 0x10);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -10044,7 +10044,7 @@ void MB1Ev_LakeIceBreakProc(void) {
     MBCameraZoomSet(1.3f);
     MBStatusShowAll();
     MB1Ev_IceCrackKill(sprId);
-    WipeCreateIn(0xB, 0x10);
+    WipeCreateIn(WIPE_FADE, 0x10);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }

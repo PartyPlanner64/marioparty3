@@ -138,9 +138,9 @@ void boardresult_FireworkProc(void) {
     Hu3DParticleCreate(model, -1, NULL, boardresult_FireworkBurstHook);
     Hu3DParticleAttrSet(model, 8, 8);
     effect = Hu3DData[model].unkBC;
-    Hu3DModelAttrSet(model, 4, 4);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     model2 = Hu3DModelRead(0xB0035, 0x2B9);
-    Hu3DModelAttrSet(model2, 4, 4);
+    Hu3DModelAttrSet(model2, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelScaleSet(model2, 2.0f, 2.0f, 2.0f);
     Hu3DMotionSpeedSet(model2, 2.0f);
 
@@ -160,7 +160,7 @@ void boardresult_FireworkProc(void) {
         cur = work->center;
         prev = cur;
         HuAudFXPlay(0x16F);
-        Hu3DModelAttrSet(model, 4, 0);
+        Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DParticleCntSet(model, 0);
         effect->unk18 = boardresult_FireworkTrailHook;
         Hu3DParticleAttrSet(model, 2, 0);
@@ -225,23 +225,23 @@ void boardresult_FireworkProc(void) {
         }
 
         HuPrcSleep(15);
-        Hu3DModelAttrSet(model, 4, 4);
+        Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DMotionTimeSet(model2, 0.0f);
-        Hu3DModelAttrSet(model2, 4, 0);
+        Hu3DModelAttrSet(model2, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(model2, cur.x, cur.y, cur.z);
         HuPrcVSleep();
         HuAudFXPlay(0x170);
         boardresult_FireworkShapeSet(model, work->unk_00);
         effect->unk18 = boardresult_FireworkBurstHook;
         Hu3DParticleCntSet(model, 0);
-        Hu3DModelAttrSet(model, 4, 0);
+        Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(model, cur.x, cur.y, cur.z);
         Hu3DParticleAttrSet(model, 2, 0);
         while (!(Hu3DParticleAttrGet(model) & 2)) {
             HuPrcVSleep();
         }
-        Hu3DModelAttrSet(model2, 4, 4);
-        Hu3DModelAttrSet(model, 4, 4);
+        Hu3DModelAttrSet(model2, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
         work->unk_04 |= 1;
         if (!(work->unk_04 & 2)) {
@@ -517,8 +517,8 @@ void boardresult_SpiralProc(void) {
     Hu3DParticleCreate(model, -1, NULL, boardresult_FireworkBurstHook);
     Hu3DParticleAttrSet(model, 8, 8);
     effect = Hu3DData[model].unkBC;
-    Hu3DModelAttrSet(model, 4, 4);
-    Hu3DModelAttrSet(model, 4, 0);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DParticleCntSet(model, 0);
     effect->unk18 = boardresult_FireworkTrailHook;
     Hu3DParticleAttrSet(model, 2, 0);

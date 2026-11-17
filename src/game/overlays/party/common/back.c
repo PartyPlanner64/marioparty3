@@ -1745,7 +1745,7 @@ void MBMoveStartMasuSet(void) {
         space = chain->spaces;
 
         for (j = 0; j < chain->chainIndicies; j++) {
-            if (MBMasuGet(*space)->space_type == 0) {
+            if (MBMasuGet(*space)->space_type == SPACE_NONE) {
                 for (k = 0; k < 4; k++) {
                     MBMoveMasuSet(k, i, j);
                 }

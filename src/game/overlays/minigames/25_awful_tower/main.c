@@ -194,7 +194,7 @@ void m237_ObjectSetup(void) {
     object = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     object->work[0] = 4;
     omSetStatBit(object, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    WipeCreateIn(0xFF, 30);
+    WipeCreateIn(WIPE_TYPE_PREV, 30);
     GMesFontMesCreate(m237_fontMesTbl, 1);
     m237_mgFlow.type = MINIGAME_4P;
     m237_mgFlow.startDelay = 60;
@@ -343,8 +343,8 @@ void m237_MainObjMain(omObjData *object) {
                 Hu3DModelDynamicFree(m237_playerObjTbl[m237_winner]->model[9]);
                 Hu3DModelCameraSet(m237_playerObjTbl[m237_winner]->model[9],
                                    m237_cameraBitTbl[m237_winner]);
-                Hu3DModelAttrSet(m237_playerObjTbl[m237_winner]->model[0], 4, 4);
-                Hu3DModelAttrSet(m237_playerObjTbl[m237_winner]->model[9], 4, 0);
+                Hu3DModelAttrSet(m237_playerObjTbl[m237_winner]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(m237_playerObjTbl[m237_winner]->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DMotionTimeSet(m237_playerObjTbl[m237_winner]->model[9],
                                   Hu3DData[m237_playerObjTbl[m237_winner]->model[0]].motTime);
                 Hu3DMotionAttrSet(m237_playerObjTbl[m237_winner]->model[9], 2, 2);
@@ -439,8 +439,8 @@ s32 m237_CoinGetHook(omObjData *player, omObjData *object) {
     HuAudFXPlay(9);
     data->unk54 = 0;
     data->unk78 = 0;
-    Hu3DModelAttrSet(object->model[0], 4, 4);
-    Hu3DModelAttrSet(object->model[1], 4, 4);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     return 1;
 }
 
@@ -477,7 +477,7 @@ void m237_CoinObjInit(omObjData *object) {
     }
     data->unk84[8] = (void *)m237_CoinGetHook;
     MgObjScaleSet(object, 3.0f, 3.0f, 3.0f);
-    Hu3DModelAttrSet(object->model[0], 4, 4);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     object->func = NULL;
 }
 
@@ -527,7 +527,7 @@ void m237_MdlObjInit(omObjData *object) {
 
             object->model[modelIdx[j] + i] =
                 m237_SprMdlCreate(animFiles[j] | 0x460000, &m237_flyerSprTbl[i][j]);
-            Hu3DModelAttrSet(object->model[modelIdx[j] + i], 4, 4);
+            Hu3DModelAttrSet(object->model[modelIdx[j] + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             Hu3DModelCameraSet(object->model[modelIdx[j] + i], m237_cameraBitTbl[i]);
             if (j < 2) {
                 Hu3DModelScaleSet(object->model[modelIdx[j] + i], 6.0525f, 6.0525f, 6.0525f);
@@ -545,7 +545,7 @@ void m237_MdlObjInit(omObjData *object) {
         m237_coinObjTbl[i]->trans.y = posY[i] * 100.0f + 50.0f;
         m237_coinObjTbl[i]->trans.z = 0.0f;
         data->unk56 = i;
-        Hu3DModelAttrSet(m237_coinObjTbl[i]->model[0], 4, 0);
+        Hu3DModelAttrSet(m237_coinObjTbl[i]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
     for (i = 0; i < 3; i++) {
         s32 files[3] = { 2, 3, 4 };
@@ -560,7 +560,7 @@ void m237_MdlObjInit(omObjData *object) {
             ((MgMapWork *)m237_platObjTbl[i][j]->data)->unk04 = i * 3 + j + 1;
             for (k = 0; k < 3; k++) {
                 m237_platObjTbl[i][j]->model[k + 1] = Hu3DModelLink(m237_mdlObj->model[j]);
-                Hu3DModelAttrSet(m237_platObjTbl[i][j]->model[k + 1], 4, 4);
+                Hu3DModelAttrSet(m237_platObjTbl[i][j]->model[k + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 Hu3DModelScaleSet(m237_platObjTbl[i][j]->model[k + 1], 0.666666f, 0.666666f, 0.666666f);
                 Hu3DModelCameraSet(m237_platObjTbl[i][j]->model[k + 1], m237_cameraBitTbl[i]);
             }
@@ -588,7 +588,7 @@ void m237_MdlObjMain(omObjData *object) {
     m237_BackDraw();
     if (m237_phase == 3) {
         if (m237_phaseTimer == 1) {
-            Hu3DModelAttrSet(object->model[3], 4, 0);
+            Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelCameraSet(object->model[3], m237_cameraBitTbl[m237_winner]);
         }
         if (m237_phaseTimer != 0 && m237_phaseTimer < 46) {
@@ -930,10 +930,10 @@ void m237_PlayerObjMain(omObjData *object) {
             MgMapBlockSet(m237_platObjTbl[group][i], 50.0f, 100.0f, -50.0f, -50.0f, 50.0f, 50.0f);
         }
         for (j = 0; j < 3; j++) {
-            Hu3DModelAttrSet(m237_platObjTbl[group][i]->model[j + 1], 4, 4);
+            Hu3DModelAttrSet(m237_platObjTbl[group][i]->model[j + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
         if (group == 0) {
-            Hu3DModelAttrSet(m237_mdlObj->model[20], 4, 4);
+            Hu3DModelAttrSet(m237_mdlObj->model[20], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             Hu3DModelCameraSet(m237_mdlObj->model[20], 0);
         }
     }
@@ -947,12 +947,12 @@ void m237_PlayerObjMain(omObjData *object) {
                 if (j == 14) {
                     Hu3DModelPosSet(m237_mdlObj->model[20], platCols[j] * 150 - 150,
                                     m237_platYTbl[j], 0.0f);
-                    Hu3DModelAttrSet(m237_mdlObj->model[20], 4, 0);
+                    Hu3DModelAttrSet(m237_mdlObj->model[20], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DData[m237_mdlObj->model[20]].cameraBit |= m237_cameraBitTbl[group];
                 } else {
                     Hu3DModelPosSet(m237_platObjTbl[group][k]->model[counts[k] + 1],
                                     platCols[j] * 150 - 150, m237_platYTbl[j], 0.0f);
-                    Hu3DModelAttrSet(m237_platObjTbl[group][k]->model[counts[k] + 1], 4, 0);
+                    Hu3DModelAttrSet(m237_platObjTbl[group][k]->model[counts[k] + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 }
                 counts[k]++;
             }
@@ -994,7 +994,7 @@ void m237_PlayerObjMain(omObjData *object) {
     }
     if (Hu3DData[object->model[6]].motTime >= 10.0f) {
         Hu3DData[object->model[6]].motTime = 0.0f;
-        Hu3DModelAttrSet(object->model[6], 4, 4);
+        Hu3DModelAttrSet(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     if (player->cpuDifficulty != -1 ||
         (m237_winner == group && m237_phase == 3 && m237_phaseTimer >= 50)) {
@@ -1168,7 +1168,7 @@ void m237_PlayerObjMain(omObjData *object) {
     if (savedCB70 != 0xFF) {
         m237_mgFlow.state = savedCB70;
     }
-    Hu3DModelAttrSet(object->model[1], 4, 4);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     for (i = 0; i < 3; i++) {
         if (data->unk38 != 1000.0f && ABS(object->trans.x - m237_platObjTbl[group][i]->trans.x) < 110.0f &&
             ABS(object->trans.y + 75.0f - m237_platObjTbl[group][i]->trans.y) < 125.0f) {
@@ -1202,7 +1202,7 @@ void m237_PlayerObjMain(omObjData *object) {
                       ((m237_coinStatTbl[1][i] == 1) ? m237_cameraBitTbl[1] : 0) |
                       ((m237_coinStatTbl[2][i] == 1) ? m237_cameraBitTbl[2] : 0) |
                       ((m237_coinStatTbl[3][i] == 1) ? m237_cameraBitTbl[3] : 0);
-            Hu3DModelAttrSet(m237_coinObjTbl[i]->model[0], 4, 0);
+            Hu3DModelAttrSet(m237_coinObjTbl[i]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelCameraSet(m237_coinObjTbl[i]->model[0], cameras);
         }
     }
@@ -1241,7 +1241,7 @@ void m237_PlayerObjMain(omObjData *object) {
                 m237_flyerVelXTbl[group] = 0.0f;
                 m237_flyerVelYTbl[group] = -20.0f;
                 m237_flyerYTbl[group] = m237_cameraYTbl[group] + 900.0f;
-                Hu3DModelAttrSet(m237_mdlObj->model[group + 8], 4, 0);
+                Hu3DModelAttrSet(m237_mdlObj->model[group + 8], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
             m237_flyerStateTbl[group] = 1;
             m237_flyerPosNoTbl[group] = i / 5;
@@ -1296,7 +1296,7 @@ void m237_PlayerObjMain(omObjData *object) {
                     m237_flyerThrowTbl[group] = 1;
                     m237_flyerDelayTbl[group] += (m237_flyerDelayTbl[group] < 30) ? 5 : 0;
                     Hu3DSprModelReset(m237_flyerSprTbl[group][1]);
-                    Hu3DModelAttrSet(m237_mdlObj->model[group + 8], 4, 4);
+                    Hu3DModelAttrSet(m237_mdlObj->model[group + 8], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
                 if (m237_phase != 2) {
                     m237_flyerStateTbl[group] = 3;
@@ -1307,8 +1307,8 @@ void m237_PlayerObjMain(omObjData *object) {
                     m237_flyerThrowTbl[group] = 0;
                     m237_flyerStateTbl[group] = 0;
                     m237_flyerDelayTbl[group] = 0;
-                    Hu3DModelAttrSet(m237_mdlObj->model[group + 8], 4, 4);
-                    Hu3DModelAttrSet(m237_mdlObj->model[group + 12], 4, 4);
+                    Hu3DModelAttrSet(m237_mdlObj->model[group + 8], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(m237_mdlObj->model[group + 12], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 } else if (m237_flyerStateTbl[group] == 3) {
                     targetX = (m237_flyerPosNoTbl[group] == 2) ? -1000.0f : 1000.0f;
                     targetY = m237_cameraYTbl[group] + 1200.0f;
@@ -1344,7 +1344,7 @@ void m237_PlayerObjMain(omObjData *object) {
                 if (m237_flyerThrowTbl[group] == 12) {
                     m237_flyerThrowTbl[group] = 0;
                     Hu3DSprModelReset(m237_flyerSprTbl[group][0]);
-                    Hu3DModelAttrSet(m237_mdlObj->model[group + 12], 4, 4);
+                    Hu3DModelAttrSet(m237_mdlObj->model[group + 12], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 } else {
                     m237_flyerThrowTbl[group]++;
                     if (m237_flyerThrowTbl[group] == 8 && m237_shotYTbl[group] <= -1000.0f) {
@@ -1355,7 +1355,7 @@ void m237_PlayerObjMain(omObjData *object) {
                         m237_shotVelYTbl[group] = m237_shotVelYInitTbl[m237_flyerPosNoTbl[group]];
                         m237_shotRotTbl[group] = 0.0f;
                         m237_shotRotSpeedTbl[group] = (m237_flyerPosNoTbl[group] != 3) ? 23.0f : -23.0f;
-                        Hu3DModelAttrSet(m237_mdlObj->model[group + 16], 4, 0);
+                        Hu3DModelAttrSet(m237_mdlObj->model[group + 16], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         Hu3DModelPosSet(m237_mdlObj->model[group + 16], m237_shotXTbl[group],
                                         m237_shotYTbl[group], 0.0f);
                         Hu3DModelRotSet(m237_mdlObj->model[group + 16], 0.0f, 0.0f,
@@ -1408,7 +1408,7 @@ void m237_PlayerObjMain(omObjData *object) {
         (m237_shotYTbl[group] < m237_cameraYTbl[group] - 850.0f ||
          m237_shotYTbl[group] > m237_cameraYTbl[group] + 850.0f)) {
         m237_shotYTbl[group] = -1000.0f;
-        Hu3DModelAttrSet(m237_mdlObj->model[group + 16], 4, 4);
+        Hu3DModelAttrSet(m237_mdlObj->model[group + 16], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     CenterM[group].y = m237_cameraYTbl[group];
     HuPadBtn[player->pad] = savedBtn;

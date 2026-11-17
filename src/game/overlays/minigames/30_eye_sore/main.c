@@ -725,10 +725,10 @@ void m248_PlayerStunUpdate(omObjData *obj) {
         Hu3DModelRotSet(obj->model[3], 0.0f, 0.0f, entry->unk_18[0]);
         Hu3DModelRotSet(obj->model[4], 0.0f, 0.0f, entry->unk_18[0]);
         Hu3DModelRotSet(obj->model[5], 0.0f, 0.0f, entry->unk_18[0]);
-        Hu3DModelAttrSet(obj->model[2], 4, 0);
-        Hu3DModelAttrSet(obj->model[3], 4, 0);
-        Hu3DModelAttrSet(obj->model[4], 4, 0);
-        Hu3DModelAttrSet(obj->model[5], 4, 0);
+        Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(obj->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(obj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
     if (state->unk_0F == 46) {
         HuAudPlayerFXPlay(0x48C, obj->work[0]);
@@ -745,10 +745,10 @@ void m248_PlayerStunUpdate(omObjData *obj) {
     } else if (state->unk_0F < 46) {
         obj->trans.y += m248_stunHopTbl[state->unk_0F - 23];
     } else if (state->unk_0F == 50) {
-        Hu3DModelAttrSet(obj->model[2], 4, 4);
-        Hu3DModelAttrSet(obj->model[3], 4, 4);
-        Hu3DModelAttrSet(obj->model[4], 4, 4);
-        Hu3DModelAttrSet(obj->model[5], 4, 4);
+        Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         m248_PlayerMotChange(obj, 4);
     } else if (state->unk_0F >= 65 && (m248_phase >= 3 ||
                                        HuPadStkX[(s8)pad] + HuPadStkY[(s8)pad] != 0 || state->unk_00 != 0)) {
@@ -800,10 +800,10 @@ void m248_PlayerHitCheck(omObjData *obj) {
             omVibrate(obj->work[0], 20, 0, 20);
         }
         HuAudPlayerFXPlay(0x488, obj->work[0]);
-        Hu3DModelAttrSet(obj->model[2], 4, 4);
-        Hu3DModelAttrSet(obj->model[3], 4, 4);
-        Hu3DModelAttrSet(obj->model[4], 4, 4);
-        Hu3DModelAttrSet(obj->model[5], 4, 4);
+        Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     end = base + 2;
     for (i = base; i < end; i++) {
@@ -1158,10 +1158,10 @@ void m248_EyeObjMain(omObjData *obj) {
                 scale = entry->unk_18[4] * 2.4f;
                 Hu3DModelScaleSet(obj->model[1], scale, 1.0f, scale);
                 if (entry->unk_18[4] < 0.06f) {
-                    Hu3DModelAttrSet(obj->model[0], 4, 4);
-                    Hu3DModelAttrSet(obj->model[1], 4, 4);
-                    Hu3DModelAttrSet(obj->model[2], 4, 4);
-                    Hu3DModelAttrSet(obj->model[3], 4, 0);
+                    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DModelPosSet(obj->model[3], 0.0f, 90.0f, 70.0f);
                     unkCBC0->unk_0C++;
                 }
@@ -1172,7 +1172,7 @@ void m248_EyeObjMain(omObjData *obj) {
             Hu3DModelScaleSet(obj->model[3], size, size, size);
             if (entry->unk_04[9] > 16) {
                 entry->unk_04[0] = 0;
-                Hu3DModelAttrSet(obj->model[3], 4, 4);
+                Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 unkCBC0->unk_0C++;
             } else {
                 entry->unk_04[0] -= 15;
@@ -1199,7 +1199,7 @@ void m248_EyeObjMain(omObjData *obj) {
                     angle = m248_AngleAdd(state->unk_48, 180.0f);
                     obj->trans.x = sindf(angle) * 30.0f;
                     obj->trans.z = cosdf(angle) * 30.0f;
-                    Hu3DModelAttrSet(obj->model[2], 4, 0);
+                    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DMotionSpeedSet(obj->model[2], 1.0f);
                     Hu3DMotionTimeSet(obj->model[2], 5.0f);
                     Hu3DModelRotSet(obj->model[2], 0.0f, state->unk_48, 0.0f);
@@ -1236,7 +1236,7 @@ void m248_EyeObjMain(omObjData *obj) {
             }
             if (entry->unk_04[1] != 0 && ++entry->unk_04[1] >= 15) {
                 entry->unk_04[1] = 0;
-                Hu3DModelAttrSet(obj->model[2], 4, 4);
+                Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             break;
     }
@@ -1258,12 +1258,12 @@ void m248_EyeObjInit(omObjData *obj) {
     obj->model[1] = Hu3DModelLink(m248_linkMdlTbl[0]);
     obj->model[2] = Hu3DModelRead(0x510002, 0x2B9);
     Hu3DMotionSpeedSet(obj->model[2], 0.0f);
-    Hu3DModelAttrSet(obj->model[2], 4, 4);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelPosSet(obj->model[2], 0.0f, 0.0f, 0.0f);
     obj->model[3] = Hu3DModelRead(0x510003, 0x2A8);
     Hu3DModelTPLvlInit(obj->model[3]);
     Hu3DModelTPLvlSet(obj->model[3], 255);
-    Hu3DModelAttrSet(obj->model[3], 4, 4);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelPosSet(obj->model[3], 0.0f, 60.0f, 20.0f);
     Hu3DModelRotSet(obj->model[3], 318.0f, 0.0f, 0.0f);
     Hu3DModelScaleSet(obj->model[3], 0.3f, 0.3f, 0.3f);
@@ -1412,7 +1412,7 @@ void m248_FireObjMain(omObjData *obj) {
                 eye->unk_0C = 30.0f;
                 obj->scale.x = obj->scale.y = obj->scale.z = 1.0f;
                 Hu3DModelScaleSet(obj->model[1], 0.1f, 1.0f, 0.1f);
-                Hu3DModelAttrSet(obj->model[1], 4, 4);
+                Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             } else {
                 eye->unk_0C = entry->unk_18[1] * 30.0f;
                 obj->scale.x = obj->scale.y = obj->scale.z = entry->unk_18[1];
@@ -1429,7 +1429,7 @@ void m248_FireObjMain(omObjData *obj) {
             Hu3DModelScaleSet(obj->model[1], scale, 1.0f, scale);
             eye->unk_10 = 1;
         } else if (obj->trans.y < 580.0f) {
-            Hu3DModelAttrSet(obj->model[1], 4, 0);
+            Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             if (eye->unk_11 == 0) {
                 HuAudFXPlay(0x489);
                 eye->unk_11 = 1;
@@ -1481,7 +1481,7 @@ void m248_FireObjInit(omObjData *obj) {
     obj->trans.y = 600.0f;
     obj->trans.z = 250.0f;
     obj->rot.x = 340.0f;
-    Hu3DModelAttrSet(obj->model[1], 4, 4);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelPosSet(obj->model[1], obj->trans.x, obj->trans.y, obj->trans.z);
     Hu3DModelScaleSet(obj->model[1], 0.1f, 1.0f, 0.1f);
     switch (index) {
@@ -1576,7 +1576,7 @@ void m248_ExitWaitObjMain(omObjData *obj) {
 
 void m248_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq == 1) {
-        WipeCreateOut(0, 20);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         obj->func = m248_ExitWaitObjMain;
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
@@ -1633,7 +1633,7 @@ void m248_MainObjMain(omObjData *obj) {
             break;
         case 4:
             if (--m248_timer <= 0) {
-                WipeCreateOut(0, 20);
+                WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                 obj->func = m248_ExitWaitObjMain;
             }
             break;
@@ -1652,7 +1652,7 @@ void m248_MainObjInit(omObjData *obj) {
     m248_PlayerObjCreateAll();
     m248_EyeObjCreateAll();
     m248_FireObjCreateAll();
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
     obj->func = m248_MainObjMain;
 }
 

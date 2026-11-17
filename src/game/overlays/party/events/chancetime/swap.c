@@ -277,8 +277,8 @@ void chancetime_HostRExit(omObjData *object) {
     Hu3DModelPosSet(object->model[4], chancetime_hostRExitX + 200.0f, -5.0f, -50.0f);
     if (count == 1) {
         chancetime_hostRExitX = 0.0f;
-        Hu3DModelAttrSet(object->model[3], 4, 4);
-        Hu3DModelAttrSet(object->model[4], 4, 4);
+        Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         chancetime_PlayerEnterStart();
         Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[5]].motId, 0, 30, 2);
         Hu3DMotionShiftSet(object->model[3], Hu3DData[object->motion[5]].motId, 0, 30, 2);
@@ -351,7 +351,7 @@ void chancetime_HostEffShow(omObjData *object) {
     Hu3DModelPosSet(object->model[7], Hu3DData[object->model[1]].pos.x + pos.x,
                     Hu3DData[object->model[1]].pos.y + pos.y - 100.0f,
                     Hu3DData[object->model[1]].pos.z + pos.z + 80.0f);
-    Hu3DModelAttrSet(object->model[7], 4, 0);
+    Hu3DModelAttrSet(object->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DMotionAttrSet(object->model[7], 2, 0);
     Hu3DMotionAttrSet(object->model[7], 1, 0);
     Hu3DSprModelFrameSet(chancetime_hostEffSprMdlTbl[0], 0);
@@ -365,7 +365,7 @@ void chancetime_HostEffShow(omObjData *object) {
     Hu3DModelPosSet(object->model[8], Hu3DData[object->model[3]].pos.x + pos.x,
                     Hu3DData[object->model[3]].pos.y + pos.y - 100.0f,
                     Hu3DData[object->model[3]].pos.z + pos.z + 80.0f);
-    Hu3DModelAttrSet(object->model[8], 4, 0);
+    Hu3DModelAttrSet(object->model[8], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DMotionAttrSet(object->model[8], 2, 0);
     Hu3DMotionAttrSet(object->model[8], 1, 0);
     Hu3DSprModelFrameSet(chancetime_hostEffSprMdlTbl[1], 0);
@@ -429,7 +429,7 @@ void chancetime_DancerProc(void) {
     Hu3DModelPosSet(object->model[2], chancetime_dancerPos.x, chancetime_dancerPos.y, chancetime_dancerPos.z);
     Hu3DModelCameraSet(object->model[2], 2);
     Hu3DMotionShiftSet(object->model[1], Hu3DData[motObj->motion[0]].motId, 0, 30, 2);
-    Hu3DModelAttrSet(object->model[2], 4, 4);
+    Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     chancetime_dancerWorkTbl[0].func = chancetime_DancerJump;
     while (TRUE) {
         chancetime_dancerWorkTbl[0].func(object);
@@ -491,7 +491,7 @@ void chancetime_DancerJump(omObjData *object) {
             Hu3DData[object->model[2]].pos.x = Hu3DData[model].pos.x;
             Hu3DData[object->model[2]].pos.y = 0.0f;
             Hu3DData[object->model[2]].pos.z = Hu3DData[model].pos.z;
-            Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
         if (Hu3DData[model].pos.y <= 0.0f) {
             break;
@@ -526,7 +526,7 @@ void chancetime_Dancer1Proc(void) {
     Hu3DModelPosSet(obj->model[2], chancetime_dancerPosTbl[0].x, chancetime_dancerPosTbl[0].y, chancetime_dancerPosTbl[0].z);
     Hu3DModelCameraSet(obj->model[2], 2);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[motObj->motion[0]].motId, 0, 10, 2);
-    Hu3DModelAttrSet(obj->model[2], 4, 0);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     chancetime_dancerWorkTbl[1].func = chancetime_Dancer1Dance;
     while (TRUE) {
         chancetime_dancerWorkTbl[1].func(obj);
@@ -572,8 +572,8 @@ void chancetime_Dancer1Dance(omObjData *object) {
     HuPrcSleep(50);
     Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[1]].motId, 0, 10, 2);
     chancetime_ObjWalk(object, -400.0f, 0.0f, 300.0f, 10);
-    Hu3DModelAttrSet(object->model[1], 4, 4);
-    Hu3DModelAttrSet(object->model[2], 4, 4);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     chancetime_dancerWorkTbl[1].func = chancetime_ObjIdle;
 }
 
@@ -593,7 +593,7 @@ void chancetime_Dancer2Proc(void) {
     Hu3DModelPosSet(obj->model[2], chancetime_dancerPosTbl[1].x, chancetime_dancerPosTbl[1].y, chancetime_dancerPosTbl[1].z);
     Hu3DModelCameraSet(obj->model[2], 2);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[motObj->motion[0]].motId, 0, 10, 2);
-    Hu3DModelAttrSet(obj->model[2], 4, 0);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     chancetime_dancerWorkTbl[2].func = chancetime_Dancer2Dance;
     while (TRUE) {
         chancetime_dancerWorkTbl[2].func(obj);
@@ -639,8 +639,8 @@ void chancetime_Dancer2Dance(omObjData *object) {
     HuPrcSleep(50);
     Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[1]].motId, 0, 10, 2);
     chancetime_ObjWalk(object, -200.0f, 0.0f, 300.0f, 10);
-    Hu3DModelAttrSet(object->model[1], 4, 4);
-    Hu3DModelAttrSet(object->model[2], 4, 4);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     chancetime_dancerWorkTbl[2].func = chancetime_ObjIdle;
 }
 
@@ -660,7 +660,7 @@ void chancetime_Dancer3Proc(void) {
     Hu3DModelPosSet(obj->model[2], chancetime_dancerPosTbl[2].x, chancetime_dancerPosTbl[2].y, chancetime_dancerPosTbl[2].z);
     Hu3DModelCameraSet(obj->model[2], 2);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[motObj->motion[0]].motId, 0, 10, 2);
-    Hu3DModelAttrSet(obj->model[2], 4, 0);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     chancetime_dancerWorkTbl[3].func = chancetime_Dancer3Dance;
     while (TRUE) {
         chancetime_dancerWorkTbl[3].func(obj);
@@ -706,8 +706,8 @@ void chancetime_Dancer3Dance(omObjData *object) {
     HuPrcSleep(50);
     Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[1]].motId, 0, 10, 2);
     chancetime_ObjWalk(object, 200.0f, 0.0f, 300.0f, 10);
-    Hu3DModelAttrSet(object->model[1], 4, 4);
-    Hu3DModelAttrSet(object->model[2], 4, 4);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     chancetime_dancerWorkTbl[3].func = chancetime_ObjIdle;
 }
 
@@ -727,7 +727,7 @@ void chancetime_Dancer4Proc(void) {
     Hu3DModelPosSet(obj->model[2], chancetime_dancerPosTbl[3].x, chancetime_dancerPosTbl[3].y, chancetime_dancerPosTbl[3].z);
     Hu3DModelCameraSet(obj->model[2], 2);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[motObj->motion[0]].motId, 0, 10, 2);
-    Hu3DModelAttrSet(obj->model[2], 4, 0);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     chancetime_dancerWorkTbl[4].func = chancetime_Dancer4Dance;
     while (TRUE) {
         chancetime_dancerWorkTbl[4].func(obj);
@@ -773,8 +773,8 @@ void chancetime_Dancer4Dance(omObjData *object) {
     HuPrcSleep(50);
     Hu3DMotionShiftSet(model, Hu3DData[motObj->motion[1]].motId, 0, 10, 2);
     chancetime_ObjWalk(object, 400.0f, 0.0f, 300.0f, 10);
-    Hu3DModelAttrSet(object->model[1], 4, 4);
-    Hu3DModelAttrSet(object->model[2], 4, 4);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     chancetime_dancerWorkTbl[4].func = chancetime_ObjIdle;
 }
 
@@ -847,7 +847,7 @@ void chancetime_HostLJump(omObjData *object) {
             Hu3DData[object->model[2]].pos.x = Hu3DData[model].pos.x;
             Hu3DData[object->model[2]].pos.y = 0.0f;
             Hu3DData[object->model[2]].pos.z = Hu3DData[model].pos.z;
-            Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
         if (Hu3DData[model].pos.y <= 0.0f) {
             break;
@@ -933,7 +933,7 @@ void chancetime_HostRJump(omObjData *object) {
             Hu3DData[object->model[2]].pos.x = Hu3DData[model].pos.x;
             Hu3DData[object->model[2]].pos.y = 0.0f;
             Hu3DData[object->model[2]].pos.z = Hu3DData[model].pos.z;
-            Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
         if (Hu3DData[model].pos.y <= 0.0f) {
             break;

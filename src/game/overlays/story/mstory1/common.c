@@ -51,7 +51,7 @@ void mstory1_SceneObjMain(omObjData *obj) {
             }
             break;
         case 3:
-            WipeCreateOut(2, 20);
+            WipeCreateOut(WIPE_STARS, 20);
             HuAudSeqFadeOut(30);
             state++;
             break;
@@ -69,7 +69,7 @@ void mstory1_SceneObjMain(omObjData *obj) {
 void mstory1_ExitObjMain(omObjData *obj) {
     if (omSysExitReq == 1) {
         if (mstory1_exitF == 0) {
-            WipeCreateOut(2, 20);
+            WipeCreateOut(WIPE_STARS, 20);
             HuAudSeqFadeOut(30);
             mstory1_exitF = 1;
         } else if (WipeStatGet() == 0) {

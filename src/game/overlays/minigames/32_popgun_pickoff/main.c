@@ -505,7 +505,7 @@ void m250_StageObjMain(omObjData *object) {
     switch (m250_phase) {
         case 0:
             Hu3DHookFuncCreate(0xC0, m250_BillboardDraw, 2);
-            GMesCreate(6);
+            GMesCreate(GMES_MES_MG_START);
             m250_timer = 900;
             m250_phase++;
         case 1:
@@ -597,8 +597,8 @@ void m250_StageObjMain(omObjData *object) {
     }
     m250_ShotTargetUpdate(object);
     for (i = 0; i < 2; i++) {
-        HuSprAttrReset(m250_sprGrpTbl[4], i * 3 + 1, 0x8000);
-        HuSprAttrReset(m250_sprGrpTbl[4], i * 3 + 2, 0x8000);
+        HuSprDispOn(m250_sprGrpTbl[4], i * 3 + 1);
+        HuSprDispOn(m250_sprGrpTbl[4], i * 3 + 2);
         HuSprPatNoSet(m250_sprGrpTbl[4], i * 3, m250_scoreTbl[i] % 10);
         HuSprPatNoSet(m250_sprGrpTbl[4], i * 3 + 1, m250_scoreTbl[i] / 10 % 10);
         HuSprPatNoSet(m250_sprGrpTbl[4], i * 3 + 2, m250_scoreTbl[i] / 100);
@@ -1000,18 +1000,18 @@ void m250_PlayerObjMain(omObjData *object) {
                 input = m250_PlayerComInput(object);
                 target = work->unk34;
             }
-            HuSprAttrReset(work->unk2F, 0, 0x8000);
+            HuSprDispOn(work->unk2F, 0);
             HuSprPosSet(work->unk2F, 0, m250_targetTbl[target].screenX,
                         m250_targetTbl[target].screenY);
             rotX = m250_aimRotXTbl[target / 3];
             rot = m250_aimRotYTbl[work->unk2A][target % 3];
             break;
         case 3:
-            HuSprAttrSet(work->unk2F, 0, 0x8000);
+            HuSprDispOff(work->unk2F, 0);
             MgPlayerMotSet(object, 0);
         case 4:
             MgPlayerMotSet(object, 0);
-            Hu3DModelAttrSet(object->model[2], 4, 4);
+            Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             rotX = 0.0f;
             if (work->unk2A != 0) {
                 if (rot > -180.0) {
@@ -1176,7 +1176,7 @@ s16 m250_EffSprCreate(s16 spriteId, s16 x, s16 y, f32 rot) {
     HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_PAT_LOOP);
     HuSprPosSet(group, i, x, y);
     HuSprZRotSet(group, i, rot);
-    HuSprAttrReset(group, i, 0x8000);
+    HuSprDispOn(group, i);
     return i;
 }
 

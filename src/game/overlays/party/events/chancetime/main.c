@@ -89,7 +89,7 @@ void chancetime_ObjectSetup(void) {
     }
 
     obj = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
-    omSetStatBit(obj, 0xA0);
+    omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     obj->work[0] = 3;
     omAddPrcObj(chancetime_PlayerProc, 0x1001, 0x2000, 0);
     omAddPrcObj(chancetime_HostProc, 0x1001, 0x2000, 0);
@@ -106,7 +106,7 @@ void chancetime_ObjectSetup(void) {
     omAddObj(0, 0, 0, -1, chancetime_ExitCheckObjMain);
     chancetime_CameraInit();
     chancetime_BgSprCreate();
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
 }
 
 void chancetime_FlowObjMain(omObjData *object) {
@@ -224,7 +224,7 @@ void chancetime_FlowObjMain(omObjData *object) {
             state += chancetime_TransferCheck() != 0;
             break;
         case 22:
-            WipeCreateOut(0, 20);
+            WipeCreateOut(WIPE_TYPE_NORMAL, 20);
             HuAudSeqFadeOut(30);
             HuAudFXAllFadeOut(30);
             state++;
@@ -265,7 +265,7 @@ void chancetime_ExitCheckObjMain(omObjData *object) {
     }
 
     if (chancetime_exitF == 0) {
-        WipeCreateOut(0, 20);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         chancetime_exitF = 1;
     } else if (WipeStatGet() == 0) {
         HuAudSeqFadeOut(30);

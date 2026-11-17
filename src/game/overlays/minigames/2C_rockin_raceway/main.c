@@ -1161,14 +1161,14 @@ void m244_PlayerObjMain(omObjData *object) {
     if (m244_ghostDispF != 0) {
         for (i = 0; i < 2; i++) {
             if (m244_ghostTbl[i].racers[racer->unk0A].active != 0) {
-                Hu3DModelAttrSet(object->model[3 + i], 4, 0);
+                Hu3DModelAttrSet(object->model[3 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             } else {
-                Hu3DModelAttrSet(object->model[3 + i], 4, 4);
+                Hu3DModelAttrSet(object->model[3 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
         }
     } else {
         for (i = 0; i < 2; i++) {
-            Hu3DModelAttrSet(object->model[3 + i], 4, 4);
+            Hu3DModelAttrSet(object->model[3 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
     for (i = 1; i >= 0; i--) {
@@ -1566,8 +1566,8 @@ void m244_PanelCreateAll(void) {
             entry->modelA = Hu3DModelLink(m244_panelTbl->modelA);
             entry->modelB = Hu3DModelLink(m244_panelTbl->modelB);
         }
-        Hu3DModelAttrSet(entry->modelA, 4, 4);
-        Hu3DModelAttrSet(entry->modelB, 4, 4);
+        Hu3DModelAttrSet(entry->modelA, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(entry->modelB, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         entry->flag = 0;
         entry->timer = 0;
         entry->active = 0;
@@ -1580,7 +1580,7 @@ void m244_PanelCreateAll(void) {
         m244_PanelCreate((Vec *)m244_trackTbl[i].unk0C[m244_panelNodeTbl[i][1]], 0,
                                      30);
     }
-    omSetStatBit(omAddObj(30, 0, 0, -1, m244_PanelObjMain), 0xA0);
+    omSetStatBit(omAddObj(30, 0, 0, -1, m244_PanelObjMain), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
 // Claims a free blink-marker entry, initializes it with the duration and base position, positions
@@ -1642,8 +1642,8 @@ void m244_PanelObjMain(omObjData *object) {
             shown = entry->modelA;
             hidden = entry->modelB;
         }
-        Hu3DModelAttrSet(shown, 4, 0);
-        Hu3DModelAttrSet(hidden, 4, 4);
+        Hu3DModelAttrSet(shown, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(hidden, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         entry->posX += entry->velX;
         entry->posY += entry->velY;
         entry->posZ += entry->velZ;
@@ -1653,8 +1653,8 @@ void m244_PanelObjMain(omObjData *object) {
         Hu3DModelScaleSet(hidden, 1.0f, 1.0f, 1.0f);
         if (m244_phase >= 3) {
             entry->active = 0;
-            Hu3DModelAttrSet(shown, 4, 4);
-            Hu3DModelAttrSet(hidden, 4, 4);
+            Hu3DModelAttrSet(shown, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(hidden, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
 }
@@ -1675,8 +1675,8 @@ s32 m244_PanelHitCheck(Vec *pos) {
         dy = entry->posY - pos->y;
         dz = entry->posZ - pos->z;
         if (dx * dx + dy * dy + dz * dz < (0.3f * 200.0) * (0.3f * 200.0)) {
-            Hu3DModelAttrSet(entry->modelA, 4, 4);
-            Hu3DModelAttrSet(entry->modelB, 4, 4);
+            Hu3DModelAttrSet(entry->modelA, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(entry->modelB, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             entry->active = 0;
             if (m244_cheerSeNo == -1 && m244_cheerSeDelay == -1 && entry->duration == 30) {
                 m244_cheerSeDelay = 4;
@@ -1756,7 +1756,7 @@ void m244_SparkInit(void) {
         model = &Hu3DData[object->model[i]];
         model->motTime = 0.0f;
         model->motSpeed = 1.0f;
-        Hu3DModelAttrSet(object->model[i], 4, 4);
+        Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     m244_sparkStateTbl = HuMemAllocTag(12 * sizeof(RockinRacewayModelState), TAG_OVERLAY);
     memset(m244_sparkStateTbl, 0, 12 * sizeof(RockinRacewayModelState));
@@ -1899,7 +1899,7 @@ void m244_SmokeInit(void) {
         effect->pos.x = effect->pos.y = effect->pos.z = 0.0f;
         effect->vel.x = effect->vel.y = effect->vel.z = 0.0f;
         effect->scale.x = effect->scale.y = effect->scale.z = 0.0f;
-        Hu3DModelAttrSet(effect->model, 4, 4);
+        Hu3DModelAttrSet(effect->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         model = &Hu3DData[effect->model];
         model->motTime = 0.0f;
     }
@@ -1981,7 +1981,7 @@ s32 m244_SmokeCreate(Vec *pos, Vec *vel, Vec *scale, f32 speed) {
         effect->speed = speed;
         effect->frame = 0.0f;
         m244_BillboardColorPatSet(effect->model, sprite, 0, m244_smokeColor);
-        Hu3DModelAttrSet(effect->model, 4, 0);
+        Hu3DModelAttrSet(effect->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         model->motTime = 0.0f;
         model->pos.x = effect->pos.x;
         model->pos.y = effect->pos.y;
@@ -2357,7 +2357,7 @@ void m244_GaugeCreate(s16 track, s16 character) {
             HuSprPriSet(group, i, 0xFFFF);
         }
     }
-    omSetStatBit(omAddObj(20, 0, 0, -1, m244_GaugeObjMain), 0xA0);
+    omSetStatBit(omAddObj(20, 0, 0, -1, m244_GaugeObjMain), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
 void m244_GaugeObjMain(omObjData *object) {

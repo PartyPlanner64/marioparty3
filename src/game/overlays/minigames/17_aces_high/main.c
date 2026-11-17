@@ -370,14 +370,14 @@ void m223_PlaneObjInit(omObjData *object) {
         object->model[5] = Hu3DModelLink(m223_planeObjTbl[0]->model[5]);
         object->model[6] = Hu3DModelLink(m223_planeObjTbl[0]->model[6]);
     }
-    Hu3DModelAttrSet(object->model[3], 4, 4);
+    Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelObjAttrSet(object->model[3], 0x70000000, 0x70000000);
-    Hu3DModelAttrSet(object->model[2], 4, 4);
+    Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DMotionAttrSet(object->model[4], 3, 2);
     Hu3DMotionAttrSet(object->model[5], 3, 2);
     Hu3DMotionAttrSet(object->model[6], 3, 2);
-    Hu3DModelAttrSet(object->model[4], 4, 4);
-    Hu3DModelAttrSet(object->model[6], 4, 4);
+    Hu3DModelAttrSet(object->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     omSetTra(object, sindf(m223_startRotTbl[idx]) * 1150.0f, -250.0f, cosdf(m223_startRotTbl[idx]) * 1150.0f);
     omSetRot(object, 0.0f, atan2df(-object->trans.x, -object->trans.z), 0.0f);
     Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
@@ -452,9 +452,9 @@ void m223_PlaneMdlUpdate(omObjData *object) {
     HuRotateRPYF(Hu3DData[object->model[0]].mtx, player->unk_38, 0.0f, player->unk_3C + player->unk_44);
     omSetRot(object, 0.0f, object->rot.y, 0.0f);
     if (player->unk_90 == 0) {
-        Hu3DModelAttrSet(object->model[0], 4, 4);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     } else {
-        Hu3DModelAttrSet(object->model[0], 4, 0);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
     if (player->unk_56 == 1) {
         Hu3DModelPosSet(object->model[1], object->trans.x + player->unk_60, object->trans.y + player->unk_68,
@@ -466,15 +466,15 @@ void m223_PlaneMdlUpdate(omObjData *object) {
         HuRotateRPYF(Hu3DData[object->model[2]].mtx, player->unk_38, 0.0f, player->unk_3C + player->unk_44);
         Hu3DModelRotSet(object->model[2], 0.0f, object->rot.y, 0.0f);
         if (player->unk_58 == 0) {
-            Hu3DModelAttrSet(object->model[2], 4, 4);
-            Hu3DModelAttrSet(object->model[1], 4, 0);
+            Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         } else {
-            Hu3DModelAttrSet(object->model[1], 4, 4);
-            Hu3DModelAttrSet(object->model[2], 4, 0);
+            Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
         if (player->unk_90 == 0) {
-            Hu3DModelAttrSet(object->model[1], 4, 4);
-            Hu3DModelAttrSet(object->model[2], 4, 4);
+            Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
 }
@@ -486,36 +486,36 @@ void m223_PlaneSubMdlUpdate(omObjData *object) {
     switch (player->unk_4C) {
         case 0:
             model = object->model[4];
-            Hu3DModelAttrSet(object->model[5], 4, 4);
-            Hu3DModelAttrSet(object->model[6], 4, 4);
+            Hu3DModelAttrSet(object->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             break;
         case 1:
             model = object->model[5];
-            Hu3DModelAttrSet(object->model[4], 4, 4);
-            Hu3DModelAttrSet(object->model[6], 4, 4);
+            Hu3DModelAttrSet(object->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             break;
         case 2:
             model = object->model[6];
-            Hu3DModelAttrSet(object->model[4], 4, 4);
-            Hu3DModelAttrSet(object->model[5], 4, 4);
+            Hu3DModelAttrSet(object->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             break;
         case 3:
             model = -1;
-            Hu3DModelAttrSet(object->model[4], 4, 4);
-            Hu3DModelAttrSet(object->model[5], 4, 4);
-            Hu3DModelAttrSet(object->model[6], 4, 4);
+            Hu3DModelAttrSet(object->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             break;
     }
     if (model >= 0) {
-        Hu3DModelAttrSet(model, 4, 0);
+        Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(model, object->trans.x, object->trans.y, object->trans.z);
         HuRotateRPYF(Hu3DData[model].mtx, player->unk_38, 0.0f, player->unk_3C + player->unk_44);
         Hu3DModelRotSet(model, 0.0f, object->rot.y, 0.0f);
     }
     if (player->unk_90 == 0) {
-        Hu3DModelAttrSet(object->model[4], 4, 4);
-        Hu3DModelAttrSet(object->model[5], 4, 4);
-        Hu3DModelAttrSet(object->model[6], 4, 4);
+        Hu3DModelAttrSet(object->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 }
 
@@ -744,7 +744,7 @@ void m223_PlaneObjMain(omObjData *object) {
             player->unk_4C = 3;
             player->unk_58 = 0;
             m223_CameraPosCalc(object);
-            Hu3DModelAttrSet(object->model[3], 4, 0);
+            Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DMotionAttrSet(object->model[3], 3, 2);
             Hu3DMotionTimeSet(object->model[3], 0.0f);
             Hu3DModelPosSet(object->model[3], object->trans.x, object->trans.y, object->trans.z);
@@ -764,7 +764,7 @@ void m223_PlaneObjMain(omObjData *object) {
     if (hit & 2) {
         player->unk_56 = 1;
         player->unk_5C = 50.0f;
-        Hu3DModelAttrSet(object->model[1], 4, 0);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
     if (hit & 4) {
         player->unk_74->work[0] = 45;
@@ -947,7 +947,7 @@ void m223_PlaneReturnObjMain(omObjData *object) {
     if (hit & 2) {
         player->unk_56 = 1;
         player->unk_5C = 50.0f;
-        Hu3DModelAttrSet(object->model[1], 4, 0);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
     if (hit & 4) {
         player->unk_74->work[0] = 45;
@@ -1013,7 +1013,7 @@ void m223_PlaneCrashObjMain(omObjData *object) {
                 player->unk_00 = 6;
                 object->func = NULL;
                 player->unk_90 = 0;
-                Hu3DModelAttrSet(object->model[3], 4, 4);
+                Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 player->camObj->func = m223_CameraOverObjMain;
                 Hu3DModelCameraSet(m223_stageObj->model[3],
                                    Hu3DData[m223_stageObj->model[3]].cameraBit &
@@ -2013,7 +2013,7 @@ void m223_ShotFire(omObjData *object) {
     shotObj = omAddObj(28, 1, 0, idx + 1, m223_ShotObjMain);
     shot = shotObj->data = HuMemAllocTag(sizeof(AceHighShot), 0x7918);
     shotObj->model[0] = Hu3DModelLink(m223_shotMdlObj->model[idx]);
-    Hu3DModelAttrSet(shotObj->model[0], 4, 0);
+    Hu3DModelAttrSet(shotObj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     shot->unk_00 = 0;
     shot->speed = player->unk_08 + 27.777777f;
     dir = player->dir;
@@ -2077,7 +2077,7 @@ void m223_ShotObjMain(omObjData *object) {
     object->mode = 0;
     if (hit & 1) {
         shot->unk_02 = 1;
-        Hu3DModelAttrSet(shot->effectModel, 4, 0);
+        Hu3DModelAttrSet(shot->effectModel, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DMotionAttrSet(shot->effectModel, 3, 0);
         Hu3DMotionTimeSet(shot->effectModel, 0.0f);
         Hu3DModelPosSet(shot->effectModel, object->trans.x, object->trans.y, object->trans.z);
@@ -2099,7 +2099,7 @@ void m223_ShotObjMain(omObjData *object) {
             break;
         case 1:
             if (shot->timer == 0) {
-                Hu3DModelAttrSet(shot->effectModel, 4, 4);
+                Hu3DModelAttrSet(shot->effectModel, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 m223_shotEffUseTbl[shot->effectIdx] = 0;
                 owner = shot->owner->data;
                 owner->unk_24++;
@@ -2121,8 +2121,8 @@ void m223_MissileFire(omObjData *object) {
     f32 dist;
     s32 i;
 
-    Hu3DModelAttrSet(object->model[1], 4, 0);
-    Hu3DModelAttrSet(object->model[2], 4, 4);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     player->unk_58 = 0;
     if (MgFlowStatGet() != MG_STATE_PLAY) {
         return;
@@ -2211,11 +2211,11 @@ void m223_MissileObjMain(omObjData *object) {
     object->mode = 0;
     if (hit & 1) {
         shot->unk_02 = 1;
-        Hu3DModelAttrSet(shot->effectModel, 4, 0);
+        Hu3DModelAttrSet(shot->effectModel, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DMotionAttrSet(shot->effectModel, 3, 0);
         Hu3DMotionTimeSet(shot->effectModel, 0.0f);
         Hu3DModelPosSet(shot->effectModel, object->trans.x, object->trans.y, object->trans.z);
-        Hu3DModelAttrSet(object->model[0], 4, 4);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         shot->timer = 30;
         shot->radius = 50.0f;
         playerData = shot->owner->data;
@@ -2348,7 +2348,7 @@ void m223_MissileObjMain(omObjData *object) {
             break;
         case 1:
             if (shot->timer == 0) {
-                Hu3DModelAttrSet(shot->effectModel, 4, 4);
+                Hu3DModelAttrSet(shot->effectModel, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 m223_shotEffUseTbl[shot->effectIdx] = 0;
                 omObjModeSet(shot->owner, 2);
                 omDelObj(object);
@@ -2428,7 +2428,7 @@ void m223_RadarObjMain(omObjData *object) {
 void m223_IntroObjMain(omObjData *object) {
     switch (m223_introPhase) {
         case 0:
-            WipeCreateIn(0xFF, 16);
+            WipeCreateIn(WIPE_TYPE_PREV, 16);
             m223_introPhase = 1;
             break;
         case 1:

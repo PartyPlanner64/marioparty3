@@ -996,7 +996,7 @@ void boardresult2_MainProc(void) {
     HuSprPosSet(boardresult2_rankTitleSprGrp->unk_0A, 0, 160, -40);
     HuSprPosSet(boardresult2_rankSubtitleSprGrp->unk_0A, 0, 55, -40);
 
-    WipeCreateIn(2, 16);
+    WipeCreateIn(WIPE_STARS, 16);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -1107,14 +1107,14 @@ void boardresult2_MainProc(void) {
 
             if (showingDetails == 1) {
                 if (boardresult2_statScroll == 0 && boardresult2_statCursor == 0) {
-                    HuSprAttrSet(boardresult2_statArrowSprGrp->unk_0A, 0, 0x8000);
+                    HuSprDispOff(boardresult2_statArrowSprGrp->unk_0A, 0);
                 } else {
-                    HuSprAttrReset(boardresult2_statArrowSprGrp->unk_0A, 0, 0x8000);
+                    HuSprDispOn(boardresult2_statArrowSprGrp->unk_0A, 0);
                 }
                 if (boardresult2_statScroll == 9 && boardresult2_statCursor == 3) {
-                    HuSprAttrSet(boardresult2_statArrowSprGrp->unk_0A, 1, 0x8000);
+                    HuSprDispOff(boardresult2_statArrowSprGrp->unk_0A, 1);
                 } else {
-                    HuSprAttrReset(boardresult2_statArrowSprGrp->unk_0A, 1, 0x8000);
+                    HuSprDispOn(boardresult2_statArrowSprGrp->unk_0A, 1);
                 }
             }
         }
@@ -1131,7 +1131,7 @@ exit:
     if (!(GwSystem.playMode & 4) || (GwPlayer[kakusiMasuItemHis[0]].stat & PLAYER_IS_CPU)) {
         HuAudSeqFadeOut(60);
     }
-    WipeCreateOut(0, 20);
+    WipeCreateOut(WIPE_TYPE_NORMAL, 20);
     HuPrcSleep(20);
     boardresult2_RankSprKill();
     boardresult2_StatSprKill();

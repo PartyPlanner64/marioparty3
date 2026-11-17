@@ -313,7 +313,7 @@ void opboardtutorial_ArriveExec(void) {
     EffectRangeSet(effect, 40.0f);
     Hu3DParticleAttrSet(effect, 1, 0);
     MBBackTPLvlSet(128);
-    WipeCreateIn(2, 16);
+    WipeCreateIn(WIPE_STARS, 16);
     HuPrcSleep(17);
     for (i = 128; i < 256; i += 8) {
         MBBackTPLvlSet(i);
@@ -356,7 +356,7 @@ void opboardtutorial_ArriveExec(void) {
         HuPrcVSleep();
         if (i == 5) {
             WipeColorSet(255, 255, 255);
-            WipeCreateOut(11, 16);
+            WipeCreateOut(WIPE_FADE, 16);
         }
     }
     while (WipeStatGet() != 0) {
@@ -548,7 +548,7 @@ void opboardtutorial_GuideTalkExec(void) {
         effects[j] = opboardtutorial_SpiralEffCreate(0xB0004, 0x689);
     }
     WipeColorSet(255, 255, 255);
-    WipeCreateIn(11, 16);
+    WipeCreateIn(WIPE_FADE, 16);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -607,7 +607,7 @@ void opboardtutorial_ExitObjMain(omObjData *obj) {
 
 void opboardtutorial_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq != 0) {
-        WipeCreateOut(2, 20);
+        WipeCreateOut(WIPE_STARS, 20);
         obj->func = opboardtutorial_ExitObjMain;
     }
 }

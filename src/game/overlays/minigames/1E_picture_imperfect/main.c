@@ -797,7 +797,7 @@ void m230_PlayerObjMain(omObjData *object) {
             }
             break;
     }
-    Hu3DModelAttrSet(object->model[1], 4, 4);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
 void m230_PlayerComInput(omObjData *object) {

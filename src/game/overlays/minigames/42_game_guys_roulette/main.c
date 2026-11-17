@@ -205,7 +205,7 @@ void m266_MainObjInit(omObjData *object) {
     m266_markerObj = omAddObj(3, 10, 10, -1, m266_MarkerObjInit);
     m266_ballObj = omAddObj(4, 10, 10, -1, m266_BallObjInit);
     omAddObj(5, 10, 10, -1, m266_StageObjInit);
-    WipeCreateIn(255, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
     object->func = m266_MainObjMain;
 }
 
@@ -918,7 +918,7 @@ void m266_ExitStartObjMain(omObjData *object) {
     } else if (m266_winF == 0) {
         GwPlayer[m266_playerInfo.player].bonusCoin = 0;
     }
-    WipeCreateOut(0, 20);
+    WipeCreateOut(WIPE_TYPE_NORMAL, 20);
     HuAudSeqFadeOut(30);
     HuAudFXAllFadeOut(30);
     object->func = m266_ExitObjMain;

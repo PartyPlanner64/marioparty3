@@ -135,7 +135,7 @@ void mstory2_SceneInit(void) {
         mstory2_padNo = 0;
     }
     mstory2_sceneCreateTbl[mstory2_sceneNo]();
-    WipeCreateIn(2, 16);
+    WipeCreateIn(WIPE_STARS, 16);
 }
 
 void (*const mstory2_sceneCreateTbl[])(void) = { mstory2_Scene0Create, mstory2_Scene1Create, mstory2_Scene2Create, mstory2_Scene3Create, mstory2_Scene4Create };
@@ -194,7 +194,7 @@ void mstory2_ExitWaitObjMain(omObjData *obj) {
 }
 
 void mstory2_ExitWipeObjMain(omObjData *obj) {
-    WipeCreateOut(2, 20);
+    WipeCreateOut(WIPE_STARS, 20);
     HuAudSeqFadeOut(30);
     HuAudFXAllFadeOut(30);
     obj->func = mstory2_ExitWaitObjMain;

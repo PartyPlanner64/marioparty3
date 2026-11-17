@@ -2509,7 +2509,7 @@ void m213_PlayerObjMain(omObjData *obj) {
         case 3:
             m213_PadClear(obj->work[0]);
             m213_PlayerTurnUpdate(obj);
-            if (GwPlayer[obj->work[0]].chr == 4) {
+            if (GwPlayer[obj->work[0]].chr == CHAR_WARIO) {
                 obj->rot.x = 0;
             }
             break;

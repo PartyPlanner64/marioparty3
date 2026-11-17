@@ -1468,7 +1468,7 @@ void m239_ExitWaitObjMain(omObjData *obj) {
 
 void m239_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq == 1) {
-        WipeCreateOut(0, 20);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         obj->func = m239_ExitWaitObjMain;
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
@@ -1485,7 +1485,7 @@ void m239_MainObjMain(omObjData *obj) {
             if (++m239_startTimer == 13) {
                 HuAudSeqPlay(0x36);
             }
-            if (GMesStatGet() == 0 || (GMesStatGet() & 2)) {
+            if (GMesStatGet() == 0 || (GMesStatGet() & GMES_STAT_TIMEEND)) {
                 m239_phase = 2;
                 GMesCreate(0x1A, 30, 160, 28);
                 m239_timer = 901;
@@ -1530,12 +1530,12 @@ void m239_MainObjMain(omObjData *obj) {
             break;
         case 7:
             if (m239_resultWaitF == 0) {
-                if (GMesStatGet() & 2) {
+                if (GMesStatGet() & GMES_STAT_TIMEEND) {
                     m239_resultWaitF = 1;
                     m239_timer = 20;
                 }
             } else if (--m239_timer <= 0) {
-                WipeCreateOut(0, 20);
+                WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                 obj->func = m239_ExitWaitObjMain;
             }
             break;
@@ -1544,7 +1544,7 @@ void m239_MainObjMain(omObjData *obj) {
 }
 
 void m239_MainObjInit(omObjData *obj) {
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
     m239_BackObjCreate();
     m239_StageObjCreate();
     m239_TargetObjCreateAll();

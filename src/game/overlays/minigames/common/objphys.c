@@ -486,16 +486,16 @@ void MgItemLifeUpdate(omObjData *arg0) {
         if (remaining < 45) {
             switch (remaining & 2) {
                 case 0:
-                    Hu3DModelAttrSet(arg0->model[0], 4, 4);
+                    Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     break;
                 case 2:
-                    Hu3DModelAttrSet(arg0->model[0], 4, 0);
+                    Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     break;
             }
             if (data->unk7C <= data->unk78) {
                 data->unk54 = 0;
-                Hu3DModelAttrSet(arg0->model[0], 4, 4);
-                Hu3DModelAttrSet(arg0->model[1], 4, 4);
+                Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(arg0->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
         }
     }
@@ -512,7 +512,7 @@ void MgItemCoinGet(omObjData *arg0, omObjData *arg1) {
     }
     sprite = data->unk21[3];
     model = arg1->model[3];
-    Hu3DModelAttrSet(model, 4, 0);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DSprModelFrameSet(sprite, 0);
     Hu3DSprModelAttrSet(sprite, 4, 4);
     Hu3DModelPosSet(model, arg1->trans.x, arg1->trans.y, arg1->trans.z);
@@ -538,8 +538,8 @@ void MgItemCoinGet(omObjData *arg0, omObjData *arg1) {
     }
     data->unk54 = 0;
     data->unk78 = 0;
-    Hu3DModelAttrSet(arg1->model[0], 4, 4);
-    Hu3DModelAttrSet(arg1->model[1], 4, 4);
+    Hu3DModelAttrSet(arg1->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(arg1->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
 void MgItemInit(omObjData *arg0, s32 arg1) {

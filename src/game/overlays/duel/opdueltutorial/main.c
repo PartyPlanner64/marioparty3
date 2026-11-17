@@ -347,7 +347,7 @@ void opdueltutorial_ArriveExec(void) {
     EffectParamSet(effect, 2.0f, 20.0f, 1.0f);
     EffectRangeSet(effect, 40.0f);
     Hu3DParticleAttrSet(effect, 1, 0);
-    WipeCreateIn(2, 16);
+    WipeCreateIn(WIPE_STARS, 16);
     HuPrcSleep(17);
     HuAudFXPlay(0x2ED);
     while (opdueltutorial_centerMdl->coords.y >= 10.0f) {
@@ -387,7 +387,7 @@ void opdueltutorial_ArriveExec(void) {
         HuPrcVSleep();
         if (i == 5) {
             WipeColorSet(255, 255, 255);
-            WipeCreateOut(11, 16);
+            WipeCreateOut(WIPE_FADE, 16);
         }
     }
     while (WipeStatGet() != 0) {
@@ -497,7 +497,7 @@ void opdueltutorial_StarTalkExec(void) {
         effects[i] = opdueltutorial_SpiralEffCreate(0xB0004, 0x689);
     }
     WipeColorSet(255, 255, 255);
-    WipeCreateIn(11, 16);
+    WipeCreateIn(WIPE_FADE, 16);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -905,7 +905,7 @@ void opdueltutorial_ExitObjMain(omObjData *obj) {
 
 void opdueltutorial_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq != 0) {
-        WipeCreateOut(2, 20);
+        WipeCreateOut(WIPE_STARS, 20);
         obj->func = opdueltutorial_ExitObjMain;
     }
 }

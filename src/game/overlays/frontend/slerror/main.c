@@ -77,14 +77,14 @@ void slerror_MainProc(void) {
     }
     for (i = 0; i < count; i++) {
         espDispOn(slerror_sprTbl[i]);
-        WipeCreateIn(0xB, 8);
+        WipeCreateIn(WIPE_FADE, 8);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }
         do {
             HuPrcVSleep();
         } while ((HuPadBtnDown[0] | HuPadBtnDown[1] | HuPadBtnDown[2] | HuPadBtnDown[3]) == 0);
-        WipeCreateOut(0xB, 8);
+        WipeCreateOut(WIPE_FADE, 8);
         while (WipeStatGet() != 0) {
             HuPrcVSleep();
         }

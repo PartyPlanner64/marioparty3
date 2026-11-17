@@ -324,7 +324,7 @@ f32 m269_bellScale = 1.5f; // scale
 void m269_MainObjMain(omObjData *object) {
     switch (m269_mainPhase) {
         case 0:
-            WipeCreateIn(0xFF, 0x10);
+            WipeCreateIn(WIPE_TYPE_PREV, 0x10);
             m269_mainPhase++;
             break;
         case 1:
@@ -1031,9 +1031,9 @@ void m269_CakeSprUpdate(void) {
     for (; i < 2; i++) {
         if (m269_eatCntTbl[i] == 6) {
             HuSprAttrReset(m269_sprTbl[base + i], 0, 0xFFFF);
-            HuSprAttrSet(m269_sprTbl[base + i], 0, 0x8000);
+            HuSprDispOff(m269_sprTbl[base + i], 0);
         } else {
-            HuSprAttrReset(m269_sprTbl[base + i], 0, 0x8000);
+            HuSprDispOn(m269_sprTbl[base + i], 0);
             HuSprBankSet(m269_sprTbl[base + i], 0, m269_eatCntTbl[i], 0);
             HuSprAnimModeSet(m269_sprTbl[base + i], 0, HUSPR_ANIM_MODE_BANK);
         }

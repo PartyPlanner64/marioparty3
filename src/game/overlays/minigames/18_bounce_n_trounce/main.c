@@ -1513,7 +1513,7 @@ void m224_IntroObjMain(omObjData *object) {
 
     switch (m224_introPhase) {
         case 0:
-            WipeCreateIn(0xFF, 16);
+            WipeCreateIn(WIPE_TYPE_PREV, 16);
             m224_introPhase = 1;
             break;
         case 1:

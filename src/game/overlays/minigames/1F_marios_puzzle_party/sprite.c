@@ -56,7 +56,7 @@ void m231_SprBatchInit(s16 blockCount) {
         gSPEndDisplayList(m231_sprBatchGfxBuf[i]);
     }
     m231_sprBatchObj = omAddObj(0x7D0, 0, 0, -1, m231_SprBatchObjMain);
-    omSetStatBit(m231_sprBatchObj, 0xA0);
+    omSetStatBit(m231_sprBatchObj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     m231_sprBatchMdl = Hu3DModelDLCreate(0, m231_sprBatchGfxBuf[Hu3DBufNo], 2);
 }
 
@@ -74,7 +74,7 @@ void m231_SprBatchAdd(s32 spriteData, s16 count) {
     m231_sprBatchTbl[m231_sprBatchNum].groupHandle = groupHandle;
     HuSprGrpMemberSet(groupHandle, 0, groupId, 0);
     HuSprAttrReset(groupHandle, 0, 0xFFFF);
-    HuSprAttrSet(groupHandle, 0, 0x8000);
+    HuSprDispOff(groupHandle, 0);
     m231_sprBatchTbl[m231_sprBatchNum].count = count;
     for (i = 0; i < count; i++, sprite++) {
         sprite->flags = 0;

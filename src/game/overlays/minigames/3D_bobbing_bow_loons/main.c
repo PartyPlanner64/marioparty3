@@ -188,7 +188,7 @@ void m261_ObjectSetup(void) {
     omGameSysInit();
     Hu3DBGColorSet(0, 0, 0);
     MgFlowInit(&m261_mgFlow);
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
     m261_BackCreate();
     m261_PlayerObjCreate();
     m261_StageObjCreate();
@@ -355,8 +355,8 @@ void m261_PlayerWinMotSet(void) {
 void m261_PlayerFallStart(void) {
     s16 chr = GwPlayer[m261_playerNo].chr;
 
-    Hu3DModelAttrSet(m261_playerObj->model[0], 4, 4);
-    Hu3DModelAttrSet(m261_playerObj->model[3], 4, 0);
+    Hu3DModelAttrSet(m261_playerObj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(m261_playerObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DMotionShiftSet(m261_playerObj->model[3], Hu3DData[m261_playerObj->motion[2]].motId,
                        0, 10, 0);
     Hu3DMotionAttrSet(m261_playerObj->model[3], 2, 2);
@@ -463,7 +463,7 @@ void m261_MainObjMain(omObjData *obj) {
     if (omSysExitReq != 0) {
         HuAudFXAllStop();
         HuAudSeqFadeOut(30);
-        WipeCreateOut(0, 20);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
     }
     switch (MgFlowMain(obj)) {
         case 0:
@@ -509,7 +509,7 @@ void m261_MainObjMain(omObjData *obj) {
             } else {
                 GwPlayer[m261_playerNo].bonusCoin = -1;
             }
-            WipeCreateOut(0, 20);
+            WipeCreateOut(WIPE_TYPE_NORMAL, 20);
             obj->func = m261_ExitObjMain;
             break;
     }
@@ -657,7 +657,7 @@ void m261_StringObjMain(omObjData *obj) {
     for (i = 1; i < 7; i++) {
         Hu3DModelPosSet(obj->model[i], strings->x[i], strings->y[i], strings->z[i]);
     }
-    Hu3DModelAttrSet(obj->model[6], 4, 4);
+    Hu3DModelAttrSet(obj->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 }
 
 void m261_ItemObjCreate(void) {
@@ -770,10 +770,10 @@ void m261_ItemGetProc(void) {
     s32 i;
 
     m261_BalloonRiseStart();
-    Hu3DModelAttrSet(m261_balloonObj->model[m261_hitBalloonNo], 4, 4);
-    Hu3DModelAttrSet(m261_balloonObj->model[m261_hitBalloonNo + 5], 4, 4);
-    Hu3DModelAttrSet(m261_stringObj->model[m261_hitBalloonNo], 4, 4);
-    Hu3DModelAttrSet(m261_dartObj->model[0], 4, 4);
+    Hu3DModelAttrSet(m261_balloonObj->model[m261_hitBalloonNo], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(m261_balloonObj->model[m261_hitBalloonNo + 5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(m261_stringObj->model[m261_hitBalloonNo], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(m261_dartObj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     m261_PopStart(work->pos_x[m261_hitBalloonNo],
                                     work->pos_y[m261_hitBalloonNo] + 50.0f);
     items->heldX = items->x[m261_hitBalloonNo];
@@ -855,7 +855,7 @@ void m261_TimerProc(void) {
     s32 seconds = 10;
     s32 frames = 30;
 
-    GMesPosSet(GMesCreate(26, 10, 160, 28), 160.0f, 28.0f);
+    GMesPosSet(GMesCreate(GMES_MES_TIMER, 10, 160, 28), 160.0f, 28.0f);
     do {
         frames--;
         if (frames == 0) {
@@ -927,7 +927,7 @@ void m261_DartThrow(void) {
     dart->x = m261_playerObj->trans.x;
     dart->y = m261_playerObj->trans.y + 100.0f;
     dart->flags |= 1;
-    Hu3DModelAttrSet(m261_dartObj->model[0], 4, 0);
+    Hu3DModelAttrSet(m261_dartObj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelAttrSet(m261_dartObj->model[0], 0x4000, 0);
     HuAudFXPlay(0x4DB);
 }
@@ -969,9 +969,9 @@ void m261_DartMissProc(void) {
         HuPrcVSleep();
     }
     dart->y = m261_playerObj->trans.y - 200.0f;
-    Hu3DModelAttrSet(m261_dartObj->model[0], 4, 4);
-    Hu3DModelAttrSet(m261_stringObj->model[5], 4, 4);
-    Hu3DModelAttrSet(m261_playerObj->model[1], 4, 4);
+    Hu3DModelAttrSet(m261_dartObj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(m261_stringObj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(m261_playerObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     m261_PopStart(
         player->pos.x + m261_chrBalloonOfsTbl[GwPlayer[m261_playerNo].chr],
         player->pos.y + 230.0f);
@@ -1114,7 +1114,7 @@ void m261_PopObjMain(omObjData *obj) {
         effect->scale += 0.03f;
         Hu3DModelVtxWave(obj->model[0], effect->scale, effect->scale * 25.0f, 2);
         if (++effect->timer == 30) {
-            Hu3DModelAttrSet(m261_popObj->model[0], 4, 4);
+            Hu3DModelAttrSet(m261_popObj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             effect->flags &= ~1;
         }
     }
@@ -1136,7 +1136,7 @@ void m261_PopStart(f32 x, f32 y) {
     m261_PopObjCreate(recolor);
     effect = m261_popObj->data;
     effect->flags |= 1;
-    Hu3DModelAttrSet(m261_popObj->model[0], 4, 0);
+    Hu3DModelAttrSet(m261_popObj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     effect->x = x;
     effect->y = y;
     effect->z = 16.0f;
@@ -1166,7 +1166,7 @@ void m261_BurstObjMain(omObjData *obj) {
     }
     if (Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 <= Hu3DData[obj->model[0]].motTime) {
         for (i = 0; i < 5; i++) {
-            Hu3DModelAttrSet(obj->model[i], 4, 4);
+            Hu3DModelAttrSet(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
 }
@@ -1177,15 +1177,15 @@ void m261_BalloonPopAll(void) {
     s32 i;
 
     for (i = 0; i < 5; i++) {
-        Hu3DModelAttrSet(m261_balloonObj->model[i], 4, 4);
-        Hu3DModelAttrSet(m261_stringObj->model[i], 4, 4);
-        Hu3DModelAttrSet(m261_itemObj->model[i], 4, 4);
+        Hu3DModelAttrSet(m261_balloonObj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(m261_stringObj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(m261_itemObj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         burst->x[i] = work->pos_x[i];
         burst->y[i] = work->pos_y[i] + 50.0f;
         burst->z[i] = work->pos_z[i] + 2.0f;
         work->state[i] &= ~1;
         work->pos_y[i] = -1000.0f;
-        Hu3DModelAttrSet(m261_burstObj->model[i], 4, 0);
+        Hu3DModelAttrSet(m261_burstObj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
 }
 
@@ -1268,5 +1268,5 @@ void m261_HitEffObjCreate(void) {
 }
 
 void m261_HitEffDispOn(void) {
-    Hu3DModelAttrSet(m261_hitEffObj->model[0], 4, 0);
+    Hu3DModelAttrSet(m261_hitEffObj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
 }

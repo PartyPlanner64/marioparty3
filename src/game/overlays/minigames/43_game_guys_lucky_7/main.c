@@ -339,7 +339,7 @@ s32 m267_confettiMdlFileTbl[] = { 0xB002B, 0xB002C, 0xB002D, 0xB002E }; // spark
 void m267_MainObjMain(omObjData *object) {
     switch (m267_mainPhase) {
         case 0:
-            WipeCreateIn(0xFF, 0x10);
+            WipeCreateIn(WIPE_TYPE_PREV, 0x10);
             m267_mainPhase++;
             break;
         case 1:
@@ -647,7 +647,7 @@ void m267_RollObjMain(omObjData *object) {
             object->func = m267_MoveObjMain;
             break;
         case 999:
-            if (HuPadBtnDown[0] & 2) {
+            if (HuPadBtnDown[0] & L_CBUTTONS) {
                 m267_rollPhase = 0;
             }
             break;

@@ -340,12 +340,12 @@ void mgresultboard_ScoreFlapUpdate(omObjData *obj) {
                 case 1:
                     if (curModel >= 0) {
                         Hu3DMotionAttrSet(obj->model[curModel + 1], 1, 0);
-                        Hu3DModelAttrSet(obj->model[curModel + 1], 4, 0);
+                        Hu3DModelAttrSet(obj->model[curModel + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         Hu3DMotionSpeedSet(obj->model[curModel + 1], mgresultboard_speed);
                     }
                     if (nextModel >= 0) {
                         Hu3DMotionAttrSet(obj->model[nextModel + 1], 1, 0);
-                        Hu3DModelAttrSet(obj->model[nextModel + 1], 4, 0);
+                        Hu3DModelAttrSet(obj->model[nextModel + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         Hu3DMotionSpeedSet(obj->model[nextModel + 1], mgresultboard_speed);
                     }
                     if (mgresultboard_scoreFlapTbl[i][j].unk_04 >= 0) {
@@ -382,7 +382,7 @@ void mgresultboard_ScoreFlapUpdate(omObjData *obj) {
                         if (nextModel >= 0) {
                             Hu3DMotionTimeSet(obj->model[nextModel + 1], 20.0f);
                             Hu3DMotionAttrSet(obj->model[nextModel + 1], 1, 1);
-                            Hu3DModelAttrSet(obj->model[nextModel + 1], 4, 4);
+                            Hu3DModelAttrSet(obj->model[nextModel + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         }
                         if (curModel >= 0) {
                             Hu3DAnimBankSet(mgresultboard_scoreAnimTbl[curModel],

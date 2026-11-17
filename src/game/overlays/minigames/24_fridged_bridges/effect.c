@@ -100,7 +100,7 @@ omObjData *m236_EffCreate(u16 type, u16 playerId, f32 x, f32 y, f32 z) {
     m236_effUseTbl[type][i] = 1;
     obj = omAddObj(60, 1, 0, -1, m236_effFuncTbl[type]);
     obj->model[0] = model;
-    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, 0);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelCameraSet(obj->model[0], m236_cameraBitTbl[playerId]);
     Hu3DMotionTimeSet(obj->model[0], 0.0f);
     omSetTra(obj, x, y, z);

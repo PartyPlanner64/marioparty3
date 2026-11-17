@@ -253,7 +253,7 @@ void m228_MainObjMain(omObjData *object) {
     if (omSysExitReq != 0) {
         HuAudFXAllStop();
         HuAudSeqFadeOut(30);
-        WipeCreateOut(0, 20);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
     }
     switch (m228_flowStat = MgFlowMain(object)) {
         case 0:
@@ -320,7 +320,7 @@ void m228_MainObjMain(omObjData *object) {
         case 4:
             break;
         case 5:
-            WipeCreateOut(0, 20);
+            WipeCreateOut(WIPE_TYPE_NORMAL, 20);
             object->func = m228_ExitObjMain;
             break;
     }
@@ -399,7 +399,7 @@ void m228_PlayerObjCreate(s32 playerIndex) {
     Hu3DModelPosSet(object->model[1], work->coords.x, work->coords.y, work->coords.z);
     Hu3DModelRotSet(object->model[1], 0.0f, 0.0f, 0.0f);
     Hu3DModelScaleSet(object->model[1], 1.0f, 1.0f, 1.0f);
-    Hu3DModelAttrSet(object->model[1], 4, 4);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     omObjMotionRead(object, 8, 0x3D0000);
     Hu3DMotionModelSet(object->model[1], object->motion[8]);
     Hu3DMotionAttrSet(object->model[1], 2, 2);
@@ -409,7 +409,7 @@ void m228_PlayerObjCreate(s32 playerIndex) {
     Hu3DModelPosSet(object->model[2], 0.0f, 0.0f, 0.0f);
     Hu3DModelRotSet(object->model[2], 0.0f, 0.0f, 0.0f);
     Hu3DModelScaleSet(object->model[2], 1.0f, 1.0f, 1.0f);
-    Hu3DModelAttrSet(object->model[2], 4, 4);
+    Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 
     switch (GwPlayer[playerIndex].chr) {
         case 1:
@@ -466,7 +466,7 @@ void m228_PlayerObjMain(omObjData *object) {
             work->flags &= ~0x10;
             work->coords.x = laneX[work->lane];
             m228_ParasolClose(object);
-            Hu3DModelAttrSet(object->model[1], 4, 0);
+            Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
     }
     if ((work->flags & 0x60) == 0x40) {
@@ -495,7 +495,7 @@ void m228_PlayerObjMain(omObjData *object) {
                 work->flags &= ~FLAG_IDLE;
                 work->driftTimer = 0;
                 work->angle = 0.0f;
-                Hu3DModelAttrSet(object->model[1], 4, 4);
+                Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
         } else if (!(work->flags & FLAG_SPINNING)) {
             m228_ParasolOpen(object);
@@ -517,7 +517,7 @@ void m228_ParasolOpen(omObjData *object) {
         Hu3DMotionModelSet(object->model[0], object->motion[1]);
         Hu3DMotionAttrSet(object->model[0], 2, 2);
         Hu3DMotionShiftSet(object->model[1], Hu3DData[object->motion[8]].motId, 0, 10, 2);
-        Hu3DModelAttrSet(object->model[1], 4, 0);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         work->unk_10 = 1;
         work->flags &= ~4;
         if (MgFlowStatGet() == MG_STATE_PLAY) {
@@ -782,7 +782,7 @@ void m228_PlayerGoalUpdate(omObjData *object) {
             work->flags = (work->flags | 0x10) & ~0x20;
             work->unk_2C = 130.0f;
             Hu3DMotionModelSet(object->model[0], object->motion[3]);
-            Hu3DModelAttrSet(object->model[4], 4, 0);
+            Hu3DModelAttrSet(object->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelPosSet(object->model[4], object->trans.x, object->trans.y, object->trans.z);
         }
     } else {

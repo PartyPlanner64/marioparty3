@@ -579,7 +579,7 @@ void storyresult_FinalResultProc(void) {
     MBDBackLoad(0x20);
     MBDCameraNearFarSet(1000.0f, 10000.0f);
     storyresult_wipeType = 0xB;
-    WipeCreateIn(0xB, 0x10);
+    WipeCreateIn(WIPE_FADE, 0x10);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -659,13 +659,13 @@ void storyresult_DebugStatProc(void) {
     }
     // i is reused to hold the button flags.
     i = 0;
-    if (HuPadBtn[0] & 4) {
+    if (HuPadBtn[0] & D_CBUTTONS) {
         i |= 1;
     }
-    if (HuPadBtn[0] & 1) {
+    if (HuPadBtn[0] & R_CBUTTONS) {
         i |= 2;
     }
-    if (HuPadBtn[0] & 8) {
+    if (HuPadBtn[0] & U_CBUTTONS) {
         i |= 4;
     }
     storyresult_StatViewCreate(&status, i);
@@ -769,12 +769,12 @@ s16 storyresult_StatRankMarkDisp(StoryResultPanel *work) {
         for (i = 0; i < count; i++, curX += 12) {
             HuSprPosSet(group, member, curX, y);
             HuSprTPLvlSet(group, member, 0);
-            HuSprAttrReset(group, member, 0x8000);
+            HuSprDispOn(group, member);
             member++;
         }
     }
     for (rank = member; rank < 13; rank++) {
-        HuSprAttrSet(group, rank, 0x8000);
+        HuSprDispOff(group, rank);
     }
     work->winFlags[5] = 1;
     work->unk14C = 1;
@@ -813,12 +813,12 @@ s16 storyresult_StatRankMarkDispEx(StoryResultPanel *work, u8 last, u8 *entries)
         for (i = 0; i < count; i++, curX += 12) {
             HuSprPosSet(group, member, curX, y);
             HuSprTPLvlSet(group, member, 0);
-            HuSprAttrReset(group, member, 0x8000);
+            HuSprDispOn(group, member);
             member++;
         }
     }
     for (rank = member; rank < 13; rank++) {
-        HuSprAttrSet(group, rank, 0x8000);
+        HuSprDispOff(group, rank);
     }
     work->winFlags[5] = 1;
     work->unk14C = 1;

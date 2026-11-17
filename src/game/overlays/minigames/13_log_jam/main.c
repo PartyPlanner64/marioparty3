@@ -376,7 +376,7 @@ void m219_MainObjMain(omObjData *object) {
     switch (m219_phase) {
         case -1:
             if (m219_phaseTimer >= 2) {
-                WipeCreateIn(0xFF, 16);
+                WipeCreateIn(WIPE_TYPE_PREV, 16);
                 m219_phase = 0;
                 m219_phaseTimer = 0;
             }
@@ -656,7 +656,7 @@ void m219_TeamObjMain(omObjData *object) {
             pos.z = team->unk_2C;
             pos.y = team->unk_28 - 50.0;
             m219_SmokeCreate(&pos, NULL, &scale, 1.0f, m219_whiteColor.rgba);
-            Hu3DModelAttrSet(team->unk_1C, 4, 4);
+            Hu3DModelAttrSet(team->unk_1C, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             done = TRUE;
         }
         HuMtxIdentF(Hu3DData[team->unk_1C].mtx);
@@ -699,14 +699,14 @@ void m219_PlayerObjInit(omObjData *object) {
         Hu3DModelHookSet(object->model[2], object->model[0], "item_hook");
         for (i = 0; i < 3; i++) {
             object->model[i + 3] = m219_LogMdlLink(i, 0);
-            Hu3DModelAttrSet(object->model[i + 3], 4, 4);
+            Hu3DModelAttrSet(object->model[i + 3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             Hu3DModelAttrSet(object->model[i + 3], 0x4000, 0x4000);
             Hu3DModelHookSet(object->model[i + 3], object->model[2], "m219-item-f");
         }
     } else {
         for (i = 0; i < 3; i++) {
             object->model[i + 3] = m219_LogMdlLink(i, 0);
-            Hu3DModelAttrSet(object->model[i + 3], 4, 4);
+            Hu3DModelAttrSet(object->model[i + 3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             Hu3DModelAttrSet(object->model[i + 3], 0x4000, 0x4000);
             Hu3DModelHookSet(object->model[i + 3], object->model[0], "item_hook");
         }
@@ -830,7 +830,7 @@ void m219_SetterUpdate(omObjData *object, LogJamTeam *team) {
                 object->rot.y = m219_AngleInterpCalc(m219_playerRotTbl[work->unk_00], 0.0f, t);
                 if (model->motIdShift == 0xFF && model->motTime >= 14.0f && model->motId == object->motion[7]) {
                     work->unk_24 = (u8)(rand8() % 3);
-                    Hu3DModelAttrSet(object->model[work->unk_24 + 3], 4, 0);
+                    Hu3DModelAttrSet(object->model[work->unk_24 + 3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     work->unk_0A++;
                     work->unk_0C = 0;
                 }
@@ -923,7 +923,7 @@ void m219_SetterUpdate(omObjData *object, LogJamTeam *team) {
                 object->trans.z =
                     m219_InterpCalc(t, m219_playerPosTbl[work->unk_00].z, m219_playerSetPosTbl[work->unk_00].z);
                 if (model->motIdShift == 0xFF && model->motTime >= 19.0f && model->motId == object->motion[8]) {
-                    Hu3DModelAttrSet(object->model[work->unk_24 + 3], 4, 4);
+                    Hu3DModelAttrSet(object->model[work->unk_24 + 3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     work->unk_22 = m219_LogCreate(work->unk_24, 0);
                     m219_LogPosSet(work->unk_22, m219_stumpPosTbl[team->unk_10].x,
                                           m219_stumpPosTbl[team->unk_10].y, m219_stumpPosTbl[team->unk_10].z);
@@ -959,7 +959,7 @@ void m219_SetterUpdate(omObjData *object, LogJamTeam *team) {
             break;
         case 13:
             if (work->unk_24 != -1) {
-                Hu3DModelAttrSet(object->model[work->unk_24 + 3], 4, 4);
+                Hu3DModelAttrSet(object->model[work->unk_24 + 3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 m219_NodeWorldMtxCalc(object, "item_hook", mtx);
                 m219_SmokeCreate((Vec *)mtx[3], NULL, &scale, 1.0f, m219_whiteColor.rgba);
                 work->unk_22 = work->unk_24 = -1;
@@ -1121,7 +1121,7 @@ void m219_ChopperUpdate(omObjData *object, LogJamTeam *team) {
                         team->unk_16 = team->unk_18 = -1;
                         team->unk_1A = 0;
                     } else {
-                        Hu3DModelAttrSet(object->model[work->unk_24 + 3], 4, 4);
+                        Hu3DModelAttrSet(object->model[work->unk_24 + 3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         work->unk_24 = work->unk_22 = -1;
                         work->unk_22 = m219_LogCreate(dir, 0);
                         m219_LogPosSet(work->unk_22, m219_stumpPosTbl[team->unk_10].x,
@@ -1147,7 +1147,7 @@ void m219_ChopperUpdate(omObjData *object, LogJamTeam *team) {
                 if (team->unk_16 != -1) {
                     work->unk_22 = 0x20;
                     work->unk_24 = team->unk_18;
-                    Hu3DModelAttrSet(object->model[work->unk_24 + 3], 4, 0);
+                    Hu3DModelAttrSet(object->model[work->unk_24 + 3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     m219_LogKill(team->unk_16);
                     team->unk_16 = team->unk_18 = -1;
                     team->unk_1A = 0;
@@ -1203,7 +1203,7 @@ void m219_ChopperUpdate(omObjData *object, LogJamTeam *team) {
                 team->unk_44 = 3 - (u8)(rand8() % 6);
             }
             if (work->unk_24 != -1) {
-                Hu3DModelAttrSet(object->model[work->unk_24 + 3], 4, 4);
+                Hu3DModelAttrSet(object->model[work->unk_24 + 3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 m219_SmokeCreate((Vec *)mtx[3], NULL, &scale, 1.0f, m219_whiteColor.rgba);
                 work->unk_22 = work->unk_24 = -1;
             }
@@ -1448,13 +1448,13 @@ void m219_LogObjMain(omObjData *object) {
                 if ((work->unk_0E & 1) || omPauseChk() + omAllPauseF != 0) {
                     for (j = 0; j < 3; j++) {
                         if (work->unk_02[j] != -1) {
-                            Hu3DModelAttrSet(work->unk_02[j], 4, 0);
+                            Hu3DModelAttrSet(work->unk_02[j], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         }
                     }
                 } else {
                     for (j = 0; j < 3; j++) {
                         if (work->unk_02[j] != -1) {
-                            Hu3DModelAttrSet(work->unk_02[j], 4, 4);
+                            Hu3DModelAttrSet(work->unk_02[j], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         }
                     }
                 }
@@ -1494,7 +1494,7 @@ s16 m219_LogCreate(s16 arg0, s16 arg1) {
         if (work->unk_08 == 0) {
             work->unk_02[0] = m219_LogMdlLink(arg0, arg1);
             if (work->unk_02[0] != -1) {
-                Hu3DModelAttrSet(work->unk_02[0], 4, 0);
+                Hu3DModelAttrSet(work->unk_02[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
             work->unk_08 = 1;
             work->unk_0A = arg0;
@@ -1932,7 +1932,7 @@ void m219_SmokeInit(void) {
         effect->pos.x = effect->pos.y = effect->pos.z = 0.0f;
         effect->vel.x = effect->vel.y = effect->vel.z = 0.0f;
         effect->scale.x = effect->scale.y = effect->scale.z = 0.0f;
-        Hu3DModelAttrSet(effect->model, 4, 4);
+        Hu3DModelAttrSet(effect->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         model = &Hu3DData[effect->model];
         model->motTime = 0.0f;
     }
@@ -2008,7 +2008,7 @@ s32 m219_SmokeCreate(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) {
         effect->speed = speed;
         effect->frame = 0.0f;
         m219_BillboardColorPatSet(effect->model, sprite, 0, effect->color.rgba);
-        Hu3DModelAttrSet(effect->model, 4, 0);
+        Hu3DModelAttrSet(effect->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         model->motTime = 0.0f;
         model->pos.x = effect->pos.x;
         model->pos.y = effect->pos.y;
@@ -2043,7 +2043,7 @@ void m219_MissInit(void) {
         effect->pos.x = effect->pos.y = effect->pos.z = 0.0f;
         effect->vel.x = effect->vel.y = effect->vel.z = 0.0f;
         effect->scale.x = effect->scale.y = effect->scale.z = 0.0f;
-        Hu3DModelAttrSet(effect->model, 4, 4);
+        Hu3DModelAttrSet(effect->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         model = &Hu3DData[effect->model];
         model->motTime = 0.0f;
     }
@@ -2123,7 +2123,7 @@ s32 m219_MissCreate(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) {
         effect->speed = speed;
         effect->frame = 0.0f;
         m219_BillboardColorPatSet(effect->model, sprite, 0, effect->color.rgba);
-        Hu3DModelAttrSet(effect->model, 4, 0);
+        Hu3DModelAttrSet(effect->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         model->motTime = 0.0f;
         model->pos.x = effect->pos.x;
         model->pos.y = effect->pos.y;

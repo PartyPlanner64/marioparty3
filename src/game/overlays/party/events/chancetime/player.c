@@ -32,25 +32,25 @@ void chancetime_PlayerProc(void) {
     Hu3DMotionAttrSet(obj->model[1], 2, 2);
     Hu3DModelPosSet(obj->model[1], 360.0f, 0.0f, -50.0f);
     Hu3DModelRotSet(obj->model[1], 0.0f, -90.0f, 0.0f);
-    Hu3DModelAttrSet(obj->model[1], 4, 4);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelCameraSet(obj->model[1], 2);
 
     obj->model[2] = Hu3DModelRead(9, 0x2B9);
     Hu3DModelPosSet(obj->model[2], 360.0f, -10.0f, -50.0f);
     Hu3DModelScaleSet(obj->model[2], 1.0f, 1.0f, 1.0f);
-    Hu3DModelAttrSet(obj->model[2], 4, 4);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelCameraSet(obj->model[2], 2);
 
     obj->model[3] = Hu3DModelRead(0x1C000B, 0x2B9);
     Hu3DModelPosSet(obj->model[3], 180.0f, 220.0f, 0.0f);
     Hu3DMotionAttrSet(obj->model[3], 2, 0);
     Hu3DModelScaleSet(obj->model[3], 0.7f, 0.7f, 0.7f);
-    Hu3DModelAttrSet(obj->model[3], 4, 4);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelCameraSet(obj->model[3], 2);
 
     obj->model[4] = Hu3DModelRead(0x5D0008, 0x2B9);
     Hu3DModelPosSet(obj->model[4], 180.0f, 220.0f, 0.0f);
-    Hu3DModelAttrSet(obj->model[4], 4, 4);
+    Hu3DModelAttrSet(obj->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 
     chancetime_playerAnimTbl[0] = CharAnimCreate(obj->model[1], 2, chr, CharMotionDataNumGet(chr, 0xA4));
     chancetime_playerAnimTbl[1] = Hu3DAnimDataRead(CharMotionDataNumGet(chr, 0xA5));
@@ -120,10 +120,10 @@ void chancetime_PlayerTurn(omObjData *object) {
         Hu3DModelScaleSet(object->model[3], 0.2f, 0.2f, 0.2f);
         Hu3DMotionAttrSet(object->model[3], 2, 0);
         Hu3DMotionAttrSet(object->model[3], 1, 1);
-        Hu3DModelAttrSet(object->model[3], 4, 0);
+        Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(object->model[4], Hu3DData[object->model[3]].pos.x, Hu3DData[object->model[3]].pos.y,
                         Hu3DData[object->model[3]].pos.z);
-        Hu3DModelAttrSet(object->model[4], 4, 0);
+        Hu3DModelAttrSet(object->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DMotionAttrSet(object->model[4], 2, 0);
         Hu3DMotionAttrSet(object->model[4], 1, 0);
         chancetime_playerWork.func = chancetime_PlayerBlockGrow;
@@ -155,8 +155,8 @@ void chancetime_PlayerEnterStart(void) {
     chancetime_playerEnterDoneF = 0;
     Hu3DMotionModelSet(obj->model[1], obj->motion[1]);
     Hu3DMotionAttrSet(obj->model[1], 2, 2);
-    Hu3DModelAttrSet(obj->model[1], 4, 0);
-    Hu3DModelAttrSet(obj->model[2], 4, 0);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     chancetime_playerWork.func = chancetime_PlayerWalkIn;
 }
 
@@ -213,7 +213,7 @@ void chancetime_PlayerHit(omObjData *object) {
                 Hu3DMotionAttrSet(object->model[3], 1, 0);
                 Hu3DMotionTimeSet(object->model[3], 0.0f);
                 Hu3DMotionSpeedSet(object->model[3], 1.2f);
-                Hu3DModelAttrSet(object->model[3], 4, 0);
+                Hu3DModelAttrSet(object->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
         }
         HuPrcVSleep();

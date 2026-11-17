@@ -207,7 +207,7 @@ void last5_KoopaExec(void) {
     HuVecCopy3F(&coinModel->coords, &last5_npcPos);
     HuAudSeqPlay(0x13);
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreateIn(2, 0x10);
+    WipeCreateIn(WIPE_STARS, 0x10);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -327,7 +327,7 @@ void last5_StarExec(void) {
     MBGuideFaceCreate(faceModel, 2, 0xA, last5_kinopioFaceAnimA);
     HuAudSeqPlay(0x13);
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreateIn(2, 0x10);
+    WipeCreateIn(WIPE_STARS, 0x10);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -348,7 +348,7 @@ void last5_StarExec(void) {
     MBDlgWinExecAllKey(-1, 0x4305);
     winner = 3;
     for (i = 0; i < 4; i++) {
-        if (GwPlayer[i].chr == 0) {
+        if (GwPlayer[i].chr == CHAR_MARIO) {
             winner = last5_playerRankTbl[i];
             break;
         }
@@ -514,7 +514,7 @@ void last5_ExitObjMain(omObjData *arg0) {
 void last5_ExitCheckObjMain(omObjData *arg0) {
     if (omSysExitReq != 0) {
         WipeColorSet(0xFF, 0xFF, 0xFF);
-        WipeCreateOut(2, 0x14);
+        WipeCreateOut(WIPE_STARS, 0x14);
         HuAudSeqFadeOut(0x3C);
         arg0->func = &last5_ExitObjMain;
     }

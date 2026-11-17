@@ -2143,7 +2143,7 @@ void MB3Ev_StarMapView(void) {
     MBPlayerIconMdlSet();
     MBModelDispOff(mb3_starGuideMdl[GwSystem.star_spawn_indices[GwSystem.current_star_spawn]]);
     MBModelDispOff(mb3_starGuideMdl[GwSystem.boardData.halfWordBytes[0]]);
-    WipeCreateIn(2, 0x10);
+    WipeCreateIn(WIPE_STARS, 0x10);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -2220,7 +2220,7 @@ void MB3Ev_StarMapView(void) {
 
     HuAudSeqFadeOut(0x5A);
     HuPrcSleep(30);
-    WipeCreateOut(2, 0x10);
+    WipeCreateOut(WIPE_STARS, 0x10);
     HuPrcSleep(0x11);
     mbTurnUnkF = 1;
     MBPlayerIconMdlReset();
@@ -6275,7 +6275,7 @@ void MB3Ev_ItemStarYoke(void) {
         if ((lamp->velocity.x > 300.0f) && (i != 0)) {
             i = 0;
             WipeColorSet(0xFF, 0xFF, 0xFF);
-            WipeCreateOut(0xB, 0x32);
+            WipeCreateOut(WIPE_FADE, 0x32);
             HuAudFXPlay(0x128);
         }
         HuPrcVSleep();
@@ -6304,7 +6304,7 @@ void MB3Ev_ItemStarYoke(void) {
     }
 
     HuAudFXPlay(0x129);
-    WipeCreateIn(0xB, 0x32);
+    WipeCreateIn(WIPE_FADE, 0x32);
     lamp->velocity.x = 100.0f;
     while (lamp->velocity.x > 30.0f) {
         HuPrcVSleep();
@@ -7770,7 +7770,7 @@ void MB3Ev_ItemAfter5(void) {
 
     HuAudFXPlay(0x129);
     WipeColorSet(0xFF, 0xFF, 0xFF);
-    WipeCreateOut(0xB, 0x32);
+    WipeCreateOut(WIPE_FADE, 0x32);
     MBPlayerVibrateObjKill(temp_s1_2);
 
     for (var_f20 = 0.0f; WipeStatGet() != 0; var_f20 += 0.1f) {
@@ -7788,7 +7788,7 @@ void MB3Ev_ItemAfter5(void) {
         HuSprAnimKill(sp18[i]);
     }
 
-    WipeCreateIn(0xB, 0x5A);
+    WipeCreateIn(WIPE_FADE, 0x5A);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -8973,7 +8973,7 @@ void MB3Ev_SandPitJump(void) {
     MBVecDirGet(&obj->coords, &space->coords, &dir);
     for (i = 0; i < 2; i++) {
         if (i == 1) {
-            WipeCreateOut(11, 16);
+            WipeCreateOut(WIPE_FADE, 16);
         }
         MBModelJumpSet(obj, 7.0f, -0.5f);
         while (MBModelJumpCheck(obj)) {
@@ -8999,7 +8999,7 @@ void MB3Ev_SandPitJump(void) {
     HuPrcSleep(5);
     HuVecCopyXYZ(&mb3_sandPit0Mdl->scale, 1.0f, 1.0f, 1.0f);
     HuVecCopyXYZ(&mb3_sandPit1Mdl->scale, 1.0f, 1.0f, 1.0f);
-    WipeCreateIn(11, 16);
+    WipeCreateIn(WIPE_FADE, 16);
     if (ring == 0) {
         HuVecCopyXYZ(&obj->coords, 113.0f, 0.0f, -30.0f);
     } else {
@@ -9445,7 +9445,7 @@ void MB3Ev_Quicksand(void) {
         }
     }
 
-    WipeCreateOut(0xB, 0x10);
+    WipeCreateOut(WIPE_FADE, 0x10);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }

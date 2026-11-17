@@ -911,7 +911,7 @@ void filesel_MainProc(void) {
     HuPrcSleep(1);
     filesel_MenuInit();
     HuAudSeqPlay(3);
-    WipeCreateIn(11, 16);
+    WipeCreateIn(WIPE_FADE, 16);
     HuPrcSleep(16);
     while (1) {
         filesel_TitleKill();
@@ -1019,7 +1019,7 @@ void filesel_MainProc(void) {
     HuPrcSleep(20);
     WipeColorSet(255, 255, 255);
     filesel_RumbleStart();
-    WipeCreateOut(11, 20);
+    WipeCreateOut(WIPE_FADE, 20);
     HuAudSeqFadeOut(20);
     HuPrcSleep(20);
     filesel_MenuClose();

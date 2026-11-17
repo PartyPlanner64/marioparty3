@@ -93,7 +93,7 @@ void staff_MainProc(void) {
         HuPrcVSleep();
     }
     WipeColorSet(0, 0, 0);
-    WipeCreateOut(11, 4);
+    WipeCreateOut(WIPE_FADE, 4);
     while (WipeStatGet()) {
         HuPrcVSleep();
     }
@@ -107,7 +107,7 @@ void staff_MainProc(void) {
         HuPrcVSleep();
     }
     HuAudSeqPlay(0x4E);
-    WipeCreateIn(11, 4);
+    WipeCreateIn(WIPE_FADE, 4);
     while (WipeStatGet()) {
         HuPrcVSleep();
     }
@@ -115,7 +115,7 @@ void staff_MainProc(void) {
         HuPrcVSleep();
     }
     HuAudSeqFadeOut(0x4A);
-    WipeCreateOut(11, 24);
+    WipeCreateOut(WIPE_FADE, 24);
     while (WipeStatGet()) {
         HuPrcVSleep();
     }
@@ -125,7 +125,7 @@ void staff_MainProc(void) {
     while (stat6 != 0) {
         HuPrcVSleep();
     }
-    WipeCreateIn(11, 24);
+    WipeCreateIn(WIPE_FADE, 24);
     while (WipeStatGet()) {
         HuPrcVSleep();
     }

@@ -1379,7 +1379,7 @@ void m232_PlayerObjMain(omObjData *obj) {
                     Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02 - 2.0f <= Hu3DData[obj->model[0]].motTime) {
                     Hu3DMotionAttrSet(obj->model[0], 2, 1);
                 }
-                if (work->unk_00 > 90 && (GMesStatGet() == 0 || (GMesStatGet() & 2))) {
+                if (work->unk_00 > 90 && (GMesStatGet() == 0 || (GMesStatGet() & GMES_STAT_TIMEEND))) {
                     MgFlowStatSet(MG_STATE_RESULT);
                 }
             }

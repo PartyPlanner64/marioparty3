@@ -270,7 +270,7 @@ void m221_MainObjMain(omObjData *object) {
             }
             break;
         case 5:
-            WipeCreateOut(0, 20);
+            WipeCreateOut(WIPE_TYPE_NORMAL, 20);
             object->func = m221_ExitObjMain;
             break;
     }
@@ -278,7 +278,7 @@ void m221_MainObjMain(omObjData *object) {
         ((MgPlayerWork *)mgPlayerObjTbl[i]->data)->unk60 = CRot.y;
     }
     if (omSysExitReq == 1) {
-        WipeCreateOut(0, 20);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
         object->func = m221_ExitObjMain;
@@ -485,7 +485,7 @@ void m221_PlayerFireHitCheck(omObjData *object) {
             MgPlayerMotForceSet(object, 0x26);
             data->unk50 |= 0x400;
             data->unk38 = -mgPlayerJumpPower;
-            Hu3DModelAttrSet(object->model[1], 4, 4);
+            Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             HuAudPlayerFXPlay(0x39D, data->unk59);
             PlayerFXPlay(0x286, data->unk59);
             omVibrate(data->unk59, 2, 2, 20);
@@ -509,11 +509,11 @@ void m221_PlayerMoveHook(omObjData *object, f32 *x, f32 *y, f32 *z) {
     data = object->data;
     stage = mgMapObjTbl[1];
     if (HuSqrtf(*x * *x + *z * *z) > 2000.0f) {
-        Hu3DModelAttrSet(object->model[0], 4, 4);
-        Hu3DModelAttrSet(object->model[10], 4, 4);
-        Hu3DModelAttrSet(object->model[11], 4, 4);
-        Hu3DModelAttrSet(object->model[12], 4, 4);
-        Hu3DModelAttrSet(object->model[13], 4, 4);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[10], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[11], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[12], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[13], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         return;
     }
     stageData = stage->data;
@@ -940,7 +940,7 @@ void m221_PlayerDustUpdate(omObjData *object, f32 x, f32 y, f32 z) {
         if (m221_dustTimerTbl[player][i] >= 0) {
             if (m221_dustTimerTbl[player][i] == 0) {
                 Hu3DModelPosSet(object->model[10 + i], x, y + 30.0f, z);
-                Hu3DModelAttrSet(object->model[10 + i], 4, 0);
+                Hu3DModelAttrSet(object->model[10 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
             if (m221_dustTimerTbl[player][i] < 8) {
                 scale = m221_dustScaleTbl[m221_dustTimerTbl[player][i] / 2];
@@ -1184,7 +1184,7 @@ void m221_FireUpdate(omObjData *object) {
         }
         if (y != 0.0f) {
             model = object->model[10 + i];
-            Hu3DModelAttrSet(model, 4, 0);
+            Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelPosSet(model, x + object->trans.x, y, m221_fireBeltPosTbl[i].y);
             Hu3DModelRotSet(model, CRot.x, 0.0f, 0.0f);
             Hu3DModelScaleSet(model, scale, scale, scale);
@@ -1195,13 +1195,13 @@ void m221_FireUpdate(omObjData *object) {
             m221_fireScaleRot = HuAngleWrap(m221_fireScaleRot);
             scale = scale * 0.5f + sindf(m221_fireScaleRot) * 0.3f;
             model = object->model[13 + i];
-            Hu3DModelAttrSet(model, 4, 0);
+            Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelPosSet(model, x + object->trans.x, y - 3.0f, m221_fireBeltPosTbl[i].y);
             Hu3DModelScaleSet(model, scale, scale, scale);
             HuRotateRPYF(Hu3DData[model].mtx, 0.0f, 0.0f, rot);
         } else {
-            Hu3DModelAttrSet(object->model[10 + i], 4, 4);
-            Hu3DModelAttrSet(object->model[13 + i], 4, 4);
+            Hu3DModelAttrSet(object->model[10 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[13 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
         m221_firePosTbl[i].x = x + object->trans.x;
         m221_firePosTbl[i].y = y;

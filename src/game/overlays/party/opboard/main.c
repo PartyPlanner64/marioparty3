@@ -323,7 +323,7 @@ void opboard_SkipCheckObjMain(omObjData *obj) {
     if (i != 4) {
         opboard_skipF = 1;
         WipeColorSet(255, 255, 255);
-        WipeCreateOut(11, 16);
+        WipeCreateOut(WIPE_FADE, 16);
         HuAudSeqFadeOut(32);
         msmSeFadeOut(32);
         obj->func = opboard_SkipObjMain;
@@ -408,7 +408,7 @@ void opboard_ArriveProc(void) {
     EffectRangeSet(opboard_effNo, 40.0f);
     Hu3DParticleAttrSet(opboard_effNo, 1, 0);
     MBBackTPLvlSet(128);
-    WipeCreateIn(2, 16);
+    WipeCreateIn(WIPE_STARS, 16);
     HuPrcSleep(17);
     opboard_skipObj = omAddObj(0x1000, 0, 0, -1, opboard_SkipCheckObjMain);
     HuAudSeqPlay(110);
@@ -462,7 +462,7 @@ void opboard_ArriveProc(void) {
         HuPrcVSleep();
         if (i == 5) {
             WipeColorSet(255, 255, 255);
-            WipeCreateOut(11, 16);
+            WipeCreateOut(WIPE_FADE, 16);
         }
     }
     while (WipeStatGet() != 0) {
@@ -828,7 +828,7 @@ void opboard_StarTalkExec(void) {
         effects[j] = opboard_SpiralEffCreate(0xB0004, 0x689);
     }
     WipeColorSet(255, 255, 255);
-    WipeCreateIn(11, 16);
+    WipeCreateIn(WIPE_FADE, 16);
     while (WipeStatGet() != 0) {
         HuPrcVSleep();
     }
@@ -1028,7 +1028,7 @@ void opboard_ExitObjMain(omObjData *obj) {
 
 void opboard_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq != 0) {
-        WipeCreateOut(2, 20);
+        WipeCreateOut(WIPE_STARS, 20);
         HuAudSeqFadeOut(60);
         obj->func = opboard_ExitObjMain;
     }

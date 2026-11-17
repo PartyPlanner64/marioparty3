@@ -363,7 +363,7 @@ void mstory4_Scene1PlayerProc(void) {
         Hu3DModelScaleSet(obj->model[2], 1.5f, 1.0f, 1.5f);
     }
     obj->model[3] = Hu3DModelRead(0x1D000A, 0x2B9);
-    Hu3DModelAttrSet(obj->model[3], 4, 4);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     omObjMotionRead(obj, 0, CharMotionDataNumGet(chr, 0));
     omObjMotionRead(obj, 1, CharMotionDataNumGet(chr, 0x2F));
     omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, 0x34));
@@ -451,15 +451,15 @@ void mstory4_Scene1TumbleProc(void) {
     obj->model[2] = Hu3DModelLink(mstory4_scene1ShadowMdl);
     obj->model[3] = Hu3DModelRead(0x1D002B, 0x2B9);
     obj->model[4] = Hu3DModelRead(0x1D002C, 0x2B9);
-    Hu3DModelAttrSet(obj->model[3], 4, 4);
-    Hu3DModelAttrSet(obj->model[4], 4, 4);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->model[5] = Hu3DModelRead(0x1D002D, 0x299);
-    Hu3DModelAttrSet(obj->model[5], 4, 4);
+    Hu3DModelAttrSet(obj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelScaleSet(obj->model[5], 2.0f, 2.0f, 2.0f);
     Hu3DMotionAttrSet(obj->model[5], 2, 2);
     Hu3DMotionSpeedSet(obj->model[5], 0.5f);
     obj->model[6] = Hu3DModelRead(0xA015F, 0x2A9);
-    Hu3DModelAttrSet(obj->model[6], 4, 4);
+    Hu3DModelAttrSet(obj->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DMotionAttrSet(obj->model[6], 2, 2);
     mstory4_scene1StarBFloatF = 1;
     omObjMotionRead(obj, 0, 0xA0076);
@@ -525,7 +525,7 @@ void mstory4_Scene1TumbleSpin(omObjData *obj) {
     pos.x = Hu3DData[obj->model[1]].pos.x;
     pos.y = Hu3DData[obj->model[1]].pos.y + 80.0f;
     pos.z = Hu3DData[obj->model[1]].pos.z;
-    Hu3DModelAttrSet(obj->model[5], 4, 0);
+    Hu3DModelAttrSet(obj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelPosSet(obj->model[5], pos.x, pos.y, pos.z);
     Hu3DModelPosSet(obj->model[6], pos.x, pos.y, pos.z);
     HuAudFXPlay(0x222);
@@ -630,8 +630,8 @@ void mstory4_Scene1StarVanish(omObjData *obj) {
         Hu3DModelRotSet(models[0], 0.0f, 0.0f, rot);
         HuPrcVSleep();
     }
-    Hu3DModelAttrSet(obj->model[1], 4, 4);
-    Hu3DModelAttrSet(obj->model[2], 4, 4);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     mstory4_scene1WorkTbl[2].func = mstory4_Scene1ObjIdle;
 }
 
@@ -926,7 +926,7 @@ void mstory4_Scene1EventExec(omObjData *obj) {
     HuPrcSleep(10);
     Hu3DMotionAttrSet(obj1->model[1], 1, 0);
     HuPrcSleep(30);
-    Hu3DModelAttrSet(obj1->model[6], 4, 0);
+    Hu3DModelAttrSet(obj1->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     HuAudFXPlay(0x223);
     HuPrcSleep(60);
     time = 60.0f;
@@ -949,7 +949,7 @@ void mstory4_Scene1EventExec(omObjData *obj) {
     mstory4_cameraPos.z = 1400.0f;
     HuPrcVSleep();
     Hu3DModelPosSet(obj1->model[6], mstory4_scene1TumbleStartPos.x, mstory4_scene1TumbleStartPos.y + 150.0f, mstory4_scene1TumbleStartPos.z);
-    Hu3DModelAttrSet(obj1->model[5], 4, 4);
+    Hu3DModelAttrSet(obj1->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     for (i = 0; i < 4; i++) {
         Hu3DMotionNoMotReset(obj1->model[6], Hu3DData[obj1->model[6]].motId, mstory4_scene1StarBAuraNameTbl[i], 27, 69);
         Hu3DMotionNoMotReset(obj1->model[6], Hu3DData[obj1->model[6]].motId, mstory4_scene1StarBAuraNameTbl[i], 27, 70);
@@ -1295,23 +1295,23 @@ void mstory4_Scene1CameraDebugProc(void) {
             }
         }
         if (HuPadBtn[0] & Z_TRIG) {
-            if (HuPadBtn[0] & 1) {
+            if (HuPadBtn[0] & R_CBUTTONS) {
                 mstory4_cameraTarget.x -= 10.0f;
             }
-            if (HuPadBtn[0] & 2) {
+            if (HuPadBtn[0] & L_CBUTTONS) {
                 mstory4_cameraTarget.x += 10.0f;
             }
         } else {
-            if (HuPadBtn[0] & 8) {
+            if (HuPadBtn[0] & U_CBUTTONS) {
                 mstory4_cameraTarget.z -= 10.0f;
             }
-            if (HuPadBtn[0] & 4) {
+            if (HuPadBtn[0] & D_CBUTTONS) {
                 mstory4_cameraTarget.z += 10.0f;
             }
-            if (HuPadBtn[0] & 1) {
+            if (HuPadBtn[0] & R_CBUTTONS) {
                 mstory4_cameraTarget.y -= 10.0f;
             }
-            if (HuPadBtn[0] & 2) {
+            if (HuPadBtn[0] & L_CBUTTONS) {
                 mstory4_cameraTarget.y += 10.0f;
             }
         }
@@ -1357,7 +1357,7 @@ void mstory4_Scene1StarSpinExec(void) {
     mstory4_EffectParamSet(mstory4_scene1StarEff, 7.0f, 50.0f, 12.0f);
     mstory4_EffectRangeSet(mstory4_scene1StarEff, 120.0f);
     Hu3DParticleAttrSet(mstory4_scene1StarEff, 1, 0);
-    Hu3DModelAttrSet(mstory4_scene1StarEff, 4, 4);
+    Hu3DModelAttrSet(mstory4_scene1StarEff, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     mstory4_Scene1PicDispOff(1);
     mstory4_Scene1PicDispOn(0);
     mstory4_cameraPos.x = 0.0f;
@@ -1379,7 +1379,7 @@ void mstory4_Scene1StarSpinExec(void) {
     for (i = 0; i < 80; i++) {
         if (i == 30) {
             Hu3DParticleAttrSet(mstory4_scene1StarEff, 1, 1);
-            Hu3DModelAttrSet(mstory4_scene1StarEff, 4, 0);
+            Hu3DModelAttrSet(mstory4_scene1StarEff, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
         mstory4_scene1StarBSpinRot += speed;
         speed += 1.0f;
@@ -1416,7 +1416,7 @@ void mstory4_Scene1ConstellationExec(void) {
         }
     }
     HuMemMemoryFreePerm(data);
-    Hu3DModelAttrSet(obj->model[6], 4, 4);
+    Hu3DModelAttrSet(obj->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     mstory4_Scene1PicDispOff(0);
     mstory4_Scene1PicDispOn(1);
     mstory4_cameraPos.x = 0.0f;
@@ -1809,7 +1809,7 @@ void mstory4_Scene1FireworkProc(void) {
     models[2] = Hu3DModelRead(0xB004C, 0x29D);
     Hu3DModelScaleSet(models[2], 0.4f, 0.4f, 0.4f);
     HuPrcSleep(work->unk_02);
-    Hu3DModelAttrSet(model, 4, 0);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     while (TRUE) {
         HuPrcVSleep();
         rx = (s32)(rand8() * 25U >> 7);
@@ -1823,7 +1823,7 @@ void mstory4_Scene1FireworkProc(void) {
         ry *= 2.0f;
         rz *= 2.0f;
         mstory4_scene1FireworkSide *= -1;
-        Hu3DModelAttrSet(models[1], 4, 0);
+        Hu3DModelAttrSet(models[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         for (i = 0; i <= 20; i++) {
             x = rx * sindf(i / 20.0f * 90.0f) + work->pos.x;
             y = ry * sindf(i / 20.0f * 135.0f + 45.0f) - ry * sindf(45.0f) + work->pos.y;
@@ -1831,10 +1831,10 @@ void mstory4_Scene1FireworkProc(void) {
             Hu3DModelPosSet(models[1], x, y, z);
             HuPrcVSleep();
         }
-        Hu3DModelAttrSet(models[1], 4, 4);
+        Hu3DModelAttrSet(models[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         HuPrcSleep(5);
         if (rand8() & 3) {
-            Hu3DModelAttrSet(models[2], 4, 0);
+            Hu3DModelAttrSet(models[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DMotionTimeSet(models[2], 0.0f);
             Hu3DMotionSpeedSet(models[2], 3.0f);
             Hu3DModelPosSet(models[2], x, y, z);
@@ -1842,7 +1842,7 @@ void mstory4_Scene1FireworkProc(void) {
                 mstory4_Scene1FireworkBurst(model, x, y, z, total / 8, i & 3);
                 HuPrcVSleep();
             }
-            Hu3DModelAttrSet(models[2], 4, 4);
+            Hu3DModelAttrSet(models[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         } else {
             for (i = 0; i < 8; i++) {
                 mstory4_Scene1FireworkBurst(model, x, y, z, total / 8, i & 3);

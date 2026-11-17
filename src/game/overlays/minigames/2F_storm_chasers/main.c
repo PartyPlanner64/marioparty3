@@ -491,7 +491,7 @@ void m247_PuffObjMain(omObjData *object) {
         case 0:
             break;
         case 1:
-            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             entry->state = 2;
             break;
         case 2:
@@ -727,7 +727,7 @@ void m247_RainObjInit(omObjData *object) {
     Hu3DModelVtxBufMake(object->model[0]);
     Hu3DModelTPLvlInit(object->model[0]);
     Hu3DModelTPLvlSet(object->model[0], 255);
-    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, 0);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DTexSizeGet("247_ame_IA44", m247_rainTexSize);
     object->trans.x = cloud->unk_18->trans.x;
     object->trans.y = 0.0f;
@@ -761,7 +761,7 @@ void m247_LightningUpdate(omObjData *object) {
             if (m247_phaseTimer <= 90) {
                 break;
             }
-            Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             if (state->state == 0) {
                 angle = ((u8)(rand8() % 5) + 1) * 30;
                 radius = ((rand8() & 3) + 1) * 80;
@@ -784,9 +784,9 @@ void m247_LightningUpdate(omObjData *object) {
         case 1:
             if (m247_markWarnFrameTbl[state->unk_04] == -1) {
                 HuAudFXPlay(0x483);
-                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, 0);
-                Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, 0);
-                Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 state->unk_04 = 0;
                 state->state = 2;
                 Hu3DMotionAttrSet(object->model[2], 1, 0);
@@ -1022,7 +1022,7 @@ void m247_PlantObjMain(omObjData *object) {
         case 0:
             if (data->unk_04 == 0) {
                 data->state = 1;
-                Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
             object->trans.x = player->unk_44->trans.x;
             object->trans.y = 100.0f;

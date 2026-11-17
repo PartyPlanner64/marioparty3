@@ -457,7 +457,7 @@ s16 mgmode_ConfettiCreate(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
         bc->unk20.f = arg1;
         bc->unk24.f = arg2;
         bc->unk08.f = arg3;
-        Hu3DModelAttrSet(model, 4, 4);
+        Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     obj = omAddObj(10, 10, 10, -1, mgmode_ConfettiObjMain);
     obj->work[0] = mgmode_confettiNum;

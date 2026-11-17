@@ -220,7 +220,7 @@ void m216_StageItemCreate(omObjData *object, s16 carIdx, CosmicCoasterSpawn *spa
         } else {
             osSyncPrintf("obj over\n");
         }
-        Hu3DModelAttrSet(object->model[j], 4, 0);
+        Hu3DModelAttrSet(object->model[j], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(object->model[j], spawn->x, spawn->y + 400.0f, car->progress - spawn->z * 100.0 - 1185.0);
         Hu3DModelPosSet(object->model[k], spawn->x, spawn->y + 400.0f, car->progress - spawn->z * 100.0 - 1185.0);
         Hu3DModelCameraSet(object->model[j], cam);
@@ -235,7 +235,7 @@ void m216_StageItemCreate(omObjData *object, s16 carIdx, CosmicCoasterSpawn *spa
     Hu3DLLightCreate(object->model[i], 1);
     Hu3DLLightColorSet(object->model[i], 0, 0, 0);
     Hu3DLLightDirSet(object->model[i], 0.0f, -127.0f, 0.0f);
-    Hu3DModelAttrSet(object->model[i], 4, 0);
+    Hu3DModelAttrSet(object->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DMotionAttrSet(object->model[i], 2, 2);
     Hu3DModelCameraSet(object->model[i], cam);
     omSetTra(newObj, spawn->x, spawn->y, spawn->z * 100.0f);
@@ -268,7 +268,7 @@ void m216_RockObjMain(omObjData *object) {
         Hu3DLLightCreate(object->model[0], 1);
         Hu3DLLightColorSet(object->model[0], 0, 0, 0);
         Hu3DLLightDirSet(object->model[0], 0.0f, -127.0f, 0.0f);
-        Hu3DModelAttrSet(object->model[0], 4, 0);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, car->progress - object->trans.z);
     } else if (car->progress - object->trans.z >= 3300.0f) {
         Hu3DModelKill(object->model[0]);
@@ -313,7 +313,7 @@ void m216_BigRockObjMain(omObjData *object) {
         Hu3DLLightCreate(object->model[0], 1);
         Hu3DLLightColorSet(object->model[0], 0, 0, 0);
         Hu3DLLightDirSet(object->model[0], 0.0f, -127.0f, 0.0f);
-        Hu3DModelAttrSet(object->model[0], 4, 0);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, car->progress - object->trans.z);
     } else if (car->progress - object->trans.z >= 3300.0f) {
         Hu3DModelKill(object->model[0]);
@@ -476,8 +476,8 @@ void m216_GoalObjMain(omObjData *object) {
     Hu3DModelPosSet(object->model[2], object->trans.x, object->trans.y + 400.0f, car->progress - object->trans.z - 1185.0f);
     state = object->data;
     if (m216_winner != -1 && m216_winner == object->work[2]) {
-        Hu3DModelAttrSet(object->model[1], 4, 4);
-        Hu3DModelAttrSet(object->model[2], 4, 0);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         state->angle += 8.0f;
         if (state->angle >= 360.0f) {
             state->angle -= 360.0f;

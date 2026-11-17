@@ -285,7 +285,7 @@ void mgmode_RoomProc(void) {
     mgmode_cameraPresetTbl = mgmode_roomCameraPresetTbl;
     mgmode_MdlListCreate(mgmode_roomMdlDefTbl);
     mgmode_RoomInit();
-    WipeCreateIn(11, 16);
+    WipeCreateIn(WIPE_FADE, 16);
     omAddPrcObj(mgmode_FloatMdlProc, 0x3FF6, 0x1000, 0);
     HuWinMesMaxSizeBetGet(size, 0x5700, 0x570A);
     mgmode_winId = HuWinExCreate(-1, (320 - size[0]) / 2, 224 - size[1], size[0], size[1], 0);
@@ -538,7 +538,7 @@ void mgmode_RoomProc(void) {
                     }
                     if ((s16)HuWinChoiceGet(mgmode_winId, 0, 0) == 0) {
                         HuWinExAnimOut(mgmode_winId, 0);
-                        WipeCreateOut(11, 15);
+                        WipeCreateOut(WIPE_FADE, 15);
                         HuAudSeqFadeOut(60);
                         mgmode_CameraPresetMove(16, 20, 1, (void (*)(s16 *))-1);
                         mgmode_exitMode = 0x80;
@@ -1133,7 +1133,7 @@ void mgmode_BookSelect(s16 arg0) {
             sel = next;
             mgModeCursor[arg0] = sel;
             for (i = 0; i < 8; i++) {
-                Hu3DModelAttrSet(mgmode_mdlTbl7[i], 4, 4);
+                Hu3DModelAttrSet(mgmode_mdlTbl7[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             if (mgmode_typeMgTbl[category][sel] != 0xFF && mgmode_typeMgTbl[category][sel] < 72) {
                 mgmode_BookMdlSet(arg0, sel);
@@ -1218,7 +1218,7 @@ void mgmode_BookSelect(s16 arg0) {
     HuSprAnimKill(spriteGrp);
     HuWinExAnimOut(win, 0);
     for (i = 0; i < 8; i++) {
-        Hu3DModelAttrSet(mgmode_mdlTbl7[i], 4, 4);
+        Hu3DModelAttrSet(mgmode_mdlTbl7[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     HuWinKill(win);
 }
@@ -1234,7 +1234,7 @@ void mgmode_BookMdlSet(s16 arg0, s16 arg1) {
     } else {
         model = mgmode_mdlTbl7[arg0];
     }
-    Hu3DModelAttrSet(model, 4, 0);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelRotSet(model, 15.0f, CRot.y, 0.0f);
     x = sindf(CRot.y) * cosdf(CRot.x);
     z = cosdf(CRot.y) * cosdf(CRot.x);
@@ -1281,7 +1281,7 @@ void mgmode_BookTakeExec(s16 arg0, s16 arg1) {
     for (i = 0; i < 30; i++) {
         HuPrcVSleep();
         if (i == 20) {
-            WipeCreateOut(11, 10);
+            WipeCreateOut(WIPE_FADE, 10);
         }
         t = i / 30.0f * 0.5f;
         Hu3DModelPosSet(model, startX + (endX - startX) * t, startY + (endY - startY) * t,
@@ -1563,16 +1563,16 @@ void mgmode_CameraDebugExec(void) {
     if (HuPadBtn[1] & START_BUTTON) {
         mgmode_CameraPresetSet(mgmode_cameraPresetNo);
     }
-    if (HuPadBtn[1] & 8) {
+    if (HuPadBtn[1] & U_CBUTTONS) {
         CZoom = (HuPadBtn[1] & Z_TRIG) ? CZoom + 30.0f : CZoom + 10.0f;
     }
-    if ((HuPadBtn[1] & 4) && CZoom - 10.0f != 0.0f) {
+    if ((HuPadBtn[1] & D_CBUTTONS) && CZoom - 10.0f != 0.0f) {
         CZoom = (HuPadBtn[1] & Z_TRIG) ? CZoom - 30.0f : CZoom - 10.0f;
     }
-    if (HuPadBtn[1] & 2) {
+    if (HuPadBtn[1] & L_CBUTTONS) {
         mgmode_cameraFov += 1.0f;
     }
-    if (HuPadBtn[1] & 1) {
+    if (HuPadBtn[1] & R_CBUTTONS) {
         mgmode_cameraFov -= 1.0f;
     }
     Hu3DCameraPerspectiveSet(0, mgmode_cameraFov, mgmode_cameraNear, mgmode_cameraFar);
@@ -1633,7 +1633,7 @@ void mgmode_CameraDebugExec(void) {
 void mgmode_ExitCheckObjMain(omObjData *arg0) {
     if ((mgmode_exitF != 0) || (omSysExitReq != 0)) {
         if ((mgmode_exitMode & 0x80) == 0) {
-            WipeCreateOut(0xB, 8);
+            WipeCreateOut(WIPE_FADE, 8);
             HuAudSeqFadeOut(0x3C);
         }
         arg0->func = mgmode_ExitObjMain;

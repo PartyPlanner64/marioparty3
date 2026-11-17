@@ -499,8 +499,8 @@ s8 m234_SignScaleUpdate(omObjData *obj, s8 mode) {
     switch (mode) {
         case 0:
             if (entry->unk_5C.y == 0.05f) {
-                Hu3DModelAttrSet(obj->model[2], 4, 0);
-                Hu3DModelAttrSet(obj->model[3], 4, 0);
+                Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
             if (entry->unk_5C.y < 1.0f) {
                 entry->unk_5C.y += 0.19f;
@@ -515,8 +515,8 @@ s8 m234_SignScaleUpdate(omObjData *obj, s8 mode) {
                 entry->unk_5C.y -= 0.19;
                 break;
             }
-            Hu3DModelAttrSet(obj->model[2], 4, 4);
-            Hu3DModelAttrSet(obj->model[3], 4, 4);
+            Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             entry->unk_5C.y = 0.05f;
             Hu3DModelScaleSet(obj->model[2], entry->unk_5C.x, entry->unk_5C.y, entry->unk_5C.z);
             Hu3DModelScaleSet(obj->model[3], entry->unk_5C.x, entry->unk_5C.y, entry->unk_5C.z);
@@ -1063,8 +1063,8 @@ void m234_PlayerObjInit(omObjData *obj) {
     entry->unk_5C.z = 1.0f;
     Hu3DModelScaleSet(obj->model[2], entry->unk_5C.x, entry->unk_5C.y, entry->unk_5C.z);
     Hu3DModelScaleSet(obj->model[3], entry->unk_5C.x, entry->unk_5C.y, entry->unk_5C.z);
-    Hu3DModelAttrSet(obj->model[2], 4, 4);
-    Hu3DModelAttrSet(obj->model[3], 4, 4);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     m234_MotSet(obj, 3, 2);
     entry->unk_06 = 3;
     m234_choiceTbl[player] = 0;
@@ -1146,16 +1146,16 @@ void m234_ActorObjMain(omObjData *obj) {
             break;
         case 1:
             if (omPauseChk() + omAllPauseF != 0) {
-                Hu3DModelAttrSet(obj->model[0], 4, 4);
-                Hu3DModelAttrSet(obj->model[1], 4, 4);
+                Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             } else {
-                Hu3DModelAttrSet(obj->model[0], 4, 0);
-                Hu3DModelAttrSet(obj->model[1], 4, 0);
+                Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
             break;
         case 2:
-            Hu3DModelAttrSet(obj->model[0], 4, 4);
-            Hu3DModelAttrSet(obj->model[1], 4, 4);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             break;
         case 6:
             if (m234_answerSlot == m234_actorSlotTbl[player][0]) {
@@ -1173,11 +1173,11 @@ void m234_ActorObjMain(omObjData *obj) {
         case 4:
         case 5:
             if (omPauseChk() + omAllPauseF != 0) {
-                Hu3DModelAttrSet(obj->model[0], 4, 4);
-                Hu3DModelAttrSet(obj->model[1], 4, 4);
+                Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             } else {
-                Hu3DModelAttrSet(obj->model[0], 4, 0);
-                Hu3DModelAttrSet(obj->model[1], 4, 0);
+                Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
             break;
     }
@@ -1291,7 +1291,7 @@ void m234_ActorObjCreateAll(void) {
         m234_actorObjTbl[i][0] = obj;
         obj->work[0] = i;
         m234_objWorkTbl[5].obj = obj;
-        omSetStatBit(obj, 0xA0);
+        omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     }
 }
 
@@ -1318,8 +1318,8 @@ void m234_HostObjInit(omObjData *obj) {
     obj->scale.z = 0.8f;
     Hu3DModelScaleSet(obj->model[0], obj->scale.x, obj->scale.y, obj->scale.z);
     Hu3DModelScaleSet(obj->model[1], obj->scale.x, obj->scale.y, obj->scale.z);
-    Hu3DModelAttrSet(obj->model[0], 4, 4);
-    Hu3DModelAttrSet(obj->model[1], 4, 4);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelCameraSet(obj->model[0], 1);
     Hu3DModelCameraSet(obj->model[1], 1);
     obj->func = m234_HostObjMain;
@@ -1334,7 +1334,7 @@ void m234_SpotlightObjMain(omObjData *obj) {
 
     switch (m234_roundPhase) {
         case 0:
-            Hu3DModelAttrSet(obj->model[0], 4, 4);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             break;
         case 5:
             switch (m234_roundNo) {
@@ -1351,13 +1351,13 @@ void m234_SpotlightObjMain(omObjData *obj) {
                                    m234_spotOfs6Tbl[m234_answerSlot];
                     break;
             }
-            Hu3DModelAttrSet(obj->model[0], 4, 0);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             break;
     }
     if (m234_phase >= 3) {
         if (entry->unk_04 <= 0) {
             entry->unk_04 = 0;
-            Hu3DModelAttrSet(obj->model[0], 4, 4);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         } else {
             entry->unk_04 -= 5;
             Hu3DModelTPLvlSet(obj->model[0], entry->unk_04);
@@ -1374,7 +1374,7 @@ void m234_SpotlightObjInit(omObjData *obj) {
     obj->trans.z = -725.0f;
     Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
     m234_objWorkTbl[13].unk_04 = 0xFF;
-    Hu3DModelAttrSet(obj->model[0], 4, 4);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelCameraSet(obj->model[0], 1);
     obj->func = m234_SpotlightObjMain;
 }
@@ -1635,14 +1635,14 @@ void m234_RoundUpdate(void) {
             if ((s32)Hu3DData[stage->model[0]].motTime <= 0) {
                 Hu3DMotionTimeSet(stage->model[0], 0.0f);
                 Hu3DMotionSpeedSet(stage->model[0], 0.0f);
-                Hu3DModelAttrSet(stage->model[0], 4, 4);
+                Hu3DModelAttrSet(stage->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             m234_ActorMarchUpdate();
             if (m234_actorObjTbl[m234_lastActorNo][0]->trans.x >= 500.0f) {
                 m234_roundPhase = 2;
-                Hu3DModelAttrSet(stage->model[0], 4, 0);
-                Hu3DModelAttrSet(host->model[0], 4, 0);
-                Hu3DModelAttrSet(host->model[1], 4, 0);
+                Hu3DModelAttrSet(stage->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(host->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(host->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
             break;
         case 2:
@@ -1678,8 +1678,8 @@ void m234_RoundUpdate(void) {
                 }
             } else {
                 host->trans.x = -450.0f;
-                Hu3DModelAttrSet(host->model[0], 4, 4);
-                Hu3DModelAttrSet(host->model[1], 4, 4);
+                Hu3DModelAttrSet(host->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(host->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 m234_musicFadeF = 0;
                 for (i = 0; i < 6; i++) {
                     if (m234_actorTbl[i][0] != 0) {
@@ -1712,7 +1712,7 @@ void m234_RoundUpdate(void) {
             if ((s32)Hu3DData[stage->model[0]].motTime <= 0) {
                 Hu3DMotionTimeSet(stage->model[0], 0.0f);
                 Hu3DMotionSpeedSet(stage->model[0], 0.0f);
-                Hu3DModelAttrSet(stage->model[0], 4, 4);
+                Hu3DModelAttrSet(stage->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 HuAudFXPlay(0x522);
                 m234_timer = 100;
                 m234_roundPhase = 6;
@@ -1771,7 +1771,7 @@ void m234_RoundUpdate(void) {
                 HuAudSeqVolFadeIn(30);
             }
             Hu3DMotionSpeedSet(stage->model[0], 1.0f);
-            Hu3DModelAttrSet(stage->model[0], 4, 0);
+            Hu3DModelAttrSet(stage->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             if ((s32)Hu3DData[stage->model[0]].motTime >= 60) {
                 Hu3DMotionTimeSet(stage->model[0], 60.0f);
                 Hu3DMotionSpeedSet(stage->model[0], 0.0f);
@@ -1820,7 +1820,7 @@ void m234_ExitWaitObjMain(omObjData *obj) {
 void m234_ExitCheckObjMain(omObjData *obj) {
     if (omSysExitReq == 1) {
         m234_QuestionKill();
-        WipeCreateOut(0, 20);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         obj->func = m234_ExitWaitObjMain;
         HuAudSeqFadeOut(30);
         HuAudFXAllFadeOut(30);
@@ -1910,7 +1910,7 @@ void m234_MainObjMain(omObjData *obj) {
         case 7:
             if (GMesStatGet() == 0) {
                 if (--m234_timer <= 0) {
-                    WipeCreateOut(0, 20);
+                    WipeCreateOut(WIPE_TYPE_NORMAL, 20);
                     obj->func = m234_ExitWaitObjMain;
                 }
             }
@@ -1931,7 +1931,7 @@ void m234_MainObjInit(omObjData *obj) {
     m234_HostObjCreate();
     m234_PlayerObjCreateAll();
     m234_ActorObjCreateAll();
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
     obj->func = m234_MainObjMain;
 }
 

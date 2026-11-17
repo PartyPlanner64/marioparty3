@@ -33,26 +33,26 @@ void op_DemoMain(void) {
     op_DemoEventSetup();
     parentPrc = HuPrcCurrentGet();
     eventPrc = op_DemoEventCreate();
-    WipeCreateIn(11, 16);
+    WipeCreateIn(WIPE_FADE, 16);
     HuPrcSleep(16);
     while (1) {
         HuPrcVSleep();
         if (omovlevtno == 1) {
             if (op_BtnStartCheck() && _CheckFlag(50)) {
                 WipeColorSet(255, 255, 255);
-                WipeCreateOut(11, 20);
+                WipeCreateOut(WIPE_FADE, 20);
                 HuAudSeqFadeOut(20);
                 break;
             }
         } else if (op_BtnStartCheck()) {
             WipeColorSet(255, 255, 255);
-            WipeCreateOut(11, 20);
+            WipeCreateOut(WIPE_FADE, 20);
             HuAudSeqFadeOut(20);
             break;
         }
         if (!HuPrcChildGet(parentPrc) || op_DemoEndGet()) {
             WipeColorSet(255, 255, 255);
-            WipeCreateOut(11, 20);
+            WipeCreateOut(WIPE_FADE, 20);
             HuAudSeqFadeOut(50);
             break;
         }
@@ -102,13 +102,13 @@ void op_TitleMain(void) {
     parentPrc = HuPrcCurrentGet();
     sprPrc = op_TitleSprCreate();
     WipeColorSet(255, 255, 255);
-    WipeCreateIn(11, 16);
+    WipeCreateIn(WIPE_FADE, 16);
     HuPrcSleep(16);
     HuPrcSleep(60);
     while (1) {
         HuPrcVSleep();
         if (op_BtnStartCheck()) {
-            WipeCreateOut(11, 20);
+            WipeCreateOut(WIPE_FADE, 20);
             HuAudSeqFadeOut(20);
             do {
                 HuPrcVSleep();
@@ -128,7 +128,7 @@ void op_TitleMain(void) {
         if (HuPrcChildGet(parentPrc) && !op_DemoEndGet() && frame < 5401) {
             frame++;
         } else {
-            WipeCreateOut(11, 20);
+            WipeCreateOut(WIPE_FADE, 20);
             HuAudSeqFadeOut(20);
             do {
                 HuPrcVSleep();

@@ -197,7 +197,7 @@ void m222_ObjectSetup(void) {
     mgPlayerObjTbl[mgPlayerObjNum++] = m222_playerObjTbl[2] = omAddObj(3, 12, 60, -1, m222_Player2ObjInit);
     mgPlayerObjTbl[mgPlayerObjNum++] = m222_playerObjTbl[3] = omAddObj(3, 12, 60, -1, m222_Player3ObjInit);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, m222_CameraObjMain), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
-    WipeCreateIn(0xFF, 30);
+    WipeCreateIn(WIPE_TYPE_PREV, 30);
     GMesFontMesCreate(m222_fontMesTbl, 1);
     m222_mgFlow.type = MINIGAME_4P;
     m222_mgFlow.startDelay = 45;
@@ -742,9 +742,9 @@ void m222_StageObjMain(omObjData *object) {
                         for (k = 0; k < 4; k++) {
                             MgPlayerMapAttrSet(m222_playerObjTbl[k], j + 1, 1);
                         }
-                        Hu3DModelAttrSet(m222_blockObjTbl[j]->model[0], 4, 4);
-                        Hu3DModelAttrSet(m222_blockObjTbl[j]->model[1], 4, 4);
-                        Hu3DModelAttrSet(m222_stageObj->model[17 + j], 4, 0);
+                        Hu3DModelAttrSet(m222_blockObjTbl[j]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        Hu3DModelAttrSet(m222_blockObjTbl[j]->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                        Hu3DModelAttrSet(m222_stageObj->model[17 + j], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         m222_MotTimeSet(m222_stageObj->model[17 + j], 0);
                         m222_blockBreakTimerTbl[j] = 1;
                         count = 0;
@@ -768,8 +768,8 @@ void m222_StageObjMain(omObjData *object) {
                             m222_debrisXTbl[k] += m222_blockObjTbl[j]->trans.x;
                             m222_debrisYTbl[k] += m222_blockObjTbl[j]->trans.y;
                             m222_debrisZTbl[k] += m222_blockObjTbl[j]->trans.z;
-                            Hu3DModelAttrSet(object->model[29 + k], 4, 0);
-                            Hu3DModelAttrSet(object->model[43 + k], 4, 0);
+                            Hu3DModelAttrSet(object->model[29 + k], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                            Hu3DModelAttrSet(object->model[43 + k], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                             count++;
                         }
                     }
@@ -781,8 +781,8 @@ void m222_StageObjMain(omObjData *object) {
             if (m222_kinokoTimer >= 55) {
                 m222_kinokoPhase = 3;
                 m222_kinokoTimer = 0;
-                Hu3DModelAttrSet(m222_stageObj->model[1], 4, 4);
-                Hu3DModelAttrSet(m222_stageObj->model[56], 4, 4);
+                Hu3DModelAttrSet(m222_stageObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(m222_stageObj->model[56], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 msmMusSetVolume(HuAudMusNo, m222_musVol);
                 break;
             }
@@ -792,7 +792,7 @@ void m222_StageObjMain(omObjData *object) {
                 for (j = 0; j < 9; j++) {
                     if (m222_blockStateTbl[j] != 0) {
                         visible += 1.0f;
-                        Hu3DModelAttrSet(m222_stageObj->model[8 + j], 4, 0);
+                        Hu3DModelAttrSet(m222_stageObj->model[8 + j], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         m222_MotTimeSet(m222_stageObj->model[8 + j], 0);
                     }
                 }
@@ -809,8 +809,8 @@ void m222_StageObjMain(omObjData *object) {
                 }
             } else if (m222_kinokoTimer == 45) {
                 for (j = 0; j < 9; j++) {
-                    Hu3DModelAttrSet(m222_blockObjTbl[j]->model[0], 4, 4);
-                    Hu3DModelAttrSet(m222_blockObjTbl[j]->model[1], 4, 4);
+                    Hu3DModelAttrSet(m222_blockObjTbl[j]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(m222_blockObjTbl[j]->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
             }
             if (m222_kinokoTimer < 7) {
@@ -826,7 +826,7 @@ void m222_StageObjMain(omObjData *object) {
                 } else {
                     t = 1.0f;
                 }
-                Hu3DModelAttrSet(object->model[1], 4, 0);
+                Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DModelPosSet(object->model[1], m222_blockObjTbl[m222_kinokoBlockNo]->trans.x,
                                 t * 75.0f + m222_blockObjTbl[m222_kinokoBlockNo]->trans.y + 12.5,
                                 m222_blockObjTbl[m222_kinokoBlockNo]->trans.z - 25.0f);
@@ -886,7 +886,7 @@ void m222_StageObjMain(omObjData *object) {
                 }
                 Hu3DModelPosSet(object->model[1], m222_kinokoX, m222_kinokoY, m222_kinokoZ);
                 Hu3DModelPosSet(object->model[56], m222_kinokoX, 0.0f, m222_kinokoZ);
-                Hu3DModelAttrSet(object->model[56], 4, 0);
+                Hu3DModelAttrSet(object->model[56], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 for (j = 0; j < 4; j++) {
                     dx = m222_playerObjTbl[j]->trans.x - m222_kinokoX;
                     dy = (m222_playerObjTbl[j]->trans.y + 75.0f - m222_kinokoY) / 1.75;
@@ -906,9 +906,9 @@ void m222_StageObjMain(omObjData *object) {
                 if (m222_phase == 5 || m222_phase == 6) {
                     m222_kinokoPhase = 9;
                     m222_kinokoTimer = 0;
-                    Hu3DModelAttrSet(object->model[1], 4, 4);
-                    Hu3DModelAttrSet(object->model[56], 4, 4);
-                    Hu3DModelAttrSet(object->model[57], 4, 0);
+                    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(object->model[56], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(object->model[57], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DModelPosSet(object->model[57], m222_kinokoX, m222_kinokoY, m222_kinokoZ);
                     m222_MotTimeSet(object->model[57], 6);
                 }
@@ -1072,7 +1072,7 @@ void m222_StageObjMain(omObjData *object) {
         case 7:
             if (m222_kinokoTimer == 1) {
                 for (j = 0; j < 9; j++) {
-                    Hu3DModelAttrSet(m222_stageObj->model[8 + j], 4, 0);
+                    Hu3DModelAttrSet(m222_stageObj->model[8 + j], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     m222_MotTimeSet(m222_stageObj->model[8 + j], 0);
                 }
                 m222_puffTimer = 1;
@@ -1090,8 +1090,8 @@ void m222_StageObjMain(omObjData *object) {
                 m222_kinokoTimer = 0;
                 for (j = 0; j < 9; j++) {
                     m222_blockStateTbl[j] = 1;
-                    Hu3DModelAttrSet(m222_blockObjTbl[j]->model[0], 4, 0);
-                    Hu3DModelAttrSet(m222_blockObjTbl[j]->model[1], 4, 0);
+                    Hu3DModelAttrSet(m222_blockObjTbl[j]->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(m222_blockObjTbl[j]->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     for (k = 0; k < 4; k++) {
                         MgPlayerMapAttrSet(m222_playerObjTbl[k], j + 1, 2);
                     }
@@ -1146,7 +1146,7 @@ void m222_StageObjMain(omObjData *object) {
         if (m222_blockBreakTimerTbl[j] != 0) {
             if (m222_blockBreakTimerTbl[j] > 60) {
                 m222_blockBreakTimerTbl[j] = 0;
-                Hu3DModelAttrSet(object->model[17 + j], 4, 4);
+                Hu3DModelAttrSet(object->model[17 + j], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             } else {
                 m222_blockBreakTimerTbl[j]++;
             }
@@ -1156,7 +1156,7 @@ void m222_StageObjMain(omObjData *object) {
         if (m222_puffTimer > 18) {
             m222_puffTimer = 0;
             for (j = 0; j < 9; j++) {
-                Hu3DModelAttrSet(object->model[8 + j], 4, 4);
+                Hu3DModelAttrSet(object->model[8 + j], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
         } else {
             m222_puffTimer++;
@@ -1166,8 +1166,8 @@ void m222_StageObjMain(omObjData *object) {
         if (m222_debrisTimerTbl[j] != 0) {
             if (m222_debrisTimerTbl[j] > 12) {
                 m222_debrisTimerTbl[j] = 0;
-                Hu3DModelAttrSet(object->model[29 + j], 4, 4);
-                Hu3DModelAttrSet(object->model[43 + j], 4, 4);
+                Hu3DModelAttrSet(object->model[29 + j], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                Hu3DModelAttrSet(object->model[43 + j], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             } else {
                 m222_debrisTimerTbl[j]++;
                 m222_debrisVelYTbl[j] -= 5.0f;
@@ -1194,11 +1194,11 @@ void m222_StageObjMain(omObjData *object) {
         if (m222_growEffTimer == 1) {
             Hu3DModelTPLvlSet(object->model[3], 0xFF);
             for (j = 0; j < 5; j++) {
-                Hu3DModelAttrSet(m222_stageObj->model[3 + j], 4, 0);
+                Hu3DModelAttrSet(m222_stageObj->model[3 + j], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
         } else if (m222_growEffTimer == 55) {
             for (j = 0; j < 5; j++) {
-                Hu3DModelAttrSet(m222_stageObj->model[3 + j], 4, 4);
+                Hu3DModelAttrSet(m222_stageObj->model[3 + j], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
         }
         if (m222_growEffTimer >= 1 && m222_growEffTimer < 55) {
@@ -1229,11 +1229,11 @@ void m222_StageObjMain(omObjData *object) {
         }
         if (m222_growEffTimer == 55) {
             for (j = 0; j < 5; j++) {
-                Hu3DModelAttrSet(m222_stageObj->model[2], 4, 0);
+                Hu3DModelAttrSet(m222_stageObj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
         } else if (m222_growEffTimer == 85) {
             for (j = 0; j < 5; j++) {
-                Hu3DModelAttrSet(m222_stageObj->model[2], 4, 4);
+                Hu3DModelAttrSet(m222_stageObj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
         }
         if (m222_growEffTimer >= 55 && m222_growEffTimer < 85) {
@@ -1311,7 +1311,7 @@ void m222_StageObjMain(omObjData *object) {
             m222_growEffDoneF = 0;
             m222_growEffTimer = 0;
             for (j = 0; j < 5; j++) {
-                Hu3DModelAttrSet(m222_stageObj->model[3 + j], 4, 4);
+                Hu3DModelAttrSet(m222_stageObj->model[3 + j], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
         }
     }
@@ -1322,7 +1322,7 @@ void m222_StageObjMain(omObjData *object) {
 
             m222_cloudTimerTbl[cloud] = 0;
             m222_MotTimeSet(object->model[26 + cloud], 0);
-            Hu3DModelAttrSet(object->model[26 + cloud], 4, 0);
+            Hu3DModelAttrSet(object->model[26 + cloud], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelPosSet(object->model[26 + cloud], m222_playerObjTbl[m222_giantGroup]->trans.x * 0.9, 300.0f,
                             m222_playerObjTbl[m222_giantGroup]->trans.z - 15.0f);
         }
@@ -1333,7 +1333,7 @@ void m222_StageObjMain(omObjData *object) {
         m222_cloudTimerTbl[j] += (m222_cloudTimerTbl[j] >= 55) ? 0 : 1;
         if (m222_cloudTimerTbl[j] >= 55) {
             m222_cloudTimerTbl[j] = 55;
-            Hu3DModelAttrSet(object->model[26 + j], 4, 4);
+            Hu3DModelAttrSet(object->model[26 + j], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
 }
@@ -2048,10 +2048,10 @@ void m222_PlayerObjMain(omObjData *object) {
     HuPadStkXSum[player->pad] = savedStick2;
     HuPadStkYSum[player->pad] = savedStick3;
     if (m222_outTimerTbl[group] >= 60) {
-        Hu3DModelAttrSet(object->model[0], 4, 4);
+        Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     if (m222_outTimerTbl[group] != 0) {
-        Hu3DModelAttrSet(object->model[1], 4, 4);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     } else {
         Hu3DModelScaleSet(object->model[1], object->scale.x, object->scale.y, object->scale.z);
     }

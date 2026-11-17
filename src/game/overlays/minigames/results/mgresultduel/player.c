@@ -379,7 +379,7 @@ void mgresultduel_CoinInit(s32 arg0) {
             mgresultduel_coinTbl[i].pos.x = mgresultduel_coinTbl[i].pos.y =
                 mgresultduel_coinTbl[i].pos.z = 0.0f;
             mgresultduel_coinTbl[i].unk14 = -10.0f;
-            Hu3DModelAttrSet(obj->model[i + 1], 4, 4);
+            Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             Hu3DModelPosSet(obj->model[i + 1], 0.0f, 400.0f, 0.0f);
         }
     }
@@ -415,7 +415,7 @@ void mgresultduel_CoinSpout(omObjData *obj) {
             entry = &Hu3DSprModelData[mgresultduel_coinTbl[i].unk02];
             animSet = &Hu3DAnimSetData[(u16)entry->unk_02];
             rot = &animSet->rot[entry->pointIdx];
-            Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             if (mgresultduel_coinNum >= 20) {
                 max = (rand8() & 1) + 1;
             } else {
@@ -459,7 +459,7 @@ void mgresultduel_CoinSpout(omObjData *obj) {
         mgresultduel_coinLandCnt++;
         mgresultduel_coinTbl[i].unk00 = 0;
         Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-        Hu3DModelAttrSet(obj->model[i + 21], HU3D_ATTR_DISPOFF, 0);
+        Hu3DModelAttrSet(obj->model[i + 21], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(obj->model[i + 21], x * mgresultduel_coinDir, y + 170.0f, z + 2300.0f);
         Hu3DMotionTimeSet(obj->model[i + 21], 0);
         Hu3DSprModelFrameSet(mgresultduel_coinEffTbl[i].unk02, 0);

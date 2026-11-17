@@ -484,7 +484,7 @@ void selmenu_ObjectSetup(void) {
         selmenu_btnRepeatTimerTbl[i] = 0;
         selmenu_btnHoldDirTbl[i] = 0;
     }
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
     HuAudSeqPlay(rand8() % 9);
 }
 
@@ -1137,7 +1137,7 @@ void selmenu_ChrSelObjMain(omObjData *obj) {
             }
         }
         WipeColorSet(0, 0, 0);
-        WipeCreateOut(0, 20);
+        WipeCreateOut(WIPE_TYPE_NORMAL, 20);
         selmenu_exitF = 1;
         selMenuMgModeF = 0;
         for (i = 0; i < 4; i++) {
@@ -1163,7 +1163,7 @@ void selmenu_ChrSelObjMain(omObjData *obj) {
             selmenu_ShadowTextPrint(i * 56 + 56, 144, omDBGStrBuf, 15, 7);
             continue;
         }
-        Hu3DModelAttrSet(selmenu_chrMdlTbl[GwPlayer[i].chr], 4, 0);
+        Hu3DModelAttrSet(selmenu_chrMdlTbl[GwPlayer[i].chr], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         Hu3DModelPosSet(selmenu_chrMdlTbl[GwPlayer[i].chr], i * 420 - 650.0f - 60.0f + i * 40, -120.0f, 0.0f);
         Hu3DModelScaleSet(selmenu_chrMdlTbl[GwPlayer[i].chr], 2.0f, 2.0f, 2.0f);
         if (selmenu_playerDoneF[i] == 1) {
@@ -1205,7 +1205,7 @@ void selmenu_ChrSelObjMain(omObjData *obj) {
                     chr--;
                 }
                 selmenu_chrUsedF[GwPlayer[i].chr] = 0;
-                Hu3DModelAttrSet(selmenu_chrMdlTbl[GwPlayer[i].chr], 4, 4);
+                Hu3DModelAttrSet(selmenu_chrMdlTbl[GwPlayer[i].chr], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 GwPlayer[i].chr = chr;
                 selmenu_chrUsedF[GwPlayer[i].chr] = 1;
                 selmenu_chrRotYTbl[i] = 0.0f;
@@ -1222,7 +1222,7 @@ void selmenu_ChrSelObjMain(omObjData *obj) {
                     chr++;
                 }
                 selmenu_chrUsedF[GwPlayer[i].chr] = 0;
-                Hu3DModelAttrSet(selmenu_chrMdlTbl[GwPlayer[i].chr], 4, 4);
+                Hu3DModelAttrSet(selmenu_chrMdlTbl[GwPlayer[i].chr], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 GwPlayer[i].chr = chr;
                 selmenu_chrUsedF[GwPlayer[i].chr] = 1;
                 selmenu_chrRotYTbl[i] = 0.0f;

@@ -929,7 +929,7 @@ void m262_TimerProc(void) {
     s32 seconds = 10;
     s32 frames = 30;
 
-    GMesPosSet(GMesCreate(26, 10, 160, 28), 160.0f, 28.0f);
+    GMesPosSet(GMesCreate(GMES_MES_TIMER, 10, 160, 28), 160.0f, 28.0f);
     do {
         frames--;
         if (frames == 0) {

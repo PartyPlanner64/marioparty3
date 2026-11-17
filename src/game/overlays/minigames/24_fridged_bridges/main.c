@@ -516,7 +516,7 @@ void m236_PlayerObjMain(omObjData *arg0) {
         omSetRot(arg0, 0.0f, angle, 0.0f);
         if (speed > 2.5f) {
             if (player->motionState != 2) {
-                if (GwPlayer[player->playerId].chr == 5 && player->unk_28 == 1) {
+                if (GwPlayer[player->playerId].chr == CHAR_DK && player->unk_28 == 1) {
                     Hu3DMotionShiftSet(arg0->model[0], Hu3DData[arg0->motion[8]].motId, 0, 6, 2);
                 } else {
                     Hu3DMotionShiftSet(arg0->model[0], Hu3DData[arg0->motion[2]].motId, 0, 6, 2);
@@ -532,7 +532,7 @@ void m236_PlayerObjMain(omObjData *arg0) {
             }
         } else {
             if (player->motionState != 1) {
-                if (GwPlayer[player->playerId].chr == 5 && player->unk_28 == 1) {
+                if (GwPlayer[player->playerId].chr == CHAR_DK && player->unk_28 == 1) {
                     Hu3DMotionShiftSet(arg0->model[0], Hu3DData[arg0->motion[3]].motId, 0, 6, 2);
                 } else {
                     Hu3DMotionShiftSet(arg0->model[0], Hu3DData[arg0->motion[1]].motId, 0, 6, 2);
@@ -551,7 +551,7 @@ void m236_PlayerObjMain(omObjData *arg0) {
     } else {
         player->slideDist = player->slideDistTarget = 0.0f;
         if (player->motionState != 0) {
-            if (GwPlayer[player->playerId].chr == 5 && player->unk_28 == 1) {
+            if (GwPlayer[player->playerId].chr == CHAR_DK && player->unk_28 == 1) {
                 Hu3DMotionShiftSet(arg0->model[0], Hu3DData[arg0->motion[7]].motId, 0, 6, 2);
             } else {
                 Hu3DMotionShiftSet(arg0->model[0], Hu3DData[arg0->motion[0]].motId, 0, 6, 2);
@@ -683,13 +683,13 @@ void m236_PlayerFreezeObjMain(omObjData *arg0) {
 
     if (--player->unk_54 != 0) {
         if (player->unk_54 & 1) {
-            Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelAttrSet(arg0->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             if (player->unk_28 == 1) {
-                Hu3DModelAttrSet(m236_pieceObj->model[player->playerId * 5], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(m236_pieceObj->model[player->playerId * 5], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
         } else {
-            Hu3DModelAttrSet(arg0->model[3], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(arg0->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             if (player->unk_28 == 1) {
                 Hu3DModelAttrSet(m236_pieceObj->model[player->playerId * 5], HU3D_ATTR_DISPOFF,
@@ -702,7 +702,7 @@ void m236_PlayerFreezeObjMain(omObjData *arg0) {
         Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DModelAttrSet(m236_pieceObj->model[player->playerId * 5], HU3D_ATTR_DISPOFF,
                            HU3D_ATTR_DISPOFF);
-        Hu3DModelAttrSet(arg0->model[3], HU3D_ATTR_DISPOFF, 0);
+        Hu3DModelAttrSet(arg0->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         player->unk_40 = 0.0f;
         Hu3DModelScaleSet(arg0->model[3], 1.0f, 1.0f, 1.0f);
         arg0->func = m236_PlayerFloatObjMain;
@@ -979,7 +979,7 @@ void m236_PieceGrab(omObjData *arg0) {
     Hu3DModelScaleSet(m236_pieceObj->model[playerId * 5], 1.0f, 1.0f, 1.0f);
     Hu3DModelHookSet(m236_pieceObj->model[playerId * 5], arg0->model[0], "item_hook");
     Hu3DModelAttrSet(m236_pieceObj->model[playerId * 5], 0x4004, 0x4000);
-    if (GwPlayer[player->playerId].chr == 5) {
+    if (GwPlayer[player->playerId].chr == CHAR_DK) {
         switch (player->motionState) {
             case 0:
                 motion = arg0->motion[7];
@@ -1026,7 +1026,7 @@ void m236_PlayerMotRestore(omObjData *arg0) {
     FridgedBridgesPlayer *player = arg0->data;
     u16 motion;
 
-    if (GwPlayer[player->playerId].chr == 5) {
+    if (GwPlayer[player->playerId].chr == CHAR_DK) {
         switch (player->motionState) {
             case 0:
                 motion = arg0->motion[0];
@@ -1087,7 +1087,7 @@ void m236_PieceObjInit(omObjData *arg0) {
     omMakeGroup(1, 12);
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 3; j++) {
-            Hu3DModelAttrSet(arg0->model[i * 5 + 1 + j], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(arg0->model[i * 5 + 1 + j], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             obj = omAddObj(10, 1, 0, 1, m236_BridgeSinkObjMain);
             obj->model[0] = arg0->model[i * 5 + 1 + j];
             omSetTra(obj, m236_bridgeSlotPosTbl[i][j].x, 0.0f, m236_bridgeSlotPosTbl[i][j].y);
@@ -1151,7 +1151,7 @@ void m236_PieceDropObjMain(omObjData *arg0) {
             Hu3DModelAttrSet(modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             modelId = m236_pieceObj->model[player->playerId * 5 + 1 + player->unk_24];
             Hu3DModelAttrSet(m236_pieceObj->model[player->playerId * 5 + 1 + player->unk_24],
-                               HU3D_ATTR_DISPOFF, 0);
+                               HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             HuAudPlayerFXPlay(0x42B, player->playerId);
         }
         Hu3DModelPosSet(modelId, arg0->trans.x, arg0->trans.y, arg0->trans.z);
@@ -1211,7 +1211,7 @@ void m236_PieceStockObjMain(omObjData *arg0) {
             omSetRot(obj, 0.0f, 0.0f, 0.0f);
             Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
             Hu3DModelScaleSet(obj->model[0], 1.0f, 0.0f, 1.0f);
-            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             arg0->work[2] |= bit;
         }
     }
@@ -1287,7 +1287,7 @@ void m236_WinObjMain(omObjData *arg0) {
         case 0:
             obj = m236_playerObjTbl[m236_winner];
             Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            Hu3DModelAttrSet(obj->model[4], HU3D_ATTR_DISPOFF, 0);
+            Hu3DModelAttrSet(obj->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             model = obj->model[0];
             obj->model[0] = obj->model[4];
             obj->model[4] = model;
@@ -1546,7 +1546,7 @@ void m236_RescueCreate(omObjData *arg0) {
     rescue = obj->data = HuMemAllocTag(sizeof(FridgedBridgesRescue), TAG_OVERLAY);
     rescue->playerObj = arg0;
     obj->model[0] = arg0->model[2];
-    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, 0);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     angle = (rand8() * rand8()) % 3600 / 10.0f;
     x = sindf(angle) * 600.0f + arg0->trans.x;
     omSetTra(obj, x, 500.0f, cosdf(angle) * 600.0f + arg0->trans.z);
@@ -1645,8 +1645,8 @@ void m236_RescueObjMain(omObjData *arg0) {
                                 rescue->playerObj->trans.z);
                 Hu3DModelPosSet(rescue->playerObj->model[3], rescue->playerObj->trans.x, rescue->playerObj->trans.y,
                                 rescue->playerObj->trans.z);
-                Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, 0);
-                Hu3DModelAttrSet(rescue->playerObj->model[3], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(arg0->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(rescue->playerObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             }
             break;
         case 4:
@@ -1664,7 +1664,7 @@ void m236_RescueObjMain(omObjData *arg0) {
                 Hu3DMotionAttrSet(rescue->playerObj->model[0], 2, 2);
                 Hu3DModelPosSet(rescue->playerObj->model[1], rescue->playerObj->trans.x, 0.0f,
                                 rescue->playerObj->trans.z);
-                Hu3DModelAttrSet(rescue->playerObj->model[1], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(rescue->playerObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 rescue->timer = 0;
                 player->scale = 1.0f;
                 HuAudPlayerFXPlay(0x430, player->playerId);
@@ -1673,7 +1673,7 @@ void m236_RescueObjMain(omObjData *arg0) {
         case 5:
             if (m236_goalF == 1 && rescue->released == 1) {
                 rescue->state = 6;
-                Hu3DModelAttrSet(rescue->playerObj->model[0], HU3D_ATTR_DISPOFF, 0);
+                Hu3DModelAttrSet(rescue->playerObj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 player->state = 1;
                 break;
             }
@@ -1690,7 +1690,7 @@ void m236_RescueObjMain(omObjData *arg0) {
             if (rescue->timer >= 30) {
                 if (rescue->released == 0) {
                     rescue->released = 1;
-                    Hu3DModelAttrSet(rescue->playerObj->model[0], HU3D_ATTR_DISPOFF, 0);
+                    Hu3DModelAttrSet(rescue->playerObj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     if (player->unk_28 == 1) {
                         Hu3DModelAttrSet(m236_pieceObj->model[player->playerId * 5], HU3D_ATTR_DISPOFF,
                                            0);
@@ -1719,9 +1719,9 @@ void m236_RescueObjMain(omObjData *arg0) {
                         Hu3DModelAttrSet(m236_pieceObj->model[player->playerId * 5], HU3D_ATTR_DISPOFF,
                                            HU3D_ATTR_DISPOFF);
                     }
-                    Hu3DModelAttrSet(rescue->playerObj->model[3], HU3D_ATTR_DISPOFF, 0);
+                    Hu3DModelAttrSet(rescue->playerObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 } else {
-                    Hu3DModelAttrSet(rescue->playerObj->model[0], HU3D_ATTR_DISPOFF, 0);
+                    Hu3DModelAttrSet(rescue->playerObj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     if (player->unk_28 == 1) {
                         Hu3DModelAttrSet(m236_pieceObj->model[player->playerId * 5], HU3D_ATTR_DISPOFF,
                                            0);

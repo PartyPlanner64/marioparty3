@@ -474,7 +474,7 @@ void m220_MainObjInit(omObjData *object) {
     if (_CheckFlag(10)) {
         m220_flag10F = 1;
     }
-    WipeCreateIn(0xFF, 16);
+    WipeCreateIn(WIPE_TYPE_PREV, 16);
 }
 
 void m220_MainObjMain(omObjData *object) {
@@ -1327,7 +1327,7 @@ void m220_BlockObjMain(omObjData *object) {
                 }
                 break;
             case 4:
-                Hu3DModelAttrSet(machine->unk_00, 4, 4);
+                Hu3DModelAttrSet(machine->unk_00, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 pos.x = machine->unk_24;
                 pos.y = machine->unk_28;
                 pos.z = machine->unk_2C;
@@ -1565,7 +1565,7 @@ void m220_PipeInit(void) {
             pipe->unk_1C = m220_pipeTbl->unk_1C;
         }
     }
-    omSetStatBit(omAddObj(0x1B, 0, 0, -1, m220_PipeObjMain), 0xA0);
+    omSetStatBit(omAddObj(0x1B, 0, 0, -1, m220_PipeObjMain), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
 }
 
 void m220_PipeObjMain(omObjData *object) {
@@ -1648,23 +1648,23 @@ void m220_PrizeInit(void) {
         if (i == 0) {
             for (j = 0; j < 4; j++) {
                 spin->unk_04[j] = Hu3DModelRead(m220_prizeMdlTbl[j], 0x299);
-                Hu3DModelAttrSet(spin->unk_04[j], 4, 4);
+                Hu3DModelAttrSet(spin->unk_04[j], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 spin->unk_0C[j][0] = Hu3DData[spin->unk_04[j]].motId;
                 spin->unk_0C[j][1] = m220_MotCreate(m220_prizeMot1Tbl[j]);
                 spin->unk_0C[j][2] = m220_MotCreate(m220_prizeMot2Tbl[j]);
             }
             spin->unk_24 = Hu3DModelRead(9, 0x99);
-            Hu3DModelAttrSet(spin->unk_24, 4, 4);
+            Hu3DModelAttrSet(spin->unk_24, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         } else {
             for (j = 0; j < 4; j++) {
                 spin->unk_04[j] = Hu3DModelLink(m220_prizeTbl->unk_04[j]);
-                Hu3DModelAttrSet(spin->unk_04[j], 4, 4);
+                Hu3DModelAttrSet(spin->unk_04[j], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 spin->unk_0C[j][0] = m220_prizeTbl->unk_0C[j][0];
                 spin->unk_0C[j][1] = m220_prizeTbl->unk_0C[j][1];
                 spin->unk_0C[j][2] = m220_prizeTbl->unk_0C[j][2];
             }
             spin->unk_24 = Hu3DModelLink(m220_prizeTbl->unk_24);
-            Hu3DModelAttrSet(spin->unk_24, 4, 4);
+            Hu3DModelAttrSet(spin->unk_24, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
     m220_prizeObj = omAddObj(0x19, 0, 6, -1, m220_PrizeObjMain);
@@ -1702,8 +1702,8 @@ void m220_PrizeObjMain(omObjData *object) {
                 spin->unk_34[1] += 20.0000002980232239;
                 spin->unk_34[6] = spin->unk_34[7] = spin->unk_34[8] = spin->unk_34[1] / 255.000007152557373;
                 if (spin->unk_34[1] >= 0.0f) {
-                    Hu3DModelAttrSet(modelId, 4, 0);
-                    Hu3DModelAttrSet(spin->unk_24, 4, 0);
+                    Hu3DModelAttrSet(modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(spin->unk_24, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 }
                 if (spin->unk_03 == 0 && spin->unk_34[1] > 204.000008761882867) {
                     baseAngle = (f32)(u8)(rand8() % 100) * 0.01 * 360.0;
@@ -1806,7 +1806,7 @@ void m220_PrizeObjMain(omObjData *object) {
                 spin->unk_00 = 0;
                 spin->unk_28 = 0;
                 spin->unk_2A = 0;
-                Hu3DModelAttrSet(modelId, 4, 4);
+                Hu3DModelAttrSet(modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 break;
         }
         Hu3DModelPosSet(modelId, spin->unk_34[0], spin->unk_34[1], spin->unk_34[2]);
@@ -1850,7 +1850,7 @@ s16 m220_PrizeCreate(s16 arg0, s16 arg1) {
         if (spin->unk_26 != 4) {
             spin->unk_28 = 0;
             modelId = spin->unk_04[spin->unk_26];
-            Hu3DModelAttrSet(modelId, 4, 4);
+            Hu3DModelAttrSet(modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             Hu3DData[modelId].motId = spin->unk_0C[spin->unk_26][1];
             model = &Hu3DData[modelId];
             model->motTime = 0.0f;
@@ -2065,7 +2065,7 @@ void m220_SmokeInit(void) {
         effect->pos.x = effect->pos.y = effect->pos.z = 0.0f;
         effect->vel.x = effect->vel.y = effect->vel.z = 0.0f;
         effect->scale.x = effect->scale.y = effect->scale.z = 0.0f;
-        Hu3DModelAttrSet(effect->model, 4, 4);
+        Hu3DModelAttrSet(effect->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         model = &Hu3DData[effect->model];
         model->motTime = 0.0f;
     }
@@ -2141,7 +2141,7 @@ s32 m220_SmokeCreate(Vec *pos, Vec *vel, Vec *scale, f32 speed, u8 *color) {
         effect->speed = speed;
         effect->frame = 0.0f;
         m220_BillboardColorPatSet(effect->model, sprite, 0, effect->color.rgba);
-        Hu3DModelAttrSet(effect->model, 4, 0);
+        Hu3DModelAttrSet(effect->model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         model->motTime = 0.0f;
         model->pos.x = effect->pos.x;
         model->pos.y = effect->pos.y;

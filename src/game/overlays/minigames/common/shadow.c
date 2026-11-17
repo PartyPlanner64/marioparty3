@@ -145,10 +145,10 @@ void MgBoxDispSet(omObjData *obj, u16 arg1) {
             }
             break;
     }
-    Hu3DModelAttrSet(model, 4, arg1);
-    Hu3DModelAttrSet(obj->model[1], 4, arg1);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, arg1);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, arg1);
     for (i = 2; i < 23; i++) {
-        Hu3DModelAttrSet(obj->model[i], 4, 4);
+        Hu3DModelAttrSet(obj->model[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
 }
 
@@ -183,7 +183,7 @@ void MgBoxObjInit(omObjData *obj) {
     data->sprites[2] = sprite;
     model = Hu3DSprModelData[sprite].modelId;
     obj->model[2] = model;
-    Hu3DModelAttrSet(model, 4, 4);
+    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DSprModelTPLvlSet(sprite, 0xC0);
     Hu3DSprModelColorSet(sprite, 0xFF, 0xFF, 0xBE);
     Hu3DModelObjAttrSet(model, 0x70000000, 0x70000000);
@@ -201,7 +201,7 @@ void MgBoxObjInit(omObjData *obj) {
         obj->model[j] = model;
         Hu3DModelObjAttrSet(model, 0x70000000, 0x70000000);
         Hu3DModelScaleSet(model, 2.0f, 2.0f, 2.0f);
-        Hu3DModelAttrSet(model, 4, 4);
+        Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
 
         sprite = Hu3DSprModelLink(mgBoxMdlTbl[3], 8);
         data->sprites[k] = sprite;
@@ -209,7 +209,7 @@ void MgBoxObjInit(omObjData *obj) {
         obj->model[k] = model;
         Hu3DModelObjAttrSet(model, 0x70000000, 0x70000000);
         Hu3DModelScaleSet(model, 2.0f, 2.0f, 2.0f);
-        Hu3DModelAttrSet(model, 4, 4);
+        Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DSprModelTPLvlSet(sprite, (u8)(i * 15 + 0x60));
     }
     obj->func = MgBoxObjMain;
@@ -284,9 +284,9 @@ s32 MgBoxSparkleUpdate(omObjData *obj) {
                 y += entry->pos.y;
                 z += entry->pos.z;
                 Hu3DModelPosSet(model, x, y, z);
-                Hu3DModelAttrSet(model, 4, 0);
+                Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 if (i == 3) {
-                    Hu3DModelAttrSet(obj->model[2], 4, 0);
+                    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     offsetX = sinAngle * 10.0f;
                     offsetZ = cosAngle * 10.0f;
                     Hu3DModelPosSet(obj->model[2], x + offsetX, y - 10.0f, z + offsetZ);
@@ -339,7 +339,7 @@ s32 MgBoxSparkleUpdate(omObjData *obj) {
                     entry->unk1A--;
                 } else {
                     entry->unk18 = 0;
-                    Hu3DModelAttrSet(model, 4, 4);
+                    Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     if (i < 13) {
                         HuAudFXPlay(0);
                     }

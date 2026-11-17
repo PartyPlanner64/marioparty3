@@ -133,7 +133,7 @@ void mstory3_SceneInit(void) {
         mstory3_padNo = 0;
     }
     mstory3_sceneCreateTbl[chapter]();
-    WipeCreateIn(2, 16);
+    WipeCreateIn(WIPE_STARS, 16);
 }
 
 void mstory3_SceneObjMain(omObjData *obj) {
@@ -179,7 +179,7 @@ void mstory3_ExitWaitObjMain(omObjData *obj) {
 }
 
 void mstory3_ExitWipeObjMain(omObjData *obj) {
-    WipeCreateOut(2, 20);
+    WipeCreateOut(WIPE_STARS, 20);
     HuAudSeqFadeOut(30);
     HuAudFXAllFadeOut(30);
     obj->func = mstory3_ExitWaitObjMain;

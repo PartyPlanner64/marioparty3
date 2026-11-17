@@ -620,7 +620,7 @@ void m218_PlayerObjMain(omObjData *object) {
             return;
         case MG_STATE_FINISH:
             if (MgFlowStatTimeGet() == 0) {
-                Hu3DModelAttrSet(object->model[2], 4, 4);
+                Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 MgPlayerMotSet(object, 38);
             }
             data->unk3C = m218_AngleWrap(data->unk3C);
@@ -827,7 +827,7 @@ void m218_PlayerObjMain(omObjData *object) {
                                 m218_LineMdlSet(node);
                             }
                         } else {
-                            Hu3DModelAttrSet(node->unk_1E, 4, 4);
+                            Hu3DModelAttrSet(node->unk_1E, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                             m218_LineNodeRemove(&m218_curPlayerWork->unk_0C, node);
                         }
                     }
@@ -1374,11 +1374,11 @@ void m218_LineMdlSet(EtchNCatchNode *node) {
         Hu3DModelPosSet(node->unk_1E, node->unk_20.x, node->unk_20.y, node->unk_20.z);
         node->unk_20.y += 5.0f;
         if (node->unk_2C >= 15) {
-            Hu3DModelAttrSet(node->unk_1E, 4, 4);
+            Hu3DModelAttrSet(node->unk_1E, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             m218_lineMdlUseTbl[node->unk_1C][node->unk_34] = 0;
         } else {
             Hu3DModelTPLvlSet(node->unk_1E, 255 - node->unk_2C * 16);
-            Hu3DModelAttrSet(node->unk_1E, 4, 0);
+            Hu3DModelAttrSet(node->unk_1E, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         }
     }
 }
@@ -1393,7 +1393,7 @@ void m218_KinopioObjInit(omObjData *object) {
     } else {
         object->model[0] = Hu3DModelLink(m218_kinopioMdl);
     }
-    Hu3DModelAttrSet(object->model[0], 4, 0);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     object->data = HuMemAllocTag(sizeof(EtchNCatchKinopioData), TAG_OVERLAY);
     memset(object->data, 0, sizeof(EtchNCatchKinopioData));
     data = object->data;
@@ -1490,10 +1490,10 @@ void m218_KinopioObjMain(omObjData *object) {
             data->unk170 = data->unk174 = 0.0f;
             espZRotSet(m218_kinopioMarkSprTbl[data->unk160], data->unk170);
             espDispOn(m218_kinopioMarkSprTbl[data->unk160]);
-            Hu3DModelAttrSet(object->model[0], 4, 4);
-            Hu3DModelAttrSet(object->model[6], 4, 4);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             for (i = 0; i < 5; i++) {
-                Hu3DModelAttrSet(object->model[i + 1], 4, 4);
+                Hu3DModelAttrSet(object->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             data->unk15C = 0;
             object->work[0] = 1;
@@ -1517,8 +1517,8 @@ void m218_KinopioObjMain(omObjData *object) {
                 m218_kinopioCatchStepTbl[data->unk160] = 1;
             } else {
                 espDispOff(m218_kinopioMarkSprTbl[data->unk160]);
-                Hu3DModelAttrSet(object->model[0], 4, 0);
-                Hu3DModelAttrSet(object->model[6], 4, 0);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                Hu3DModelAttrSet(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 for (i = 0; i < 5; i++) {
                     Hu3DMotionTimeSet(object->model[i + 1], 0.0f);
                 }
@@ -1538,7 +1538,7 @@ void m218_KinopioObjMain(omObjData *object) {
                 m218_KinopioCatchEffUpdate(object);
             } else {
                 for (i = 0; i < 5; i++) {
-                    Hu3DModelAttrSet(object->model[i + 1], 4, 4);
+                    Hu3DModelAttrSet(object->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
             }
             if (data->unk15C >= Hu3DMotion[Hu3DData[object->model[0]].motId].unk02 / 2.0f - 2.0f) {
@@ -1555,14 +1555,14 @@ void m218_KinopioObjMain(omObjData *object) {
             data->unk168 += 2.0f;
             object->trans.y += data->unk168 + 5.0f;
             for (i = 0; i < 5; i++) {
-                Hu3DModelAttrSet(object->model[i + 1], 4, 4);
+                Hu3DModelAttrSet(object->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             object->work[0] = 9;
             m218_cageObjTbl[data->unk160]->work[0] = 0;
             break;
         case 9:
             for (i = 0; i < 5; i++) {
-                Hu3DModelAttrSet(object->model[i + 1], 4, 4);
+                Hu3DModelAttrSet(object->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             }
             data->unk15C++;
             object->trans.y += data->unk168 + 5.0f;
@@ -1581,8 +1581,8 @@ void m218_KinopioObjMain(omObjData *object) {
             Hu3DModelScaleSet(object->model[6], data->unk164, data->unk164, data->unk164);
             break;
         case 10:
-            Hu3DModelAttrSet(object->model[0], 4, 4);
-            Hu3DModelAttrSet(object->model[6], 4, 4);
+            Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+            Hu3DModelAttrSet(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             data->unk164 = 1.0f;
             Hu3DModelScaleSet(object->model[6], data->unk164, data->unk164, data->unk164);
             break;
@@ -1696,7 +1696,7 @@ void m218_KinopioCatchEffUpdate(omObjData *object) {
         Hu3DModelTPLvlSet(object->model[i + 1], 255.0f - data->unk1B4 * 8.0f);
         Hu3DModelScaleSet(object->model[i + 1], 3.0f, 3.0f, 3.0f);
         Hu3DModelRotSet(object->model[i + 1], 0.0f, 90.0f, 0.0f);
-        Hu3DModelAttrSet(object->model[i + 1], 4, 0);
+        Hu3DModelAttrSet(object->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
 }
 
@@ -1871,7 +1871,7 @@ void m218_CageObjMain(omObjData *object) {
             Hu3DModelPosSet(object->model[0], object->trans.x, object->trans.y, object->trans.z);
             Hu3DModelPosSet(object->model[2], object->trans.x, 0.0f, object->trans.z);
             Hu3DModelScaleSet(object->model[2], work->unk04, work->unk04, work->unk04);
-            Hu3DModelAttrSet(object->model[2], 4, 0);
+            Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
             break;
         case 1:
             if (m218_kinopioObjTbl[work->unk00]->work[0] != 10) {
@@ -1918,7 +1918,7 @@ void m218_CageObjMain(omObjData *object) {
             break;
         case 3:
             work->unk04 = 1.0f;
-            Hu3DModelAttrSet(object->model[2], 4, 4);
+            Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             break;
     }
 }

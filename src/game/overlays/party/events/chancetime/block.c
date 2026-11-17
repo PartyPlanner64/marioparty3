@@ -567,12 +567,12 @@ void chancetime_EventProc(void) {
     Hu3DModelScaleSet(obj->model[1], 0.5f, 0.5f, 0.5f);
     Hu3DMotionAttrSet(obj->model[1], 2, 2);
     Hu3DModelCameraSet(obj->model[1], 4);
-    Hu3DModelAttrSet(obj->model[1], 4, 4);
+    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     for (i = 1; i < 10; i++) {
         obj->model[i + 1] = Hu3DModelLink(obj->model[1]);
         Hu3DModelScaleSet(obj->model[i + 1], 0.5f, 0.5f, 0.5f);
         Hu3DModelCameraSet(obj->model[i + 1], 4);
-        Hu3DModelAttrSet(obj->model[i + 1], 4, 4);
+        Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DMotionAttrSet(obj->model[i + 1], 2, 2);
     }
     for (i = 0; i < 10; i++) {
@@ -581,7 +581,7 @@ void chancetime_EventProc(void) {
         EffectRangeSet(chancetime_starEffTbl[i], 60.0f);
         Hu3DModelCameraSet(chancetime_starEffTbl[i], 4);
         Hu3DParticleAttrSet(chancetime_starEffTbl[i], 1, 0);
-        Hu3DModelAttrSet(chancetime_starEffTbl[i], 4, 4);
+        Hu3DModelAttrSet(chancetime_starEffTbl[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     chancetime_eventWin = HuWinExCreateStyled(100, 160, 14);
     HuWinExPriSet((s16)chancetime_eventWin, 5);
@@ -835,8 +835,8 @@ void chancetime_TransferAnimExec(omObjData *object) {
                         espBankSet(chancetime_coinSprTbl[i], 0, 0);
                         espPosSet(chancetime_coinSprTbl[i], 80, 74.0f - offsetY);
                     } else {
-                        Hu3DModelAttrSet(object->model[i + 1], 4, 0);
-                        Hu3DModelAttrSet(chancetime_starEffTbl[i], 4, 0);
+                        Hu3DModelAttrSet(object->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                        Hu3DModelAttrSet(chancetime_starEffTbl[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                         Hu3DParticleAttrSet(chancetime_starEffTbl[i], 1, 1);
                         Hu3DModelPosSet(object->model[i + 1], -170.0f, 375.0f, 0.0f);
                         EffectPosSet(chancetime_starEffTbl[i], -170.0f, 375.0f, 0.0f);
@@ -857,7 +857,7 @@ void chancetime_TransferAnimExec(omObjData *object) {
                         }
                         HuAudFXPlay(0x106);
                     } else {
-                        Hu3DModelAttrSet(object->model[i + 1], 4, 4);
+                        Hu3DModelAttrSet(object->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         Hu3DParticleAttrSet(chancetime_starEffTbl[i], 1, 0);
                         gained += step;
                         value = gained + starsF[1];

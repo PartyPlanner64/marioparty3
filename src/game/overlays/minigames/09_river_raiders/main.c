@@ -393,7 +393,7 @@ void m209_RiverObjInit(omObjData *obj) {
     Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
     obj->rot.x = obj->rot.y = obj->rot.z = 0.0f;
     Hu3DModelRotSet(obj->model[0], obj->rot.x, obj->rot.y, obj->rot.z);
-    Hu3DModelAttrSet(obj->model[0], 4, 0);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelRemakeStatic(obj->model[0]);
     Hu3DModelDynamicFree(obj->model[0]);
     obj->func = m209_RiverObjMain;
@@ -427,7 +427,7 @@ void m209_WaterObjInit(omObjData *obj) {
     obj->model[0] = Hu3DModelRead(0x2A0004, 0x2A8);
     Hu3DModelTPLvlInit(obj->model[0]);
     Hu3DModelTPLvlSet(obj->model[0], 0x80);
-    Hu3DModelAttrSet(obj->model[0], 4, 0);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DModelVtxBufMake(obj->model[0]);
     Hu3DTexSizeGet("209_water_00_DEF", m209_waterTexSize);
     m209_waterScroll = 0.0f;
@@ -518,7 +518,7 @@ void m209_RopeObjInit(omObjData *obj) {
     Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
     obj->rot.x = obj->rot.y = obj->rot.z = 0.0f;
     Hu3DModelRotSet(obj->model[0], obj->rot.x, obj->rot.y, obj->rot.z);
-    Hu3DModelAttrSet(obj->model[0], 4, 0);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     obj->func = m209_RopeObjMain;
 }
 
@@ -557,11 +557,11 @@ void m209_BoatComInputCalc(omObjData *obj) {
         entry->unk_06 = 0;
     }
     if ((u16)(entry->unk_06 % 3) < 2) {
-        Hu3DModelAttrSet(obj->model[5], 4, 0);
-        Hu3DModelAttrSet(obj->model[1], 4, 0);
+        Hu3DModelAttrSet(obj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     } else {
-        Hu3DModelAttrSet(obj->model[5], 4, 4);
-        Hu3DModelAttrSet(obj->model[1], 4, 4);
+        Hu3DModelAttrSet(obj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     if (entry->unk_06 < 31) {
         dir = rand8();
@@ -660,11 +660,11 @@ void m209_BoatPadInput(omObjData *obj) {
         m209_boatStunTimer = 0;
     }
     if ((u16)(entry->unk_06 % 3) < 2) {
-        Hu3DModelAttrSet(obj->model[5], 4, 0);
-        Hu3DModelAttrSet(obj->model[1], 4, 0);
+        Hu3DModelAttrSet(obj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     } else {
-        Hu3DModelAttrSet(obj->model[5], 4, 4);
-        Hu3DModelAttrSet(obj->model[1], 4, 4);
+        Hu3DModelAttrSet(obj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     if (entry->unk_06 < 31) {
         if (HuPadStkX[GwPlayer[player].pad] < -29) {
@@ -875,11 +875,11 @@ void m209_BoatObjMain(omObjData *obj) {
                     entry->unk_0E--;
                 }
                 if (obj->trans.y <= 1.0f) {
-                    Hu3DModelAttrSet(obj->model[2], 4, 0);
-                    Hu3DModelAttrSet(obj->model[3], 4, 0);
+                    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+                    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 } else {
-                    Hu3DModelAttrSet(obj->model[2], 4, 4);
-                    Hu3DModelAttrSet(obj->model[3], 4, 4);
+                    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+                    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
             }
             break;
@@ -1171,11 +1171,11 @@ void m209_SkierComInputCalc(omObjData *obj) {
         entry->unk_06 = 0;
     }
     if ((u16)(entry->unk_06 % 3) < 2) {
-        Hu3DModelAttrSet(obj->model[0], 4, 0);
-        Hu3DModelAttrSet(obj->model[1], 4, 0);
+        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     } else {
-        Hu3DModelAttrSet(obj->model[0], 4, 4);
-        Hu3DModelAttrSet(obj->model[1], 4, 4);
+        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     if (entry->unk_06 == 0) {
         dir = rand8();
@@ -1254,11 +1254,11 @@ void m209_SkierPadInput(omObjData *obj) {
         entry->unk_06 = 0;
     }
     if ((u16)(entry->unk_06 % 3) < 2) {
-        Hu3DModelAttrSet(obj->model[0], 4, 0);
-        Hu3DModelAttrSet(obj->model[1], 4, 0);
+        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     } else {
-        Hu3DModelAttrSet(obj->model[0], 4, 4);
-        Hu3DModelAttrSet(obj->model[1], 4, 4);
+        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }
     if (entry->unk_06 == 0) {
         if (HuPadStkX[GwPlayer[player].pad] < -29) {
@@ -1430,9 +1430,9 @@ void m209_SkierObjMain(omObjData *obj) {
                         break;
                 }
                 if (obj->trans.y <= 1.0f) {
-                    Hu3DModelAttrSet(obj->model[2], 4, 0);
+                    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 } else {
-                    Hu3DModelAttrSet(obj->model[2], 4, 4);
+                    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
                 if (obj->work[1] == 2) {
                     if (--m209_skierHopTimer <= 0) {
@@ -1767,7 +1767,7 @@ void m209_ItemHitUpdate(omObjData *obj) {
                         Hu3DModelScaleSet(model, 3.0f, 3.0f, 3.0f);
                     }
                     entry->unk_04 = 0;
-                    Hu3DModelAttrSet(obj->model[0], 4, 4);
+                    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
                 for (i = 0; i < 3; i++) {
                     if (entries[i]->unk_06 == 0 && boats[i]->trans.x + 65.0f >= obj->trans.x - 50.0f &&
@@ -1783,7 +1783,7 @@ void m209_ItemHitUpdate(omObjData *obj) {
                             Hu3DModelScaleSet(model, 3.0f, 3.0f, 3.0f);
                         }
                         entry->unk_04 = 0;
-                        Hu3DModelAttrSet(obj->model[0], 4, 4);
+                        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
                 }
             }
@@ -1883,7 +1883,7 @@ void m209_ItemHitUpdate(omObjData *obj) {
                         }
                     }
                     entry->unk_04 = 0;
-                    Hu3DModelAttrSet(obj->model[0], 4, 4);
+                    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
                 for (i = 0; i < 3; i++) {
                     if (entries[i]->unk_06 == 0 && boats[i]->trans.x + 65.0f >= obj->trans.x - 40.0f &&
@@ -1902,7 +1902,7 @@ void m209_ItemHitUpdate(omObjData *obj) {
                             }
                         }
                         entry->unk_04 = 0;
-                        Hu3DModelAttrSet(obj->model[0], 4, 4);
+                        Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     }
                 }
             }
@@ -1954,7 +1954,7 @@ void m209_ItemObjMain(omObjData *obj) {
             if (obj->work[0] == 0) {
                 if (m209_timer % 29 == 0 && m209_coinCnt < 20) {
                     cur = &m209_itemWorkTbl[m209_coinCnt];
-                    Hu3DModelAttrSet(cur->obj->model[0], 4, 0);
+                    Hu3DModelAttrSet(cur->obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     m209_coinCnt++;
                     if (cur->unk_04 == 0) {
                         cur->unk_04 = 1;
@@ -1962,7 +1962,7 @@ void m209_ItemObjMain(omObjData *obj) {
                 }
                 if (m209_timer % 181 == 0 && m209_coinBagCnt < 3) {
                     cur = &m209_itemWorkTbl[m209_coinBagCnt + 20];
-                    Hu3DModelAttrSet(cur->obj->model[0], 4, 0);
+                    Hu3DModelAttrSet(cur->obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     m209_coinBagCnt++;
                     if (cur->unk_04 == 0) {
                         cur->unk_04 = 1;
@@ -1970,7 +1970,7 @@ void m209_ItemObjMain(omObjData *obj) {
                 }
                 if (m209_timer < 221 && m209_coinBagCnt == 3) {
                     cur = &m209_itemWorkTbl[m209_coinBagCnt + 20];
-                    Hu3DModelAttrSet(cur->obj->model[0], 4, 0);
+                    Hu3DModelAttrSet(cur->obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     m209_coinBagCnt++;
                     if (cur->unk_04 == 0) {
                         cur->unk_04 = 1;
@@ -1978,7 +1978,7 @@ void m209_ItemObjMain(omObjData *obj) {
                 }
                 if (m209_timer % 125 == 0 && m209_logCnt < 5) {
                     cur = &m209_itemWorkTbl[m209_logCnt + 24];
-                    Hu3DModelAttrSet(cur->obj->model[0], 4, 0);
+                    Hu3DModelAttrSet(cur->obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     m209_logCnt++;
                     if (cur->unk_04 == 0) {
                         cur->unk_04 = 1;
@@ -1986,7 +1986,7 @@ void m209_ItemObjMain(omObjData *obj) {
                 }
                 if (m209_timer < 241 && m209_logCnt == 5) {
                     cur = &m209_itemWorkTbl[m209_logCnt + 24];
-                    Hu3DModelAttrSet(cur->obj->model[0], 4, 0);
+                    Hu3DModelAttrSet(cur->obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     m209_logCnt++;
                     if (cur->unk_04 == 0) {
                         cur->unk_04 = 1;
@@ -2013,7 +2013,7 @@ void m209_ItemObjMain(omObjData *obj) {
                 }
                 if (obj->trans.z > 1200.0) {
                     entry->unk_04 = 0;
-                    Hu3DModelAttrSet(obj->model[0], 4, 4);
+                    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 }
             }
             if (obj->work[0] >= 24) {
@@ -2036,7 +2036,7 @@ void m209_ItemObjMain(omObjData *obj) {
                         }
                         if (Hu3DData[obj->model[0]].motTime == m209_logMotLen) {
                             entry->unk_04 = 0;
-                            Hu3DModelAttrSet(obj->model[0], 4, 4);
+                            Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                         }
                         break;
                 }
@@ -2112,7 +2112,7 @@ void m209_ItemObjInit(omObjData *obj) {
             m209_logMotLen = Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02;
             break;
     }
-    Hu3DModelAttrSet(obj->model[0], 4, 4);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     obj->func = m209_ItemObjMain;
 }
 
@@ -2331,7 +2331,7 @@ void m209_MainObjInit(omObjData *obj) {
     m209_RopeObjCreateAll();
     m209_ScoreObjCreateAll();
     m209_starEffGrp = EffectGroupStarCreate(0x2A9, 10);
-    WipeCreateIn(0xFF, 0x10);
+    WipeCreateIn(WIPE_TYPE_PREV, 0x10);
     obj->func = m209_MainObjMain;
 }
 

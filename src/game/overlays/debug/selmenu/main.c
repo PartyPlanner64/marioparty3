@@ -3,6 +3,16 @@
 
 #define ABS(x) ((x) > 0 ? (x) : -(x))
 
+// Menu input bits stored in selmenu_btnDownTbl / selmenu_btnHoldDirTbl
+#define SELMENU_BTN_UP 1
+#define SELMENU_BTN_DOWN 2
+#define SELMENU_BTN_LEFT 4
+#define SELMENU_BTN_RIGHT 8
+#define SELMENU_BTN_A 0x10
+#define SELMENU_BTN_B 0x20
+#define SELMENU_BTN_Z 0x40
+#define SELMENU_BTN_START 0x80
+
 typedef struct SelMenuConfig {
     u8 available;
     u8 player_groups;
@@ -515,36 +525,36 @@ void selmenu_BtnCalcObjMain(omObjData *obj) {
         stickX = HuPadStkX[i];
         stickY = HuPadStkY[i];
         if (HuPadBtnDown[i] & (U_JPAD | U_CBUTTONS)) {
-            selmenu_btnDownTbl[i] |= 1;
+            selmenu_btnDownTbl[i] |= SELMENU_BTN_UP;
         }
         if (HuPadBtnDown[i] & (D_JPAD | D_CBUTTONS)) {
-            selmenu_btnDownTbl[i] |= 2;
+            selmenu_btnDownTbl[i] |= SELMENU_BTN_DOWN;
         }
         if (HuPadBtnDown[i] & (L_JPAD | L_CBUTTONS)) {
-            selmenu_btnDownTbl[i] |= 4;
+            selmenu_btnDownTbl[i] |= SELMENU_BTN_LEFT;
         }
         if (HuPadBtnDown[i] & (R_JPAD | R_CBUTTONS)) {
-            selmenu_btnDownTbl[i] |= 8;
+            selmenu_btnDownTbl[i] |= SELMENU_BTN_RIGHT;
         }
         if (stickY < -10 && ABS(selmenu_stickYPrev[i]) < 10) {
-            selmenu_btnDownTbl[i] |= 2;
+            selmenu_btnDownTbl[i] |= SELMENU_BTN_DOWN;
         }
         if (stickY > 10 && ABS(selmenu_stickYPrev[i]) < 10) {
-            selmenu_btnDownTbl[i] |= 1;
+            selmenu_btnDownTbl[i] |= SELMENU_BTN_UP;
         }
         if (stickX < -10 && ABS(selmenu_stickXPrev[i]) < 10) {
-            selmenu_btnDownTbl[i] |= 4;
+            selmenu_btnDownTbl[i] |= SELMENU_BTN_LEFT;
         }
         if (stickX > 10 && ABS(selmenu_stickXPrev[i]) < 10) {
-            selmenu_btnDownTbl[i] |= 8;
+            selmenu_btnDownTbl[i] |= SELMENU_BTN_RIGHT;
         }
         selmenu_stickXPrev[i] = stickX;
         selmenu_stickYPrev[i] = stickY;
         if (HuPadBtnDown[i] & Z_TRIG) {
-            selmenu_btnDownTbl[i] |= 0x40;
+            selmenu_btnDownTbl[i] |= SELMENU_BTN_Z;
         }
         if ((HuPadBtn[i] & (U_JPAD | U_CBUTTONS)) || stickY > 10) {
-            if (selmenu_btnHoldDirTbl[i] & 1) {
+            if (selmenu_btnHoldDirTbl[i] & SELMENU_BTN_UP) {
                 selmenu_btnHoldCntTbl[i]++;
                 if (selmenu_btnHoldCntTbl[i] >= 16) {
                     selmenu_btnHoldCntTbl[i] = 15;
@@ -552,21 +562,21 @@ void selmenu_BtnCalcObjMain(omObjData *obj) {
             } else {
                 selmenu_btnHoldCntTbl[i] = 0;
             }
-            if (selmenu_btnHoldDirTbl[i] != 1) {
+            if (selmenu_btnHoldDirTbl[i] != SELMENU_BTN_UP) {
                 selmenu_btnRepeatTimerTbl[i] = 0;
                 selmenu_btnHoldCntTbl[i] = 0;
             }
-            selmenu_btnHoldDirTbl[i] = 1;
+            selmenu_btnHoldDirTbl[i] = SELMENU_BTN_UP;
             if (selmenu_btnHoldCntTbl[i] == 15) {
                 if (selmenu_btnRepeatTimerTbl[i] == 0) {
-                    selmenu_btnDownTbl[i] |= 1;
+                    selmenu_btnDownTbl[i] |= SELMENU_BTN_UP;
                     selmenu_btnRepeatTimerTbl[i] = 2;
                 } else {
                     selmenu_btnRepeatTimerTbl[i]--;
                 }
             }
         } else if ((HuPadBtn[i] & (D_JPAD | D_CBUTTONS)) || stickY < -10) {
-            if (selmenu_btnHoldDirTbl[i] & 2) {
+            if (selmenu_btnHoldDirTbl[i] & SELMENU_BTN_DOWN) {
                 selmenu_btnHoldCntTbl[i]++;
                 if (selmenu_btnHoldCntTbl[i] >= 16) {
                     selmenu_btnHoldCntTbl[i] = 15;
@@ -574,21 +584,21 @@ void selmenu_BtnCalcObjMain(omObjData *obj) {
             } else {
                 selmenu_btnHoldCntTbl[i] = 0;
             }
-            if (selmenu_btnHoldDirTbl[i] != 2) {
+            if (selmenu_btnHoldDirTbl[i] != SELMENU_BTN_DOWN) {
                 selmenu_btnRepeatTimerTbl[i] = 0;
                 selmenu_btnHoldCntTbl[i] = 0;
             }
-            selmenu_btnHoldDirTbl[i] = 2;
+            selmenu_btnHoldDirTbl[i] = SELMENU_BTN_DOWN;
             if (selmenu_btnHoldCntTbl[i] == 15) {
                 if (selmenu_btnRepeatTimerTbl[i] == 0) {
-                    selmenu_btnDownTbl[i] |= 2;
+                    selmenu_btnDownTbl[i] |= SELMENU_BTN_DOWN;
                     selmenu_btnRepeatTimerTbl[i] = 2;
                 } else {
                     selmenu_btnRepeatTimerTbl[i]--;
                 }
             }
         } else if ((HuPadBtn[i] & (L_JPAD | L_CBUTTONS)) || stickX < -10) {
-            if (selmenu_btnHoldDirTbl[i] & 4) {
+            if (selmenu_btnHoldDirTbl[i] & SELMENU_BTN_LEFT) {
                 selmenu_btnHoldCntTbl[i]++;
                 if (selmenu_btnHoldCntTbl[i] >= 16) {
                     selmenu_btnHoldCntTbl[i] = 15;
@@ -596,21 +606,21 @@ void selmenu_BtnCalcObjMain(omObjData *obj) {
             } else {
                 selmenu_btnHoldCntTbl[i] = 0;
             }
-            if (selmenu_btnHoldDirTbl[i] != 4) {
+            if (selmenu_btnHoldDirTbl[i] != SELMENU_BTN_LEFT) {
                 selmenu_btnRepeatTimerTbl[i] = 0;
                 selmenu_btnHoldCntTbl[i] = 0;
             }
-            selmenu_btnHoldDirTbl[i] = 4;
+            selmenu_btnHoldDirTbl[i] = SELMENU_BTN_LEFT;
             if (selmenu_btnHoldCntTbl[i] == 15) {
                 if (selmenu_btnRepeatTimerTbl[i] == 0) {
-                    selmenu_btnDownTbl[i] |= 4;
+                    selmenu_btnDownTbl[i] |= SELMENU_BTN_LEFT;
                     selmenu_btnRepeatTimerTbl[i] = 2;
                 } else {
                     selmenu_btnRepeatTimerTbl[i]--;
                 }
             }
         } else if ((HuPadBtn[i] & (R_JPAD | R_CBUTTONS)) || stickX > 10) {
-            if (selmenu_btnHoldDirTbl[i] & 8) {
+            if (selmenu_btnHoldDirTbl[i] & SELMENU_BTN_RIGHT) {
                 selmenu_btnHoldCntTbl[i]++;
                 if (selmenu_btnHoldCntTbl[i] >= 16) {
                     selmenu_btnHoldCntTbl[i] = 15;
@@ -618,14 +628,14 @@ void selmenu_BtnCalcObjMain(omObjData *obj) {
             } else {
                 selmenu_btnHoldCntTbl[i] = 0;
             }
-            if (selmenu_btnHoldDirTbl[i] != 8) {
+            if (selmenu_btnHoldDirTbl[i] != SELMENU_BTN_RIGHT) {
                 selmenu_btnRepeatTimerTbl[i] = 0;
                 selmenu_btnHoldCntTbl[i] = 0;
             }
-            selmenu_btnHoldDirTbl[i] = 8;
+            selmenu_btnHoldDirTbl[i] = SELMENU_BTN_RIGHT;
             if (selmenu_btnHoldCntTbl[i] == 15) {
                 if (selmenu_btnRepeatTimerTbl[i] == 0) {
-                    selmenu_btnDownTbl[i] |= 8;
+                    selmenu_btnDownTbl[i] |= SELMENU_BTN_RIGHT;
                     selmenu_btnRepeatTimerTbl[i] = 2;
                 } else {
                     selmenu_btnRepeatTimerTbl[i]--;
@@ -635,13 +645,13 @@ void selmenu_BtnCalcObjMain(omObjData *obj) {
             selmenu_btnHoldCntTbl[i] = 0;
         }
         if (HuPadBtnDown[i] & A_BUTTON) {
-            selmenu_btnDownTbl[i] |= 0x10;
+            selmenu_btnDownTbl[i] |= SELMENU_BTN_A;
         }
         if (HuPadBtnDown[i] & B_BUTTON) {
-            selmenu_btnDownTbl[i] |= 0x20;
+            selmenu_btnDownTbl[i] |= SELMENU_BTN_B;
         }
         if (HuPadBtnDown[i] & START_BUTTON) {
-            selmenu_btnDownTbl[i] |= 0x80;
+            selmenu_btnDownTbl[i] |= SELMENU_BTN_START;
         }
         if ((HuPadBtn[i] & (L_TRIG | R_TRIG)) == (L_TRIG | R_TRIG)) {
             omOvlReturnEx(0);
@@ -731,7 +741,7 @@ void selmenu_MenuObjMain(omObjData *obj) {
         if (!CheckControllerRead(i)) {
             continue;
         }
-        if ((selmenu_btnDownTbl[i] & 0x90) && selmenu_menuTbl[selmenu_page * 10 + selmenu_selectPos].available == 0) {
+        if ((selmenu_btnDownTbl[i] & (SELMENU_BTN_A | SELMENU_BTN_START)) && selmenu_menuTbl[selmenu_page * 10 + selmenu_selectPos].available == 0) {
             if (selmenu_decideF == 0) {
                 omAddObj(2, 0, 0, -1, selmenu_ChrSelObjInit);
                 selmenu_decideF = 1;
@@ -739,23 +749,23 @@ void selmenu_MenuObjMain(omObjData *obj) {
                 obj->func = selmenu_MgNameRiseObjMain;
                 selmenu_SePlay(1);
             }
-        } else if (selmenu_btnDownTbl[i] & 1) {
+        } else if (selmenu_btnDownTbl[i] & SELMENU_BTN_UP) {
             selmenu_CursorMove(-1);
             selmenu_PlayerGroupSet();
             selmenu_SePlay(0);
-        } else if (selmenu_btnDownTbl[i] & 2) {
+        } else if (selmenu_btnDownTbl[i] & SELMENU_BTN_DOWN) {
             selmenu_CursorMove(1);
             selmenu_PlayerGroupSet();
             selmenu_SePlay(0);
-        } else if (selmenu_btnDownTbl[i] & 4) {
+        } else if (selmenu_btnDownTbl[i] & SELMENU_BTN_LEFT) {
             selmenu_PageMove(-1);
             selmenu_PlayerGroupSet();
             selmenu_SePlay(4);
-        } else if (selmenu_btnDownTbl[i] & 8) {
+        } else if (selmenu_btnDownTbl[i] & SELMENU_BTN_RIGHT) {
             selmenu_PageMove(1);
             selmenu_PlayerGroupSet();
             selmenu_SePlay(4);
-        } else if (selmenu_btnDownTbl[i] & 0x40) {
+        } else if (selmenu_btnDownTbl[i] & SELMENU_BTN_Z) {
             selmenu_playerCfgOptionPos = 0;
             selmenu_playerCfgPlayerPos = 0;
             selmenu_playerCfgSelF = 0;
@@ -854,7 +864,7 @@ void selmenu_PlayerCfgObjMain(omObjData *obj) {
         if (!CheckControllerRead(i)) {
             continue;
         }
-        if (selmenu_btnDownTbl[i] & 0x40) {
+        if (selmenu_btnDownTbl[i] & SELMENU_BTN_Z) {
             obj->func = selmenu_MenuObjMain;
             return;
         }
@@ -865,49 +875,49 @@ void selmenu_PlayerCfgObjMain(omObjData *obj) {
         }
         switch (selmenu_playerCfgSelF) {
             case 0:
-                if (selmenu_playerCfgPlayerPos < 2 && (selmenu_btnDownTbl[i] & 1)) {
+                if (selmenu_playerCfgPlayerPos < 2 && (selmenu_btnDownTbl[i] & SELMENU_BTN_UP)) {
                     selmenu_playerCfgPlayerPos = 4;
-                } else if (selmenu_playerCfgPlayerPos == 4 && (selmenu_btnDownTbl[i] & 2)) {
+                } else if (selmenu_playerCfgPlayerPos == 4 && (selmenu_btnDownTbl[i] & SELMENU_BTN_DOWN)) {
                     selmenu_playerCfgPlayerPos = 0;
-                } else if (selmenu_playerCfgPlayerPos == 4 && (selmenu_btnDownTbl[i] & 4)) {
+                } else if (selmenu_playerCfgPlayerPos == 4 && (selmenu_btnDownTbl[i] & SELMENU_BTN_LEFT)) {
                     if (--GwSystem.current_board_index < 0) {
                         GwSystem.current_board_index = 0;
                     }
-                } else if (selmenu_playerCfgPlayerPos == 4 && (selmenu_btnDownTbl[i] & 8)) {
+                } else if (selmenu_playerCfgPlayerPos == 4 && (selmenu_btnDownTbl[i] & SELMENU_BTN_RIGHT)) {
                     if (++GwSystem.current_board_index > 0) {
                         GwSystem.current_board_index = 0;
                     }
                 } else if (selmenu_playerCfgPlayerPos != 4) {
-                    if (selmenu_btnDownTbl[i] & 0xC) {
+                    if (selmenu_btnDownTbl[i] & (SELMENU_BTN_LEFT | SELMENU_BTN_RIGHT)) {
                         selmenu_playerCfgPlayerPos ^= 1;
-                    } else if (selmenu_btnDownTbl[i] & 3) {
+                    } else if (selmenu_btnDownTbl[i] & (SELMENU_BTN_UP | SELMENU_BTN_DOWN)) {
                         selmenu_playerCfgPlayerPos ^= 2;
                     }
-                    if (selmenu_btnDownTbl[i] & 0x20) {
+                    if (selmenu_btnDownTbl[i] & SELMENU_BTN_B) {
                         obj->func = selmenu_MenuObjMain;
                         return;
                     }
-                    if (selmenu_btnDownTbl[i] & 0x10) {
+                    if (selmenu_btnDownTbl[i] & SELMENU_BTN_A) {
                         selmenu_playerCfgSelF = 1;
                         return;
                     }
-                    if (selmenu_btnDownTbl[i] & 0x80) {
+                    if (selmenu_btnDownTbl[i] & SELMENU_BTN_START) {
                         selmenu_GroupShuffle();
                         selmenu_PadShuffle();
                     }
                 }
                 break;
             case 1:
-                if (selmenu_btnDownTbl[i] & 1) {
+                if (selmenu_btnDownTbl[i] & SELMENU_BTN_UP) {
                     if (--selmenu_playerCfgOptionPos < 0) {
                         selmenu_playerCfgOptionPos = 5;
                     }
-                } else if (selmenu_btnDownTbl[i] & 2) {
+                } else if (selmenu_btnDownTbl[i] & SELMENU_BTN_DOWN) {
                     if (++selmenu_playerCfgOptionPos >= 6) {
                         selmenu_playerCfgOptionPos = 0;
                     }
                 }
-                if (selmenu_btnDownTbl[i] & 8) {
+                if (selmenu_btnDownTbl[i] & SELMENU_BTN_RIGHT) {
                     switch (selmenu_playerCfgOptionPos) {
                         case 0:
                             break;
@@ -935,7 +945,7 @@ void selmenu_PlayerCfgObjMain(omObjData *obj) {
                             }
                             break;
                     }
-                } else if (selmenu_btnDownTbl[i] & 4) {
+                } else if (selmenu_btnDownTbl[i] & SELMENU_BTN_LEFT) {
                     switch (selmenu_playerCfgOptionPos) {
                         case 0:
                             break;
@@ -967,11 +977,11 @@ void selmenu_PlayerCfgObjMain(omObjData *obj) {
                             }
                             break;
                     }
-                } else if (selmenu_btnDownTbl[i] & 0x30) {
+                } else if (selmenu_btnDownTbl[i] & (SELMENU_BTN_A | SELMENU_BTN_B)) {
                     selmenu_playerCfgSelF = 0;
                     selmenu_playerCfgOptionPos = 0;
                     return;
-                } else if (selmenu_btnDownTbl[i] & 0x80) {
+                } else if (selmenu_btnDownTbl[i] & SELMENU_BTN_START) {
                     switch (selmenu_playerCfgOptionPos) {
                         case 2:
                             selmenu_GroupShuffle();
@@ -1152,7 +1162,7 @@ void selmenu_ChrSelObjMain(omObjData *obj) {
         if (CheckControllerRead(i) && (HuPadBtnDown[i] & START_BUTTON)) {
             for (j = 0; j < 4; j++) {
                 if (CheckControllerRead(j)) {
-                    selmenu_btnDownTbl[j] |= 0x10;
+                    selmenu_btnDownTbl[j] |= SELMENU_BTN_A;
                 }
             }
         }
@@ -1178,13 +1188,13 @@ void selmenu_ChrSelObjMain(omObjData *obj) {
         textColor = color;
         sprintf(omDBGStrBuf, selmenu_chrNameTbl[GwPlayer[i].chr]);
         selmenu_ShadowTextPrint(i * 56 + 50 + i * 4, 144, omDBGStrBuf, textColor, color - 8);
-        if ((selmenu_btnDownTbl[i] & 0x10) && selmenu_playerDoneF[i] == 0) {
+        if ((selmenu_btnDownTbl[i] & SELMENU_BTN_A) && selmenu_playerDoneF[i] == 0) {
             selmenu_playerDoneF[i] = 1;
             Hu3DMotionModelSet(selmenu_chrMdlTbl[GwPlayer[i].chr], selmenu_chrDecideMotTbl[GwPlayer[i].chr]);
             Hu3DMotionAttrSet(selmenu_chrMdlTbl[GwPlayer[i].chr], 1, 0);
             Hu3DMotionAttrSet(selmenu_chrMdlTbl[GwPlayer[i].chr], 2, 2);
             selmenu_SePlay(2);
-        } else if ((selmenu_btnDownTbl[i] & 0x20) && selmenu_playerDoneF[i] == 1) {
+        } else if ((selmenu_btnDownTbl[i] & SELMENU_BTN_B) && selmenu_playerDoneF[i] == 1) {
             selmenu_playerDoneF[i] = 0;
             Hu3DMotionModelSet(selmenu_chrMdlTbl[GwPlayer[i].chr], selmenu_chrIdleMotTbl[GwPlayer[i].chr]);
             Hu3DMotionAttrSet(selmenu_chrMdlTbl[GwPlayer[i].chr], 1, 0);
@@ -1192,7 +1202,7 @@ void selmenu_ChrSelObjMain(omObjData *obj) {
             selmenu_SePlay(3);
         }
         if (selmenu_playerDoneF[i] == 0) {
-            if (selmenu_btnDownTbl[i] & 4) {
+            if (selmenu_btnDownTbl[i] & SELMENU_BTN_LEFT) {
                 chr = GwPlayer[i].chr - 1;
                 selmenu_SePlay(0);
                 while (TRUE) {
@@ -1209,7 +1219,7 @@ void selmenu_ChrSelObjMain(omObjData *obj) {
                 GwPlayer[i].chr = chr;
                 selmenu_chrUsedF[GwPlayer[i].chr] = 1;
                 selmenu_chrRotYTbl[i] = 0.0f;
-            } else if (selmenu_btnDownTbl[i] & 8) {
+            } else if (selmenu_btnDownTbl[i] & SELMENU_BTN_RIGHT) {
                 chr = GwPlayer[i].chr + 1;
                 selmenu_SePlay(0);
                 while (TRUE) {

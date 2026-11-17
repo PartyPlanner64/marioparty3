@@ -1,6 +1,6 @@
 #include "libm.h"
 
-void func_8008D740_main(s32 precision) {
+void __libmSetPrecision(s32 precision) {
     f64 tolerance = 1.0;
     s32 i;
 

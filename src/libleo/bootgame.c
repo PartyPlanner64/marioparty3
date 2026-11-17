@@ -16,7 +16,7 @@
 
 extern u32 _osPreNMI;
 
-u8 D_800C1560_main[0xC10]; /* unreferenced */
+u8 __leoUnusedBuf[0xC10]; /* unreferenced */
 u32 LeoBootGameParam;
 
 void __LeoBootGame2(void *entry);

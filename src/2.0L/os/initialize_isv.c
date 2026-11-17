@@ -15,7 +15,7 @@ extern ISVDbg *gISVDbgPrnAdrs;
 extern u32 leoComuBuffAdd;
 extern __osExceptionVector __isExpJPSave; // __isExpJP save
 
-extern void func_80081A20_main(void);
+extern void __isBreak(void);
 
 void isPrintfInit(void) {
     is_Handle = osCartRomInit();
@@ -140,7 +140,7 @@ void __osInitialize_isv(void) {
             fn();
         }
         if (gISVChk & 2) {
-            func_80081A20_main();
+            __isBreak();
         }
     }
 }

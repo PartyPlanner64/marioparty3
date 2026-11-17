@@ -19,6 +19,14 @@ typedef struct {
     /* 0xC */ u32 inst4;
 } __osExceptionVector;
 
+u32 __checkHardware_msp(void);
+u32 __checkHardware_kmc(void);
+u32 __checkHardware_isv(void);
+void __osInitialize_msp(void);
+void __osInitialize_kmc(void);
+void __osInitialize_isv(void);
+void __osInitialize_emu(void);
+
 extern char *(*__printfunc)(char *dst, const char *src, unsigned int count);
 
 #endif

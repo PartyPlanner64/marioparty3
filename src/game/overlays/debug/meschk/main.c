@@ -121,11 +121,11 @@ MessageCheckEntry meschk_mesFileTbl[] = {
 
 u8 meschk_workPad[0x1D0] BSS; /* Unreferenced. */
 
-extern void meschk_MainProc(void);
-extern void meschk_MesCheckExec(void);
-extern void meschk_ExitCheckObjMain(omObjData *data);
-extern void meschk_ExitObjMain(omObjData *data);
-extern void meschk_ModelProc(void);
+void meschk_MainProc(void);
+void meschk_MesCheckExec(void);
+void meschk_ExitCheckObjMain(omObjData *data);
+void meschk_ExitObjMain(omObjData *data);
+void meschk_ModelProc(void);
 
 void meschk_ObjectSetup() {
     omObjData *temp_v0;

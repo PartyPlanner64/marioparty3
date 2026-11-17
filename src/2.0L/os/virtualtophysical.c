@@ -1,6 +1,5 @@
 #include "common.h"
-
-extern u32 __osProbeTLB(void *);
+#include "PR/osint.h"
 
 u32 osVirtualToPhysical(void *addr) {
     if (IS_KSEG0(addr)) {

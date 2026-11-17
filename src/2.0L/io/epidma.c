@@ -1,8 +1,5 @@
 #include "common.h"
-
-extern OSDevMgr __osPiDevMgr;
-
-extern OSMesgQueue *osPiGetCmdQueue(void);
+#include "piint.h"
 
 s32 osEPiStartDma(OSPiHandle *pihandle, OSIoMesg *mb, s32 direction) {
     register s32 ret;

@@ -29,6 +29,7 @@ extern u32 __osPiAccessQueueEnabled;
 #endif
 
 void __osDevMgrMain(void *args);
+OSMesgQueue *osPiGetCmdQueue(void);
 void __osPiCreateAccessQueue(void);
 
 void __osPiGetAccess(void);
@@ -37,6 +38,7 @@ s32 __osPiRawReadIo(u32 devAddr, u32 *data);
 s32 __osPiRawWriteIo(u32 devAddr, u32 data);
 s32 __osEPiRawReadIo(OSPiHandle *pihandle, u32 devAddr, u32 *data);
 s32 __osEPiRawWriteIo(OSPiHandle *pihandle, u32 devAddr, u32 data);
+s32 __osEPiRawStartDma(OSPiHandle *pihandle, s32 direction, u32 devAddr, void *dramAddr, u32 size);
 
 #define WAIT_ON_IOBUSY(stat)                                \
     stat = IO_READ(PI_STATUS_REG);                          \

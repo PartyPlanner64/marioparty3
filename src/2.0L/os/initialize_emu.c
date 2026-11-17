@@ -1,8 +1,7 @@
 #include "common.h"
 #include "initialize.h"
+#include "PR/os_internal.h"
 #include "PR/rdb.h"
-
-extern u32 __osRdbSend(u8 *buf, u32 size, u32 type);
 
 char *proutSyncPrintf(char *str, const char *buf, unsigned int n);
 

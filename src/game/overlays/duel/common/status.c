@@ -93,7 +93,6 @@ void MBDStatusScaleSet(s32 playerIndex, f32 scaleX, f32 scaleY);
 void MBDStatusAnimCreate(void);
 void MBDStatusPlayerCreate(s32 playerIndex);
 void MBDStatusPlayerKill(s32 playerIndex);
-void MBDVsSprKill(void);
 void MBDCoinTakeCreateSound(s32 playerIndex, s32 coins, s32 arg2);
 
 void MBDStatusNumUpdate(s32 playerIndex) {

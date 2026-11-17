@@ -1,9 +1,5 @@
 #include "common.h"
-
-extern u32 __osDisableInt(void);
-extern void __osRestoreInt(u32);
-extern void __osEnqueueAndYield(OSThread **);
-extern OSThread *__osPopThread(OSThread **);
+#include "PR/osint.h"
 
 extern OSThread *__osRunningThread;
 

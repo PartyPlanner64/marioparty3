@@ -40,6 +40,7 @@ extern void		__osSetConfig(u32);
 extern void		__osSetCount(u32);
 extern u32		__osGetSR(void);
 extern void		__osSetSR(u32);
+extern void		__osSetWatchLo(u32);
 extern u32		__osDisableInt(void);
 extern void		__osRestoreInt(u32);
 

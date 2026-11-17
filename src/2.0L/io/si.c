@@ -1,4 +1,5 @@
 #include "common.h"
+#include "controller.h"
 
 int __osSiDeviceBusy(void) {
     register u32 stat = IO_READ(SI_STATUS_REG);

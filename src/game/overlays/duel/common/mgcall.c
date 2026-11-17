@@ -76,16 +76,6 @@ extern omObjData *mbdCoinChangeObj[2];
 extern u8 mbdCoinChangeMode;
 extern f32 mbdCoinChangePosTbl[2][2];
 
-extern Object *MBDAuraObjGet(void);
-extern void MBDTelopMgTypeCreate(s32 arg0, Vec *pos);
-extern s32 MBDMasuTypeNumGet(s32 spaceType);
-extern s32 MBDTelopMgTypeStatGet(void);
-extern void MBDTelopMgTypeKill(void);
-extern void MBDStatusDispMoveSet(s32 arg0);
-extern s32 MBDStatusMoveCheck(void);
-extern void MBDVsSprCreate(void);
-extern void MBDVsSprKill(void);
-
 void MBDMgCallCursorSprCreate(void);
 void MBDMgCallListCreate(s32 arg0);
 void MBDMgCallListCreateProc(void);

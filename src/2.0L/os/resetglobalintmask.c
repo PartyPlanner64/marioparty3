@@ -1,7 +1,5 @@
 #include "common.h"
-
-extern u32 __osDisableInt(void);
-extern void __osRestoreInt(u32);
+#include "PR/os_internal.h"
 
 extern u32 __OSGlobalIntMask;
 

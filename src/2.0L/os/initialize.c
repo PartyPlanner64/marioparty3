@@ -17,15 +17,6 @@ extern __osExceptionVector __osExceptionPreamble[];
 extern OSPiHandle __Dom1SpeedParam;
 extern OSPiHandle __Dom2SpeedParam;
 
-extern void __osSetWatchLo(u32);
-extern u32 __checkHardware_msp(void);
-extern u32 __checkHardware_kmc(void);
-extern u32 __checkHardware_isv(void);
-extern void __osInitialize_msp(void);
-extern void __osInitialize_kmc(void);
-extern void __osInitialize_isv(void);
-extern void __osInitialize_emu(void);
-
 inline void __createSpeedParam(void) {
     __Dom1SpeedParam.type = DEVICE_TYPE_INIT;
     __Dom1SpeedParam.latency = IO_READ(PI_BSD_DOM1_LAT_REG);

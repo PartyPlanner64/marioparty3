@@ -115,6 +115,9 @@ typedef struct {
 #define CONT_CMD_END 0xFE /* indicates end of a command */
 #define CONT_CMD_EXE 1    /* set pif ram status byte to this to do a command */
 
+/* si.c */
+int __osSiDeviceBusy(void);
+
 /* siacs.c */
 void __osSiCreateAccessQueue(void);
 void __osSiGetAccess(void);

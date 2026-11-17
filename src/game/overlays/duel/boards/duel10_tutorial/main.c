@@ -86,10 +86,6 @@ extern u8 mbdSaiHitLockF;
 
 void MBDCameraFocusVecSet(Vec *arg0);
 void MBDPartnerAttackFuncSet(PartnerFunc *, PartnerFunc *);
-extern void MBD10_MissMarkProc(void);
-extern void MBD10_CameraShakeProc(void);
-extern void MBD10Ev_PartnerBox1SquashProc(void);
-extern void MBD10Ev_PartnerBox2SquashProc(void);
 void MBD10_DodgeProc(void);
 void MBDSaiValueForceSet(s32, s32);
 void MBD10Ev_PlayerWalkExecEx(s32, s32);

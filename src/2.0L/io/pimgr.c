@@ -4,8 +4,6 @@
 
 #define OS_RAMROM_STACKSIZE 1024
 
-extern s32 __osEPiRawStartDma(OSPiHandle *pihandle, s32 direction, u32 devAddr, void *dramAddr, u32 size);
-
 extern OSPiHandle __Dom1SpeedParam;
 extern OSPiHandle __Dom2SpeedParam;
 

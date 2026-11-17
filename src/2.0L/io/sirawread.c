@@ -1,6 +1,5 @@
 #include "common.h"
-
-extern int __osSiDeviceBusy(void);
+#include "controller.h"
 
 s32 __osSiRawReadIo(u32 devAddr, u32 *data) {
     if (__osSiDeviceBusy()) {

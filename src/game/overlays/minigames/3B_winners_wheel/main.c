@@ -339,7 +339,7 @@ void m259_MainObjMain(omObjData *obj) {
             }
             if (m259_seqNo == 1) {
                 if (!(GwPlayer[m259_playerNo].stat & 1)) {
-                    if (HuPadBtnDown[GwPlayer[m259_playerNo].pad] == 0x8000) {
+                    if (HuPadBtnDown[GwPlayer[m259_playerNo].pad] == A_BUTTON) {
                         m259_PlayerHitStart(1);
                         m259_seqNo = 3;
                     }

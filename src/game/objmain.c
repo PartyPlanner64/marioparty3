@@ -1121,11 +1121,11 @@ void omDBGSystemKeyCheck(omObjData *object) {
                 HuAudFXPlay(0);
                 switch (object->work[2]) {
                     case 0: // CANCEL
-                        omPadBtnDown[port] |= 0x20;
+                        omPadBtnDown[port] |= L_TRIG;
                         break;
                     case 1: // RESET
                         omSysExitReq = 1;
-                        omPadBtnDown[port] |= 0x20;
+                        omPadBtnDown[port] |= L_TRIG;
                         if (omDBGSysKeyObj->work[0] & 1) {
                             omDBGSysKeyObj->work[0] &= ~1;
                             if (omPauseWinInitF == 1) {
@@ -1220,7 +1220,7 @@ void omDBGSystemKeyCheck(omObjData *object) {
         if (!(omPadBtnDown[i] & L_TRIG)) {
             continue;
         }
-        if ((omPadBtn[i] | omPadBtnDown[i]) & 0x10) {
+        if ((omPadBtn[i] | omPadBtnDown[i]) & R_TRIG) {
             continue;
         }
         omDBGHu3DPauseFBak = Hu3DPauseF;
@@ -1270,7 +1270,7 @@ void omSystemKeyCheck(omObjData *object) {
         if (omSysPauseReadyF == 0) {
             return;
         }
-        if ((omPadBtnDown[OM_GET_WORK_PTR(object, PauseObjWork)->halfwords[3]] & 0x1000) ||
+        if ((omPadBtnDown[OM_GET_WORK_PTR(object, PauseObjWork)->halfwords[3]] & START_BUTTON) ||
             omOvlChangeF == 1 || omSysPauseCloseReq == 1) {
             omSysPauseCloseReq = 0;
             Hu3DPauseF = 0;

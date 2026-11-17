@@ -1065,7 +1065,7 @@ void m258_PlayerObjMain(omObjData *object) {
     work->prevPos.y = object->trans.y;
     work->prevPos.z = object->trans.z;
     if (work->unk3C != 0) {
-        HuPadBtnDown[pad] &= ~0x4000;
+        HuPadBtnDown[pad] &= ~B_BUTTON;
     } else {
         Hu3DData[object->model[0]].motIdShape = 0xFF;
     }

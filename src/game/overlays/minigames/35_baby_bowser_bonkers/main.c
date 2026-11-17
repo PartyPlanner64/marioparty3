@@ -692,7 +692,7 @@ void m253_PlayerComInput(omObjData *object) {
         }
         HuPadStkX[player->unk_2A] = dx * 64.0f * scale;
         HuPadStkY[player->unk_2A] = -(dz * 64.0f * scale);
-        HuPadBtn[player->unk_2A] |= 0x8000;
+        HuPadBtn[player->unk_2A] |= A_BUTTON;
         HuPadBtnDown[player->unk_2A] = 0;
         return;
     }
@@ -701,8 +701,8 @@ void m253_PlayerComInput(omObjData *object) {
             HuPadStkX[player->unk_2A] = 0;
             HuPadStkY[player->unk_2A] = 0;
             if (!(player->unk_3E & 7) && player->unk_32 != -1) {
-                HuPadBtnDown[player->unk_2A] |= 0x8000;
-                HuPadBtn[player->unk_2A] |= 0x8000;
+                HuPadBtnDown[player->unk_2A] |= A_BUTTON;
+                HuPadBtn[player->unk_2A] |= A_BUTTON;
             }
             if (--player->unk_3E <= 0) {
                 player->unk_40 = (u8)(rand8() % 15) + 15.0f + player->unk_30 * 5;
@@ -727,10 +727,10 @@ void m253_PlayerComInput(omObjData *object) {
         dist = sqrtf(dx * dx + dz * dz);
         if (dist < 150.0 && dist > 50.0 && player->unk_34 >= 12 - player->unk_30 * 2 &&
             m253_PlayerAirCheck(object) == 0 && actor->unk_04 != 0) {
-            HuPadBtnDown[player->unk_2A] |= 0x8000;
+            HuPadBtnDown[player->unk_2A] |= A_BUTTON;
         }
         if (data->unk38 != 1000.0f) {
-            HuPadBtn[player->unk_2A] |= 0x8000;
+            HuPadBtn[player->unk_2A] |= A_BUTTON;
         } else if ((m253_KoopaJrTimeLeftGet(actor->unk_00) < 15.0f && player->unk_34 >= player->unk_36 &&
                     player->unk_38 <= dist) ||
                    (ready && !(rand8() & 0xF))) {
@@ -1152,7 +1152,7 @@ s16 m253_KoopaJrStompCheck(BabyBowserBonkersKoopaJr *actor) {
                 }
                 MgPlayerMotForceSet(obj, 6);
                 data->unk50 &= ~0x80;
-                if ((u16)HuPadBtn[pad] & 0x8000) {
+                if ((u16)HuPadBtn[pad] & A_BUTTON) {
                     data->unk38 = -mgPlayerJumpPower;
                 } else {
                     data->unk38 = -mgPlayerJumpPower * 0.75f;

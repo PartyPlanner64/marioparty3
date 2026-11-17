@@ -369,8 +369,8 @@ static void MBMapFullMain(void) {
         u16 pad;
         HuPrcVSleep();
         pad = ContBtnDown[userData];
-        dir = -((pad & 0x800) == 0);
-        if (pad & 0x400) {
+        dir = -((pad & U_JPAD) == 0);
+        if (pad & D_JPAD) {
             dir = 1;
         }
         if (ContBtnDown[userData] & L_JPAD) {

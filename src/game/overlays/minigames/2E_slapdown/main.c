@@ -411,11 +411,11 @@ void m246_PaddleAnimClose(void) {
 void m246_PlayerComInput(omObjData *obj) {
     if (m246_matchF == 1 && m246_timer < 50) {
         if (((rand8() & 0xFF) + (rand8() & 0xFF)) % m246_comSlapRateTbl[GwPlayer[obj->work[0]].cpu_difficulty][0] == 0 || m246_timer < 2) {
-            HuPadBtnDown[obj->work[3]] |= 0x8000;
+            HuPadBtnDown[obj->work[3]] |= A_BUTTON;
         }
     } else {
         if (((rand8() & 0xFF) + (rand8() & 0xFF)) % m246_comSlapRateTbl[GwPlayer[obj->work[0]].cpu_difficulty][1] == 0) {
-            HuPadBtnDown[obj->work[3]] |= 0x8000;
+            HuPadBtnDown[obj->work[3]] |= A_BUTTON;
         }
     }
 }
@@ -447,7 +447,7 @@ void m246_PlayerObjMain(omObjData *obj) {
             if (obj->work[0] == 3) {
                 if (m246_timer > 0) {
                     for (i = 0; i < 4; i++) {
-                        if (entries[i]->unk_04 == 0 && entries[i]->unk_06 == 0 && (HuPadBtnDown[objs[i]->work[3]] & 0x8000)) {
+                        if (entries[i]->unk_04 == 0 && entries[i]->unk_06 == 0 && (HuPadBtnDown[objs[i]->work[3]] & A_BUTTON)) {
                             entries[i]->unk_06 = 1;
                         }
                     }

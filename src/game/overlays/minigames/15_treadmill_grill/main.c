@@ -638,7 +638,7 @@ void m221_PlayerComInput(omObjData *object) {
     if (m221_comStateTbl[player] == 32 && data->unk38 != 1000.0f) {
         HuPadStkX[pad] = m221_comStickSaveTbl[player][0];
         HuPadStkY[pad] = m221_comStickSaveTbl[player][1];
-        HuPadBtn[pad] |= 0x8000;
+        HuPadBtn[pad] |= A_BUTTON;
         for (i = 0; i < 4; i++) {
             if (m221_playerOutTbl[i] != 1) {
                 if (i != player) {
@@ -646,7 +646,7 @@ void m221_PlayerComInput(omObjData *object) {
                     x = other->trans.x - object->trans.x;
                     z = other->trans.z - object->trans.z;
                     if (HuSqrtf(x * x + z * z) < 2.0f * data->unk48) {
-                        HuPadBtnDown[pad] |= 0x2000;
+                        HuPadBtnDown[pad] |= Z_TRIG;
                     }
                 }
             }
@@ -694,7 +694,7 @@ void m221_PlayerComInput(omObjData *object) {
     if (state != 0) {
         m221_comStateTbl[player] = state;
         if (m221_comTimerTbl[player] > 60 && m221_comChanceTbl[difficulty] / 4.0f >= rand8()) {
-            HuPadBtnDown[pad] |= 0x8000;
+            HuPadBtnDown[pad] |= A_BUTTON;
             m221_comStateTbl[player] = 32;
             m221_comTimerTbl[player] = 0;
         }
@@ -778,7 +778,7 @@ void m221_PlayerComInput(omObjData *object) {
                     if (dist < 2.0f * data->unk48 + 80.0f) {
                         rotY = data->unk3C;
                         if (MgDirDot(x, z, sindf(rotY), cosdf(rotY)) < -0.8f) {
-                            HuPadBtnDown[pad] = 0x4000;
+                            HuPadBtnDown[pad] = B_BUTTON;
                             m221_comStateTbl[player] = 16;
                             break;
                         }
@@ -801,7 +801,7 @@ void m221_PlayerComInput(omObjData *object) {
         case 4:
         case 8:
             if (m221_comTimerTbl[player] > 60 && m221_comChanceTbl[difficulty] / 4.0f >= rand8()) {
-                HuPadBtnDown[pad] |= 0x8000;
+                HuPadBtnDown[pad] |= A_BUTTON;
                 m221_comStateTbl[player] = 32;
                 m221_comTimerTbl[player] = 0;
             }

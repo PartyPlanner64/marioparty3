@@ -366,16 +366,16 @@ void m239_HitEffObjCreateAll(void) {
 void m239_ComSlotPress(omObjData *obj, s32 slot) {
     slot &= 3;
     if (slot == 0) {
-        HuPadBtnDown[GwPlayer[obj->work[0]].pad] = 0x4000;
+        HuPadBtnDown[GwPlayer[obj->work[0]].pad] = B_BUTTON;
         HuPadStkY[GwPlayer[obj->work[0]].pad] = 60;
     } else if (slot == 1) {
-        HuPadBtnDown[GwPlayer[obj->work[0]].pad] = 0x8000;
+        HuPadBtnDown[GwPlayer[obj->work[0]].pad] = A_BUTTON;
         HuPadStkY[GwPlayer[obj->work[0]].pad] = 60;
     } else if (slot == 2) {
-        HuPadBtnDown[GwPlayer[obj->work[0]].pad] = 0x4000;
+        HuPadBtnDown[GwPlayer[obj->work[0]].pad] = B_BUTTON;
         HuPadStkY[GwPlayer[obj->work[0]].pad] = -60;
     } else if (slot == 3) {
-        HuPadBtnDown[GwPlayer[obj->work[0]].pad] = 0x8000;
+        HuPadBtnDown[GwPlayer[obj->work[0]].pad] = A_BUTTON;
         HuPadStkY[GwPlayer[obj->work[0]].pad] = -60;
     }
 }
@@ -593,16 +593,16 @@ void m239_PlayerLoseSet(PipeCleanerPlayerWork *work) {
 void m239_PlayerSwingStart(omObjData *obj) {
     PipeCleanerPlayerWork *work = &m239_playerWorkTbl[obj->work[0]];
 
-    if (HuPadStkY[GwPlayer[obj->work[0]].pad] > 50 && (HuPadBtnDown[GwPlayer[obj->work[0]].pad] & 0x8000)) {
+    if (HuPadStkY[GwPlayer[obj->work[0]].pad] > 50 && (HuPadBtnDown[GwPlayer[obj->work[0]].pad] & A_BUTTON)) {
         m239_PlayerMotChange(obj, 1);
         work->motionId = 2;
-    } else if (HuPadStkY[GwPlayer[obj->work[0]].pad] < -50 && (HuPadBtnDown[GwPlayer[obj->work[0]].pad] & 0x8000)) {
+    } else if (HuPadStkY[GwPlayer[obj->work[0]].pad] < -50 && (HuPadBtnDown[GwPlayer[obj->work[0]].pad] & A_BUTTON)) {
         m239_PlayerMotChange(obj, 3);
         work->motionId = 4;
-    } else if (HuPadStkY[GwPlayer[obj->work[0]].pad] > 50 && (HuPadBtnDown[GwPlayer[obj->work[0]].pad] & 0x4000)) {
+    } else if (HuPadStkY[GwPlayer[obj->work[0]].pad] > 50 && (HuPadBtnDown[GwPlayer[obj->work[0]].pad] & B_BUTTON)) {
         m239_PlayerMotChange(obj, 2);
         work->motionId = 1;
-    } else if (HuPadStkY[GwPlayer[obj->work[0]].pad] < -50 && (HuPadBtnDown[GwPlayer[obj->work[0]].pad] & 0x4000)) {
+    } else if (HuPadStkY[GwPlayer[obj->work[0]].pad] < -50 && (HuPadBtnDown[GwPlayer[obj->work[0]].pad] & B_BUTTON)) {
         m239_PlayerMotChange(obj, 4);
         work->motionId = 3;
     }

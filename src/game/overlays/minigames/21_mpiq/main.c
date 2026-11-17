@@ -372,8 +372,8 @@ void m233_PlayerObjMain(omObjData *obj) {
         HuPadBtnDown[data->unk57] = 0;
     }
     if (m233_buzzLockF == 1 && !(GwPlayer[data->unk59].stat & 1)) {
-        HuPadBtn[data->unk57] &= 0x7FFF;
-        HuPadBtnDown[data->unk57] &= 0x7FFF;
+        HuPadBtn[data->unk57] &= ~A_BUTTON;
+        HuPadBtnDown[data->unk57] &= ~A_BUTTON;
     }
     MgPlayerObjMain(obj);
     data->unk60 = 0;
@@ -460,8 +460,8 @@ void m233_ComInput(s32 index) {
     if (m233_buzzLockF == 0 && m233_comInputTbl[index].delay != 0) {
         m233_comInputTbl[index].delay--;
         if (m233_comInputTbl[index].delay == 0) {
-            HuPadBtn[data->unk57] |= 0x8000;
-            HuPadBtnDown[data->unk57] |= 0x8000;
+            HuPadBtn[data->unk57] |= A_BUTTON;
+            HuPadBtnDown[data->unk57] |= A_BUTTON;
         }
     } else if (index == m233_answerPlayer && m233_comInputTbl[index].hold != 0) {
         m233_comInputTbl[index].hold--;
@@ -1098,8 +1098,8 @@ void m233_ComInputProc(void) {
     while (TRUE) {
         for (i = 0; i < 4; i++) {
             if (GwPlayer[i].stat & 1) {
-                HuPadBtn[GwPlayer[i].pad] &= 0x1FFF;
-                HuPadBtnDown[GwPlayer[i].pad] &= 0x1FFF;
+                HuPadBtn[GwPlayer[i].pad] &= ~(A_BUTTON | B_BUTTON | Z_TRIG);
+                HuPadBtnDown[GwPlayer[i].pad] &= ~(A_BUTTON | B_BUTTON | Z_TRIG);
             }
             if (MgFlowStatGet() == MG_STATE_PLAY && (GwPlayer[i].stat & 1)) {
                 m233_ComInput(i);
@@ -1169,7 +1169,7 @@ void m233_ChoiceSelectProc(void) {
             work->x = screenPos.x + 28.0f;
             work->y = screenPos.y - 46.0f;
             work->scale = 0.0f;
-            if ((buttons & 0xE000) == 0x8000) {
+            if ((buttons & (A_BUTTON | B_BUTTON | Z_TRIG)) == A_BUTTON) {
                 m233_choiceNo = 0;
                 MgPlayerMotSwap(player, 0x26, 0);
                 MgPlayerMotForceSet(player, 0x27);
@@ -1183,7 +1183,7 @@ void m233_ChoiceSelectProc(void) {
                 work->flags |= 2;
                 m233_quizFlag &= ~0x20;
             }
-            if ((buttons & 0xE000) == 0x4000) {
+            if ((buttons & (A_BUTTON | B_BUTTON | Z_TRIG)) == B_BUTTON) {
                 m233_choiceNo = 1;
                 MgPlayerMotSwap(player, 0x26, 0);
                 MgPlayerMotForceSet(player, 0x27);
@@ -1197,7 +1197,7 @@ void m233_ChoiceSelectProc(void) {
                 work->flags |= 2;
                 m233_quizFlag &= ~0x20;
             }
-            if ((buttons & 0xE000) == 0x2000) {
+            if ((buttons & (A_BUTTON | B_BUTTON | Z_TRIG)) == Z_TRIG) {
                 m233_choiceNo = 2;
                 MgPlayerMotSwap(player, 0x26, 0);
                 MgPlayerMotForceSet(player, 0x27);
@@ -2133,7 +2133,7 @@ void m233_BuzzProc(void) {
             if (m233_playerFlagTbl[i] & 1) {
                 continue;
             }
-            if (HuPadBtnDown[GwPlayer[i].pad] & 0x8000) {
+            if (HuPadBtnDown[GwPlayer[i].pad] & A_BUTTON) {
                 pressed[count++] = i;
                 m233_quizFlag &= ~0x10;
                 m233_quizFlag |= 4;
@@ -2156,7 +2156,7 @@ void m233_BuzzObjMain(omObjData *obj) {
     if (!(m233_quizFlag & 2)) {
         count = 0;
         for (i = 0; i < 4; i++) {
-            if (HuPadBtnDown[GwPlayer[i].pad] & 0x8000) {
+            if (HuPadBtnDown[GwPlayer[i].pad] & A_BUTTON) {
                 pressed[count++] = i;
                 m233_quizFlag &= ~0x10;
                 m233_quizFlag |= 4;

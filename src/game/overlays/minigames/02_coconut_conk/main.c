@@ -1267,11 +1267,11 @@ void m202_TeamComInputCalc(omObjData *arg0) {
                 dir = 2;
             }
             if (arg0->trans.x + 29.0f > target->trans.x - 40.0f && arg0->trans.x - 29.0f < target->trans.x + 40.0f) {
-                HuPadBtnDown[arg0->work[3]] |= 0x8000;
-                HuPadBtnDown[arg0->work[3]] |= 0x2000;
+                HuPadBtnDown[arg0->work[3]] |= A_BUTTON;
+                HuPadBtnDown[arg0->work[3]] |= Z_TRIG;
             }
         } else {
-            HuPadBtnDown[arg0->work[3]] |= 0x8000;
+            HuPadBtnDown[arg0->work[3]] |= A_BUTTON;
         }
     }
     data->unk06--;
@@ -1294,10 +1294,10 @@ void m202_TeamComInputCalc(omObjData *arg0) {
     }
     HuPadStkX[arg0->work[3]] = data->unk08;
     if (rand8() % 70 == 0) {
-        HuPadBtnDown[arg0->work[3]] |= 0x8000;
+        HuPadBtnDown[arg0->work[3]] |= A_BUTTON;
     }
     if (rand8() % 5 == 0) {
-        HuPadBtnDown[arg0->work[3]] |= 0x2000;
+        HuPadBtnDown[arg0->work[3]] |= Z_TRIG;
     }
 }
 

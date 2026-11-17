@@ -956,7 +956,7 @@ void m212_PlayerComInput(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideFunc 
             }
             if ((s32)rand16() % (handler->unk_11 + 1) == 0) {
                 if ((s16)m212_ComShotHitCheck(object, player) == 0) {
-                    ((u16 *)HuPadBtn)[player->unk_00] = 0x8000;
+                    ((u16 *)HuPadBtn)[player->unk_00] = A_BUTTON;
                 }
             }
             break;
@@ -973,7 +973,7 @@ void m212_PlayerComInput(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideFunc 
                 if (--handler->unk_1C <= 0) {
                     handler->unk_0C = 0;
                 } else if ((s32)rand16() % (handler->unk_11 + 1) == 0) {
-                    ((u16 *)HuPadBtn)[player->unk_00] = 0x8000;
+                    ((u16 *)HuPadBtn)[player->unk_00] = A_BUTTON;
                 }
             }
             break;

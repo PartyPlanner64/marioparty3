@@ -166,13 +166,13 @@ void mgenter_StageMainProc(void) {
                 HuPrcSleep(10);
                 mgenter_arrowDispF = 1;
             }
-            if (HuPadBtnDown[mgenter_padNo] & 0x8000) {
+            if (HuPadBtnDown[mgenter_padNo] & A_BUTTON) {
                 HuAudFXPlay(2);
                 mgInstSlotEnd = mgenter_stageNo;
                 storySceneNo = mgenter_stageNo;
                 break;
             }
-            if (HuPadBtnDown[mgenter_padNo] & 0x4000) {
+            if (HuPadBtnDown[mgenter_padNo] & B_BUTTON) {
                 HuAudFXPlay(4);
                 mgInstSlotEnd = -1;
                 mgenter_exitMode = 0;
@@ -213,12 +213,12 @@ void mgenter_StageMainProc(void) {
                 HuPrcSleep(10);
                 mgenter_arrowDispF = 1;
             }
-            if (HuPadBtnDown[mgenter_padNo] & 0x8000) {
+            if (HuPadBtnDown[mgenter_padNo] & A_BUTTON) {
                 HuAudFXPlay(2);
                 confirmed = TRUE;
                 break;
             }
-            if (HuPadBtnDown[mgenter_padNo] & 0x4000) {
+            if (HuPadBtnDown[mgenter_padNo] & B_BUTTON) {
                 HuAudFXPlay(4);
                 confirmed = FALSE;
                 break;
@@ -275,11 +275,11 @@ void mgenter_MainProc(void) {
     }
     while (TRUE) {
         btn = HuPadBtnDown[mgenter_padNo];
-        if (btn & 0x8000) {
+        if (btn & A_BUTTON) {
             HuAudFXPlay(2);
             break;
         }
-        if (btn & 0x4000) {
+        if (btn & B_BUTTON) {
             HuAudFXPlay(4);
             mgenter_exitMode = 0;
             mgenter_exitF = 1;
@@ -596,10 +596,10 @@ void mgenter_NumMainProc(void) {
     HuWinExAnimIn(valueWinId);
     while (TRUE) {
         btn = ContBtnRep[mgenter_padNo];
-        if (btn & 0x800) {
+        if (btn & U_JPAD) {
             delta = 100;
         } else {
-            delta = (btn & 0x400) ? -100 : 0;
+            delta = (btn & D_JPAD) ? -100 : 0;
         }
         if (value == 1000 && delta > 0) {
             value = 100;
@@ -615,12 +615,12 @@ void mgenter_NumMainProc(void) {
             HuWinMesSet(valueWinId, 0x4602, -1, -1);
         }
         btn = HuPadBtnDown[mgenter_padNo];
-        if (btn & 0x8000) {
+        if (btn & A_BUTTON) {
             HuAudFXPlay(2);
             mgModeCoinRate = value;
             break;
         }
-        if (btn & 0x4000) {
+        if (btn & B_BUTTON) {
             HuAudFXPlay(4);
             mgenter_exitMode = 0;
             mgenter_exitF = 1;

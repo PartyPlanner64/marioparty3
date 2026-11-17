@@ -355,7 +355,7 @@ void m214_PlayerObjInit(omObjData *object) {
     data->charge.value = 0;
     data->unk1A = 0;
     data->unk10 = 0;
-    data->unk12 = 0x4000;
+    data->unk12 = B_BUTTON;
     data->unk1E = 0;
     data->unk1C = 0;
     omObjMotionRead(object, 0, CharMotionDataNumGet(character, 0));
@@ -665,26 +665,26 @@ void m214_PumperUpdate(omObjData *object) {
         pressB = (HuPadBtnDown[playerData->unk57] & (B_BUTTON | Z_TRIG)) != 0;
     }
     if ((pressA != 0) & (pressB != 0)) {
-        if (data->unk12 == 0x8000) {
+        if (data->unk12 == A_BUTTON) {
             pressA = 0;
         } else {
-            pressB &= data->unk12 != 0x4000 ? 0xFFFF : 0;
+            pressB &= data->unk12 != B_BUTTON ? 0xFFFF : 0;
         }
     } else if (pressA) {
-        pressA &= data->unk12 != 0x8000 ? 0xFFFF : 0;
+        pressA &= data->unk12 != A_BUTTON ? 0xFFFF : 0;
     } else if (pressB) {
-        pressB &= data->unk12 != 0x4000 ? 0xFFFF : 0;
+        pressB &= data->unk12 != B_BUTTON ? 0xFFFF : 0;
     }
     if (pressA) {
         Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[1]].motId, (s16)time, 1, 2);
         data->unk10 = 1;
         m214_SePanPlay(0x368, side, 1, playerData->unk59);
-        data->unk12 = 0x8000;
+        data->unk12 = A_BUTTON;
     } else if (pressB) {
         Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[1]].motId, (s16)time, 1, 4);
         data->unk10 = 2;
         m214_SePanPlay(0x367, side, 1, playerData->unk59);
-        data->unk12 = 0x4000;
+        data->unk12 = B_BUTTON;
     }
     if (data->unk10 == 1) {
         if (data->charge.value < 9) {
@@ -895,9 +895,9 @@ void m214_SprayObjMain(omObjData *object) {
             data->angle = 120.0f;
         }
         if (count >= 2) {
-            HuPadBtn[port] |= 0x8000;
+            HuPadBtn[port] |= A_BUTTON;
         } else {
-            HuPadBtn[port] &= 0x7FFF;
+            HuPadBtn[port] &= ~A_BUTTON;
         }
     } else if (ABS(HuPadStkX[port]) > 40) {
         if (HuPadStkX[port] < 0) {

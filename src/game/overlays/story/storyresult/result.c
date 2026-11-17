@@ -421,18 +421,18 @@ void storyresult_FinalStatProc(void) {
     angle = 0;
     speed = 0;
     while (TRUE) {
-        if (HuPadBtnDown[storyresult_padNo] & 0x8000) {
+        if (HuPadBtnDown[storyresult_padNo] & A_BUTTON) {
             HuAudFXPlay(2);
             break;
         }
         if (data->state == 0) {
-            if ((HuPadBtnDown[storyresult_padNo] & 0x100) || HuPadStkX[storyresult_padNo] >= 31) {
+            if ((HuPadBtnDown[storyresult_padNo] & R_JPAD) || HuPadStkX[storyresult_padNo] >= 31) {
                 HuAudFXPlay(1);
                 data->state = 3;
                 angle = 180;
                 speed = -22;
                 selection = 1;
-            } else if ((HuPadBtnDown[storyresult_padNo] & 0x200) ||
+            } else if ((HuPadBtnDown[storyresult_padNo] & L_JPAD) ||
                        HuPadStkX[storyresult_padNo] < -30) {
                 HuAudFXPlay(1);
                 data->state = 4;

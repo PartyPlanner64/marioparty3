@@ -755,12 +755,12 @@ void m256_PlayerObjMain(omObjData *object) {
             } else {
                 input = m256_PlayerComInput(object);
             }
-            if (input & 0xE000) {
-                if (input & 0x8000) {
+            if (input & (A_BUTTON | B_BUTTON | Z_TRIG)) {
+                if (input & A_BUTTON) {
                     work->unk32 = 3;
-                } else if (input & 0x4000) {
+                } else if (input & B_BUTTON) {
                     work->unk32 = 2;
-                } else if (input & 0x2000) {
+                } else if (input & Z_TRIG) {
                     work->unk32 = 1;
                 }
             }

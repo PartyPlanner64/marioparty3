@@ -2615,7 +2615,7 @@ u8 filesel_storyStageBoardTbl[][2] = {
 
 s32 filesel_NameOptionInput(u32 buttons) {
     s32 length;
-    if (buttons & 0x1000) {
+    if (buttons & START_BUTTON) {
         filesel_nameInput.mode = 1;
         filesel_nameInput.option = 11;
         filesel_KeyCursorDispOff();
@@ -2681,17 +2681,17 @@ s32 filesel_NameOptionInput(u32 buttons) {
             filesel_NameOptionDispSet(filesel_nameInput.option);
         }
         filesel_KeyboardDispSet(filesel_nameInput.keyboard);
-    } else if (buttons & 0x800) {
+    } else if (buttons & U_JPAD) {
         filesel_nameInput.mode = 0;
         filesel_NameOptionDispSet(-1);
         filesel_nameInput.row = 4;
         filesel_KeyCursorDispOn();
-    } else if (buttons & 0x400) {
+    } else if (buttons & D_JPAD) {
         filesel_nameInput.mode = 0;
         filesel_NameOptionDispSet(-1);
         filesel_nameInput.row = 0;
         filesel_KeyCursorDispOn();
-    } else if (buttons & 0x200) {
+    } else if (buttons & L_JPAD) {
         HuAudFXPlay(1);
         switch (filesel_nameInput.option) {
             case 10:
@@ -2702,7 +2702,7 @@ s32 filesel_NameOptionInput(u32 buttons) {
                 break;
         }
         filesel_NameOptionDispSet(filesel_nameInput.option);
-    } else if (buttons & 0x100) {
+    } else if (buttons & R_JPAD) {
         HuAudFXPlay(1);
         switch (filesel_nameInput.option) {
             case 10:
@@ -2713,7 +2713,7 @@ s32 filesel_NameOptionInput(u32 buttons) {
                 break;
         }
         filesel_NameOptionDispSet(filesel_nameInput.option);
-    } else if (buttons & 0x2000) {
+    } else if (buttons & Z_TRIG) {
         HuAudFXPlay(1);
         switch (filesel_nameInput.keyboard) {
             case 4:
@@ -2727,7 +2727,7 @@ s32 filesel_NameOptionInput(u32 buttons) {
                 break;
         }
         filesel_KeyboardDispSet(filesel_nameInput.keyboard);
-    } else if (buttons & 0x10) {
+    } else if (buttons & R_TRIG) {
         HuAudFXPlay(1);
         switch (filesel_nameInput.keyboard) {
             case 4:
@@ -2759,16 +2759,16 @@ void filesel_KeyCursorDispOff(void) {
 }
 
 s32 filesel_HiraganaInput(u32 buttons) {
-    if (buttons & 0x1000) {
+    if (buttons & START_BUTTON) {
         filesel_nameInput.mode = 1;
         filesel_nameInput.option = 11;
         filesel_KeyCursorDispOff();
         filesel_NameOptionDispSet(filesel_nameInput.option);
         return 0;
     }
-    if (buttons & 0xF00) {
+    if (buttons & (U_JPAD | D_JPAD | L_JPAD | R_JPAD)) {
         filesel_KeyCursorDispOn();
-        if (buttons & 0x800) {
+        if (buttons & U_JPAD) {
             if (--filesel_nameInput.row < 0) {
                 filesel_nameInput.row = 0;
                 filesel_nameInput.mode = 1;
@@ -2777,7 +2777,7 @@ s32 filesel_HiraganaInput(u32 buttons) {
                 filesel_KeyCursorDispOff();
                 return 0;
             }
-        } else if (buttons & 0x400) {
+        } else if (buttons & D_JPAD) {
             if (++filesel_nameInput.row >= 5) {
                 filesel_nameInput.row = 4;
                 filesel_nameInput.mode = 1;
@@ -2786,11 +2786,11 @@ s32 filesel_HiraganaInput(u32 buttons) {
                 filesel_KeyCursorDispOff();
                 goto end;
             }
-        } else if (buttons & 0x200) {
+        } else if (buttons & L_JPAD) {
             if (--filesel_nameInput.column < 0) {
                 filesel_nameInput.column = 17;
             }
-        } else if (buttons & 0x100) {
+        } else if (buttons & R_JPAD) {
             if (++filesel_nameInput.column >= 18) {
                 filesel_nameInput.column = 0;
             }
@@ -2838,7 +2838,7 @@ s32 filesel_HiraganaInput(u32 buttons) {
         }
         return 0;
     }
-    if (buttons & 0x2000) {
+    if (buttons & Z_TRIG) {
         HuAudFXPlay(1);
         switch (filesel_nameInput.keyboard) {
             case 4:
@@ -2856,7 +2856,7 @@ s32 filesel_HiraganaInput(u32 buttons) {
                 break;
         }
         filesel_KeyboardDispSet(filesel_nameInput.keyboard);
-    } else if (buttons & 0x10) {
+    } else if (buttons & R_TRIG) {
         HuAudFXPlay(1);
         switch (filesel_nameInput.keyboard) {
             case 4:
@@ -2881,16 +2881,16 @@ end:
 }
 
 s32 filesel_KatakanaInput(u32 buttons) {
-    if (buttons & 0x1000) {
+    if (buttons & START_BUTTON) {
         filesel_nameInput.mode = 1;
         filesel_nameInput.option = 11;
         filesel_KeyCursorDispOff();
         filesel_NameOptionDispSet(filesel_nameInput.option);
         return 0;
     }
-    if (buttons & 0xF00) {
+    if (buttons & (U_JPAD | D_JPAD | L_JPAD | R_JPAD)) {
         filesel_KeyCursorDispOn();
-        if (buttons & 0x800) {
+        if (buttons & U_JPAD) {
             if (--filesel_nameInput.row < 0) {
                 filesel_nameInput.row = 0;
                 filesel_nameInput.mode = 1;
@@ -2899,7 +2899,7 @@ s32 filesel_KatakanaInput(u32 buttons) {
                 filesel_KeyCursorDispOff();
                 return 0;
             }
-        } else if (buttons & 0x400) {
+        } else if (buttons & D_JPAD) {
             if (++filesel_nameInput.row >= 5) {
                 filesel_nameInput.row = 4;
                 filesel_nameInput.mode = 1;
@@ -2908,11 +2908,11 @@ s32 filesel_KatakanaInput(u32 buttons) {
                 filesel_KeyCursorDispOff();
                 goto end;
             }
-        } else if (buttons & 0x200) {
+        } else if (buttons & L_JPAD) {
             if (--filesel_nameInput.column < 0) {
                 filesel_nameInput.column = 17;
             }
-        } else if (buttons & 0x100) {
+        } else if (buttons & R_JPAD) {
             if (++filesel_nameInput.column >= 18) {
                 filesel_nameInput.column = 0;
             }
@@ -2960,7 +2960,7 @@ s32 filesel_KatakanaInput(u32 buttons) {
         }
         return 0;
     }
-    if (buttons & 0x2000) {
+    if (buttons & Z_TRIG) {
         HuAudFXPlay(1);
         switch (filesel_nameInput.keyboard) {
             case 4:
@@ -2978,7 +2978,7 @@ s32 filesel_KatakanaInput(u32 buttons) {
                 break;
         }
         filesel_KeyboardDispSet(filesel_nameInput.keyboard);
-    } else if (buttons & 0x10) {
+    } else if (buttons & R_TRIG) {
         HuAudFXPlay(1);
         switch (filesel_nameInput.keyboard) {
             case 4:
@@ -3003,16 +3003,16 @@ end:
 }
 
 s32 filesel_AlphaInput(u32 buttons) {
-    if (buttons & 0x1000) {
+    if (buttons & START_BUTTON) {
         filesel_nameInput.mode = 1;
         filesel_nameInput.option = 11;
         filesel_KeyCursorDispOff();
         filesel_NameOptionDispSet(filesel_nameInput.option);
         return 0;
     }
-    if (buttons & 0xF00) {
+    if (buttons & (U_JPAD | D_JPAD | L_JPAD | R_JPAD)) {
         filesel_KeyCursorDispOn();
-        if (buttons & 0x800) {
+        if (buttons & U_JPAD) {
             if (--filesel_nameInput.row < 0) {
                 filesel_nameInput.row = 0;
                 filesel_nameInput.mode = 1;
@@ -3021,7 +3021,7 @@ s32 filesel_AlphaInput(u32 buttons) {
                 filesel_KeyCursorDispOff();
                 return 0;
             }
-        } else if (buttons & 0x400) {
+        } else if (buttons & D_JPAD) {
             if (++filesel_nameInput.row >= 5) {
                 filesel_nameInput.row = 4;
                 filesel_nameInput.mode = 1;
@@ -3030,11 +3030,11 @@ s32 filesel_AlphaInput(u32 buttons) {
                 filesel_KeyCursorDispOff();
                 goto end;
             }
-        } else if (buttons & 0x200) {
+        } else if (buttons & L_JPAD) {
             if (--filesel_nameInput.column < 0) {
                 filesel_nameInput.column = 12;
             }
-        } else if (buttons & 0x100) {
+        } else if (buttons & R_JPAD) {
             if (++filesel_nameInput.column >= 13) {
                 filesel_nameInput.column = 0;
             }
@@ -3082,10 +3082,10 @@ s32 filesel_AlphaInput(u32 buttons) {
         }
         return 0;
     }
-    if (buttons & 0x2000) {
+    if (buttons & Z_TRIG) {
         goto changeKeyboard;
     }
-    if (buttons & 0x10) {
+    if (buttons & R_TRIG) {
     changeKeyboard:
         filesel_KeyCursorDispOn();
         filesel_KeyboardDispSet(filesel_nameInput.keyboard);
@@ -3271,7 +3271,7 @@ s32 filesel_ModeChoice(s32 fileIndex) {
                 input = 0;
                 break;
             }
-        } else if (input & 0x300) {
+        } else if (input & (L_JPAD | R_JPAD)) {
             selected = (((u32)input >> 9) ^ 1) & 1;
             if (selected == 0) {
                 filesel_SprPosGet(18, &startX, &startY);
@@ -4576,18 +4576,18 @@ s32 filesel_StickRepGet(s32 arg0) {
     absY = __builtin_abs(stickY);
     if (absY < absX) {
         if (absX > absY * 2) {
-            direction = (stickX < 0) ? 0x200 : 0x100;
+            direction = (stickX < 0) ? L_JPAD : R_JPAD;
         } else if (stickY > 0) {
-            direction = (stickX < 0) ? 0xA00 : 0x900;
+            direction = (stickX < 0) ? (U_JPAD | L_JPAD) : (U_JPAD | R_JPAD);
         } else {
-            direction = (stickX < 0) ? 0x600 : 0x500;
+            direction = (stickX < 0) ? (D_JPAD | L_JPAD) : (D_JPAD | R_JPAD);
         }
     } else if (absY > absX * 2) {
-        direction = (stickY < 0) ? 0x400 : 0x800;
+        direction = (stickY < 0) ? D_JPAD : U_JPAD;
     } else if (stickY > 0) {
-        direction = (stickX < 0) ? 0xA00 : 0x900;
+        direction = (stickX < 0) ? (U_JPAD | L_JPAD) : (U_JPAD | R_JPAD);
     } else {
-        direction = (stickX < 0) ? 0x600 : 0x500;
+        direction = (stickX < 0) ? (D_JPAD | L_JPAD) : (D_JPAD | R_JPAD);
     }
 
     if (filesel_stickBtn == direction && ++filesel_stickRepCnt < 9) {

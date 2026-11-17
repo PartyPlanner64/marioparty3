@@ -713,15 +713,15 @@ s32 option_RoomChoice(void) {
     while (1) {
         buttons = HuPadBtnDown[0];
         buttons |= option_StickBtnGet(0);
-        if (buttons & 0x8000) {
+        if (buttons & A_BUTTON) {
             result = option_RoomDecide(selection, buttons);
             if (result != -1) {
                 selection = result;
                 break;
             }
-        } else if (buttons & 0xF00) {
+        } else if (buttons & (U_JPAD | D_JPAD | L_JPAD | R_JPAD)) {
             selection = option_RoomMove(selection, buttons);
-        } else if (buttons & 0x4000) {
+        } else if (buttons & B_BUTTON) {
             option_MenuSprDispOff(0);
             option_MenuWinDispOff(0);
             switch (selection) {
@@ -951,14 +951,14 @@ s32 option_RoomMove(s32 selection, s32 buttons) {
 
     switch (selection) {
         case 0:
-            if (buttons & 0x200) {
+            if (buttons & L_JPAD) {
                 selection = 1;
                 option_CameraTurnMove(&option_roomCameraLTbl[0], &option_roomCameraLTbl[1], 7);
                 option_MenuSprPosGet(0, &x, &y);
                 option_ScreenPosGetEx(&option_roomCameraLTbl[0], &option_roomCameraLTbl[1], &up, option_roomCursorPosTbl[1].x, option_roomCursorPosTbl[1].y, option_roomCursorPosTbl[1].z, &endX, &endY);
                 option_SprPosMove(0, x, y, endX, endY, 7);
                 option_MenuWinMesSet(0, 0x4e01);
-            } else if (buttons & 0x100) {
+            } else if (buttons & R_JPAD) {
                 selection = 2;
                 option_CameraTurnMove(&option_roomCameraRTbl[0], &option_roomCameraRTbl[1], 7);
                 option_MenuSprPosGet(0, &x, &y);
@@ -968,7 +968,7 @@ s32 option_RoomMove(s32 selection, s32 buttons) {
             }
             break;
         case 1:
-            if (buttons & 0x200) {
+            if (buttons & L_JPAD) {
                 selection = 3;
                 option_CameraTurnMove(&option_roomCameraExitTbl[0], &option_roomCameraExitTbl[1], 20);
                 option_MenuSprDispOff(0);
@@ -980,7 +980,7 @@ s32 option_RoomMove(s32 selection, s32 buttons) {
                 option_MenuSprDispOn(0);
                 option_MenuWinDispOn(0);
                 option_MenuWinMesSet(0, 0x4e03);
-            } else if (buttons & 0x100) {
+            } else if (buttons & R_JPAD) {
                 selection = 0;
                 option_CameraTurnMove(&option_roomCameraCTbl[0], &option_roomCameraCTbl[1], 7);
                 option_MenuSprPosGet(0, &x, &y);
@@ -990,14 +990,14 @@ s32 option_RoomMove(s32 selection, s32 buttons) {
             }
             break;
         case 2:
-            if (buttons & 0x200) {
+            if (buttons & L_JPAD) {
                 selection = 0;
                 option_CameraTurnMove(&option_roomCameraCTbl[0], &option_roomCameraCTbl[1], 7);
                 option_MenuSprPosGet(0, &x, &y);
                 option_ScreenPosGetEx(&option_roomCameraCTbl[0], &option_roomCameraCTbl[1], &up, option_roomCursorPosTbl[0].x, option_roomCursorPosTbl[0].y, option_roomCursorPosTbl[0].z, &endX, &endY);
                 option_SprPosMove(0, x, y, endX, endY, 7);
                 option_MenuWinMesSet(0, 0x4e02);
-            } else if (buttons & 0x100) {
+            } else if (buttons & R_JPAD) {
                 selection = 3;
                 option_CameraTurnMove(&option_roomCameraExitTbl[0], &option_roomCameraExitTbl[1], 20);
                 option_MenuSprDispOff(0);
@@ -1012,7 +1012,7 @@ s32 option_RoomMove(s32 selection, s32 buttons) {
             }
             break;
         case 3:
-            if (buttons & 0x200) {
+            if (buttons & L_JPAD) {
                 selection = 2;
                 option_CameraTurnMove(&option_roomCameraRTbl[0], &option_roomCameraRTbl[1], 20);
                 option_MenuSprDispOff(0);
@@ -1024,7 +1024,7 @@ s32 option_RoomMove(s32 selection, s32 buttons) {
                 option_MenuSprDispOn(0);
                 option_MenuWinDispOn(0);
                 option_MenuWinMesSet(0, 0x4e01);
-            } else if (buttons & 0x100) {
+            } else if (buttons & R_JPAD) {
                 selection = 1;
                 option_CameraTurnMove(&option_roomCameraLTbl[0], &option_roomCameraLTbl[1], 20);
                 option_MenuSprDispOff(0);
@@ -1082,15 +1082,15 @@ s32 option_SoundRoomChoice(void) {
     while (1) {
         buttons = HuPadBtnDown[0];
         buttons |= option_StickBtnGet(0);
-        if (buttons & 0x8000) {
+        if (buttons & A_BUTTON) {
             result = option_SoundRoomDecide(selection, buttons);
             if (result != -1) {
                 selection = result;
                 break;
             }
-        } else if (buttons & 0xF00) {
+        } else if (buttons & (U_JPAD | D_JPAD | L_JPAD | R_JPAD)) {
             selection = option_SoundRoomMove(selection, buttons);
-        } else if (buttons & 0x4000) {
+        } else if (buttons & B_BUTTON) {
             option_MenuSprDispOff(0);
             option_MenuWinDispOff(0);
             switch (selection) {
@@ -1263,7 +1263,7 @@ s32 option_SoundRoomMove(s32 selection, s32 buttons) {
     s32 x, y, endX, endY;
     switch (selection) {
         case 0:
-            if (buttons & 0x200) {
+            if (buttons & L_JPAD) {
                 selection = 2;
                 camera = option_soundRoomCameraTbl;
                 HuVecCopy3F(&pos, &camera[2][0]);
@@ -1275,7 +1275,7 @@ s32 option_SoundRoomMove(s32 selection, s32 buttons) {
                 option_SoundRoomCursorPosGet(2, &endX, &endY);
                 option_SprPosMove(0, x, y, endX, endY, 8);
                 option_MenuWinMesSet(0, 0x4E0A);
-            } else if (buttons & 0x100) {
+            } else if (buttons & R_JPAD) {
                 selection = 3;
                 camera = option_soundRoomCameraTbl;
                 HuVecCopy3F(&pos, &camera[3][0]);
@@ -1290,7 +1290,7 @@ s32 option_SoundRoomMove(s32 selection, s32 buttons) {
             }
             break;
         case 2:
-            if (buttons & 0x200) {
+            if (buttons & L_JPAD) {
                 selection = 4;
                 camera = option_soundRoomCameraTbl;
                 HuVecCopy3F(&pos, &camera[4][0]);
@@ -1305,7 +1305,7 @@ s32 option_SoundRoomMove(s32 selection, s32 buttons) {
                 option_MenuSprDispOn(0);
                 option_MenuWinDispOn(0);
                 option_MenuWinMesSet(0, 0x4E0B);
-            } else if (buttons & 0x100) {
+            } else if (buttons & R_JPAD) {
                 selection = 0;
                 camera = option_soundRoomCameraTbl;
                 HuVecCopy3F(&pos, &camera[0][0]);
@@ -1320,7 +1320,7 @@ s32 option_SoundRoomMove(s32 selection, s32 buttons) {
             }
             break;
         case 3:
-            if (buttons & 0x200) {
+            if (buttons & L_JPAD) {
                 selection = 0;
                 camera = option_soundRoomCameraTbl;
                 HuVecCopy3F(&pos, &camera[0][0]);
@@ -1332,7 +1332,7 @@ s32 option_SoundRoomMove(s32 selection, s32 buttons) {
                 option_MenuWinMesSet(0, 0x4E06);
                 option_MenuMdlDispOn(6);
                 option_MenuMdlDispOn(7);
-            } else if (buttons & 0x100) {
+            } else if (buttons & R_JPAD) {
                 selection = 5;
                 camera = option_soundRoomCameraTbl;
                 HuVecCopy3F(&pos, &camera[5][0]);
@@ -1350,7 +1350,7 @@ s32 option_SoundRoomMove(s32 selection, s32 buttons) {
             }
             break;
         case 4:
-            if (buttons & 0x200) {
+            if (buttons & L_JPAD) {
                 selection = 5;
                 camera = option_soundRoomCameraTbl;
                 HuVecCopy3F(&pos, &camera[5][0]);
@@ -1360,7 +1360,7 @@ s32 option_SoundRoomMove(s32 selection, s32 buttons) {
                 option_SoundRoomCursorPosGet(5, &endX, &endY);
                 option_SprPosMove(0, x, y, endX, endY, 8);
                 option_MenuWinMesSet(0, 0x4E0B);
-            } else if (buttons & 0x100) {
+            } else if (buttons & R_JPAD) {
                 selection = 2;
                 camera = option_soundRoomCameraTbl;
                 HuVecCopy3F(&pos, &camera[2][0]);
@@ -1378,7 +1378,7 @@ s32 option_SoundRoomMove(s32 selection, s32 buttons) {
             }
             break;
         case 5:
-            if (buttons & 0x200) {
+            if (buttons & L_JPAD) {
                 selection = 3;
                 camera = option_soundRoomCameraTbl;
                 HuVecCopy3F(&pos, &camera[3][0]);
@@ -1393,7 +1393,7 @@ s32 option_SoundRoomMove(s32 selection, s32 buttons) {
                 option_MenuSprDispOn(0);
                 option_MenuWinDispOn(0);
                 option_MenuWinMesSet(0, 0x4E09);
-            } else if (buttons & 0x100) {
+            } else if (buttons & R_JPAD) {
                 selection = 4;
                 camera = option_soundRoomCameraTbl;
                 HuVecCopy3F(&pos, &camera[4][0]);
@@ -1591,14 +1591,14 @@ s32 option_RecordRoomMove(s32 selection, s32 buttons) {
     up = option_cameraUp;
     switch (selection) {
         case 0:
-            if (buttons & 0x200) {
+            if (buttons & L_JPAD) {
                 selection = 1;
-            } else if (buttons & 0x100) {
+            } else if (buttons & R_JPAD) {
                 selection = 2;
             }
             break;
         case 1:
-            if (buttons & 0x200) {
+            if (buttons & L_JPAD) {
                 selection = 3;
                 HuVecCopy3F(&pos, &option_recordRoomCameraRTbl[0]);
                 HuVecCopy3F(&at, &option_recordRoomCameraExitTbl[1]);
@@ -1611,7 +1611,7 @@ s32 option_RecordRoomMove(s32 selection, s32 buttons) {
                 option_MenuSprDispOn(0);
                 option_MenuWinDispOn(0);
                 option_MenuWinMesSet(0, 0x4e12);
-            } else if (buttons & 0x100) {
+            } else if (buttons & R_JPAD) {
                 selection = 2;
                 option_CameraTurnMove(&option_recordRoomCameraRTbl[0], &option_recordRoomCameraRTbl[1], 7);
                 option_MenuSprPosGet(0, &x, &y);
@@ -1621,14 +1621,14 @@ s32 option_RecordRoomMove(s32 selection, s32 buttons) {
             }
             break;
         case 2:
-            if (buttons & 0x200) {
+            if (buttons & L_JPAD) {
                 selection = 1;
                 option_CameraTurnMove(&option_recordRoomCameraLTbl[0], &option_recordRoomCameraLTbl[1], 7);
                 option_MenuSprPosGet(0, &x, &y);
                 option_ScreenPosGetEx(&option_recordRoomCameraLTbl[0], &option_recordRoomCameraLTbl[1], &up, option_recordRoomCursorLPos.x, option_recordRoomCursorLPos.y, option_recordRoomCursorLPos.z, &endX, &endY);
                 option_SprPosMove(0, x, y, endX, endY, 7);
                 option_MenuWinMesSet(0, 0x4e10);
-            } else if (buttons & 0x100) {
+            } else if (buttons & R_JPAD) {
                 selection = 3;
                 HuVecCopy3F(&pos, &option_recordRoomCameraRTbl[0]);
                 HuVecCopy3F(&at, &option_recordRoomCameraExitTbl[1]);
@@ -1644,7 +1644,7 @@ s32 option_RecordRoomMove(s32 selection, s32 buttons) {
             }
             break;
         case 3:
-            if (buttons & 0x200) {
+            if (buttons & L_JPAD) {
                 selection = 2;
                 option_CameraTurnMove(&option_recordRoomCameraRTbl[0], &option_recordRoomCameraRTbl[1], 30);
                 option_MenuSprDispOff(0);
@@ -1655,7 +1655,7 @@ s32 option_RecordRoomMove(s32 selection, s32 buttons) {
                 option_MenuSprDispOn(0);
                 option_MenuWinDispOn(0);
                 option_MenuWinMesSet(0, 0x4e0e);
-            } else if (buttons & 0x100) {
+            } else if (buttons & R_JPAD) {
                 selection = 1;
                 option_CameraTurnMove(&option_recordRoomCameraLTbl[0], &option_recordRoomCameraLTbl[1], 30);
                 option_MenuSprDispOff(0);
@@ -1829,15 +1829,15 @@ s32 option_RecordRoomChoice(void) {
         while (1) {
             buttons = HuPadBtnDown[0];
             buttons |= option_StickBtnGet(0);
-            if (buttons & 0x8000) {
+            if (buttons & A_BUTTON) {
                 next = option_RecordRoomDecide(selection, buttons);
                 if (next != -1) {
                     selection = next;
                     break;
                 }
-            } else if (buttons & 0xF00) {
+            } else if (buttons & (U_JPAD | D_JPAD | L_JPAD | R_JPAD)) {
                 selection = option_RecordRoomMove(selection, buttons);
-            } else if (buttons & 0x4000) {
+            } else if (buttons & B_BUTTON) {
                 option_MenuSprDispOff(0);
                 option_MenuWinDispOff(0);
                 switch (selection) {
@@ -2508,11 +2508,11 @@ void option_SoundTestExec(void) {
         buttons = HuPadBtnRep[0];
         buttons |= option_PadBtnRepGet(0);
         buttons = (buttons & ~(A_BUTTON | B_BUTTON)) | (HuPadBtnDown[0] & (A_BUTTON | B_BUTTON));
-        if (buttons & 0x4000) {
+        if (buttons & B_BUTTON) {
             model = option_MenuMdlIdGet(2);
             Hu3DModelAnimStop(Hu3DData[model].hmf);
             break;
-        } else if (buttons & 0x8000) {
+        } else if (buttons & A_BUTTON) {
             if (menu.pages[page].entries[selected].sound != -1) {
                 if (option_SeObjCheck()) {
                     option_SeObjKill();
@@ -2524,8 +2524,8 @@ void option_SoundTestExec(void) {
             } else {
                 option_MenuMdlIdGet(2);
             }
-        } else if (buttons & 0x300) {
-            if (buttons & 0x200) {
+        } else if (buttons & (L_JPAD | R_JPAD)) {
+            if (buttons & L_JPAD) {
                 page--;
             } else {
                 page++;
@@ -2536,7 +2536,7 @@ void option_SoundTestExec(void) {
             }
             if (page == 14) {
                 if (!customSounds) {
-                    page = buttons & 0x200 ? 13 : 0;
+                    page = buttons & L_JPAD ? 13 : 0;
                 }
             }
             HuWinMesSet(titleWindow, menu.pages[page].title, -1, -1);
@@ -2557,10 +2557,10 @@ void option_SoundTestExec(void) {
                     selected = 8;
                 }
             }
-        } else if (buttons & 0xC00) {
+        } else if (buttons & (U_JPAD | D_JPAD)) {
             previous = selected;
             do {
-                if (buttons & 0x800) {
+                if (buttons & U_JPAD) {
                     selected--;
                 } else {
                     selected++;
@@ -2679,19 +2679,19 @@ void option_MusicTestExec(void) {
         buttons = HuPadBtnRep[0];
         buttons |= option_PadBtnRepGet(0);
         buttons = (buttons & ~(A_BUTTON | B_BUTTON)) | (HuPadBtnDown[0] & (A_BUTTON | B_BUTTON));
-        if (buttons & 0x4000) {
+        if (buttons & B_BUTTON) {
             model = option_MenuMdlIdGet(3);
             Hu3DModelAnimStop(Hu3DData[model].hmf);
             break;
-        } else if (buttons & 0x8000) {
+        } else if (buttons & A_BUTTON) {
             HuAudSeqStop();
             if (menu.pages[page].entries[selected].sound != -1) {
                 HuAudSeqPlay(menu.pages[page].entries[selected].sound);
             }
             model = option_MenuMdlIdGet(3);
             Hu3DModelAnimStart(Hu3DData[model].hmf);
-        } else if (buttons & 0x300) {
-            if (buttons & 0x200) {
+        } else if (buttons & (L_JPAD | R_JPAD)) {
+            if (buttons & L_JPAD) {
                 page--;
             } else {
                 page++;
@@ -2702,7 +2702,7 @@ void option_MusicTestExec(void) {
             }
             if (page == 10) {
                 if (!_CheckFlag(0x1E)) {
-                    page = buttons & 0x200 ? 9 : 11;
+                    page = buttons & L_JPAD ? 9 : 11;
                 }
             }
             HuWinMesSet(titleWindow, menu.pages[page].title, -1, -1);
@@ -2723,10 +2723,10 @@ void option_MusicTestExec(void) {
                     selected = 8;
                 }
             }
-        } else if (buttons & 0xC00) {
+        } else if (buttons & (U_JPAD | D_JPAD)) {
             previous = selected;
             do {
-                if (buttons & 0x800) {
+                if (buttons & U_JPAD) {
                     selected--;
                 } else {
                     selected++;

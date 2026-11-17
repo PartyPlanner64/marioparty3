@@ -1330,9 +1330,9 @@ void m244_PlayerComInput(omObjData *object) {
     }
     if (press) {
         if (racer->unk1E == 0x8000) {
-            HuPadBtnDown[racer->unk0C] = 0x8000;
+            HuPadBtnDown[racer->unk0C] = A_BUTTON;
         } else {
-            HuPadBtnDown[racer->unk0C] = 0x6000;
+            HuPadBtnDown[racer->unk0C] = (B_BUTTON | Z_TRIG);
         }
     }
 }
@@ -1343,7 +1343,7 @@ void m244_RacerAccelUpdate(RockinRacewayRacer *racer) {
         if (racer->unk38 >= 1.0f) {
             racer->unk38 = 1.0f;
         }
-        if (HuPadBtnDown[racer->unk0C] == 0x8000) {
+        if (HuPadBtnDown[racer->unk0C] == A_BUTTON) {
             racer->unk1E = 0x6000;
         } else {
             racer->unk1E = 0x8000;

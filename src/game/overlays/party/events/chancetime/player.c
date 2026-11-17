@@ -194,7 +194,7 @@ void chancetime_PlayerHit(omObjData *object) {
         if (done) {
             break;
         }
-        btn = HuPadBtnDown[GwPlayer[player].pad] & 0x8000;
+        btn = HuPadBtnDown[GwPlayer[player].pad] & A_BUTTON;
         if (btn) {
             break;
         }

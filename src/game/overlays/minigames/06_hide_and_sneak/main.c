@@ -666,7 +666,7 @@ void m206_SeekerObjMain(omObjData *object) {
             }
             for (i = 0; i < 4; i++) {
                 if (x == m206_signXTbl[m206_signNum][i]) {
-                    if ((HuPadBtnDown[pad] & 0x8000) || work->unk_0C != 0) {
+                    if ((HuPadBtnDown[pad] & A_BUTTON) || work->unk_0C != 0) {
                         m206_seekerSpotNo = m206_signSpotTbl[i];
                         m206_roundDoneBits = 1;
                         work->unk_08 = 0;

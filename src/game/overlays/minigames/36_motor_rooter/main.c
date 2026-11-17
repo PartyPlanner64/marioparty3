@@ -2193,12 +2193,12 @@ void m254_PlayerComInput(FuncContext *ctx) {
                         break;
                     case 2:
                         if (obstacleDifference < 3) {
-                            ((u16 *)HuPadBtn)[player->controllerPort] = 0x8000;
+                            ((u16 *)HuPadBtn)[player->controllerPort] = A_BUTTON;
                         } else {
                             if (obstacleDifference < 4) {
                                 (void)rand16();
                             }
-                            ((u16 *)HuPadBtn)[player->controllerPort] = 0x4000;
+                            ((u16 *)HuPadBtn)[player->controllerPort] = B_BUTTON;
                         }
                         break;
                 }
@@ -2249,16 +2249,16 @@ void m254_PlayerComInput(FuncContext *ctx) {
                                 break;
                             case 2:
                                 if (itemDifference < 3) {
-                                    ((u16 *)HuPadBtn)[player->controllerPort] = 0x8000;
+                                    ((u16 *)HuPadBtn)[player->controllerPort] = A_BUTTON;
                                 } else {
                                     if (itemDifference < 4) {
                                         (void)rand16();
                                     }
-                                    ((u16 *)HuPadBtn)[player->controllerPort] = 0x4000;
+                                    ((u16 *)HuPadBtn)[player->controllerPort] = B_BUTTON;
                                 }
                                 if (!(rand16() % (ctx->work.s8[6] + 1))) {
                                     HuPadBtn[player->controllerPort] = ~HuPadBtn[player->controllerPort];
-                                    HuPadBtn[player->controllerPort] &= 0xC000;
+                                    HuPadBtn[player->controllerPort] &= (A_BUTTON | B_BUTTON);
                                 }
                                 break;
                         }

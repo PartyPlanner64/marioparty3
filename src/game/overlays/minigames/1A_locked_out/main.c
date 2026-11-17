@@ -888,7 +888,7 @@ void m226_PlayerObjMain(omObjData *object) {
     work->unk0C.y = object->trans.y;
     work->unk0C.z = object->trans.z;
     if (work->unk25 != 0) {
-        HuPadBtnDown[pad] &= ~0x4000;
+        HuPadBtnDown[pad] &= ~B_BUTTON;
     } else {
         Hu3DData[object->model[0]].motIdShape = 0xFF;
     }
@@ -1089,7 +1089,7 @@ u16 m226_PlayerComInput(omObjData *object) {
     switch (work->unk28) {
         case 0:
             if (work->unk25 != 0) {
-                HuPadBtnDown[pad] |= 0x8000;
+                HuPadBtnDown[pad] |= A_BUTTON;
             }
             work->unk2C = 0;
             work->unk2E = 0;
@@ -1116,7 +1116,7 @@ u16 m226_PlayerComInput(omObjData *object) {
                 holder = blockWork->unk14;
                 angle = m226_AngleCalc(holder->trans.x - object->trans.x, holder->trans.z - object->trans.z);
                 if (m226_DistXZCalc(&object->trans, &holder->trans) < data->unk48 * 2.2 + data->unk64) {
-                    HuPadBtnDown[pad] |= 0x4000;
+                    HuPadBtnDown[pad] |= B_BUTTON;
                 }
                 for (i = 0; i < m226_keyCreateCnt; i++) {
                     blockWork = m226_keyObjTbl[i]->data;
@@ -1136,7 +1136,7 @@ u16 m226_PlayerComInput(omObjData *object) {
                 angle = m226_AngleCalc(block->trans.x - object->trans.x, block->trans.z - object->trans.z);
                 if (m226_DistXZCalc(&object->trans, &block->trans) <= data->unk48 + blockWork->unk04 + 2.0 &&
                     __builtin_fabs((f64)(angle - data->unk3C)) < 40.0) {
-                    HuPadBtnDown[pad] |= 0x8000;
+                    HuPadBtnDown[pad] |= A_BUTTON;
                 }
             }
             HuPadStkX[pad] = (work->unk22 * 6.0 + 46.0) * sindf(angle);
@@ -1144,7 +1144,7 @@ u16 m226_PlayerComInput(omObjData *object) {
             break;
         case 2:
             if (work->unk25 != work->unk2C + 1) {
-                HuPadBtnDown[pad] |= 0x8000;
+                HuPadBtnDown[pad] |= A_BUTTON;
                 work->unk28 = 1;
                 break;
             }

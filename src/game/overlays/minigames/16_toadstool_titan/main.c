@@ -1680,7 +1680,7 @@ void m222_PlayerObjMain(omObjData *object) {
                             break;
                         case 1:
                             m222_comStateTbl[group] = 3;
-                            HuPadBtnDown[player->pad] |= 0x8000;
+                            HuPadBtnDown[player->pad] |= A_BUTTON;
                             m222_comTimerTbl[group] = params[4][player->cpuDifficulty] + rand8() % params[5][player->cpuDifficulty];
                             break;
                         case 2:
@@ -1690,7 +1690,7 @@ void m222_PlayerObjMain(omObjData *object) {
                     }
                 }
                 if (m222_comStateTbl[group] == 3) {
-                    HuPadBtn[player->pad] |= 0x8000;
+                    HuPadBtn[player->pad] |= A_BUTTON;
                 }
                 m222_comTimerTbl[group] -= (m222_comTimerTbl[group] > 0) ? 1 : 0;
                 if (m222_blockStateTbl[m222_comWaitTbl[group]] == 0) {
@@ -1862,7 +1862,7 @@ void m222_PlayerObjMain(omObjData *object) {
                     }
                 }
                 if (data->unk38 != 1000.0f) {
-                    HuPadBtn[player->pad] |= 0x8000;
+                    HuPadBtn[player->pad] |= A_BUTTON;
                 } else if (m222_humanNum != 0) {
                     if (params[16][player->cpuDifficulty] + rand8() % params[17][player->cpuDifficulty] < 32) {
                         break;
@@ -1878,9 +1878,9 @@ void m222_PlayerObjMain(omObjData *object) {
                     otherVelZ = cosdf(otherData->unk3C) * otherData->unk40;
                     for (i = 0; i < 6; i++) {
                         if ((posX - otherX) * (posX - otherX) + (posZ - otherZ) * (posZ - otherZ) < 22500.0f) {
-                            HuPadBtn[player->pad] |= 0x8000;
-                            HuPadBtnDown[player->pad] |= 0x8000;
-                            HuPadBtnRep[player->pad] |= 0x8000;
+                            HuPadBtn[player->pad] |= A_BUTTON;
+                            HuPadBtnDown[player->pad] |= A_BUTTON;
+                            HuPadBtnRep[player->pad] |= A_BUTTON;
                             break;
                         }
                         posX += velX;
@@ -1913,13 +1913,13 @@ void m222_PlayerObjMain(omObjData *object) {
                     switch ((dist < 50.0f) ? 1 : (rand8() & 3) < 3) {
                         case 1:
                             m222_comStateTbl[group] = 12;
-                            HuPadBtnDown[player->pad] |= 0x8000;
+                            HuPadBtnDown[player->pad] |= A_BUTTON;
                             m222_comTimerTbl[group] = params[4][player->cpuDifficulty] + rand8() % params[5][player->cpuDifficulty];
                             break;
                     }
                 }
                 if (m222_comStateTbl[group] == 12) {
-                    HuPadBtn[player->pad] |= 0x8000;
+                    HuPadBtn[player->pad] |= A_BUTTON;
                 }
                 m222_comTimerTbl[group] -= (m222_comTimerTbl[group] > 0) ? 1 : 0;
                 break;

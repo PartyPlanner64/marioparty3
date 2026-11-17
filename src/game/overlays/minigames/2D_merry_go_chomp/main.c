@@ -1042,7 +1042,7 @@ void m245_PlayerObjMain(omObjData *obj) {
                             }
                             entry->unk_0C = choices[m245_RandGet(count)];
                         }
-                    } else if (!(HuPadBtnDown[obj->work[3]] & 0x8000)) {
+                    } else if (!(HuPadBtnDown[obj->work[3]] & A_BUTTON)) {
                         break;
                     }
                 }

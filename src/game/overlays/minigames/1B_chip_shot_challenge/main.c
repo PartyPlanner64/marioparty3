@@ -963,7 +963,7 @@ void m227_PlayerObjMain(omObjData *object) {
                 break;
             case 2:
                 GMesTimerValueSet(m227_aimTimer / 30 + 1);
-                if ((buttons & 0x8000) || m227_aimTimer == 0) {
+                if ((buttons & A_BUTTON) || m227_aimTimer == 0) {
                     MgPlayerMotSet(object, 3);
                     data->unk50 = 3;
                     m227_aimF = 0;
@@ -1467,7 +1467,7 @@ void m227_PlayerComInputGet(omObjData *object, s32 *stickX, s32 *stickY, s32 *bu
             *stickY = !(work->unk_40 < dist) ? 30 : -30;
         }
         if (*stickX == 0 && *stickY == 0) {
-            *buttons |= 0x8000;
+            *buttons |= A_BUTTON;
         }
     }
 }

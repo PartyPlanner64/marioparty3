@@ -502,7 +502,7 @@ s32 m225_PlayerComInput(omObjData *object) {
     if (data->unk38 != 1000.0f) {
         HuPadStkX[pad] = m225_comStickTbl[player][0];
         HuPadStkY[pad] = m225_comStickTbl[player][1];
-        HuPadBtn[pad] |= 0x8000;
+        HuPadBtn[pad] |= A_BUTTON;
     } else {
         bestDist = 20000.0f;
         best = -1;
@@ -525,7 +525,7 @@ s32 m225_PlayerComInput(omObjData *object) {
             MapVecNormalize(&dir);
             HuPadStkX[pad] = dir.x * 60.0f * m225_comStickScaleTbl[difficulty];
             HuPadStkY[pad] = dir.z * -60.0f * m225_comStickScaleTbl[difficulty];
-            HuPadBtnDown[pad] |= 0x8000;
+            HuPadBtnDown[pad] |= A_BUTTON;
         } else if (bestDist < 400.0f) {
             puck = mgItemObjTbl[best];
             dx = object->trans.x;

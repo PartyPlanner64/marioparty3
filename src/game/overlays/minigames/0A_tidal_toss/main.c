@@ -1496,17 +1496,17 @@ u16 m210_SoloComInput(omObjData *object) {
     switch (work->unk32) {
         case 1:
             if (work->unk2E == 0) {
-                HuPadBtn[player] |= 0x8000;
+                HuPadBtn[player] |= A_BUTTON;
             }
             if (status & 0x20) {
                 work->unk32++;
             } else {
-                HuPadBtnDown[player] |= 0x8000;
+                HuPadBtnDown[player] |= A_BUTTON;
             }
             break;
         case 2:
             if (work->unk2E == 0) {
-                HuPadBtn[player] |= 0x8000;
+                HuPadBtn[player] |= A_BUTTON;
             }
             if (!(status & 0x20)) {
                 work->unk32 = 0;
@@ -1514,14 +1514,14 @@ u16 m210_SoloComInput(omObjData *object) {
             break;
         case 3:
             if (status & 2) {
-                HuPadBtnDown[player] |= 0x8000;
+                HuPadBtnDown[player] |= A_BUTTON;
                 work->unk32++;
             }
             break;
         case 4:
-            HuPadBtn[player] |= 0x8000;
+            HuPadBtn[player] |= A_BUTTON;
             if ((f64)(f32)work->unk34 <= object->trans.y - 20.0) {
-                HuPadBtnDown[player] |= 0x2000;
+                HuPadBtnDown[player] |= Z_TRIG;
                 work->unk32++;
             }
             break;
@@ -1586,7 +1586,7 @@ u16 m210_TeamComInput(omObjData *arg0, f32 arg1) {
                 if (distanceD <= 0.0) {
                     random = (s32)((f32)m210_Rand16Get() * 1.52587890625e-05 * 100.0);
                     if (random < work->unk2E * 10 + 45) {
-                        HuPadBtnDown[player] |= 0x8000;
+                        HuPadBtnDown[player] |= A_BUTTON;
                         switch (work->unk2E) {
                             case 0:
                             case 1:
@@ -1617,7 +1617,7 @@ u16 m210_TeamComInput(omObjData *arg0, f32 arg1) {
 
     if (work->unk32 != 0) {
         work->unk32--;
-        HuPadBtn[player] |= 0x8000;
+        HuPadBtn[player] |= A_BUTTON;
     }
 
     if (240.0 < arg1 && !(status & 0x20)) {

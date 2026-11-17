@@ -450,7 +450,7 @@ void m263_PlayerSwingObjMain(omObjData *object) {
                 m263_comWait--;
             }
         } else {
-            jump = HuPadBtnDown[m263_padNo] & 0x8000;
+            jump = HuPadBtnDown[m263_padNo] & A_BUTTON;
         }
         if ((m263_timer != 0 && jump) ||
             (m263_timer == 0 &&
@@ -1021,17 +1021,17 @@ void m263_CameraDebugPad(void) {
     f32 dirZ;
     f32 inv;
 
-    if (HuPadBtnDown[0] & 0x10) {
+    if (HuPadBtnDown[0] & R_TRIG) {
         m263_debugPrintF ^= 1;
     }
-    if (HuPadBtn[0] & 0x1000) {
+    if (HuPadBtn[0] & START_BUTTON) {
         m263_CameraDebugReset();
     }
     if (HuPadBtn[0] & 8) {
-        CZoom = (HuPadBtn[0] & 0x2000) ? CZoom + 30.0f : CZoom + 10.0f;
+        CZoom = (HuPadBtn[0] & Z_TRIG) ? CZoom + 30.0f : CZoom + 10.0f;
     }
     if ((HuPadBtn[0] & 4) && CZoom - 10.0f != 0.0f) {
-        CZoom = (HuPadBtn[0] & 0x2000) ? CZoom - 30.0f : CZoom - 10.0f;
+        CZoom = (HuPadBtn[0] & Z_TRIG) ? CZoom - 30.0f : CZoom - 10.0f;
     }
     if (HuPadBtn[0] & 2) {
         m263_cameraFov += 1.0f;
@@ -1042,7 +1042,7 @@ void m263_CameraDebugPad(void) {
     Hu3DCameraPerspectiveSet(0, m263_cameraFov, 500.0f, 8000.0f);
     rotX = m263_cameraDebugRot.x;
     rotY = m263_cameraDebugRot.y;
-    speed = (HuPadBtn[0] & 0x2000) ? 5.0f : 2.0f;
+    speed = (HuPadBtn[0] & Z_TRIG) ? 5.0f : 2.0f;
     rotY += (-HuPadStkX[0] / 30) * speed;
     if (rotY >= 360.0f) {
         rotY -= 360.0f;
@@ -1059,16 +1059,16 @@ void m263_CameraDebugPad(void) {
     m263_cameraDebugRot.x = rotX;
     CRot.x = (s16)rotX;
     CRot.y = (s16)m263_cameraDebugRot.y;
-    speed = (HuPadBtn[0] & 0x2000) ? 10.0f : 2.0f;
-    if (HuPadBtn[0] & 0x800) {
+    speed = (HuPadBtn[0] & Z_TRIG) ? 10.0f : 2.0f;
+    if (HuPadBtn[0] & U_JPAD) {
         Center.x += sindf(rotY) * sindf(rotX) * -speed;
         Center.y += cosdf(rotX) * -speed;
         Center.z += cosdf(rotY) * sindf(rotX) * -speed;
-    } else if (HuPadBtn[0] & 0x400) {
+    } else if (HuPadBtn[0] & D_JPAD) {
         Center.x += sindf(rotY) * sindf(rotX) * speed;
         Center.y += cosdf(rotX) * speed;
         Center.z += cosdf(rotY) * sindf(rotX) * speed;
-    } else if (HuPadBtn[0] & 0x200) {
+    } else if (HuPadBtn[0] & L_JPAD) {
         // rotX is reused here as the X component of the camera direction.
         rotX = gCameraList->pos.z - Center.z;
         dirZ = -(gCameraList->pos.x - Center.x);
@@ -1076,7 +1076,7 @@ void m263_CameraDebugPad(void) {
         Center.x += rotX * inv * speed;
         Center.y += 0.0f;
         Center.z += dirZ * inv * speed;
-    } else if (HuPadBtn[0] & 0x100) {
+    } else if (HuPadBtn[0] & R_JPAD) {
         rotX = -(gCameraList->pos.z - Center.z);
         dirZ = gCameraList->pos.x - Center.x;
         inv = 1.0f / HuSqrtf(rotX * rotX + dirZ * dirZ);

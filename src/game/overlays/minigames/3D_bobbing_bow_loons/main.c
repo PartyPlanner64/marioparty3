@@ -1046,7 +1046,7 @@ void m261_ThrowInputProc(void) {
                     break;
                 }
             }
-        } else if (HuPadBtnDown[GwPlayer[m261_playerNo].pad] & 0x8000) {
+        } else if (HuPadBtnDown[GwPlayer[m261_playerNo].pad] & A_BUTTON) {
             m261_seqNo = 3;
             break;
         }

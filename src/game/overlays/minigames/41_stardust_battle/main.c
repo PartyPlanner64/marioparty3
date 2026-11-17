@@ -1184,7 +1184,7 @@ void m265_PlayerObjMain(omObjData *object) {
         HuPadBtnDown[obj->pad] = 0;
         HuPadStkX[obj->pad] = HuPadStkY[obj->pad] = 0;
     } else if (obj->unk_66 != -1) {
-        HuPadBtnDown[obj->pad] &= ~0x4000;
+        HuPadBtnDown[obj->pad] &= ~B_BUTTON;
     }
     if (obj->func_70 != NULL) {
         obj->func_70(object);
@@ -1319,7 +1319,7 @@ void m265_PlayerDustHoldUpdate(omObjData *object, s16 noControl) {
                         obj->unk_68 = 1;
                     }
                 }
-                if (model->motIdShape == object->motion[38] && (HuPadBtnDown[obj->pad] & 0x4000)) {
+                if (model->motIdShape == object->motion[38] && (HuPadBtnDown[obj->pad] & B_BUTTON)) {
                     if (data->unk5C != 64) {
                         Hu3DMotionShapeSet(object->model[0], object->motion[39], 0);
                         model->motShapeSpeed = 2.0f;

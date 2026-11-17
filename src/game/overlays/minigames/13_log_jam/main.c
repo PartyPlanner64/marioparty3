@@ -843,7 +843,7 @@ void m219_SetterUpdate(omObjData *object, LogJamTeam *team) {
             }
             break;
         case 2:
-            if ((HuPadBtnDown[work->unk_1A] & 0xE000) && team->unk_16 == -1 && partner->unk_22 == -1 &&
+            if ((HuPadBtnDown[work->unk_1A] & (A_BUTTON | B_BUTTON | Z_TRIG)) && team->unk_16 == -1 && partner->unk_22 == -1 &&
                 (partner->unk_08 == 6 || partner->unk_08 == 7)) {
                 switch (HuPadBtnDown[work->unk_1A]) {
                     case 0x8000:
@@ -1064,12 +1064,12 @@ void m219_ChopperUpdate(omObjData *object, LogJamTeam *team) {
             }
             break;
         case 7:
-            if ((HuPadBtnDown[work->unk_1A] & 0xE000) && !(partner->unk_08 == 3 && partner->unk_0A == 0)) {
-                if (HuPadBtnDown[work->unk_1A] == 0x8000) {
+            if ((HuPadBtnDown[work->unk_1A] & (A_BUTTON | B_BUTTON | Z_TRIG)) && !(partner->unk_08 == 3 && partner->unk_0A == 0)) {
+                if (HuPadBtnDown[work->unk_1A] == A_BUTTON) {
                     work->unk_26 = 0;
-                } else if (HuPadBtnDown[work->unk_1A] == 0x4000) {
+                } else if (HuPadBtnDown[work->unk_1A] == B_BUTTON) {
                     work->unk_26 = 1;
-                } else if (HuPadBtnDown[work->unk_1A] == 0x2000) {
+                } else if (HuPadBtnDown[work->unk_1A] == Z_TRIG) {
                     work->unk_26 = 2;
                 } else {
                     work->unk_26 = 3;

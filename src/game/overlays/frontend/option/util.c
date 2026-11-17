@@ -942,18 +942,18 @@ s32 option_StickBtnGet(s32 pad) {
         absY = __builtin_abs(y);
         if (absY < absX) {
             if (absY * 2 < absX) {
-                option_stickBtn = x < 0 ? 0x200 : 0x100;
+                option_stickBtn = x < 0 ? L_JPAD : R_JPAD;
             } else if (y > 0) {
-                option_stickBtn = x < 0 ? 0xA00 : 0x900;
+                option_stickBtn = x < 0 ? (U_JPAD | L_JPAD) : (U_JPAD | R_JPAD);
             } else {
-                option_stickBtn = x < 0 ? 0x600 : 0x500;
+                option_stickBtn = x < 0 ? (D_JPAD | L_JPAD) : (D_JPAD | R_JPAD);
             }
         } else if (absX * 2 < absY) {
-            option_stickBtn = y < 0 ? 0x400 : 0x800;
+            option_stickBtn = y < 0 ? D_JPAD : U_JPAD;
         } else if (y > 0) {
-            option_stickBtn = x < 0 ? 0xA00 : 0x900;
+            option_stickBtn = x < 0 ? (U_JPAD | L_JPAD) : (U_JPAD | R_JPAD);
         } else {
-            option_stickBtn = x < 0 ? 0x600 : 0x500;
+            option_stickBtn = x < 0 ? (D_JPAD | L_JPAD) : (D_JPAD | R_JPAD);
         }
     }
     return option_stickBtn;

@@ -358,10 +358,10 @@ void m270_WaterWaveUpdate(omObjData *object) {
     if (HuPadBtn[1] & 2) {
         m270_waveLenA -= 0.1f;
     }
-    if (HuPadBtn[1] & 0x10) {
+    if (HuPadBtn[1] & R_TRIG) {
         m270_waveAmpA -= 0.1f;
     }
-    if (HuPadBtn[1] & 0x20) {
+    if (HuPadBtn[1] & L_TRIG) {
         m270_waveAmpA += 0.1f;
     }
     m270_wavePeriodB = m270_wavePeriodA - 0.3f;
@@ -997,7 +997,7 @@ void m270_PlayerObjMain(omObjData *object) {
             }
         }
     }
-    if (m270_btnSave & 0x8000) {
+    if (m270_btnSave & A_BUTTON) {
         if (speed == 0.0f) {
             speed = 1.0f;
         }

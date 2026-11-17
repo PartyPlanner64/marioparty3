@@ -263,19 +263,19 @@ static void MBMapScrollProc(void) {
         MBCameraPos2DGet(&sp10);
         temp = MBCameraPos2DSet(&sp10);
         MBMapScrollArrowDispSet(temp_s3, temp);
-        if (ContBtn[temp_s2] & 0x200) {
+        if (ContBtn[temp_s2] & L_JPAD) {
             sp10.x -= 16.0f;
             var_s1 = 0xF;
         }
-        if (ContBtn[temp_s2] & 0x100) {
+        if (ContBtn[temp_s2] & R_JPAD) {
             sp10.x += temp2;
             var_s1 = 0xF;
         }
-        if (ContBtn[temp_s2] & 0x800) {
+        if (ContBtn[temp_s2] & U_JPAD) {
             sp10.y -= temp2;
             var_s1 = 0xF;
         }
-        if (ContBtn[temp_s2] & 0x400) {
+        if (ContBtn[temp_s2] & D_JPAD) {
             sp10.y += temp2;
             var_s1 = 0xF;
         }

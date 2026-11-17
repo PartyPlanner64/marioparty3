@@ -803,7 +803,7 @@ void m235_PlayerObjMain(omObjData *object) {
         stickX = 0;
         m235_btnSave = 0;
     }
-    if (m235_btnSave & 0x8000) {
+    if (m235_btnSave & A_BUTTON) {
         if (speed == 0.0f) {
             speed = 1.0f;
         }
@@ -1260,7 +1260,7 @@ void m235_PlayerComInput(omObjData *object) {
     if (MgDirDot(dx, dz, sindf(dir), cosdf(dir)) < 0.0f) {
         m235_stkXSave = 60;
     } else if (accelerate == TRUE) {
-        m235_btnSave |= 0x8000;
+        m235_btnSave |= A_BUTTON;
     } else if (m235_stkXSave > 0) {
         m235_stkXSave = 60;
     } else {

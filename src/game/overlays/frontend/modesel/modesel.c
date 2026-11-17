@@ -2239,17 +2239,17 @@ s32 modesel_MenuExec(void) {
     while (1) {
         buttons = HuPadBtnDown[0];
         buttons |= modesel_StickBtnGet(0);
-        if (buttons & 0x8000) {
+        if (buttons & A_BUTTON) {
             result = modesel_MenuDecide(cur, buttons);
             if (result >= 0) {
                 break;
             }
-        } else if (buttons & 0xF00) {
+        } else if (buttons & (U_JPAD | D_JPAD | L_JPAD | R_JPAD)) {
             result = modesel_MenuMove(cur, buttons);
             if (result >= 0) {
                 cur = result;
             }
-        } else if (buttons & 0x4000) {
+        } else if (buttons & B_BUTTON) {
             modesel_SprDispOff(1);
             modesel_CameraEaseMove(10, 8);
             HuPrcSleep(8);
@@ -2663,14 +2663,14 @@ s32 modesel_BoardStatChoice(void) {
         HuPrcVSleep();
         buttons = HuPadBtnDown[0];
         buttons |= modesel_StickBtnGet(0);
-        if (buttons & 0x8000) {
+        if (buttons & A_BUTTON) {
             break;
         }
-        if (buttons & 0x4000) {
+        if (buttons & B_BUTTON) {
             choice = -1;
             break;
         }
-        if (buttons & 0xF00) {
+        if (buttons & (U_JPAD | D_JPAD | L_JPAD | R_JPAD)) {
             choice = (choice == 14) ? 15 : 14;
             modesel_CursorMove(1, choice);
         }
@@ -3074,51 +3074,51 @@ s32 modesel_MenuMove(s32 cur, s32 buttons) {
         case 0:
         case 1:
         case 2:
-            if (buttons & 0x200) {
+            if (buttons & L_JPAD) {
                 do {
                     modesel_storyChr = (modesel_storyChr - 1 < 0) ? 5 : modesel_storyChr - 1;
                 } while (MgStoryRankGet(modesel_storyChrHalf) < 0);
-            } else if (buttons & 0x100) {
+            } else if (buttons & R_JPAD) {
                 do {
                     modesel_storyChr = (modesel_storyChr + 1 < 6) ? modesel_storyChr + 1 : 0;
                 } while (MgStoryRankGet(modesel_storyChrHalf) < 0);
-            } else if (buttons & 0x400) {
+            } else if (buttons & D_JPAD) {
                 next = 3;
             }
             break;
         case 3:
-            if (buttons & 0x800) {
+            if (buttons & U_JPAD) {
                 for (i = 0; i < 6; i++) {
                     if (MgStoryRankGet(i) >= 0) {
                         next = 2;
                     }
                 }
-            } else if (buttons & 0x200) {
+            } else if (buttons & L_JPAD) {
                 next = 8;
                 if (FileSelEnteredGet() == 0) {
                     next = (GwStory.unk0 == 12) ? 10 : 8;
                 }
-            } else if (buttons & 0x100) {
+            } else if (buttons & R_JPAD) {
                 next = (unlocked == 0) ? 7 : 5;
-            } else if (buttons & 0x400) {
+            } else if (buttons & D_JPAD) {
                 next = 9;
             }
             break;
         case 4:
         case 5:
-            if (buttons & 0x800) {
+            if (buttons & U_JPAD) {
                 next = 3;
-            } else if (buttons & 0x200) {
+            } else if (buttons & L_JPAD) {
                 next = 9;
-            } else if (buttons & 0x400) {
+            } else if (buttons & D_JPAD) {
                 next = 7;
             }
             break;
         case 6:
         case 7:
-            if (buttons & 0x800) {
+            if (buttons & U_JPAD) {
                 next = unlocked ? 5 : 9;
-            } else if (buttons & 0x200) {
+            } else if (buttons & L_JPAD) {
                 next = 10;
                 if (FileSelEnteredGet() == 0) {
                     next = (GwStory.unk0 != 12) ? 10 : 8;
@@ -3126,12 +3126,12 @@ s32 modesel_MenuMove(s32 cur, s32 buttons) {
             }
             break;
         case 8:
-            if (buttons & 0x800) {
+            if (buttons & U_JPAD) {
                 next = 9;
                 if (FileSelEnteredGet() == 0 && GwStory.unk0 == 12) {
                     next = 10;
                 }
-            } else if (buttons & 0x100) {
+            } else if (buttons & R_JPAD) {
                 next = 10;
                 if (FileSelEnteredGet() == 0 && GwStory.unk0 == 12) {
                     next = 7;
@@ -3139,39 +3139,39 @@ s32 modesel_MenuMove(s32 cur, s32 buttons) {
             }
             break;
         case 9:
-            if (buttons & 0x800) {
+            if (buttons & U_JPAD) {
                 next = 3;
-            } else if (buttons & 0x200) {
+            } else if (buttons & L_JPAD) {
                 next = 8;
                 if (FileSelEnteredGet() == 0) {
                     next = (GwStory.unk0 == 12) ? 10 : 8;
                 }
-            } else if (buttons & 0x400) {
+            } else if (buttons & D_JPAD) {
                 next = 10;
                 if (FileSelEnteredGet() == 0) {
                     next = (GwStory.unk0 != 12) ? 10 : 8;
                 }
-            } else if (buttons & 0x100) {
+            } else if (buttons & R_JPAD) {
                 next = (unlocked == 0) ? 7 : 5;
             }
             break;
         case 10:
             if (FileSelEnteredGet() == 0 && GwStory.unk0 == 12) {
-                if (buttons & 0x800) {
+                if (buttons & U_JPAD) {
                     next = 9;
-                } else if (buttons & 0x200) {
-                } else if (buttons & 0x400) {
+                } else if (buttons & L_JPAD) {
+                } else if (buttons & D_JPAD) {
                     next = 8;
-                } else if (buttons & 0x100) {
+                } else if (buttons & R_JPAD) {
                     next = 9;
                 }
             } else {
-                if (buttons & 0x800) {
+                if (buttons & U_JPAD) {
                     next = 9;
-                } else if (buttons & 0x200) {
+                } else if (buttons & L_JPAD) {
                     next = 8;
-                } else if (buttons & 0x400) {
-                } else if (buttons & 0x100) {
+                } else if (buttons & D_JPAD) {
+                } else if (buttons & R_JPAD) {
                     next = 7;
                 }
             }
@@ -3704,14 +3704,14 @@ void modesel_HelpExec(void) {
     HuWinMesPalSet(modesel_winTbl[1][0], 4, 0, 255, 0);
     HuWinMesPalSet(modesel_winTbl[1][0], 6, 255, 255, 128);
     while (1) {
-        if (HuPadBtnDown[0] & 0x4000) {
+        if (HuPadBtnDown[0] & B_BUTTON) {
             break;
         }
-        if (ContBtnDown[0] & 0x200) {
+        if (ContBtnDown[0] & L_JPAD) {
             modesel_SprDispOff(4);
             modesel_SprDispOn(5);
             modesel_WinMesSet(1, 0x5F01);
-        } else if (ContBtn[0] & 0x100) {
+        } else if (ContBtn[0] & R_JPAD) {
             modesel_SprDispOn(4);
             modesel_SprDispOff(5);
             modesel_WinMesSet(1, 0x5F02);

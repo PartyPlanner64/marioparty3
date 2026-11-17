@@ -299,7 +299,7 @@ void meschk_MesCheckExec() {
                 }
                 break;
             }
-            if ((HuPadBtn[0] & (L_TRIG | R_TRIG)) == 0x30) {
+            if ((HuPadBtn[0] & (L_TRIG | R_TRIG)) == (L_TRIG | R_TRIG)) {
                 done = 1;
                 break;
             }

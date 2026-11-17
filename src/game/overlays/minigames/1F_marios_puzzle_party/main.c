@@ -399,13 +399,13 @@ u16 m231_InputBtnGet(s32 playerIndex) {
         buttons = HuPadBtn[GwPlayer[playerIndex].pad];
         buttons &= 0xF0FF;
         if (HuPadStkX[GwPlayer[playerIndex].pad] > 30.0f) {
-            buttons |= 0x100;
+            buttons |= R_JPAD;
         }
         if (HuPadStkX[GwPlayer[playerIndex].pad] < -30.0f) {
-            buttons |= 0x200;
+            buttons |= L_JPAD;
         }
         if (HuPadStkY[GwPlayer[playerIndex].pad] < -30.0f) {
-            buttons |= 0x400;
+            buttons |= D_JPAD;
         }
     } else {
         buttons = m231_comInputTbl[playerIndex].direction;
@@ -2219,10 +2219,10 @@ void m231_PlayerProc(void) {
                     input->direction = 0;
                     input->buttons = 0;
                     if (cursor->pathIdx > input->targetPath) {
-                        input->direction |= 0x200;
+                        input->direction |= L_JPAD;
                     }
                     if (cursor->pathIdx < input->targetPath) {
-                        input->direction |= 0x100;
+                        input->direction |= R_JPAD;
                     }
                     if (input->swap != 0) {
                         input->swap = 0;
@@ -2268,11 +2268,11 @@ void m231_PlayerProc(void) {
                     }
                 }
                 if (cursor->moveDir == 0 && speed != 7 && cursor->unk_28 == 0) {
-                    if ((m231_InputBtnGet(board) & 0x200) &&
+                    if ((m231_InputBtnGet(board) & L_JPAD) &&
                         !m231_PairMoveCheck(board, cursor, -1)) {
                         cursor->moveDir = -1;
                     }
-                    if ((m231_InputBtnGet(board) & 0x100) &&
+                    if ((m231_InputBtnGet(board) & R_JPAD) &&
                         !m231_PairMoveCheck(board, cursor, 1)) {
                         cursor->moveDir = 1;
                     }
@@ -2294,14 +2294,14 @@ void m231_PlayerProc(void) {
                     }
                 }
                 if (cursor->unk_28 == 0) {
-                    speed = (m231_InputBtnGet(board) & 0x400) ? 7 : 2;
+                    speed = (m231_InputBtnGet(board) & D_JPAD) ? 7 : 2;
                 }
-                if (m231_InputBtnDownGet(board, 0x2000)) {
+                if (m231_InputBtnDownGet(board, Z_TRIG)) {
                     timer = 5;
                     cursor->unk_28 = 1;
                     speed = 14;
                 }
-                if (m231_InputBtnDownGet(board, 0x8000) && cursor->unk_28 == 0) {
+                if (m231_InputBtnDownGet(board, A_BUTTON) && cursor->unk_28 == 0) {
                     i = cursor->blockOwners[0];
                     cursor->blockOwners[0] = cursor->blockOwners[1];
                     cursor->blockOwners[1] = i;
@@ -2324,10 +2324,10 @@ void m231_PlayerProc(void) {
                     input->buttons = 0;
                     cursor->pathIdx = (cursor->x - m231_fieldPosTbl[board][0]) / 14.0f;
                     if (cursor->pathIdx > input->targetPath) {
-                        input->direction |= 0x200;
+                        input->direction |= L_JPAD;
                     }
                     if (cursor->pathIdx < input->targetPath) {
-                        input->direction |= 0x100;
+                        input->direction |= R_JPAD;
                     }
                     m231_ColumnHeightGet(board, input->targetPath);
                     if (input->delay-- <= 0) {
@@ -2349,11 +2349,11 @@ void m231_PlayerProc(void) {
                     }
                 }
                 if (cursor->moveDir == 0 && speed != 7 && !done && cursor->unk_28 == 0) {
-                    if ((m231_InputBtnGet(board) & 0x200) &&
+                    if ((m231_InputBtnGet(board) & L_JPAD) &&
                         !m231_BigBlockMoveCheck(board, cursor, -1)) {
                         cursor->moveDir = -1;
                     }
-                    if ((m231_InputBtnGet(board) & 0x100) &&
+                    if ((m231_InputBtnGet(board) & R_JPAD) &&
                         !m231_BigBlockMoveCheck(board, cursor, 1)) {
                         cursor->moveDir = 1;
                     }
@@ -2399,9 +2399,9 @@ void m231_PlayerProc(void) {
                     }
                 }
                 if (cursor->unk_28 == 0) {
-                    speed = (m231_InputBtnGet(board) & 0x400) ? 7 : 2;
+                    speed = (m231_InputBtnGet(board) & D_JPAD) ? 7 : 2;
                 }
-                if ((m231_InputBtnGet(board) & 0x2000) || done) {
+                if ((m231_InputBtnGet(board) & Z_TRIG) || done) {
                     timer = 5;
                     cursor->unk_28 = 1;
                     speed = 14;

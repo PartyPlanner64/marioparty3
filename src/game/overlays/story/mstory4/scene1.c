@@ -1273,28 +1273,28 @@ const s32 mstory4_scene1PicFileTbl[8] = { 0x1D0017, 0x1D0015, 0x1D0018, 0x1D0019
 
 void mstory4_Scene1CameraDebugProc(void) {
     while (TRUE) {
-        if (HuPadBtn[0] & 0x2000) {
-            if (HuPadBtn[0] & 0x100) {
+        if (HuPadBtn[0] & Z_TRIG) {
+            if (HuPadBtn[0] & R_JPAD) {
                 mstory4_cameraPos.x -= 10.0f;
             }
-            if (HuPadBtn[0] & 0x200) {
+            if (HuPadBtn[0] & L_JPAD) {
                 mstory4_cameraPos.x += 10.0f;
             }
         } else {
-            if (HuPadBtn[0] & 0x800) {
+            if (HuPadBtn[0] & U_JPAD) {
                 mstory4_cameraPos.z -= 10.0f;
             }
-            if (HuPadBtn[0] & 0x400) {
+            if (HuPadBtn[0] & D_JPAD) {
                 mstory4_cameraPos.z += 10.0f;
             }
-            if (HuPadBtn[0] & 0x100) {
+            if (HuPadBtn[0] & R_JPAD) {
                 mstory4_cameraPos.y -= 10.0f;
             }
-            if (HuPadBtn[0] & 0x200) {
+            if (HuPadBtn[0] & L_JPAD) {
                 mstory4_cameraPos.y += 10.0f;
             }
         }
-        if (HuPadBtn[0] & 0x2000) {
+        if (HuPadBtn[0] & Z_TRIG) {
             if (HuPadBtn[0] & 1) {
                 mstory4_cameraTarget.x -= 10.0f;
             }

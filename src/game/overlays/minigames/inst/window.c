@@ -196,7 +196,7 @@ void inst_WinPageMain(s32 arg0) {
     if (inst_startF == 1) {
         return;
     }
-    if (inst_PadBtnDownGet(0x10) != 0) {
+    if (inst_PadBtnDownGet(R_TRIG) != 0) {
         inst_PracticeOn();
         inst_winFunc = inst_WinPracticeMain;
         return;
@@ -305,7 +305,7 @@ void inst_WinPageMain(s32 arg0) {
 s32 inst_PracticeCancelCheck(void) {
     s32 changed = 0;
 
-    if ((inst_PadBtnDownGet(0x10) != 0) && (inst_startF != 1)) {
+    if ((inst_PadBtnDownGet(R_TRIG) != 0) && (inst_startF != 1)) {
         changed = 1;
         inst_PracticeOff();
         inst_winFunc = inst_WinPageMain;
@@ -375,7 +375,7 @@ void inst_WinPracticeMain(s32 arg0) {
                 return;
             }
         }
-        while (inst_PadBtnDownGet(0x8000) == 0) {
+        while (inst_PadBtnDownGet(A_BUTTON) == 0) {
             if (inst_PracticeCancelCheck() != 0) {
                 return;
             }

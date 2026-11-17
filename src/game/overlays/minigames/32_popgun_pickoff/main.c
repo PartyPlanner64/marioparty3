@@ -1055,7 +1055,7 @@ void m250_PlayerObjMain(omObjData *object) {
         case 7:
             return;
     }
-    if (input & 0x8000) {
+    if (input & A_BUTTON) {
         if (m250_ShotCreate(object, target) != 0) {
             _HuAudPlayerFXPlay(0x496, data->unk59);
             Hu3DMotionTimeSet(object->model[0], 0.0f);
@@ -1100,7 +1100,7 @@ u16 m250_PlayerComInput(omObjData *object) {
                 break;
             }
             if (m250_Rand16Get() % (8 - work->unk2B) == 0) {
-                input = 0x8000;
+                input = A_BUTTON;
             }
             if (target->unk1B != 2 && m250_Rand16Get() % (work->unk2B + 2) != 0) {
                 work->unk2E = 0;

@@ -780,7 +780,7 @@ void m252_PlayerObjMain(omObjData *object) {
             }
             switch (player->unk_0C) {
                 case 1:
-                    if (HuPadBtnDown[player->unk_1A] & 0x8000) {
+                    if (HuPadBtnDown[player->unk_1A] & A_BUTTON) {
                         if (MgPlayerMotSet(object, 4)) {
                             player->unk_30 = 10;
                             player->unk_32 = 1;
@@ -852,7 +852,7 @@ void m252_PlayerObjMain(omObjData *object) {
                         accel = 2.0f;
                     }
                     accel *= 0.5f;
-                    if (HuPadBtnDown[player->unk_1A] & 0x8000) {
+                    if (HuPadBtnDown[player->unk_1A] & A_BUTTON) {
                         player->unk_44 += accel;
                         player->unk_0E++;
                         if (!(player->unk_0E & 1)) {

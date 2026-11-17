@@ -135,8 +135,8 @@ void staff_MainProc(void) {
         HuPrcVSleep();
     }
     while (TRUE) {
-        if ((HuPadBtnDown[0] & 0xD000) || (HuPadBtnDown[1] & 0xD000) || (HuPadBtnDown[2] & 0xD000) ||
-            (HuPadBtnDown[3] & 0xD000)) {
+        if ((HuPadBtnDown[0] & (A_BUTTON | B_BUTTON | START_BUTTON)) || (HuPadBtnDown[1] & (A_BUTTON | B_BUTTON | START_BUTTON)) || (HuPadBtnDown[2] & (A_BUTTON | B_BUTTON | START_BUTTON)) ||
+            (HuPadBtnDown[3] & (A_BUTTON | B_BUTTON | START_BUTTON))) {
             break;
         }
         HuPrcVSleep();

@@ -857,24 +857,24 @@ void MgStoryStatViewProc(void) {
     angle = 0;
     speed = 0;
     while (TRUE) {
-        if (HuPadBtnDown[mgStoryStatPortNo] & 0x4000) {
+        if (HuPadBtnDown[mgStoryStatPortNo] & B_BUTTON) {
             HuAudFXPlay(4);
             *result = -2;
             break;
         }
-        if (HuPadBtnDown[mgStoryStatPortNo] & 0x1000) {
+        if (HuPadBtnDown[mgStoryStatPortNo] & START_BUTTON) {
             HuAudFXPlay(2);
             *result = -1;
             break;
         }
         if (MgStoryStatModeGet(prc) == 0) {
-            if ((HuPadBtnDown[mgStoryStatPortNo] & 0x100) || HuPadStkX[mgStoryStatPortNo] >= 31) {
+            if ((HuPadBtnDown[mgStoryStatPortNo] & R_JPAD) || HuPadStkX[mgStoryStatPortNo] >= 31) {
                 HuAudFXPlay(1);
                 MgStoryStatModeSet(prc, 3);
                 angle = 180;
                 speed = -22;
                 selection = 1;
-            } else if ((HuPadBtnDown[mgStoryStatPortNo] & 0x200) || HuPadStkX[mgStoryStatPortNo] < -30) {
+            } else if ((HuPadBtnDown[mgStoryStatPortNo] & L_JPAD) || HuPadStkX[mgStoryStatPortNo] < -30) {
                 HuAudFXPlay(1);
                 MgStoryStatModeSet(prc, 4);
                 angle = 180;

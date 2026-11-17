@@ -609,7 +609,7 @@ void m267_RollObjMain(omObjData *object) {
                 GMesTimerValueSet(m267_countNum);
                 switch (m267_playerInfo[3]) {
                     case 0:
-                        if ((HuPadBtnDown[m267_playerInfo[1]] & 0x8000) ||
+                        if ((HuPadBtnDown[m267_playerInfo[1]] & A_BUTTON) ||
                             m267_countNum == 0) {
                             m267_playerMotNo = 3;
                             m267_rollTimer = 0;
@@ -1869,7 +1869,7 @@ void m267_WinKeyWait(s16 win, s16 player, s16 mode) {
     while (HuWinStatGet(win) != 0) {
         switch (mode) {
             case 0:
-                if (HuPadBtnDown[player] & 0x8000) {
+                if (HuPadBtnDown[player] & A_BUTTON) {
                     HuWinComKeySet(-0x8000, -0x8000, -0x8000, -0x8000);
                 }
                 break;

@@ -1226,9 +1226,9 @@ void m241_PlayerComInput(omObjData *object) {
     HuPadStkX[data->unk57] = sindf(work->unk0C) * stick;
     HuPadStkY[data->unk57] = -cosdf(work->unk0C) * stick;
     if (jump == 1) {
-        HuPadBtnDown[data->unk57] |= 0x8000;
+        HuPadBtnDown[data->unk57] |= A_BUTTON;
     } else {
-        HuPadBtnDown[data->unk57] &= 0x7FFF;
+        HuPadBtnDown[data->unk57] &= ~A_BUTTON;
     }
 }
 

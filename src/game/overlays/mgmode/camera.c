@@ -554,16 +554,16 @@ void mgmode_DpadStickSet(void) {
 
     y = 0.0f;
     x = y;
-    if (HuPadBtn[mgmode_padNo] & 0x200) {
+    if (HuPadBtn[mgmode_padNo] & L_JPAD) {
         x = -1.0f;
     }
-    if (HuPadBtn[mgmode_padNo] & 0x100) {
+    if (HuPadBtn[mgmode_padNo] & R_JPAD) {
         x += 1.0f;
     }
-    if (HuPadBtn[mgmode_padNo] & 0x800) {
+    if (HuPadBtn[mgmode_padNo] & U_JPAD) {
         y += 1.0f;
     }
-    if (HuPadBtn[mgmode_padNo] & 0x400) {
+    if (HuPadBtn[mgmode_padNo] & D_JPAD) {
         y += -1.0f;
     }
     if (x == 0.0f && y == 0.0f) {

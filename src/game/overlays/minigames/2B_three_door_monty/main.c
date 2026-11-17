@@ -1397,21 +1397,21 @@ void m243_PlayerComInput(omObjData *obj) {
     if (act != 0) {
         switch (choice) {
             case 0:
-                HuPadBtnDown[obj->work[3]] |= 0x2000;
+                HuPadBtnDown[obj->work[3]] |= Z_TRIG;
                 break;
             case 1:
-                HuPadBtnDown[obj->work[3]] |= 0x4000;
+                HuPadBtnDown[obj->work[3]] |= B_BUTTON;
                 break;
             case 2:
-                HuPadBtnDown[obj->work[3]] |= 0x8000;
+                HuPadBtnDown[obj->work[3]] |= A_BUTTON;
                 break;
             default:
                 if (door == 0) {
-                    HuPadBtnDown[obj->work[3]] |= 0x2000;
+                    HuPadBtnDown[obj->work[3]] |= Z_TRIG;
                 } else if (door == 1) {
-                    HuPadBtnDown[obj->work[3]] |= 0x4000;
+                    HuPadBtnDown[obj->work[3]] |= B_BUTTON;
                 } else if (door == 2) {
-                    HuPadBtnDown[obj->work[3]] |= 0x8000;
+                    HuPadBtnDown[obj->work[3]] |= A_BUTTON;
                 }
                 break;
         }
@@ -1433,7 +1433,7 @@ void m243_PlayerAnswerInput(omObjData *obj) {
     if (entry->unk_06 != -1) {
         return;
     }
-    if (HuPadBtnDown[obj->work[3]] & 0x8000) {
+    if (HuPadBtnDown[obj->work[3]] & A_BUTTON) {
         if (m243_answerTime >= 34) {
             entry->unk_12 = m243_answerTime - (u8)(rand8() % 3) * 10;
         } else {
@@ -1445,7 +1445,7 @@ void m243_PlayerAnswerInput(omObjData *obj) {
         Hu3DModelAttrSet(obj->model[4], 4, 4);
         entry->unk_06 = 2;
     }
-    if (HuPadBtnDown[obj->work[3]] & 0x4000) {
+    if (HuPadBtnDown[obj->work[3]] & B_BUTTON) {
         if (m243_answerTime >= 34) {
             entry->unk_12 = m243_answerTime - (u8)(rand8() % 3) * 10;
         } else {
@@ -1457,7 +1457,7 @@ void m243_PlayerAnswerInput(omObjData *obj) {
         Hu3DModelAttrSet(obj->model[4], 4, 4);
         entry->unk_06 = 1;
     }
-    if (HuPadBtnDown[obj->work[3]] & 0x2000) {
+    if (HuPadBtnDown[obj->work[3]] & Z_TRIG) {
         if (m243_answerTime >= 34) {
             entry->unk_12 = m243_answerTime - (u8)(rand8() % 3) * 10;
         } else {

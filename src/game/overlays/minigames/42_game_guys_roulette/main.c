@@ -531,7 +531,7 @@ void m266_WinKeyWait(s16 win) {
     while (HuWinStatGet(win) != 0) {
         switch (m266_playerInfo.cpu) {
             case 0:
-                if (HuPadBtnDown[m266_playerInfo.pad] & 0x8000) {
+                if (HuPadBtnDown[m266_playerInfo.pad] & A_BUTTON) {
                     HuWinComKeySet(-0x8000, -0x8000, -0x8000, -0x8000);
                 }
                 break;

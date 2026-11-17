@@ -4720,7 +4720,7 @@ itemSelect:
                     }
                     timer = 30;
 
-                    if ((*(u16 *)((u8 *)ContBtnDown + (GwPlayer[system->current_player_index].pad << 1)) & 0x8000) == 0) {
+                    if ((*(u16 *)((u8 *)ContBtnDown + (GwPlayer[system->current_player_index].pad << 1)) & A_BUTTON) == 0) {
                         row = (s32)ContBtnDown;
                         while (1) {
                             if (MBPlayerComCheck(-1) != 0) {

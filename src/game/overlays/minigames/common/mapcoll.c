@@ -1605,7 +1605,7 @@ void MgPlayerObjMain(omObjData *arg0) {
     if (state & 1) {
         idle = 1;
         if (data->unk38 == 1000.0f) {
-            if (MgPlayerGroundMove(arg0, data->unk3C, x, y, z) != 65536.0f && (pressed & 0x8000)) {
+            if (MgPlayerGroundMove(arg0, data->unk3C, x, y, z) != 65536.0f && (pressed & A_BUTTON)) {
                 MgPlayerJumpStart(arg0, data);
                 idle = 0;
             }
@@ -1662,7 +1662,7 @@ void MgPlayerObjMain(omObjData *arg0) {
         f32 vy;
 
         if (state & 0x10000) {
-            if (pressed & 0x8000) {
+            if (pressed & A_BUTTON) {
                 MgPlayerJumpStart(arg0, data);
             }
         } else if (data->unk40 == mgPlayerSpeedZero) {
@@ -1783,9 +1783,9 @@ void MgPlayerObjMain(omObjData *arg0) {
         newY = MgPlayerGroundMove(arg0, data->unk3C, x, y, z);
         if (newY != 65536.0f) {
             y = newY;
-            if (pressed & 0x8000) {
+            if (pressed & A_BUTTON) {
                 MgPlayerJumpStart(arg0, data);
-            } else if (pressed & 0x4000) {
+            } else if (pressed & B_BUTTON) {
                 MgPlayerActStart(arg0, data);
                 MgPlayerStickReset(arg0);
             }
@@ -1802,7 +1802,7 @@ void MgPlayerObjMain(omObjData *arg0) {
         }
         vy = data->unk38;
         if (!(state & 0x300)) {
-            if (((time > 5.0f) & (time < 7.0f)) && !(held & 0x8000) && (!(data->unk50 & 8) & (vy < 0.0f))) {
+            if (((time > 5.0f) & (time < 7.0f)) && !(held & A_BUTTON) && (!(data->unk50 & 8) & (vy < 0.0f))) {
                 data->unk38 = -mgPlayerJumpPower * 0.2f;
             }
             if (abs(stickX) >= 9 || abs(stickY) >= 9) {
@@ -1817,10 +1817,10 @@ void MgPlayerObjMain(omObjData *arg0) {
                     mgMoveOfsZ *= 0.2f;
                 }
             }
-            if (pressed & 0x4000) {
+            if (pressed & B_BUTTON) {
                 MgPlayerAirAttack(arg0, data);
             }
-            if ((pressed & 0x2000) && !(data->unk50 & 8)) {
+            if ((pressed & Z_TRIG) && !(data->unk50 & 8)) {
                 MgPlayerHipDrop(arg0, data);
             }
             if (vy > mgPlayerFallMax) {
@@ -1954,9 +1954,9 @@ void MgPlayerObjMain(omObjData *arg0) {
         if (newY != 65536.0f) {
             y = newY;
             if (!(MgPlayerMotStatGet(arg0) & 0xC00)) {
-                if (pressed & 0x8000) {
+                if (pressed & A_BUTTON) {
                     MgPlayerJumpStart(arg0, data);
-                } else if (pressed & 0x4000) {
+                } else if (pressed & B_BUTTON) {
                     MgPlayerActStart(arg0, data);
                 } else {
                     dx = stickX - avgX;

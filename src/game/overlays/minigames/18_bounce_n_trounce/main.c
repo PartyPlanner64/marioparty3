@@ -714,13 +714,13 @@ void m224_PlayerUpdate(omObjData *object, s8 stickX, s8 stickY, u16 btn) {
             if (stickX != 0 || stickY != 0) {
                 rotY = angle;
             }
-            if (btn & 0x8000) {
+            if (btn & A_BUTTON) {
                 work->unk_0C = 1;
             }
             break;
     }
     if (work->unk_08 == 1) {
-        if (work->unk_44 == 0.0f && (btn & 0x2000) && work->unk_0A != 0 && work->state == 0) {
+        if (work->unk_44 == 0.0f && (btn & Z_TRIG) && work->unk_0A != 0 && work->state == 0) {
             fx = PlayerFXPlay(0x3C7, work->playerId);
             if (MgFlowStatGet() != MG_STATE_PLAY) {
                 HuAudFXVolSet(fx, 0x75);
@@ -1302,7 +1302,7 @@ void m224_PlayerComInputGet(omObjData *object, s8 *stickX, s8 *stickY, u16 *btn)
                 return;
             }
             if (work->motState == 2) {
-                *btn |= 0x8000;
+                *btn |= A_BUTTON;
             }
             angle = atan2df(work->aiTargetPos.z - object->trans.z, work->aiTargetPos.x - object->trans.x) + CRot.y;
             *stickX = cosdf(angle) * 80.0f;
@@ -1347,10 +1347,10 @@ void m224_PlayerComInputGet(omObjData *object, s8 *stickX, s8 *stickY, u16 *btn)
                 work->aiState = 0;
             }
             if (dist < 150.0f && work->unk_0A != 0) {
-                *btn |= 0x2000;
+                *btn |= Z_TRIG;
             }
             if (dist < 400.0f && work->motState == 2) {
-                *btn |= 0x8000;
+                *btn |= A_BUTTON;
             }
             angle = atan2df(work->aiTarget->trans.z - object->trans.z, work->aiTarget->trans.x - object->trans.x) + CRot.y;
             *stickX = cosdf(angle) * 80.0f;
@@ -1533,7 +1533,7 @@ void m224_IntroObjMain(omObjData *object) {
                 player = m224_playerObjTbl[i];
                 work = OM_GET_DATA_PTR(player, BounceNTrounceWork);
                 if (work->motState == 2 && m224_introJumpF == 1) {
-                    m224_introBtnTbl[i] |= 0x8000;
+                    m224_introBtnTbl[i] |= A_BUTTON;
                 }
             }
             if (m224_introJumpF == 1) {
@@ -1543,7 +1543,7 @@ void m224_IntroObjMain(omObjData *object) {
         case 3:
             if (m224_playerObjTbl[0]->trans.y > 500.0f) {
                 for (i = 0; i < 4; i++) {
-                    m224_introBtnTbl[i] |= 0x2000;
+                    m224_introBtnTbl[i] |= Z_TRIG;
                 }
                 m224_introPhase = 4;
             }

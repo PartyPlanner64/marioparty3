@@ -2253,17 +2253,17 @@ void m213_PlayerComInput(omObjData *obj) {
     }
     if (press) {
         if (jet->unk_18 != 0) {
-            HuPadBtnDown[GwPlayer[obj->work[0]].pad] |= 0x8000;
+            HuPadBtnDown[GwPlayer[obj->work[0]].pad] |= A_BUTTON;
         } else {
-            HuPadBtnDown[GwPlayer[obj->work[0]].pad] |= 0x4000;
+            HuPadBtnDown[GwPlayer[obj->work[0]].pad] |= B_BUTTON;
         }
     } else {
         interval = jet->unk_30 * 0.5;
         if (rand8() % interval == 0 && jet->unk_14 == 0.0f) {
             if (jet->unk_18 != 0) {
-                HuPadBtnDown[GwPlayer[obj->work[0]].pad] |= 0x8000;
+                HuPadBtnDown[GwPlayer[obj->work[0]].pad] |= A_BUTTON;
             } else {
-                HuPadBtnDown[GwPlayer[obj->work[0]].pad] |= 0x4000;
+                HuPadBtnDown[GwPlayer[obj->work[0]].pad] |= B_BUTTON;
             }
             jet->unk_34 = rand8() % jet->unk_30 + 5;
         }
@@ -2283,7 +2283,7 @@ void m213_PlayerPumpUpdate(omObjData *obj) {
             jet->unk_14 = 0.0f;
         }
         jet->unk_10 += (s32)jet->unk_14;
-        if (HuPadBtnDown[GwPlayer[obj->work[0]].pad] & 0x8000) {
+        if (HuPadBtnDown[GwPlayer[obj->work[0]].pad] & A_BUTTON) {
             sound = HuAudPlayerFXPlay(0x35D, obj->work[0]);
             if (obj->work[1] != 0) {
                 HuAudFXPanning(sound, 0x60);
@@ -2307,8 +2307,8 @@ void m213_PlayerPumpUpdate(omObjData *obj) {
             jet->unk_14 = 0.0f;
         }
         jet->unk_10 += (s32)jet->unk_14;
-        if ((HuPadBtnDown[GwPlayer[obj->work[0]].pad] & 0x4000) ||
-            (HuPadBtnDown[GwPlayer[obj->work[0]].pad] & 0x2000)) {
+        if ((HuPadBtnDown[GwPlayer[obj->work[0]].pad] & B_BUTTON) ||
+            (HuPadBtnDown[GwPlayer[obj->work[0]].pad] & Z_TRIG)) {
             sound = HuAudPlayerFXPlay(0x35E, obj->work[0]);
             if (obj->work[1] != 0) {
                 HuAudFXPanning(sound, 0x60);

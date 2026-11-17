@@ -137,7 +137,7 @@ void MBDPlayerTauntProc(omObjData *obj) {
             (MBDPlayerComCheck(temp_s0[0]) == 0) &&
             (mbTauntOffF == 0) &&
             ((GwSystem.current_player_index != temp_s0[0]) || (mbTurnUnkF == 0)) &&
-            (ContBtnDown[GwPlayer[temp_s0[0]].pad] & 0x20)) {
+            (ContBtnDown[GwPlayer[temp_s0[0]].pad] & L_TRIG)) {
             PlayerFXPlay(0x2BD, temp_s0[0]);
         }
         HuPrcVSleep();

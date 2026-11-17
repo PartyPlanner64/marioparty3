@@ -937,7 +937,7 @@ void m234_PlayerObjMain(omObjData *obj) {
                     }
                     break;
                 case 1:
-                    if ((s32)entry->unk_44.x % 60 == 0 && (HuPadBtnDown[pad] & 0x8000)) {
+                    if ((s32)entry->unk_44.x % 60 == 0 && (HuPadBtnDown[pad] & A_BUTTON)) {
                         HuAudPlayerFXPlay(0x417, obj->work[0]);
                         entry->unk_0A = 2;
                     }
@@ -949,7 +949,7 @@ void m234_PlayerObjMain(omObjData *obj) {
                     }
                     break;
                 case 3:
-                    if (HuPadBtnDown[pad] & 0x4000) {
+                    if (HuPadBtnDown[pad] & B_BUTTON) {
                         HuAudPlayerFXPlay(0x418, obj->work[0]);
                         entry->unk_0A = 4;
                     }

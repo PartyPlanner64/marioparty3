@@ -314,7 +314,7 @@ void mchar_ViewerObjMain(omObjData *arg0) {
         model->motShiftTime = Hu3DMotionTimeCalc(&Hu3DMotion[model->motIdShift], model->motShiftAttr, model->motShiftTime, model->unk54, model->motShiftSpeed + model->motShiftSpeed);
         model->motAttr = (model->motAttr & 0xFB) | 1;
     }
-    if ((HuPadBtn[0] & (L_TRIG | R_TRIG)) == 0x30) {
+    if ((HuPadBtn[0] & (L_TRIG | R_TRIG)) == (L_TRIG | R_TRIG)) {
         mchar_exitF = 1;
     }
     if (HuPadBtnDown[1] & START_BUTTON) {

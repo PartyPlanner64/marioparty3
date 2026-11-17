@@ -1066,10 +1066,10 @@ void m237_PlayerObjMain(omObjData *object) {
             }
         }
         if (m237_comJumpTimerTbl[group] == m237_comHoldTbl[m237_comTargetTbl[group] - 1] + 3) {
-            HuPadBtn[player->pad] |= 0x8000;
-            HuPadBtnDown[player->pad] = 0x8000;
+            HuPadBtn[player->pad] |= A_BUTTON;
+            HuPadBtnDown[player->pad] = A_BUTTON;
         } else if (m237_comJumpTimerTbl[group] > m237_comHoldTbl[m237_comTargetTbl[group] - 1] + 3) {
-            HuPadBtn[player->pad] |= 0x8000;
+            HuPadBtn[player->pad] |= A_BUTTON;
         }
         if (m237_comJumpTimerTbl[group] != 0) {
             f32 dx = (platCols[m237_comTargetTbl[group] - 1] * 150 - 150) * 1.125 - object->trans.x;
@@ -1115,9 +1115,9 @@ void m237_PlayerObjMain(omObjData *object) {
     if (m237_platNoTbl[group] == 15 && (m237_phase != 3 || m237_phaseTimer < 30)) {
         HuPadStkX[player->pad] = 0;
         HuPadStkXSum[player->pad] = 0;
-        HuPadBtn[player->pad] &= 0x7FFF;
-        HuPadBtnDown[player->pad] &= 0x7FFF;
-        HuPadBtnRep[player->pad] &= 0x7FFF;
+        HuPadBtn[player->pad] &= ~A_BUTTON;
+        HuPadBtnDown[player->pad] &= ~A_BUTTON;
+        HuPadBtnRep[player->pad] &= ~A_BUTTON;
     }
     if (m237_wallDirTbl[group] != 0) {
         if (m237_wallDirTbl[group] == ((HuPadStkX[player->pad] < 0)   ? -1
@@ -1148,7 +1148,7 @@ void m237_PlayerObjMain(omObjData *object) {
         }
     }
     if (m237_squeezePlatTbl[group] != 0) {
-        HuPadBtn[player->pad] &= 0x7FFF;
+        HuPadBtn[player->pad] &= ~A_BUTTON;
     }
     if (!(m237_winner < 4 &&
           (m237_phase == 7 || (m237_phase == 4 && m237_phaseTimer >= 30)))) {

@@ -1551,7 +1551,7 @@ void mgmode_CameraDebugExec(void) {
     f32 inv;
 
     model = &Hu3DData[mgmode_mdlTbl[15]];
-    if (HuPadBtnDown[1] & 0x10) {
+    if (HuPadBtnDown[1] & R_TRIG) {
         mgmode_cameraDebugF ^= 1;
         if (mgmode_cameraDebugF) {
             osSyncPrintf("\t{\n\t{%4.1f,%4.1f,%4.1f},\n", CRot.x, CRot.y, CRot.z);
@@ -1560,14 +1560,14 @@ void mgmode_CameraDebugExec(void) {
             osSyncPrintf("HMF>%4.1f,%4.1f,%4.1f\n", model->rot.x, model->rot.y, model->rot.z);
         }
     }
-    if (HuPadBtn[1] & 0x1000) {
+    if (HuPadBtn[1] & START_BUTTON) {
         mgmode_CameraPresetSet(mgmode_cameraPresetNo);
     }
     if (HuPadBtn[1] & 8) {
-        CZoom = (HuPadBtn[1] & 0x2000) ? CZoom + 30.0f : CZoom + 10.0f;
+        CZoom = (HuPadBtn[1] & Z_TRIG) ? CZoom + 30.0f : CZoom + 10.0f;
     }
     if ((HuPadBtn[1] & 4) && CZoom - 10.0f != 0.0f) {
-        CZoom = (HuPadBtn[1] & 0x2000) ? CZoom - 30.0f : CZoom - 10.0f;
+        CZoom = (HuPadBtn[1] & Z_TRIG) ? CZoom - 30.0f : CZoom - 10.0f;
     }
     if (HuPadBtn[1] & 2) {
         mgmode_cameraFov += 1.0f;
@@ -1578,7 +1578,7 @@ void mgmode_CameraDebugExec(void) {
     Hu3DCameraPerspectiveSet(0, mgmode_cameraFov, mgmode_cameraNear, mgmode_cameraFar);
     rotX = mgmode_cameraRot.x;
     rotY = mgmode_cameraRot.y;
-    speed = (HuPadBtn[1] & 0x2000) ? 5.0f : 2.0f;
+    speed = (HuPadBtn[1] & Z_TRIG) ? 5.0f : 2.0f;
     rotY += (-HuPadStkX[1] / 30) * speed;
     if (rotY >= 360.0f) {
         rotY -= 360.0f;
@@ -1595,16 +1595,16 @@ void mgmode_CameraDebugExec(void) {
     mgmode_cameraRot.x = rotX;
     CRot.x = (s16)rotX;
     CRot.y = (s16)mgmode_cameraRot.y;
-    speed = (HuPadBtn[1] & 0x2000) ? 10.0f : 2.0f;
-    if (HuPadBtn[1] & 0x800) {
+    speed = (HuPadBtn[1] & Z_TRIG) ? 10.0f : 2.0f;
+    if (HuPadBtn[1] & U_JPAD) {
         Center.x += sindf(rotY) * sindf(rotX) * -speed;
         Center.y += cosdf(rotX) * -speed;
         Center.z += cosdf(rotY) * sindf(rotX) * -speed;
-    } else if (HuPadBtn[1] & 0x400) {
+    } else if (HuPadBtn[1] & D_JPAD) {
         Center.x += sindf(rotY) * sindf(rotX) * speed;
         Center.y += cosdf(rotX) * speed;
         Center.z += cosdf(rotY) * sindf(rotX) * speed;
-    } else if (HuPadBtn[1] & 0x200) {
+    } else if (HuPadBtn[1] & L_JPAD) {
         // rotX is reused here as the X component of the camera direction.
         rotX = gCameraList->pos.z - Center.z;
         dirZ = -(gCameraList->pos.x - Center.x);
@@ -1612,7 +1612,7 @@ void mgmode_CameraDebugExec(void) {
         Center.x += rotX * inv * speed;
         Center.y += 0.0f;
         Center.z += dirZ * inv * speed;
-    } else if (HuPadBtn[1] & 0x100) {
+    } else if (HuPadBtn[1] & R_JPAD) {
         rotX = -(gCameraList->pos.z - Center.z);
         dirZ = gCameraList->pos.x - Center.x;
         inv = 1.0f / HuSqrtf(rotX * rotX + dirZ * dirZ);

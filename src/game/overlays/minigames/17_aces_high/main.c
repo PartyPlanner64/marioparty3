@@ -670,10 +670,10 @@ void m223_PlaneEndObjMain(omObjData *object) {
         player->unk_80 = target;
     }
     player->unk_84 = player->unk_80 / 30.0f;
-    if (btn & 0x4000) {
+    if (btn & B_BUTTON) {
         speed = 16.666666f;
         player->unk_4C = 0;
-    } else if (btn & 0x8000) {
+    } else if (btn & A_BUTTON) {
         speed = 41.666664f;
         player->unk_4C = 2;
     } else {
@@ -839,10 +839,10 @@ void m223_PlaneObjMain(omObjData *object) {
         player->unk_80 = target;
     }
     player->unk_84 = player->unk_80 / 30.0f;
-    if (btn & 0x4000) {
+    if (btn & B_BUTTON) {
         speed = 16.666666f;
         player->unk_4C = 0;
-    } else if (btn & 0x8000) {
+    } else if (btn & A_BUTTON) {
         speed = 41.666664f;
         player->unk_4C = 2;
     } else {
@@ -1246,13 +1246,13 @@ void m223_PlaneComInput(omObjData *object, s8 *stickX, s8 *stickY, u16 *btnDown,
                            (object->trans.z - other->trans.z) * (object->trans.z - other->trans.z));
             result = m223_PlaneComSteer(object, &target, angleTol, 60.0f, stickX, stickY);
             if (dist < 2400.0f) {
-                *btnDown |= 0x2000;
+                *btnDown |= Z_TRIG;
             }
             if ((farDist < dist && !(result & 0x4000)) || (result & 0x8000)) {
-                *btn |= 0x8000;
+                *btn |= A_BUTTON;
             }
             if ((dist < nearDist && !(result & 0x8000)) || (result & 0x4000)) {
-                *btn |= 0x4000;
+                *btn |= B_BUTTON;
             }
             if (--player->unk_B0 == 0) {
                 player->unk_92 = 0;
@@ -1294,10 +1294,10 @@ void m223_PlaneComInput(omObjData *object, s8 *stickX, s8 *stickY, u16 *btnDown,
                            (object->trans.z - other->trans.z) * (object->trans.z - other->trans.z));
             result = m223_PlaneComSteer(object, &target, angleTol, 60.0f, stickX, stickY);
             if ((farDist < dist && !(result & 0x4000)) || (result & 0x8000)) {
-                *btn |= 0x8000;
+                *btn |= A_BUTTON;
             }
             if ((dist < nearDist && !(result & 0x8000)) || (result & 0x4000)) {
-                *btn |= 0x4000;
+                *btn |= B_BUTTON;
             }
             break;
         case 4:
@@ -1307,10 +1307,10 @@ void m223_PlaneComInput(omObjData *object, s8 *stickX, s8 *stickY, u16 *btnDown,
                            (object->trans.z - player->unk_9C.z) * (object->trans.z - player->unk_9C.z));
             result = m223_PlaneComSteer(object, &target, angleTol, 20.0f, stickX, stickY);
             if ((farDist < dist && !(result & 0x4000)) || (result & 0x8000)) {
-                *btn |= 0x8000;
+                *btn |= A_BUTTON;
             }
             if ((dist < nearDist && !(result & 0x8000)) || (result & 0x4000)) {
-                *btn |= 0x4000;
+                *btn |= B_BUTTON;
             }
             if (dist < 100.0f) {
                 player->unk_92 = 0;
@@ -1347,7 +1347,7 @@ void m223_PlaneComInput(omObjData *object, s8 *stickX, s8 *stickY, u16 *btnDown,
                 *stickX = -stick;
             }
             if (HuSqrtf(object->trans.x * object->trans.x + object->trans.z * object->trans.z) > 3600.0f) {
-                *btn |= 0x4000;
+                *btn |= B_BUTTON;
             }
             break;
         case 5:
@@ -1357,10 +1357,10 @@ void m223_PlaneComInput(omObjData *object, s8 *stickX, s8 *stickY, u16 *btnDown,
                            (object->trans.z - player->unk_9C.z) * (object->trans.z - player->unk_9C.z));
             result = m223_PlaneComSteer(object, &target, 3.0f, 20.0f, stickX, stickY);
             if ((farDist < dist && !(result & 0x4000)) || (result & 0x8000)) {
-                *btn |= 0x8000;
+                *btn |= A_BUTTON;
             }
             if ((dist < nearDist && !(result & 0x8000)) || (result & 0x4000)) {
-                *btn |= 0x4000;
+                *btn |= B_BUTTON;
             }
             if (MgFlowStatGet() == MG_STATE_RESULT) {
                 player->unk_92 = 6;
@@ -1379,7 +1379,7 @@ void m223_PlaneComInput(omObjData *object, s8 *stickX, s8 *stickY, u16 *btnDown,
                 *stickY = -70;
                 player->unk_0C = 1;
             }
-            *btn |= 0x8000;
+            *btn |= A_BUTTON;
             break;
     }
     if (state == 5 || state == 6) {
@@ -1387,7 +1387,7 @@ void m223_PlaneComInput(omObjData *object, s8 *stickX, s8 *stickY, u16 *btnDown,
     }
     if (m223_PlaneComTargetFind(object, fov, list, &nearest, &minDist) != 0) {
         if (minDist <= 2750.0f) {
-            *btnDown |= 0x2000;
+            *btnDown |= Z_TRIG;
         }
         if (player->unk_92 == 1 && minDist < 1000.0f) {
             player->unk_B0 = rand8() % 181 + 60;
@@ -1396,11 +1396,11 @@ void m223_PlaneComInput(omObjData *object, s8 *stickX, s8 *stickY, u16 *btnDown,
         }
     }
     if (player->unk_70 != 0 && m223_ShotNearDistGet(object) < missileDist) {
-        *btn = (*btn & ~0x4000) | 0x8000;
+        *btn = (*btn & ~B_BUTTON) | A_BUTTON;
     }
     if (player->unk_AE != 0) {
         if (player->unk_52 < player->unk_AC) {
-            *btn |= 0x2000;
+            *btn |= Z_TRIG;
         } else {
             player->unk_AE = 0;
         }
@@ -1440,7 +1440,7 @@ u16 m223_PlaneComSteer(omObjData *object, Vec *target, f32 angleTol, f32 heightT
     } else {
         if (fabs(diff * scale) > 70.0) {
             stick = 70.0f;
-            btn = 0x4000;
+            btn = B_BUTTON;
         } else {
             stick = fabs(diff * scale);
         }

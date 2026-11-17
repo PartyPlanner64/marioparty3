@@ -442,8 +442,8 @@ void m242_PlayerComInput(omObjData *object) {
     HuPadStkY[object->work[3]] = -velZ;
     if (target->trans.x - 45.0f <= object->trans.x && object->trans.x <= target->trans.x + 45.0f &&
         target->trans.z - 67.5f <= object->trans.z && object->trans.z <= target->trans.z + 67.5f) {
-        HuPadBtnDown[object->work[3]] |= 0x8000;
-        HuPadBtnDown[object->work[3]] |= 0x2000;
+        HuPadBtnDown[object->work[3]] |= A_BUTTON;
+        HuPadBtnDown[object->work[3]] |= Z_TRIG;
     }
 }
 
@@ -599,7 +599,7 @@ void m242_PlayerObjMain(omObjData *object) {
                      cardObj->trans.z - 135.0f < object->trans.z && object->trans.z < cardObj->trans.z + 135.0f &&
                      other->unk_04[0] == 1 && m242_comFlipF == 0)) {
                     MgPlayerMotSet(object, 0);
-                    HuPadBtnDown[object->work[3]] |= 0x8000;
+                    HuPadBtnDown[object->work[3]] |= A_BUTTON;
                     m242_comFlipF = 1;
                 }
             }

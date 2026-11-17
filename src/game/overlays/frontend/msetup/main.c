@@ -1953,7 +1953,7 @@ void msetup_TutorialSetupExec(s16 mode) {
     for (i = 0; i < 4; i++) {
         msetup_WinMesSet(messages[i]);
         msetup_WinMesWait();
-        if (msetup_WinInputGet() & 0x4000) {
+        if (msetup_WinInputGet() & B_BUTTON) {
             msetup_WinMesSet(messages[4]);
             if (msetup_WinMesWait() == 0) {
                 break;

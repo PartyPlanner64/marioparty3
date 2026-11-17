@@ -4572,7 +4572,7 @@ void MBD4Ev_TurnStart(void) {
         MBDPartnerPosFix(index);
         MBDStatusFrontUpdate(index);
         MBDStatusBackUpdate(index);
-        if (ContBtn[0] & 0x1000) {
+        if (ContBtn[0] & START_BUTTON) {
             MBDPartnerPowerUp(index);
         }
 
@@ -4631,7 +4631,7 @@ void MBD4Ev_TurnStart(void) {
         MBDPartnerPosFix(1);
         MBDStatusFrontUpdate(1);
         MBDStatusBackUpdate(1);
-        if (ContBtn[0] & 0x1000) {
+        if (ContBtn[0] & START_BUTTON) {
             MBDPartnerPowerUp(1);
         }
     }

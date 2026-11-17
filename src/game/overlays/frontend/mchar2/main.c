@@ -141,7 +141,7 @@ void mchar2_ViewerObjMain(omObjData *arg0) {
         }
         model->motAttr = (model->motAttr & 0xFB) | 1;
     }
-    if ((HuPadBtn[0] & (L_TRIG | R_TRIG)) == 0x30) {
+    if ((HuPadBtn[0] & (L_TRIG | R_TRIG)) == (L_TRIG | R_TRIG)) {
         mchar2_exitF = 1;
     }
     if (HuPadBtnDown[1] & START_BUTTON) {

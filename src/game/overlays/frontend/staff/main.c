@@ -50,7 +50,7 @@ void staff_ObjectSetup(void) {
 }
 
 void staff_ExitCheckObjMain(omObjData *object) {
-    if (staff_storyF == 0 && (HuPadBtnDown[staff_padNo] & 0x1000)) {
+    if (staff_storyF == 0 && (HuPadBtnDown[staff_padNo] & START_BUTTON)) {
         staff_exitMode = 0;
         staff_exitCnt = 1;
     }

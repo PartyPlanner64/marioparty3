@@ -544,7 +544,7 @@ void m269_ChoiceObjMain(omObjData *object) {
                             input = -1;
                             m269_inputWait = 5;
                         }
-                        if (HuPadBtnDown[m269_playerInfo[1]] & 0x8000) {
+                        if (HuPadBtnDown[m269_playerInfo[1]] & A_BUTTON) {
                             input = 10;
                         }
                         break;
@@ -1710,7 +1710,7 @@ void m269_WinKeyWait(s16 win, s16 player, s16 mode) {
     while (HuWinStatGet(win) != 0) {
         switch (mode) {
             case 0:
-                if (HuPadBtnDown[player] & 0x8000) {
+                if (HuPadBtnDown[player] & A_BUTTON) {
                     HuWinComKeySet(-0x8000, -0x8000, -0x8000, -0x8000);
                 }
                 break;

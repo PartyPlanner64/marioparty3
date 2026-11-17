@@ -760,7 +760,7 @@ void selmenu_MenuObjMain(omObjData *obj) {
             selmenu_playerCfgPlayerPos = 0;
             selmenu_playerCfgSelF = 0;
             obj->func = selmenu_PlayerCfgObjMain;
-        } else if (HuPadBtnDown[i] & 0x10) {
+        } else if (HuPadBtnDown[i] & R_TRIG) {
             if (++omDBGPlayMode >= 3) {
                 omDBGPlayMode = 0;
             }

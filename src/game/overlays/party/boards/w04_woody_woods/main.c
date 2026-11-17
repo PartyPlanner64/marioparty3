@@ -4241,7 +4241,7 @@ itemSelect:
                     }
                     timer = 30;
 
-                    if ((*(u16 *)((u8 *)ContBtnDown + (GwPlayer[system->current_player_index].pad << 1)) & 0x8000) == 0) {
+                    if ((*(u16 *)((u8 *)ContBtnDown + (GwPlayer[system->current_player_index].pad << 1)) & A_BUTTON) == 0) {
                         row = (s32)ContBtnDown;
                         while (1) {
                             if (MBPlayerComCheck(-1) != 0) {
@@ -8540,9 +8540,9 @@ void MB4Ev_HatenaPick(void) {
     for (i = 0; i < count; i++) {
         if (choice == -1) {
             if (!MBPlayerComCheck(-1)) {
-                if (ContBtn[GwPlayer[curPlayer].pad] & 0x200) {
+                if (ContBtn[GwPlayer[curPlayer].pad] & L_JPAD) {
                     choice = 0;
-                } else if (ContBtn[GwPlayer[curPlayer].pad] & 0x100) {
+                } else if (ContBtn[GwPlayer[curPlayer].pad] & R_JPAD) {
                     choice = 1;
                 }
             }
@@ -8575,9 +8575,9 @@ void MB4Ev_HatenaPick(void) {
                 if (MBRand(10.0f) == 0) {
                     choice = MBRand(2.0f) != 0;
                 }
-            } else if (ContBtn[GwPlayer[curPlayer].pad] & 0x200) {
+            } else if (ContBtn[GwPlayer[curPlayer].pad] & L_JPAD) {
                 choice = 0;
-            } else if (ContBtn[GwPlayer[curPlayer].pad] & 0x100) {
+            } else if (ContBtn[GwPlayer[curPlayer].pad] & R_JPAD) {
                 choice = 1;
             }
             if (choice != -1) {
@@ -8787,9 +8787,9 @@ void MB4Ev_HatenaPickRev(void) {
     for (i = 0; i < count; i++) {
         if (choice == -1) {
             if (!MBPlayerComCheck(-1)) {
-                if (ContBtn[GwPlayer[curPlayer].pad] & 0x200) {
+                if (ContBtn[GwPlayer[curPlayer].pad] & L_JPAD) {
                     choice = 0;
-                } else if (ContBtn[GwPlayer[curPlayer].pad] & 0x100) {
+                } else if (ContBtn[GwPlayer[curPlayer].pad] & R_JPAD) {
                     choice = 1;
                 }
             }
@@ -8821,9 +8821,9 @@ void MB4Ev_HatenaPickRev(void) {
                 if (MBRand(10.0f) == 0) {
                     choice = MBRand(2.0f) != 0;
                 }
-            } else if (ContBtn[GwPlayer[curPlayer].pad] & 0x200) {
+            } else if (ContBtn[GwPlayer[curPlayer].pad] & L_JPAD) {
                 choice = 0;
-            } else if (ContBtn[GwPlayer[curPlayer].pad] & 0x100) {
+            } else if (ContBtn[GwPlayer[curPlayer].pad] & R_JPAD) {
                 choice = 1;
             }
             if (choice != -1) {

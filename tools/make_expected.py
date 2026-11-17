@@ -1,9 +1,12 @@
 import os
 import shutil
 
-# Set the source and destination directories
-src_dir = 'build'
-dst_dir = 'expected/build'
+from version_paths import BUILD_DIR, EXPECTED_DIR, rel
+
+# Mirror this version's build directory under expected/, keeping its path
+# (expected/ver/<version>/build) so diff.py can find reference objects.
+src_dir = rel(BUILD_DIR)
+dst_dir = str(EXPECTED_DIR / src_dir)
 
 # Make sure the destination directory exists
 if not os.path.exists(dst_dir):

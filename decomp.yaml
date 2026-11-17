@@ -6,14 +6,14 @@ versions:
   fullname: US
   sha1: 6BEB80FF822B96BCF85DCDB512E8B2B7969D8259
   paths:
-    target: "marioparty3.z64"
+    target: "ver/us/baserom.z64"
 
-    build_dir: "build"
-    map: "build/marioparty3.map"
-    compiled_target: "build/marioparty3.z64"
-    elf: "build/marioparty3.elf"
+    build_dir: "ver/us/build"
+    map: "ver/us/build/marioparty3.map"
+    compiled_target: "ver/us/build/marioparty3.z64"
+    elf: "ver/us/build/marioparty3.elf"
 
     expected_dir: "expected/"
 
-    asm: "asm"
-    nonmatchings: "asm/nonmatchings"
+    asm: "ver/us/asm"
+    nonmatchings: "ver/us/asm/nonmatchings"

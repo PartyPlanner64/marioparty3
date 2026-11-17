@@ -7,9 +7,9 @@ input=$(cat)
 # Check for file path in Read/Write/Edit tools
 file_path=$(echo "$input" | jq -r '.tool_input.file_path // ""')
 
-# Block edits to marioparty3.sha1
-if [[ "$file_path" == *marioparty3.sha1 ]]; then
-  echo "Blocked: marioparty3.sha1 is a reference checksum file and should not be edited." 1>&2
+# Block edits to the per-version reference checksums (ver/<version>/checksum.sha1)
+if [[ "$file_path" == */ver/*/checksum.sha1 ]]; then
+  echo "Blocked: $file_path is a reference checksum file and should not be edited." 1>&2
   exit 2
 fi
 

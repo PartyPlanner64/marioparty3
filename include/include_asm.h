@@ -3,13 +3,18 @@
 
 #if !defined(M2CTX) && !defined(PERMUTER)
 
+/*
+ * FOLDER is relative to the version directory (ver/<version>/), which the
+ * Makefile passes as VERSION_DIR.
+ */
+
 #ifndef INCLUDE_ASM
 #define INCLUDE_ASM(FOLDER, NAME) \
     __asm__( \
         ".section .text\n" \
         "    .set noat\n" \
         "    .set noreorder\n" \
-        "    .include \"" FOLDER "/" #NAME ".s\"\n" \
+        "    .include \"" VERSION_DIR "/" FOLDER "/" #NAME ".s\"\n" \
         "    .set reorder\n" \
         "    .set at\n" \
     )
@@ -18,7 +23,7 @@
 #define INCLUDE_RODATA(FOLDER, NAME) \
     __asm__( \
         ".section .rodata\n" \
-        "    .include \"" FOLDER "/" #NAME ".s\"\n" \
+        "    .include \"" VERSION_DIR "/" FOLDER "/" #NAME ".s\"\n" \
         ".section .text" \
     )
 #endif

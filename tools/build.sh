@@ -10,12 +10,27 @@ if [[ -f "venv/bin/activate" ]]; then
     source "venv/bin/activate"
 fi
 
+clean=0
 splat=0
 verbose=0
-for arg in "$@"; do
+version="${VERSION:-us}"
+while [[ $# -gt 0 ]]; do
+    arg="$1"
+    shift
     case "$arg" in
+        --version)
+            if [[ $# -eq 0 ]]; then
+                echo "--version requires a value (e.g. --version us)" >&2
+                exit 1
+            fi
+            version="$1"
+            shift
+            ;;
+        --version=*)
+            version="${arg#--version=}"
+            ;;
         --clean)
-            make distclean
+            clean=1
             # --clean implies a full regeneration, so behave like --splat.
             splat=1
             ;;
@@ -39,8 +54,12 @@ if [[ "$verbose" -eq 0 ]]; then
     quiet=(QUIET=1)
 fi
 
-if [[ "$splat" -eq 1 ]]; then
-    make "${quiet[@]}" setup
+if [[ "$clean" -eq 1 ]]; then
+    make VERSION="$version" distclean
 fi
 
-exec make -j "${quiet[@]}"
+if [[ "$splat" -eq 1 ]]; then
+    make VERSION="$version" "${quiet[@]}" setup
+fi
+
+exec make -j VERSION="$version" "${quiet[@]}"

@@ -4,6 +4,8 @@ import os.path
 import argparse
 from subprocess import check_call
 
+from version_paths import BASEROM, EXPECTED_DIR, MAP, ROM, VERSION, rel
+
 parser = argparse.ArgumentParser(
     description="Find the first difference(s) between the built ROM and the base ROM."
 )
@@ -32,13 +34,13 @@ args = parser.parse_args()
 diff_count = args.count
 
 if args.make:
-    check_call(["make", "build/marioparty.z64"])
+    check_call(["make", f"VERSION={VERSION}", rel(ROM)])
 
-baseimg = f"baserom.us.z64"
-basemap = f"expected/build/marioparty3.map"
+baseimg = rel(BASEROM)
+basemap = str(EXPECTED_DIR / rel(MAP))
 
-myimg = f"build/marioparty3.z64"
-mymap = f"build/marioparty3.map"
+myimg = rel(ROM)
+mymap = rel(MAP)
 
 if not os.path.isfile(baseimg):
     print(f"{baseimg} must exist.")

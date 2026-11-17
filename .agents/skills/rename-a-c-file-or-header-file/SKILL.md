@@ -7,7 +7,7 @@ description: Use this skill when you want to rename a C file and/or a header fil
 
 ## Instructions
 
-C files and their associated header files are mapped to specific ROM addresses via the Splat project configuration in `marioparty3.yaml`.
+C files and their associated header files are mapped to specific ROM addresses via the Splat project configuration in `ver/us/splat.yaml`.
 
 A file will typically have a code segment, such as:
 

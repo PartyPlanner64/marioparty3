@@ -6,6 +6,8 @@ import sys
 import subprocess
 import tempfile
 
+from version_paths import BUILD_DIR, VERSION_MACRO, rel
+
 script_dir = os.path.dirname(os.path.realpath(__file__))
 root_dir = os.path.abspath(os.path.join(script_dir, ".."))
 src_dir = root_dir + "src/"
@@ -14,7 +16,7 @@ src_dir = root_dir + "src/"
 CPP_FLAGS = [
     "-Iinclude",
     "-Isrc",
-    "-Ibuild/include",
+    "-I" + rel(BUILD_DIR / "include"),
     "-Iinclude/engine",
     "-D_LANGUAGE_C",
     "-DF3DEX_GBI_2",
@@ -23,6 +25,7 @@ CPP_FLAGS = [
     "-D__asm__(...)=",
     "-ffreestanding",
     "-DM2CTX",
+    "-DVERSION=" + VERSION_MACRO,
 ]
 
 def import_c_file(in_file) -> str:

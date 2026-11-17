@@ -6,9 +6,9 @@ import os
 import argparse
 from enum import IntEnum
 
+from version_paths import NONMATCHINGS_DIR
 
-script_dir = os.path.dirname(os.path.realpath(__file__))
-asm_dir = script_dir + "/../asm/nonmatchings"
+asm_dir = str(NONMATCHINGS_DIR)
 
 modes = [ "min", "max", "avg", "total", "size" ]
 

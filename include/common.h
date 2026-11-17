@@ -3,6 +3,7 @@
 
 #include "ultra64.h"
 #include "types.h"
+#include "version.h"
 #include "humath.h"
 
 #include "game/audio.h"

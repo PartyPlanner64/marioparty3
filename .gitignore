@@ -1,14 +1,18 @@
-baserom.*.z64
-undefined_funcs_auto.txt
-undefined_syms_auto.txt
+# Per-version baseroms and generated files (see ver/<version>/).
+ver/*/baserom.z64
+ver/*/undefined_funcs_auto.txt
+ver/*/undefined_syms_auto.txt
+ver/*/asm/
+ver/*/assets/
+ver/*/build/
+ver/*/.splat_cache
+ver/*/*.ld
 asm/
 build/
 assets/
 expected/
 rsp/
 ignore_funcs.local.txt
-include/ld_addrs.h
-marioparty3.ld
 ctx.c
 build.ninja
 tools/bin

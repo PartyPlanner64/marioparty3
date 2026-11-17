@@ -23,11 +23,11 @@ from pathlib import Path
 
 import yaml
 
-ROOT = Path(__file__).resolve().parent.parent
-SYMBOL_ADDRS = ROOT / "symbol_addrs.txt"
-YAML_PATH = ROOT / "marioparty3.yaml"
+from version_paths import ROOT, SPLAT_YAML, SYMBOL_ADDRS, UNDEFINED_SYMS
+
+YAML_PATH = SPLAT_YAML
 TEXT_DIRS = [ROOT / "src", ROOT / "include"]
-EXTRA_FILES = [ROOT / "undefined_syms.txt"]
+EXTRA_FILES = [UNDEFINED_SYMS]
 SOURCE_EXTS = {".c", ".h", ".inc"}
 
 PLACEHOLDER_RE = re.compile(r"^(func|D)_([0-9A-F]{8})(?:_([A-Za-z0-9_]+))?$")

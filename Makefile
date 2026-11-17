@@ -1,12 +1,22 @@
 ### Build Options ###
 
-BASEROM      := baserom.us.z64
+# VERSION selects the game release to build. Each release keeps its splat
+# config, symbols, baserom, and generated output under ver/$(VERSION)/.
+VERSIONS     := us
+VERSION      ?= us
 TARGET       := marioparty3
 COMPARE      ?= 1
 NON_MATCHING ?= 0
 CHECK        ?= 1
 VERBOSE      ?= 0
 QUIET        ?= 0
+
+ifeq ($(filter $(VERSION),$(VERSIONS)),)
+$(error Unknown VERSION `$(VERSION)'. Valid versions: $(VERSIONS))
+endif
+
+VER_DIR      := ver/$(VERSION)
+BASEROM      := $(VER_DIR)/baserom.z64
 
 # Fail early if baserom does not exist
 ifeq ($(wildcard $(BASEROM)),)
@@ -48,10 +58,10 @@ endif
 
 ### Output ###
 
-BUILD_DIR := build
+BUILD_DIR := $(VER_DIR)/build
 ROM       := $(BUILD_DIR)/$(TARGET).z64
 ELF       := $(BUILD_DIR)/$(TARGET).elf
-LD_SCRIPT := $(TARGET).ld
+LD_SCRIPT := $(VER_DIR)/$(TARGET).ld
 LD_MAP    := $(BUILD_DIR)/$(TARGET).map
 
 
@@ -59,7 +69,7 @@ LD_MAP    := $(BUILD_DIR)/$(TARGET).map
 
 PYTHON		:= venv/bin/python3  # Ensure we're using the Python from the virtual environment
 N64CKSUM	:= $(PYTHON) tools/n64cksum.py
-SPLAT_YAML	:= marioparty3.yaml
+SPLAT_YAML	:= $(VER_DIR)/splat.yaml
 SPLAT	:= $(PYTHON) -m splat split $(SPLAT_YAML)  # Use splat from the virtual environment
 EMULATOR   := mupen64plus
 DIFF       := diff
@@ -93,8 +103,11 @@ ENDLINE := \n'
 
 ASFLAGS        := -G 0 -I include -mips3 -mabi=32
 CFLAGS         := -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -DOLD_GCC -Wa,--force-n64align
-CPPFLAGS     := -I include -I $(BUILD_DIR)/include -I src -DF3DEX_GBI_2 -D_LANGUAGE_C
-LDFLAGS        := -T undefined_syms.txt -T undefined_funcs_auto.txt -T undefined_syms_auto.txt -T $(LD_SCRIPT) -Map $(LD_MAP) --no-check-sections
+# VERSION_DEFINES names the release being built (see include/version.h); the
+# version directory lets INCLUDE_ASM find this release's split assembly.
+VERSION_DEFINES := -DVERSION=VERSION_$(shell echo $(VERSION) | tr a-z- A-Z_) -DVERSION_DIR=\"$(VER_DIR)\"
+CPPFLAGS     := -I include -I $(BUILD_DIR)/include -I src -DF3DEX_GBI_2 -D_LANGUAGE_C $(VERSION_DEFINES)
+LDFLAGS        := -T $(VER_DIR)/undefined_syms.txt -T $(VER_DIR)/undefined_funcs_auto.txt -T $(VER_DIR)/undefined_syms_auto.txt -T $(LD_SCRIPT) -Map $(LD_MAP) --no-check-sections
 CHECK_WARNINGS := -Wall -Wextra -Wunused-but-set-variable -Wno-format-security -Wno-unused-parameter -Wno-sign-compare -Wno-missing-braces -Wno-unused-variable -Wno-pointer-to-int-cast -Wno-int-to-pointer-cast -Wuseless-cast -m32
 CFLAGS_CHECK   := -fcommon -fsyntax-only -ffreestanding -fsigned-char -nostdinc -fno-builtin -D CC_CHECK -D _LANGUAGE_C -std=gnu90 $(CHECK_WARNINGS)
 
@@ -107,186 +120,186 @@ OPTFLAGS := -O1
 ### Sources ###
 
 # Object files
-OBJECTS := $(shell grep -E 'build.+\.o' marioparty3.ld -o)
+OBJECTS := $(shell grep -E '$(BUILD_DIR)/.+\.o' $(LD_SCRIPT) -o 2>/dev/null)
 DEPENDS := $(OBJECTS:=.d) 
 
 ### Targets ###
 
-build/src/libhmath/%.c.o build/src/libhmath/%.c.s: OPTFLAGS = -O2
-build/src/libhmath/%.o build/src/libhmath/%.c.s build/src/libm/%.o: CFLAGS := -G0 -mips3 -mgp32 -mfp32 -ffast-math -Wa,--force-n64align
+$(BUILD_DIR)/src/libhmath/%.c.o $(BUILD_DIR)/src/libhmath/%.c.s: OPTFLAGS = -O2
+$(BUILD_DIR)/src/libhmath/%.o $(BUILD_DIR)/src/libhmath/%.c.s $(BUILD_DIR)/src/libm/%.o: CFLAGS := -G0 -mips3 -mgp32 -mfp32 -ffast-math -Wa,--force-n64align
 
-#build/src/libultra/os/%.o: CFLAGS := -O2 $(CFLAGSCOMMON)
-#build/src/libultra/libc/%.o: CFLAGS := -O2 $(CFLAGSCOMMON)
-# build/src/2.0L/%.o: CFLAGS := -O2 $(CFLAGSCOMMON)
+#$(BUILD_DIR)/src/libultra/os/%.o: CFLAGS := -O2 $(CFLAGSCOMMON)
+#$(BUILD_DIR)/src/libultra/libc/%.o: CFLAGS := -O2 $(CFLAGSCOMMON)
+# $(BUILD_DIR)/src/2.0L/%.o: CFLAGS := -O2 $(CFLAGSCOMMON)
 
 all: $(ROM)
 
 -include $(DEPENDS)
 
 clean:
-	$(V)rm -rf build
+	$(V)rm -rf $(BUILD_DIR)
 
 distclean: clean
-	$(V)rm -rf asm
-	$(V)rm -rf assets
-	$(V)rm -f *auto.txt
-	$(V)rm -f marioparty3.ld
-	$(V)rm -f include/ld_addrs.h
+	$(V)rm -rf $(VER_DIR)/asm
+	$(V)rm -rf $(VER_DIR)/assets
+	$(V)rm -rf $(VER_DIR)/.splat_cache
+	$(V)rm -f $(VER_DIR)/*auto.txt
+	$(V)rm -f $(LD_SCRIPT)
 
 setup: distclean split
 
 split:
-	$(V)rm -rf asm
+	$(V)rm -rf $(VER_DIR)/asm
 	$(V)$(SPLAT)$(SPLAT_REDIRECT)
 
 test: $(ROM)
 	$(V)$(EMULATOR) $<
 
 # Flags for individual files. TODO: move these to a common directory and make this a directory thing instead
-build/src/lib/hvq.c.o: OPTFLAGS = -O2
-build/src/lib/hvq.c.o: CFLAGS += -Wa,--force-n64align
-build/src/2.0L/audio/%.c.o: OPTFLAGS = -O2
-build/src/2.0L/audio/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_MIPS_SZLONG=32 -D_LANGUAGE_C -DF3DEX_GBI -D__MIPSEB__ -Wa,--force-n64align
-build/src/2.0L/audio/%.c.o: CPPFLAGS = -I include -I include/PR -I include/gcc -I $(BUILD_DIR)/include -I src -DNDEBUG -D_MIPS_SZLONG=32 -DF3DEX_GBI_2
-build/src/2.0L/audio/cseq.c.o: OPTFLAGS = -O3
-build/src/2.0L/audio/env.c.o: OPTFLAGS = -O3
-build/src/2.0L/audio/drvrnew.c.o: OPTFLAGS = -O3
-build/src/2.0L/n_audio/%.c.o: OPTFLAGS = -O2
-build/src/2.0L/n_audio/n_csq.c.o: OPTFLAGS = -O3
-build/src/2.0L/n_audio/n_reverb.c.o: NO_STRIP_NOP = 1
-build/src/2.0L/n_audio/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_MIPS_SZLONG=32 -D_LANGUAGE_C -DF3DEX_GBI -D__MIPSEB__ -Wa,--force-n64align
-build/src/2.0L/n_audio/%.c.o: CPPFLAGS = -I include -I include/PR -I include/gcc -I $(BUILD_DIR)/include -I src -DNDEBUG -D_MIPS_SZLONG=32 -DF3DEX_GBI_2
+$(BUILD_DIR)/src/lib/hvq.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/lib/hvq.c.o: CFLAGS += -Wa,--force-n64align
+$(BUILD_DIR)/src/2.0L/audio/%.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/audio/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_MIPS_SZLONG=32 -D_LANGUAGE_C -DF3DEX_GBI -D__MIPSEB__ -Wa,--force-n64align
+$(BUILD_DIR)/src/2.0L/audio/%.c.o: CPPFLAGS = -I include -I include/PR -I include/gcc -I $(BUILD_DIR)/include -I src -DNDEBUG -D_MIPS_SZLONG=32 -DF3DEX_GBI_2 $(VERSION_DEFINES)
+$(BUILD_DIR)/src/2.0L/audio/cseq.c.o: OPTFLAGS = -O3
+$(BUILD_DIR)/src/2.0L/audio/env.c.o: OPTFLAGS = -O3
+$(BUILD_DIR)/src/2.0L/audio/drvrnew.c.o: OPTFLAGS = -O3
+$(BUILD_DIR)/src/2.0L/n_audio/%.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/n_audio/n_csq.c.o: OPTFLAGS = -O3
+$(BUILD_DIR)/src/2.0L/n_audio/n_reverb.c.o: NO_STRIP_NOP = 1
+$(BUILD_DIR)/src/2.0L/n_audio/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_MIPS_SZLONG=32 -D_LANGUAGE_C -DF3DEX_GBI -D__MIPSEB__ -Wa,--force-n64align
+$(BUILD_DIR)/src/2.0L/n_audio/%.c.o: CPPFLAGS = -I include -I include/PR -I include/gcc -I $(BUILD_DIR)/include -I src -DNDEBUG -D_MIPS_SZLONG=32 -DF3DEX_GBI_2 $(VERSION_DEFINES)
 # libultra rmon touches the FPU through an otherwise-unused volatile float.
-build/src/2.0L/rmon/%.c.o: CFLAGS_CHECK += -Wno-unused-but-set-variable
-build/src/8A6B0.c.o: OPTFLAGS = -O2 #Could also be -O3?
+$(BUILD_DIR)/src/2.0L/rmon/%.c.o: CFLAGS_CHECK += -Wno-unused-but-set-variable
+$(BUILD_DIR)/src/8A6B0.c.o: OPTFLAGS = -O2 #Could also be -O3?
 # n_synstartvoiceparam and n_synsetpan were built unoptimized; -Wa,-g keeps gas from filling delay slots.
-build/src/game/n_synstartvoiceparam.c.o: OPTFLAGS = -O0
-build/src/game/n_synstartvoiceparam.c.o: NO_STRIP_NOP = 1
-build/src/game/n_synstartvoiceparam.c.o: CFLAGS += -Wa,-g
-build/src/game/n_synsetpan.c.o: OPTFLAGS = -O0
-build/src/game/n_synsetpan.c.o: NO_STRIP_NOP = 1
-build/src/game/n_synsetpan.c.o: CFLAGS += -Wa,-g
+$(BUILD_DIR)/src/game/n_synstartvoiceparam.c.o: OPTFLAGS = -O0
+$(BUILD_DIR)/src/game/n_synstartvoiceparam.c.o: NO_STRIP_NOP = 1
+$(BUILD_DIR)/src/game/n_synstartvoiceparam.c.o: CFLAGS += -Wa,-g
+$(BUILD_DIR)/src/game/n_synsetpan.c.o: OPTFLAGS = -O0
+$(BUILD_DIR)/src/game/n_synsetpan.c.o: NO_STRIP_NOP = 1
+$(BUILD_DIR)/src/game/n_synsetpan.c.o: CFLAGS += -Wa,-g
 # libkmc fmod was built without the post-call nop strip.
-build/src/libkmc/fmod.c.o: NO_STRIP_NOP = 1
-build/src/2.0L/debug/kdebugserver.c.o: OPTFLAGS = -O3
-build/src/2.0L/debug/readhost.c.o: OPTFLAGS = -O2
-build/src/2.0L/debug/threadprofile.c.o: OPTFLAGS = -O2
-build/src/2.0L/rmon/%.c.o: OPTFLAGS = -O2
-build/src/2.0L/rmon/rmonbrk.c.o: OPTFLAGS = -O3
-build/src/2.0L/rmon/rmonmain.c.o: OPTFLAGS = -O3
-build/src/2.0L/rmon/rmonmem.c.o: OPTFLAGS = -O3
-build/src/2.0L/rmon/rmonregs.c.o: OPTFLAGS = -O3
-build/src/2.0L/rmon/rmontask.c.o: OPTFLAGS = -O3
-build/src/2.0L/gu/%.c.o: OPTFLAGS = -O2
-build/src/2.0L/gu/%.c.o: NO_STRIP_NOP = 1
-build/src/2.0L/gu/lookat.c.o: OPTFLAGS = -O3
-build/src/2.0L/gu/perspective.c.o: OPTFLAGS = -O3
-build/src/2.0L/gu/rotate.c.o: OPTFLAGS = -O3
-build/src/2.0L/gu/rotaterpy.c.o: OPTFLAGS = -O3
-build/src/2.0L/io/ai.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/aigetlen.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/aisetfreq.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/aisetnextbuf.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/cartrominit.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/conteeplongread.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/conteeplongwrite.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/conteepprobe.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/conteepread.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/conteepwrite.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/contpfs.c.o: OPTFLAGS = -O3
-build/src/2.0L/io/contramread.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/contramwrite.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/contreaddata.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/controller.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/contsetch.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/devmgr.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/epidma.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/epirawdma.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/epirawread.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/epirawwrite.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/epiread.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/epiwrite.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/motor.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/pfsgetstatus.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/pfsisplug.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/pfsselectbank.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/piacs.c.o: OPTFLAGS = -O2 -fno-expensive-optimizations
-build/src/2.0L/io/pigetcmdq.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/pimgr.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/pirawdma.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/pirawread.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/pirawwrite.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/piread.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/piwrite.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/si.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/siacs.c.o: OPTFLAGS = -O2 -fno-expensive-optimizations
-build/src/2.0L/io/sirawdma.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/sirawread.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/sirawwrite.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/sp.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/spgetstat.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/sprawdma.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/sprawread.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/sprawwrite.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/spsetstat.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/sptask.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/sptaskyield.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/sptaskyielded.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/vi.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/viblack.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/vigetcurrcontext.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/vimgr.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/visetevent.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/visetmode.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/visetspecial.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/visetyscale.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/viswapbuf.c.o: OPTFLAGS = -O2
-build/src/2.0L/io/viswapcontext.c.o: OPTFLAGS = -O2
-build/src/2.0L/libc/ldiv.c.o: OPTFLAGS = -O2
-build/src/2.0L/libc/sprintf.c.o: OPTFLAGS = -O2
-build/src/2.0L/libc/syncprintf.c.o: OPTFLAGS = -O2
-build/src/2.0L/libc/string.c.o: OPTFLAGS = -O2
-build/src/2.0L/libc/xldtob.c.o: OPTFLAGS = -O2
-build/src/2.0L/libc/xlitob.c.o: OPTFLAGS = -O2
-build/src/2.0L/libc/xprintf.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/afterprenmi.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/createthread.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/destroythread.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/getmemsize.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/getthreadpri.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/gettime.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/initialize.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/initialize_emu.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/initialize_isv.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/initialize_kmc.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/initialize_msp.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/initrdb.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/jammesg.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/rdbsend.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/recvmesg.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/resetglobalintmask.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/sendmesg.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/seteventmesg.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/setglobalintmask.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/setthreadpri.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/settimer.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/startthread.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/timerintr.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/virtualtophysical.c.o: OPTFLAGS = -O2
-build/src/2.0L/os/yieldthread.c.o: OPTFLAGS = -O2
-build/src/88CF0.c.o: OPTFLAGS = -O2
-build/src/88CF0.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
+$(BUILD_DIR)/src/libkmc/fmod.c.o: NO_STRIP_NOP = 1
+$(BUILD_DIR)/src/2.0L/debug/kdebugserver.c.o: OPTFLAGS = -O3
+$(BUILD_DIR)/src/2.0L/debug/readhost.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/debug/threadprofile.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/rmon/%.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/rmon/rmonbrk.c.o: OPTFLAGS = -O3
+$(BUILD_DIR)/src/2.0L/rmon/rmonmain.c.o: OPTFLAGS = -O3
+$(BUILD_DIR)/src/2.0L/rmon/rmonmem.c.o: OPTFLAGS = -O3
+$(BUILD_DIR)/src/2.0L/rmon/rmonregs.c.o: OPTFLAGS = -O3
+$(BUILD_DIR)/src/2.0L/rmon/rmontask.c.o: OPTFLAGS = -O3
+$(BUILD_DIR)/src/2.0L/gu/%.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/gu/%.c.o: NO_STRIP_NOP = 1
+$(BUILD_DIR)/src/2.0L/gu/lookat.c.o: OPTFLAGS = -O3
+$(BUILD_DIR)/src/2.0L/gu/perspective.c.o: OPTFLAGS = -O3
+$(BUILD_DIR)/src/2.0L/gu/rotate.c.o: OPTFLAGS = -O3
+$(BUILD_DIR)/src/2.0L/gu/rotaterpy.c.o: OPTFLAGS = -O3
+$(BUILD_DIR)/src/2.0L/io/ai.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/aigetlen.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/aisetfreq.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/aisetnextbuf.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/cartrominit.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/conteeplongread.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/conteeplongwrite.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/conteepprobe.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/conteepread.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/conteepwrite.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/contpfs.c.o: OPTFLAGS = -O3
+$(BUILD_DIR)/src/2.0L/io/contramread.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/contramwrite.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/contreaddata.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/controller.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/contsetch.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/devmgr.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/epidma.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/epirawdma.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/epirawread.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/epirawwrite.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/epiread.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/epiwrite.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/motor.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/pfsgetstatus.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/pfsisplug.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/pfsselectbank.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/piacs.c.o: OPTFLAGS = -O2 -fno-expensive-optimizations
+$(BUILD_DIR)/src/2.0L/io/pigetcmdq.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/pimgr.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/pirawdma.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/pirawread.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/pirawwrite.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/piread.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/piwrite.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/si.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/siacs.c.o: OPTFLAGS = -O2 -fno-expensive-optimizations
+$(BUILD_DIR)/src/2.0L/io/sirawdma.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/sirawread.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/sirawwrite.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/sp.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/spgetstat.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/sprawdma.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/sprawread.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/sprawwrite.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/spsetstat.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/sptask.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/sptaskyield.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/sptaskyielded.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/vi.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/viblack.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/vigetcurrcontext.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/vimgr.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/visetevent.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/visetmode.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/visetspecial.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/visetyscale.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/viswapbuf.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/io/viswapcontext.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/libc/ldiv.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/libc/sprintf.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/libc/syncprintf.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/libc/string.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/libc/xldtob.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/libc/xlitob.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/libc/xprintf.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/afterprenmi.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/createthread.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/destroythread.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/getmemsize.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/getthreadpri.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/gettime.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/initialize.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/initialize_emu.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/initialize_isv.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/initialize_kmc.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/initialize_msp.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/initrdb.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/jammesg.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/rdbsend.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/recvmesg.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/resetglobalintmask.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/sendmesg.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/seteventmesg.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/setglobalintmask.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/setthreadpri.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/settimer.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/startthread.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/timerintr.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/virtualtophysical.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/2.0L/os/yieldthread.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/88CF0.c.o: OPTFLAGS = -O2
+$(BUILD_DIR)/src/88CF0.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
 
 # Files that have scommon
-build/src/2.0L/gu/lookathil.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
-build/src/game/gamemes.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
-build/src/game/hmflight.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
-build/src/game/pause.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
-build/src/game/overlays/minigames/31_vine_with_me/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
-build/src/game/overlays/minigames/36_motor_rooter/system.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
-build/src/game/overlays/minigames/37_silly_screws/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
-build/src/game/overlays/minigames/39_tick_tock_hop/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
-build/src/game/overlays/party/common/model.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
+$(BUILD_DIR)/src/2.0L/gu/lookathil.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
+$(BUILD_DIR)/src/game/gamemes.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
+$(BUILD_DIR)/src/game/hmflight.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
+$(BUILD_DIR)/src/game/pause.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
+$(BUILD_DIR)/src/game/overlays/minigames/31_vine_with_me/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
+$(BUILD_DIR)/src/game/overlays/minigames/36_motor_rooter/system.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
+$(BUILD_DIR)/src/game/overlays/minigames/37_silly_screws/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
+$(BUILD_DIR)/src/game/overlays/minigames/39_tick_tock_hop/%.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
+$(BUILD_DIR)/src/game/overlays/party/common/model.c.o: CFLAGS = -G0 -mips3 -mgp32 -mfp32 -D_LANGUAGE_C -Wa,--force-n64align
 
 # libm and libleo use IDO 5.3.
 IDO_OBJECTS := $(sort $(filter $(BUILD_DIR)/src/libm/%.c.o $(BUILD_DIR)/src/libleo/%.c.o,$(OBJECTS)))
@@ -329,7 +342,7 @@ $(GCC_OBJECTS): $(BUILD_DIR)/%.c.o: $(BUILD_DIR)/%.c.s
 	@$(STRIP) $@ -N dummy-symbol-name
 
 # Assemble .s files with modern gnu as
-$(BUILD_DIR)/asm/%.s.o: asm/%.s
+$(BUILD_DIR)/%.s.o: %.s
 	$(ECHO)$(PRINT)$(GREEN)Assembling asm file: $(ENDGREEN)$(BLUE)$<$(ENDBLUE)$(ENDLINE)
 	@mkdir -p $(shell dirname $@)
 	$(V)$(AS) $(ASFLAGS) -o $@ $<

@@ -5,7 +5,7 @@ description: Use this skill when you want to rename a function. Renaming a funct
 
 # Rename a function
 
-Create a mapping from the old function name to the new function name in `symbol_addrs.txt`. For example, if we wanted to rename `func_8006D0D0_6DCD0` to `foo`, we would add the following line to `symbol_addrs.txt`:
+Create a mapping from the old function name to the new function name in `ver/us/symbol_addrs.txt`. For example, if we wanted to rename `func_8006D0D0_6DCD0` to `foo`, we would add the following line to `ver/us/symbol_addrs.txt`:
 
 ```
 foo = 0x8006D0D0;

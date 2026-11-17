@@ -11,7 +11,7 @@
                 "-I include/PR",
                 "-I include/engine",
                 "-I include/gcc",
-                "-I build/include",
+                "-I ver/us/build/include",
                 "-I src"
             ],
             "browse": {
@@ -28,6 +28,8 @@
             ],
             "defines": [
                 "F3DEX_GBI_2",
+                "VERSION=VERSION_US",
+                "VERSION_DIR=\"ver/us\"",
                 "_LANGUAGE_C",
                 "_MIPS_SZLONG=32",
                 "OLD_GCC"

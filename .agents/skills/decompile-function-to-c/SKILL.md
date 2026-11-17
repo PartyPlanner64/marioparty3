@@ -27,11 +27,13 @@ Do not be alarmed at the number of functions that may be remaining. We should me
 
 ## Locate where to write the C code
 
-Due to the work we've done to map out C file locations in marioparty3.yaml, a C file should already exist for the function you want to decompile. That C file will contain a line like the following in place of the function you want to decompile:
+Due to the work we've done to map out C file locations in ver/us/splat.yaml, a C file should already exist for the function you want to decompile. That C file will contain a line like the following in place of the function you want to decompile:
 
 ```c
 INCLUDE_ASM("asm/nonmatchings/file", func_80012345_67890);
 ```
+
+The folder is relative to the version directory, so the assembly is at `ver/us/asm/nonmatchings/file/func_80012345_67890.s`.
 
 ## Decompile the function to C
 
@@ -66,7 +68,7 @@ Use `python3 tools/asm-differ/diff.py --no-pager <function name>` to diff releva
 
 Based on the results of the diff, think through what the underlying issue might be and update the source code accordingly.
 
-If you make larger changes, like changes to the marioparty3.yaml or symbol_addrs.txt, you need to run `./tools/build.sh --splat` to regenerate files based on those changes.
+If you make larger changes, like changes to `ver/us/splat.yaml` or `ver/us/symbol_addrs.txt`, you need to run `./tools/build.sh --splat` to regenerate files based on those changes.
 
 ## Wrap-up steps
 

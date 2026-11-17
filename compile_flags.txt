@@ -1,3 +1,5 @@
 -std=c89
 -Iinclude
+-Iver/us/build/include
 -D_LANGUAGE_C=1
+-DVERSION=VERSION_US

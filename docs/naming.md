@@ -144,7 +144,7 @@ across overlays (`m254_LerpCalc`, `m255_LerpCalc`). Use
 ## Tooling
 
 `tools/rename_symbols.py MAPFILE` applies `old new` pairs across `src/`,
-`include/`, `undefined_syms.txt`, and `symbol_addrs.txt` (adding entries with
+`include/`, `ver/us/undefined_syms.txt`, and `ver/us/symbol_addrs.txt` (adding entries with
 `segment:`/`rom:` as needed). It refuses names that already exist. Verify with
 `./tools/build.sh --splat`.
 

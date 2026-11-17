@@ -29,13 +29,14 @@ import re
 import subprocess
 import m2ctx
 import tempfile
+from version_paths import VER_DIR
 
 rootDir = sys.argv[1]
 cfile = sys.argv[2]
 lineNumber = max(0, int(sys.argv[3]) - 1)
 
 def run_mips_to_c(retType, funcPath, funcName, contextFile):
-    asmPath = rootDir + "/asm/nonmatchings/" + funcPath + "/" + funcName + ".s"
+    asmPath = str(VER_DIR / funcPath / (funcName + ".s"))
     mipsToCPath = rootDir + "/tools/mips_to_c/mips_to_c.py"
     procArgs = [mipsToCPath]
     procArgs.append("--context")

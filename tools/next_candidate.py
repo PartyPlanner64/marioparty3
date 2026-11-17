@@ -9,7 +9,7 @@ small / makes few calls (so it's quick to do).
 How it decides "decompiled" vs "pending":
 
   * PENDING  functions come from the `glabel` functions in
-    asm/nonmatchings/ -- each .s there is one function still waiting to be
+    ver/<version>/asm/nonmatchings/ -- each .s there is one function still waiting to be
     written in C. (Plain rodata/data .s files have no `glabel` and are
     skipped.)
   * DECOMPILED functions come from real C function definitions in src/.
@@ -39,8 +39,7 @@ import re
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-NONMATCHINGS = ROOT / "asm" / "nonmatchings"
+from version_paths import NONMATCHINGS_DIR as NONMATCHINGS, ROOT
 SRC = ROOT / "src"
 
 GLABEL_RE = re.compile(r"^glabel\s+(\w+)\s*$")
@@ -63,7 +62,7 @@ C_KEYWORDS = {
 
 
 def scan_nonmatchings():
-    """Walk every .s under asm/nonmatchings once.
+    """Walk every .s under ver/<version>/asm/nonmatchings once.
 
     Returns:
         candidates: name -> {path, size, callees:set, total_calls:int}
@@ -242,7 +241,7 @@ def main(argv=None):
     if not NONMATCHINGS.is_dir():
         sys.exit(f"error: {NONMATCHINGS} not found (run from the repo root)")
 
-    sys.stderr.write("Scanning asm/nonmatchings and src ...\n")
+    sys.stderr.write(f"Scanning {NONMATCHINGS.relative_to(ROOT)} and src ...\n")
     candidates, glabel_set = scan_nonmatchings()
     decompiled = scan_src_decompiled()
 

@@ -9,7 +9,7 @@ file_path=$(echo "$input" | jq -r '.tool_input.file_path // ""')
 
 # Block if file_path is in the asm/ directory
 if [[ "$file_path" == */asm/* ]]; then
-  echo "Blocked: Files in asm/ are automatically generated and should not be edited directly. To rename a symbol, update symbol_addrs.txt. To regenerate the assembly files, use ./tools/build.sh --splat." 1>&2
+  echo "Blocked: Files in asm/ are automatically generated and should not be edited directly. To rename a symbol, update ver/<version>/symbol_addrs.txt. To regenerate the assembly files, use ./tools/build.sh --splat." 1>&2
   exit 2
 fi
 

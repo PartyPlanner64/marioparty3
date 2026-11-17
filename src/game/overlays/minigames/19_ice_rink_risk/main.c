@@ -746,22 +746,6 @@ f32 m225_PuckFloorGet(omObjData *object, Hu3DSphere *sphere, Vec *normal) {
     return floorY;
 }
 
-// NON_MATCHING: the target hoists the mgItemObjTbl address (s5), 0.0f
-// ($f24) and 1000.0f (s4) out of the loop, in that order, after the entry test.
-// With direct indexing the address is the first loop.c movable (threshold
-// 61 -> 58), and the loop has at least 59 insns at loop time (56 in the final
-// loop + 3 movables), so 0.0f (savings 1, life 1) can never pass
-// threshold * savings * lifetime >= insn_count. Only something giving 0.0f
-// savings/lifetime >= 2 (e.g. a matched duplicate 0.0f compare, which leaves
-// an extra bc1f) could hoist it; none of the natural forms tried do. The
-// direct form is otherwise identical apart from that one hoist.
-// Reading through a local pointer (below) hoists 0.0f, but the pointer is set
-// before the loop entry test and 0.0f/1000.0f swap register classes. The two
-// do-while(0) wrappers only lower the diff score (740 -> 625).
-// Also tried: if/continue/early-continue forms, compare spellings, a `zero`
-// local, `unk48 * 2`/`2.0f * unk48`, splitting the dist computation,
-// `dist < 0.0f && unk38 == 1000.0f` plus a second `dist < 0.0f` block.
-#ifdef NON_MATCHING
 void m225_PuckHitCheck(omObjData *object, f32 x, f32 y, f32 z) {
     IceRinkRiskPuckWork *work = OM_GET_DATA_PTR(object, IceRinkRiskPuckWork);
     IceRinkRiskPuckWork *otherWork;
@@ -769,9 +753,15 @@ void m225_PuckHitCheck(omObjData *object, f32 x, f32 y, f32 z) {
     f32 dx, dy, dz;
     f32 dist;
     s32 i;
-    omObjData **objs = mgItemObjTbl;
+    s32 pad[2]; // Preserve the original stack frame.
+    omObjData **objs;
 
-    for (i = 0; i < m225_puckNum; i++) {
+    i = 0;
+    if (m225_puckNum <= 0) {
+        return;
+    }
+    objs = mgItemObjTbl;
+    do {
         if (i == work->unk56) {
             continue;
         }
@@ -781,25 +771,23 @@ void m225_PuckHitCheck(omObjData *object, f32 x, f32 y, f32 z) {
         dy = other->trans.y - y;
         dz = other->trans.z - (z + mgMoveOfsZ);
         dist = HuSqrtf(dx * dx + dy * dy + dz * dz) - (work->unk48 + work->unk48);
-        if (dist < 0.0f) {
-            do {
-                if (work->unk38 == 1000.0f) {
-                    MgMoveOfsAdd(dx, dz, dist);
-                }
-            } while (0);
-            m225_PuckHitReflect(object, dx, dz);
-            if (m225_puckHitTbl[work->unk56].unk04 >= 16) {
-                m225_puckHitTbl[work->unk56].unk00 = otherWork->unk56;
-                do {
-                    m225_puckHitTbl[work->unk56].unk04 = 0;
-                } while (0);
+        // Keep the rejection block separate so GCC hoists zero into an FPR.
+        do {
+            if (!(dist < 0.0f)) {
+                goto nextPuck;
             }
+        } while (0);
+        if (work->unk38 == 1000.0f) {
+            MgMoveOfsAdd(dx, dz, dist);
         }
-    }
+        m225_PuckHitReflect(object, dx, dz);
+        if (m225_puckHitTbl[work->unk56].unk04 >= 16) {
+            m225_puckHitTbl[work->unk56].unk00 = otherWork->unk56;
+            m225_puckHitTbl[work->unk56].unk04 = 0;
+        }
+    nextPuck:;
+    } while (++i < m225_puckNum);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/overlays/minigames/19_ice_rink_risk/main", m225_PuckHitCheck);
-#endif
 
 void m225_PuckWallCheck(omObjData *object, Hu3DSphere *arg1) {
     IceRinkRiskPuckWork *work = OM_GET_DATA_PTR(object, IceRinkRiskPuckWork);

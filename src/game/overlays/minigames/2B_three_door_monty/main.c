@@ -1802,7 +1802,7 @@ void m243_PlayerObjInit(omObjData *obj) {
     for (i = 0; i < 3; i++) {
         obj->model[2 + i] = Hu3DModelRead(m243_answerMdlTbl[i] | 0x4C0000, 0xA9);
         Hu3DModelHookSet(obj->model[2 + i], obj->model[0], "item_hook");
-        Hu3DModelAttrSet(obj->model[2 + i], 0x4000, 0x4000);
+        Hu3DModelAttrSet(obj->model[2 + i], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
         if (i == 0) {
             Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
         } else {

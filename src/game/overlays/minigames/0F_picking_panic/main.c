@@ -1331,7 +1331,7 @@ void m215_TeamUpdate(omObjData *object, s8 arg1) {
         } else {
             m215_itemVelXTbl[arg1][slot] = m215_itemVelYTbl[arg1][slot] = 0.0f;
         }
-        Hu3DModelAttrSet(*m215_itemMdlTbl[arg1][slot][m215_itemTypeTbl[arg1][slot]], 0x4000, 0);
+        Hu3DModelAttrSet(*m215_itemMdlTbl[arg1][slot][m215_itemTypeTbl[arg1][slot]], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
         m215_armMotTimeTbl[idx0] = 18;
         m215_armMotTargetTbl[idx0] = 0;
         HuAudPlayerFXPlay(0x36D, arg1 * 2);
@@ -1367,7 +1367,7 @@ void m215_TeamUpdate(omObjData *object, s8 arg1) {
                          : (j < 22)   ? 1.0 - (j - 14) / 8.0
                                       : 0.0) *
             60.0;
-        Hu3DModelAttrSet(*m215_itemMdlTbl[arg1][slot][m215_itemTypeTbl[arg1][slot]], 0x4000, 0);
+        Hu3DModelAttrSet(*m215_itemMdlTbl[arg1][slot][m215_itemTypeTbl[arg1][slot]], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
         m215_armMotTimeTbl[idx1] = 18;
         m215_armMotTargetTbl[idx1] = 0;
         HuAudPlayerFXPlay(0x36D, arg1 * 2 + 1);

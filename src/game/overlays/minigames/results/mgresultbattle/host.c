@@ -164,7 +164,7 @@ void mgresultbattle_HostProc(void) {
     Hu3DMotionAttrSet(itemObj->model[1], 2, 2);
     Hu3DModelAttrSet(itemObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     itemObj->model[2] = Hu3DModelRead(0x1B0000, 0x2B9);
-    Hu3DModelAttrSet(itemObj->model[2], 0x4000, 0x4000);
+    Hu3DModelAttrSet(itemObj->model[2], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
     Hu3DMotionAttrSet(itemObj->model[2], 2, 2);
     Hu3DModelAttrSet(itemObj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelHookSet(itemObj->model[2], itemObj->model[1], "item_hook");

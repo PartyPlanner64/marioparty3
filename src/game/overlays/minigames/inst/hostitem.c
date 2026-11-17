@@ -28,7 +28,7 @@ void inst_BattleHostMain(void) {
     omObjMotionRead(object, 1, 0xA00B5);
     if (inst_mgType == 3) {
         object->model[1] = Hu3DModelRead(0x170047, 0x16B9);
-        Hu3DModelAttrSet(object->model[1], 0x4000, 0x4000);
+        Hu3DModelAttrSet(object->model[1], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
         Hu3DMotionAttrSet(object->model[1], 2, 2);
         Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DModelHookSet(object->model[1], object->model[0], "item_hook");

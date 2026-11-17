@@ -102,13 +102,13 @@ void chancetime_HostProc(void) {
 
     object->model[5] = Hu3DModelRead(0x1C0008, 0x2B9);
     Hu3DModelCameraSet(object->model[5], HU3D_CAM1);
-    Hu3DModelAttrSet(object->model[5], 0x4000, 0x4000);
+    Hu3DModelAttrSet(object->model[5], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
     Hu3DMotionAttrSet(object->model[5], 2, 2);
     Hu3DModelAttrSet(object->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DMotionAttrSet(object->model[5], 1, 1);
     object->model[6] = Hu3DModelRead(0x1C0008, 0x2B9);
     Hu3DModelCameraSet(object->model[6], HU3D_CAM1);
-    Hu3DModelAttrSet(object->model[6], 0x4000, 0x4000);
+    Hu3DModelAttrSet(object->model[6], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
     Hu3DMotionAttrSet(object->model[6], 2, 2);
     Hu3DModelAttrSet(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DMotionAttrSet(object->model[6], 1, 1);
@@ -226,9 +226,9 @@ void chancetime_HostHideWait(omObjData *object) {
 
     if (chancetime_hostItemHideF == 0) {
         if (time >= 20.0f) {
-            Hu3DModelAttrSet(object->model[5], 0x4000, 0);
+            Hu3DModelAttrSet(object->model[5], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
             Hu3DModelAttrSet(object->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            Hu3DModelAttrSet(object->model[6], 0x4000, 0);
+            Hu3DModelAttrSet(object->model[6], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
             Hu3DModelAttrSet(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             chancetime_HostEffShow(object);
             chancetime_hostItemHideF = 1;

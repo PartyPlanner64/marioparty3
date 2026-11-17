@@ -17,7 +17,7 @@ s16 EffectModelCreate(s32 fileId, s32 attr) {
     HmfModelData_UnkBC_Unk58_Struct *particle;
     s16 i;
 
-    model = EffectModelRead(fileId, attr & ~0x60);
+    model = EffectModelRead(fileId, attr & ~HU3D_ATTR_AA_MASK);
     Hu3DParticleCreate(model, -1, NULL, EffectParticleHook);
     hmf = Hu3DData[model].hmf;
     bc = Hu3DData[model].unkBC;

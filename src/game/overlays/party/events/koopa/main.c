@@ -994,7 +994,7 @@ void koopa_SpellEffExec(s32 modelFile) {
 
     MBMotionShiftSet(koopa_koopaMdl, 5, 0, 5, 0);
     object = MBModelFileCreate(modelFile, -1, 1.0f, NULL, NULL);
-    Hu3DModelAttrSet(object->omObj1->model[0], 0x180, 0);
+    Hu3DModelAttrSet(object->omObj1->model[0], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
     Hu3DModelLayerSet(object->omObj1->model[0], 0);
     HuVecCopy3F(&object->coords, &koopa_koopaMdl->coords);
     object->coords.y += 200.0f;

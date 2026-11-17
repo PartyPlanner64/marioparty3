@@ -40,7 +40,7 @@ void Hu3DParticleCreate(s16 model, s16 type, char *name, void (*func)(s16)) {
     f32 angle2;
     f32 sinAngle1;
 
-    Hu3DModelAttrSet(model, 0x1000000, 0x1000000);
+    Hu3DModelAttrSet(model, HU3D_ATTR_PARTICLE, HU3D_ATTR_PARTICLE);
     bc = HuMemAllocTag(sizeof(HmfModelData_UnkBC_Struct), hmf->unk0E + 1);
     modelP->unkBC = bc;
     particle = HuMemAllocTag(hmf->unk1A * sizeof(HmfModelData_UnkBC_Unk58_Struct), hmf->unk0E + 1);

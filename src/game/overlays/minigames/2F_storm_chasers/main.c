@@ -1165,7 +1165,7 @@ void m247_PlayerPlantAttach(omObjData *object) {
     StormChaserPlant *data = &m247_plantTbl[object->work[0]];
 
     if (data->state != -1) {
-        Hu3DModelAttrSet(data->unk_24->model[0], 0x4000, 0x4000);
+        Hu3DModelAttrSet(data->unk_24->model[0], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
         Hu3DModelHookSet(data->unk_24->model[0], object->model[0], "item_hook");
         Hu3DMotionShapeSet(object->model[0], object->motion[22], 1);
         object->work[1] = 1;
@@ -1177,7 +1177,7 @@ void m247_PlantAttach(omObjData *object) {
     StormChaserPlayer *player = &m247_playerWorkTbl[object->work[0]];
     StormChaserPlant *data = &m247_plantTbl[object->work[0]];
 
-    Hu3DModelAttrSet(object->model[0], 0x4000, 0x4000);
+    Hu3DModelAttrSet(object->model[0], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
     Hu3DModelHookSet(object->model[0], player->unk_44->model[0], "item_hook");
     Hu3DMotionShapeSet(player->unk_44->model[0], player->unk_44->motion[22], 1);
     player->unk_44->work[1] = 1;
@@ -1339,7 +1339,7 @@ void m247_PlayerPlantThrow(omObjData *object) {
 
     if (data->unk_04 != 0) {
         Hu3DData[object->model[0]].motIdShape = 255;
-        Hu3DModelAttrSet(data->unk_24->model[0], 0x4000, 0);
+        Hu3DModelAttrSet(data->unk_24->model[0], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
         data->unk_04 = 0;
         m247_PuffStart(object);
     }
@@ -1459,8 +1459,8 @@ void m247_PlayerObjInit(omObjData *object) {
     work = object->data;
     work->unkEC = 0;
     Hu3DModelObjAttrSet(object->model[1], 0x80000000, 0);
-    Hu3DModelAttrSet(object->model[1], 0x60, 0x20);
-    Hu3DModelAttrSet(object->model[1], 0x180, 0x80);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_AA_MASK, HU3D_ATTR_AA);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_ON);
     Hu3DModelRemakeStatic(object->model[1]);
     Hu3DModelDynamicFree(object->model[1]);
     object->model[3] = Hu3DModelRead(3, 0x2BD);

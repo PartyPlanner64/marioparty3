@@ -1274,7 +1274,7 @@ void m252_KoopaCreate(s16 index) {
         modelId = bowser->unk_08 = Hu3DModelLink(m252_koopaTbl->unk_08);
     }
     Hu3DModelScaleSet(modelId, 1.3f, 1.3f, 1.3f);
-    Hu3DModelAttrSet(bowser->unk_04, 0x4000, 0x4000);
+    Hu3DModelAttrSet(bowser->unk_04, HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
     Hu3DModelHookSet(bowser->unk_04, bowser->unk_00->model[0], "item_hook");
     Hu3DModelCameraSet(bowser->unk_04, 1 << index);
     Hu3DModelCameraSet(bowser->unk_06, 1 << index);
@@ -1332,7 +1332,7 @@ void m252_KoopaObjMain(omObjData *object) {
                 }
                 break;
             case 1:
-                Hu3DModelAttrSet(bowser->unk_04, 0x4000, 0);
+                Hu3DModelAttrSet(bowser->unk_04, HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
                 m252_ObjMtxCalc(object, 90.0f, rotMtx);
                 m252_KoopaHookMtxGet(bowser, hookMtx[0], model->motShapeTime);
                 mtxCat(hookMtx, rotMtx, mtx);
@@ -1445,7 +1445,7 @@ void m252_KoopaObjMain(omObjData *object) {
                 }
                 break;
             case 3:
-                Hu3DModelAttrSet(bowser->unk_04, 0x4000, 0);
+                Hu3DModelAttrSet(bowser->unk_04, HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
                 m252_ObjMtxCalc(object, 90.0f, rotMtx);
                 m252_KoopaHookMtxGet(bowser, hookMtx[0], 0.0f);
                 mtxCat(hookMtx, rotMtx, mtx);

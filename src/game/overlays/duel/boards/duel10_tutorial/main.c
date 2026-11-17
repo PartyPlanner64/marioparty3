@@ -585,7 +585,7 @@ Object *MBD10_AttackEffMdlCreate(s32 arg0) {
     Object *obj;
 
     obj = MBDModelCreate(arg0 & 0xFF, 0);
-    Hu3DModelAttrSet(obj->omObj1->model[0], 0x180, 0);
+    Hu3DModelAttrSet(obj->omObj1->model[0], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
     Hu3DModelLayerSet(obj->omObj1->model[0], 0x1800);
     Hu3DModelRemakeStatic(obj->omObj1->model[0]);
     MBDModelTempAllocFree(obj);
@@ -1724,7 +1724,7 @@ void MBD10_KoopaJrChangeExec(Object *obj, s32 swap) {
         HuPrcSleep(3);
     }
     model = MBDModelCreate(0x21, NULL);
-    Hu3DModelAttrSet(model->omObj1->model[0], 0x180, 0);
+    Hu3DModelAttrSet(model->omObj1->model[0], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
     Hu3DModelLayerSet(model->omObj1->model[0], 0x800);
     Hu3DModelRemakeStatic(model->omObj1->model[0]);
     HuVecCopy3F(&model->coords, &obj->coords);
@@ -1762,7 +1762,7 @@ void MBD10_KoopaJrChangeEndExec(Object *obj) {
     f32 angle;
 
     model = MBDModelCreate(0x21, NULL);
-    Hu3DModelAttrSet(model->omObj1->model[0], 0x180, 0);
+    Hu3DModelAttrSet(model->omObj1->model[0], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
     Hu3DModelLayerSet(model->omObj1->model[0], 0x800);
     Hu3DModelRemakeStatic(model->omObj1->model[0]);
     HuVecCopy3F(&model->coords, &mbd10_koopaMdl->coords);
@@ -2394,7 +2394,7 @@ void MBD10_SnifitAttackExec(s32 playerIndex, s32 targetPlayer, Object *obj, Obje
     MBDEffMdlCreate(0x4E, &pos, 0, 0.5f);
     if (mode == 2) {
         MBDModelDispOn(partner2);
-        Hu3DModelAttrSet(partner2->omObj1->model[0], 0x180, 0);
+        Hu3DModelAttrSet(partner2->omObj1->model[0], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
         Hu3DModelLayerSet(partner2->omObj1->model[0], 0x800);
         HuVecCopy3F(&partner2->coords, &partner->coords);
         partner2->velocity.x = 5.0f;
@@ -4386,7 +4386,7 @@ s32 MBD10Ev_PartnerRouletteExec(s32 index) {
     for (i = 0; i < 4; i++) {
         copies[i] = MBDModelLinkCreate(model);
         Hu3DModelLayerSet(copies[i]->omObj1->model[0], 0x800);
-        Hu3DModelAttrSet(copies[i]->omObj1->model[0], 0x180, 0);
+        Hu3DModelAttrSet(copies[i]->omObj1->model[0], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
         Hu3DMotionAttrSet(copies[i]->omObj1->model[0], 2, 0);
         HuVecCopy3F(&copies[i]->coords, &partnerSpace->coords);
         copies[i]->velocity.x = 26.0f;

@@ -1553,7 +1553,7 @@ void op_DemoEvent(void) {
         op_MotionFlagSet(0xE, 1);
         temp_s1_2 = op_ModelIdGet(0xD);
         temp_v0_9 = op_ModelIdGet(0xE);
-        Hu3DModelAttrSet(temp_v0_9, 0x4000, 0x4000);
+        Hu3DModelAttrSet(temp_v0_9, HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
         Hu3DModelHookSet(temp_v0_9, temp_s1_2, "hook");
         if (storyMode != 0) {
             HuAudFXPlay(0x23A);
@@ -1723,7 +1723,7 @@ void op_DemoEvent(void) {
             }
             i += 2;
         } while (i < 0x68);
-        Hu3DModelAttrSet(op_ModelIdGet(0xE), 0x4000, 0);
+        Hu3DModelAttrSet(op_ModelIdGet(0xE), HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
         op_ModelRotGet(0xD, &sp1B0.x, &sp1B0.y, &sp1B0.z);
         op_ModelRotSet(0xE, sp1B0.x, sp1B0.y, sp1B0.z);
         temp_f22 = sp1B0.y;
@@ -1965,7 +1965,7 @@ void op_DemoEvent(void) {
         op_ModelDispOn(6);
         temp_s1_3 = op_ModelIdGet(0);
         temp_v0_10 = op_ModelIdGet(6);
-        Hu3DModelAttrSet(temp_v0_10, 0x4000, 0x4000);
+        Hu3DModelAttrSet(temp_v0_10, HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
         Hu3DModelHookSet(temp_v0_10, temp_s1_3, "item_hook");
         op_ModelRotGet(0, &sp208.x, &sp208.y, &sp208.z);
         op_ModelPosGet(0, &sp1F8.x, &sp1F8.y, &sp1F8.z);
@@ -2031,7 +2031,7 @@ void op_DemoEvent(void) {
         op_ModelDispOn(0xF);
         temp_s1_4 = op_ModelIdGet(5);
         temp_v0_11 = op_ModelIdGet(0xF);
-        Hu3DModelAttrSet(temp_v0_11, 0x4000, 0x4000);
+        Hu3DModelAttrSet(temp_v0_11, HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
         Hu3DModelHookSet(temp_v0_11, temp_s1_4, "item_hook");
         for (i = 1; i < 9; i++) {
             HuPrcVSleep();
@@ -2221,9 +2221,9 @@ void op_DemoEvent(void) {
         op_ModelRotSet(1, temp_f24, op_CameraAngleCalc(sp2B8.x, sp2B8.z, sp2C8.x, sp2C8.z), temp_f24);
         op_DemoMotIntervalCreate(2, 1, 0x3B, 0x38, 0x2C, 0x28);
         op_DemoMotRestartCreate(3, 0x13, 0, 0x58);
-        Hu3DModelAttrSet(op_ModelIdGet(0xF), 0x4000, 0);
+        Hu3DModelAttrSet(op_ModelIdGet(0xF), HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
         op_ModelDispOff(0xF);
-        Hu3DModelAttrSet(op_ModelIdGet(6), 0x4000, 0);
+        Hu3DModelAttrSet(op_ModelIdGet(6), HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
         op_ModelKill(6);
         op_ModelPosGet(0xF, &sp2F8.x, &sp2F8.y, &sp2F8.z);
         op_DemoShadowCreate(0x27, sp2F8.x, sp2F8.y, sp2F8.z);

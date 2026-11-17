@@ -639,7 +639,7 @@ void m256_PlayerObjInit(omObjData *object) {
         slot = i + 2;
         object->model[slot] = Hu3DModelRead(itemModels[i] | 0x590000, tag);
         Hu3DModelHookSet(object->model[slot], object->model[0], "item_hook");
-        Hu3DModelAttrSet(object->model[slot], 0x4000, 0x4000);
+        Hu3DModelAttrSet(object->model[slot], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
     }
     Hu3DModelAttrSet(object->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     object->model[9] = Hu3DModelRead2(7, 0x2DD);

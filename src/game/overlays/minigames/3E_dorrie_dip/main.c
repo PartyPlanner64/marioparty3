@@ -437,7 +437,7 @@ void m262_DorrieObjMain(omObjData *obj) {
         }
         if (m262_grabRaftNo != -1) {
             Hu3DModelHookSet(m262_raftObj->model[m262_grabRaftNo], obj->model[0], "item_hook");
-            Hu3DModelAttrSet(m262_raftObj->model[m262_grabRaftNo], 0x4000, 0x4000);
+            Hu3DModelAttrSet(m262_raftObj->model[m262_grabRaftNo], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
             Hu3DModelAttrSet(m262_raftObj->model[m262_grabRaftNo + 6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             rafts->unk00[m262_grabRaftNo] &= ~1;
             Hu3DMotionAttrSet(obj->model[0], 8, 0);

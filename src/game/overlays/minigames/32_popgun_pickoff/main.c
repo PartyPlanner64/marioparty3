@@ -877,7 +877,7 @@ void m250_PlayerObjInit(omObjData *object) {
         HuSprZRotSet(work->unk2F, 0, 45.0f);
     }
     Hu3DModelHookSet(object->model[2], object->model[0], "item_hook");
-    Hu3DModelAttrSet(object->model[2], 0x4000, 0x4000);
+    Hu3DModelAttrSet(object->model[2], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
     object->func = m250_PlayerObjMain;
     MgPlayerMotLoad(object, 0, CharMotionDataNumGet(character, 0x4B), 1, 0);
     MgPlayerMotLoad(object, 0x26, CharMotionDataNumGet(character, 0x4C), 2, 0);

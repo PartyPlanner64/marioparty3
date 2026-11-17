@@ -3859,14 +3859,14 @@ void MB6Ev_Trapdoor(void) {
     if (MBRand(2.0f) == 0) {
         MBSaiNumKill(playerIdx);
         model1 = MBModelFileCreate(0x13018B, -1, 1.0f, 0, 0);
-        Hu3DModelAttrSet(model1->omObj1->model[0], 0x180, 0);
+        Hu3DModelAttrSet(model1->omObj1->model[0], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
         Hu3DModelLayerSet(model1->omObj1->model[0], 0);
         Hu3DModelRemakeStatic(model1->omObj1->model[0]);
         MBModelTempAllocFree(model1);
         HuVecCopy3F(&model1->coords, &player->player_obj->coords);
         model2 = MBModelFileCreate(0x13018C, -1, 1.0f, 0, 0);
         Hu3DModelLayerSet(model2->omObj1->model[0], 0);
-        Hu3DModelAttrSet(model2->omObj1->model[0], 0x80000, 0x80000);
+        Hu3DModelAttrSet(model2->omObj1->model[0], HU3D_ATTR_ZMASK, HU3D_ATTR_ZMASK);
         Hu3DModelRemakeStatic(model2->omObj1->model[0]);
         MBModelTempAllocFree(model2);
         HuVecCopy3F(&model2->coords, &player->player_obj->coords);
@@ -6384,7 +6384,7 @@ void MB6Ev_KSuitStart(void) {
     HuAudFXPlay(0x143);
 
     model = MBModelCreate(0x22, NULL);
-    Hu3DModelAttrSet(model->omObj1->model[0], 0x180, 0);
+    Hu3DModelAttrSet(model->omObj1->model[0], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
     Hu3DModelLayerSet(model->omObj1->model[0], 0x1800);
     Hu3DModelRemakeStatic(model->omObj1->model[0]);
     HuVecCopy3F(&model->coords, &player->player_obj->coords);
@@ -6431,7 +6431,7 @@ void MB6Ev_KSuitEnd(void) {
     HuAudFXPlay(0x143);
 
     model = MBModelCreate(0x22, NULL);
-    Hu3DModelAttrSet(model->omObj1->model[0], 0x180, 0);
+    Hu3DModelAttrSet(model->omObj1->model[0], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
     Hu3DModelLayerSet(model->omObj1->model[0], 0x1800);
     Hu3DModelRemakeStatic(model->omObj1->model[0]);
     HuVecCopy3F(&model->coords, &player->player_obj->coords);
@@ -8231,7 +8231,7 @@ void MB6Ev_ItemAfter5(void) {
     }
     temp_v0_3 = MBModelCreate(0x46, NULL);
     mb6ev_after5EffMdl = temp_v0_3;
-    Hu3DModelAttrSet(temp_v0_3->omObj1->model[0], 0x180, 0);
+    Hu3DModelAttrSet(temp_v0_3->omObj1->model[0], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
     Hu3DModelLayerSet(temp_v0_3->omObj1->model[0], 0x1800);
     Hu3DModelRemakeStatic(temp_v0_3->omObj1->model[0]);
     Hu3DModelScaleSet(temp_v0_3->omObj1->model[0], 0.0f, 0.0f, 0.0f);
@@ -9110,7 +9110,7 @@ void MB6Ev_BombCountExec(void) {
         for (i = 0; i < 3; i++) {
             scale = 25.0f;
             models[i] = MBModelFileCreate(animIds.entries[i], -1, 1.0f, 0, 0);
-            Hu3DModelAttrSet(models[i]->omObj1->model[0], 0x180, 0);
+            Hu3DModelAttrSet(models[i]->omObj1->model[0], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
             Hu3DModelLayerSet(models[i]->omObj1->model[0], 0x1800);
             Hu3DModelRemakeStatic(models[i]->omObj1->model[0]);
             MB6Ev_BombExplodeMdlEndStart(models[i]);

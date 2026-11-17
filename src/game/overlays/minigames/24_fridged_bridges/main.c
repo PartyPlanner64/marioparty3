@@ -768,7 +768,7 @@ void m236_PlayerEndObjMain(omObjData *arg0) {
         if (!(player->unk_44 <= 0.0f)) {
             return;
         }
-        Hu3DModelAttrSet(m236_pieceObj->model[player->playerId * 5], 0x4004, HU3D_ATTR_DISPOFF);
+        Hu3DModelAttrSet(m236_pieceObj->model[player->playerId * 5], HU3D_ATTR_HOOK | HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         m236_PlayerMotRestore(arg0);
     }
     Hu3DMotionShiftSet(arg0->model[0], Hu3DData[arg0->motion[6]].motId, 0, 6, 0);
@@ -978,7 +978,7 @@ void m236_PieceGrab(omObjData *arg0) {
                        HU3D_ATTR_DISPOFF);
     Hu3DModelScaleSet(m236_pieceObj->model[playerId * 5], 1.0f, 1.0f, 1.0f);
     Hu3DModelHookSet(m236_pieceObj->model[playerId * 5], arg0->model[0], "item_hook");
-    Hu3DModelAttrSet(m236_pieceObj->model[playerId * 5], 0x4004, 0x4000);
+    Hu3DModelAttrSet(m236_pieceObj->model[playerId * 5], HU3D_ATTR_HOOK | HU3D_ATTR_DISPOFF, HU3D_ATTR_HOOK);
     if (GwPlayer[player->playerId].chr == CHAR_DK) {
         switch (player->motionState) {
             case 0:
@@ -1005,7 +1005,7 @@ void m236_PieceDrop(omObjData *arg0) {
     FridgedBridgesPieceWork *work;
 
     player->unk_28 = 0;
-    Hu3DModelAttrSet(m236_pieceObj->model[playerId * 5], 0x4000, 0);
+    Hu3DModelAttrSet(m236_pieceObj->model[playerId * 5], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
     m236_PlayerMotRestore(arg0);
     player->state = 0;
     obj = omAddObj(10, 0, 0, -1, m236_PieceDropObjMain);

@@ -932,7 +932,7 @@ void m207_PlayerInit(omObjData *object, s8 group) {
             Hu3DModelScaleSet(object->model[2], 0.15625f, 0.15625f, 0.15625f);
             Hu3DModelCameraSet(object->model[2], (group == 0) ? 1 : 2);
             Hu3DModelHookSet(object->model[2], object->model[0], "item_hook");
-            Hu3DModelAttrSet(object->model[2], 0x4000, 0x4000);
+            Hu3DModelAttrSet(object->model[2], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
             break;
         case 2:
             omObjMotionRead(object, 1, CharMotionDataNumGet(chr, 0x7F));

@@ -1442,7 +1442,7 @@ void m238_PlayerComInput(FuncContext *ctx) {
             m238_PadClear(player->padId);
             for (i = 0; i < 2; i++) {
                 item = &m238_gameWork->unk_04[i * 4 + (s16)m238_laneTbl[ctx->work.s16[0]]];
-                if (item->unk_05 != 0 || (Hu3DData[item->model].attr & 4)) {
+                if (item->unk_05 != 0 || (Hu3DData[item->model].attr & HU3D_ATTR_DISPOFF)) {
                     continue;
                 }
                 if (ctx->work.s8[0] == 0) {
@@ -1512,7 +1512,7 @@ void m238_PlayerComInputB(FuncContext *ctx) {
             m238_PadClear(player->padId);
             for (i = 0; i < 2; i++) {
                 item = &m238_gameWork->unk_04[i * 4 + (s16)m238_laneTbl[ctx->work.s16[0]]];
-                if (item->unk_05 != 0 || (Hu3DData[item->model].attr & 4)) {
+                if (item->unk_05 != 0 || (Hu3DData[item->model].attr & HU3D_ATTR_DISPOFF)) {
                     continue;
                 }
                 if (ctx->work.s8[0] == 0) {
@@ -1859,7 +1859,7 @@ void m238_PlayerObstacleHit(FuncContext *ctx) {
     }
     for (i = 0; i < 2; i++) {
         item = &m238_gameWork->unk_04[i * 4 + (s16)m238_laneTbl[ctx->work.s16[0]]];
-        if (item->unk_03 != 0 || (Hu3DData[item->model].attr & 4)) {
+        if (item->unk_03 != 0 || (Hu3DData[item->model].attr & HU3D_ATTR_DISPOFF)) {
             continue;
         }
         if (abs(object->trans.z - (-(m238_gameWork->unk_0C[item->unk_04] * 100) + item->unk_08)) < 90.0) {

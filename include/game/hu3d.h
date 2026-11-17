@@ -11,12 +11,44 @@
 
 #define HU3D_ATTR_NONE 0
 #define HU3D_ATTR_STATIC (1 << 0) // drawn from prebuilt static display lists
+#define HU3D_ATTR_UNK2 (1 << 1)
 #define HU3D_ATTR_DISPOFF (1 << 2)
+#define HU3D_ATTR_FILEFREE (1 << 3)    // source file data is freed after loading
 #define HU3D_ATTR_DYNAMICFREE (1 << 4) // dynamic model data has been freed
+
+// Antialiasing mode (render mode AA_EN / IM_RD)
+#define HU3D_ATTR_AA_SHIFT 5
+#define HU3D_ATTR_AA_MASK (3 << HU3D_ATTR_AA_SHIFT)
+#define HU3D_ATTR_AA_OFF (0 << HU3D_ATTR_AA_SHIFT)
+#define HU3D_ATTR_AA (1 << HU3D_ATTR_AA_SHIFT)         // full AA (AA_EN | IM_RD)
+#define HU3D_ATTR_AA_REDUCED (2 << HU3D_ATTR_AA_SHIFT) // reduced AA (AA_EN)
+
+// Z-buffer mode (render mode Z_CMP / Z_UPD)
+#define HU3D_ATTR_ZBUF_SHIFT 7
+#define HU3D_ATTR_ZBUF_MASK (3 << HU3D_ATTR_ZBUF_SHIFT)
+#define HU3D_ATTR_ZBUF_OFF (0 << HU3D_ATTR_ZBUF_SHIFT)
+#define HU3D_ATTR_ZBUF_ON (1 << HU3D_ATTR_ZBUF_SHIFT)
+#define HU3D_ATTR_ZBUF_OBJ (2 << HU3D_ATTR_ZBUF_SHIFT) // decided by each object's flags
+
+#define HU3D_ATTR_LIGHTING (1 << 9)
 #define HU3D_ATTR_LAYER_SHIFT 10
 #define HU3D_ATTR_LAYER_MASK (7 << HU3D_ATTR_LAYER_SHIFT)
+#define HU3D_ATTR_OBJCULL (1 << 13)    // per-object culling of static display lists
+#define HU3D_ATTR_HOOK (1 << 14)       // drawn attached to another model's object (Hu3DModelHookSet)
 #define HU3D_ATTR_NOPAUSE (1 << 15)
+#define HU3D_ATTR_PRIMCOLOR (1 << 16)  // use the Hu3DModelPrimColorSet / Hu3DModelEnvColorSet colors
+#define HU3D_ATTR_TEX_OPA (1 << 17)    // textured materials drawn without alpha coverage
+#define HU3D_ATTR_NOVIEW (1 << 18)     // model matrix is not multiplied by the camera view
+#define HU3D_ATTR_ZMASK (1 << 19)      // drawn with a zero color/alpha combine, depth only
+#define HU3D_ATTR_MAPDATA (1 << 21)    // load map attribute and camera records
+#define HU3D_ATTR_SHAPECACHE (1 << 22) // build a shape cache with the display lists
 #define HU3D_ATTR_REMAKESTATIC (1 << 23) // static display lists need rebuilding
+#define HU3D_ATTR_PARTICLE (1 << 24)
+
+// Attributes that require static display lists to be rebuilt when changed
+#define HU3D_ATTR_REMAKE_MASK                                                                        \
+    (HU3D_ATTR_UNK2 | HU3D_ATTR_ZBUF_MASK | HU3D_ATTR_LIGHTING | HU3D_ATTR_LAYER_MASK |             \
+     HU3D_ATTR_OBJCULL | HU3D_ATTR_PRIMCOLOR | HU3D_ATTR_TEX_OPA | HU3D_ATTR_ZMASK)
 
 #define HU3D_CAM0 (1 << 0)
 #define HU3D_CAM1 (1 << 1)

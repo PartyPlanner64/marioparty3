@@ -507,7 +507,7 @@ void m239_ItemThrowStart(omObjData *obj, PipeCleanerPlayerWork *work) {
     work->pos.y = 150.0f;
     work->pos.z = 0.0f;
     work->rotX = 0.0f;
-    Hu3DModelAttrSet(work->object->model[2], 0x4000, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(work->object->model[2], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
     Hu3DModelPosSet(obj->model[2], work->pos.x, work->pos.y, work->pos.z);
     Hu3DModelRotSet(obj->model[2], work->rotX, 0.0f, 0.0f);
     m239_PlayerMotChange(work->object, 7);
@@ -782,7 +782,7 @@ void m239_PlayerObjInit(omObjData *obj) {
     obj->trans.z = 0;
     Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
     obj->model[2] = Hu3DModelRead(0x480003, 0x299);
-    Hu3DModelAttrSet(obj->model[2], 0x4000, 0x4000);
+    Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
     Hu3DModelHookSet(obj->model[2], obj->model[0], "item_hook");
     Hu3DModelCameraSet(obj->model[0], 1 << obj->work[0]);
     Hu3DModelCameraSet(obj->model[1], 1 << obj->work[0]);

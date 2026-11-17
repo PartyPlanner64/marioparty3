@@ -695,19 +695,19 @@ void m219_PlayerObjInit(omObjData *object) {
     data->unkEC = NULL;
     if (work->unk_02 == 1) {
         object->model[2] = Hu3DModelRead(0x340000, 0xB9);
-        Hu3DModelAttrSet(object->model[2], 0x4000, 0x4000);
+        Hu3DModelAttrSet(object->model[2], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
         Hu3DModelHookSet(object->model[2], object->model[0], "item_hook");
         for (i = 0; i < 3; i++) {
             object->model[i + 3] = m219_LogMdlLink(i, 0);
             Hu3DModelAttrSet(object->model[i + 3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            Hu3DModelAttrSet(object->model[i + 3], 0x4000, 0x4000);
+            Hu3DModelAttrSet(object->model[i + 3], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
             Hu3DModelHookSet(object->model[i + 3], object->model[2], "m219-item-f");
         }
     } else {
         for (i = 0; i < 3; i++) {
             object->model[i + 3] = m219_LogMdlLink(i, 0);
             Hu3DModelAttrSet(object->model[i + 3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            Hu3DModelAttrSet(object->model[i + 3], 0x4000, 0x4000);
+            Hu3DModelAttrSet(object->model[i + 3], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
             Hu3DModelHookSet(object->model[i + 3], object->model[0], "item_hook");
         }
     }
@@ -1193,7 +1193,7 @@ void m219_ChopperUpdate(omObjData *object, LogJamTeam *team) {
             if (team->unk_1C != -1) {
                 HuMtxIdentF(Hu3DData[team->unk_1C].mtx);
                 mtxTransCat(Hu3DData[team->unk_1C].mtx, 0.0f, -50.0f, 0.0f);
-                Hu3DModelAttrSet(team->unk_1C, 0x4000, 0);
+                Hu3DModelAttrSet(team->unk_1C, HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
                 team->unk_20 = 0;
                 team->unk_24 = mtx[3][0];
                 team->unk_2C = mtx[3][2];

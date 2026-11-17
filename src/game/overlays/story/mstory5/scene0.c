@@ -504,7 +504,7 @@ void mstory5_Scene0PlayerStampExec(omObjData *obj) {
     mstory5_ObjRotMove(obj, 0.0f, 110.0f, 0.0f, 10);
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[6]].motId, 0, 10, 0);
     HuPrcSleep(10);
-    Hu3DModelAttrSet(obj->model[3], 0x4000, 0x4000);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
     Hu3DModelHookSet(obj->model[3], model, mstory5_scene0ItemHookName);
     Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     mstory5_MotionEndWait(model);
@@ -556,7 +556,7 @@ void mstory5_Scene0PlayerStampExec(omObjData *obj) {
         HuPrcVSleep();
     } while (time > 0.0f);
     Hu3DMotionSpeedSet(model, 1.0f);
-    Hu3DModelAttrSet(obj->model[3], 0x4000, 0);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
     Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     HuAudSeqFadeOut(20);
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[3]].motId, 0, 10, 0);

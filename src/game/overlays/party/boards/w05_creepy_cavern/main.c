@@ -6195,7 +6195,7 @@ void MB5Ev_KSuitStart(void) {
     HuAudFXPlay(0x143);
 
     model = MBModelCreate(0x22, NULL);
-    Hu3DModelAttrSet(model->omObj1->model[0], 0x180, 0);
+    Hu3DModelAttrSet(model->omObj1->model[0], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
     Hu3DModelLayerSet(model->omObj1->model[0], 0x1800);
     Hu3DModelRemakeStatic(model->omObj1->model[0]);
     HuVecCopy3F(&model->coords, &player->player_obj->coords);
@@ -6242,7 +6242,7 @@ void MB5Ev_KSuitEnd(void) {
     HuAudFXPlay(0x143);
 
     model = MBModelCreate(0x22, NULL);
-    Hu3DModelAttrSet(model->omObj1->model[0], 0x180, 0);
+    Hu3DModelAttrSet(model->omObj1->model[0], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
     Hu3DModelLayerSet(model->omObj1->model[0], 0x1800);
     Hu3DModelRemakeStatic(model->omObj1->model[0]);
     HuVecCopy3F(&model->coords, &player->player_obj->coords);
@@ -8031,7 +8031,7 @@ void MB5Ev_ItemAfter5(void) {
     }
     temp_v0_3 = MBModelCreate(0x46, NULL);
     mb5ev_after5EffMdl = temp_v0_3;
-    Hu3DModelAttrSet(temp_v0_3->omObj1->model[0], 0x180, 0);
+    Hu3DModelAttrSet(temp_v0_3->omObj1->model[0], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
     Hu3DModelLayerSet(temp_v0_3->omObj1->model[0], 0x1800);
     Hu3DModelRemakeStatic(temp_v0_3->omObj1->model[0]);
     Hu3DModelScaleSet(temp_v0_3->omObj1->model[0], 0.0f, 0.0f, 0.0f);

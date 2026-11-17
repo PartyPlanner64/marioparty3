@@ -854,7 +854,7 @@ MgPlayerWork *m227_PlayerInit(omObjData *object, s32 player) {
     object->model[2] = Hu3DModelRead2((chr + 10) | 0x3C0000, tag);
     object->model[3] = Hu3DModelRead2((chr + 0x12) | 0x3C0000, 0x4AD);
     Hu3DModelHookSet(object->model[2], object->model[0], "item_hook");
-    Hu3DModelAttrSet(object->model[2], 0x4000, 0x4000);
+    Hu3DModelAttrSet(object->model[2], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
     Hu3DModelTPLvlInit(object->model[3]);
     Hu3DModelTPLvlSet(object->model[3], 0x80);
     data->unk40 = 50.0f;

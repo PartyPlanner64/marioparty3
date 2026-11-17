@@ -1514,7 +1514,7 @@ void m258_ChickenObjMain(omObjData *object) {
             if (--work->unk03 == 0) {
                 MgPlayerMotSet(object, 0);
                 Hu3DModelHookSet(object->model[0], work->target->model[0], "item_hook");
-                Hu3DModelAttrSet(object->model[0], 0x4000, 0x4000);
+                Hu3DModelAttrSet(object->model[0], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
             }
             Hu3DModelAttrSet(object->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             work->unk08 = 0.0f;

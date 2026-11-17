@@ -1207,8 +1207,8 @@ void m242_PlayerObjInit(omObjData *object) {
     work = object->data;
     work->unkEC = NULL;
     Hu3DModelObjAttrSet(object->model[1], 0x80000000, 0);
-    Hu3DModelAttrSet(object->model[1], 0x60, 0x20);
-    Hu3DModelAttrSet(object->model[1], 0x180, 0x80);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_AA_MASK, HU3D_ATTR_AA);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_ON);
     Hu3DModelRemakeStatic(object->model[1]);
     Hu3DModelDynamicFree(object->model[1]);
     object->model[7] = Hu3DModelRead(8, 0x2BD);

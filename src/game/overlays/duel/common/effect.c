@@ -61,7 +61,7 @@ void MBDEffBurstProc(void) {
         mbdEffBurstObjTbl[i] = obj;
         if (!noLayer) {
             Hu3DModelLayerSet(obj->omObj1->model[0], 0x800);
-            Hu3DModelAttrSet(mbdEffBurstObjTbl[i]->omObj1->model[0], 0x180, 0);
+            Hu3DModelAttrSet(mbdEffBurstObjTbl[i]->omObj1->model[0], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
             Hu3DModelRemakeStatic(mbdEffBurstObjTbl[i]->omObj1->model[0]);
         }
         MBDModelTempAllocFree(mbdEffBurstObjTbl[i]);
@@ -136,7 +136,7 @@ Process *MBDEffMdlCreateEx(s32 modelId, Vec *pos, Vec *vel, f32 scale, s32 delay
     EffectMoveWork *work;
 
     Hu3DModelLayerSet(obj->omObj1->model[0], 0x800);
-    Hu3DModelAttrSet(obj->omObj1->model[0], 0x180, 0);
+    Hu3DModelAttrSet(obj->omObj1->model[0], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
     Hu3DModelRemakeStatic(obj->omObj1->model[0]);
     Hu3DMotionSpeedSet(obj->omObj1->model[0], speed);
     MBDModelTempAllocFree(obj);
@@ -222,7 +222,7 @@ s32 MBDEffExplodeCreate(s32 dataNum, char *objName) {
 
     Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
     Hu3DModelObjAttrSet(model, 0x20000, 0x20000);
-    Hu3DModelAttrSet(model, 0x180, 0);
+    Hu3DModelAttrSet(model, HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
     Hu3DModelRemakeStatic(model);
     Hu3DModelVtxBufMake(model);
     Hu3DModelDynamicFree(model);

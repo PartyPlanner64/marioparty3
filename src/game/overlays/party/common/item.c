@@ -1426,7 +1426,7 @@ void MBTelopMgTypeCreate(s32 arg0, u32 arg1) {
     if (!(mbTelopFlag & 4) && ((var_s1 = MBMgTypeCalc(), (((~var_s1 == 0) | (arg0 != 0)) == 0)) || (var_s1 = arg0 + 2, (arg0 != 0)))) {
         modelObj = MBModelFileCreate(0x130204, -1, 1.8f, 0, 0);
         mbTelopMgTypeMdl = modelObj;
-        Hu3DModelAttrSet(modelObj->omObj1->model[0], 0x180, 0);
+        Hu3DModelAttrSet(modelObj->omObj1->model[0], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
         Hu3DModelLayerSet(mbTelopMgTypeMdl->omObj1->model[0], 0x1800U);
         Hu3DModelRemakeStatic(mbTelopMgTypeMdl->omObj1->model[0]);
         MBModelTempAllocFree(mbTelopMgTypeMdl);

@@ -262,7 +262,7 @@ s32 Hu3DModelCreate(u8 *data, u32 arg1) {
     }
 skip:
     modelP->attr = arg1;
-    if (arg1 & 8) {
+    if (arg1 & HU3D_ATTR_FILEFREE) {
         gFreeFunc(data);
     }
     if (arg1 & HU3D_ATTR_STATIC) {
@@ -629,7 +629,7 @@ void Hu3DExec(void *arg0, u16 arg1) {
             if (model->unk09 != 0xFF) {
                 Hu3DModelLODExec(i);
             }
-            if (model->attr & 0x1000000) {
+            if (model->attr & HU3D_ATTR_PARTICLE) {
                 bc = model->unkBC;
                 if ((!Hu3DPauseF || (model->attr & HU3D_ATTR_NOPAUSE)) && !(bc->unk04 & 2)) {
                     bc->unk18(i);
@@ -639,7 +639,7 @@ void Hu3DExec(void *arg0, u16 arg1) {
             hmf->unk0A = 1;
             hmf->unk01 = model->unk00;
             Hu3DCurAttr = model->attr;
-            if (!(model->attr & 0x40000)) {
+            if (!(model->attr & HU3D_ATTR_NOVIEW)) {
                 guMtxL2F(camMtx, &Hu3DCurCamMtx->lookAtMtx);
                 if (model->pos.x != 0.0f || model->pos.y != 0.0f || model->pos.z != 0.0f) {
                     mtxTransCat(camMtx, model->pos.x, model->pos.y, model->pos.z);
@@ -718,7 +718,7 @@ void Hu3DExec(void *arg0, u16 arg1) {
             } else {
                 hmf->unk8C = hmf->unk90 = hmf->unk94 = NULL;
             }
-            if (Hu3DCurAttr & 0x4000) {
+            if (Hu3DCurAttr & HU3D_ATTR_HOOK) {
                 HuMtxL2F(mtx, DrawObjData[Hu3DDrawList[model->unk68->unk00][model->unk68->unk60[model->unk0A].unk1D].objectIndex].fixedMtx);
             }
             Hu3DDraw(hmf, mtx, scaleMtx);
@@ -865,7 +865,7 @@ void Hu3DModelAttrSet(s16 idx, s32 arg1, s32 arg2) {
     HmfModel *model = &Hu3DData[idx];
 
     if (model->hmf != NULL) {
-        if (arg1 & 0xB3F82) {
+        if (arg1 & HU3D_ATTR_REMAKE_MASK) {
             arg2 |= HU3D_ATTR_REMAKESTATIC;
         }
         if (arg1 & HU3D_ATTR_LAYER_MASK) {
@@ -1630,7 +1630,7 @@ s32 Hu3DMotionCreate(void *arg0, s32 arg1) {
     } else {
         ret = Hu3DMotionCreateNoHmf((HmfMotionFile *)data);
     }
-    if (arg1 & 8) {
+    if (arg1 & HU3D_ATTR_FILEFREE) {
         gFreeFunc(data);
     }
     return ret;
@@ -1714,7 +1714,7 @@ void Hu3DModelLODExec(s16 idx) {
             if (Hu3DData[i].hmf != NULL || (Hu3DData[i].attr & HU3D_ATTR_DISPOFF)) {
                 continue;
             }
-            if ((Hu3DData[i].attr & 0x4000) &&
+            if ((Hu3DData[i].attr & HU3D_ATTR_HOOK) &&
                 (model->hmf == Hu3DData[i].unk68 || Hu3DData[model->unk09].hmf == Hu3DData[i].unk68)) {
                 Hu3DData[i].unk68 = hmf;
             }

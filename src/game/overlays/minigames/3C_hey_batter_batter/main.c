@@ -609,7 +609,7 @@ void m260_PlayerObjInit(omObjData *object) {
     if (chr == 5) {
         omObjMotionRead(object, 6, 0x5D000A);
     }
-    Hu3DModelAttrSet(object->model[1], 0x4000, 0x4000);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
     Hu3DModelHookSet(object->model[1], object->model[0], "item_hook");
     omSetTra(object, -150.0f, 15.0f, 0.0f);
     omSetRot(object, 0.0f, 180.0f, 0.0f);
@@ -739,7 +739,7 @@ void m260_KoopaObjInit(omObjData *object) {
     omObjMotionRead(object, 3, 0xA00F8);
     omObjMotionRead(object, 4, 0xA00F9);
     omObjMotionRead(object, 5, 0xA00FA);
-    Hu3DModelAttrSet(object->model[1], 0x4000, 0x4000);
+    Hu3DModelAttrSet(object->model[1], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
     Hu3DModelHookSet(object->model[1], object->model[0], "c162_000-te2");
     Hu3DModelCameraSet(object->model[1], HU3D_CAM0);
     omSetTra(object, 0.0f, 5.5f, -1000.0f);

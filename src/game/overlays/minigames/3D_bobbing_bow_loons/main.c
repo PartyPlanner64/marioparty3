@@ -894,7 +894,7 @@ void m261_DartObjCreate(void) {
     omSetTra(obj, dart->x, dart->y, dart->z);
     omSetRot(obj, 0.0f, 0.0f, dart->rotZ);
     Hu3DModelHookSet(obj->model[0], m261_playerObj->model[0], "item_hook");
-    Hu3DModelAttrSet(obj->model[0], 0x4000, 0x4000);
+    Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
 }
 
 void m261_DartObjMain(omObjData *obj) {
@@ -928,7 +928,7 @@ void m261_DartThrow(void) {
     dart->y = m261_playerObj->trans.y + 100.0f;
     dart->flags |= 1;
     Hu3DModelAttrSet(m261_dartObj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-    Hu3DModelAttrSet(m261_dartObj->model[0], 0x4000, 0);
+    Hu3DModelAttrSet(m261_dartObj->model[0], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
     HuAudFXPlay(0x4DB);
 }
 

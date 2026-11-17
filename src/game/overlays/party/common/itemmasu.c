@@ -302,7 +302,7 @@ void MBItemMasuGiveExec(s32 arg0) {
         } else {
             mbItemMasuBoxMdl = MBModelFileCreate(0xB0036, -1, 1.0f, 0, 0);
         }
-        Hu3DModelAttrSet(mbItemMasuBoxMdl->omObj1->model[0], 0x180, 0);
+        Hu3DModelAttrSet(mbItemMasuBoxMdl->omObj1->model[0], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
         Hu3DModelLayerSet(mbItemMasuBoxMdl->omObj1->model[0], 0x1800);
         Hu3DModelRemakeStatic(mbItemMasuBoxMdl->omObj1->model[0]);
         HuVecCopy3F(&mbItemMasuBoxMdl->coords, &player->player_obj->coords);

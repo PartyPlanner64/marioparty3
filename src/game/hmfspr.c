@@ -212,7 +212,7 @@ void Hu3DSprModelExec(s32 frames) {
             continue;
         }
         entry = &Hu3DSprModelData[i];
-        if ((Hu3DData[entry->modelId].attr & 4) || (u16)entry->unk_02 == 0xFFFF) {
+        if ((Hu3DData[entry->modelId].attr & HU3D_ATTR_DISPOFF) || (u16)entry->unk_02 == 0xFFFF) {
             continue;
         }
         if (entry->flags & 0x80) {
@@ -363,7 +363,7 @@ void Hu3DSprModelExec(s32 frames) {
 
         gSPEndDisplayList(Hu3DSprGfxPos++);
 
-        if (!(entry->flags & 1) && (Hu3DPauseF == 0 || (Hu3DData[entry->modelId].attr & 0x8000))) {
+        if (!(entry->flags & 1) && (Hu3DPauseF == 0 || (Hu3DData[entry->modelId].attr & HU3D_ATTR_NOPAUSE))) {
             for (j = 0; j < frames; j++) {
                 entry->unk_08++;
                 entry->unk_0A++;

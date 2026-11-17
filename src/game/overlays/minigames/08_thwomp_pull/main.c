@@ -1215,7 +1215,7 @@ void m208_SideObjMain(omObjData *object) {
             m208_rockStateTbl[group] = 1;
             Hu3DMotionModelSet(object->model[33], m208_sideObjTbl[0]->motion[18]);
             Hu3DModelAttrSet(object->model[35], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
-            Hu3DModelAttrSet(object->model[35], 0x4000, 0);
+            Hu3DModelAttrSet(object->model[35], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
             Hu3DModelTPLvlSet(object->model[35], 255);
         }
         if (m208_throwTimerTbl[group] != 0) {
@@ -1245,7 +1245,7 @@ void m208_SideObjMain(omObjData *object) {
                 Hu3DMotionModelSet(object->model[33], m208_sideObjTbl[0]->motion[19]);
                 Hu3DModelAttrSet(object->model[35], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DModelHookSet(object->model[35], object->model[33], "srowman-item_fook");
-                Hu3DModelAttrSet(object->model[35], 0x4000, 0x4000);
+                Hu3DModelAttrSet(object->model[35], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
                 Hu3DModelTPLvlSet(object->model[35], 255);
             }
             if (m208_throwTimerTbl[group] >= 16 && m208_throwTimerTbl[group] < 46) {
@@ -1263,7 +1263,7 @@ void m208_SideObjMain(omObjData *object) {
             }
             if (m208_throwTimerTbl[group] == 26) {
                 m208_rockStateTbl[group] = 2;
-                Hu3DModelAttrSet(object->model[35], 0x4000, 0);
+                Hu3DModelAttrSet(object->model[35], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
                 Hu3DModelAttrSet(object->model[35], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 Hu3DModelAttrSet(object->model[34], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DModelAttrSet(object->model[38], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);

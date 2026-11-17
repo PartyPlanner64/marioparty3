@@ -352,8 +352,8 @@ void m201_PlayerInit(omObjData *obj, u16 playerNo) {
         Hu3DMotionAttrSet(obj->model[0], 2, 2);
         Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DModelHookSet(obj->model[3], obj->model[1], m201_lureHookTbl[0]);
-        Hu3DModelAttrSet(obj->model[3], 0x4000, 0x4000);
-        Hu3DModelAttrSet(obj->model[1], 0x4000, 0x4000);
+        Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
+        Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
         omSetTra(obj, 0.0f, 100.0f, 900.0f);
         omSetRot(obj, 0.0f, 180.0f, 0.0f);
         Hu3DModelPosSet(obj->model[4], 0.0f, 100.0f, 900.0f);
@@ -476,7 +476,7 @@ void m201_FisherObjMain(omObjData *obj) {
                     break;
                 }
                 obj->work[0] = 2;
-                Hu3DModelAttrSet(obj->model[1], 0x4000, 0);
+                Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
                 Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DMotionModelSet(obj->model[0], obj->motion[3]);
@@ -490,7 +490,7 @@ void m201_FisherObjMain(omObjData *obj) {
             }
             if (MgFlowStatGet() != MG_STATE_PLAY) {
                 obj->work[0] = 0;
-                Hu3DModelAttrSet(obj->model[1], 0x4000, 0x4000);
+                Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
                 Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 Hu3DMotionModelSet(obj->model[0], obj->motion[8]);
@@ -502,7 +502,7 @@ void m201_FisherObjMain(omObjData *obj) {
             Hu3DMotionAttrSet(obj->model[0], 3, 3);
             Hu3DMotionSpeedSet(obj->model[0], 1.0f);
             Hu3DMotionSpeedSet(obj->model[2], 1.0f);
-            Hu3DModelAttrSet(obj->model[3], 0x4000, 0);
+            Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
             if (work->lineObj != NULL) {
                 omDelObj(work->lineObj);
             }
@@ -558,20 +558,20 @@ void m201_FisherObjMain(omObjData *obj) {
                 if (work->lineObj->work[1] == 1) {
                     omObjModeSet(lineWork->unk1B8, 2);
                     obj->work[0] = 5;
-                    Hu3DModelAttrSet(obj->model[1], 0x4000, 0);
+                    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
                     Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DMotionModelSet(obj->model[0], obj->motion[2]);
                     Hu3DMotionModelSet(obj->model[2], obj->motion[17]);
-                    Hu3DModelAttrSet(obj->model[3], 0x4000, 0x4000);
+                    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
                 } else {
                     obj->work[0] = 0;
-                    Hu3DModelAttrSet(obj->model[1], 0x4000, 0x4000);
+                    Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
                     Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                     Hu3DMotionModelSet(obj->model[0], obj->motion[8]);
                     Hu3DMotionAttrSet(obj->model[0], 3, 3);
-                    Hu3DModelAttrSet(obj->model[3], 0x4000, 0x4000);
+                    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
                     work->aiTarget = NULL;
                 }
                 omDelObj(work->lineObj);
@@ -609,7 +609,7 @@ void m201_FisherObjMain(omObjData *obj) {
         case 5:
             if (Hu3DData[obj->model[0]].motTime >= Hu3DMotion[Hu3DData[obj->model[0]].motId].unk02) {
                 obj->work[0] = 0;
-                Hu3DModelAttrSet(obj->model[1], 0x4000, 0x4000);
+                Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
                 Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                 Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
                 Hu3DMotionModelSet(obj->model[0], obj->motion[8]);
@@ -1301,9 +1301,9 @@ void m201_FisherWinObjMain(omObjData *obj) {
             }
             break;
         case 1:
-            Hu3DModelAttrSet(m201_fisherObj->model[1], 0x4000, 0);
-            Hu3DModelAttrSet(m201_fisherObj->model[3], 0x4000, 0);
-            Hu3DModelAttrSet(m201_fisherObj->model[2], 0x4000, 0);
+            Hu3DModelAttrSet(m201_fisherObj->model[1], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(m201_fisherObj->model[3], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(m201_fisherObj->model[2], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
             Hu3DModelAttrSet(m201_fisherObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             Hu3DModelAttrSet(m201_fisherObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             for (i = 0; i < 6; i++) {
@@ -1463,9 +1463,9 @@ void m201_FishWinObjMain(omObjData *obj) {
             }
             break;
         case 4:
-            Hu3DModelAttrSet(m201_fisherObj->model[1], 0x4000, 0);
-            Hu3DModelAttrSet(m201_fisherObj->model[3], 0x4000, 0);
-            Hu3DModelAttrSet(m201_fisherObj->model[2], 0x4000, 0);
+            Hu3DModelAttrSet(m201_fisherObj->model[1], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(m201_fisherObj->model[3], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
+            Hu3DModelAttrSet(m201_fisherObj->model[2], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
             Hu3DModelAttrSet(m201_fisherObj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             Hu3DModelAttrSet(m201_fisherObj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
             for (i = 0; i < 6; i++) {

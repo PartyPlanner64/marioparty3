@@ -709,7 +709,7 @@ void MgPlayerItemThrow(omObjData *arg0, f32 arg1) {
         }
         data->unk50 &= ~0x150;
         itemData->unk50 &= ~0x10;
-        Hu3DModelAttrSet(item->model[0], 0x4000, HU3D_ATTR_NONE);
+        Hu3DModelAttrSet(item->model[0], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
         Hu3DData[arg0->model[0]].motIdShape = 0xFF;
         if (item->model[1] != 0) {
             Hu3DModelAttrSet(item->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
@@ -741,7 +741,7 @@ s32 MgPlayerItemHold(omObjData *arg0, omObjData *item) {
     data->unkC8 = item;
     itemData->unk80 = arg0;
     Hu3DModelHookSet(item->model[0], arg0->model[0], "item_hook");
-    Hu3DModelAttrSet(item->model[0], 0x4000, 0x4000);
+    Hu3DModelAttrSet(item->model[0], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
     data->unkB4 = itemData->unk74;
     if (item->model[1] != 0) {
         Hu3DModelAttrSet(item->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);

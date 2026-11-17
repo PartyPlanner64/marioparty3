@@ -912,7 +912,7 @@ void MBDMgCallExec(void) {
     s32 i;
 
     obj = MBDModelFileCreate(0x130204, -1, 1.4f, scale, NULL);
-    Hu3DModelAttrSet(obj->omObj1->model[0], 0x180, 0);
+    Hu3DModelAttrSet(obj->omObj1->model[0], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
     Hu3DModelLayerSet(obj->omObj1->model[0], 0x1800);
     Hu3DModelRemakeStatic(obj->omObj1->model[0]);
     MBDModelTempAllocFree(obj);

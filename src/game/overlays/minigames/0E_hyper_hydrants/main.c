@@ -390,7 +390,7 @@ void m214_PlayerObjInit(omObjData *object) {
             m214_pumper0No = playerData->unk59;
             object->rot.y = 0;
             object->model[2] = Hu3DModelRead(0x2F0005, 0xA89);
-            Hu3DModelAttrSet(object->model[2], 0x10000, 0x10000);
+            Hu3DModelAttrSet(object->model[2], HU3D_ATTR_PRIMCOLOR, HU3D_ATTR_PRIMCOLOR);
             Hu3DModelPrimColorSet(object->model[2], 0, 0, 0, 0);
             Hu3DModelEnvColorSet(object->model[2], 16, 16, 16, 0);
             Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[1]].motId, 0, 1, 2);
@@ -427,7 +427,7 @@ void m214_PlayerObjInit(omObjData *object) {
             m214_pumper1No = playerData->unk59;
             object->rot.y = 0;
             object->model[2] = Hu3DModelRead(0x2F0007, 0xA89);
-            Hu3DModelAttrSet(object->model[2], 0x10000, 0x10000);
+            Hu3DModelAttrSet(object->model[2], HU3D_ATTR_PRIMCOLOR, HU3D_ATTR_PRIMCOLOR);
             Hu3DModelPrimColorSet(object->model[2], 0, 0, 0, 0);
             Hu3DModelEnvColorSet(object->model[2], 16, 16, 16, 0);
             Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[1]].motId, 0, 1, 2);

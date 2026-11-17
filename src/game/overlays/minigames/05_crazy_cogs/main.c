@@ -1219,7 +1219,7 @@ void m205_TeamObjInit(omObjData *arg0) {
     work = arg0->data;
     work->unkEC = 0;
     Hu3DModelObjAttrSet(arg0->model[1], 0x80000000, 0);
-    Hu3DModelAttrSet(arg0->model[1], 0x60, 0x20);
+    Hu3DModelAttrSet(arg0->model[1], HU3D_ATTR_AA_MASK, HU3D_ATTR_AA);
     Hu3DModelRemakeStatic(arg0->model[1]);
     Hu3DModelDynamicFree(arg0->model[1]);
     arg0->model[3] = Hu3DModelRead(3, 0x2BD);

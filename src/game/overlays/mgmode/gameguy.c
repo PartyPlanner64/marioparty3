@@ -156,7 +156,7 @@ void mgmode_GambleRoomProc(void) {
     mgmode_gamblePlayerAnim = CharAnimCreate(mgmode_mdlTbl[8], 1, mgmode_gamblePlayerChr,
                                            CharMotionDataNumGetTbl(mgmode_gamblePlayerChr, 1, 0));
     Hu3DModelDynamicFree(mgmode_mdlTbl[8]);
-    Hu3DModelAttrSet(mgmode_mdlTbl[18], 0x180, HU3D_ATTR_NONE);
+    Hu3DModelAttrSet(mgmode_mdlTbl[18], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_OFF);
     Hu3DModelRemakeStatic(mgmode_mdlTbl[18]);
     Hu3DModelDynamicFree(mgmode_mdlTbl[18]);
     Hu3DModelPosSet(mgmode_mdlTbl[18], -208.0f, 0.0f, -332.0f);

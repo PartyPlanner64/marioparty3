@@ -1333,7 +1333,7 @@ void m226_KeyGrabUpdate(omObjData *object, u8 isPlayer, u8 canGrab) {
     if (canGrab && playerWork->unk25 != 0) {
         block = m226_keyObjTbl[playerWork->unk25 - 1];
         work = block->data;
-        Hu3DModelAttrSet(block->model[0], 0x4000, 0);
+        Hu3DModelAttrSet(block->model[0], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
         work->unk08.x = sindf(data->unk3C) * 4.0;
         work->unk08.y = 15.0f;
         work->unk08.z = cosdf(data->unk3C) * 4.0;
@@ -1378,7 +1378,7 @@ void m226_KeyGrabUpdate(omObjData *object, u8 isPlayer, u8 canGrab) {
         }
         if (__builtin_fabs((f64)angle) < 45.0) {
             Hu3DModelHookSet(block->model[0], object->model[0], "item_hook");
-            Hu3DModelAttrSet(block->model[0], 0x4000, 0x4000);
+            Hu3DModelAttrSet(block->model[0], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
             _HuAudPlayerFXPlay(0x3D6, data->unk59);
             playerWork->unk25 = i + 1;
             work->unk00 = 1;

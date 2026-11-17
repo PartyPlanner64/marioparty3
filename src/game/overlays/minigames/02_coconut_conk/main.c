@@ -917,7 +917,7 @@ void m202_SoloHitCheck(omObjData *arg0) {
             data->unk28 = data->unk24 = 1.0f;
             break;
         case 1:
-            Hu3DModelAttrSet(arg0->model[3], 0x4000, 0);
+            Hu3DModelAttrSet(arg0->model[3], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
             data->unk24 = 0.5f;
             data->unk28 = 1.3f;
             data->unk0A = 2;
@@ -1024,7 +1024,7 @@ void m202_SoloObjMain(omObjData *arg0) {
             switch (data->unk08) {
                 case 0:
                     Hu3DModelAttrSet(arg0->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-                    Hu3DModelAttrSet(arg0->model[3], 0x4000, 0);
+                    Hu3DModelAttrSet(arg0->model[3], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
                     Hu3DMotionSpeedSet(arg0->model[4], 1.0f);
                     Hu3DModelAttrSet(arg0->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
                     Hu3DModelPosSet(arg0->model[4], arg0->trans.x, arg0->trans.y + 20.0f, arg0->trans.z);
@@ -1160,7 +1160,7 @@ void m202_SoloObjInit(omObjData *obj) {
     Hu3DModelPosSet(obj->model[2], 0.0f, 0.0f, 0.0f);
     obj->model[3] = Hu3DModelRead(0x230000, 0x299);
     Hu3DModelPosSet(obj->model[3], 0.0f, 0.0f, 0.0f);
-    Hu3DModelAttrSet(obj->model[3], 0x4000, 0x4000);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
     Hu3DModelHookSet(obj->model[3], obj->model[0], "item_hook");
     obj->model[4] = Hu3DModelRead(0x230006, 0x28D);
     Hu3DModelPosSet(obj->model[4], 0.0f, 0.0f, 0.0f);
@@ -1533,8 +1533,8 @@ void m202_TeamObjInit(omObjData *arg0) {
     work = arg0->data;
     work->unkEC = 0;
     Hu3DModelObjAttrSet(arg0->model[1], 0x80000000, 0);
-    Hu3DModelAttrSet(arg0->model[1], 0x60, 0x20);
-    Hu3DModelAttrSet(arg0->model[1], 0x180, 0x80);
+    Hu3DModelAttrSet(arg0->model[1], HU3D_ATTR_AA_MASK, HU3D_ATTR_AA);
+    Hu3DModelAttrSet(arg0->model[1], HU3D_ATTR_ZBUF_MASK, HU3D_ATTR_ZBUF_ON);
     Hu3DModelRemakeStatic(arg0->model[1]);
     Hu3DModelDynamicFree(arg0->model[1]);
     arg0->model[7] = Hu3DModelRead(8, 0x2BD);

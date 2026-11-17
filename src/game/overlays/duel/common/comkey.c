@@ -521,11 +521,11 @@ void MBDCameraZoomLerpExec(Vec *pos, f32 zoom, f32 targetZoom, u32 frames) {
 
 void MBDModelHookSet(Object *obj, char *hookName, s16 model) {
     Hu3DModelHookSet(model, obj->omObj1->model[0], hookName);
-    Hu3DModelAttrSet(model, 0x4000, 0x4000);
+    Hu3DModelAttrSet(model, HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
 }
 
 void MBDModelHookReset(s16 arg0) {
-    Hu3DModelAttrSet(arg0, 0x4000, 0);
+    Hu3DModelAttrSet(arg0, HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
 }
 
 s32 MBDWinDummyCreate(s16 x, s16 y, s16 w, s16 h) {

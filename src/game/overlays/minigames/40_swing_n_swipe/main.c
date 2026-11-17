@@ -487,7 +487,7 @@ void m264_PlayerObjInit(omObjData *object) {
     Hu3DModelPosSet(object->model[1], object->trans.x, object->trans.y, object->trans.z);
     Hu3DModelScaleSet(object->model[1], 1.5f, 1.0f, 1.5f);
     m264_batMdl = Hu3DModelRead(0x610002, 0x2B9);
-    Hu3DModelAttrSet(m264_batMdl, 0x4000, 0x4000);
+    Hu3DModelAttrSet(m264_batMdl, HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
     Hu3DModelHookSet(m264_batMdl, object->model[0], "item_hook");
     object->func = m264_PlayerObjMain;
 }

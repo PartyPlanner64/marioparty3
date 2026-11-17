@@ -729,7 +729,7 @@ void mstory3_Scene1PlayerCardShow(omObjData *obj) {
     s16 model = obj->model[1];
 
     HuPrcSleep(20);
-    Hu3DModelAttrSet(obj->model[3], 0x4000, 0x4000);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
     Hu3DModelHookSet(obj->model[3], obj->model[1], mstory3_scene1ItemHookName);
     Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     Hu3DMotionShiftSet(model, Hu3DData[obj->motion[3]].motId, 0, 10, 0);
@@ -761,7 +761,7 @@ void mstory3_Scene1PlayerCardHide(omObjData *obj) {
     } while (time > 0.0f);
     Hu3DMotionSpeedSet(model, 1.0f);
     Hu3DMotionShiftSet(obj->model[1], Hu3DData[obj->motion[0]].motId, 0, 10, 2);
-    Hu3DModelAttrSet(obj->model[3], 0x4000, 0);
+    Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_HOOK, HU3D_ATTR_NONE);
     Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     mstory3_scene1WorkTbl[0].func = mstory3_Scene1PlayerRivalFace;
 }

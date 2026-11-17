@@ -180,7 +180,7 @@ void LoadHMF(HmfData *hmf, void *fileData, s32 flags) {
         hmf->unk80 = HuMemAllocTag(recordCount * sizeof(HmfMotionNode), Hu3DModelTag);
     }
 
-    if (flags & 0x200000) {
+    if (flags & HU3D_ATTR_MAPDATA) {
         if (mapCount != 0) {
             hmf->unkC4 = HuMemAllocTag(mapCount * sizeof(HmfMapData), Hu3DModelTag);
             hmf->unk26 = mapCount;
@@ -261,7 +261,7 @@ void LoadHMF(HmfData *hmf, void *fileData, s32 flags) {
                 break;
 
             case 0x61: {
-                if (flags & 0x200000) {
+                if (flags & HU3D_ATTR_MAPDATA) {
                     hmf->unkC4[mapCount].unk1C = GetString(hmf, &hmf->unkC4[mapCount], (record[3] << 8) + record[4]);
                     MapAttrLoad(hmf, record + 5, mapCount);
                     mapCount++;
@@ -270,7 +270,7 @@ void LoadHMF(HmfData *hmf, void *fileData, s32 flags) {
             }
 
             case 0x5D:
-                if (flags & 0x200000) {
+                if (flags & HU3D_ATTR_MAPDATA) {
                     CameraLoad(hmf, record + 5);
                 }
                 break;

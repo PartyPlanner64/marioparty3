@@ -371,7 +371,7 @@ void MakeDisplayList(HmfData *arg0) {
     flags = arg0->unk1C;
     flags = flags * 4 + arg0->unk10 * 8;
     Hu3DVtxPos = HuMemAlloc(flags * sizeof(Vtx));
-    if (arg0->unkB4 != 0 || (Hu3DCurAttr & 0x400000)) {
+    if (arg0->unkB4 != 0 || (Hu3DCurAttr & HU3D_ATTR_SHAPECACHE)) {
         if (arg0->unk5C != NULL) {
             HuMemFree(arg0->unk5C);
         }
@@ -422,7 +422,7 @@ void MakeDisplayList(HmfData *arg0) {
         combineModeBak = 0xFFFFFFFF;
         texAnimEntryBak = NULL;
         SetLightColor(&gMainGfxPos, 1, 0);
-        if (Hu3DCurAttr & 0x200) {
+        if (Hu3DCurAttr & HU3D_ATTR_LIGHTING) {
             gSPLight(gMainGfxPos++, Hu3DLightP, Hu3DLightData->unk00 + 1);
             lightColBakR = Hu3DLightP->l.col[0];
             lightColBakG = Hu3DLightP->l.col[1];
@@ -498,7 +498,7 @@ void MakeDisplayList(HmfData *arg0) {
         HuMemFree(arg0->unk5C);
         arg0->unk5C = indices;
     }
-    if (arg0->unkB4 != 0 || (Hu3DCurAttr & 0x400000)) {
+    if (arg0->unkB4 != 0 || (Hu3DCurAttr & HU3D_ATTR_SHAPECACHE)) {
         Hu3DShapeCacheMake(arg0);
     }
     if (arg0->unk1C * 4 + arg0->unk10 * 8 < vtxCnt) {
@@ -1056,7 +1056,7 @@ void objMesh(HmfData *arg0, s16 arg1, HmfDrawObject *arg2) {
         material = &arg0->unk88[object->unk1E];
         gDPSetPrimColor(gMainGfxPos++, 0, 0, material->unk05, material->unk06, material->unk07, (u8)object->unk20);
     }
-    if (Hu3DCurAttr & 0x10000) {
+    if (Hu3DCurAttr & HU3D_ATTR_PRIMCOLOR) {
         gDPSetEnvColor(gMainGfxPos++, (u8)arg0->unk02[4], (u8)arg0->unk02[5], (u8)arg0->unk02[6], (u8)arg0->unk02[7]);
         gDPSetPrimColor(gMainGfxPos++, 0, 0, (u8)arg0->unk02[0], (u8)arg0->unk02[1], (u8)arg0->unk02[2], (u8)arg0->unk02[3]);
     }
@@ -1285,7 +1285,7 @@ void FaceDraw(HmfData *hmf, s16 objectIndex) {
     previousMaterial = &hmf->unk88[source->unk30];
     flags = drawObjP->unk50 &= ~0x40000;
     groupVertices = (flags & 0x6020000) == 0x20000;
-    if ((Hu3DCurAttr & 0x2001) == 0x2001) {
+    if ((Hu3DCurAttr & (HU3D_ATTR_OBJCULL | HU3D_ATTR_STATIC)) == (HU3D_ATTR_OBJCULL | HU3D_ATTR_STATIC)) {
         ObjCullCheck(hmf, objectIndex);
     }
     unlit = source->unk00 & 0x80;
@@ -1446,7 +1446,7 @@ void MaterialSet(HmfData *hmf, s32 *flags) {
         r = g = b = 0;
         if (textureEntry == (HmfData_Unk84_Entry *)-1) {
             changed = 0;
-            if (Hu3DCurAttr & 0x200) {
+            if (Hu3DCurAttr & HU3D_ATTR_LIGHTING) {
                 r = material->unk01 * Hu3DMatColScale;
                 if (r > 255)
                     r = 255;
@@ -1533,7 +1533,7 @@ void MaterialSet(HmfData *hmf, s32 *flags) {
                     g = b = r;
                     break;
             }
-            if ((Hu3DCurAttr & 0x200) && ((u16)lightColBakR != r || (u16)lightColBakG != g || (u16)lightColBakB != b)) {
+            if ((Hu3DCurAttr & HU3D_ATTR_LIGHTING) && ((u16)lightColBakR != r || (u16)lightColBakG != g || (u16)lightColBakB != b)) {
                 lightColBakR = r;
                 lightColBakG = g;
                 lightColBakB = b;
@@ -1802,28 +1802,28 @@ void ObjCullCheck(HmfData *hmf, s16 objectIndex) {
 
 void SetBlendMode(HmfMaterialData *material, HmfData_Unk84_Entry *texture, u32 flags) {
     u8 materialFlags;
-    s32 antialias;
+    s32 zbuf;
     u64 combine;
     u64 renderMode;
-    s16 depthMode;
+    s16 aaMode;
     s32 mask;
-    s32 materialDepthFlags;
+    s32 materialAAFlags;
     u32 materialRenderMode;
 
     materialFlags = material->unk09;
-    if ((Hu3DCurAttr & 0x180) == 0x100) {
-        antialias = ((flags >> 24) ^ 1) & 1;
+    if ((Hu3DCurAttr & HU3D_ATTR_ZBUF_MASK) == HU3D_ATTR_ZBUF_OBJ) {
+        zbuf = ((flags >> 24) ^ 1) & 1;
     } else {
-        antialias = Hu3DCurAttr & 0x180;
+        zbuf = Hu3DCurAttr & HU3D_ATTR_ZBUF_MASK;
     }
     if (flags & 0x80000) {
         return;
     }
-    if (Hu3DCurAttr & 0x80000) {
+    if (Hu3DCurAttr & HU3D_ATTR_ZMASK) {
         combine = 0xFCFFFFFF;
         combine <<= 32;
         combine |= 0xFFFFFFFF;
-    } else if (Hu3DCurAttr & 0x10000) {
+    } else if (Hu3DCurAttr & HU3D_ATTR_PRIMCOLOR) {
         combine = 0xFC127E24;
         combine <<= 32;
         combine |= 0x55FDF2F9;
@@ -1904,13 +1904,13 @@ void SetBlendMode(HmfMaterialData *material, HmfData_Unk84_Entry *texture, u32 f
             combine |= 0xFFFFF238;
         }
     }
-    mask = Hu3DCurAttr & 0x60;
-    if (mask == 0x20) {
-        depthMode = 0x48;
+    mask = Hu3DCurAttr & HU3D_ATTR_AA_MASK;
+    if (mask == HU3D_ATTR_AA) {
+        aaMode = 0x48;
     } else {
-        depthMode = (mask == 0x40) * 8;
+        aaMode = (mask == HU3D_ATTR_AA_REDUCED) * 8;
     }
-    if (Hu3DCurAttr & 0x80000) {
+    if (Hu3DCurAttr & HU3D_ATTR_ZMASK) {
         renderMode = 0x5553F0;
     } else if (flags & 0x8000) {
         gDPSetBlendColor(gMainGfxPos++, 0, 0, 0, 1);
@@ -1940,13 +1940,13 @@ void SetBlendMode(HmfMaterialData *material, HmfData_Unk84_Entry *texture, u32 f
             gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
             if (Hu3DFogF == 0) {
                 {
-                    materialDepthFlags = depthMode;
+                    materialAAFlags = aaMode;
                     materialRenderMode = 0x553D18;
                     goto applyMaterialRenderMode;
                 }
             } else {
                 {
-                    s32 renderFlags = depthMode;
+                    s32 renderFlags = aaMode;
                     renderFlags |= (s32)0xC8113D18;
                     renderMode = renderFlags;
                 }
@@ -1959,21 +1959,21 @@ void SetBlendMode(HmfMaterialData *material, HmfData_Unk84_Entry *texture, u32 f
         if (!(materialFlags & 4)) {
             gDPSetPrimColor(gMainGfxPos++, 0, 0, material->unk05, material->unk06, material->unk07, material->unk0A);
         }
-        if (depthMode != 0) {
-            depthMode |= 0x180;
+        if (aaMode != 0) {
+            aaMode |= 0x180;
         } else {
-            depthMode |= 0x200;
+            aaMode |= 0x200;
         }
-        if (antialias) {
+        if (zbuf) {
             if (Hu3DFogF == 0) {
                 {
-                    materialDepthFlags = depthMode;
+                    materialAAFlags = aaMode;
                     materialRenderMode = 0x504850;
                     goto applyMaterialRenderMode;
                 }
             } else {
                 {
-                    s32 renderFlags = depthMode;
+                    s32 renderFlags = aaMode;
                     renderFlags |= (s32)0xC8104850;
                     renderMode = renderFlags;
                 }
@@ -1981,15 +1981,15 @@ void SetBlendMode(HmfMaterialData *material, HmfData_Unk84_Entry *texture, u32 f
         } else {
             if (Hu3DFogF == 0) {
                 {
-                    materialDepthFlags = depthMode;
+                    materialAAFlags = aaMode;
                     materialRenderMode = 0x504040;
                 applyMaterialRenderMode:
-                    materialRenderMode |= materialDepthFlags;
+                    materialRenderMode |= materialAAFlags;
                     renderMode = (s32)materialRenderMode;
                 }
             } else {
                 {
-                    s32 renderFlags = depthMode;
+                    s32 renderFlags = aaMode;
                     renderFlags |= (s32)0xC8104040;
                     renderMode = renderFlags;
                 }
@@ -1999,20 +1999,20 @@ void SetBlendMode(HmfMaterialData *material, HmfData_Unk84_Entry *texture, u32 f
     } else {
         gDPSetAlphaCompare(gMainGfxPos++, G_AC_NONE);
         if (texture == (HmfData_Unk84_Entry *)-1) {
-            if (depthMode == 0) {
-                depthMode |= 0x200;
+            if (aaMode == 0) {
+                aaMode |= 0x200;
             }
-            if (antialias) {
+            if (zbuf) {
                 if (Hu3DFogF == 0) {
                     {
-                        s32 renderFlags = depthMode;
+                        s32 renderFlags = aaMode;
                         u32 mode = 0x552030;
                         mode = renderFlags | mode;
                         renderMode = (s32)mode;
                     }
                 } else {
                     {
-                        s32 renderFlags = depthMode;
+                        s32 renderFlags = aaMode;
                         renderFlags |= (s32)0xC8112030;
                         renderMode = renderFlags;
                     }
@@ -2020,34 +2020,34 @@ void SetBlendMode(HmfMaterialData *material, HmfData_Unk84_Entry *texture, u32 f
             } else {
                 if (Hu3DFogF == 0) {
                     {
-                        s32 renderFlags = depthMode;
+                        s32 renderFlags = aaMode;
                         u32 mode = 0x552000;
                         mode = renderFlags | mode;
                         renderMode = (s32)mode;
                     }
                 } else {
                     {
-                        s32 renderFlags = depthMode;
+                        s32 renderFlags = aaMode;
                         renderFlags |= (s32)0xC8112000;
                         renderMode = renderFlags;
                     }
                 }
             }
-        } else if (Hu3DCurAttr & 0x20000) {
-            if (depthMode == 0) {
-                depthMode |= 0x200;
+        } else if (Hu3DCurAttr & HU3D_ATTR_TEX_OPA) {
+            if (aaMode == 0) {
+                aaMode |= 0x200;
             }
-            if (antialias) {
+            if (zbuf) {
                 if (Hu3DFogF == 0) {
                     {
-                        s32 renderFlags = depthMode;
+                        s32 renderFlags = aaMode;
                         u32 mode = 0x552030;
                         mode = renderFlags | mode;
                         renderMode = (s32)mode;
                     }
                 } else {
                     {
-                        s32 renderFlags = depthMode;
+                        s32 renderFlags = aaMode;
                         renderFlags |= (s32)0xC8112030;
                         renderMode = renderFlags;
                     }
@@ -2055,31 +2055,31 @@ void SetBlendMode(HmfMaterialData *material, HmfData_Unk84_Entry *texture, u32 f
             } else {
                 if (Hu3DFogF == 0) {
                     {
-                        s32 renderFlags = depthMode;
+                        s32 renderFlags = aaMode;
                         u32 mode = 0x552000;
                         mode = renderFlags | mode;
                         renderMode = (s32)mode;
                     }
                 } else {
                     {
-                        s32 renderFlags = depthMode;
+                        s32 renderFlags = aaMode;
                         renderFlags |= (s32)0xC8112000;
                         renderMode = renderFlags;
                     }
                 }
             }
         } else {
-            if (antialias) {
+            if (zbuf) {
                 if (Hu3DFogF == 0) {
                     {
-                        s32 renderFlags = depthMode;
+                        s32 renderFlags = aaMode;
                         u32 mode = 0x553038;
                         mode = renderFlags | mode;
                         renderMode = (s32)mode;
                     }
                 } else {
                     {
-                        s32 renderFlags = depthMode;
+                        s32 renderFlags = aaMode;
                         renderFlags |= (s32)0xC8113038;
                         renderMode = renderFlags;
                     }
@@ -2087,14 +2087,14 @@ void SetBlendMode(HmfMaterialData *material, HmfData_Unk84_Entry *texture, u32 f
             } else {
                 if (Hu3DFogF == 0) {
                     {
-                        s32 renderFlags = depthMode;
+                        s32 renderFlags = aaMode;
                         u32 mode = 0xF0A7008;
                         /* De Morgan's form preserves the original OR operand order. */
                         renderMode = (s32) ~(~mode & ~renderFlags);
                     }
                 } else {
                     {
-                        s32 renderFlags = depthMode;
+                        s32 renderFlags = aaMode;
                         renderFlags |= (s32)0xCB027008;
                         renderMode = renderFlags;
                     }

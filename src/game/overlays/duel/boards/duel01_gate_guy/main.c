@@ -3612,7 +3612,7 @@ void MBD1Ev_PartnerGetExec(s32 index) {
             }
             comKeys[GwPlayer[index].pad] = A_BUTTON;
             HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], MBDMesWaitGet());
-            HuWinAttrSet(mbdDlgWinId, 2, 2);
+            HuWinAttrSet(mbdDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         }
         choice = HuWinChoiceGet(mbdDlgWinId, 0, 1);
         comKeys[GwPlayer[index].pad] = 0;
@@ -3644,7 +3644,7 @@ void MBD1Ev_PartnerGetExec(s32 index) {
             }
             comKeys[GwPlayer[index].pad] = A_BUTTON;
             HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], MBDMesWaitGet());
-            HuWinAttrSet(mbdDlgWinId, 2, 2);
+            HuWinAttrSet(mbdDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         }
         choice = HuWinChoiceGet(mbdDlgWinId, 0, 1);
         comKeys[GwPlayer[index].pad] = 0;
@@ -3846,7 +3846,7 @@ void MBD1Ev_TurnStart(void) {
     if (index == 0 && GwSystem.current_turn == 1 && player->stats.partners.frontID == -1 &&
         player->stats.partners.backID == -1) {
         win = HuWinExCreate(-1, 80, 80, 160, 105, 0);
-        HuWinAttrSet(win, 64, 64);
+        HuWinAttrSet(win, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
         HuWinExAnimIn(win);
         HuWinMesConv(mes, (s32)mbd1ev_partnerSelFront1PStr);
         HuWinMesSet(win, (u32)mes, -1, -1);
@@ -3864,14 +3864,14 @@ void MBD1Ev_TurnStart(void) {
             }
             comKeys[GwPlayer[index].pad] = A_BUTTON;
             HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], MBDMesWaitGet());
-            HuWinAttrSet(win, 2, 2);
+            HuWinAttrSet(win, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         }
         frontChoice = (s16)HuWinChoiceGet(win, 0, 1);
         HuWinExAnimOut(win, 0);
         HuWinKill(win);
 
         win = HuWinExCreate(-1, 80, 80, 160, 105, 0);
-        HuWinAttrSet(win, 64, 64);
+        HuWinAttrSet(win, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
         HuWinExAnimIn(win);
         HuWinMesConv(mes, (s32)mbd1ev_partnerSelBack1PStr);
         HuWinMesSet(win, (u32)mes, -1, -1);
@@ -3889,7 +3889,7 @@ void MBD1Ev_TurnStart(void) {
             }
             comKeys[GwPlayer[index].pad] = A_BUTTON;
             HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], MBDMesWaitGet());
-            HuWinAttrSet(win, 2, 2);
+            HuWinAttrSet(win, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         }
         backChoice = (s16)HuWinChoiceGet(win, 0, 1);
         HuWinExAnimOut(win, 0);
@@ -3905,7 +3905,7 @@ void MBD1Ev_TurnStart(void) {
         }
 
         win = HuWinExCreate(-1, 80, 80, 160, 105, 0);
-        HuWinAttrSet(win, 64, 64);
+        HuWinAttrSet(win, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
         HuWinExAnimIn(win);
         HuWinMesConv(mes, (s32)mbd1ev_partnerSelFront2PStr);
         HuWinMesSet(win, (u32)mes, -1, -1);
@@ -3923,14 +3923,14 @@ void MBD1Ev_TurnStart(void) {
             }
             comKeys[GwPlayer[index].pad] = A_BUTTON;
             HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], MBDMesWaitGet());
-            HuWinAttrSet(win, 2, 2);
+            HuWinAttrSet(win, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         }
         frontChoice = (s16)HuWinChoiceGet(win, 0, 0);
         HuWinExAnimOut(win, 0);
         HuWinKill(win);
 
         win = HuWinExCreate(-1, 80, 80, 160, 105, 0);
-        HuWinAttrSet(win, 64, 64);
+        HuWinAttrSet(win, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
         HuWinExAnimIn(win);
         HuWinMesConv(mes, (s32)mbd1ev_partnerSelBack2PStr);
         HuWinMesSet(win, (u32)mes, -1, -1);
@@ -3948,7 +3948,7 @@ void MBD1Ev_TurnStart(void) {
             }
             comKeys[GwPlayer[index].pad] = A_BUTTON;
             HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], MBDMesWaitGet());
-            HuWinAttrSet(win, 2, 2);
+            HuWinAttrSet(win, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         }
         backChoice = (s16)HuWinChoiceGet(win, 0, 0);
         HuWinExAnimOut(win, 0);
@@ -6083,7 +6083,7 @@ void MBD1Ev_Gate1Pay(void) {
             }
             comKeys[GwPlayer[index].pad] = A_BUTTON;
             HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], MBDMesWaitGet());
-            HuWinAttrSet(mbdDlgWinId, 2, 2);
+            HuWinAttrSet(mbdDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         }
         choice = HuWinChoiceGet(mbdDlgWinId, 0, 1);
         comKeys[GwPlayer[index].pad] = 0;
@@ -6152,7 +6152,7 @@ void MBD1Ev_Gate2Pay(void) {
             }
             comKeys[GwPlayer[index].pad] = A_BUTTON;
             HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], MBDMesWaitGet());
-            HuWinAttrSet(mbdDlgWinId, 2, 2);
+            HuWinAttrSet(mbdDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         }
         choice = HuWinChoiceGet(mbdDlgWinId, 0, 1);
         comKeys[GwPlayer[index].pad] = 0;

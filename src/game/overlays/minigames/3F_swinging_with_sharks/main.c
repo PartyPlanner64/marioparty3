@@ -301,7 +301,7 @@ void m263_ObjectSetup(void) {
         }
     }
     m263_playerNo = i;
-    m263_comLevel = GwPlayer[m263_playerNo].stat & 1;
+    m263_comLevel = GwPlayer[m263_playerNo].stat & PLAYER_IS_CPU;
     GwPlayer[m263_playerNo].bonusCoin = -1;
     m263_playerChr = GwPlayer[i].chr;
     m263_padNo = GwPlayer[i].pad;

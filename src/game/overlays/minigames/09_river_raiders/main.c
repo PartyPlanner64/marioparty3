@@ -816,7 +816,7 @@ void m209_BoatObjMain(omObjData *obj) {
             break;
         case 2:
             if (m209_timer > 0) {
-                if (GwPlayer[player].stat & 1) {
+                if (GwPlayer[player].stat & PLAYER_IS_CPU) {
                     m209_BoatComInput(obj);
                 } else {
                     m209_BoatPadInput(obj);
@@ -1363,7 +1363,7 @@ void m209_SkierObjMain(omObjData *obj) {
     switch (m209_phase) {
         case 2:
             if (m209_timer > 0) {
-                if (GwPlayer[player].stat & 1) {
+                if (GwPlayer[player].stat & PLAYER_IS_CPU) {
                     m209_SkierComInput(obj);
                 } else {
                     m209_SkierPadInput(obj);

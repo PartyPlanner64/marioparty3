@@ -1431,7 +1431,7 @@ void m229_HandObjMain(omObjData *obj) {
             if (work->unk18 > 1.0f) {
                 work->unk18 = 1.0f;
             }
-            if ((GwPlayer[playerNo].stat & 1) && work->unk16 == 0) {
+            if ((GwPlayer[playerNo].stat & PLAYER_IS_CPU) && work->unk16 == 0) {
                 work->unk16 = 1;
                 count = 0;
                 chance = rand8() % 100;
@@ -1538,7 +1538,7 @@ void m229_HandObjMain(omObjData *obj) {
             break;
         case 9:
             if (m229_timer > 0) {
-                if (GwPlayer[playerNo].stat & 1) {
+                if (GwPlayer[playerNo].stat & PLAYER_IS_CPU) {
                     m229_HandComInput(obj);
                 } else {
                     m229_HandPadInput(obj);
@@ -3068,7 +3068,7 @@ void m229_MainObjMain(omObjData *obj) {
     if (m229_messVibTimer > 0) {
         if (m229_messVibTimer % 5 == 1) {
             for (i = 0; i < 4; i++) {
-                if (!(GwPlayer[i].stat & 1)) {
+                if (!(GwPlayer[i].stat & PLAYER_IS_CPU)) {
                     omVibrate(i, 2, 3, 10);
                 }
             }

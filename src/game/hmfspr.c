@@ -757,7 +757,7 @@ s32 CharMotionDataNumGetTbl(s16 chr, s16 arg1, s16 arg2) {
 }
 
 s32 CharMotionDataNumGet(s16 chr, s16 animId) {
-    if (chr == 7) {
+    if (chr == CHAR_DAISY) {
         u16 packed = CharMotionDataTbl[animId];
         return ((packed & 0xFF00) << 8) | (packed & 0xFF);
     }

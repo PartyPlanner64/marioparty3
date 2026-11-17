@@ -1050,7 +1050,7 @@ void m244_PlayerObjCreateAll(void) {
         racer->unk0A = m244_racerPlayerTbl[i][1];
         racer->unk0C = GwPlayer[racer->unk0A].pad;
         racer->unk0E = GwPlayer[racer->unk0A].chr;
-        if (GwPlayer[racer->unk0A].stat & 1) {
+        if (GwPlayer[racer->unk0A].stat & PLAYER_IS_CPU) {
             racer->unk10 = 1;
         } else {
             racer->unk10 = 0;

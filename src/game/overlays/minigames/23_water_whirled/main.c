@@ -1196,7 +1196,7 @@ void m235_PlayerComInput(omObjData *object) {
     f32 dir;
     f32 radius;
 
-    if (MgFlowStatGet() == MG_STATE_PLAY && !(GwPlayer[player].stat & 1)) {
+    if (MgFlowStatGet() == MG_STATE_PLAY && !(GwPlayer[player].stat & PLAYER_IS_CPU)) {
         return;
     }
     m235_btnSave = 0;

@@ -243,7 +243,7 @@ void m222_MainObjInit(omObjData *object) {
         m222_groupPlayerTbl[j]->pad = GwPlayer[i].pad;
         m222_groupPlayerTbl[j]->chr = GwPlayer[i].chr;
         m222_groupPlayerTbl[j]->group = j;
-        m222_groupPlayerTbl[j]->cpuDifficulty = (GwPlayer[i].stat & 1) ? GwPlayer[i].cpu_difficulty : -1;
+        m222_groupPlayerTbl[j]->cpuDifficulty = (GwPlayer[i].stat & PLAYER_IS_CPU) ? GwPlayer[i].cpu_difficulty : -1;
         m222_humanNum += (m222_groupPlayerTbl[j]->cpuDifficulty == -1) ? 1 : 0;
     }
     for (i = 0; i < 4; i++) {

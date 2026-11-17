@@ -590,7 +590,7 @@ void m228_PlayerMoveUpdate(omObjData *object) {
     if (work->flags & 4) {
         return;
     }
-    if (GwPlayer[work->playerIndex].stat & 1) {
+    if (GwPlayer[work->playerIndex].stat & PLAYER_IS_CPU) {
         stickX = m228_PlayerComStickGet(object);
     } else {
         stickX = HuPadStkX[GwPlayer[work->playerIndex].pad];
@@ -632,7 +632,7 @@ void m228_PlayerParasolUpdate(omObjData *object) {
     u16 pressed;
 
     if (work->flags & FLAG_IDLE) {
-        if (GwPlayer[work->playerIndex].stat & 1) {
+        if (GwPlayer[work->playerIndex].stat & PLAYER_IS_CPU) {
             pressed = m228_PlayerComBtnGet(object);
         } else {
             pressed = HuPadBtnDown[GwPlayer[work->playerIndex].pad];

@@ -652,7 +652,7 @@ void m241_FirePatternUpdate(omObjData *object) {
                 case 0:
                     for (i = 0; i < 4; i++) {
                         data = mgPlayerObjTbl[i]->data;
-                        if ((GwPlayer[data->unk59].stat & 1) && data->unk38 != 1000.0f) {
+                        if ((GwPlayer[data->unk59].stat & PLAYER_IS_CPU) && data->unk38 != 1000.0f) {
                             m241_comAliveF = 1;
                             break;
                         }
@@ -824,7 +824,7 @@ void m241_PlayerObjMain(omObjData *object) {
                 m241_PlayerIntroUpdate(object);
                 break;
             case MG_STATE_PLAY:
-                if (GwPlayer[data->unk59].stat & 1) {
+                if (GwPlayer[data->unk59].stat & PLAYER_IS_CPU) {
                     m241_PlayerComInput(object);
                 }
                 MgPlayerObjMain(object);

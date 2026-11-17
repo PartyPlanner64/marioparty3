@@ -998,7 +998,7 @@ void MgStoryStageGoto(void) {
                 }
             }
         } else {
-            GwPlayer[i].stat = 1;
+            GwPlayer[i].stat = PLAYER_IS_CPU;
         }
     }
     omOvlHisChg(0, 0x7D, 0, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);

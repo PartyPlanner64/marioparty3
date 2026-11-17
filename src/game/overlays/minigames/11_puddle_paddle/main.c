@@ -1348,7 +1348,7 @@ void m217_BoatMoveUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
         for (j = 0; j < 2; j++) {
             player = &m217_playerTbl[team->players[j]];
             if ((GwPlayer[team->players[j]].stat & 1) && team->players[j] != team->unk_2C) {
-                if (rand16() % (player->unk_52 + 1) == 0 && (GwPlayer[team->unk_2C].stat & 1)) {
+                if (rand16() % (player->unk_52 + 1) == 0 && (GwPlayer[team->unk_2C].stat & PLAYER_IS_CPU)) {
                     team->unk_60 = 0;
                     team->unk_62 = rand16() % (player->unk_54 - 4) + 5;
                 }

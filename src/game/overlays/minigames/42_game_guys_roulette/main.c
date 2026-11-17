@@ -237,7 +237,7 @@ void m266_PlayerInfoInit(GameGuysRoulettePlayerInfo *info) {
     info->player = i;
     info->pad = GwPlayer[i].pad;
     info->chr = GwPlayer[i].chr;
-    if (GwPlayer[i].stat & 1) {
+    if (GwPlayer[i].stat & PLAYER_IS_CPU) {
         info->cpu = 1;
         info->difficulty = GwPlayer[i].cpu_difficulty;
         m266_comLevel = GwCommon.unkA0;

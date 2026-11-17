@@ -472,7 +472,7 @@ void m214_PlayerObjMain(omObjData *object) {
                 m214_PumperUpdate(object);
                 break;
             }
-            if (!(GwPlayer[playerData->unk59].stat & 1)) {
+            if (!(GwPlayer[playerData->unk59].stat & PLAYER_IS_CPU)) {
                 if ((HuPadStkX[playerData->unk57] < 0 ? -HuPadStkX[playerData->unk57] : HuPadStkX[playerData->unk57]) > 0 && object->rot.y > 120.0f && object->rot.y < 240.0f) {
                     Hu3DMotionAttrSet(object->model[0], 1, 2);
                 } else {
@@ -628,7 +628,7 @@ void m214_PumperUpdate(omObjData *object) {
     time = Hu3DData[object->model[0]].motTime;
     end = Hu3DMotion[Hu3DData[object->model[0]].motId].unk02;
     side = GwPlayer[playerData->unk59].group >= 2;
-    if (GwPlayer[playerData->unk59].stat & 1) {
+    if (GwPlayer[playerData->unk59].stat & PLAYER_IS_CPU) {
         if ((time == end) | (time == 0.0f)) {
             random = (rand8() * 100) >> 8;
             switch (GwPlayer[playerData->unk59].cpu_difficulty) {
@@ -826,7 +826,7 @@ void m214_SprayObjMain(omObjData *object) {
     port = playerData->unk57;
     data = object->data;
     count = 0;
-    if (GwPlayer[playerIndex].stat & 1) {
+    if (GwPlayer[playerIndex].stat & PLAYER_IS_CPU) {
         farthest = -1000.0f;
         target = 4;
         for (i = 0; i < 5; i++) {

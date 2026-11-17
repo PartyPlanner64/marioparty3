@@ -637,7 +637,7 @@ void m226_PlayerObjInit(omObjData *object) {
     work = data->unk158;
     work->unk20 = player;
     work->unk21 = character;
-    work->unk27 = GwPlayer[player].stat & 1;
+    work->unk27 = GwPlayer[player].stat & PLAYER_IS_CPU;
     work->unk22 = GwPlayer[player].cpu_difficulty;
     work->unk1C = model | 0x2F;
     work->unk23 = 0;

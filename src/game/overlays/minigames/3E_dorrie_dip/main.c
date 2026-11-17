@@ -577,11 +577,11 @@ void m262_PlayerObjMain(omObjData *obj) {
 
     HuPadStkX[data->unk57] = 0;
     HuPadStkY[data->unk57] = 0;
-    if (GwPlayer[data->unk59].stat & 1) {
+    if (GwPlayer[data->unk59].stat & PLAYER_IS_CPU) {
         HuPadBtn[data->unk57] = 0;
         HuPadBtnDown[data->unk57] = 0;
     }
-    if (MgFlowStatGet() == MG_STATE_PLAY && (GwPlayer[data->unk59].stat & 1)) {
+    if (MgFlowStatGet() == MG_STATE_PLAY && (GwPlayer[data->unk59].stat & PLAYER_IS_CPU)) {
         m262_ComInput();
     }
     MgPlayerObjMain(obj);

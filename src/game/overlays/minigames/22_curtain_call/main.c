@@ -1074,7 +1074,7 @@ void m234_PlayerObjInit(omObjData *obj) {
     Hu3DModelCameraSet(obj->model[1], HU3D_CAM0);
     Hu3DModelCameraSet(obj->model[2], HU3D_CAM0);
     Hu3DModelCameraSet(obj->model[3], HU3D_CAM0);
-    obj->work[1] = GwPlayer[player].stat & 1;
+    obj->work[1] = GwPlayer[player].stat & PLAYER_IS_CPU;
     m234_comLevelTbl[player] = GwPlayer[player].cpu_difficulty;
     obj->work[3] = GwPlayer[player].pad;
     obj->func = m234_PlayerObjMain;

@@ -711,7 +711,7 @@ void m220_PlayerObjInit(omObjData *object) {
     chr = GwPlayer[playerIndex].chr;
     player->unk_20 = chr;
     player->unk_1E = GwPlayer[playerIndex].pad;
-    player->unk_22 = GwPlayer[playerIndex].stat & 1;
+    player->unk_22 = GwPlayer[playerIndex].stat & PLAYER_IS_CPU;
     player->unk_24 = GwPlayer[playerIndex].cpu_difficulty;
     player->unk_26 = 0;
     player->unk_28 = 0;
@@ -729,7 +729,7 @@ void m220_PlayerObjInit(omObjData *object) {
     MgPlayerMotLoad(object, 21, CharMotionDataNumGet(chr, 0x1F), 0, 0);
     MgPlayerMotLoad(object, 38, CharMotionDataNumGet(chr, 0x33), 1, 60);
     MgPlayerMotLoad(object, 39, CharMotionDataNumGet(chr, 0x3A), 1, 60);
-    if (chr != 5) {
+    if (chr != CHAR_DK) {
         index = rand8() & 1;
         MgPlayerMotLoad(object, 13, CharMotionDataNumGet(chr, m220_voiceNoTbl[index]), 1, 120);
         player->unk_18 = m220_voiceChrTbl[chr] | m220_voiceNoTbl[index];

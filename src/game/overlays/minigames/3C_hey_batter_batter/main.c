@@ -250,7 +250,7 @@ void m260_ComSwingInit(void) {
     m260_missF = 1;
     m260_unusedNo = 0;
     m260_unusedState = 0;
-    if (GwPlayer[m260_playerNo].stat & 1) {
+    if (GwPlayer[m260_playerNo].stat & PLAYER_IS_CPU) {
         thresholds[0] = mgInstSlotTbl[0];
         for (i = 1; i < 5; i++) {
             thresholds[i] = thresholds[i - 1] + mgInstSlotTbl[i];
@@ -606,7 +606,7 @@ void m260_PlayerObjInit(omObjData *object) {
     omObjMotionRead(object, 3, CharMotionDataNumGet(chr, 0x38));
     omObjMotionRead(object, 4, CharMotionDataNumGet(chr, 0x83));
     omObjMotionRead(object, 5, CharMotionDataNumGet(chr, 1));
-    if (chr == 5) {
+    if (chr == CHAR_DK) {
         omObjMotionRead(object, 6, 0x5D000A);
     }
     Hu3DModelAttrSet(object->model[1], HU3D_ATTR_HOOK, HU3D_ATTR_HOOK);
@@ -807,7 +807,7 @@ void m260_KoopaObjMain(omObjData *object) {
                 }
                 Hu3DData[object->model[3]].rot.x += 30.0f;
                 if (m260_swingF == 0) {
-                    if (GwPlayer[m260_playerNo].stat & 1) {
+                    if (GwPlayer[m260_playerNo].stat & PLAYER_IS_CPU) {
                         if (m260_ballTime == m260_comSwingTime) {
                             m260_swingF = 1;
                             HuAudFXPlay(0x4D0);

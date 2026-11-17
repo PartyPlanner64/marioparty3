@@ -880,7 +880,7 @@ void m258_PlayerObjInit(omObjData *object) {
     work->player = player;
     work->index = m258_playerInitNo;
     work->character = character;
-    work->unk25 = GwPlayer[player].stat & 1;
+    work->unk25 = GwPlayer[player].stat & PLAYER_IS_CPU;
     work->unk23 = GwPlayer[player].cpu_difficulty;
     work->unk1C = model | 0x9A;
     work->unk24 = 0;

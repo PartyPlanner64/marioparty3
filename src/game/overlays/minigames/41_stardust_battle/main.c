@@ -1099,7 +1099,7 @@ void m265_PlayerObjInit(omObjData *object) {
     character = GwPlayer[player].chr;
     obj->character = character;
     obj->pad = GwPlayer[player].pad;
-    obj->unk_26 = GwPlayer[player].stat & 1;
+    obj->unk_26 = GwPlayer[player].stat & PLAYER_IS_CPU;
     obj->cpuDifficulty = GwPlayer[player].cpu_difficulty;
     chr = character;
     model = omCharModelNoTbl[chr][0];
@@ -1126,7 +1126,7 @@ void m265_PlayerObjInit(omObjData *object) {
     MgPlayerMotLoad(object, 9, CharMotionDataNumGet(chr, 7), 1, 39);
     MgPlayerMotRead(object, 33, CharMotionDataNumGet(chr, 35), 2, 0);
     MgPlayerMotLoad(object, 34, CharMotionDataNumGet(chr, 36), 2, 0);
-    if (chr != 5) {
+    if (chr != CHAR_DK) {
         MgPlayerMotLoad(object, 5, CharMotionDataNumGet(chr, 142), 0, 0);
         MgPlayerMotLoad(object, 38, CharMotionDataNumGet(chr, 18), 0, 0);
         MgPlayerMotLoad(object, 39, CharMotionDataNumGet(chr, 28), 0, 0);

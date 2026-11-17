@@ -137,13 +137,13 @@ void MBDTelopPlayerMain(omObjData *arg0) {
             if (arg0->work[3] == 6) {
                 arg0->work[1]--;
                 for (i = 0; i < 4; i++) {
-                    if (!(GwPlayer[i].stat & 1)) {
+                    if (!(GwPlayer[i].stat & PLAYER_IS_CPU)) {
                         break;
                     }
                 }
                 if (i != 4) {
                     for (i = 0; i < 4; i++) {
-                        if (!(GwPlayer[i].stat & 1) && (HuPadBtnDown[GwPlayer[i].pad] & (A_BUTTON | B_BUTTON))) {
+                        if (!(GwPlayer[i].stat & PLAYER_IS_CPU) && (HuPadBtnDown[GwPlayer[i].pad] & (A_BUTTON | B_BUTTON))) {
                             arg0->work[0] = 2;
                         }
                     }

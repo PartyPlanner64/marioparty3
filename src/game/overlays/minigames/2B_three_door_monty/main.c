@@ -1788,7 +1788,7 @@ void m243_PlayerObjInit(omObjData *obj) {
     }
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
-    if (chr != 5) {
+    if (chr != CHAR_DK) {
         Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
     } else {
         Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z + 30.0f);

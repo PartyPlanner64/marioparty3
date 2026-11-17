@@ -975,7 +975,7 @@ void m210_PlayerObjInit(omObjData *object) {
     playerSlot = m210_playerSlotNo;
     work->unk2D = GwPlayer[playerSlot].group;
     work->unk2C = character;
-    work->unk30 = GwPlayer[playerIndex].stat & 1;
+    work->unk30 = GwPlayer[playerIndex].stat & PLAYER_IS_CPU;
     work->unk2E = GwPlayer[playerIndex].cpu_difficulty;
     work->unk2F = 0;
     work->unk1C = 11.0f;

@@ -1423,7 +1423,7 @@ void m227_PlayerComInputGet(omObjData *object, s32 *stickX, s32 *stickY, s32 *bu
     s32 playerIndex;
     s32 difficulty;
 
-    if (GwPlayer[work->playerIndex].stat & 1) {
+    if (GwPlayer[work->playerIndex].stat & PLAYER_IS_CPU) {
         *buttons = 0;
         *stickY = 0;
         *stickX = 0;

@@ -155,8 +155,8 @@ void opdueltutorial_ObjectSetup(void) {
             opdueltutorial_playerMotTbl[i][j + 1] = CharMotionDataNumGet(i, opdueltutorial_playerMotMario[j + 1]);
         }
     }
-    GwPlayer[0].stat = 1;
-    GwPlayer[1].stat = 1;
+    GwPlayer[0].stat = PLAYER_IS_CPU;
+    GwPlayer[1].stat = PLAYER_IS_CPU;
     GwPlayer[0].chr = 0;
     GwPlayer[1].chr = 1;
     omGameSysInit();

@@ -287,7 +287,7 @@ static void MBMapScrollProc(void) {
             MBStatusShowAll();
         }
 
-        if (GwPlayer[GwSystem.current_player_index].stat & 1) {
+        if (GwPlayer[GwSystem.current_player_index].stat & PLAYER_IS_CPU) {
             HuWinComKeyReset();
             break;
         }

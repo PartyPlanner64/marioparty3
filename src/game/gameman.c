@@ -171,10 +171,10 @@ void GameManPlayerInit(void) {
         memset(&GwPlayer[i], 0, sizeof(GW_PLAYER));
         if (CheckControllerRead(i) != PAD_NOT_INSERTED) {
             GameManPadNoneF[i] = 0;
-            GwPlayer[i].stat &= ~1;
+            GwPlayer[i].stat &= ~PLAYER_IS_CPU;
         } else {
             GameManPadNoneF[i] = 1;
-            GwPlayer[i].stat |= 1;
+            GwPlayer[i].stat |= PLAYER_IS_CPU;
         }
 
         GwPlayer[i].pad = i;

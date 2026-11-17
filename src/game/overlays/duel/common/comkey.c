@@ -51,7 +51,7 @@ static void MBDWinComKeyExec(s32 arg0, s32 arg1, s32 arg2) {
     hasCom = 0;
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (i == arg1) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 hasCom = 1;
                 sp18[GwPlayer[i].pad] = A_BUTTON;
             } else {
@@ -107,7 +107,7 @@ static void MBDWinComKey2Exec(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     mask = 0;
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if ((i == arg1) || (i == arg2)) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 sp18[GwPlayer[i].pad] = A_BUTTON;
             } else {
                 mask |= sp20[GwPlayer[i].pad];
@@ -166,7 +166,7 @@ static void MBDWinComKeyAllExec(s32 arg0, s32 arg1) {
 
     mask = 0;
     for (i = 0; i < mbdWinComKeyAllNum; i++) {
-        if (!(GwPlayer[i].stat & 1)) {
+        if (!(GwPlayer[i].stat & PLAYER_IS_CPU)) {
             break;
         }
     }
@@ -193,7 +193,7 @@ static void MBDWinComKeyAllExec(s32 arg0, s32 arg1) {
         }
     } else {
         for (i = 0; i < mbdWinComKeyAllNum; i++) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 sp18[GwPlayer[i].pad] = 0;
             } else {
                 mask |= sp20[GwPlayer[i].pad];
@@ -346,7 +346,7 @@ void MBDPlayerKeyWait(void) {
 
     HuPrcSleep(2);
     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
-        if (!(GwPlayer[i].stat & 1)) {
+        if (!(GwPlayer[i].stat & PLAYER_IS_CPU)) {
             break;
         }
     }
@@ -358,7 +358,7 @@ void MBDPlayerKeyWait(void) {
 
     while (1) {
         for (i = 0; i < MBD_MAX_PLAYERS; i++) {
-            if (!(GwPlayer[i].stat & 1) && (HuPadBtnDown[GwPlayer[i].pad] & (A_BUTTON | B_BUTTON))) {
+            if (!(GwPlayer[i].stat & PLAYER_IS_CPU) && (HuPadBtnDown[GwPlayer[i].pad] & (A_BUTTON | B_BUTTON))) {
                 break;
             }
         }
@@ -376,7 +376,7 @@ void MBDPlayerKeyWaitAll(void) {
 
     HuPrcSleep(2);
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
-        if (!(GwPlayer[i].stat & 1)) {
+        if (!(GwPlayer[i].stat & PLAYER_IS_CPU)) {
             break;
         }
     }
@@ -388,7 +388,7 @@ void MBDPlayerKeyWaitAll(void) {
 
     while (1) {
         for (i = 0; i < MB_MAX_PLAYERS; i++) {
-            if (!(GwPlayer[i].stat & 1) && (HuPadBtnDown[GwPlayer[i].pad] & (A_BUTTON | B_BUTTON))) {
+            if (!(GwPlayer[i].stat & PLAYER_IS_CPU) && (HuPadBtnDown[GwPlayer[i].pad] & (A_BUTTON | B_BUTTON))) {
                 break;
             }
         }

@@ -3539,7 +3539,7 @@ void modesel_BoardStatRead(void) {
         SLLoadBoard();
         for (i = 0; i < 4; i++) {
             modesel_boardStatParty.chr[i] = GwPlayer[i].chr;
-            modesel_boardStatParty.cpu[i] = GwPlayer[i].stat & 1;
+            modesel_boardStatParty.cpu[i] = GwPlayer[i].stat & PLAYER_IS_CPU;
         }
         modesel_boardStatParty.gameLength = (value = GwSystem.current_game_length) >= 3 ? 3 : value;
         modesel_boardStatParty.currentTurn = (value = GwSystem.current_turn) >= 99 ? 99 : value;
@@ -3547,7 +3547,7 @@ void modesel_BoardStatRead(void) {
         SLLoadBoardStory();
         for (i = 0; i < 2; i++) {
             modesel_boardStatStory.chr[i] = GwPlayer[i].chr;
-            modesel_boardStatStory.cpu[i] = GwPlayer[i].stat & 1;
+            modesel_boardStatStory.cpu[i] = GwPlayer[i].stat & PLAYER_IS_CPU;
         }
         modesel_boardStatStory.gameLength = (value = GwSystem.current_game_length) >= 3 ? 3 : value;
         modesel_boardStatStory.currentTurn = (value = GwSystem.current_turn) >= 99 ? 99 : value;

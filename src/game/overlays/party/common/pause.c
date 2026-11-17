@@ -105,7 +105,7 @@ static void MBWinComKeyExec(s32 arg0, s32 arg1, s32 arg2) {
     hasCom = 0;
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (i == arg1) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 hasCom = 1;
                 sp18[GwPlayer[i].pad] = A_BUTTON;
             } else {
@@ -161,7 +161,7 @@ static void MBWinComKey2Exec(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     mask = 0;
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if ((i == arg1) || (i == arg2)) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 sp18[GwPlayer[i].pad] = A_BUTTON;
             } else {
                 mask |= sp20[GwPlayer[i].pad];
@@ -216,7 +216,7 @@ static void MBWinComKeyAllExec(s32 arg0, s32 arg1) {
 
     mask = 0;
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
-        if (!(GwPlayer[i].stat & 1)) {
+        if (!(GwPlayer[i].stat & PLAYER_IS_CPU)) {
             break;
         }
     }
@@ -243,7 +243,7 @@ static void MBWinComKeyAllExec(s32 arg0, s32 arg1) {
         }
     } else {
         for (i = 0; i < MB_MAX_PLAYERS; i++) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 sp18[GwPlayer[i].pad] = 0;
             } else {
                 mask |= sp20[GwPlayer[i].pad];
@@ -505,7 +505,7 @@ void MBPlayerKeyWait(void) {
 
     HuPrcSleep(2);
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
-        if (!(GwPlayer[i].stat & 1)) {
+        if (!(GwPlayer[i].stat & PLAYER_IS_CPU)) {
             break;
         }
     }
@@ -517,7 +517,7 @@ void MBPlayerKeyWait(void) {
 
     while (1) {
         for (i = 0; i < MB_MAX_PLAYERS; i++) {
-            if (!(GwPlayer[i].stat & 1) &&
+            if (!(GwPlayer[i].stat & PLAYER_IS_CPU) &&
                 (HuPadBtnDown[GwPlayer[i].pad] & (A_BUTTON | B_BUTTON))) {
                 break;
             }
@@ -806,7 +806,7 @@ static void MBPauseMesMain(void) {
             switch (mes[prev]) {
             case 0x5101:
                 for (i = 0; i < 4; i++) {
-                    if (GwPlayer[i].stat & 1) {
+                    if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                         HuWinInsertMesSet(mbPauseGuide->amount, MBPauseMesNumGet(0x5104), i);
                     } else {
                         HuWinInsertMesSet(mbPauseGuide->amount, MBPauseMesNumGet(0x5103), i);
@@ -1261,7 +1261,7 @@ static s32 MBPausePadUsedCheck(s16 arg0) {
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         player = MBPlayerGet(i);
-        if (!(player->stat & 1)) {
+        if (!(player->stat & PLAYER_IS_CPU)) {
             if (player->pad == arg0) {
                 return 1;
             }
@@ -1284,11 +1284,11 @@ static void MBPausePadSet(GW_PLAYER* arg0, s16 arg1) {
             }
             player->pad = pad;
             arg0->pad = arg1;
-            arg0->stat &= ~1;
+            arg0->stat &= ~PLAYER_IS_CPU;
             return;
         }        
     } else {
-        arg0->stat |= 1;
+        arg0->stat |= PLAYER_IS_CPU;
     }
 }
 

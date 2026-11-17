@@ -338,7 +338,7 @@ void m259_MainObjMain(omObjData *obj) {
                 m259_seqNo = 1;
             }
             if (m259_seqNo == 1) {
-                if (!(GwPlayer[m259_playerNo].stat & 1)) {
+                if (!(GwPlayer[m259_playerNo].stat & PLAYER_IS_CPU)) {
                     if (HuPadBtnDown[GwPlayer[m259_playerNo].pad] == A_BUTTON) {
                         m259_PlayerHitStart(1);
                         m259_seqNo = 3;
@@ -680,7 +680,7 @@ void m259_PanelObjCreate(void) {
     omSetTra(obj, panels->x[0], panels->y[0], panels->z[0]);
     m259_panelNo = 0;
     m259_oppPanelNo = 5;
-    if (GwPlayer[m259_playerNo].stat & 1) {
+    if (GwPlayer[m259_playerNo].stat & PLAYER_IS_CPU) {
         item = (u8)(rand8() % 100);
         for (j = 0, total = 0; j < 5; j++) {
             if (item >= total && item < total + mgInstSlotTbl[j]) {

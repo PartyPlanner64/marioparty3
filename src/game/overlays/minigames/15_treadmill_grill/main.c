@@ -491,7 +491,7 @@ void m221_PlayerFireHitCheck(omObjData *object) {
             omVibrate(data->unk59, 2, 2, 20);
         }
     }
-    if (GwPlayer[data->unk59].stat & 1) {
+    if (GwPlayer[data->unk59].stat & PLAYER_IS_CPU) {
         HuPadBtnDown[data->unk57] = m221_padBtnDownSave;
         HuPadBtn[data->unk57] = m221_padBtnSave;
         HuPadStkX[data->unk57] = m221_padStkXSave;
@@ -613,7 +613,7 @@ void m221_PlayerComInput(omObjData *object) {
     if (MgFlowStatGet() == MG_STATE_FINISH) {
         data->unk3C *= 0.8f;
     }
-    if (!(GwPlayer[data->unk59].stat & 1)) {
+    if (!(GwPlayer[data->unk59].stat & PLAYER_IS_CPU)) {
         return;
     }
     m221_padBtnDownSave = HuPadBtnDown[pad];

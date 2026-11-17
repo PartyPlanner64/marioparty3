@@ -186,14 +186,14 @@ s32 MBDBranchSelStart(UnkEA790Struct* arg0, s16 playerNo, s32 arg2) {
         osCreateMesgQueue(&arg0->unk10, &arg0->unk28, 0x10);
         arg0->unk_00 = arg2 | arg0->unk_00;
         player = MBDPlayerGet(playerNo);
-        if (player->stat & 1) {
+        if (player->stat & PLAYER_IS_CPU) {
             arg0->unk_00 |= 1;
             MBDBranchSelMesSend(arg0, -1);
         } else {
             arg0->unkE = player->pad;
             omAddPrcObj(MBDBranchSelPadProc, 0xEFFF, 0x1000, 0)->user_data = arg0;
         }
-        return player->stat & 1;
+        return player->stat & PLAYER_IS_CPU;
     }
     return -1;
 }

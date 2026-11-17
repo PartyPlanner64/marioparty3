@@ -602,7 +602,7 @@ void m230_PlayerObjMain(omObjData *object) {
                 m230_PartUpdate(object);
                 break;
             }
-            if (GwPlayer[playerData->unk59].stat & 1) {
+            if (GwPlayer[playerData->unk59].stat & PLAYER_IS_CPU) {
                 m230_PlayerComInput(object);
             }
             if (work->unk05 == 0 && work->unk06 == 0 && playerData->unk38 != 1000.0f &&

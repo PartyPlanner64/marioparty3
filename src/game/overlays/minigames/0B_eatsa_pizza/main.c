@@ -268,7 +268,7 @@ void m211_PlayerObjInit(omObjData *object) {
     work->unk32 = group;
     work->unk33 = m211_groupSlotTbl[group];
     work->unk18 = work->unk14 = data->unk3C;
-    work->unk35 = GwPlayer[player].stat & 1;
+    work->unk35 = GwPlayer[player].stat & PLAYER_IS_CPU;
     work->unk31 = GwPlayer[player].cpu_difficulty;
     work->unk2C = model | 0x4E;
     work->unk34 = 0;

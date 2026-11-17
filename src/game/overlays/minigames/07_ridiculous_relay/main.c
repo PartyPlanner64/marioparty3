@@ -233,7 +233,7 @@ void m207_MainObjInit(omObjData *object) {
         m207_groupPlayerTbl[group]->pad = GwPlayer[i].pad;
         m207_groupPlayerTbl[group]->chr = GwPlayer[i].chr;
         m207_groupPlayerTbl[group]->group = group;
-        m207_groupPlayerTbl[group]->cpuDifficulty = (GwPlayer[i].stat & 1) ? GwPlayer[i].cpu_difficulty : -1;
+        m207_groupPlayerTbl[group]->cpuDifficulty = (GwPlayer[i].stat & PLAYER_IS_CPU) ? GwPlayer[i].cpu_difficulty : -1;
     }
     Hu3DHookFuncCreate(0, m207_HudDraw, 2);
     object->func = m207_MainObjMain;

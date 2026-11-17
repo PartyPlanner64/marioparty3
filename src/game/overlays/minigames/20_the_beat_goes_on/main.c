@@ -1410,7 +1410,7 @@ u16 m232_PlayerComInput(MgPlayerWork *data) {
     u8 roll;
     s32 chance;
 
-    if (!(GwPlayer[data->unk59].stat & 1)) {
+    if (!(GwPlayer[data->unk59].stat & PLAYER_IS_CPU)) {
         return HuPadBtnDown[data->unk57];
     }
     if (m232_seqNo == m232_seqLen &&

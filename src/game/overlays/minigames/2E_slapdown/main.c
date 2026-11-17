@@ -730,7 +730,7 @@ void m246_PlayerObjInit(omObjData *obj) {
     omObjMotionRead(obj, 2, CharMotionDataNumGet(chr, 0x14));
     omObjMotionRead(obj, 3, CharMotionDataNumGet(chr, 8));
     omObjMotionRead(obj, 4, CharMotionDataNumGet(chr, 0x30));
-    if (chr != 3) {
+    if (chr != CHAR_YOSHI) {
         omObjMotionRead(obj, 5, CharMotionDataNumGet(chr, 0x38));
     } else {
         omObjMotionRead(obj, 5, CharMotionDataNumGet(chr, 0x3A));
@@ -738,7 +738,7 @@ void m246_PlayerObjInit(omObjData *obj) {
     Hu3DMotionModelSet(obj->model[0], obj->motion[0]);
     Hu3DMotionAttrSet(obj->model[0], 2, 2);
     entry->unk_04 = 0;
-    if (chr != 5) {
+    if (chr != CHAR_DK) {
         obj->trans.x = m246_playerPosXTbl[obj->work[1]];
         obj->trans.y = 75.0f;
         obj->trans.z = m246_playerPosZTbl[obj->work[1]];

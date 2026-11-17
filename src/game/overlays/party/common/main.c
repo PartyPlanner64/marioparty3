@@ -1180,7 +1180,7 @@ static s32 MBKettouTargetChoiceGet(u8 *arg0) {
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (i == system->current_player_index) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 var_s2 = 1; // why does this change codegen
                 var_s2 = MBKettouComTargetGet() + 1;
                 sp18[GwPlayer[i].pad] = D_JPAD;

@@ -1024,7 +1024,7 @@ void m248_PlayerObjInit(omObjData *obj) {
     state->unk_40 = obj->trans.y + 180.0f;
     state->unk_0C = 0;
     state->unk_0D = 14;
-    state->unk_00 = GwPlayer[player].stat & 1;
+    state->unk_00 = GwPlayer[player].stat & PLAYER_IS_CPU;
     state->unk_01 = GwPlayer[player].cpu_difficulty;
     state->unk_02 = 0;
     state->unk_48 = 0.0f;

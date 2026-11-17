@@ -413,7 +413,7 @@ void m201_FisherObjMain(omObjData *obj) {
     stat = obj->mode;
     work = obj->data;
     pad = GwPlayer[work->playerNo].pad;
-    if (GwPlayer[work->playerNo].stat & 1) {
+    if (GwPlayer[work->playerNo].stat & PLAYER_IS_CPU) {
         m201_FisherComInputGet(obj, &stickX, &stickY, &btn);
     } else {
         stickX = HuPadStkX[pad];
@@ -885,7 +885,7 @@ void m201_FishObjMain(omObjData *obj) {
     f32 diff;
 
     pad = GwPlayer[work->playerNo].pad;
-    if (GwPlayer[work->playerNo].stat & 1) {
+    if (GwPlayer[work->playerNo].stat & PLAYER_IS_CPU) {
         m201_FishComInputGet(obj, &stickX, &stickY, &btn);
     } else {
         stickX = HuPadStkX[pad];

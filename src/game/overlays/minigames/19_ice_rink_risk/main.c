@@ -449,7 +449,7 @@ void m225_PlayerFlyObjMain(omObjData *object) {
 s32 m225_PlayerPadRestore(omObjData *object) {
     MgPlayerWork *data = object->data;
 
-    if (GwPlayer[data->unk59].stat & 1) {
+    if (GwPlayer[data->unk59].stat & PLAYER_IS_CPU) {
         HuPadBtnDown[data->unk57] = m225_comBtnDownSave;
         HuPadBtn[data->unk57] = m225_comBtnSave;
         HuPadStkX[data->unk57] = m225_comStickXSave;
@@ -487,7 +487,7 @@ s32 m225_PlayerComInput(omObjData *object) {
     f32 angle;
     f32 dx, dy, dz;
 
-    if (MgFlowStatGet() == MG_STATE_PLAY && !(GwPlayer[player].stat & 1)) {
+    if (MgFlowStatGet() == MG_STATE_PLAY && !(GwPlayer[player].stat & PLAYER_IS_CPU)) {
         return 1;
     }
     m225_comBtnDownSave = HuPadBtnDown[pad];

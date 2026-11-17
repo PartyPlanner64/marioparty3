@@ -906,7 +906,7 @@ static void MBSaiPlayerProc(void) {
                 HuPrcSleep(0x14);
                 break;
             case 1:
-                if (((GwPlayer[temp_s3->unk0].stat & 1) || (HuPadBtnDown[GwPlayer[temp_s3->unk0].pad] & A_BUTTON)) && !(Hu3DData[mbSaiWorkTbl[temp_s3->unk0].unk_16].attr & 4) && (GWBoardFlagCheck(0x11) == 0)) {
+                if (((GwPlayer[temp_s3->unk0].stat & PLAYER_IS_CPU) || (HuPadBtnDown[GwPlayer[temp_s3->unk0].pad] & A_BUTTON)) && !(Hu3DData[mbSaiWorkTbl[temp_s3->unk0].unk_16].attr & 4) && (GWBoardFlagCheck(0x11) == 0)) {
                     temp_s3->unk4++;
                     MBPlayerMotionSet(temp_s3->unk0, 2, 0);
                     MBModelJumpSet(GwPlayer[temp_s3->unk0].player_obj, 2.0f, -0.3f);

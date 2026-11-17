@@ -130,7 +130,7 @@ static s32 MBItemMasuChoiceGet(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (i == GwSystem.current_player_index) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 sp18[GwPlayer[i].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);

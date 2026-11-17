@@ -236,7 +236,7 @@ void m264_ComInit(void) {
 
     m264_missF = 1;
     GwPlayer[m264_playerNo].bonusCoin = -1;
-    if (GwPlayer[m264_playerNo].stat & 1) {
+    if (GwPlayer[m264_playerNo].stat & PLAYER_IS_CPU) {
         thresholds[0] = mgInstSlotTbl[0];
         for (i = 1; i < 5; i++) {
             thresholds[i] = thresholds[i - 1] + mgInstSlotTbl[i];
@@ -664,7 +664,7 @@ void m264_PlayerInputUpdate(void) {
     s16 i = 0;
     s16 pad;
 
-    if (!(GwPlayer[m264_playerNo].stat & 1)) {
+    if (!(GwPlayer[m264_playerNo].stat & PLAYER_IS_CPU)) {
         pad = GwPlayer[m264_playerNo].pad;
         if ((HuPadBtnDown[pad] & A_BUTTON) && m264_swingF == 0) {
             m264_swingF = 1;

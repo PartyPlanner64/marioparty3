@@ -768,7 +768,7 @@ void MBDSaiPlayerProc(void) {
                 HuPrcSleep(20);
                 break;
             case 1:
-                if (((GwPlayer[work->playerIndex].stat & 1) ||
+                if (((GwPlayer[work->playerIndex].stat & PLAYER_IS_CPU) ||
                      (HuPadBtnDown[GwPlayer[work->playerIndex].pad] & A_BUTTON)) &&
                     !(Hu3DData[mbSaiWorkTbl[work->playerIndex].unk_16].attr & 4) && (GWBoardFlagCheck(0x11) == 0) &&
                     (mbdSaiHitLockF == 0)) {

@@ -242,7 +242,7 @@ void m237_MainObjInit(omObjData *object) {
         m237_groupPlayerTbl[group]->pad = GwPlayer[i].pad;
         m237_groupPlayerTbl[group]->chr = GwPlayer[i].chr;
         m237_groupPlayerTbl[group]->group = group;
-        m237_groupPlayerTbl[group]->cpuDifficulty = (GwPlayer[i].stat & 1) ? GwPlayer[i].cpu_difficulty : -1;
+        m237_groupPlayerTbl[group]->cpuDifficulty = (GwPlayer[i].stat & PLAYER_IS_CPU) ? GwPlayer[i].cpu_difficulty : -1;
     }
     object->func = m237_MainObjMain;
 }

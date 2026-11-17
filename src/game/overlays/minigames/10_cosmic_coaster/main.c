@@ -396,7 +396,7 @@ void m216_CarInit(omObjData *object, s16 group) {
     Hu3DLLightDirSet(object->model[0], 0.0f, -127.0f, 0.0f);
     car->hasHuman = 0;
     for (i = 0; i < 2; i++) {
-        if (!(GwPlayer[i].stat & 1)) {
+        if (!(GwPlayer[i].stat & PLAYER_IS_CPU)) {
             car->hasHuman = 1;
         }
         chr = (s8)GwPlayer[car->player[i]].chr;

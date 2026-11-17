@@ -407,7 +407,7 @@ void mgresultbattle_PlayerReactWait(omObjData *obj) {
             pressed = 0;
             for (i = 0; i < 40; i++) {
                 for (j = 0; j < 4; j++) {
-                    if (!(GwPlayer[j].stat & 1) && (HuPadBtnDown[GwPlayer[j].pad] & A_BUTTON)) {
+                    if (!(GwPlayer[j].stat & PLAYER_IS_CPU) && (HuPadBtnDown[GwPlayer[j].pad] & A_BUTTON)) {
                         pressed = 1;
                         break;
                     }

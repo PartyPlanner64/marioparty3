@@ -852,7 +852,7 @@ void m250_PlayerObjInit(omObjData *object) {
     work->unk29 = character;
     work->unk2A = m250_playerInitNo;
     work->unk18 = work->unk14 = data->unk3C;
-    work->unk2D = GwPlayer[player].stat & 1;
+    work->unk2D = GwPlayer[player].stat & PLAYER_IS_CPU;
     work->unk2E = 0;
     work->unk2B = GwPlayer[player].cpu_difficulty;
     work->unk24 = model | 0x2F;

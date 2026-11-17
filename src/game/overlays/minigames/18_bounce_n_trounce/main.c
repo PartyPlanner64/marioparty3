@@ -622,7 +622,7 @@ void m224_PlayerObjMain(omObjData *object) {
     if (work->state == 3) {
         return;
     }
-    if (GwPlayer[work->playerId].stat & 1) {
+    if (GwPlayer[work->playerId].stat & PLAYER_IS_CPU) {
         m224_PlayerComInputGet(object, &stickX, &stickY, &btn);
     } else {
         stickX = HuPadStkX[port];

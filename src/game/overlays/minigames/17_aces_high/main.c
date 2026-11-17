@@ -774,7 +774,7 @@ void m223_PlaneObjMain(omObjData *object) {
     m223_PlaneShakeUpdate(object);
     mode = MgFlowStatGet();
     if (mode == MG_STATE_PLAY || mode == MG_STATE_FINISH || MgFlowStatGet() == MG_STATE_RESULT) {
-        com = GwPlayer[player->camIdx].stat & 1;
+        com = GwPlayer[player->camIdx].stat & PLAYER_IS_CPU;
         if (com || mode == MG_STATE_FINISH || mode == MG_STATE_RESULT) {
             m223_PlaneComInput(object, &stickX, &stickY, &btnDown, &btn);
             if (mode == MG_STATE_FINISH || mode == MG_STATE_RESULT) {

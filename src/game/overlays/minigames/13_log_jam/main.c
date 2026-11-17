@@ -685,7 +685,7 @@ void m219_PlayerObjInit(omObjData *object) {
     chr = GwPlayer[player].chr;
     work->unk_1C = chr;
     work->unk_1A = GwPlayer[player].pad;
-    work->unk_1E = GwPlayer[player].stat & 1;
+    work->unk_1E = GwPlayer[player].stat & PLAYER_IS_CPU;
     work->unk_20 = GwPlayer[player].cpu_difficulty;
     model = omCharModelNoTbl[chr][0];
     motion = omCharModelNoTbl[chr][2];
@@ -725,10 +725,10 @@ void m219_PlayerObjInit(omObjData *object) {
         MgPlayerMotLoad(object, 7, CharMotionDataNumGet(chr, 0x77), 0, 30);
         MgPlayerMotLoad(object, 8, CharMotionDataNumGet(chr, 0x78), 0, 40);
     }
-    if (chr == 5) {
-        MgPlayerMotLoad(object, 9, CharMotionDataNumGet(5, 0x31), 1, 120);
-        work->unk_14 = m219_voiceChrTbl[5] | 0x31;
-    } else if (chr == 1 || chr == 6) {
+    if (chr == CHAR_DK) {
+        MgPlayerMotLoad(object, 9, CharMotionDataNumGet(CHAR_DK, 0x31), 1, 120);
+        work->unk_14 = m219_voiceChrTbl[CHAR_DK] | 0x31;
+    } else if (chr == CHAR_LUIGI || chr == CHAR_WALUIGI) {
         MgPlayerMotLoad(object, 9, CharMotionDataNumGet(chr, m219_voiceNoTbl[0]), 1, 120);
         work->unk_14 = m219_voiceChrTbl[chr] | m219_voiceNoTbl[0];
     } else {

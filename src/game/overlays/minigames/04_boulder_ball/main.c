@@ -470,7 +470,7 @@ s32 m204_RunnerHit(omObjData *object, omObjData *other) {
 s32 m204_RunnerGoalCheck(omObjData *object) {
     MgPlayerWork *data = object->data;
 
-    if (GwPlayer[data->unk59].stat & 1) {
+    if (GwPlayer[data->unk59].stat & PLAYER_IS_CPU) {
         HuPadBtnDown[data->unk57] = m204_padBtnDown;
         HuPadBtn[data->unk57] = m204_padBtn;
         HuPadStkX[data->unk57] = m204_padStkX;
@@ -504,7 +504,7 @@ s32 m204_RunnerComInput(omObjData *object) {
     if (MgFlowStatGet() != MG_STATE_PLAY) {
         return 0;
     }
-    if (!(GwPlayer[player].stat & 1)) {
+    if (!(GwPlayer[player].stat & PLAYER_IS_CPU)) {
         return 0;
     }
     m204_padBtnDown = HuPadBtnDown[pad];
@@ -802,7 +802,7 @@ void m204_PusherObjMain(omObjData *object) {
     HuPadStkX[pad] = 0;
     HuPadBtnDown[pad] = 0;
     HuPadBtn[pad] = 0;
-    if (GwPlayer[player].stat & 1) {
+    if (GwPlayer[player].stat & PLAYER_IS_CPU) {
         m204_PusherComInput(object);
     }
     switch (data->unk50) {

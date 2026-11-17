@@ -331,7 +331,7 @@ void mgresultboard_MainObjMain(omObjData *arg0) {
 
                 if (var_a0 > 0) {
                     playerIdx = mgresultboard_resultTbl[i].idx; //??? why does this help so much
-                    if (GwPlayer[playerIdx].stat & 1) {
+                    if (GwPlayer[playerIdx].stat & PLAYER_IS_CPU) {
                         continue;
                     } else {
                         omVibrate(playerIdx, 5, 0, 5);
@@ -440,7 +440,7 @@ void mgresultboard_MainObjMain(omObjData *arg0) {
     buttonPressed = 0;
     cpuCount = 0;
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
-        if (!(GwPlayer[i].stat & 1)) {
+        if (!(GwPlayer[i].stat & PLAYER_IS_CPU)) {
             buttonPressed |= HuPadBtn[GwPlayer[i].pad];
         } else {
             cpuCount++;

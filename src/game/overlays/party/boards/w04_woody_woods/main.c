@@ -2374,7 +2374,7 @@ s32 MB4_ComShopItemChoice(u8 *arg0) {
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (i == GwSystem.current_player_index) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 var_s2 = MB4_ComShopItemDecide();
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = D_JPAD;
             } else {
@@ -2429,7 +2429,7 @@ s32 MB4_ComShopEnterChoice(void) {
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (i == GwSystem.current_player_index) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 var_s2 = 1; // dead store; matches MBKettouTargetChoiceGet
                 var_s2 = MB4_ComShopEnterDecide();
                 sp18[GwPlayer[i].pad] = D_JPAD;
@@ -2543,7 +2543,7 @@ s32 MB4_ComTeresaChoice(u8 *arg0, s32 arg1, s32 arg2) {
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (i == GwSystem.current_player_index) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 if (arg1 == 0) {
                     MB4_ComTeresaTargetDecide();
                     var_s2 = mb4_comTeresaType + 1;
@@ -3301,7 +3301,7 @@ s32 MB4Ev_KeyManChoiceGet(s32 arg0) {
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (i == GwSystem.current_player_index) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 var_s2 = 1;
                 sp18[GwPlayer[i].pad] = D_JPAD;
             } else {
@@ -3462,7 +3462,7 @@ s32 MB4Ev_YesNoChoiceGet(s32 arg0, s32 arg1) {
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (i == GwSystem.current_player_index) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 switch (arg0) {
                     case 0:
                         var_s2 = MBPlayerRankRandGet(0) + 1;
@@ -4599,7 +4599,7 @@ s32 MB4Ev_TeresaSteal(s32 playerIndex) {
                 angle++;
             }
 
-            if (GwPlayer[playerIndex].stat & 1) {
+            if (GwPlayer[playerIndex].stat & PLAYER_IS_CPU) {
                 if (state == 0) {
                     goto tryInput;
                 } else {
@@ -6646,7 +6646,7 @@ s32 MB4_ComItemTargetChoice(u8 *arg0, s32 arg1) {
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (i == GwSystem.current_player_index) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 delay = 1; // Required for matching register allocation.
                 if (arg1 != 0) {
                     delay = mb4_comExchangeBoxTarget + 1;

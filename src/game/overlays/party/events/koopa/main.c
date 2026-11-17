@@ -256,7 +256,7 @@ void koopa_RouletteObjMain(omObjData *obj) {
             break;
         case 1:
             if (obj->trans.z == 0) {
-                if (GwPlayer[koopa_playerNo].stat & 1) {
+                if (GwPlayer[koopa_playerNo].stat & PLAYER_IS_CPU) {
                     obj->trans.z = 1.0f;
                 } else {
                     buttons = ContBtnDown[GwPlayer[koopa_playerNo].pad];

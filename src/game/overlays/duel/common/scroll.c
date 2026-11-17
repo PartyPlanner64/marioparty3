@@ -356,7 +356,7 @@ void MBDMapScrollProc(void) {
                 MBDStatusShowAll();
             }
 
-            if (GwPlayer[GwSystem.current_player_index].stat & 1) {
+            if (GwPlayer[GwSystem.current_player_index].stat & PLAYER_IS_CPU) {
                 HuWinComKeyReset();
                 goto label; // break doesn't work here for some reason
             }

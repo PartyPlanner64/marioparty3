@@ -989,7 +989,7 @@ void msetup_PartySetupProc(void) {
             GwPlayer[i].pad = msetup_playerConfig.controllerPorts[i];
             if (msetup_playerConfig.cpuDifficulty[i] < 4) {
                 GwPlayer[i].cpu_difficulty = msetup_playerConfig.cpuDifficulty[i];
-                GwPlayer[i].stat = 1;
+                GwPlayer[i].stat = PLAYER_IS_CPU;
             } else {
                 GwPlayer[i].cpu_difficulty = 1;
                 GwPlayer[i].stat = 0;
@@ -1286,7 +1286,7 @@ void msetup_DuelSetupProc(void) {
             GwPlayer[i].pad = msetup_playerConfig.controllerPorts[i];
             if (msetup_playerConfig.cpuDifficulty[i] < 4) {
                 GwPlayer[i].cpu_difficulty = msetup_playerConfig.cpuDifficulty[i];
-                GwPlayer[i].stat = 1;
+                GwPlayer[i].stat = PLAYER_IS_CPU;
             } else {
                 GwPlayer[i].cpu_difficulty = 1;
                 GwPlayer[i].stat = 0;
@@ -1350,7 +1350,7 @@ void msetup_StoryPlayerInit(void) {
         GwPlayer[1].star = stars;
         GwPlayer[1].pad = msetup_playerConfig.controllerPorts[1];
         GwPlayer[1].cpu_difficulty = GwStory.unk2;
-        GwPlayer[1].stat = 1;
+        GwPlayer[1].stat = PLAYER_IS_CPU;
         GwPlayer[1].coin = 0;
     } else {
         character = 0;
@@ -1376,7 +1376,7 @@ void msetup_StoryPlayerInit(void) {
             GwPlayer[player].star = stars;
             GwPlayer[player].pad = msetup_playerConfig.controllerPorts[1];
             GwPlayer[player].cpu_difficulty = GwStory.unk2;
-            GwPlayer[player].stat = 1;
+            GwPlayer[player].stat = PLAYER_IS_CPU;
             GwPlayer[player].coin = 0;
             player = 2;
         }
@@ -1385,7 +1385,7 @@ void msetup_StoryPlayerInit(void) {
             GwPlayer[player].star = stars;
             GwPlayer[player].pad = msetup_playerConfig.controllerPorts[player];
             GwPlayer[player].cpu_difficulty = GwStory.unk2;
-            GwPlayer[player].stat = 1;
+            GwPlayer[player].stat = PLAYER_IS_CPU;
             GwPlayer[player].coin = 0;
         }
     }
@@ -1405,7 +1405,7 @@ void msetup_StoryPartySetupProc(void) {
         msetup_playerConfig.characters[i] = GwPlayer[i].chr;
         msetup_playerConfig.stars[i] = GwPlayer[i].star;
         msetup_playerConfig.controllerPorts[i] = GwPlayer[i].pad;
-        if (GwPlayer[i].stat & 1) {
+        if (GwPlayer[i].stat & PLAYER_IS_CPU) {
             msetup_playerConfig.cpuDifficulty[i] = GwPlayer[i].cpu_difficulty;
         } else {
             msetup_playerConfig.cpuDifficulty[i] = 0xFF;
@@ -1544,7 +1544,7 @@ void msetup_StoryDuelSetupProc(void) {
         msetup_playerConfig.characters[i] = GwPlayer[i].chr;
         msetup_playerConfig.stars[i] = GwPlayer[i].star;
         msetup_playerConfig.controllerPorts[i] = GwPlayer[i].pad;
-        if (GwPlayer[i].stat & 1) {
+        if (GwPlayer[i].stat & PLAYER_IS_CPU) {
             msetup_playerConfig.cpuDifficulty[i] = GwPlayer[i].cpu_difficulty;
         } else {
             msetup_playerConfig.cpuDifficulty[i] = 0xFF;
@@ -1862,7 +1862,7 @@ void msetup_MgModeSetupExec(s16 (**steps)(s16)) {
             GwPlayer[i].pad = msetup_playerConfig.controllerPorts[i];
             if (msetup_playerConfig.cpuDifficulty[i] < 4) {
                 GwPlayer[i].cpu_difficulty = msetup_playerConfig.cpuDifficulty[i];
-                GwPlayer[i].stat = 1;
+                GwPlayer[i].stat = PLAYER_IS_CPU;
             } else {
                 GwPlayer[i].cpu_difficulty = 1;
                 GwPlayer[i].stat = 0;
@@ -2000,7 +2000,7 @@ void msetup_TutorialSetupExec(s16 mode) {
             GwPlayer[i].star = stars;
             GwPlayer[i].pad = *controllerPort;
             GwPlayer[i].cpu_difficulty = 1;
-            GwPlayer[i].stat = 1;
+            GwPlayer[i].stat = PLAYER_IS_CPU;
             GwPlayer[i].coin = 0;
         }
     }

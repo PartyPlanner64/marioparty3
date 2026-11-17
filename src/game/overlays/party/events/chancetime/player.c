@@ -184,7 +184,7 @@ void chancetime_PlayerHit(omObjData *object) {
     // The repeated done checks and the delay/btn temporaries are needed for the original block layout.
     while (TRUE) {
         done = FALSE;
-        if (GwPlayer[player].stat & 1) {
+        if (GwPlayer[player].stat & PLAYER_IS_CPU) {
             done = TRUE;
         }
         if (done) {

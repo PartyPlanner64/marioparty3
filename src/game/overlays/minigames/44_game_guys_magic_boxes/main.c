@@ -1549,7 +1549,7 @@ void m268_PlayerInfoInit(void) {
     m268_playerInfoNo[0] = i;
     m268_playerInfoNo[1] = GwPlayer[i].pad;
     m268_playerInfoNo[2] = GwPlayer[i].chr;
-    if (GwPlayer[i].stat & 1) {
+    if (GwPlayer[i].stat & PLAYER_IS_CPU) {
         m268_playerInfoNo[3] = 1;
         m268_playerInfoNo[4] = GwPlayer[i].cpu_difficulty;
         m268_comLevel = GwCommon.unkA0;

@@ -1334,7 +1334,7 @@ void MB10Ev_TutorialProc(void) {
     mb10ev_guide->obj->coords.y -= 2.0f;
     MBGuideFaceCreate(mb10ev_guide->obj, 2, 0xF, mb10ev_guideFaceTbl[0]);
     MBGuidePosSet(mb10ev_guide, 0x42, 0);
-    HuWinAttrSet(mb10ev_guide->amount, 0x40, 0x40);
+    HuWinAttrSet(mb10ev_guide->amount, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
     MB10Ev_PlayerColorReset();
     MB10Ev_StatusColorUpdate();
     HuPrcSleep(3);

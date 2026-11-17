@@ -2445,7 +2445,7 @@ s32 MB1_ComShopItemChoice(u8 *arg0) {
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (i == GwSystem.current_player_index) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 count = MB1_ComShopItemDecide();
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = D_JPAD;
             } else {
@@ -2499,7 +2499,7 @@ s32 MB1_ComShopEnterChoice(void) {
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (i == GwSystem.current_player_index) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 count = MB1_ComShopEnterDecide();
                 sp18[GwPlayer[i].pad] = D_JPAD;
             } else {
@@ -2631,7 +2631,7 @@ s32 MB1_ComTeresaChoice(u8 *arg0, s32 arg1, s32 arg2) {
     
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (i == GwSystem.current_player_index) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 if (arg1 == 0) {
                     MB1_ComTeresaTargetDecide();
                     count = mb1_comTeresaType + 1;
@@ -3627,7 +3627,7 @@ s32 MB1Ev_YesNoChoiceGet(DecisionTreeNonLeafNode *arg0, s32 arg1) {
     
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (i == GwSystem.current_player_index) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 switch ((s32)arg0) {
                 case 0:
                     count = MBPlayerRankRandGet(0) + 1;
@@ -4748,7 +4748,7 @@ s32 MB1Ev_TeresaSteal(s32 arg0) {
             shake++;
         }
 
-        if (GwPlayer[arg0].stat & 1) {
+        if (GwPlayer[arg0].stat & PLAYER_IS_CPU) {
             if (hold != 0) {
                 if (GwPlayer[arg0].cpu_difficulty == CPU_EASY) {
                     if ((6 - MBRand(3.0f)) >= hold) {
@@ -6777,7 +6777,7 @@ s32 MB1_ComItemTargetChoice(u8 *arg0, s32 arg1) {
 
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (i == GwSystem.current_player_index) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 if (arg1 != 0) {
                     count = mb1_comExchangeBoxTarget + 1;
                 } else {

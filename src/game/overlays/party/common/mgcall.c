@@ -1080,7 +1080,7 @@ static void MBMgCallGambleProc(void) {
                 break;
             case 1:
                 if ((MBStatusMoveCheck() == 0) &&
-                    (((HuPadBtnDown[GwPlayer[temp_s2->curPlayerNo].pad] & A_BUTTON) && !(GwPlayer[temp_s2->curPlayerNo].stat & 1)) || (GwPlayer[temp_s2->curPlayerNo].stat & 1))) {
+                    (((HuPadBtnDown[GwPlayer[temp_s2->curPlayerNo].pad] & A_BUTTON) && !(GwPlayer[temp_s2->curPlayerNo].stat & PLAYER_IS_CPU)) || (GwPlayer[temp_s2->curPlayerNo].stat & PLAYER_IS_CPU))) {
                     MBMgCallListClose();
                     MBStatusDispMoveSet(5);
                     temp_s2->unk_00++;

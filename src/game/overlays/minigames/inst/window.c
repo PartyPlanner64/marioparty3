@@ -465,7 +465,7 @@ u16 inst_PadBtnDownAutoGet(u16 buttons, s16 wait) {
             break;
     }
     for (i = 0; i < 4; i++) {
-        if (!(GwPlayer[i].stat & 1)) {
+        if (!(GwPlayer[i].stat & PLAYER_IS_CPU)) {
             break;
         }
     }

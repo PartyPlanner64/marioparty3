@@ -785,7 +785,7 @@ void boardresult2_StatSprCreate(void) {
     MBDGuidePosSet(boardresult2_hostGuide, 105, 8);
     HuVecCopyXYZ(&boardresult2_hostGuide->obj->scale, 0.1f, 0.1f, 0.1f);
     HuWinScaleSet(boardresult2_hostGuide->win_id, 1.0f, 1.0f);
-    HuWinAttrSet(boardresult2_hostGuide->win_id, 0x4000, 0x4000);
+    HuWinAttrSet(boardresult2_hostGuide->win_id, HUWIN_ATTR_OPEN, HUWIN_ATTR_OPEN);
     HuWinMesPalSet(boardresult2_hostGuide->win_id, 2, 255, 96, 96);
     HuWinMesPalSet(boardresult2_hostGuide->win_id, 4, 96, 255, 64);
     HuWinMesPalSet(boardresult2_hostGuide->win_id, 6, 64, 255, 255);

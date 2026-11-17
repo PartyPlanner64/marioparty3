@@ -338,7 +338,7 @@ void MBDPauseMesMain(void) {
             switch (mes[prev]) {
                 case 0x5102:
                     for (i = 0; i < MBD_MAX_PLAYERS; i++) {
-                        if (GwPlayer[i].stat & 1) {
+                        if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                             HuWinInsertMesSet(mbdPauseGuide->win_id, MBDPauseMesNumGet(0x5104), i);
                         } else {
                             HuWinInsertMesSet(mbdPauseGuide->win_id, MBDPauseMesNumGet(0x5103), i);
@@ -814,11 +814,11 @@ void MBDPausePadSet(GW_PLAYER *arg0, s16 arg1) {
             }
             player->pad = pad;
             arg0->pad = arg1;
-            arg0->stat &= ~1;
+            arg0->stat &= ~PLAYER_IS_CPU;
             return;
         }
     } else {
-        arg0->stat |= 1;
+        arg0->stat |= PLAYER_IS_CPU;
     }
 }
 

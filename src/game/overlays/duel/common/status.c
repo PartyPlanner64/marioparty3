@@ -258,7 +258,7 @@ void MBDStatusMain(void) {
                     } else {
                         switch (j) {
                             case 6:
-                                if (GwPlayer[i].stat & 1) {
+                                if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                                     break;
                                 }
                                 continue;
@@ -377,7 +377,7 @@ void MBDStatusComSprCreate(s32 playerIndex) {
     HuSprPriSet(group, 6, playerIndex * 5 + 0x478E);
     HuSprAttrSet(group, 6, HUSPR_ATTR_NONE);
     HuSprPosSet(group, 6, mbdStatusSprOfsPtrTbl[playerIndex][6][0], mbdStatusSprOfsPtrTbl[playerIndex][6][1]);
-    if (!(GwPlayer[playerIndex].stat & 1)) {
+    if (!(GwPlayer[playerIndex].stat & PLAYER_IS_CPU)) {
         HuSprDispOff(group, 6);
     }
 }

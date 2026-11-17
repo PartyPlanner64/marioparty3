@@ -704,7 +704,7 @@ void m261_ItemObjCreate(void) {
     items->angle = 0.0f;
     items->heldX = 0.0f;
     items->heldY = 0.0f;
-    if (GwPlayer[m261_playerNo].stat & 1) {
+    if (GwPlayer[m261_playerNo].stat & PLAYER_IS_CPU) {
         value = (u8)(rand8() % 100);
         for (j = 0, total = 0; j < 5; j++) {
             if (value >= total && value < total + mgInstSlotTbl[j]) {
@@ -1014,7 +1014,7 @@ void m261_ThrowInputProc(void) {
 
     work = m261_balloonObj->data;
     do {
-        if (GwPlayer[m261_playerNo].stat & 1) {
+        if (GwPlayer[m261_playerNo].stat & PLAYER_IS_CPU) {
             range = (4 - GwPlayer[m261_playerNo].cpu_difficulty) * 5;
             for (i = 0; i < 5; i++) {
                 targetAngles[i] = (rand8() % (range * 2) - range) + minAngles[i];

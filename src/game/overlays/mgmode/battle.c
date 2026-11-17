@@ -1525,7 +1525,7 @@ s32 mgmode_BattleStarAdd(void) {
         if (mgModeStar[i] >= mgmode_battleGoalTbl[mgModeSelNo]) {
             mgmode_starPlayerTbl[mgmode_starPlayerNum] = i;
             mgmode_starPlayerNum++;
-            if (!(GwPlayer[i].stat & 1)) {
+            if (!(GwPlayer[i].stat & PLAYER_IS_CPU)) {
                 RepeatVibrator(GwPlayer[i].pad, 10, 0, 10);
             }
         }

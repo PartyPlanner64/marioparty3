@@ -1032,7 +1032,7 @@ void m245_PlayerObjMain(omObjData *obj) {
         case 1:
             if (m245_timer < 144 && obj->work[1] == m245_jumpTurnNo) {
                 if (m245_timer > 0) {
-                    if (GwPlayer[index].stat & 1) {
+                    if (GwPlayer[index].stat & PLAYER_IS_CPU) {
                         if (entry->unk_0C < 0) {
                             for (i = 0, count = 0; i < 5 - m245_roundNo; i++) {
                                 if (m245_seatFreeTbl[i] != 0) {

@@ -459,7 +459,7 @@ void m236_PlayerInit(omObjData *arg0, s16 playerIndex) {
     omObjMotionRead(arg0, 0, CharMotionDataNumGet(chr, 0));
     omObjMotionRead(arg0, 1, CharMotionDataNumGet(chr, 1));
     omObjMotionRead(arg0, 2, CharMotionDataNumGet(chr, 2));
-    if (chr == 5) {
+    if (chr == CHAR_DK) {
         omObjMotionRead(arg0, 3, 0x45000D);
         omObjMotionRead(arg0, 7, 0x45000E);
         omObjMotionRead(arg0, 8, 0x45000F);
@@ -491,7 +491,7 @@ void m236_PlayerObjMain(omObjData *arg0) {
     u16 count;
 
     if (MgFlowStatGet() == MG_STATE_PLAY) {
-        if (!(GwPlayer[player->playerId].stat & 1)) {
+        if (!(GwPlayer[player->playerId].stat & PLAYER_IS_CPU)) {
             stickX = HuPadStkX[port];
             stickY = HuPadStkY[port];
         } else {

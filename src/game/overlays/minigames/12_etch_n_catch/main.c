@@ -563,7 +563,7 @@ void m218_PlayerObjMain(omObjData *object) {
         HuPadStkX[data->unk57] = 0;
         HuPadStkY[data->unk57] = 0;
     }
-    if (GwPlayer[data->unk59].stat & 1) {
+    if (GwPlayer[data->unk59].stat & PLAYER_IS_CPU) {
         m218_PlayerComInput(object);
     }
     data->unk40 *= 0.9f;

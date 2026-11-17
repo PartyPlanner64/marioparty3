@@ -371,7 +371,7 @@ void m233_PlayerObjMain(omObjData *obj) {
         HuPadBtn[data->unk57] = 0;
         HuPadBtnDown[data->unk57] = 0;
     }
-    if (m233_buzzLockF == 1 && !(GwPlayer[data->unk59].stat & 1)) {
+    if (m233_buzzLockF == 1 && !(GwPlayer[data->unk59].stat & PLAYER_IS_CPU)) {
         HuPadBtn[data->unk57] &= ~A_BUTTON;
         HuPadBtnDown[data->unk57] &= ~A_BUTTON;
     }
@@ -1097,11 +1097,11 @@ void m233_ComInputProc(void) {
 
     while (TRUE) {
         for (i = 0; i < 4; i++) {
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 HuPadBtn[GwPlayer[i].pad] &= ~(A_BUTTON | B_BUTTON | Z_TRIG);
                 HuPadBtnDown[GwPlayer[i].pad] &= ~(A_BUTTON | B_BUTTON | Z_TRIG);
             }
-            if (MgFlowStatGet() == MG_STATE_PLAY && (GwPlayer[i].stat & 1)) {
+            if (MgFlowStatGet() == MG_STATE_PLAY && (GwPlayer[i].stat & PLAYER_IS_CPU)) {
                 m233_ComInput(i);
             }
         }
@@ -2189,7 +2189,7 @@ s16 m233_QuestionWinCreate(void) {
     HuWinMesMaxSizeGet(1, size, mes);
     win = HuWinCreate(79, 45, 165, 80, 0, 0);
     m233_questionWinNo = win;
-    HuWinAttrSet(win, 64, 64);
+    HuWinAttrSet(win, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
     HuWinMesSpeedSet(win, 5);
     HuWinDummy(win);
     HuWinBGTPLvlSet(win, 0);
@@ -2266,7 +2266,7 @@ s16 m233_ChoiceWinCreate(void) {
     }
     HuWinMesMaxSizeGet(1, size, mes);
     win = HuWinCreate(79, 45, 165, 80, 0, 0);
-    HuWinAttrSet(win, 64, 64);
+    HuWinAttrSet(win, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
     HuWinMesSpeedSet(win, 0);
     HuWinDummy(win);
     HuWinBGTPLvlSet(win, 0);

@@ -284,10 +284,10 @@ void MBD10_SaveInit(void) {
     GwPlayer[0].nnidx = -1;
     GwPlayer[1].nnlink = -1;
     GwPlayer[1].nnidx = -1;
-    GwPlayer[0].stat = 1;
-    GwPlayer[1].stat = 1;
-    GwPlayer[2].stat = 1;
-    GwPlayer[3].stat = 1;
+    GwPlayer[0].stat = PLAYER_IS_CPU;
+    GwPlayer[1].stat = PLAYER_IS_CPU;
+    GwPlayer[2].stat = PLAYER_IS_CPU;
+    GwPlayer[3].stat = PLAYER_IS_CPU;
     GwPlayer[0].chr = 0;
     GwPlayer[1].chr = 1;
     GwPlayer[0].pad = 0;
@@ -3420,7 +3420,7 @@ void MBD10Ev_TutorialProc(void) {
     MBDGuideFaceCreate(mbd10ev_guide->obj, 2, 0xF, mbd10ev_guideFaceTbl[0]);
     MBDGuidePosSet(mbd10ev_guide, 0x5A, 0);
     omAddPrcObj(MBD10Ev_GuideMotProc, 0x4800, 0, 0)->user_data = mbd10ev_guide;
-    HuWinAttrSet(mbd10ev_guide->win_id, 0x40, 0x40);
+    HuWinAttrSet(mbd10ev_guide->win_id, HUWIN_ATTR_PAUSE, HUWIN_ATTR_PAUSE);
     MBD10Ev_ComSetAll();
     MBD10Ev_PlayerColorReset();
     MBDMasuTypeSet(5, MBD_MASU_TYPE_CHR(CHAR_LUIGI));
@@ -4460,7 +4460,7 @@ void MBD10Ev_PartnerGetExec(s32 index, s32 comSelectSecond) {
             }
             comKeys[GwPlayer[index].pad] = A_BUTTON;
             HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], MBDMesWaitGet());
-            HuWinAttrSet(mbdDlgWinId, 2, 2);
+            HuWinAttrSet(mbdDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         }
         choice = HuWinChoiceGet(mbdDlgWinId, 0, 1);
         comKeys[GwPlayer[index].pad] = 0;
@@ -4492,7 +4492,7 @@ void MBD10Ev_PartnerGetExec(s32 index, s32 comSelectSecond) {
             }
             comKeys[GwPlayer[index].pad] = A_BUTTON;
             HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], MBDMesWaitGet());
-            HuWinAttrSet(mbdDlgWinId, 2, 2);
+            HuWinAttrSet(mbdDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         }
         choice = HuWinChoiceGet(mbdDlgWinId, 0, 1);
         comKeys[GwPlayer[index].pad] = 0;

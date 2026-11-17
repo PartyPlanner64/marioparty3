@@ -1003,7 +1003,7 @@ void m202_SoloObjMain(omObjData *arg0) {
             break;
         case 2:
             if (m202_timer > 0 && m202_soloHitF == 0) {
-                if (GwPlayer[player].stat & 1) {
+                if (GwPlayer[player].stat & PLAYER_IS_CPU) {
                     m202_SoloComInput(arg0);
                 } else {
                     m202_SoloPadInput(arg0);

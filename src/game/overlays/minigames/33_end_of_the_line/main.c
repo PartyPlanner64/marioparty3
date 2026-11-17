@@ -856,7 +856,7 @@ void m251_PlayerObjInit(omObjData *obj) {
     for (i = 0; i < 4; i++) {
         if (GwPlayer[i].group == player->playerIdx) {
             player->gwPlayerIdx = i;
-            if (GwPlayer[i].stat & 1) {
+            if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                 m251_comNum++;
             }
             break;
@@ -1165,7 +1165,7 @@ void m251_PlayerRideObjMain(omObjData *obj) {
             player->unk86 = -1;
         }
     }
-    if (GwPlayer[player->gwPlayerIdx].stat & 1) {
+    if (GwPlayer[player->gwPlayerIdx].stat & PLAYER_IS_CPU) {
         stick = m251_PlayerComInput(obj);
     } else {
         stick = HuPadStkX[GwPlayer[player->gwPlayerIdx].pad];

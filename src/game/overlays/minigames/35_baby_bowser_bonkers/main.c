@@ -547,7 +547,7 @@ void m253_PlayerObjInit(omObjData *object) {
     chr = GwPlayer[gwIndex].chr;
     player->unk_2C = chr;
     player->unk_2A = GwPlayer[gwIndex].pad;
-    player->unk_2E = GwPlayer[gwIndex].stat & 1;
+    player->unk_2E = GwPlayer[gwIndex].stat & PLAYER_IS_CPU;
     player->unk_30 = GwPlayer[gwIndex].cpu_difficulty;
     model = omCharModelNoTbl[chr][0];
     motionFile = omCharModelNoTbl[chr][1];

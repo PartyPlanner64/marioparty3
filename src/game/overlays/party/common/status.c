@@ -344,7 +344,7 @@ static void MBStatusMain(omObjData *obj) {
                     for (j = 0; j < 14; j++) {
                         switch (j) {
                             case 9:
-                                if (GwPlayer[i].stat & 1) {
+                                if (GwPlayer[i].stat & PLAYER_IS_CPU) {
                                     break;
                                 }
                                 continue;
@@ -397,7 +397,7 @@ static void MBStatusMain(omObjData *obj) {
                         }
                     }
 
-                    if ((GwPlayer[i].stat & 1) && !(temp_s2->uiVisible & 1)) {
+                    if ((GwPlayer[i].stat & PLAYER_IS_CPU) && !(temp_s2->uiVisible & 1)) {
                         HuSprDispOn(temp_s2->playerIndex, 9);
                     } else {
                         HuSprDispOff(temp_s2->playerIndex, 9);
@@ -530,7 +530,7 @@ static void MBStatusComSprCreate(s32 playerNo) {
     HuSprPriSet(temp_s2, 9, ((playerNo * 5) + 0x478E));
     HuSprAttrSet(temp_s2, 9, HUSPR_ATTR_NONE);
     HuSprPosSet(temp_s2, 9, mbStatusSprOfsTbl[9][0], mbStatusSprOfsTbl[9][1]);
-    if (!(GwPlayer[playerNo].stat & 1)) {
+    if (!(GwPlayer[playerNo].stat & PLAYER_IS_CPU)) {
         HuSprDispOff(temp_s2, 9);
     }
 }

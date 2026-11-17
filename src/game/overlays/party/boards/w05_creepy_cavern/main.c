@@ -9447,21 +9447,6 @@ void MB5_CartBlockProc(void) {
     }
 }
 
-// Logic matches the target; only register allocation differs (score 40). The target has a CSE
-// boundary between `p = &pos; ofs = mb5ev_cartEscapeOfsTbl[unk4 + order];` and the `p->x`/`p->z` adds,
-// so the later `&pos`, `&playerObj->coords` and `&playerObj->rot` are recomputed instead of
-// CSE'd; the first `do { } while (0)` reproduces it, and extending it up over the first
-// HuPrcChildLink(process, ...) loop-weights `process` so it beats `unk4` (fixes s7/s8). The
-// second `do { } while (0)` fixes the type/work/playerObj s-registers. Still left: v0/v1 swap in
-// the `ofs` math (target ties `ofs` to the table base, we tie it to the scaled index). Not fixed
-// by: `order + unk4`, `&D[i][0]`, `D + i`, `(f32 *)D + i * 2`, an `idx` local, `f32 (*ofs)[2]`,
-// `*ofs++`, base-then-add (`ofs = D[0]; ofs += i * 2;` gets the registers right but loads the
-// base before the `sll`, score 60), or moving the adds into the loop. The target looks like `ofs`
-// spans two basic blocks: replacing both do-whiles with `if (<anything>) { A } else { A }` where
-// A = `HuVecCopy3F(&pos, &end->coords); p = &pos; ofs = ...;` (arms cross-jumped after reload)
-// gives the CSE boundary and index/base in v0/v1 as in the target, but `ofs` still lands in v0
-// (target v1) and `unk4`/`process` swap s7/s8 again (score 40).
-#ifdef NON_MATCHING
 void MB5Ev_CartPlayerEscapeProc(void) {
     PlayerReactWork *work = HuPrcCurrentGet()->user_data;
     Object *model = mb5ev_cartMdl;
@@ -9528,16 +9513,16 @@ void MB5Ev_CartPlayerEscapeProc(void) {
 
     HuVecCopy3F(&pos, &start->coords);
     MBVecDirGet(&playerObj->coords, &pos, &playerObj->rot);
-    // do-while (0) acts as a CSE / loop-weighting boundary.
+    // Keep the movement stages grouped for the original compiler's register allocation.
     do {
         HuPrcChildLink(process, MBVecSpeedMove2Create(&playerObj->coords, &pos, &playerObj->coords, 2.0f));
         HuPrcChildWatch();
 
         HuVecCopy3F(&pos, &end->coords);
         p = &pos;
-        ofs = mb5ev_cartEscapeOfsTbl[unk4 + order];
+        ofs = &mb5ev_cartEscapeOfsTbl[unk4 + order][1];
     } while (0);
-    p->x += ofs[0];
+    p->x += *--ofs;
     p->z += ofs[1];
     MBVecDirGet(&playerObj->coords, &pos, &playerObj->rot);
     HuPrcChildLink(process, MBVecSpeedMoveCreate(&playerObj->coords, &pos, &playerObj->coords, 2.0f));
@@ -9557,9 +9542,6 @@ void MB5Ev_CartPlayerEscapeProc(void) {
     } while (0);
     omDelPrcObj(NULL);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/overlays/party/boards/w05_creepy_cavern/main", MB5Ev_CartPlayerEscapeProc);
-#endif
 
 void MB5Ev_CartPlayerEscapeSideProc(void) {
     PlayerReactWork *work = HuPrcCurrentGet()->user_data;

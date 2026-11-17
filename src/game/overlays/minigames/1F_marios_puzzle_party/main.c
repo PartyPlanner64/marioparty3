@@ -397,7 +397,7 @@ u16 m231_InputBtnGet(s32 playerIndex) {
 
     if (!(GwPlayer[playerIndex].stat & PLAYER_IS_CPU)) {
         buttons = HuPadBtn[GwPlayer[playerIndex].pad];
-        buttons &= 0xF0FF;
+        buttons &= ~(U_JPAD | D_JPAD | L_JPAD | R_JPAD);
         if (HuPadStkX[GwPlayer[playerIndex].pad] > 30.0f) {
             buttons |= R_JPAD;
         }

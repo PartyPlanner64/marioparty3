@@ -232,7 +232,6 @@ u8 m203_phasePad[4] BSS; /* Unreferenced. */
 SpotlightSwimUnk8 m203_lampStateTbl[4] BSS;
 
 void m203_ScreenPosCalc(s16, f32, f32, f32, f32 *);
-void func_8007E040_main(Mtx *m, Mtx *n, Mtx *res);
 void m203_WakeUpdate(omObjData *);
 void m203_StageObjInit(omObjData *);
 void m203_WaterObjMain(omObjData *);
@@ -388,7 +387,7 @@ void m203_ScreenPosCalc(s16 camIndex, f32 x, f32 y, f32 z, f32 *screenPos) {
     s16 vpIndex;
 
     func_80088850_main(&mtx, x, y, z);
-    func_8007E040_main(&mtx, lookAt, &mtx);
+    guMtxCatL(&mtx, lookAt, &mtx);
     viewX = (s32)(((u32)integer[3][0] << 16) | fraction[3][0]) >> 16;
     viewY = (s32)(((u32)integer[3][1] << 16) | fraction[3][1]) >> 16;
     viewZ = (s32)(((u32)integer[3][2] << 16) | fraction[3][2]) >> 16;

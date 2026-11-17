@@ -15,7 +15,6 @@ s32 mgresultduel_mainTimer = 0;
 s8 mgresultduel_exitWipeF = 0;
 
 const s16 mgresultduel_statusPosTbl[2][2] = { { 30, 40 }, { 194, 40 } };
-extern Addr D_128CC60;
 
 void MBDStatusPosSet(s32, s16, s16);
 void MBDStatusScaleSet(s32, f32, f32);
@@ -67,7 +66,7 @@ void mgresultduel_ObjectSetup(void) {
     MBDStatusScaleSet(0, 0.0f, 0.0f);
     MBDStatusScaleSet(1, 0.0f, 0.0f);
     Hu3DCamInit(1);
-    MBDBackArcInit(D_128CC60);
+    MBDBackArcInit(hvq_data_ROM_START);
     MBDBackLoad(23);
     MBDCameraNearFarSet(1000.0f, 10000.0f);
 

@@ -46,7 +46,6 @@ typedef struct {
 
 
 f64 fmod(f64 x, f64 y);
-void func_8007E040_main(Mtx *m, Mtx *n, Mtx *res);
 
 static Vp HuSprViewport = {
     { { 640, 480, 511, 0 }, { 640, 480, 511, 0 } },
@@ -1766,7 +1765,7 @@ void HuSprDummy(void) {
 
     fmod(0.0, 0.0);
     guTranslateF(mf, 0.0f, 0.0f, 0.0f);
-    func_8007E040_main(&a, &b, &a);
+    guMtxCatL(&a, &b, &a);
 }
 
 u16 HuSprRead16(u8 **arg0) {

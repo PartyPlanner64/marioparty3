@@ -60,7 +60,6 @@ void MBDVecDirGet(Vec *, Vec *, Vec *);
 void MBD1_MissMarkProc(void); // probably takes object as arg
 Process *MBDPlayerPosMoveCreate(Vec *, Vec *, Vec *, s32);
 void MBD1_CameraShakeProc(void);
-void func_80089A20_main(Vec *, s32);
 void MBDPlayerPartyMotionSet(s32, s32, s32);
 void MBD1_ObjectSetup(void);
 void MBD1_GateGuyCreate(void);

@@ -604,7 +604,6 @@ void m244_CameraMoveStart(f32 x, f32 y, f32 z, f32 rotX, f32 rotY, f32 rotZ, f32
 void m244_CameraFocusObjMain(omObjData *object);
 void m244_CameraPosUpdate(s32 camIndex);
 void m244_ScreenPosCalc(s32 camIndex, f32 *pos, f32 *screen, f32 *normalized);
-void func_8007E040_main(Mtx *m, Mtx *n, Mtx *res);
 f32 m244_InterpCalc(f32 arg0, f32 arg1, f32 arg2);
 void m244_ReplayInit(void);
 void m244_SeQueueInit(void);
@@ -3042,7 +3041,7 @@ void m244_ScreenPosCalc(s32 camIndex, f32 *pos, f32 *screen, f32 *normalized) {
     guLookAt(&lookAt, camera->pos.x, camera->pos.y, camera->pos.z, camera->at.x, camera->at.y, camera->at.z,
              camera->up.x, camera->up.y, camera->up.z);
     func_80088850_main(&mtx, pos[0], pos[1], pos[2]);
-    func_8007E040_main(&mtx, &lookAt, &mtx);
+    guMtxCatL(&mtx, &lookAt, &mtx);
     viewX = (s32)(((u32)integer[3][0] << 16) | fraction[3][0]) >> 16;
     viewY = (s32)(((u32)integer[3][1] << 16) | fraction[3][1]) >> 16;
     viewZ = (s32)(((u32)integer[3][2] << 16) | fraction[3][2]) >> 16;

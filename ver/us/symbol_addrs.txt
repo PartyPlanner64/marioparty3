@@ -300,6 +300,8 @@ omobjfirst = 0x800D5560; // type:s16
 omnextidx = 0x800D6B40; // type:s16
 
 //1060.c
+entrypoint = 0x80000400; //rom:0x1000
+main_BSS_SIZE = 0x2E080; //defined:True absolute:True
 ultraMain = 0x80000460; //rom:0x1060
 thread1_idle = 0x800004D0; //rom:0x10D0
 msmSysInit = 0x8000086C;
@@ -398,7 +400,9 @@ guMtxIdentF = 0x8007DCC0; //rom:0x7E8C0
 guMtxF2L = 0x8007DD20; //rom:0x7E920
 guMtxL2F = 0x8007DDA0; //rom:0x7E9A0
 guMtxCatF = 0x8007DE20; //rom:0x7EA20
+guScale = 0x8007DF20;
 guTranslateF = 0x8007DFE0; //rom:0x7EBE0
+guMtxCatL = 0x8007E040;
 
 guOrthoF = 0x8007ABE0;
 guOrtho = 0x8007AD10;
@@ -757,6 +761,7 @@ osSetTimer = 0x8007CD20;
 __osProbeTLB = 0x8007D210;
 
 __osExceptionPreamble = 0x8007FB10;
+__ptException = 0x8007FB40;
 send_mesg = 0x8008052C;
 __osEnqueueAndYield = 0x8008061C;
 __osEnqueueThread = 0x8008072C;
@@ -2386,8 +2391,13 @@ __osThprofFunc = 0x800A4034; //size:0x4
 __osRcpImTable = 0x800A8210; //size:0x80
 __osHwIntTable = 0x800A3FE0; //size:0x28
 __osPiIntTable = 0x800A4008; //size:0x8
+__osRdb_DbgRead_Ct = 0x800A4010; //size:0x4
+__osRdb_Mesg = 0x800A4014; //size:0x4
+__os_Kdebug_Pkt = 0x800A4018; //size:0x4
+__osPreviousThread = 0x800A401C; //size:0x4
 __osIntOffTable = 0x800A8690; //size:0x20
 __osIntTable = 0x800A86B0; //size:0x24
+__osCauseTable_pt = 0x800A86D4;
 m260_playPhase = 0x80109C40; //rom:0x2D8110 size:0x2 type:s16 segment:hey_batter_batter
 m260_playTimer = 0x80109C42; //rom:0x2D8112 size:0x2 type:s16 segment:hey_batter_batter
 m260_resultPhase = 0x80109C48; //rom:0x2D8118 size:0x2 type:s16 segment:hey_batter_batter

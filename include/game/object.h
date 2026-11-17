@@ -15,6 +15,23 @@
 #define OM_STAT_NOALLPAUSE (1 << 7) // excluded from omAllPause
 #define OM_STAT_MODELPAUSE (1 << 8)
 
+// Overlay stat flags, passed to omOvlCallEx / omOvlGotoEx and stored in omovlstat.
+#define OM_OVL_STAT_NONE 0
+#define OM_OVL_STAT_MGLIB (1 << 0) // load the minigame common library
+#define OM_OVL_STAT_BOARD (1 << 1) // party board: shared board library, board audio fx
+#define OM_OVL_STAT_MG (1 << 2) // minigame: minigame library, minigame audio fx, practice exit, no system pause
+#define OM_OVL_STAT_SYSKEY (1 << 4) // create the system key check (pause/reset) object
+#define OM_OVL_STAT_TIMER (1 << 5) // create the system timer object
+#define OM_OVL_STAT_GFXBUF2 (1 << 6) // use 2 graphics buffers
+#define OM_OVL_STAT_GFXBUF3 (1 << 7) // use 3 graphics buffers
+#define OM_OVL_STAT_AUDFX1 (1 << 8) // audio fx type override
+#define OM_OVL_STAT_AUDFX2 (1 << 9)
+#define OM_OVL_STAT_AUDFX3 (1 << 10)
+#define OM_OVL_STAT_AUDFX4 (1 << 11)
+#define OM_OVL_STAT_AUDFX5 (1 << 12)
+#define OM_OVL_STAT_AUDFXKEEP (1 << 13) // leave the audio fx settings unchanged
+#define OM_OVL_STAT_DUEL (1 << 14) // duel board: duel common library
+
 #define OM_GET_WORK_PTR(object, type) ((type *)(&((object)->work[0])))
 #define OM_GET_DATA_PTR(object, type) ((type *)(((object)->data)))
 
@@ -104,7 +121,7 @@ u16 omPauseChk(void);
 void omGameSysInit(void);
 void omPrcSetStatBit(Process* prc, s32 stat);
 void omOvlGotoEx(s32 ovlID, s16 event, u16 stat);
-void omOvlHisChg(s16 level, s32 overlay, s16 event, s16 stat);
+void omOvlHisChg(s16 level, s32 overlay, s16 event, u16 stat);
 void omOvlKill(void);
 void omDestroyObjMan(void);
 void omPrcSetDestructor(Process* prc, void* destructor);

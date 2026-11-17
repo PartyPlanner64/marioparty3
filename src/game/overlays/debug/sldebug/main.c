@@ -324,6 +324,6 @@ void sldebug_ExitCheckObjMain(omObjData *arg0) {
 
 void sldebug_ExitObjMain(omObjData *arg0) {
     if (WipeStatGet() == 0) {
-        omOvlGotoEx(ovl_boot, 0, 0x81);
+        omOvlGotoEx(ovl_boot, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_GFXBUF3);
     }
 }

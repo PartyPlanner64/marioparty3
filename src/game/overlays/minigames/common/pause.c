@@ -1001,7 +1001,7 @@ void MgStoryStageGoto(void) {
             GwPlayer[i].stat = 1;
         }
     }
-    omOvlHisChg(0, 0x7D, 0, 0x4090);
+    omOvlHisChg(0, 0x7D, 0, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
     omovlhisidx++;
     omOvlGotoEx(overlay, event, stat);
 }

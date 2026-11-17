@@ -1101,12 +1101,12 @@ void modesel_MainProc(void) {
     omOvlKill();
     switch (result) {
         case 0:
-            omOvlCallEx(staff, modesel_storyChrHalf, 0x4000);
-            omOvlHisChg(1, 0x77, 0, 0x91);
+            omOvlCallEx(staff, modesel_storyChrHalf, OM_OVL_STAT_DUEL);
+            omOvlHisChg(1, 0x77, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             break;
         case 1:
-            omOvlCallEx(option, 0, 0x91);
-            omOvlHisChg(1, 0x77, 0, 0x91);
+            omOvlCallEx(option, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
+            omOvlHisChg(1, 0x77, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             break;
         case 2:
             while (1) {
@@ -1114,50 +1114,50 @@ void modesel_MainProc(void) {
             }
         case 4:
             GwSystem.playMode = (GwSystem.playMode & 4) | 2;
-            omOvlCallEx(msetup, 1, 0x4090);
-            omOvlHisChg(1, 0x77, 0, 0x91);
+            omOvlCallEx(msetup, 1, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
+            omOvlHisChg(1, 0x77, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             break;
         case 5:
             SLLoadBoardStory();
             _SetFlag(0);
             GwSystem.playMode = 2;
-            omOvlCallEx(duelcall, 0, 0x4090);
-            omOvlHisChg(1, 0x77, 0, 0x91);
+            omOvlCallEx(duelcall, 0, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
+            omOvlHisChg(1, 0x77, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             break;
         case 6:
             GwSystem.playMode = 2;
-            omOvlCallEx(msetup, 8, 0x91);
-            omOvlHisChg(1, 0x77, 0, 0x91);
+            omOvlCallEx(msetup, 8, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
+            omOvlHisChg(1, 0x77, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             break;
         case 7:
             GwSystem.playMode = 1;
-            omOvlCallEx(msetup, 0, 0x91);
-            omOvlHisChg(1, 0x77, 0, 0x91);
+            omOvlCallEx(msetup, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
+            omOvlHisChg(1, 0x77, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             break;
         case 8:
             SLLoadBoard();
             GwSystem.playMode = 1;
             _SetFlag(0);
-            omOvlCallEx(boardcall, 0, 0x92);
-            omOvlHisChg(1, 0x77, 0, 0x91);
+            omOvlCallEx(boardcall, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
+            omOvlHisChg(1, 0x77, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             break;
         case 9:
             GwSystem.playMode = (GwSystem.playMode & 4) | 1;
-            omOvlCallEx(msetup, 7, 0x91);
-            omOvlHisChg(1, 0x77, 0, 0x91);
+            omOvlCallEx(msetup, 7, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
+            omOvlHisChg(1, 0x77, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             break;
         case 10:
             if (GwStory.unk0 == 12) {
-                omOvlCallEx(stardust_battle, 0, 0x94);
-                omOvlHisChg(1, 0x77, 0, 0x91);
+                omOvlCallEx(stardust_battle, 0, OM_OVL_STAT_MG | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
+                omOvlHisChg(1, 0x77, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
                 MgStoryStageGoto();
                 modesel_PlayerPadInit();
             } else if (GwSystem.playMode & 1) {
-                omOvlCallEx(msetup, 2, 0x91);
-                omOvlHisChg(1, 0x77, 0, 0x91);
+                omOvlCallEx(msetup, 2, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
+                omOvlHisChg(1, 0x77, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             } else {
-                omOvlCallEx(msetup, 3, 0x91);
-                omOvlHisChg(1, 0x77, 0, 0x91);
+                omOvlCallEx(msetup, 3, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
+                omOvlHisChg(1, 0x77, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             }
             break;
         case 11:
@@ -1169,11 +1169,11 @@ void modesel_MainProc(void) {
                 }
             }
             if (GwSystem.playMode & 1) {
-                omOvlCallEx(boardcall, 0, 0x92);
+                omOvlCallEx(boardcall, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             } else {
-                omOvlCallEx(duelcall, 0, 0x4090);
+                omOvlCallEx(duelcall, 0, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             }
-            omOvlHisChg(1, 0x77, 0, 0x91);
+            omOvlHisChg(1, 0x77, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             history = &omovlhis[omovlhisidx];
             history->overlayID = 0x7D;
             history->event = 0;
@@ -1184,15 +1184,15 @@ void modesel_MainProc(void) {
             break;
         case 13:
             if (FileSelEnteredGet() == 1) {
-                omOvlCallEx(msetup, 5, 0x91);
+                omOvlCallEx(msetup, 5, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             } else {
-                omOvlCallEx(msetup, 6, 0x91);
+                omOvlCallEx(msetup, 6, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             }
-            omOvlHisChg(1, 0x77, 0, 0x91);
+            omOvlHisChg(1, 0x77, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             break;
         case 14:
-            omOvlCallEx(stardust_battle, 0, 0x94);
-            omOvlHisChg(1, 0x77, 0, 0x91);
+            omOvlCallEx(stardust_battle, 0, OM_OVL_STAT_MG | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
+            omOvlHisChg(1, 0x77, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             MgStoryStageGoto();
             modesel_PlayerPadInit();
             break;
@@ -1200,7 +1200,7 @@ void modesel_MainProc(void) {
         case 15:
         case 16:
         default:
-            omOvlHisChg(1, 0x7A, 0, 0x92);
+            omOvlHisChg(1, 0x7A, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             if ((u16)omOvlReturnEx(1) == 0) {
                 osSyncPrintf("\n%d:omMapReturn ERROR!\n", 944);
             }

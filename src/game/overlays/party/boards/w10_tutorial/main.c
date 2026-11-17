@@ -139,7 +139,7 @@ void MB10Ev_KakusiExec(UnkMBGuideData *guide);
 void MB10_BoardInit(void) {
     GwSystem.current_board_index = 6;
     omInitObjMan(0xA, 0);
-    omOvlGotoEx(boardcall, 0, 0x192);
+    omOvlGotoEx(boardcall, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
 }
 
 void MB10_SaveInit(void) {

@@ -507,7 +507,7 @@ void mgmode_BattleSetupExec(void) {
                 }
                 GwSystem.minigame_index = (u8)mgModeMgNo + 1;
                 mgModeCoinRate = 100;
-                omOvlHisChg(0, 0x69, 4, 0x84);
+                omOvlHisChg(0, 0x69, 4, OM_OVL_STAT_MG | OM_OVL_STAT_GFXBUF3);
                 mgmode_exitF = 1;
                 mgmode_exitOvlNo = 0x70;
                 mgmode_exitEvtNo = 0;
@@ -1183,7 +1183,7 @@ s32 mgmode_BattleResultExec(void) {
         GwPlayer[i].group = mgModeGroupBak[i];
     }
     GwSystem.minigame_index = (u8)mgModeMgNo + 1;
-    omOvlHisChg(0, 0x69, 4, 0x84);
+    omOvlHisChg(0, 0x69, 4, OM_OVL_STAT_MG | OM_OVL_STAT_GFXBUF3);
     mgmode_exitF = 1;
     mgmode_exitOvlNo = 0x70;
     mgmode_exitEvtNo = 0;

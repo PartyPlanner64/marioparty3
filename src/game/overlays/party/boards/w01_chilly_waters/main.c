@@ -2696,7 +2696,7 @@ s32 MB1_ComTeresaPlayerChoice(u8* arg0) {
 void MB1_BoardInit(void) {
     GwSystem.current_board_index = 0;
     omInitObjMan(10, 0);
-    omOvlGotoEx(boardcall, 0, 0x192);
+    omOvlGotoEx(boardcall, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
 }
 
 // entrypoint 1

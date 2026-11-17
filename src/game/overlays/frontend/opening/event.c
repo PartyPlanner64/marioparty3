@@ -67,7 +67,7 @@ void op_DemoMain(void) {
     HuWinAllKill();
     omOvlKill();
     if (omovlevtno == 0) {
-        omOvlGotoEx(opening, 0, 0x82);
+        omOvlGotoEx(opening, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_GFXBUF3);
     } else if (omovlevtno == 1) {
         if (!_CheckFlag(50)) {
             _SetFlag(50);
@@ -75,7 +75,7 @@ void op_DemoMain(void) {
         }
         omOvlReturnEx(1);
     } else {
-        omOvlGotoEx(opening, 0, 0x82);
+        omOvlGotoEx(opening, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_GFXBUF3);
     }
     omDelPrcObj(NULL);
     while (1) {
@@ -119,7 +119,7 @@ void op_TitleMain(void) {
             op_TitleKill();
             HuWinAllKill();
             omOvlKill();
-            omOvlGotoEx(filesel, 0, 0x91);
+            omOvlGotoEx(filesel, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             omDelPrcObj(NULL);
             while (1) {
                 HuPrcVSleep();
@@ -139,7 +139,7 @@ void op_TitleMain(void) {
             op_TitleKill();
             HuWinAllKill();
             omOvlKill();
-            omOvlGotoEx(ovl_boot, 1, 0x90);
+            omOvlGotoEx(ovl_boot, 1, OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             omDelPrcObj(NULL);
             while (1) {
                 HuPrcVSleep();

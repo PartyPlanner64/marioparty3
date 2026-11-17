@@ -404,7 +404,7 @@ void mgmode_GambleBetExec(void) {
     }
     _SetFlag(0xD);
     GwSystem.minigame_index = (u8)mgModeMgNo + 1;
-    omOvlHisChg(0, 0x69, 5, 0x84);
+    omOvlHisChg(0, 0x69, 5, OM_OVL_STAT_MG | OM_OVL_STAT_GFXBUF3);
     mgmode_exitF = 1;
     mgmode_exitOvlNo = 0x70;
     mgmode_exitEvtNo = 0;
@@ -637,7 +637,7 @@ s32 mgmode_GambleResultExec(void) {
         }
         _SetFlag(0xD);
         GwSystem.minigame_index = (u8)mgModeMgNo + 1;
-        omOvlHisChg(0, 0x69, 5, 0x84);
+        omOvlHisChg(0, 0x69, 5, OM_OVL_STAT_MG | OM_OVL_STAT_GFXBUF3);
         mgmode_exitF = 1;
         mgmode_exitOvlNo = 0x70;
         mgmode_exitEvtNo = 0;

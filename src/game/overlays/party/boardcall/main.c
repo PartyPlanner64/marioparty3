@@ -12,8 +12,8 @@ void boardcall_Start(void) {
     }
     omInitObjMan(0xA, 0);
     MBOvlCallInit();
-    omOvlGotoEx(boardcall, 1, 0x192);
-    omOvlHisChg(0, boardcall, 1, 0x192);
+    omOvlGotoEx(boardcall, 1, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
+    omOvlHisChg(0, boardcall, 1, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
 }
 
 // entry 1

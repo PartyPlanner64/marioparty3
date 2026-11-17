@@ -1185,7 +1185,7 @@ void MBD4_BranchHelpEnd(void) {
 void MBD4_BoardInit(void) {
     GwSystem.current_board_index = 3;
     omInitObjMan(0xA, 0);
-    omOvlGotoEx(duelcall, 0, 0x4190);
+    omOvlGotoEx(duelcall, 0, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
 }
 
 void MBD4_SaveInit(void) {

@@ -682,9 +682,9 @@ void omOvlGotoEx(s32 ovlID, s16 event, u16 stat) {
     omovlstat = stat;
     omHu3DReinitWait = 0;
 
-    if (stat & 0x40 && HuGfxBufNum != 2) {
+    if (stat & OM_OVL_STAT_GFXBUF2 && HuGfxBufNum != 2) {
         omHu3DLayerNumSet(2);
-    } else if (stat & 0x80 && (HuGfxBufNum != 3)) {
+    } else if (stat & OM_OVL_STAT_GFXBUF3 && (HuGfxBufNum != 3)) {
         omHu3DLayerNumSet(3);
     }
 
@@ -692,11 +692,11 @@ void omOvlGotoEx(s32 ovlID, s16 event, u16 stat) {
         omHu3DParamSet(omOvlHu3DParamTbl[ovlID].unk_00, omOvlHu3DParamTbl[ovlID].unk_02, omOvlHu3DParamTbl[ovlID].unk_04);
     }
 
-    if (!(stat & 0x2000)) {
-        if (stat & 2) {
+    if (!(stat & OM_OVL_STAT_AUDFXKEEP)) {
+        if (stat & OM_OVL_STAT_BOARD) {
             var_a0_2 = omBoardAudParamTbl[GwSystem.current_board_index][0];
             var_v1 = omBoardAudParamTbl[GwSystem.current_board_index][1];
-        } else if (stat & 4) {
+        } else if (stat & OM_OVL_STAT_MG) {
             var_a0_2 = omMgAudParamTbl[GwSystem.minigame_index - 1][0];
             var_v1 = omMgAudParamTbl[GwSystem.minigame_index - 1][1];
         } else {
@@ -704,19 +704,19 @@ void omOvlGotoEx(s32 ovlID, s16 event, u16 stat) {
             var_v1 = 20;
         }
 
-        if (stat & 0x100) {
+        if (stat & OM_OVL_STAT_AUDFX1) {
             var_a0_2 = 1;
             var_v1 = 20;
-        } else if (stat & 0x200) {
+        } else if (stat & OM_OVL_STAT_AUDFX2) {
             var_a0_2 = 2;
             var_v1 = 20;
-        } else if (stat & 0x400) {
+        } else if (stat & OM_OVL_STAT_AUDFX3) {
             var_a0_2 = 3;
             var_v1 = 20;
-        } else if (stat & 0x800) {
+        } else if (stat & OM_OVL_STAT_AUDFX4) {
             var_a0_2 = 4;
             var_v1 = 20;
-        } else if (stat & 0x1000) {
+        } else if (stat & OM_OVL_STAT_AUDFX5) {
             var_a0_2 = 5;
             var_v1 = 20;
         }
@@ -727,7 +727,7 @@ void omOvlGotoEx(s32 ovlID, s16 event, u16 stat) {
     HuAudFxParamNext = 0;
 }
 
-void omOvlHisChg(s16 level, s32 overlay, s16 event, s16 stat) {
+void omOvlHisChg(s16 level, s32 overlay, s16 event, u16 stat) {
     s32 ovlhisIndex = omovlhisidx - level;
     omOvlHisData *history;
 
@@ -1321,7 +1321,7 @@ void omSystemKeyCheck(omObjData *object) {
         }
     }
 
-    if (WipeStatGet() == 1 || omSysExitReq == 1 || omOvlChangeF == 1 || !(omovlstat & 4)) {
+    if (WipeStatGet() == 1 || omSysExitReq == 1 || omOvlChangeF == 1 || !(omovlstat & OM_OVL_STAT_MG)) {
         return;
     }
 
@@ -1432,13 +1432,13 @@ void omAllUPause(void) {
 
 void omGameSysInit(void) {
     MgCoinReset();
-    if (omovlstat & 0x10) {
+    if (omovlstat & OM_OVL_STAT_SYSKEY) {
         omSystemKeyCheckSetup();
-        if (omovlstat & 4) {
+        if (omovlstat & OM_OVL_STAT_MG) {
             omSysPauseDisableF = 1;
         }
     }
-    if (omovlstat & 0x20) {
+    if (omovlstat & OM_OVL_STAT_TIMER) {
         omSysTimerCreate();
     }
     HuAudFadeObjCreate();
@@ -1485,12 +1485,12 @@ void omHu3DParamSet(u16 arg0, u16 arg1, u16 arg2) {
 void omModeOvlLoad(void) {
     s16 ovlIndex;
 
-    if (omovlstat & 0x5) {
-        ovlIndex = 2;
-    } else if (omovlstat & 2) {
-        ovlIndex = 0;
-    } else if (omovlstat & 0x4000) {
-        ovlIndex = 1;
+    if (omovlstat & (OM_OVL_STAT_MGLIB | OM_OVL_STAT_MG)) {
+        ovlIndex = minigame;
+    } else if (omovlstat & OM_OVL_STAT_BOARD) {
+        ovlIndex = shared_board;
+    } else if (omovlstat & OM_OVL_STAT_DUEL) {
+        ovlIndex = name_81;
     } else {
         return;
     }

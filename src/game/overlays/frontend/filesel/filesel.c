@@ -1030,15 +1030,15 @@ void filesel_MainProc(void) {
     switch (result) {
         case 0:
             FileSelEnteredSet(1);
-            omOvlCallEx(modesel, 1, 0x91);
+            omOvlCallEx(modesel, 1, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             filesel_StoryRead();
             break;
         case 1:
             FileSelEnteredSet(0);
             filesel_StoryRead();
             if (_CheckFlag(0x28)) {
-                omOvlCallEx(modesel, 0, 0x81);
-                omOvlHisChg(1, 0x7A, 0, 0x81);
+                omOvlCallEx(modesel, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_GFXBUF3);
+                omOvlHisChg(1, 0x7A, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_GFXBUF3);
             } else {
                 story = GwStory.unk0;
                 if (filesel_storySceneTbl[story] != 0xFF) {
@@ -1048,12 +1048,12 @@ void filesel_MainProc(void) {
                     history->event = 0;
                     history->stat = 0x82;
                     storySceneNo = filesel_storySceneTbl[story];
-                    omOvlCallEx(storycall, 0, 0x81);
-                    omOvlHisChg(1, 0x77, 0, 0x81);
+                    omOvlCallEx(storycall, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_GFXBUF3);
+                    omOvlHisChg(1, 0x77, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_GFXBUF3);
                     break;
                 }
-                omOvlCallEx(modesel, 0, 0x81);
-                omOvlHisChg(1, 0x77, 0, 0x81);
+                omOvlCallEx(modesel, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_GFXBUF3);
+                omOvlHisChg(1, 0x77, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_GFXBUF3);
             }
             break;
         case 2: {
@@ -1065,8 +1065,8 @@ void filesel_MainProc(void) {
             history->overlayID = 0x7A;
             history->event = 0;
             history->stat = 0x82;
-            omOvlCallEx(msetup, 4, 0x81);
-            omOvlHisChg(1, 0x77, 0, 0x81);
+            omOvlCallEx(msetup, 4, OM_OVL_STAT_MGLIB | OM_OVL_STAT_GFXBUF3);
+            omOvlHisChg(1, 0x77, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_GFXBUF3);
             break;
         }
         default:

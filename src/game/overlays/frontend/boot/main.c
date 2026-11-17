@@ -56,11 +56,11 @@ void boot_ExitObjMain(omObjData *arg0) {
     if (WipeStatGet() == 0) {
         HuWinAllKill();
         if (boot_skipF != 0) {
-            omOvlGotoEx(opening, 2, 0x92);
+            omOvlGotoEx(opening, 2, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             return;
         }
-        omOvlCallEx(opening, 2, 0x92);
-        omOvlHisChg(1, opening, 2, 0x92);
+        omOvlCallEx(opening, 2, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
+        omOvlHisChg(1, opening, 2, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
     }
 }
 

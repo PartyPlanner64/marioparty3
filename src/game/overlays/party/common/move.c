@@ -420,7 +420,7 @@ s32 MBBoardRestartSet(void) {
     GWBoardFlagSet(0xE);
     if (MBOvlCallCheck() == 1) {
         if (GWBoardFlagCheck(3) != 0) {
-            MBOvlCall(-2, 4, 0x192);
+            MBOvlCall(-2, 4, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
             ret = 1;
         }
     } else if (GWBoardFlagCheck(3) != 0) {

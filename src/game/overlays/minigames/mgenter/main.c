@@ -111,8 +111,8 @@ void mgenter_SkipObjectSetup(void) {
     MapCollInit(1);
     Hu3DSprModelInit(0x19);
     omInitObjMan(0x33, 0x19);
-    omOvlHisChg(0, 0x68, 0, 4);
-    omOvlCallEx(inst, 0, 2);
+    omOvlHisChg(0, 0x68, 0, OM_OVL_STAT_MG);
+    omOvlCallEx(inst, 0, OM_OVL_STAT_BOARD);
     _SetFlag(0xD);
     mgModeCoinBase++;
 }
@@ -856,10 +856,10 @@ void mgenter_ExitObjMain(omObjData *obj) {
             omOvlReturnEx(1);
             break;
         case 2:
-            omOvlCallEx(mgenter_exitOvlNo, mgenter_exitEvtNo, 0x111);
+            omOvlCallEx(mgenter_exitOvlNo, mgenter_exitEvtNo, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_AUDFX1);
             break;
         case 1:
-            omOvlGotoEx(mgenter_exitOvlNo, mgenter_exitEvtNo, 0x111);
+            omOvlGotoEx(mgenter_exitOvlNo, mgenter_exitEvtNo, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_AUDFX1);
             break;
     }
 }

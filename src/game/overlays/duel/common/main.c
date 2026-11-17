@@ -73,8 +73,8 @@ void MBDOvlCallInit(void) {
     mbovlhisidx = 0;
 
     if (GWBoardFlagCheck(1) == 0) {
-        MBDOvlCall(-2, 1, 0x4190);
-        MBDOvlCall(mbdBoardIntroOvlTbl[GwSystem.current_board_index], 0, 0x4190);
+        MBDOvlCall(-2, 1, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
+        MBDOvlCall(mbdBoardIntroOvlTbl[GwSystem.current_board_index], 0, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
     }
     MBDSaveInit();
     MBDMesSpeedSet(GwSystem.message_speed);
@@ -94,7 +94,7 @@ void MBDOvlCallExec(void) {
     }
     if (ditherBak.unk_02 != 0) {
         mbOvlCallF = 0;
-        omOvlCallEx(mbdBoardOvlTbl[GwSystem.current_board_index], 2, 0x4190);
+        omOvlCallEx(mbdBoardOvlTbl[GwSystem.current_board_index], 2, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
         return;
     }
     if (mbEndingF != 0) {
@@ -121,7 +121,7 @@ void MBDOvlCallEventReturn(s16 arg0) {
     if (mbovlhisidx >= 5) {
         mbovlhisidx = 4;
     }
-    MBDOvlCall(-2, 3, 0x4190);
+    MBDOvlCall(-2, 3, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
     omOvlReturnEx(1);
 }
 
@@ -497,17 +497,17 @@ void MBDExitProc(void) {
             if (GwSystem.current_board_index == 5) {
                 _CheckFlag(9);
             }
-            MBDOvlCall(0x62, 0, 0x4190);
+            MBDOvlCall(0x62, 0, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
             MBDBoardReturnOff();
         }
         if (mbdExitFlag & 1) {
             MBDNextPlayerTurn();
         }
         if (mbdExitFlag & 2) {
-            MBDOvlCall(0x70, 0, 0x192);
+            MBDOvlCall(0x70, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
         }
         if (mbdExitFlag & 8) {
-            MBDOvlCall(mbdExitOvlNo, mbdExitOvlEvent, 0x192);
+            MBDOvlCall(mbdExitOvlNo, mbdExitOvlEvent, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
         }
         omOvlReturnEx(1);
         omOvlKill();

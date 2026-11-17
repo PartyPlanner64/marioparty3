@@ -664,18 +664,18 @@ void option_RoomProc(void) {
     omOvlKill();
     switch (active) {
         case 0:
-            omOvlHisChg(0, 0x7B, 3, 0x91);
-            omOvlCallEx(option, 6, 0x91);
+            omOvlHisChg(0, 0x7B, 3, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
+            omOvlCallEx(option, 6, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             break;
         case 1:
-            omOvlGotoEx(option, 4, 0x91);
+            omOvlGotoEx(option, 4, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             break;
         case 2:
-            omOvlGotoEx(option, 5, 0x91);
+            omOvlGotoEx(option, 5, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             break;
         case 3:
             omOvlReturnEx(1);
-            omOvlHisChg(0, 0x77, 3, 0x91);
+            omOvlHisChg(0, 0x77, 3, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             break;
         case 4:
         case 5:
@@ -1191,10 +1191,10 @@ void option_SoundRoomProc(void) {
     omOvlKill();
     switch (result) {
         case 4:
-            omOvlGotoEx(option, 1, 0x91);
+            omOvlGotoEx(option, 1, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             break;
         case 5:
-            omOvlGotoEx(option, 2, 0x91);
+            omOvlGotoEx(option, 2, OM_OVL_STAT_MGLIB | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             break;
         case 0:
         case 1:

@@ -100,9 +100,9 @@ void GameManInitProc(void) {
         SLCurBoxNoSet(0);
         SLLoadGameStat();
         if (temp_s0 != 0) {
-            omOvlCallEx(slerror, 0, 0x82);
+            omOvlCallEx(slerror, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_GFXBUF3);
         } else {
-            omOvlCallEx(ovl_boot, 0, 0x84);
+            omOvlCallEx(ovl_boot, 0, OM_OVL_STAT_MG | OM_OVL_STAT_GFXBUF3);
         }
     }
 

@@ -267,7 +267,7 @@ void storyresult_StageResultProc(void) {
     }
 
     if (GwStory.unk0 >= 12) {
-        omOvlHisChg(0, 0x7D, 1, 0x4090);
+        omOvlHisChg(0, 0x7D, 1, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
         omovlhisidx++;
         storyresult_exitMode = 1;
         storyresult_exitOvlNo = 0x75;

@@ -1089,16 +1089,16 @@ void selmenu_ChrSelObjMain(omObjData *obj) {
             GwSystem.current_player_index = 0;
             if (omDBGPlayMode == 0) {
                 if (selMenuMgModeF == 0) {
-                    omOvlCallEx(selmenu_menuTbl[selmenu_page * 10 + selmenu_selectPos].unk_04, 0, 0x94);
+                    omOvlCallEx(selmenu_menuTbl[selmenu_page * 10 + selmenu_selectPos].unk_04, 0, OM_OVL_STAT_MG | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
                 } else {
-                    omOvlCallEx(MgDataMaxGet(GwSystem.minigame_index), 0, 0x82);
+                    omOvlCallEx(MgDataMaxGet(GwSystem.minigame_index), 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_GFXBUF3);
                 }
             } else if (omDBGPlayMode == 1) {
                 GwSystem.playMode = 1;
-                omOvlCallEx(selmenu_menuTbl[selmenu_page * 10 + selmenu_selectPos].unk_04, 0, 0x92);
+                omOvlCallEx(selmenu_menuTbl[selmenu_page * 10 + selmenu_selectPos].unk_04, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             } else {
                 GwSystem.playMode = 2;
-                omOvlCallEx(selmenu_menuTbl[selmenu_page * 10 + selmenu_selectPos].unk_04, 0, 0x4090);
+                omOvlCallEx(selmenu_menuTbl[selmenu_page * 10 + selmenu_selectPos].unk_04, 0, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             }
         }
         return;

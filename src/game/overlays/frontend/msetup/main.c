@@ -225,7 +225,7 @@ void msetup_ExitObjMain(omObjData *object) {
     if (WipeStatGet() == 0) {
         HuWinAllKill();
         msetup_SysClose();
-        flags = 0x14;
+        flags = OM_OVL_STAT_MG | OM_OVL_STAT_SYSKEY;
         switch (msetup_exitMode) {
             case 0:
             default:
@@ -238,10 +238,10 @@ void msetup_ExitObjMain(omObjData *object) {
                 omOvlGotoEx(msetup_exitOvlNo, msetup_exitEvtNo, flags);
                 break;
             case 3:
-                omOvlGotoEx(msetup_exitOvlNo, msetup_exitEvtNo, 0x4090);
+                omOvlGotoEx(msetup_exitOvlNo, msetup_exitEvtNo, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
                 break;
             case 4:
-                omOvlGotoEx(msetup_exitOvlNo, msetup_exitEvtNo, 0x92);
+                omOvlGotoEx(msetup_exitOvlNo, msetup_exitEvtNo, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
                 break;
         }
     }
@@ -1510,7 +1510,7 @@ void msetup_StoryPartySetupProc(void) {
             msetup_exitMode = 4;
             msetup_exitOvlNo = 71;
             msetup_exitEvtNo = 0;
-            omOvlHisChg(0, 0x7D, 0, 0x4090);
+            omOvlHisChg(0, 0x7D, 0, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             omovlhisidx++;
             i = 0;
         } else {
@@ -1644,7 +1644,7 @@ void msetup_StoryDuelSetupProc(void) {
             msetup_exitMode = 3;
             msetup_exitOvlNo = 90;
             msetup_exitEvtNo = 0;
-            omOvlHisChg(0, 0x7D, 0, 0x4090);
+            omOvlHisChg(0, 0x7D, 0, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             omovlhisidx++;
             i = 0;
         } else {

@@ -78,13 +78,13 @@ void staff_ExitObjMain(omObjData *object) {
 
     if (WipeStatGet() == 0) {
         HuWinAllKill();
-        flags = 0x14;
+        flags = OM_OVL_STAT_MG | OM_OVL_STAT_SYSKEY;
         switch (staff_exitMode) {
             case 0:
             default:
                 if (staff_storyF != 0) {
                     omovlhisidx = -1;
-                    omOvlCallEx(ovl_boot, 0, 0x84);
+                    omOvlCallEx(ovl_boot, 0, OM_OVL_STAT_MG | OM_OVL_STAT_GFXBUF3);
                 } else {
                     omOvlReturnEx(1);
                 }
@@ -96,10 +96,10 @@ void staff_ExitObjMain(omObjData *object) {
                 omOvlGotoEx(staff_exitOvlNo, staff_exitEvtNo, flags);
                 break;
             case 3:
-                omOvlGotoEx(staff_exitOvlNo, staff_exitEvtNo, 0x4090);
+                omOvlGotoEx(staff_exitOvlNo, staff_exitEvtNo, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
                 break;
             case 4:
-                omOvlGotoEx(staff_exitOvlNo, staff_exitEvtNo, 0x92);
+                omOvlGotoEx(staff_exitOvlNo, staff_exitEvtNo, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
                 break;
         }
     }

@@ -19,7 +19,7 @@ void slerror_MainProc(void) {
     u16 i;
 
     if (SLFormatFlags & 0x10) {
-        omOvlGotoEx(ovl_boot, 0, 0x81);
+        omOvlGotoEx(ovl_boot, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_GFXBUF3);
         omOvlKill();
         HuPrcVSleep();
     }
@@ -95,7 +95,7 @@ void slerror_MainProc(void) {
         HuSprAnimKill(slerror_animTbl[i]);
     }
     HuWinAllKill();
-    omOvlGotoEx(ovl_boot, 0, 0x81);
+    omOvlGotoEx(ovl_boot, 0, OM_OVL_STAT_MGLIB | OM_OVL_STAT_GFXBUF3);
     omOvlKill();
     HuPrcVSleep();
 }

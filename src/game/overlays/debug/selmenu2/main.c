@@ -1013,11 +1013,11 @@ void selmenu2_ChrSelObjMain(omObjData *obj) {
             GwSystem.current_player_index = 0;
             selMenuLastOvl = selmenu2_menuTbl[selmenu2_page * 10 + selmenu2_selectPos].unk_04;
             if (selMenuLastOvl >= 71) {
-                omOvlCallEx(selMenuLastOvl, 0, 0x84);
+                omOvlCallEx(selMenuLastOvl, 0, OM_OVL_STAT_MG | OM_OVL_STAT_GFXBUF3);
             } else if (mgDataTbl[GwSystem.minigame_index - 1].minigameType != 6) {
-                omOvlCallEx(inst, 0, 0x82);
+                omOvlCallEx(inst, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_GFXBUF3);
             } else {
-                omOvlCallEx(mgDataTbl[GwSystem.minigame_index - 1].overlay, 0, 0x94);
+                omOvlCallEx(mgDataTbl[GwSystem.minigame_index - 1].overlay, 0, OM_OVL_STAT_MG | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
             }
         }
         return;

@@ -315,7 +315,7 @@ void inst_MainObjMain(omObjData *object) {
 void inst_MgStart(void) {
     s32 unused[6]; // Retain the original stack frame.
 
-    omOvlCallEx(mgDataTbl[inst_mgNo].overlay, 0, 0x14);
+    omOvlCallEx(mgDataTbl[inst_mgNo].overlay, 0, OM_OVL_STAT_MG | OM_OVL_STAT_SYSKEY);
     if (inst_practiceF == 1) {
         _SetFlag(0xF);
         return;
@@ -325,16 +325,16 @@ void inst_MgStart(void) {
     }
     switch (inst_mgType) {
         case 6:
-            omOvlHisChg(1, 0x72, 0, 0x14);
+            omOvlHisChg(1, 0x72, 0, OM_OVL_STAT_MG | OM_OVL_STAT_SYSKEY);
             return;
         case 4:
             if (GwSystem.playMode & 2) {
-                omOvlHisChg(1, 0x73, 0, 0x4010);
+                omOvlHisChg(1, 0x73, 0, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY);
                 return;
             }
             goto pop_history;
         case 3:
-            omOvlHisChg(1, 0x74, 0, 0x12);
+            omOvlHisChg(1, 0x74, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY);
             return;
         case 5:
         case 7:
@@ -345,7 +345,7 @@ void inst_MgStart(void) {
             }
             return;
         default:
-            omOvlHisChg(1, 0x71, 0, 0x12);
+            omOvlHisChg(1, 0x71, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY);
             return;
     }
 }

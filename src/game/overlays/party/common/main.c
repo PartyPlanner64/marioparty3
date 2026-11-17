@@ -401,13 +401,13 @@ void MBOvlCallInit(void) {
     mbovlhisidx = 0;
 
     if (GWBoardFlagCheck(1) == 0) {
-        if ((GwSystem.current_board_index != 6) && (MBOvlCall(-2, 4, 0x192), (GwSystem.current_board_index != 6))) {
-            MBOvlCall(0x53, 0, 0x192);
+        if ((GwSystem.current_board_index != 6) && (MBOvlCall(-2, 4, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1), (GwSystem.current_board_index != 6))) {
+            MBOvlCall(0x53, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
         } else {
-            MBOvlCall(0x54, 0, 0x192);
+            MBOvlCall(0x54, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
         }
 
-        MBOvlCall(-2, 1, 0x192);
+        MBOvlCall(-2, 1, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
     }
 
     MBSaveInit();
@@ -428,7 +428,7 @@ void MBOvlCallExec(void) {
     }
     if (ditherBak.unk_02 != 0) {
         mbOvlCallF = 0;
-        omOvlCallEx(mbBoardOvlTbl[GwSystem.current_board_index], 2, 0x192);
+        omOvlCallEx(mbBoardOvlTbl[GwSystem.current_board_index], 2, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
         return;
     }
     if (mbEndingF != 0) {
@@ -455,7 +455,7 @@ static void MBOvlCallEventReturn(s16 arg0) {
     if (mbovlhisidx >= ARRAY_COUNT(mbovlhis)) {
         mbovlhisidx = ARRAY_COUNT(mbovlhis) - 1;
     }
-    MBOvlCall(-2, 3, 0x192);
+    MBOvlCall(-2, 3, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
     omOvlReturnEx(1);
 }
 
@@ -865,13 +865,13 @@ static void MBExitProc(void) {
             if (GwSystem.current_board_index == WALUIGIS_ISLAND) {
                 _CheckFlag(9);
             }
-            MBOvlCall(0x4F, 0, 0x4190);
+            MBOvlCall(0x4F, 0, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
             MBBoardReturnOff();
         }
 
         if (mbExitFlag & 1) {
             if (MBLast5Check() != 0) {
-                MBOvlCall(0x51, 0, 0x192);
+                MBOvlCall(0x51, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
             }
             MBNextPlayerTurn();
         }
@@ -884,11 +884,11 @@ static void MBExitProc(void) {
                     mgPlayerTeam[i] = 1;
                 }
             }
-            MBOvlCall(0x70, 0, 0x192);
+            MBOvlCall(0x70, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
         }
 
         if (mbExitFlag & 8) {
-            MBOvlCall(mbExitOvlNo, mbExitOvlEvent, 0x192);
+            MBOvlCall(mbExitOvlNo, mbExitOvlEvent, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
         }
 
         GWBoardFlagClear(5);

@@ -80,7 +80,7 @@ void storyresult_ObjectSetup(void) {
     storyresult_PlayerConfigInit();
     switch (omovlevtno) {
         case 0:
-            if (omovlstat & 0x4000) {
+            if (omovlstat & OM_OVL_STAT_DUEL) {
                 omAddPrcObj(storyresult_StageResultProc, 0x3F00, 0x1000, 0);
             }
             break;
@@ -134,7 +134,7 @@ void storyresult_ExitObjMain(omObjData *object) {
             MBDBackClose();
         }
         HuWinAllKill();
-        flags = 0x14;
+        flags = OM_OVL_STAT_MG | OM_OVL_STAT_SYSKEY;
         switch (storyresult_exitMode) {
             case 0:
             default:
@@ -147,10 +147,10 @@ void storyresult_ExitObjMain(omObjData *object) {
                 omOvlGotoEx(storyresult_exitOvlNo, storyresult_exitEvtNo, flags);
                 break;
             case 3:
-                omOvlGotoEx(storyresult_exitOvlNo, storyresult_exitEvtNo, 0x4090);
+                omOvlGotoEx(storyresult_exitOvlNo, storyresult_exitEvtNo, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
                 break;
             case 4:
-                omOvlGotoEx(storyresult_exitOvlNo, storyresult_exitEvtNo, 0x92);
+                omOvlGotoEx(storyresult_exitOvlNo, storyresult_exitEvtNo, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3);
                 break;
         }
     }
@@ -468,7 +468,7 @@ s16 storyresult_StageClearCheck(void) {
         storyresult_exitOvlNo = 0x75;
         storyresult_exitEvtNo = 0;
         storySceneNo = 15;
-        omOvlGotoEx(storycall, 0, 0x14);
+        omOvlGotoEx(storycall, 0, OM_OVL_STAT_MG | OM_OVL_STAT_SYSKEY);
     }
     return result;
 }

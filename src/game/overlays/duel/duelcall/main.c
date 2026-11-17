@@ -11,8 +11,8 @@ void duelcall_Start(void) {
     }
     omInitObjMan(0xA, 0);
     MBDOvlCallInit();
-    omOvlGotoEx(duelcall, 1, 0x4190);
-    omOvlHisChg(0, 0x5A, 1, 0x4190);
+    omOvlGotoEx(duelcall, 1, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
+    omOvlHisChg(0, 0x5A, 1, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
 }
 
 void duelcall_Exec(void) {

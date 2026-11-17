@@ -448,7 +448,7 @@ void mgmode_RoomProc(void) {
                             mtxRotCat(node->unk58, 0.0f, -i * 5, 0.0f);
                         }
                         mgmode_CameraPresetMove(15, 20, 1, (void (*)(s16 *))-1);
-                        omOvlHisChg(0, 0x69, 7, 0x84);
+                        omOvlHisChg(0, 0x69, 7, OM_OVL_STAT_MG | OM_OVL_STAT_GFXBUF3);
                         mgmode_exitF = 1;
                         mgmode_exitOvlNo = 0x69;
                         mgmode_exitEvtNo = 3;
@@ -499,7 +499,7 @@ void mgmode_RoomProc(void) {
                             mtxRotCat(node->unk58, 0.0f, i * 5, 0.0f);
                         }
                         mgmode_CameraPresetMove(14, 20, 1, (void (*)(s16 *))-1);
-                        omOvlHisChg(0, 0x69, 6, 0x84);
+                        omOvlHisChg(0, 0x69, 6, OM_OVL_STAT_MG | OM_OVL_STAT_GFXBUF3);
                         mgmode_exitF = 1;
                         mgmode_exitOvlNo = 0x69;
                         mgmode_exitEvtNo = 2;
@@ -1193,7 +1193,7 @@ void mgmode_BookSelect(s16 arg0) {
             }
             GwSystem.minigame_index = mgmode_typeMgTbl[category][sel] + 1;
             mgModeMenuNo = arg0;
-            omOvlHisChg(0, 0x69, 1, 0x84);
+            omOvlHisChg(0, 0x69, 1, OM_OVL_STAT_MG | OM_OVL_STAT_GFXBUF3);
             mgmode_exitF = 1;
             mgmode_exitOvlNo = 0x68;
             if (GwSystem.minigame_index == 0x47 || GwSystem.minigame_index == 0x1F) {
@@ -1659,11 +1659,11 @@ void mgmode_ExitObjMain(omObjData *arg0) {
         }
         if (mgmode_exitOvlNo == 0x70) {
             _SetFlag(0x1C);
-            omOvlCallEx(mgmode_exitOvlNo, mgmode_exitEvtNo, 0x82);
+            omOvlCallEx(mgmode_exitOvlNo, mgmode_exitEvtNo, OM_OVL_STAT_BOARD | OM_OVL_STAT_GFXBUF3);
         } else {
-            omOvlCallEx(mgmode_exitOvlNo, mgmode_exitEvtNo, 0x84);
+            omOvlCallEx(mgmode_exitOvlNo, mgmode_exitEvtNo, OM_OVL_STAT_MG | OM_OVL_STAT_GFXBUF3);
         }
     } else {
-        omOvlGotoEx(mgmode_exitOvlNo, mgmode_exitEvtNo, 0x82);
+        omOvlGotoEx(mgmode_exitOvlNo, mgmode_exitEvtNo, OM_OVL_STAT_BOARD | OM_OVL_STAT_GFXBUF3);
     }
 }

@@ -566,6 +566,13 @@ sincosdf = 0x8008EBD0;
 sind = 0x8008EC30;
 sindf = 0x8008EF20;
 
+HvqReadHuffmanNode = 0x800665E0;
+HvqReadMeanValue = 0x80066894;
+HvqDecodeBlock = 0x80066A44;
+HvqConvertToRgba422 = 0x800677B8;
+HvqConvertToRgba420 = 0x80067D50;
+HvqDecodeBlockRow = 0x80068ECC;
+HvqDecodeImage = 0x800694D0;
 hvqMpsDecode1 = 0x800698E8;
 hvqMpsDecodeStart1 = 0x80069E68;
 hvqMpsInit1 = 0x8006A370;

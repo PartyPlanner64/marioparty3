@@ -111,15 +111,15 @@ static inline s16 HvqReadSymbol(HvqBitStream *stream, HvqHuffmanTree *tree) {
     return tree->left[node];
 }
 
-s16 func_800665E0_main(HvqBitStream *stream, HvqHuffmanTree *tree) {
+s16 HvqReadHuffmanNode(HvqBitStream *stream, HvqHuffmanTree *tree) {
     s32 node;
     u32 bit7, bit6, bit5, bit4, bit3, bit2, bit1, bit0;
 
     /* A set bit introduces a branch, followed by its left and right subtrees. */
     if (HvqReadBit(stream)) {
         node = sHvqNextTreeNode++;
-        tree->left[node] = func_800665E0_main(stream, tree);
-        tree->right[node] = func_800665E0_main(stream, tree);
+        tree->left[node] = HvqReadHuffmanNode(stream, tree);
+        tree->right[node] = HvqReadHuffmanNode(stream, tree);
         return node;
     }
 
@@ -135,7 +135,7 @@ s16 func_800665E0_main(HvqBitStream *stream, HvqHuffmanTree *tree) {
     return (bit7 << 7) | (bit6 << 6) | (bit5 << 5) | (bit4 << 4) | (bit3 << 3) | (bit2 << 2) | (bit1 << 1) | bit0;
 }
 
-s32 func_80066894_main(HvqBitStream *stream) {
+s32 HvqReadMeanValue(HvqBitStream *stream) {
     s16 value;
     s16 symbol;
 
@@ -152,7 +152,7 @@ s32 func_80066894_main(HvqBitStream *stream) {
 }
 
 static inline s32 HvqReadMean(s32 component) {
-    return func_80066894_main(&sHvqMeanStreams[component]);
+    return HvqReadMeanValue(&sHvqMeanStreams[component]);
 }
 
 static inline s32 HvqPatternScale(s32 *amplitude, u16 code, s16 maximum, s32 component) {
@@ -387,7 +387,7 @@ static inline void HvqExpandBlock(s16 *output, s32 mode, u8 mean, s32 component)
     }
 }
 
-void func_80066A44_main(s16 *output, HvqBlockState *state, s32 component) {
+void HvqDecodeBlock(s16 *output, HvqBlockState *state, s32 component) {
     s32 mode = state->mode;
     u8 mean = state->mean;
 
@@ -476,7 +476,7 @@ static inline u16 HvqPackPixel(s16 y, s16 red, s16 green, s16 blue) {
     return (sHvqColorClampTable[(y + red) >> 6] << 10) | (sHvqColorClampTable[(y + green) >> 6] << 5) | sHvqColorAlphaClampTable[(y + blue) >> 6];
 }
 
-void func_800677B8_main(u16 *output, s16 *luma, s16 *cb, s16 *cr) {
+void HvqConvertToRgba422(u16 *output, s16 *luma, s16 *cb, s16 *cr) {
     s16 *left = luma;
     s16 *right = left + 16;
     u16 *pixel;
@@ -541,7 +541,7 @@ void func_800677B8_main(u16 *output, s16 *luma, s16 *cb, s16 *cr) {
     }
 }
 
-void func_80067D50_main(u16 *output, s16 *luma, s16 *cb, s16 *cr) {
+void HvqConvertToRgba420(u16 *output, s16 *luma, s16 *cb, s16 *cr) {
     s16 *left = luma;
     s16 *right = (luma += 16);
     u16 *pixel;
@@ -704,7 +704,7 @@ void func_80067D50_main(u16 *output, s16 *luma, s16 *cb, s16 *cr) {
     }
 }
 
-void func_80068ECC_main(u16 *output) {
+void HvqDecodeBlockRow(u16 *output) {
     s32 count;
 
     sHvqCbBlockState.rightMode = *sHvqCbBlockState.currentMode;
@@ -723,34 +723,34 @@ void func_80068ECC_main(u16 *output) {
         sHvqLumaBlockState.rightMode = *++sHvqLumaBlockState.currentMode;
         sHvqLumaBlockState.mean = sHvqLumaBlockState.rightMean;
         sHvqLumaBlockState.rightMean = *++sHvqLumaBlockState.currentMean;
-        func_80066A44_main(sHvqLumaSamples, &sHvqLumaBlockState, 0);
+        HvqDecodeBlock(sHvqLumaSamples, &sHvqLumaBlockState, 0);
         sHvqLumaBlockState.mode = sHvqLumaBlockState.rightMode;
         sHvqLumaBlockState.rightMode = *++sHvqLumaBlockState.currentMode;
         sHvqLumaBlockState.mean = sHvqLumaBlockState.rightMean;
         sHvqLumaBlockState.rightMean = *++sHvqLumaBlockState.currentMean;
-        func_80066A44_main(sHvqLumaSamples + 16, &sHvqLumaBlockState, 0);
+        HvqDecodeBlock(sHvqLumaSamples + 16, &sHvqLumaBlockState, 0);
         if (sHvqHasSecondLumaRow) {
             sHvqSecondLumaRowBlockState.mode = sHvqSecondLumaRowBlockState.rightMode;
             sHvqSecondLumaRowBlockState.rightMode = *++sHvqSecondLumaRowBlockState.currentMode;
             sHvqSecondLumaRowBlockState.mean = sHvqSecondLumaRowBlockState.rightMean;
             sHvqSecondLumaRowBlockState.rightMean = *++sHvqSecondLumaRowBlockState.currentMean;
-            func_80066A44_main(sHvqLumaSamples + 32, &sHvqSecondLumaRowBlockState, 0);
+            HvqDecodeBlock(sHvqLumaSamples + 32, &sHvqSecondLumaRowBlockState, 0);
             sHvqSecondLumaRowBlockState.mode = sHvqSecondLumaRowBlockState.rightMode;
             sHvqSecondLumaRowBlockState.rightMode = *++sHvqSecondLumaRowBlockState.currentMode;
             sHvqSecondLumaRowBlockState.mean = sHvqSecondLumaRowBlockState.rightMean;
             sHvqSecondLumaRowBlockState.rightMean = *++sHvqSecondLumaRowBlockState.currentMean;
-            func_80066A44_main(sHvqLumaSamples + 48, &sHvqSecondLumaRowBlockState, 0);
+            HvqDecodeBlock(sHvqLumaSamples + 48, &sHvqSecondLumaRowBlockState, 0);
         }
         sHvqCbBlockState.mode = sHvqCbBlockState.rightMode;
         sHvqCbBlockState.rightMode = *++sHvqCbBlockState.currentMode;
         sHvqCbBlockState.mean = sHvqCbBlockState.rightMean;
         sHvqCbBlockState.rightMean = *++sHvqCbBlockState.currentMean;
-        func_80066A44_main(sHvqCbSamples, &sHvqCbBlockState, 1);
+        HvqDecodeBlock(sHvqCbSamples, &sHvqCbBlockState, 1);
         sHvqCrBlockState.mode = sHvqCrBlockState.rightMode;
         sHvqCrBlockState.rightMode = *++sHvqCrBlockState.currentMode;
         sHvqCrBlockState.mean = sHvqCrBlockState.rightMean;
         sHvqCrBlockState.rightMean = *++sHvqCrBlockState.currentMean;
-        func_80066A44_main(sHvqCrSamples, &sHvqCrBlockState, 2);
+        HvqDecodeBlock(sHvqCrSamples, &sHvqCrBlockState, 2);
         sHvqConvertToRgba(output, sHvqLumaSamples, sHvqCbSamples, sHvqCrSamples);
         output += sHvqOutputGroupColumnStep;
     }
@@ -760,38 +760,38 @@ void func_80068ECC_main(u16 *output) {
     sHvqLumaBlockState.rightMode = *++sHvqLumaBlockState.currentMode;
     sHvqLumaBlockState.mean = sHvqLumaBlockState.rightMean;
     sHvqLumaBlockState.rightMean = *++sHvqLumaBlockState.currentMean;
-    func_80066A44_main(sHvqLumaSamples, &sHvqLumaBlockState, 0);
+    HvqDecodeBlock(sHvqLumaSamples, &sHvqLumaBlockState, 0);
     sHvqLumaBlockState.mode = sHvqLumaBlockState.rightMode;
     sHvqLumaBlockState.currentMode++;
     sHvqLumaBlockState.mean = sHvqLumaBlockState.rightMean;
     sHvqLumaBlockState.currentMean++;
-    func_80066A44_main(sHvqLumaSamples + 16, &sHvqLumaBlockState, 0);
+    HvqDecodeBlock(sHvqLumaSamples + 16, &sHvqLumaBlockState, 0);
     if (sHvqHasSecondLumaRow) {
         sHvqSecondLumaRowBlockState.mode = sHvqSecondLumaRowBlockState.rightMode;
         sHvqSecondLumaRowBlockState.rightMode = *++sHvqSecondLumaRowBlockState.currentMode;
         sHvqSecondLumaRowBlockState.mean = sHvqSecondLumaRowBlockState.rightMean;
         sHvqSecondLumaRowBlockState.rightMean = *++sHvqSecondLumaRowBlockState.currentMean;
-        func_80066A44_main(sHvqLumaSamples + 32, &sHvqSecondLumaRowBlockState, 0);
+        HvqDecodeBlock(sHvqLumaSamples + 32, &sHvqSecondLumaRowBlockState, 0);
         sHvqSecondLumaRowBlockState.mode = sHvqSecondLumaRowBlockState.rightMode;
         sHvqSecondLumaRowBlockState.currentMode++;
         sHvqSecondLumaRowBlockState.mean = sHvqSecondLumaRowBlockState.rightMean;
         sHvqSecondLumaRowBlockState.currentMean++;
-        func_80066A44_main(sHvqLumaSamples + 48, &sHvqSecondLumaRowBlockState, 0);
+        HvqDecodeBlock(sHvqLumaSamples + 48, &sHvqSecondLumaRowBlockState, 0);
     }
     sHvqCbBlockState.mode = sHvqCbBlockState.rightMode;
     sHvqCbBlockState.currentMode++;
     sHvqCbBlockState.mean = sHvqCbBlockState.rightMean;
     sHvqCbBlockState.currentMean++;
-    func_80066A44_main(sHvqCbSamples, &sHvqCbBlockState, 1);
+    HvqDecodeBlock(sHvqCbSamples, &sHvqCbBlockState, 1);
     sHvqCrBlockState.mode = sHvqCrBlockState.rightMode;
     sHvqCrBlockState.currentMode++;
     sHvqCrBlockState.mean = sHvqCrBlockState.rightMean;
     sHvqCrBlockState.currentMean++;
-    func_80066A44_main(sHvqCrSamples, &sHvqCrBlockState, 2);
+    HvqDecodeBlock(sHvqCrSamples, &sHvqCrBlockState, 2);
     sHvqConvertToRgba(output, sHvqLumaSamples, sHvqCbSamples, sHvqCrSamples);
 }
 
-void func_800694D0_main(u16 *output) {
+void HvqDecodeImage(u16 *output) {
     s32 count;
 
     /* Repeat the first row above the image. */
@@ -816,7 +816,7 @@ void func_800694D0_main(u16 *output) {
         sHvqSecondLumaRowBlockState.belowMean = sHvqSecondLumaRowBlockState.currentMean + sHvqLumaBlockColumns;
     }
 
-    func_80068ECC_main(output);
+    HvqDecodeBlockRow(output);
     output += sHvqOutputGroupRowStep;
     sHvqCbBlockState.aboveMode = sHvqBlockModes[1];
     sHvqCbBlockState.aboveMean = sHvqBlockMeans[1];
@@ -839,7 +839,7 @@ void func_800694D0_main(u16 *output) {
     }
 
     for (count = sHvqChromaBlockRows - 2; count > 0; count--) {
-        func_80068ECC_main(output);
+        HvqDecodeBlockRow(output);
         output += sHvqOutputGroupRowStep;
         if (sHvqHasSecondLumaRow) {
             sHvqLumaBlockState.aboveMode += sHvqLumaBlockColumns;
@@ -869,7 +869,7 @@ void func_800694D0_main(u16 *output) {
         sHvqLumaBlockState.belowMode = sHvqLumaBlockState.currentMode;
         sHvqLumaBlockState.belowMean = sHvqLumaBlockState.currentMean;
     }
-    func_80068ECC_main(output);
+    HvqDecodeBlockRow(output);
 }
 
 static inline void HvqInitStream(u32 *data, HvqBitStream *stream) {
@@ -971,7 +971,7 @@ void hvqMpsDecode1(void *data, u16 *output, s32 stride, u8 *workBuffer) {
             secondMean = ((u32) * ++aboveSecond + (*second++ = secondMean + HvqReadMean(2))) >> 1;
         }
     }
-    func_800694D0_main(output);
+    HvqDecodeImage(output);
 }
 
 static inline void HvqReadTree(u32 *data, HvqBitStream *stream, HvqHuffmanTree *tree) {
@@ -980,7 +980,7 @@ static inline void HvqReadTree(u32 *data, HvqBitStream *stream, HvqHuffmanTree *
         stream->mask = 0;
         if (tree != NULL) {
             sHvqNextTreeNode = 256;
-            tree->root = func_800665E0_main(stream, tree);
+            tree->root = HvqReadHuffmanNode(stream, tree);
         }
     } else {
         stream->nextWord = NULL;
@@ -1025,10 +1025,10 @@ void hvqMpsDecodeStart1(void *data) {
     sHvqChromaBlockCount = sHvqChromaBlockColumns * sHvqChromaBlockRows;
     if (sHvqVerticalSampling == 1) {
         sHvqHasSecondLumaRow = 0;
-        sHvqConvertToRgba = func_800677B8_main;
+        sHvqConvertToRgba = HvqConvertToRgba422;
     } else {
         sHvqHasSecondLumaRow = 1;
-        sHvqConvertToRgba = func_80067D50_main;
+        sHvqConvertToRgba = HvqConvertToRgba420;
     }
     sHvqPatternTableTransposed = header->componentOrder;
     if (sHvqPatternTableTransposed == 0) {

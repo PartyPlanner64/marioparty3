@@ -668,7 +668,7 @@ void duelresult2_StatSprCreate(void) {
 
     duelresult2_statNameSprGrp = MBDSprGrpCreate(10, 0);
     for (i = 0; i < 10; i++) {
-        if (i == 9 && GwSystem.current_board_index == 5) {
+        if (i == 9 && GwSystem.current_board_index == DUEL_BOARD_BACKTRACK) {
             data = DataRead(statFiles.files[10]);
         } else {
             data = DataRead(statFiles.files[i]);

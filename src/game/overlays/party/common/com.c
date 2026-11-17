@@ -37,7 +37,7 @@ s16 MBComTreeExec(DecisionTreeNonLeafNode *arg0) {
                     if (!((1 << i) & node->node_data1.data)) {
                         continue;
                     }
-                    if (GwSystem.current_board_index == 2) {
+                    if (GwSystem.current_board_index == BOARD_SPINY_DESERT) {
                         if ((GwSystem.boardData.halfWordBytes[2] >> GwSystem.current_player_index) & 1) {
                             if (GWBoardFlagCheck(0x12) == 0) {
                                 if (i == GwSystem.boardData.halfWordBytes[0]) {

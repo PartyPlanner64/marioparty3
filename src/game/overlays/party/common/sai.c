@@ -111,6 +111,7 @@ static void MBSaiObjMain(omObjData *arg0) {
                     }
                     
                     if (i == 4) {
+                        // No board uses index 8
                         if (GwSystem.current_board_index == 8) {
                             return;
                         } else {

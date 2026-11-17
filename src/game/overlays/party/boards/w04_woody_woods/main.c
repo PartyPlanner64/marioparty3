@@ -2144,13 +2144,13 @@ void MB4Ev_StarMapView(void) {
     MB4Ev_StarGuideJumpExec(guide);
 
     if ((system->current_star_spawn == 0) && (GWBoardFlagCheck(4) == 0)) {
-        if (system->current_board_index == 2) {
+        if (system->current_board_index == BOARD_SPINY_DESERT) {
             mesNum = 0x5E09;
         } else {
             mesNum = 0x5E00;
         }
     } else {
-        if (system->current_board_index == 2) {
+        if (system->current_board_index == BOARD_SPINY_DESERT) {
             mesNum = 0x5E09;
         } else {
             mesNum = 0x5E01;
@@ -2179,7 +2179,7 @@ void MB4Ev_StarMapView(void) {
     MBGuideFaceSet(guide->obj, mb4ev_starGuideFaceTbl[face]);
     MBMotionSet(guide->obj, -1, 2);
 
-    if (system->current_board_index != 2) {
+    if (system->current_board_index != BOARD_SPINY_DESERT) {
         proc = omAddPrcObj(MB4Ev_StarGuideIn, 0x4800, 0, 0);
         mb4ev_starGuideInProc = proc;
         proc->user_data = space;
@@ -2605,7 +2605,7 @@ s32 MB4_ComTeresaPlayerChoice(u8 *arg0) {
 }
 
 void MB4_BoardInit(void) {
-    GwSystem.current_board_index = 3;
+    GwSystem.current_board_index = BOARD_WOODY_WOODS;
     omInitObjMan(0xA, 0);
     omOvlGotoEx(boardcall, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
 }

@@ -750,7 +750,7 @@ Process *MBDPartnerFrontFollowCreate(s32 playerIdx, s32 arg) {
 void MBDPartnerFrontFollowExec(s32 playerIndex) {
     Process *prc;
 
-    if (GwSystem.current_board_index == 3) {
+    if (GwSystem.current_board_index == DUEL_BOARD_BLOWHARD) {
         prc = MBDPartnerFrontFollowCreate(playerIndex, 1);
     } else {
         prc = MBDPartnerFrontFollowCreate(playerIndex, 0);
@@ -861,7 +861,7 @@ Process *MBDPartnerBackFollowCreate(s32 playerIdx, s32 arg) {
 void MBDPartnerBackFollowExec(s32 playerIndex) {
     Process *prc;
 
-    if (GwSystem.current_board_index == 3) {
+    if (GwSystem.current_board_index == DUEL_BOARD_BLOWHARD) {
         prc = MBDPartnerBackFollowCreate(playerIndex, 1);
     } else {
         prc = MBDPartnerBackFollowCreate(playerIndex, 0);

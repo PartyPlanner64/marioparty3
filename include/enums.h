@@ -26,6 +26,28 @@ enum SPACE_TYPES {
     SPACE_TYPES_TOTAL
 };
 
+// GwSystem.current_board_index during Party mode
+enum BOARD_INDEX {
+    BOARD_CHILLY_WATERS = 0,
+    BOARD_DEEP_BLOOBER_SEA = 1,
+    BOARD_SPINY_DESERT = 2,
+    BOARD_WOODY_WOODS = 3,
+    BOARD_CREEPY_CAVERN = 4,
+    BOARD_WALUIGIS_ISLAND = 5,
+    BOARD_TUTORIAL = 6
+};
+
+// GwSystem.current_board_index during Duel mode
+enum DUEL_BOARD_INDEX {
+    DUEL_BOARD_GATE_GUY = 0,
+    DUEL_BOARD_ARROWHEAD = 1,
+    DUEL_BOARD_PIPESQUEAK = 2,
+    DUEL_BOARD_BLOWHARD = 3,
+    DUEL_BOARD_MR_MOVER = 4,
+    DUEL_BOARD_BACKTRACK = 5,
+    DUEL_BOARD_TUTORIAL = 6
+};
+
 enum CPU_DIFFICULTY {
     CPU_EASY,
     CPU_NORMAL,

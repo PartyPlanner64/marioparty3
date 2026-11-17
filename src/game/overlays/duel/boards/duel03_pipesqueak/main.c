@@ -583,7 +583,7 @@ void MBD3_BranchHelpEnd(void) {
 }
 
 void MBD3_BoardInit(void) {
-    GwSystem.current_board_index = 2;
+    GwSystem.current_board_index = DUEL_BOARD_PIPESQUEAK;
     omInitObjMan(0xA, 0);
     omOvlGotoEx(duelcall, 0, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
 }
@@ -2070,7 +2070,7 @@ void MBD3_KoopaJrChangeEndExec(Object *obj) {
     Hu3DModelRemakeStatic(model->omObj1->model[0]);
     HuVecCopy3F(&model->coords, &mbd3_koopaMdl->coords);
     model->coords.y += 5.0f;
-    if (GwSystem.current_board_index == 6) {
+    if (GwSystem.current_board_index == DUEL_BOARD_TUTORIAL) {
         HuAudFXPlay(0x1E3);
     }
 
@@ -3709,7 +3709,7 @@ void MBD3Ev_PartnerGetExec(s32 index) {
     MBDPartnerOfsGet(index, &frontPos, &backPos);
     MBDPartnerDirGet(index, &frontRot, &backRot);
     MBDMotionShiftSet(mbd3ev_partnerGetMdl, 0, 0, 5, 2);
-    if (GwSystem.current_board_index == 2) {
+    if (GwSystem.current_board_index == DUEL_BOARD_PIPESQUEAK) {
         MBDModelJumpSet(mbd3ev_partnerGetMdl, 2.0f, -0.2f);
     }
     if (choice == 0) {

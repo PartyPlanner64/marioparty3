@@ -267,7 +267,7 @@ void MBDWarpMasuProc(void) {
     player->rev = 0;
     duelUnkF0 = 0;
     MBDPlayerPosMasuSet(mbdItemWarpPlayerA, MBDMasuLinkMasuIdGet(player->clink, player->cidx));
-    if (GwSystem.current_board_index == 5 && GwSystem.boardData.halfWordBytes[0] != 0) {
+    if (GwSystem.current_board_index == DUEL_BOARD_BACKTRACK && GwSystem.boardData.halfWordBytes[0] != 0) {
         player->rev = 1;
         tempLink = player->nlink;
         tempIdx = player->nidx;

@@ -198,7 +198,7 @@ void MBDMgCallListExec(omObjData *arg0) {
                 arg0->scale.x = 0.08f;
                 if (arg0->work[1] == arg0->work[2] && arg0->work[3] == 0 && arg0->scale.z + 0.08f >= 1.0f) {
                     if ((rand8() & 0xF) || arg0->scale.y == 1.0f || arg0->work[1] == 0) {
-                        if (GwSystem.show_minigame_explanations == FALSE || GwSystem.current_board_index == 6) {
+                        if (GwSystem.show_minigame_explanations == FALSE || GwSystem.current_board_index == DUEL_BOARD_TUTORIAL) {
                             HuAudFXPlay(0x105);
                         } else {
                             HuAudFXPlay(0x112);
@@ -233,7 +233,7 @@ void MBDMgCallListExec(omObjData *arg0) {
                 mbMgHisIdx[mbdMgCallType]++;
                 mbMgHisIdx[mbdMgCallType] = mbMgHisIdx[mbdMgCallType] % mbdMgCallHisLenTbl[mbdMgCallType + mbdMgCallPackOfs];
                 GWMgNoSet(mbdMgCallMgList[arg0->work[2]]);
-                if (GwSystem.current_board_index != 6 || mbdMgCallType == 1) {
+                if (GwSystem.current_board_index != DUEL_BOARD_TUTORIAL || mbdMgCallType == 1) {
                     MBDTelopMgTypeKill();
                     MBDMgCallClose();
                 }
@@ -445,7 +445,7 @@ void MBDMgCallPartnerListExec(omObjData *arg0) {
                 mbMgHisIdx[mbdMgCallType]++;
                 mbMgHisIdx[mbdMgCallType] = mbMgHisIdx[mbdMgCallType] % mbdMgCallHisLenTbl[mbdMgCallType + mbdMgCallPackOfs];
                 GWMgNoSet(mbdMgCallMgList[arg0->work[2]]);
-                if (GwSystem.current_board_index != 6 || mbdMgCallType == 1) {
+                if (GwSystem.current_board_index != DUEL_BOARD_TUTORIAL || mbdMgCallType == 1) {
                     MBDHelpWinKill(mbdMgCallHelpWin);
                     MBDMgCallClose();
                 }

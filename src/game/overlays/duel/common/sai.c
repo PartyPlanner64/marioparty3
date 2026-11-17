@@ -84,6 +84,7 @@ void MBDSaiObjMain(omObjData *arg0) {
                     }
 
                     if (i == 4) {
+                        // No board uses index 8
                         if (GwSystem.current_board_index == 8) {
                             entry->unk28 = HuAudFXPlay(0x10B);
                         } else {

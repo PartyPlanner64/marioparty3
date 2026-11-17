@@ -2205,13 +2205,13 @@ void MB1Ev_StarMapView(void) {
     MB1Ev_StarGuideJumpExec(guide);
 
     if ((system->current_star_spawn == 0) && (GWBoardFlagCheck(4) == 0)) {
-        if (system->current_board_index == 2) {
+        if (system->current_board_index == BOARD_SPINY_DESERT) {
             mesNum = 0x5E09;
         } else {
             mesNum = 0x5E00;
         }
     } else {
-        if (system->current_board_index == 2) {
+        if (system->current_board_index == BOARD_SPINY_DESERT) {
             mesNum = 0x5E09;
         } else {
             mesNum = 0x5E01;
@@ -2242,7 +2242,7 @@ void MB1Ev_StarMapView(void) {
     MBGuideFaceSet(guide->obj, mb1ev_starGuideFaceTbl[face]);
     MBMotionSet(guide->obj, -1, 2);
 
-    if (system->current_board_index != 2) {
+    if (system->current_board_index != BOARD_SPINY_DESERT) {
         proc = omAddPrcObj(MB1Ev_StarGuideIn, 0x4800, 0, 0);
         mb1ev_starGuideInProc = proc;
         proc->user_data = space;
@@ -2694,7 +2694,7 @@ s32 MB1_ComTeresaPlayerChoice(u8* arg0) {
 
 // entrypoint 0
 void MB1_BoardInit(void) {
-    GwSystem.current_board_index = 0;
+    GwSystem.current_board_index = BOARD_CHILLY_WATERS;
     omInitObjMan(10, 0);
     omOvlGotoEx(boardcall, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
 }

@@ -2278,8 +2278,8 @@ void MB6Ev_StarMapView(void) {
     HuWinMesSet(
         data->amount,
         (loc->current_star_spawn == 0 && GWBoardFlagCheck(4) == 0)
-            ? (((loc->current_board_index == 2) ? 0x5E09 : 0) | 0x5E00)
-            : (((loc->current_board_index == 2) ? 0x5E09 : 0) | 0x5E01),
+            ? (((loc->current_board_index == BOARD_SPINY_DESERT) ? 0x5E09 : 0) | 0x5E00)
+            : (((loc->current_board_index == BOARD_SPINY_DESERT) ? 0x5E09 : 0) | 0x5E01),
         -1, -1);
     HuWinExOpen(data->amount, 1);
     HuAudFXPlay(0x2A7);
@@ -2287,7 +2287,7 @@ void MB6Ev_StarMapView(void) {
     MBMotionShiftSet(data->obj, -1, 0, 6, 2);
     HuWinExClose(data->amount, 1);
     Hu3DMotionReset(data->obj->omObj1->model[0]);
-    if (loc->current_board_index != 2 || (rand8() & 1)) {
+    if (loc->current_board_index != BOARD_SPINY_DESERT || (rand8() & 1)) {
         space = MBMasuGet(mb6ev_starGuideMasu[loc->star_spawn_indices[loc->current_star_spawn]]);
     }
     MBCameraPos3DSet(&space->coords);
@@ -2300,7 +2300,7 @@ void MB6Ev_StarMapView(void) {
     idx = MBRand(7.0f);
     MBGuideFaceSet(data->obj, mb6ev_starGuideFaceTbl[idx]);
     MBMotionSet(data->obj, -1, 2);
-    if (loc->current_board_index != 2) {
+    if (loc->current_board_index != BOARD_SPINY_DESERT) {
         Process *prc = omAddPrcObj(MB6Ev_StarGuideIn, 0x4800, 0, 0);
         mb6ev_starGuideInProc = (s32)prc;
         prc->user_data = space;
@@ -2721,7 +2721,7 @@ s32 MB6_ComTeresaPlayerChoice(u8 *arg0) {
 }
 
 void MB6_BoardInit(void) {
-    GwSystem.current_board_index = 5;
+    GwSystem.current_board_index = BOARD_WALUIGIS_ISLAND;
     omInitObjMan(0xA, 0);
     omOvlGotoEx(boardcall, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
 }

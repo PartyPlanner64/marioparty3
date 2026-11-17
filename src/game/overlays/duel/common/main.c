@@ -448,7 +448,7 @@ void MBDNextPlayerTurn(void) {
     system->current_player_index++;
     if ((system->current_player_index >= 2) && (system->current_player_index = 0, (mbTurnOnF == 0))) {
         system->current_turn++;
-        if ((system->current_board_index == 4) && (system->total_turns == 50)) {
+        if ((system->current_board_index == DUEL_BOARD_MR_MOVER) && (system->total_turns == 50)) {
             if (system->current_turn > 20) {
                 system->current_turn = 19;
             }
@@ -494,7 +494,7 @@ void MBDExitProc(void) {
         MBDExit();
         if (mbdExitFlag & 0x20) {
             mbEndingF = 1;
-            if (GwSystem.current_board_index == 5) {
+            if (GwSystem.current_board_index == DUEL_BOARD_BACKTRACK) {
                 _CheckFlag(9);
             }
             MBDOvlCall(0x62, 0, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
@@ -539,7 +539,7 @@ void MBDMasuPassSePlay(s16 spaceType) {
 void MBDMasuLandSePlay(s16 spaceType) {
     switch (spaceType) {
         case MBD_MASU_TYPE_REVERSE:
-            if (GwSystem.current_board_index == 5) {
+            if (GwSystem.current_board_index == DUEL_BOARD_BACKTRACK) {
                 HuAudFXPlay(0x1D4);
             } else {
                 HuAudFXPlay(0x1D3);
@@ -587,7 +587,7 @@ void MBDPlayerFixOfsGet(s32 playerIndex, Vec *out) {
         MBDVecDirGet(&curPos, &nextPos, &dir);
         MBDVecRotateY(&dir, 90.0f);
         MBDVecNormalize(&dir);
-        if (GwSystem.current_board_index == 4 && player->clink == 6 && player->cidx == 0) {
+        if (GwSystem.current_board_index == DUEL_BOARD_MR_MOVER && player->clink == 6 && player->cidx == 0) {
             HuVecMulScalar(&dir, 24.0f, &dir);
         } else {
             HuVecMulScalar(&dir, 16.968f, &dir);
@@ -993,7 +993,7 @@ void MBDMain(void) {
                         }
                     }
 
-                    if (system->current_board_index == 4 && space->unk_02 == 2) {
+                    if (system->current_board_index == DUEL_BOARD_MR_MOVER && space->unk_02 == 2) {
                         s32 seNo;
 
                         seNo = HuAudFXPlay(0x1EC);
@@ -1164,7 +1164,7 @@ void MBDMain(void) {
                         GwSystem.boardData.halfWordBytes[4 + player->turn]++;
                         break;
                     case MBD_MASU_TYPE_REVERSE:
-                        if (system->current_board_index != 5) {
+                        if (system->current_board_index != DUEL_BOARD_BACKTRACK) {
                             MBDPlayerVibrate(-1, 1);
                         } else {
                             MBDPlayerVibrate(-1, 3);
@@ -1517,7 +1517,7 @@ void MBDMain(void) {
                     }
 
                     case MBD_MASU_TYPE_REVERSE:
-                        if (system->current_board_index == 5) {
+                        if (system->current_board_index == DUEL_BOARD_BACKTRACK) {
                             break;
                         }
                         MBDSaiTypeSet(system->current_player_index, 1);

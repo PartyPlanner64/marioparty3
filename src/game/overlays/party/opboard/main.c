@@ -897,7 +897,7 @@ void opboard_StarTalkExec(void) {
         MBDlgWinInsertCreateAllKey(-1, messages[GwSystem.current_board_index], mbCharNameMesTbl[GwStory.unk1], 0, 0, 0, 0);
         MBDlgWinMesWaitAllKey();
         MBDlgWinMesWaitAllKey();
-        if (GwSystem.current_board_index == 5) {
+        if (GwSystem.current_board_index == BOARD_WALUIGIS_ISLAND) {
             MBDlgWinMesWaitAllKey();
         }
         MBDlgWinClose();
@@ -906,7 +906,7 @@ void opboard_StarTalkExec(void) {
         {
             s32 files[] = { 0x1D0003, 0x1D0004, 0x1D0005, 0x1D0006, 0x1D0007, 0x1D0008 };
 
-            if (GwSystem.current_board_index != 5) {
+            if (GwSystem.current_board_index != BOARD_WALUIGIS_ISLAND) {
                 Vec pos;
                 OpBoardPath *path;
                 s16 effect;
@@ -935,7 +935,7 @@ void opboard_StarTalkExec(void) {
             {
                 s32 messages[] = { 0x1801, 0x1803, 0x1805, 0x1807, 0x1809, 0x180B };
 
-                if (GwSystem.current_board_index != 5) {
+                if (GwSystem.current_board_index != BOARD_WALUIGIS_ISLAND) {
                     MBMotionShiftSet(opboard_centerMdl, 0, 0, 5, 2);
                     MBDlgWinInsertCreateAllKey(-1, messages[GwSystem.current_board_index], 0, 0, 0, 0, 0);
                     MBDlgWinMesWaitAllKey();

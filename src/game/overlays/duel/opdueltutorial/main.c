@@ -134,7 +134,7 @@ void opdueltutorial_ObjectSetup(void) {
     s32 i;
     s32 j;
 
-    opdueltutorial_boardNo = GwSystem.current_board_index = 6;
+    opdueltutorial_boardNo = GwSystem.current_board_index = DUEL_BOARD_TUTORIAL;
     omInitObjMan(50, 20);
     Hu3DGLightColorSet(1, 255, 255, 255);
     Hu3DGLightColorSet(2, 200, 200, 200);

@@ -401,7 +401,7 @@ void MBOvlCallInit(void) {
     mbovlhisidx = 0;
 
     if (GWBoardFlagCheck(1) == 0) {
-        if ((GwSystem.current_board_index != 6) && (MBOvlCall(-2, 4, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1), (GwSystem.current_board_index != 6))) {
+        if ((GwSystem.current_board_index != BOARD_TUTORIAL) && (MBOvlCall(-2, 4, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1), (GwSystem.current_board_index != BOARD_TUTORIAL))) {
             MBOvlCall(0x53, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
         } else {
             MBOvlCall(0x54, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
@@ -2626,7 +2626,7 @@ static void MBMain(void) {
                         HuPrcSleep(0xA);
                 }
 
-                if (system->current_board_index == 3) {
+                if (system->current_board_index == BOARD_WOODY_WOODS) {
                     GwSystem.boardData.halfWordBytes[4] = 0;
                 }
 
@@ -2950,7 +2950,7 @@ static void MBMain(void) {
                         HuPrcChildWatch();
 
                         // Special handling for board 3
-                        if (system->current_board_index == 3 && GwSystem.boardData.halfWordBytes[3] != 0) {
+                        if (system->current_board_index == BOARD_WOODY_WOODS && GwSystem.boardData.halfWordBytes[3] != 0) {
                             GwSystem.boardData.halfWordBytes[3] = 0;
                             goto label654; // Jump back to state 10 (dice roll)
                         }

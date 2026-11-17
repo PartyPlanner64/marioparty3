@@ -1976,7 +1976,7 @@ void msetup_TutorialSetupExec(s16 mode) {
         HuAudFXPlay(0x2DF);
         msetup_CameraKeyframeExec(msetup_cameraStartKeyTbl, 22.0f, NULL);
         _ClearFlag(0);
-        GwSystem.current_board_index = 6;
+        GwSystem.current_board_index = BOARD_TUTORIAL; // same value as DUEL_BOARD_TUTORIAL
         GwSystem.total_turns = 20;
         GwSystem.current_game_length = 0;
         switch (mode) {

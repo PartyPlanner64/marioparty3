@@ -81,7 +81,7 @@ void MBDMasuBmpCreate(s16 arg0) {
 
     mbdMasuBmpMode = arg0;
 
-    if (GwSystem.current_board_index == 5) {
+    if (GwSystem.current_board_index == DUEL_BOARD_BACKTRACK) {
         dirs = mbdMasuBmpAltTbl;
     } else {
         dirs = mbdMasuBmpTbl;

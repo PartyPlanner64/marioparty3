@@ -264,7 +264,7 @@ void MBD10_BranchHelpEnd(void) {
 }
 
 void MBD10_BoardInit(void) {
-    GwSystem.current_board_index = 6;
+    GwSystem.current_board_index = DUEL_BOARD_TUTORIAL;
     omInitObjMan(0xA, 0);
     omOvlGotoEx(duelcall, 0, OM_OVL_STAT_DUEL | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
 }
@@ -1767,7 +1767,7 @@ void MBD10_KoopaJrChangeEndExec(Object *obj) {
     Hu3DModelRemakeStatic(model->omObj1->model[0]);
     HuVecCopy3F(&model->coords, &mbd10_koopaMdl->coords);
     model->coords.y += 5.0f;
-    if (GwSystem.current_board_index == 6) {
+    if (GwSystem.current_board_index == DUEL_BOARD_TUTORIAL) {
         HuAudFXPlay(0x1E3);
     }
 

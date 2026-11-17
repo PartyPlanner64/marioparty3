@@ -2630,7 +2630,7 @@ s32 MB3_ComTeresaPlayerChoice(u8 *arg0) {
 
 // entrypoint 0
 void MB3_BoardInit(void) {
-    GwSystem.current_board_index = 2;
+    GwSystem.current_board_index = BOARD_SPINY_DESERT;
     omInitObjMan(0xA, 0);
     omOvlGotoEx(boardcall, 0, OM_OVL_STAT_BOARD | OM_OVL_STAT_SYSKEY | OM_OVL_STAT_GFXBUF3 | OM_OVL_STAT_AUDFX1);
 }

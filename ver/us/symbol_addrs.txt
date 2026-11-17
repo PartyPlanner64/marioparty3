@@ -769,6 +769,7 @@ osSetTimer = 0x8007CD20;
 __osProbeTLB = 0x8007D210;
 
 __osExceptionPreamble = 0x8007FB10;
+__ptExceptionPreamble = 0x8007FB20;
 __ptException = 0x8007FB40;
 send_mesg = 0x8008052C;
 __osEnqueueAndYield = 0x8008061C;
@@ -3263,7 +3264,6 @@ WipeScreenStillReset = 0x80066228; //rom:0x66E28
 n_alSynStartVoiceParams = 0x80066270; //rom:0x66E70
 // n_synsetpan.c
 n_alSynSetPan = 0x80066400; //rom:0x67000
-__osExceptionPreambleMsp = 0x8007FB20;
 ContBtnDown = 0x800C9520;
 HuPadStkX = 0x800CBB6E;
 Hu3DMotion = 0x800CCF58;

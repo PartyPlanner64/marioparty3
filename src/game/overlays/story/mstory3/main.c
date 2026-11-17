@@ -196,7 +196,7 @@ void mstory3_WinCreate(void) {
     s16 playerBits[4] = { 1, 2, 4, 8 };
 
     mstory3_winId = HuWinExCreateStyled(160, 194, 20);
-    comKeys[mstory3_padNo] = -1;
+    comKeys[mstory3_padNo] = HUWIN_COMKEY_PAD;
     HuWinAttrSet(mstory3_winId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_NONE);
     HuWinActivePlayerSet(mstory3_winId, playerBits[mstory3_padNo]);
     HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);

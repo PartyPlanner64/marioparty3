@@ -56,7 +56,7 @@ static void MBDWinComKeyExec(s32 arg0, s32 arg1, s32 arg2) {
                 sp18[GwPlayer[i].pad] = A_BUTTON;
             } else {
                 HuWinActivePlayerSet(arg0, sp20[GwPlayer[i].pad]);
-                sp18[GwPlayer[i].pad] = -1;
+                sp18[GwPlayer[i].pad] = HUWIN_COMKEY_PAD;
             }
         } else {
             sp18[GwPlayer[i].pad] = 0;
@@ -111,7 +111,7 @@ static void MBDWinComKey2Exec(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
                 sp18[GwPlayer[i].pad] = A_BUTTON;
             } else {
                 mask |= sp20[GwPlayer[i].pad];
-                sp18[GwPlayer[i].pad] = -1;
+                sp18[GwPlayer[i].pad] = HUWIN_COMKEY_PAD;
             }
         } else {
             sp18[GwPlayer[i].pad] = 0;
@@ -197,7 +197,7 @@ static void MBDWinComKeyAllExec(s32 arg0, s32 arg1) {
                 sp18[GwPlayer[i].pad] = 0;
             } else {
                 mask |= sp20[GwPlayer[i].pad];
-                sp18[GwPlayer[i].pad] = -1;
+                sp18[GwPlayer[i].pad] = HUWIN_COMKEY_PAD;
             }
         }
         HuWinActivePlayerSet(arg0, mask);
@@ -218,7 +218,7 @@ static void MBDWinComKeyAllExec(s32 arg0, s32 arg1) {
 
 void MBDWinComKeyAnyWait(s32 arg0) {
     HuWinActivePlayerSet(arg0, HUWIN_PLAYER_ALL);
-    HuWinComKeySet(-1, -1, -1, -1);
+    HuWinComKeySet(HUWIN_COMKEY_PAD, HUWIN_COMKEY_PAD, HUWIN_COMKEY_PAD, HUWIN_COMKEY_PAD);
     while (HuWinStatGet(arg0) != 0) {
         HuPrcVSleep();
     }

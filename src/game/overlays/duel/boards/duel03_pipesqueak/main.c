@@ -3629,7 +3629,7 @@ void MBD3Ev_PartnerGetExec(s32 index) {
         MBDDlgWinCreate(0x16, 0x1F05);
         if (!MBDPlayerComCheck(index)) {
             HuWinActivePlayerSet(mbdDlgWinId, playerBits[GwPlayer[index].pad]);
-            comKeys[GwPlayer[index].pad] = -1;
+            comKeys[GwPlayer[index].pad] = HUWIN_COMKEY_PAD;
             HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
         } else {
             if (MBD3_ComPartnerRefuseRateGet() >= MBDRand(100.0f) ||
@@ -3661,7 +3661,7 @@ void MBD3Ev_PartnerGetExec(s32 index) {
         MBDDlgWinCreate(0x16, 0x1F03);
         if (!MBDPlayerComCheck(index)) {
             HuWinActivePlayerSet(mbdDlgWinId, playerBits[GwPlayer[index].pad]);
-            comKeys[GwPlayer[index].pad] = -1;
+            comKeys[GwPlayer[index].pad] = HUWIN_COMKEY_PAD;
             HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
         } else {
             if (player->stats.partners.backID == PARTNER_NONE ||
@@ -3882,7 +3882,7 @@ void MBD3Ev_TurnStart(void) {
         }
         if (!MBDPlayerComCheck(index)) {
             HuWinActivePlayerSet(win, playerBits[GwPlayer[index].pad]);
-            comKeys[GwPlayer[index].pad] = -1;
+            comKeys[GwPlayer[index].pad] = HUWIN_COMKEY_PAD;
             HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
         } else {
             if (GwPlayer[index].chr == CHAR_DK) {
@@ -3907,7 +3907,7 @@ void MBD3Ev_TurnStart(void) {
         }
         if (!MBDPlayerComCheck(index)) {
             HuWinActivePlayerSet(win, playerBits[GwPlayer[index].pad]);
-            comKeys[GwPlayer[index].pad] = -1;
+            comKeys[GwPlayer[index].pad] = HUWIN_COMKEY_PAD;
             HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
         } else {
             if (GwPlayer[index].chr == CHAR_DK) {
@@ -3941,7 +3941,7 @@ void MBD3Ev_TurnStart(void) {
         }
         if (!MBDPlayerComCheck(index)) {
             HuWinActivePlayerSet(win, playerBits[GwPlayer[index].pad]);
-            comKeys[GwPlayer[index].pad] = -1;
+            comKeys[GwPlayer[index].pad] = HUWIN_COMKEY_PAD;
             HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
         } else {
             if (GwPlayer[index].chr == CHAR_DK) {
@@ -3966,7 +3966,7 @@ void MBD3Ev_TurnStart(void) {
         }
         if (!MBDPlayerComCheck(index)) {
             HuWinActivePlayerSet(win, playerBits[GwPlayer[index].pad]);
-            comKeys[GwPlayer[index].pad] = -1;
+            comKeys[GwPlayer[index].pad] = HUWIN_COMKEY_PAD;
             HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
         } else {
             if (GwPlayer[index].chr == CHAR_DK) {

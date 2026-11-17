@@ -21,6 +21,8 @@
 #define HUWIN_PLAYER_4 (1 << 3)
 #define HUWIN_PLAYER_ALL 0xF
 
+#define HUWIN_COMKEY_PAD -1 // COM key passes through the player's real controller input
+
 #define HUWIN_ATTR_NONE 0
 #define HUWIN_ATTR_NOCANCEL (1 << 0) // B does not cancel a choice
 #define HUWIN_ATTR_COMKEY (1 << 1) // input comes from the COM key queue

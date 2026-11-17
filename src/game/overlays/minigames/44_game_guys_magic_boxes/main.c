@@ -1706,7 +1706,7 @@ s16 m268_WinChoiceGet(s16 win, s16 player, s16 mode, s16 count, u16 cancel) {
     players = m268_activePlayerTbl;
     switch (mode) {
         case 0:
-            keys.v[player] = -1;
+            keys.v[player] = HUWIN_COMKEY_PAD;
             HuWinAttrSet(win, HUWIN_ATTR_COMKEY, HUWIN_ATTR_NONE);
             HuWinActivePlayerSet(win, players.v[player]);
             HuWinComKeySet(keys.v[0], keys.v[1], keys.v[2], keys.v[3]);

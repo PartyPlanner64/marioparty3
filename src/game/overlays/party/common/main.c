@@ -1186,7 +1186,7 @@ static s32 MBKettouTargetChoiceGet(u8 *arg0) {
                 sp18[GwPlayer[i].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
-                sp18[GwPlayer[i].pad] = -1;
+                sp18[GwPlayer[i].pad] = HUWIN_COMKEY_PAD;
             }
         } else {
             sp18[GwPlayer[i].pad] = 0;

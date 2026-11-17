@@ -674,7 +674,7 @@ void MB10Ev_GuideWinClose(UnkMBGuideData *guide) {
 
 void MB10Ev_GuideWinAutoExec(UnkMBGuideData *guide, u32 mess) {
     HuWinActivePlayerSet(guide->amount, 15);
-    HuWinComKeySet(-1, -1, -1, -1);
+    HuWinComKeySet(HUWIN_COMKEY_PAD, HUWIN_COMKEY_PAD, HUWIN_COMKEY_PAD, HUWIN_COMKEY_PAD);
     HuWinMesSet(guide->amount, mess, -1, -1);
     while (HuWinStatGet(guide->amount) != 0) {
         HuPrcVSleep();

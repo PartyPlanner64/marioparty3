@@ -2495,7 +2495,7 @@ s32 MB6_ComShopItemChoice(u8 *arg0) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
-                sp18[GwPlayer[i].pad] = -1;
+                sp18[GwPlayer[i].pad] = HUWIN_COMKEY_PAD;
             }
         } else {
             sp18[GwPlayer[i].pad] = 0;
@@ -2551,7 +2551,7 @@ s32 MB6_ComShopEnterChoice(void) {
                 sp18[GwPlayer[i].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
-                sp18[GwPlayer[i].pad] = -1;
+                sp18[GwPlayer[i].pad] = HUWIN_COMKEY_PAD;
             }
         } else {
             sp18[GwPlayer[i].pad] = 0;
@@ -2669,7 +2669,7 @@ s32 MB6_ComTeresaChoice(u8 *arg0, s32 arg1, s32 arg2) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
-                sp18[GwPlayer[i].pad] = -1;
+                sp18[GwPlayer[i].pad] = HUWIN_COMKEY_PAD;
             }
         } else {
             sp18[GwPlayer[i].pad] = 0;
@@ -3967,7 +3967,7 @@ s32 MB6Ev_KeyManChoiceGet(s32 arg0) {
                 sp18[GwPlayer[i].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
-                sp18[GwPlayer[i].pad] = -1;
+                sp18[GwPlayer[i].pad] = HUWIN_COMKEY_PAD;
             }
         } else {
             sp18[GwPlayer[i].pad] = 0;
@@ -4141,7 +4141,7 @@ s32 MB6Ev_YesNoChoiceGet(s32 arg0, s32 arg1) {
                 sp18[GwPlayer[i].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
-                sp18[GwPlayer[i].pad] = -1;
+                sp18[GwPlayer[i].pad] = HUWIN_COMKEY_PAD;
             }
         } else {
             sp18[GwPlayer[i].pad] = 0;
@@ -7335,7 +7335,7 @@ s32 MB6_ComItemTargetChoice(u8 *arg0, s32 arg1) {
                 inputs[GwPlayer[i].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, buttons[GwPlayer[i].pad]);
-                inputs[GwPlayer[i].pad] = -1;
+                inputs[GwPlayer[i].pad] = HUWIN_COMKEY_PAD;
             }
         } else {
             inputs[GwPlayer[i].pad] = 0;

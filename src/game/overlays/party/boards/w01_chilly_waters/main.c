@@ -2450,7 +2450,7 @@ s32 MB1_ComShopItemChoice(u8 *arg0) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
-                sp18[GwPlayer[i].pad] = -1;
+                sp18[GwPlayer[i].pad] = HUWIN_COMKEY_PAD;
             }
         } else {
             sp18[GwPlayer[i].pad] = 0;
@@ -2504,7 +2504,7 @@ s32 MB1_ComShopEnterChoice(void) {
                 sp18[GwPlayer[i].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
-                sp18[GwPlayer[i].pad] = -1;
+                sp18[GwPlayer[i].pad] = HUWIN_COMKEY_PAD;
             }
         } else {
             sp18[GwPlayer[i].pad] = 0;
@@ -2641,7 +2641,7 @@ s32 MB1_ComTeresaChoice(u8 *arg0, s32 arg1, s32 arg2) {
                 sp18[GwPlayer[GwSystem.current_player_index].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
-                sp18[GwPlayer[i].pad] = -1;
+                sp18[GwPlayer[i].pad] = HUWIN_COMKEY_PAD;
             }
         } else {
             sp18[GwPlayer[i].pad] = 0;
@@ -3645,7 +3645,7 @@ s32 MB1Ev_YesNoChoiceGet(DecisionTreeNonLeafNode *arg0, s32 arg1) {
                 sp18[GwPlayer[i].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
-                sp18[GwPlayer[i].pad] = -1;
+                sp18[GwPlayer[i].pad] = HUWIN_COMKEY_PAD;
             }
         } else {
             sp18[GwPlayer[i].pad] = 0;
@@ -6786,7 +6786,7 @@ s32 MB1_ComItemTargetChoice(u8 *arg0, s32 arg1) {
                 sp18[GwPlayer[i].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
-                sp18[GwPlayer[i].pad] = -1;
+                sp18[GwPlayer[i].pad] = HUWIN_COMKEY_PAD;
             }
         } else {
             sp18[GwPlayer[i].pad] = 0;

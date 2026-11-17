@@ -134,7 +134,7 @@ static s32 MBItemMasuChoiceGet(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
                 sp18[GwPlayer[i].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
-                sp18[GwPlayer[i].pad] = -1;
+                sp18[GwPlayer[i].pad] = HUWIN_COMKEY_PAD;
             }
 
         } else {

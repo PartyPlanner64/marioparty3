@@ -1725,7 +1725,7 @@ void HuWinAllKill(void) {
 }
 
 void HuWinComKeyWait(s16 player1, s16 player2, s16 player3, s16 player4, u8 frames) {
-    _HuWinComKeySet(-(player1 == -1), -(player2 == -1), -(player3 == -1), -(player4 == -1), frames);
+    _HuWinComKeySet(-(player1 == HUWIN_COMKEY_PAD), -(player2 == HUWIN_COMKEY_PAD), -(player3 == HUWIN_COMKEY_PAD), -(player4 == HUWIN_COMKEY_PAD), frames);
     _HuWinComKeySet(player1, player2, player3, player4, 1);
 }
 
@@ -1751,7 +1751,7 @@ void HuWinComKeyGet(s16 *inputs) {
     }
     for (i = 0; i < MAXCONTROLLERS; i++) {
         inputs[i] = winComKeyBuf[(u8)comKeyIdxNow][i];
-        if (inputs[i] == -1) {
+        if (inputs[i] == HUWIN_COMKEY_PAD) {
             inputs[i] = ContBtnRep[i];
         }
     }

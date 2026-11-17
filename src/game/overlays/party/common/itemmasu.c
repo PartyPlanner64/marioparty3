@@ -131,7 +131,7 @@ static s32 MBItemMasuChoiceGet(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if (i == GwSystem.current_player_index) {
             if (GwPlayer[i].stat & 1) {
-                sp18[GwPlayer[i].pad] = 0x400;
+                sp18[GwPlayer[i].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
                 sp18[GwPlayer[i].pad] = -1;
@@ -146,7 +146,7 @@ static s32 MBItemMasuChoiceGet(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         HuWinAttrSet(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         for (j = 0; arg2 != 0; j++) {
             if (--arg2 == 0) {
-                sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
+                sp18[GwPlayer[GwSystem.current_player_index].pad] = A_BUTTON;
             }
             if (j == 0) {
                 HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], MBMesWaitGet());

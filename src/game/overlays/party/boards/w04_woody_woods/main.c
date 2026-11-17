@@ -2376,7 +2376,7 @@ s32 MB4_ComShopItemChoice(u8 *arg0) {
         if (i == GwSystem.current_player_index) {
             if (GwPlayer[i].stat & 1) {
                 var_s2 = MB4_ComShopItemDecide();
-                sp18[GwPlayer[GwSystem.current_player_index].pad] = 0x400;
+                sp18[GwPlayer[GwSystem.current_player_index].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
                 sp18[GwPlayer[i].pad] = -1;
@@ -2390,7 +2390,7 @@ s32 MB4_ComShopItemChoice(u8 *arg0) {
         HuWinAttrSet(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         for (j = 0; var_s2 != 0; j++) {
             if (--var_s2 == 0) {
-                sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
+                sp18[GwPlayer[GwSystem.current_player_index].pad] = A_BUTTON;
             }
             if (j == 0) {
                 HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], MBMesWaitGet());
@@ -2432,7 +2432,7 @@ s32 MB4_ComShopEnterChoice(void) {
             if (GwPlayer[i].stat & 1) {
                 var_s2 = 1; // dead store; matches MBKettouTargetChoiceGet
                 var_s2 = MB4_ComShopEnterDecide();
-                sp18[GwPlayer[i].pad] = 0x400;
+                sp18[GwPlayer[i].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
                 sp18[GwPlayer[i].pad] = -1;
@@ -2446,7 +2446,7 @@ s32 MB4_ComShopEnterChoice(void) {
         HuWinAttrSet(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         for (j = 0; var_s2 != 0; j++) {
             if (--var_s2 == 0) {
-                sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
+                sp18[GwPlayer[GwSystem.current_player_index].pad] = A_BUTTON;
             }
             if (j == 0) {
                 HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], MBMesWaitGet());
@@ -2550,7 +2550,7 @@ s32 MB4_ComTeresaChoice(u8 *arg0, s32 arg1, s32 arg2) {
                 } else {
                     var_s2 = mb4_comTeresaTarget + 1;
                 }
-                sp18[GwPlayer[GwSystem.current_player_index].pad] = 0x400;
+                sp18[GwPlayer[GwSystem.current_player_index].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
                 sp18[GwPlayer[i].pad] = -1;
@@ -2564,7 +2564,7 @@ s32 MB4_ComTeresaChoice(u8 *arg0, s32 arg1, s32 arg2) {
         HuWinAttrSet(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         for (j = 0; var_s2 != 0; j++) {
             if (--var_s2 == 0) {
-                sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
+                sp18[GwPlayer[GwSystem.current_player_index].pad] = A_BUTTON;
             }
             if (j == 0) {
                 HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], MBMesWaitGet());
@@ -3303,7 +3303,7 @@ s32 MB4Ev_KeyManChoiceGet(s32 arg0) {
         if (i == GwSystem.current_player_index) {
             if (GwPlayer[i].stat & 1) {
                 var_s2 = 1;
-                sp18[GwPlayer[i].pad] = 0x400;
+                sp18[GwPlayer[i].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
                 sp18[GwPlayer[i].pad] = -1;
@@ -3317,7 +3317,7 @@ s32 MB4Ev_KeyManChoiceGet(s32 arg0) {
         HuWinAttrSet(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         for (j = 0; var_s2 != 0; j++) {
             if (--var_s2 == 0) {
-                sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
+                sp18[GwPlayer[GwSystem.current_player_index].pad] = A_BUTTON;
             }
             if (j == 0) {
                 HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], MBMesWaitGet());
@@ -3477,7 +3477,7 @@ s32 MB4Ev_YesNoChoiceGet(s32 arg0, s32 arg1) {
                         var_s2 = MBComTreeExec((void *)arg0) + 1;
                         break;
                 }
-                sp18[GwPlayer[i].pad] = 0x400;
+                sp18[GwPlayer[i].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
                 sp18[GwPlayer[i].pad] = -1;
@@ -3491,7 +3491,7 @@ s32 MB4Ev_YesNoChoiceGet(s32 arg0, s32 arg1) {
         HuWinAttrSet(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         for (j = 0; var_s2 != 0; j++) {
             if (--var_s2 == 0) {
-                sp18[GwPlayer[GwSystem.current_player_index].pad] = -0x8000;
+                sp18[GwPlayer[GwSystem.current_player_index].pad] = A_BUTTON;
             }
             if (j == 0) {
                 HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], MBMesWaitGet());
@@ -6653,7 +6653,7 @@ s32 MB4_ComItemTargetChoice(u8 *arg0, s32 arg1) {
                 } else {
                     delay = mb4_comRobBoxTarget + 1;
                 }
-                inputs[GwPlayer[i].pad] = 0x400;
+                inputs[GwPlayer[i].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, buttons[GwPlayer[i].pad]);
                 inputs[GwPlayer[i].pad] = -1;
@@ -6667,7 +6667,7 @@ s32 MB4_ComItemTargetChoice(u8 *arg0, s32 arg1) {
         HuWinAttrSet(mbDlgWinId, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
         for (j = 0; delay != 0; j++) {
             if (--delay == 0) {
-                inputs[GwPlayer[GwSystem.current_player_index].pad] = 0x8000;
+                inputs[GwPlayer[GwSystem.current_player_index].pad] = A_BUTTON;
             }
             if (j == 0) {
                 HuWinComKeyWait(inputs[0], inputs[1], inputs[2], inputs[3],

@@ -53,7 +53,7 @@ static void MBDWinComKeyExec(s32 arg0, s32 arg1, s32 arg2) {
         if (i == arg1) {
             if (GwPlayer[i].stat & 1) {
                 hasCom = 1;
-                sp18[GwPlayer[i].pad] = -0x8000;
+                sp18[GwPlayer[i].pad] = A_BUTTON;
             } else {
                 HuWinActivePlayerSet(arg0, sp20[GwPlayer[i].pad]);
                 sp18[GwPlayer[i].pad] = -1;
@@ -108,7 +108,7 @@ static void MBDWinComKey2Exec(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if ((i == arg1) || (i == arg2)) {
             if (GwPlayer[i].stat & 1) {
-                sp18[GwPlayer[i].pad] = -0x8000;
+                sp18[GwPlayer[i].pad] = A_BUTTON;
             } else {
                 mask |= sp20[GwPlayer[i].pad];
                 sp18[GwPlayer[i].pad] = -1;
@@ -173,13 +173,13 @@ static void MBDWinComKeyAllExec(s32 arg0, s32 arg1) {
 
     if (i == mbdWinComKeyAllNum) {
         HuWinAttrSet(arg0, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, GwMessSpeed);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, GwMessSpeed);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, GwMessSpeed);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, GwMessSpeed);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, GwMessSpeed);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, GwMessSpeed);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, GwMessSpeed);
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, GwMessSpeed);
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, GwMessSpeed);
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, GwMessSpeed);
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, GwMessSpeed);
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, GwMessSpeed);
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, GwMessSpeed);
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, GwMessSpeed);
         GwMessSpeed = GwMessWait;
         if (arg1 == 0) {
             while (HuWinStatGet(arg0) != 0) {

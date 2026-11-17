@@ -4455,10 +4455,10 @@ void MBD10Ev_PartnerGetExec(s32 index, s32 comSelectSecond) {
             HuWinComKeySet(comKeys[0], comKeys[1], comKeys[2], comKeys[3]);
         } else {
             if (comSelectSecond) {
-                comKeys[GwPlayer[index].pad] = 0x400;
+                comKeys[GwPlayer[index].pad] = D_JPAD;
                 HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], MBDMesWaitGet());
             }
-            comKeys[GwPlayer[index].pad] = -0x8000;
+            comKeys[GwPlayer[index].pad] = A_BUTTON;
             HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], MBDMesWaitGet());
             HuWinAttrSet(mbdDlgWinId, 2, 2);
         }
@@ -4487,10 +4487,10 @@ void MBD10Ev_PartnerGetExec(s32 index, s32 comSelectSecond) {
         } else {
             if (player->stats.partners.backID == PARTNER_NONE ||
                 MBD10_ComPartnerSlotRateGet() >= MBDRand(100.0f)) {
-                comKeys[GwPlayer[index].pad] = 0x400;
+                comKeys[GwPlayer[index].pad] = D_JPAD;
                 HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], MBDMesWaitGet());
             }
-            comKeys[GwPlayer[index].pad] = -0x8000;
+            comKeys[GwPlayer[index].pad] = A_BUTTON;
             HuWinComKeyWait(comKeys[0], comKeys[1], comKeys[2], comKeys[3], MBDMesWaitGet());
             HuWinAttrSet(mbdDlgWinId, 2, 2);
         }

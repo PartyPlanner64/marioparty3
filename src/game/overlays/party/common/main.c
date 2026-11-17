@@ -1183,7 +1183,7 @@ static s32 MBKettouTargetChoiceGet(u8 *arg0) {
             if (GwPlayer[i].stat & 1) {
                 var_s2 = 1; // why does this change codegen
                 var_s2 = MBKettouComTargetGet() + 1;
-                sp18[GwPlayer[i].pad] = 0x400;
+                sp18[GwPlayer[i].pad] = D_JPAD;
             } else {
                 HuWinActivePlayerSet(mbDlgWinId, sp20[GwPlayer[i].pad]);
                 sp18[GwPlayer[i].pad] = -1;
@@ -1198,7 +1198,7 @@ static s32 MBKettouTargetChoiceGet(u8 *arg0) {
         for (j = 0; var_s2 != 0; j++) {
             var_s2--;
             if (var_s2 == 0) {
-                sp18[GwPlayer[system->current_player_index].pad] = -0x8000;
+                sp18[GwPlayer[system->current_player_index].pad] = A_BUTTON;
             }
             if (j == 0) {
                 HuWinComKeyWait(sp18[0], sp18[1], sp18[2], sp18[3], MBMesWaitGet());

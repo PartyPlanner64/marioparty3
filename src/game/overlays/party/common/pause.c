@@ -107,7 +107,7 @@ static void MBWinComKeyExec(s32 arg0, s32 arg1, s32 arg2) {
         if (i == arg1) {
             if (GwPlayer[i].stat & 1) {
                 hasCom = 1;
-                sp18[GwPlayer[i].pad] = -0x8000;
+                sp18[GwPlayer[i].pad] = A_BUTTON;
             } else {
                 HuWinActivePlayerSet(arg0, sp20[GwPlayer[i].pad]);
                 sp18[GwPlayer[i].pad] = -1;
@@ -162,7 +162,7 @@ static void MBWinComKey2Exec(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     for (i = 0; i < MB_MAX_PLAYERS; i++) {
         if ((i == arg1) || (i == arg2)) {
             if (GwPlayer[i].stat & 1) {
-                sp18[GwPlayer[i].pad] = -0x8000;
+                sp18[GwPlayer[i].pad] = A_BUTTON;
             } else {
                 mask |= sp20[GwPlayer[i].pad];
                 sp18[GwPlayer[i].pad] = -1;

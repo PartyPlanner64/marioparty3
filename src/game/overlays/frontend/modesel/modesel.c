@@ -2267,7 +2267,7 @@ s32 modesel_MenuExec(void) {
                 break;
             }
             if (FileSelEnteredGet() == 1) {
-                HuWinComKeyWait(-0x8000, 0, 0, 0, 1);
+                HuWinComKeyWait(A_BUTTON, 0, 0, 0, 1);
                 modesel_WinMesSet(0, 0x3101);
             } else if (GwStory.unk0 == 12) {
                 modesel_WinMesSet(0, 0x3136);

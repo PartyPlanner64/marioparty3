@@ -1724,20 +1724,20 @@ void HuWinAllKill(void) {
     }
 }
 
-void HuWinComKeyWait(s16 up, s16 down, s16 left, s16 right, u8 frames) {
-    _HuWinComKeySet(-(up == -1), -(down == -1), -(left == -1), -(right == -1), frames);
-    _HuWinComKeySet(up, down, left, right, 1);
+void HuWinComKeyWait(s16 player1, s16 player2, s16 player3, s16 player4, u8 frames) {
+    _HuWinComKeySet(-(player1 == -1), -(player2 == -1), -(player3 == -1), -(player4 == -1), frames);
+    _HuWinComKeySet(player1, player2, player3, player4, 1);
 }
 
-void HuWinComKeySet(s16 up, s16 down, s16 left, s16 right) {
-    _HuWinComKeySet(up, down, left, right, 1);
+void HuWinComKeySet(s16 player1, s16 player2, s16 player3, s16 player4) {
+    _HuWinComKeySet(player1, player2, player3, player4, 1);
 }
 
-void _HuWinComKeySet(s16 up, s16 down, s16 left, s16 right, s16 frames) {
-    winComKeyBuf[comKeyIdx][0] = up;
-    winComKeyBuf[comKeyIdx][1] = down;
-    winComKeyBuf[comKeyIdx][2] = left;
-    winComKeyBuf[comKeyIdx][3] = right;
+void _HuWinComKeySet(s16 player1, s16 player2, s16 player3, s16 player4, s16 frames) {
+    winComKeyBuf[comKeyIdx][0] = player1;
+    winComKeyBuf[comKeyIdx][1] = player2;
+    winComKeyBuf[comKeyIdx][2] = player3;
+    winComKeyBuf[comKeyIdx][3] = player4;
     winComKeyBuf[comKeyIdx][WINDOW_INPUT_RECORD_FRAMES] = frames;
     comKeyIdx = (comKeyIdx + 1) & 0x1F;
 }

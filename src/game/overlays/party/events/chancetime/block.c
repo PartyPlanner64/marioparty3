@@ -614,13 +614,13 @@ void chancetime_BlockSpinMesExec(void) {
     HuWinHomeClear(chancetime_eventWin);
     if (GwPlayer[chancetime_playerOrderTbl[0]].stat & 1) {
         HuWinAttrSet(chancetime_eventWin, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
     }
     chancetime_HostTalkStart();
     HuWinMesSet(chancetime_eventWin, chancetime_blockMesTbl[index], -1, -1);
@@ -945,13 +945,13 @@ void chancetime_IntroMesExec(void) {
     HuWinHomeClear(chancetime_eventWin);
     if (GwPlayer[chancetime_playerOrderTbl[0]].stat & 1) {
         HuWinAttrSet(chancetime_eventWin, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
     }
     chancetime_HostTalkStart();
     chancetime_HostTurn();
@@ -997,13 +997,13 @@ void chancetime_ResultMesExec(s32 arg0, s32 arg1, s32 arg2) {
     HuWinHomeClear(chancetime_eventWin);
     if (GwPlayer[chancetime_playerOrderTbl[0]].stat & 1) {
         HuWinAttrSet(chancetime_eventWin, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
     }
     chancetime_HostTalkStart();
     HuWinMesSet(chancetime_eventWin, chancetime_actionMesTbl[arg0], -1, -1);
@@ -1013,13 +1013,13 @@ void chancetime_ResultMesExec(s32 arg0, s32 arg1, s32 arg2) {
     }
     if (GwPlayer[chancetime_playerOrderTbl[0]].stat & 1) {
         HuWinAttrSet(chancetime_eventWin, HUWIN_ATTR_COMKEY, HUWIN_ATTR_COMKEY);
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
-        HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
+        HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON, MBMesWaitGet());
     }
     if (arg2 < arg1) {
         if (arg2 > 0) {

@@ -1870,12 +1870,12 @@ void m267_WinKeyWait(s16 win, s16 player, s16 mode) {
         switch (mode) {
             case 0:
                 if (HuPadBtnDown[player] & A_BUTTON) {
-                    HuWinComKeySet(-0x8000, -0x8000, -0x8000, -0x8000);
+                    HuWinComKeySet(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON);
                 }
                 break;
             case 1:
                 for (i = 0; i < 10; i++) {
-                    HuWinComKeyWait(-0x8000, -0x8000, -0x8000, -0x8000,
+                    HuWinComKeyWait(A_BUTTON, A_BUTTON, A_BUTTON, A_BUTTON,
                                     m267_comKeyWaitTbl[m267_comLevel]);
                 }
                 while (HuWinStatGet(win) != 0) {
@@ -1904,11 +1904,11 @@ s16 m267_WinChoiceGet(s16 win, s16 player, s16 mode, s16 count) {
             break;
         case 1:
             for (i = 0; i < count; i++) {
-                keys.v[player] = 0x400;
+                keys.v[player] = D_JPAD;
                 HuWinComKeyWait(keys.v[0], keys.v[1], keys.v[2], keys.v[3],
                                 m267_comKeyWaitTbl[m267_comLevel]);
             }
-            keys.v[player] = -0x8000;
+            keys.v[player] = A_BUTTON;
             HuWinComKeyWait(keys.v[0], keys.v[1], keys.v[2], keys.v[3],
                             m267_comKeyWaitTbl[m267_comLevel]);
             break;
@@ -1932,11 +1932,11 @@ s16 m267_WinChoiceGetEx(s16 win, s16 player, s16 mode, s16 count) {
             break;
         case 1:
             for (i = 0; i < count; i++) {
-                keys.v[player] = 0x400;
+                keys.v[player] = D_JPAD;
                 HuWinComKeyWait(keys.v[0], keys.v[1], keys.v[2], keys.v[3],
                                 m267_comKeyWaitTbl[m267_comLevel]);
             }
-            keys.v[player] = -0x8000;
+            keys.v[player] = A_BUTTON;
             HuWinComKeyWait(keys.v[0], keys.v[1], keys.v[2], keys.v[3],
                             m267_comKeyWaitTbl[m267_comLevel]);
             break;

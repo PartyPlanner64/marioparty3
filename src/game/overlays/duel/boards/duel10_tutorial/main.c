@@ -338,7 +338,7 @@ void MBD10_MissMarkProc(void) {
     DataClose(data);
     HuSprGrpMemberSet(sprite->unk_0A, 0, sprite->unk_0C[0], 0);
     HuSprPriSet(sprite->unk_0A, 0, 0x2010);
-    HuSprAttrSet(sprite->unk_0A, 0, 0);
+    HuSprAttrSet(sprite->unk_0A, 0, HUSPR_ATTR_NONE);
     HuSprPosSet(sprite->unk_0A, 0, screenPos.x, screenPos.y);
     HuAudFXPlay(0x202);
     amplitude = 20.0f;
@@ -2679,7 +2679,7 @@ Duel10SprGroup *MBD10Ev_CaptionCreate(s16 arg0, s16 x, s16 y) {
     group->sprites[0] = HuSprAnimRead(data);
     HuSprGrpMemberSet(group->spriteGroup, 0, group->sprites[0], 0);
     HuSprPriSet(group->spriteGroup, 0, 0xB);
-    HuSprAttrSet(group->spriteGroup, 0, 0x1000);
+    HuSprAttrSet(group->spriteGroup, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(group->spriteGroup, 0, x + 5, y);
     DataClose(data);
 
@@ -2687,7 +2687,7 @@ Duel10SprGroup *MBD10Ev_CaptionCreate(s16 arg0, s16 x, s16 y) {
     group->sprites[1] = HuSprAnimRead(data);
     HuSprGrpMemberSet(group->spriteGroup, 1, group->sprites[1], 0);
     HuSprPriSet(group->spriteGroup, 1, 0xC);
-    HuSprAttrSet(group->spriteGroup, 1, 0x1000);
+    HuSprAttrSet(group->spriteGroup, 1, HUSPR_ATTR_XLU);
     HuSprPosSet(group->spriteGroup, 1, x + 5, y);
     HuSprColorSet(group->spriteGroup, 1, 0x1F, 0xB0, 0x3F);
     DataClose(data);
@@ -2696,7 +2696,7 @@ Duel10SprGroup *MBD10Ev_CaptionCreate(s16 arg0, s16 x, s16 y) {
     group->sprites[2] = HuSprAnimRead(data);
     HuSprGrpMemberSet(group->spriteGroup, 2, group->sprites[2], 0);
     HuSprPriSet(group->spriteGroup, 2, 0xA);
-    HuSprAttrSet(group->spriteGroup, 2, 0x1000);
+    HuSprAttrSet(group->spriteGroup, 2, HUSPR_ATTR_XLU);
     HuSprPosSet(group->spriteGroup, 2, x, y);
     DataClose(data);
 
@@ -2725,7 +2725,7 @@ s16 MBD10_PauseQuitCheck(s32 player) {
     dimmer->unk_0C[0] = HuSprAnimRead(data);
     HuSprGrpMemberSet(dimmer->unk_0A, 0, dimmer->unk_0C[0], 0);
     HuSprPriSet(dimmer->unk_0A, 0, 9);
-    HuSprAttrSet(dimmer->unk_0A, 0, 0x1000);
+    HuSprAttrSet(dimmer->unk_0A, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(dimmer->unk_0A, 0, 0xA0, 0x78);
     HuSprScaleSet(dimmer->unk_0A, 0, 40.0f, 30.0f);
     HuSprColorTPLvlSet(dimmer->unk_0A, 0, 0, 0, 0, 0xC0);
@@ -2737,7 +2737,7 @@ s16 MBD10_PauseQuitCheck(s32 player) {
     DataClose(data);
     HuSprGrpMemberSet(icon->unk_0A, 0, icon->unk_0C[0], 0);
     HuSprPriSet(icon->unk_0A, 0, 8);
-    HuSprAttrSet(icon->unk_0A, 0, 0x1000);
+    HuSprAttrSet(icon->unk_0A, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(icon->unk_0A, 0, 0xA0, 0x78);
     HuSprColorSet(icon->unk_0A, 0, 0x89, 0xCA, 0xB2);
 
@@ -4197,7 +4197,7 @@ void MBD10Ev_PartnerRouletteProc(void) {
         spr->unk_0C[i] = HuSprAnimRead(data);
         HuSprGrpMemberSet(spr->unk_0A, i, spr->unk_0C[i], 0);
         HuSprPriSet(spr->unk_0A, i, i + 1);
-        HuSprAttrSet(spr->unk_0A, i, 0);
+        HuSprAttrSet(spr->unk_0A, i, HUSPR_ATTR_NONE);
         HuSprPosSet(spr->unk_0A, i, pos[i][0], pos[i][1]);
         DataClose(data);
         if (i == 2) {
@@ -4815,7 +4815,7 @@ void MBD10Ev_Hatena(void) {
     DataClose(data);
     HuSprGrpMemberSet(mbd10ev_hatenaSprGrp->unk_0A, 0, mbd10ev_hatenaSprGrp->unk_0C[0], 0);
     HuSprPriSet(mbd10ev_hatenaSprGrp->unk_0A, 0, 0xB);
-    HuSprAttrSet(mbd10ev_hatenaSprGrp->unk_0A, 0, 0x1000);
+    HuSprAttrSet(mbd10ev_hatenaSprGrp->unk_0A, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(mbd10ev_hatenaSprGrp->unk_0A, 0, 160, -32);
     HuSprScissorSet(mbd10ev_hatenaSprGrp->unk_0A, 0, 16, 12, 304, 228);
     data = DataRead(0x130104);
@@ -4823,7 +4823,7 @@ void MBD10Ev_Hatena(void) {
     DataClose(data);
     HuSprGrpMemberSet(mbd10ev_hatenaSprGrp->unk_0A, 1, mbd10ev_hatenaSprGrp->unk_0C[1], 0);
     HuSprPriSet(mbd10ev_hatenaSprGrp->unk_0A, 1, 0xC);
-    HuSprAttrSet(mbd10ev_hatenaSprGrp->unk_0A, 1, 0x1000);
+    HuSprAttrSet(mbd10ev_hatenaSprGrp->unk_0A, 1, HUSPR_ATTR_XLU);
     HuSprPosSet(mbd10ev_hatenaSprGrp->unk_0A, 1, 0, 0);
     HuSprScissorSet(mbd10ev_hatenaSprGrp->unk_0A, 0, 16, 12, 304, 228);
     HuSprColorSet(mbd10ev_hatenaSprGrp->unk_0A, 1, 251, 203, 0);

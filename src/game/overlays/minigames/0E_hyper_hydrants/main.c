@@ -1829,7 +1829,7 @@ void m214_IrisObjInit(omObjData *object) {
     HuSprGrpMemberSet(m214_frameSprGrp, 0, m214_frameAnim, 0);
     HuSprPriSet(m214_frameSprGrp, 0, 0x10);
     HuSprAttrReset(m214_frameSprGrp, 0, 0xFFFF);
-    HuSprAttrSet(m214_frameSprGrp, 0, 0x1000);
+    HuSprAttrSet(m214_frameSprGrp, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(m214_frameSprGrp, 0, 160, 120);
     for (i = 0; i < 2; i++) {
         m214_backAnim = HuSprAnimDataRead(0x2F0000);
@@ -1837,10 +1837,10 @@ void m214_IrisObjInit(omObjData *object) {
         HuSprGrpMemberSet(m214_backSprGrp, 0, m214_backAnim, 0);
         HuSprAttrReset(m214_backSprGrp, 0, 0xFFFF);
         if (i == 0) {
-            HuSprAttrSet(m214_backSprGrp, 0, 0x5000);
+            HuSprAttrSet(m214_backSprGrp, 0, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
             HuSprPosSet(m214_backSprGrp, 0, 80, 120);
         } else {
-            HuSprAttrSet(m214_backSprGrp, 0, 0x5001);
+            HuSprAttrSet(m214_backSprGrp, 0, HUSPR_ATTR_BG | HUSPR_ATTR_XLU | HUSPR_ATTR_FLIPX);
             HuSprPosSet(m214_backSprGrp, 0, 240, 120);
         }
     }
@@ -1857,10 +1857,10 @@ void m214_IrisObjInit(omObjData *object) {
         HuSprPriSet(m214_frameSprGrp, 0, 0x20);
         HuSprAttrReset(m214_irisSprGrpTbl[i], 0, 0xFFFF);
         if (i == 0) {
-            HuSprAttrSet(m214_irisSprGrpTbl[0], 0, 0x1000);
+            HuSprAttrSet(m214_irisSprGrpTbl[0], 0, HUSPR_ATTR_XLU);
             HuSprPosSet(m214_irisSprGrpTbl[0], 0, 80, 120);
         } else {
-            HuSprAttrSet(m214_irisSprGrpTbl[i], 0, 0x1001);
+            HuSprAttrSet(m214_irisSprGrpTbl[i], 0, HUSPR_ATTR_XLU | HUSPR_ATTR_FLIPX);
             HuSprPosSet(m214_irisSprGrpTbl[i], 0, 240, 120);
         }
         sprites[i] = HuSprGet(m214_irisSprGrpTbl[i], 0);

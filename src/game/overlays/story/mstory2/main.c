@@ -281,7 +281,7 @@ void mstory2_BackRotExec(void) {
 void mstory2_BackCreate(void) {
     mstory2_backSpr = espEntry(HuSprAnimDataRead(0x1D0012), 0, 0);
     espPosSet(mstory2_backSpr, 160, 120);
-    espAttrSet(mstory2_backSpr, 0x4000);
+    espAttrSet(mstory2_backSpr, HUSPR_ATTR_BG);
     mstory2_backMdl = Hu3DModelRead(0x1D0014, 0x2B9);
     Hu3DModelPosSet(mstory2_backMdl, 591.7f, -81.0f, -1305.7f);
     Hu3DMotionAttrSet(mstory2_backMdl, 2, 0);
@@ -309,7 +309,7 @@ void mstory2_StampCardProc(void) {
     for (i = 0; i < 7; i++) {
         mstory2_stampCardSprTbl[i + 1] = espEntry(HuSprAnimDataRead(mstory2_stampSprFileTbl[i]), 0, 0);
         espPosSet(mstory2_stampCardSprTbl[i + 1], mstory2_stampPosTbl[i][0] + 48, mstory2_stampPosTbl[i][1] + 48);
-        espAttrSet(mstory2_stampCardSprTbl[i + 1], 8);
+        espAttrSet(mstory2_stampCardSprTbl[i + 1], HUSPR_ATTR_FILTER_BILERP);
         espDispOff(mstory2_stampCardSprTbl[i + 1]);
     }
     data = DataRead(0x1D0002);
@@ -321,9 +321,9 @@ void mstory2_StampCardProc(void) {
         x += cosdf(angle) * 32.0f;
         y -= sindf(angle) * 32.0f;
         espPosSet(mstory2_stampSparkSprTbl[i], x, y);
-        espAttrSet(mstory2_stampSparkSprTbl[i], 0x1000);
+        espAttrSet(mstory2_stampSparkSprTbl[i], HUSPR_ATTR_XLU);
         espColorSet(mstory2_stampSparkSprTbl[i], 255, 255, 192);
-        espAttrSet(mstory2_stampSparkSprTbl[i], 8);
+        espAttrSet(mstory2_stampSparkSprTbl[i], HUSPR_ATTR_FILTER_BILERP);
         espScaleSet(mstory2_stampSparkSprTbl[i], 1.5f, 1.5f);
         espTPLvlSet(mstory2_stampSparkSprTbl[i], 255);
         espDispOff(mstory2_stampSparkSprTbl[i]);
@@ -332,7 +332,7 @@ void mstory2_StampCardProc(void) {
     mstory2_stampFadeSpr = espEntry(HuSprAnimDataRead(0x1D0000), 0, 0);
     espPosSet(mstory2_stampFadeSpr, 160, 120);
     espScaleSet(mstory2_stampFadeSpr, 40.0f, 30.0f);
-    espAttrSet(mstory2_stampFadeSpr, 0);
+    espAttrSet(mstory2_stampFadeSpr, HUSPR_ATTR_NONE);
     espDispOff(mstory2_stampFadeSpr);
     omPrcSetDestructor(0, mstory2_StampCardDestroy);
     espDispOn(mstory2_stampFadeSpr);

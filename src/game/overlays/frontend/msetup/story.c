@@ -141,7 +141,7 @@ void msetup_StoryMenuProc(void) {
         sprites[i] = HuSprAnimDataRead(backgrounds[i].dataId);
         HuSprTPLvlSet(backgroundGroup, i, 0x100);
         HuSprAttrReset(backgroundGroup, i, 0xFFFF);
-        HuSprAttrSet(backgroundGroup, i, 0x1000);
+        HuSprAttrSet(backgroundGroup, i, HUSPR_ATTR_XLU);
         HuSprScaleSet(backgroundGroup, i, 1.0f, 1.0f);
         HuSprAnimModeSet(backgroundGroup, i, HUSPR_ANIM_MODE_STOP);
         HuSprGrpMemberSet(backgroundGroup, i, sprites[i], 0);
@@ -158,7 +158,7 @@ void msetup_StoryMenuProc(void) {
     for (i = 0; i < optionCount; i++) {
         optionSprites[i] = HuSprAnimDataRead(options[i].dataId);
         HuSprAttrReset(group, i, 0xFFFF);
-        HuSprAttrSet(group, i, 0x1000);
+        HuSprAttrSet(group, i, HUSPR_ATTR_XLU);
         HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_STOP);
         HuSprGrpMemberSet(group, i, optionSprites[i], 0);
         HuSprTPLvlSet(group, i, 0x100);
@@ -166,7 +166,7 @@ void msetup_StoryMenuProc(void) {
             HuSprPriSet(group, i, 400);
             switch (menu->type) {
                 case 0:
-                    HuSprAttrSet(group, i, 0x9000);
+                    HuSprAttrSet(group, i, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
                     break;
                 case 1:
                     HuSprTPLvlSet(group, i, 0x40);
@@ -183,7 +183,7 @@ void msetup_StoryMenuProc(void) {
         sprite = HuSprAnimDataRead(0x140064);
         for (i = 0; i < optionCount; i++) {
             HuSprAttrReset(shadowGroup, i, 0xFFFF);
-            HuSprAttrSet(shadowGroup, i, 0x9000);
+            HuSprAttrSet(shadowGroup, i, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
             HuSprAnimModeSet(shadowGroup, i, HUSPR_ANIM_MODE_STOP);
             HuSprGrpMemberSet(shadowGroup, i, sprite, 0);
             HuSprTPLvlSet(shadowGroup, i, 0x80);
@@ -497,7 +497,7 @@ void msetup_StorySetupProc(void) {
     third.pos.y = 0;
     third.pos.z = 0;
     sprite = espEntry(HuSprAnimDataRead(0x140067), 0, 0);
-    espAttrSet(sprite, 0x4000);
+    espAttrSet(sprite, HUSPR_ATTR_BG);
     espPosSet(sprite, 160, 120);
     msetup_storyWinId = HuWinExCreateStyled(160, 204, 19);
     HuWinActivePlayerSet(msetup_storyWinId, 1 << msetup_padNo);

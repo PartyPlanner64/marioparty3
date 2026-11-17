@@ -313,18 +313,18 @@ void m209_ScoreObjInit(omObjData *obj) {
         case 0:
             entry->sprite = HuSprAnimDataRead(0x2A0013);
             entry->esp = espEntry(entry->sprite, 0, 0);
-            espAttrSet(entry->esp, 0x1000);
+            espAttrSet(entry->esp, HUSPR_ATTR_XLU);
             break;
         case 1:
             entry->sprite = HuSprAnimDataRead(0x2A0012);
             entry->esp = espEntry(entry->sprite, 0, 0);
-            espAttrSet(entry->esp, 0x1000);
+            espAttrSet(entry->esp, HUSPR_ATTR_XLU);
             break;
         case 2:
         case 3:
             entry->sprite = HuSprAnimDataRead(0x31);
             entry->esp = espEntry(entry->sprite, 0, 0);
-            espAttrSet(entry->esp, 0x1000);
+            espAttrSet(entry->esp, HUSPR_ATTR_XLU);
             if (obj->work[1] == 2) {
                 espDispOff(entry->esp);
             }
@@ -946,7 +946,7 @@ void m209_BoatObjInit(omObjData *obj) {
     Hu3DModelDynamicFree(obj->model[4]);
     m209_boatIconSpr = HuSprAnimDataRead(m209_chrIconTbl[chr]);
     m209_boatIconEsp = espEntry(m209_boatIconSpr, 0, 0);
-    espAttrSet(m209_boatIconEsp, 0x1000);
+    espAttrSet(m209_boatIconEsp, HUSPR_ATTR_XLU);
     espPosSet(m209_boatIconEsp, 30, 210);
     espScaleSet(m209_boatIconEsp, 1.0f, 1.0f);
     m209_enginePitch = -300;
@@ -1584,7 +1584,7 @@ void m209_SkierObjInit(omObjData *obj) {
     Hu3DModelDynamicFree(obj->model[3]);
     entry->sprite = HuSprAnimDataRead(m209_chrIconTbl[chr]);
     entry->esp = espEntry(entry->sprite, 0, 0);
-    espAttrSet(entry->esp, 0x1000);
+    espAttrSet(entry->esp, HUSPR_ATTR_XLU);
     espPosSet(entry->esp, m209_skierIconPosTbl[obj->work[2]].x, m209_skierIconPosTbl[obj->work[2]].y);
     espScaleSet(entry->esp, 1.0f, 1.0f);
     obj->func = m209_SkierObjMain;

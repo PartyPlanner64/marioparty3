@@ -357,7 +357,7 @@ void opboard_BoardTitleExec(void) {
     DataClose(data);
     HuSprGrpMemberSet(opboard_titleGrp->spriteGroup, 0, opboard_titleGrp->model[0], 0);
     HuSprPriSet(opboard_titleGrp->spriteGroup, 0, 10);
-    HuSprAttrSet(opboard_titleGrp->spriteGroup, 0, 0);
+    HuSprAttrSet(opboard_titleGrp->spriteGroup, 0, HUSPR_ATTR_NONE);
     HuSprPosSet(opboard_titleGrp->spriteGroup, 0, 160, 100);
     HuSprScaleSet(opboard_titleGrp->spriteGroup, 0, 0.0f, 0.0f);
     for (amplitude = 0.5f, angle = 0.0f; angle <= 720.0f; angle += 45.0f) {
@@ -377,7 +377,7 @@ void opboard_BoardTitleExec(void) {
     DataClose(data);
     HuSprGrpMemberSet(opboard_subtitleGrp->spriteGroup, 0, opboard_subtitleGrp->model[0], 0);
     HuSprPriSet(opboard_subtitleGrp->spriteGroup, 0, 9);
-    HuSprAttrSet(opboard_subtitleGrp->spriteGroup, 0, 0);
+    HuSprAttrSet(opboard_subtitleGrp->spriteGroup, 0, HUSPR_ATTR_NONE);
     HuSprPosSet(opboard_subtitleGrp->spriteGroup, 0, 160, 70);
     HuPrcSleep(75);
     MBSprGrpKill(opboard_subtitleGrp);

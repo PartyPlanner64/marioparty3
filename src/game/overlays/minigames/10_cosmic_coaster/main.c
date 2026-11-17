@@ -268,7 +268,7 @@ void m216_HudObjInit(omObjData *object) {
         }
         hud->frame[i] = espEntry(frameSprite, 0, 0);
         espPosSet(hud->frame[i], i * 160 + 80, 120);
-        espAttrSet(hud->frame[i], 0x4000);
+        espAttrSet(hud->frame[i], HUSPR_ATTR_BG);
         espPriSet(hud->frame[i], 0x8190);
         hud->label[i] = espEntry(labelSprite, 0, 0);
         espPosSet(hud->label[i], i * 15 + 153, 120);
@@ -1025,12 +1025,12 @@ void m216_StarSkyObjInit(omObjData *object) {
     for (i = 0; i < 6; i++) {
         data->sprite[i] = espEntry(sprite, 0, 0);
         espPriSet(data->sprite[i], 0x815E);
-        espAttrSet(data->sprite[i], 0x4000);
+        espAttrSet(data->sprite[i], HUSPR_ATTR_BG);
         espScaleSet(data->sprite[i], 0.5f, 0.5f);
         espDispOff(data->sprite[i]);
         data->sprite2[i] = espEntry(sprite2, 0, 0);
         espPriSet(data->sprite2[i], 0x815E);
-        espAttrSet(data->sprite2[i], 0x4000);
+        espAttrSet(data->sprite2[i], HUSPR_ATTR_BG);
         espScaleSet(data->sprite2[i], 0.5f, 0.5f);
         espDispOff(data->sprite2[i]);
         data->inUse[i] = 0;

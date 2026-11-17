@@ -348,52 +348,52 @@ void m268_HudObjInit(omObjData *object) {
 
     chr = GwPlayer[m268_playerInfoNo[0]].chr;
     charSprites = m268_chrSprFileTbl;
-    m268_EspSlotCreate(&m268_backSpr, 0x650000, 0, 0x4000);
+    m268_EspSlotCreate(&m268_backSpr, 0x650000, 0, HUSPR_ATTR_BG);
     m268_SprParamSet(&m268_backSpr, 1000, 0x100, 0, 0, 320, 240, 0.0f, 1.0f,
                                         1.0f);
     m268_SprDispSet(&m268_backSpr, 1);
-    m268_EspSlotCreate(&m268_bannerSpr, 0x650001, 0, 0);
+    m268_EspSlotCreate(&m268_bannerSpr, 0x650001, 0, HUSPR_ATTR_NONE);
     m268_SprParamSet(&m268_bannerSpr, 800, 0x100, 0, 0, 320, 186, 0.0f, 1.0f,
                                         1.0f);
     m268_SprDispSet(&m268_bannerSpr, 1);
-    m268_EspSlotCreate(&m268_bannerSprA, 0x650002, 0, 0);
+    m268_EspSlotCreate(&m268_bannerSprA, 0x650002, 0, HUSPR_ATTR_NONE);
     m268_SprParamSet(&m268_bannerSprA, 800, 0x100, 0, 0, 320, 186, 0.0f, 1.0f,
                                         1.0f);
     m268_SprDispSet(&m268_bannerSprA, 0);
-    m268_EspSlotCreate(&m268_bannerSprB, 0x650003, 0, 0);
+    m268_EspSlotCreate(&m268_bannerSprB, 0x650003, 0, HUSPR_ATTR_NONE);
     m268_SprParamSet(&m268_bannerSprB, 800, 0x100, 0, 0, 320, 186, 0.0f, 1.0f,
                                         1.0f);
     m268_SprDispSet(&m268_bannerSprB, 0);
-    m268_EspSlotCreate(&m268_roundPanelSpr, 0x650004, 0, 0);
+    m268_EspSlotCreate(&m268_roundPanelSpr, 0x650004, 0, HUSPR_ATTR_NONE);
     m268_SprParamSet(&m268_roundPanelSpr, 800, 0x100, 242, 16, 54, 54, 0.0f, 1.0f,
                                         1.0f);
     m268_SprDispSet(&m268_roundPanelSpr, 1);
     for (i = 0; i < 3; i++) {
-        m268_EspSlotCreate(&m268_roundLampSprTbl[i][0], 0x21002A, 0, 0);
+        m268_EspSlotCreate(&m268_roundLampSprTbl[i][0], 0x21002A, 0, HUSPR_ATTR_NONE);
         m268_SprParamSet(&m268_roundLampSprTbl[i][0], 99, 0x100, i * 16 + 24, 32, 16,
                                             16, 0.0f, 1.0f, 1.0f);
         m268_SprDispSet(&m268_roundLampSprTbl[i][0], 0);
-        m268_EspSlotCreate(&m268_roundLampSprTbl[i][1], 0x21002B, 0, 0);
+        m268_EspSlotCreate(&m268_roundLampSprTbl[i][1], 0x21002B, 0, HUSPR_ATTR_NONE);
         m268_SprParamSet(&m268_roundLampSprTbl[i][1], 100, 0x100, i * 16 + 24, 32, 16,
                                             16, 0.0f, 1.0f, 1.0f);
         m268_SprDispSet(&m268_roundLampSprTbl[i][1], 1);
     }
     m268_SprDispSet(&m268_roundLampSprTbl[0][0], 1);
-    m268_EspSlotCreate(&m268_coinIconSpr, 0x21001A, 0, 0);
+    m268_EspSlotCreate(&m268_coinIconSpr, 0x21001A, 0, HUSPR_ATTR_NONE);
     m268_SprParamSet(&m268_coinIconSpr, 100, 0x100, 24, 16, 12, 12, 0.0f, 1.0f,
                                         1.0f);
     m268_SprDispSet(&m268_coinIconSpr, 1);
-    m268_EspSlotCreate(&m268_coinCrossSpr, 0x21001B, 0, 0);
+    m268_EspSlotCreate(&m268_coinCrossSpr, 0x21001B, 0, HUSPR_ATTR_NONE);
     m268_SprParamSet(&m268_coinCrossSpr, 100, 0x100, 36, 16, 12, 12, 0.0f, 1.0f,
                                         1.0f);
     m268_SprDispSet(&m268_coinCrossSpr, 1);
     for (i = 0; i < 3; i++) {
-        m268_EspSlotCreate(&m268_coinDigitSprTbl[i], 0x31, 1, 0);
+        m268_EspSlotCreate(&m268_coinDigitSprTbl[i], 0x31, 1, HUSPR_ATTR_NONE);
         m268_SprParamSet(&m268_coinDigitSprTbl[i], 100, 0x100, i * 12 + 48, 16, 12, 12,
                                             0.0f, 1.0f, 1.0f);
         m268_SprDispSet(&m268_coinDigitSprTbl[i], 1);
     }
-    m268_EspSlotCreate(&m268_portraitSpr, charSprites.ids[chr] | 0x210000, 0, 0);
+    m268_EspSlotCreate(&m268_portraitSpr, charSprites.ids[chr] | 0x210000, 0, HUSPR_ATTR_NONE);
     m268_SprParamSet(&m268_portraitSpr, 100, 0x100, 55, 70, 46, 46, 0.0f, 1.0f,
                                         1.0f);
     m268_SprDispSet(&m268_portraitSpr, 0);
@@ -1587,7 +1587,7 @@ void m268_BoxSpotLayerInit(void) {
     m268_boxSpotGrp = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(m268_boxSpotGrp, 0, spriteIndex, 0);
     HuSprAttrReset(m268_boxSpotGrp, 0, 0xFFFF);
-    HuSprAttrSet(m268_boxSpotGrp, 0, 0x1000);
+    HuSprAttrSet(m268_boxSpotGrp, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(m268_boxSpotGrp, 0, 160, 120);
     HuSprTPLvlSet(m268_boxSpotGrp, 0, 0);
     HuSprPriSet(m268_boxSpotGrp, 0, 10);

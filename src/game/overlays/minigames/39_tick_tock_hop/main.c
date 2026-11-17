@@ -325,8 +325,8 @@ void m257_ClockObjInit(omObjData *object) {
         m257_AnimMdlDispOn(id, starPosX, -25.0f, starPosZ, 0.0f, 0.0f, 0.0f, 0.4f, rand16() % 31);
         Hu3DModelAttrSet(m257_animMdlTbl[id].modelId, HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
-    m257_gameWork->tensSpriteId = m257_SprCreate(0xF, 0, 0x2D, 0, 0);
-    m257_gameWork->unitsSpriteId = id = m257_SprCreate(0xF, 0, 0x2D, 0, 0);
+    m257_gameWork->tensSpriteId = m257_SprCreate(0xF, 0, 0x2D, 0, HUSPR_ATTR_NONE);
+    m257_gameWork->unitsSpriteId = id = m257_SprCreate(0xF, 0, 0x2D, 0, HUSPR_ATTR_NONE);
     m257_SprDispOn(id, 280, 32);
     m257_gameWork->clockHandRot[HAND_PLATFORM] = 270.0f;
     m257_gameWork->clockHandRot[HAND_OBSTACLE] = 0.0f;

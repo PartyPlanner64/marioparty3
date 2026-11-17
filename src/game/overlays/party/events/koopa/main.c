@@ -561,7 +561,7 @@ void koopa_RouletteSprCreate(void) {
         DataClose(temp_v0);
         HuSprGrpMemberSet(koopa_backSprGrp, 0, koopa_backSpr, 0);
         HuSprPriSet(koopa_backSprGrp, 0, 0x4770);
-        HuSprAttrSet(koopa_backSprGrp, 0, 0x1000);
+        HuSprAttrSet(koopa_backSprGrp, 0, HUSPR_ATTR_XLU);
         HuSprPosSet(koopa_backSprGrp, 0, koopa_rouletteWinTbl[0][1] + 0x64, koopa_rouletteWinTbl[0][2] + 0x32);
         HuSprColorSet(koopa_backSprGrp, 0, 0, 0, 0);
         koopa_titleSprGrp = HuSprGrpCreate(1, 5);
@@ -570,7 +570,7 @@ void koopa_RouletteSprCreate(void) {
         DataClose(temp_v0);
         HuSprGrpMemberSet(koopa_titleSprGrp, 0, koopa_titleSpr, 0);
         HuSprPriSet(koopa_titleSprGrp, 0, 0x4770);
-        HuSprAttrSet(koopa_titleSprGrp, 0, 0x1000);
+        HuSprAttrSet(koopa_titleSprGrp, 0, HUSPR_ATTR_XLU);
         HuSprPosSet(koopa_titleSprGrp, 0, koopa_rouletteWinTbl[0][1] + 0x64, koopa_rouletteWinTbl[0][2] - 0x1E);
         temp_v0 = DataRead(0x130260);
         koopa_lampSpr = HuSprAnimRead(temp_v0);
@@ -580,7 +580,7 @@ void koopa_RouletteSprCreate(void) {
             koopa_lampSprGrpTbl[i] = HuSprGrpCreate(1, 5);
             HuSprGrpMemberSet(koopa_lampSprGrpTbl[i], 0, koopa_lampSpr, 1);
             HuSprPriSet(koopa_lampSprGrpTbl[i], 0, 0x4770);
-            HuSprAttrSet(koopa_lampSprGrpTbl[i], 0, 0x1000);
+            HuSprAttrSet(koopa_lampSprGrpTbl[i], 0, HUSPR_ATTR_XLU);
             HuSprPosSet(koopa_lampSprGrpTbl[i], 0, koopa_rouletteWinTbl[0][1] + (i * 0xC8), (koopa_rouletteWinTbl[0][2] - 0x28));
             if ((randVal == 0) && (koopa_rouletteLeaveF == 0)) {
                 var_v0_2 = koopa_rouletteStopOfs;
@@ -613,7 +613,7 @@ void koopa_CursorCreate(void) {
         DataClose(temp_v0);
         HuSprGrpMemberSet(koopa_cursorSprGrp, 0, koopa_cursorSpr, 0);
         HuSprPriSet(koopa_cursorSprGrp, 0, 0x100);
-        HuSprAttrSet(koopa_cursorSprGrp, 0, 0x1000);
+        HuSprAttrSet(koopa_cursorSprGrp, 0, HUSPR_ATTR_XLU);
         HuSprPosSet(koopa_cursorSprGrp, 0, 0x32, koopa_cursorPosY);
     }
 }
@@ -886,7 +886,7 @@ s32 koopa_SuitGiveExec(void) {
     DataClose(data);
     HuSprGrpMemberSet(sprite->spriteGroup, 0, sprite->model[0], 0);
     HuSprAttrReset(sprite->spriteGroup, 0, 0xFFFF);
-    HuSprAttrSet(sprite->spriteGroup, 0, 0x1000);
+    HuSprAttrSet(sprite->spriteGroup, 0, HUSPR_ATTR_XLU);
     HuSprPriSet(sprite->spriteGroup, 0, 0x1000);
     HuSprPosSet(sprite->spriteGroup, 0, 160, -32);
     koopa_StatusShow();
@@ -937,7 +937,7 @@ s32 koopa_PhoneGiveExec(void) {
     DataClose(data);
     HuSprGrpMemberSet(sprite->spriteGroup, 0, sprite->model[0], 0);
     HuSprAttrReset(sprite->spriteGroup, 0, 0xFFFF);
-    HuSprAttrSet(sprite->spriteGroup, 0, 0x1000);
+    HuSprAttrSet(sprite->spriteGroup, 0, HUSPR_ATTR_XLU);
     HuSprPriSet(sprite->spriteGroup, 0, 0x1000);
     HuSprPosSet(sprite->spriteGroup, 0, 160, -32);
     koopa_StatusShow();

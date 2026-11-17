@@ -311,7 +311,7 @@ void MBSaiNumSprCreate(s32 arg0) {
     for (i = 0; i < 2; i++) {
         HuSprGrpMemberSet(entry->sprites[entry->rollValueIdx], i, entry->unk_14, 0);
         HuSprPriSet(entry->sprites[entry->rollValueIdx], i, 0x4000);
-        HuSprAttrSet(entry->sprites[entry->rollValueIdx], i, 0x9000);
+        HuSprAttrSet(entry->sprites[entry->rollValueIdx], i, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
         HuSprSpeedSet(entry->sprites[entry->rollValueIdx], i, 0.0f);
         HuSprScaleSet(entry->sprites[entry->rollValueIdx], i, 0.0f, 0.0f);
         HuSprBankSet(entry->sprites[entry->rollValueIdx], i, 0, 0);
@@ -1298,7 +1298,7 @@ static void MBKakusiItemBlockProc(void) {
                 HuSprGrpMemberSet(grp, 0, anim, 0);
                 HuSprPriSet(grp, 0, 0xB);
                 HuSprAnimModeSet(grp, 0, HUSPR_ANIM_MODE_STOP);
-                HuSprAttrSet(grp, 0, 0x180C);
+                HuSprAttrSet(grp, 0, HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_AVERAGE);
                 HuSprPosSet(grp, 0, 160, 90);
                 HuSprTPLvlSet(grp, 0, 0);
 

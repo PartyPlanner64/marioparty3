@@ -410,7 +410,7 @@ void m247_HudObjInit(omObjData *object) {
     m247_hudY = 120.0f;
     m247_hudSprGrp = HuSprAnimDataRead(0x500000);
     m247_hudSpr = espEntry(m247_hudSprGrp, 0, 0);
-    espAttrSet(m247_hudSpr, 0x5000);
+    espAttrSet(m247_hudSpr, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
     espPosSet(m247_hudSpr, m247_hudX, m247_hudY);
     mgMapObjTbl[mgMapObjNum++] = object;
     work = HuMemAllocTag(0xB4, TAG_OVERLAY);

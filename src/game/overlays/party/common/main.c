@@ -1827,7 +1827,7 @@ static s32 MBBattleExec(GW_PLAYER* arg0) {
         HuSprGrpMemberSet(var_s5, 0, sp44, 0);
         HuSprPriSet(var_s5, 0, 0x14U);
         HuSprAnimModeSet(var_s5, 0, HUSPR_ANIM_MODE_STOP);
-        HuSprAttrSet(var_s5, 0, 0x1000);
+        HuSprAttrSet(var_s5, 0, HUSPR_ATTR_XLU);
         HuSprPosSet(var_s5, 0, 0xA0, 0x78);
         HuSprParentSet(var_s5, 0, -1);
         temp_v0_4 = DataRead(0x130114);
@@ -1836,7 +1836,7 @@ static s32 MBBattleExec(GW_PLAYER* arg0) {
         HuSprGrpMemberSet(var_s5, 1, sp4C, 0);
         HuSprPriSet(var_s5, 1, 0xAU);
         HuSprAnimModeSet(var_s5, 1, HUSPR_ANIM_MODE_BANK);
-        HuSprAttrSet(var_s5, 1, 0x1000);
+        HuSprAttrSet(var_s5, 1, HUSPR_ATTR_XLU);
         HuSprPosSet(var_s5, 1, -0x28, 0x10);
         HuSprParentSet(var_s5, 1, 0);
         
@@ -3063,7 +3063,7 @@ static void MBMain(void) {
                                     HuSprGrpMemberSet(temp_s2_2, 0, temp_s3_3, 0);
                                     HuSprPriSet(temp_s2_2, 0, 0xA);
                                     HuSprAnimModeSet(temp_s2_2, 0, HUSPR_ANIM_MODE_STOP);
-                                    HuSprAttrSet(temp_s2_2, 0, 0x180C);
+                                    HuSprAttrSet(temp_s2_2, 0, HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_AVERAGE);
                                     HuSprPosSet(temp_s2_2, 0, 0xA0, 0x5A);
                                     HuSprTPLvlSet(temp_s2_2, 0, 0);
                                     HuAudFXPlay(0x10);

@@ -98,7 +98,7 @@ void m266_SpotBeamInit(void) {
     m266_spotColorLayer.timer = 0;
     HuSprTPLvlSet(m266_spotColorLayer.group, 0, 0);
     HuSprAttrReset(m266_spotColorLayer.group, 0, 0xFFFF);
-    HuSprAttrSet(m266_spotColorLayer.group, 0, 0x1000);
+    HuSprAttrSet(m266_spotColorLayer.group, 0, HUSPR_ATTR_XLU);
     m266_spotColorLayer.sprite->data->pat->data =
         m266_spotColorLayer.unk_04[m266_spotBufNo];
 }
@@ -258,7 +258,7 @@ s16 m266_SpotSprCreate(s32 dataNum, s32 attr, s32 priority, s32 tpLvl) {
     group = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(group, 0, sprite, 0);
     HuSprAttrReset(group, 0, 0xFFFF);
-    HuSprAttrSet(group, 0, attr | 0x1000);
+    HuSprAttrSet(group, 0, attr | HUSPR_ATTR_XLU);
     HuSprPriSet(group, 0, priority);
     HuSprPosSet(group, 0, 160, 120);
     HuSprTPLvlSet(group, 0, tpLvl);
@@ -268,7 +268,7 @@ s16 m266_SpotSprCreate(s32 dataNum, s32 attr, s32 priority, s32 tpLvl) {
 void m266_SpotLayerInit(void) {
     s16 *pal;
 
-    m266_spotColorLayer.group = m266_SpotSprCreate(0x63000A, 0, 10, 128);
+    m266_spotColorLayer.group = m266_SpotSprCreate(0x63000A, HUSPR_ATTR_NONE, 10, 128);
     m266_spotColorLayer.sprite = HuSprGet(m266_spotColorLayer.group, 0);
     m266_spotColorLayer.unk_04[0] = m266_spotColorLayer.sprite->data->pat->data;
     pal = m266_spotColorLayer.sprite->data->pal;
@@ -283,7 +283,7 @@ void m266_SpotLayerInit(void) {
     pal[6] = 0xFFC1;
     pal[7] = 0xFFFE;
 
-    m266_spotMaskLayer.group = m266_SpotSprCreate(0x63000A, 0, 10, 256);
+    m266_spotMaskLayer.group = m266_SpotSprCreate(0x63000A, HUSPR_ATTR_NONE, 10, 256);
     m266_spotMaskLayer.sprite = HuSprGet(m266_spotMaskLayer.group, 0);
     m266_spotMaskLayer.unk_04[0] = m266_spotMaskLayer.sprite->data->pat->data;
     pal = m266_spotMaskLayer.sprite->data->pal;

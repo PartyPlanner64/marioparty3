@@ -91,7 +91,7 @@ void MB1Ev_IceCrackProc(void) {
     work->unkA = grpId;
     HuSprGrpMemberSet(grpId, 0, sprId, 0);
     HuSprPosSet(grpId, 0, work->unk0, work->unk4);
-    HuSprAttrSet(grpId, 0, 0x5000);
+    HuSprAttrSet(grpId, 0, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
     HuSprColorSet(grpId, 0, 0x20, 0xA0, 0x90);
     HuSprScissorSet(grpId, 0, 0x10, 0xC, 0x130, 0xE4);
 

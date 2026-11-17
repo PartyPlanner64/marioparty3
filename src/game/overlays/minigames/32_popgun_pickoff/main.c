@@ -391,7 +391,7 @@ void m250_StageObjInit(omObjData *object) {
     m250_sprAnimTbl[0] = m250_AnimDataRead(0x530000);
     m250_sprGrpTbl[0] = m250_SprGrpCreate(m250_sprAnimTbl[0], 1);
     HuSprPosSet(m250_sprGrpTbl[0], 0, 160, 120);
-    HuSprAttrSet(m250_sprGrpTbl[0], 0, 0x4000);
+    HuSprAttrSet(m250_sprGrpTbl[0], 0, HUSPR_ATTR_BG);
     m250_sprAnimTbl[1] = m250_AnimDataRead(0x530001);
     spr = m250_SprAnimPatGet(m250_sprAnimTbl[1], 0);
     m250_sprGrpTbl[1] = m250_BillboardCreate(m250_sprAnimTbl[1], 0x1808);
@@ -444,8 +444,8 @@ void m250_StageObjInit(omObjData *object) {
     }
     m250_sprAnimTbl[6] = m250_AnimDataRead(0x530007);
     m250_sprGrpTbl[2] = m250_SprGrpCreate(m250_sprAnimTbl[6], 2);
-    HuSprAttrSet(m250_sprGrpTbl[2], 0, 0x1000);
-    HuSprAttrSet(m250_sprGrpTbl[2], 1, 0x1000);
+    HuSprAttrSet(m250_sprGrpTbl[2], 0, HUSPR_ATTR_XLU);
+    HuSprAttrSet(m250_sprGrpTbl[2], 1, HUSPR_ATTR_XLU);
     HuSprColorTPLvlSet(m250_sprGrpTbl[2], 0, 0, 0, 0, 0xC2);
     HuSprColorTPLvlSet(m250_sprGrpTbl[2], 1, 0, 0, 0, 0xC2);
     HuSprPosSet(m250_sprGrpTbl[2], 0, 60, 48);
@@ -456,19 +456,19 @@ void m250_StageObjInit(omObjData *object) {
         m250_AnimDataRead(characterSprites[PLAYER_WORK(mgPlayerObjTbl[1])->unk29] | 0x210000);
     m250_sprGrpTbl[6] = m250_SprGrpCreate(m250_sprAnimTbl[11], 2);
     HuSprGrpMemberSet(m250_sprGrpTbl[6], 1, m250_sprAnimTbl[12], 0);
-    HuSprAttrSet(m250_sprGrpTbl[6], 0, 0x1000);
-    HuSprAttrSet(m250_sprGrpTbl[6], 1, 0x1000);
+    HuSprAttrSet(m250_sprGrpTbl[6], 0, HUSPR_ATTR_XLU);
+    HuSprAttrSet(m250_sprGrpTbl[6], 1, HUSPR_ATTR_XLU);
     HuSprPosSet(m250_sprGrpTbl[6], 0, 36, 48);
     HuSprPosSet(m250_sprGrpTbl[6], 1, 236, 48);
     m250_sprAnimTbl[8] = m250_AnimDataRead(0x2D);
     m250_sprAnimTbl[9] = m250_AnimDataRead(0x2F);
     m250_sprGrpTbl[4] = m250_SprGrpCreate(m250_sprAnimTbl[8], 6);
-    HuSprAttrSet(m250_sprGrpTbl[4], 0, 0x1000);
-    HuSprAttrSet(m250_sprGrpTbl[4], 1, 0x1000);
-    HuSprAttrSet(m250_sprGrpTbl[4], 2, 0x1000);
-    HuSprAttrSet(m250_sprGrpTbl[4], 3, 0x1000);
-    HuSprAttrSet(m250_sprGrpTbl[4], 4, 0x1000);
-    HuSprAttrSet(m250_sprGrpTbl[4], 5, 0x1000);
+    HuSprAttrSet(m250_sprGrpTbl[4], 0, HUSPR_ATTR_XLU);
+    HuSprAttrSet(m250_sprGrpTbl[4], 1, HUSPR_ATTR_XLU);
+    HuSprAttrSet(m250_sprGrpTbl[4], 2, HUSPR_ATTR_XLU);
+    HuSprAttrSet(m250_sprGrpTbl[4], 3, HUSPR_ATTR_XLU);
+    HuSprAttrSet(m250_sprGrpTbl[4], 4, HUSPR_ATTR_XLU);
+    HuSprAttrSet(m250_sprGrpTbl[4], 5, HUSPR_ATTR_XLU);
     HuSprPosSet(m250_sprGrpTbl[4], 0, 80, 48);
     HuSprPosSet(m250_sprGrpTbl[4], 1, 67, 48);
     HuSprPosSet(m250_sprGrpTbl[4], 2, 53, 48);
@@ -484,9 +484,9 @@ u8 m250_PenaltyCreate(s16 x, s16 y) {
     HuSprGrpMemberSet(group, 0, m250_sprAnimTbl[8], 0);
     HuSprGrpMemberSet(group, 1, m250_sprAnimTbl[8], 0);
     HuSprGrpMemberSet(group, 2, m250_sprAnimTbl[9], 0);
-    HuSprAttrSet(group, 0, 0x1000);
-    HuSprAttrSet(group, 1, 0x1000);
-    HuSprAttrSet(group, 2, 0x1000);
+    HuSprAttrSet(group, 0, HUSPR_ATTR_XLU);
+    HuSprAttrSet(group, 1, HUSPR_ATTR_XLU);
+    HuSprAttrSet(group, 2, HUSPR_ATTR_XLU);
     HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_STOP);
     HuSprAnimModeSet(group, 1, HUSPR_ANIM_MODE_STOP);
     HuSprAnimModeSet(group, 2, HUSPR_ANIM_MODE_STOP);
@@ -863,7 +863,7 @@ void m250_PlayerObjInit(omObjData *object) {
     work->pos.z = object->trans.z;
     work->unk20 = 0;
     work->unk2F = m250_SprGrpCreate(m250_sprAnimTbl[2], 1);
-    HuSprAttrSet(work->unk2F, 0, 0x9008);
+    HuSprAttrSet(work->unk2F, 0, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU | HUSPR_ATTR_FILTER_BILERP);
     HuSprColorTPLvlSet(work->unk2F, 0, colors.rgb[character][0], colors.rgb[character][1],
                        colors.rgb[character][2], 0x100);
     work->unk33 = CharAnimCreate(object->model[0], 2, motions.values[character], model | anims[2][character]);

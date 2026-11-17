@@ -336,7 +336,7 @@ void filesel_SprCreate(s32 arg0, s32 arg1) {
 
 void filesel_SprBGCreate(s32 arg0, s32 arg1) {
     filesel_SprCreate(arg0, arg1);
-    espAttrSet(filesel_sprTbl[arg0].unk_00, 0x4000);
+    espAttrSet(filesel_sprTbl[arg0].unk_00, HUSPR_ATTR_BG);
 }
 
 void filesel_SprKill(s32 arg0) {
@@ -556,7 +556,7 @@ void filesel_MotionSet(s32 arg0, s32 arg1, s16 arg2) {
 void filesel_BGSprCreate(s32 arg0) {
     filesel_bgAnim = HuSprAnimDataRead(arg0);
     filesel_bgSpr = espEntry(filesel_bgAnim, 0, 0);
-    espAttrSet(filesel_bgSpr, 0x4000);
+    espAttrSet(filesel_bgSpr, HUSPR_ATTR_BG);
     espPosSet(filesel_bgSpr, 0xA0, 0x78);
 }
 
@@ -1086,11 +1086,11 @@ void filesel_CopyEraseBtnCreate(void) {
     filesel_SprDispOff(1);
     filesel_SprCreate(2, 0x1F000E);
     filesel_SprBankSet(2, 0, 0);
-    filesel_SprAttrSet(2, 0x800);
+    filesel_SprAttrSet(2, HUSPR_ATTR_AA);
     filesel_SprDispOff(2);
     filesel_SprCreate(3, 0x1F000F);
     filesel_SprBankSet(3, 0, 0);
-    filesel_SprAttrSet(3, 0x800);
+    filesel_SprAttrSet(3, HUSPR_ATTR_AA);
     filesel_SprDispOff(3);
 }
 

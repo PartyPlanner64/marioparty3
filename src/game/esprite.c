@@ -241,7 +241,7 @@ s16 espEntry(s16 arg0, s16 arg1, u16 arg2) {
     temp_s0->unk10 = temp_s0->unk14 = 1.0f;
     HuSprTPLvlSet(temp_v0, 0, 0x100);
     HuSprAttrReset(temp_v0, 0, 0xFFFF);
-    HuSprAttrSet(temp_v0, 0, 0x1000);
+    HuSprAttrSet(temp_v0, 0, HUSPR_ATTR_XLU);
     HuSprScaleSet(temp_v0, 0, 1.0f, 1.0f);
     HuSprAnimModeSet(temp_v0, 0, arg2);
     HuSprGrpMemberSet(temp_v0, 0, arg0, arg1);

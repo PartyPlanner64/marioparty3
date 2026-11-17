@@ -2719,16 +2719,16 @@ void m213_RecordObjMain(omObjData *obj) {
         HuSprGrpMemberSet(record->group, 0, record->spriteData, 0);
         HuSprAnimModeSet(record->group, 0, HUSPR_ANIM_MODE_STOP);
         HuSprPatNoSet(record->group, 0, (s16)record->digits[0]);
-        HuSprAttrSet(record->group, 0, 0x1000);
-        HuSprAttrSet(record->group, 0, 0);
+        HuSprAttrSet(record->group, 0, HUSPR_ATTR_XLU);
+        HuSprAttrSet(record->group, 0, HUSPR_ATTR_NONE);
         for (i = 1; i < 3; i++) {
             HuSprScaleSet(record->group, i, record->unk_20 / 12.0f + 1.0f, record->unk_20 / 12.0f + 1.0f);
             HuSprPosSet(record->group, i, i * 12, 0);
             HuSprGrpMemberSet(record->group, i, record->spriteData, 0);
             HuSprAnimModeSet(record->group, i, HUSPR_ANIM_MODE_STOP);
             HuSprPatNoSet(record->group, i, (s16)record->digits[i]);
-            HuSprAttrSet(record->group, i, 0x1000);
-            HuSprAttrSet(record->group, i, 0);
+            HuSprAttrSet(record->group, i, HUSPR_ATTR_XLU);
+            HuSprAttrSet(record->group, i, HUSPR_ATTR_NONE);
         }
         espScaleSet(record->esprite, record->unk_20 / 12.0f + 1.0f, record->unk_20 / 12.0f + 1.0f);
         espPosSet(record->esprite, record->unk_20 * 4 + 78, record->unk_20 / 4 + 22);
@@ -2747,8 +2747,8 @@ void m213_RecordObjInit(omObjData *obj) {
     HuSprGrpMemberSet(m213_recordSprGrp, 0, m213_recordDigitAnim, 0);
     HuSprAnimModeSet(m213_recordSprGrp, 0, HUSPR_ANIM_MODE_STOP);
     HuSprPatNoSet(m213_recordSprGrp, 0, m213_recordDigit0Lo);
-    HuSprAttrSet(m213_recordSprGrp, 0, 0x1000);
-    HuSprAttrSet(m213_recordSprGrp, 0, 0);
+    HuSprAttrSet(m213_recordSprGrp, 0, HUSPR_ATTR_XLU);
+    HuSprAttrSet(m213_recordSprGrp, 0, HUSPR_ATTR_NONE);
     for (i = 1; i < 3; i++) {
         HuSprParentSet(record->group, i, 0);
         HuSprGrpMemberSet(record->group, i, record->spriteData, 0);
@@ -2757,20 +2757,20 @@ void m213_RecordObjInit(omObjData *obj) {
             HuSprGrpMemberSet(record->group, i, record->spriteData, 0);
             HuSprAnimModeSet(record->group, i, HUSPR_ANIM_MODE_STOP);
             HuSprPatNoSet(record->group, i, (s16)record->digits[i]);
-            HuSprAttrSet(record->group, i, 0x1000);
-            HuSprAttrSet(record->group, i, 0);
+            HuSprAttrSet(record->group, i, HUSPR_ATTR_XLU);
+            HuSprAttrSet(record->group, i, HUSPR_ATTR_NONE);
         } else {
             HuSprPosSet(record->group, i, i * 12, 0);
             HuSprGrpMemberSet(record->group, i, record->spriteData, 0);
             HuSprAnimModeSet(record->group, i, HUSPR_ANIM_MODE_STOP);
             HuSprPatNoSet(record->group, i, 0);
-            HuSprAttrSet(record->group, i, 0x1000);
+            HuSprAttrSet(record->group, i, HUSPR_ATTR_XLU);
             HuSprDispOff(record->group, i);
         }
     }
     record->espriteData = HuSprAnimDataRead(0x2E0023);
     record->esprite = espEntry(record->espriteData, 0, 0);
-    espAttrSet(record->esprite, 0x1000);
+    espAttrSet(record->esprite, HUSPR_ATTR_XLU);
     espPosSet(record->esprite, 78, 22);
     espDispOn(record->esprite);
     record->unk_20 = 0;

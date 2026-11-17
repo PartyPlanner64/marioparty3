@@ -170,7 +170,7 @@ void boardresult2_RankSprCreate(void) {
     for (j = 0; j < 4; j++) {
         HuSprGrpMemberSet(boardresult2_rankHeaderSprGrp->unk_0A, j, boardresult2_rankHeaderSprGrp->unk_0C[0], 0);
         HuSprPriSet(boardresult2_rankHeaderSprGrp->unk_0A, j, 99);
-        HuSprAttrSet(boardresult2_rankHeaderSprGrp->unk_0A, j, 0x4000);
+        HuSprAttrSet(boardresult2_rankHeaderSprGrp->unk_0A, j, HUSPR_ATTR_BG);
         HuSprPosSet(boardresult2_rankHeaderSprGrp->unk_0A, j, headerX.x[j], 104);
     }
 
@@ -180,7 +180,7 @@ void boardresult2_RankSprCreate(void) {
     DataClose(data);
     HuSprGrpMemberSet(boardresult2_rankLabelSprGrp->unk_0A, 0, boardresult2_rankLabelSprGrp->unk_0C[0], 0);
     HuSprPriSet(boardresult2_rankLabelSprGrp->unk_0A, 0, 99);
-    HuSprAttrSet(boardresult2_rankLabelSprGrp->unk_0A, 0, 0x4000);
+    HuSprAttrSet(boardresult2_rankLabelSprGrp->unk_0A, 0, HUSPR_ATTR_BG);
     HuSprPosSet(boardresult2_rankLabelSprGrp->unk_0A, 0, 55, 129);
 
     for (i = 0; i < 4; i++) {
@@ -191,7 +191,7 @@ void boardresult2_RankSprCreate(void) {
             DataClose(data);
             HuSprGrpMemberSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, boardresult2_rankRowSprGrpTbl[i]->unk_0C[j + 1], 0);
             HuSprPriSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 98 - j);
-            HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 0x4000);
+            HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, HUSPR_ATTR_BG);
             HuSprPosSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, memberX.x[j], 0);
         }
 
@@ -200,7 +200,7 @@ void boardresult2_RankSprCreate(void) {
         DataClose(data);
         HuSprGrpMemberSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 4, boardresult2_rankRowSprGrpTbl[i]->unk_0C[4], 0);
         HuSprPriSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 4, 95);
-        HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 4, 0x4000);
+        HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 4, HUSPR_ATTR_BG);
         HuSprPosSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 4, memberX.x[3], 1);
 
         j = 4;
@@ -215,7 +215,7 @@ void boardresult2_RankSprCreate(void) {
         HuSprGrpMemberSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, boardresult2_rankRowSprGrpTbl[i]->unk_0C[j + 1],
                           GwPlayer[kakusiMasuItemHis[i]].star / 10);
         HuSprPriSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 98 - j);
-        HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 0x4000);
+        HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, HUSPR_ATTR_BG);
         HuSprPosSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 68, 4);
 
         data = DataRead(0xC0086);
@@ -224,7 +224,7 @@ void boardresult2_RankSprCreate(void) {
         HuSprGrpMemberSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 6, boardresult2_rankRowSprGrpTbl[i]->unk_0C[6],
                           GwPlayer[kakusiMasuItemHis[i]].star % 10);
         HuSprPriSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 6, 93);
-        HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 6, 0x4000);
+        HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 6, HUSPR_ATTR_BG);
         HuSprPosSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 6, 84, 4);
 
         j = 6;
@@ -239,7 +239,7 @@ void boardresult2_RankSprCreate(void) {
         HuSprGrpMemberSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, boardresult2_rankRowSprGrpTbl[i]->unk_0C[j + 1],
                           GwPlayer[kakusiMasuItemHis[i]].coin / 100);
         HuSprPriSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 98 - j);
-        HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 0x4000);
+        HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, HUSPR_ATTR_BG);
         HuSprPosSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 142, 4);
 
         j = 7;
@@ -254,7 +254,7 @@ void boardresult2_RankSprCreate(void) {
                               GwPlayer[kakusiMasuItemHis[i]].coin);
         }
         HuSprPriSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 98 - j);
-        HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 0x4000);
+        HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, HUSPR_ATTR_BG);
         HuSprPosSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 158, 4);
 
         if (GwPlayer[kakusiMasuItemHis[i]].coin >= 10) {
@@ -264,7 +264,7 @@ void boardresult2_RankSprCreate(void) {
             HuSprGrpMemberSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 9, boardresult2_rankRowSprGrpTbl[i]->unk_0C[9],
                               GwPlayer[kakusiMasuItemHis[i]].coin % 10);
             HuSprPriSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 9, 90);
-            HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 9, 0x4000);
+            HuSprAttrSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 9, HUSPR_ATTR_BG);
             HuSprPosSet(boardresult2_rankRowSprGrpTbl[i]->unk_0A, 9, 174, 4);
         }
     }
@@ -279,7 +279,7 @@ void boardresult2_RankSprCreate(void) {
     DataClose(data);
     HuSprGrpMemberSet(boardresult2_rankTitleSprGrp->unk_0A, 0, boardresult2_rankTitleSprGrp->unk_0C[0], 0);
     HuSprPriSet(boardresult2_rankTitleSprGrp->unk_0A, 0, 90);
-    HuSprAttrSet(boardresult2_rankTitleSprGrp->unk_0A, 0, 0x4000);
+    HuSprAttrSet(boardresult2_rankTitleSprGrp->unk_0A, 0, HUSPR_ATTR_BG);
     HuSprPosSet(boardresult2_rankTitleSprGrp->unk_0A, 0, 160, 33);
 
     boardresult2_rankSubtitleSprGrp = MBDSprGrpCreate(1, 0);
@@ -288,7 +288,7 @@ void boardresult2_RankSprCreate(void) {
     DataClose(data);
     HuSprGrpMemberSet(boardresult2_rankSubtitleSprGrp->unk_0A, 0, boardresult2_rankSubtitleSprGrp->unk_0C[0], 0);
     HuSprPriSet(boardresult2_rankSubtitleSprGrp->unk_0A, 0, 89);
-    HuSprAttrSet(boardresult2_rankSubtitleSprGrp->unk_0A, 0, 0x4000);
+    HuSprAttrSet(boardresult2_rankSubtitleSprGrp->unk_0A, 0, HUSPR_ATTR_BG);
     HuSprPosSet(boardresult2_rankSubtitleSprGrp->unk_0A, 0, 55, 41);
 }
 
@@ -674,7 +674,7 @@ void boardresult2_StatSprCreate(void) {
     DataClose(data);
     HuSprGrpMemberSet(boardresult2_boardNameSprGrp->unk_0A, 0, boardresult2_boardNameSprGrp->unk_0C[0], 0);
     HuSprPriSet(boardresult2_boardNameSprGrp->unk_0A, 0, 110);
-    HuSprAttrSet(boardresult2_boardNameSprGrp->unk_0A, 0, 0x4000);
+    HuSprAttrSet(boardresult2_boardNameSprGrp->unk_0A, 0, HUSPR_ATTR_BG);
     HuSprPosSet(boardresult2_boardNameSprGrp->unk_0A, 0, 74, 39);
 
     boardresult2_gameLengthSprGrp = MBDSprGrpCreate(2, 0);
@@ -683,7 +683,7 @@ void boardresult2_StatSprCreate(void) {
     DataClose(data);
     HuSprGrpMemberSet(boardresult2_gameLengthSprGrp->unk_0A, 0, boardresult2_gameLengthSprGrp->unk_0C[0], 0);
     HuSprPriSet(boardresult2_gameLengthSprGrp->unk_0A, 0, 100);
-    HuSprAttrSet(boardresult2_gameLengthSprGrp->unk_0A, 0, 0x4000);
+    HuSprAttrSet(boardresult2_gameLengthSprGrp->unk_0A, 0, HUSPR_ATTR_BG);
     HuSprPosSet(boardresult2_gameLengthSprGrp->unk_0A, 0, 210, 28);
 
     if (GwSystem.playMode & 4) {
@@ -695,7 +695,7 @@ void boardresult2_StatSprCreate(void) {
     DataClose(data);
     HuSprGrpMemberSet(boardresult2_gameLengthSprGrp->unk_0A, 1, boardresult2_gameLengthSprGrp->unk_0C[1], 0);
     HuSprPriSet(boardresult2_gameLengthSprGrp->unk_0A, 1, 99);
-    HuSprAttrSet(boardresult2_gameLengthSprGrp->unk_0A, 1, 0x4000);
+    HuSprAttrSet(boardresult2_gameLengthSprGrp->unk_0A, 1, HUSPR_ATTR_BG);
     HuSprPosSet(boardresult2_gameLengthSprGrp->unk_0A, 1, 210, 28);
 
     boardresult2_statLabelSprGrp = MBDSprGrpCreate(1, 0);
@@ -704,7 +704,7 @@ void boardresult2_StatSprCreate(void) {
     DataClose(data);
     HuSprGrpMemberSet(boardresult2_statLabelSprGrp->unk_0A, 0, boardresult2_statLabelSprGrp->unk_0C[0], 0);
     HuSprPriSet(boardresult2_statLabelSprGrp->unk_0A, 0, 99);
-    HuSprAttrSet(boardresult2_statLabelSprGrp->unk_0A, 0, 0x4000);
+    HuSprAttrSet(boardresult2_statLabelSprGrp->unk_0A, 0, HUSPR_ATTR_BG);
     HuSprPosSet(boardresult2_statLabelSprGrp->unk_0A, 0, 218, 51);
 
     for (i = 0; i < 4; i++) {
@@ -714,7 +714,7 @@ void boardresult2_StatSprCreate(void) {
         DataClose(data);
         HuSprGrpMemberSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 1, boardresult2_statRowSprGrpTbl[i]->unk_0C[1], 0);
         HuSprPriSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 1, 98);
-        HuSprAttrSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 1, 0x4000);
+        HuSprAttrSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 1, HUSPR_ATTR_BG);
         HuSprPosSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 1, 172, 0);
 
         data = DataRead(nameFiles.files[GwPlayer[kakusiMasuItemHis[i]].chr]);
@@ -722,7 +722,7 @@ void boardresult2_StatSprCreate(void) {
         DataClose(data);
         HuSprGrpMemberSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 2, boardresult2_statRowSprGrpTbl[i]->unk_0C[2], 0);
         HuSprPriSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 2, 97);
-        HuSprAttrSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 2, 0x4000);
+        HuSprAttrSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 2, HUSPR_ATTR_BG);
         HuSprPosSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 2, 36, 1);
 
         data = DataRead(faceFiles.files[GwPlayer[kakusiMasuItemHis[i]].chr]);
@@ -730,7 +730,7 @@ void boardresult2_StatSprCreate(void) {
         DataClose(data);
         HuSprGrpMemberSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 3, boardresult2_statRowSprGrpTbl[i]->unk_0C[3], 0);
         HuSprPriSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 3, 96);
-        HuSprAttrSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 3, 0x4000);
+        HuSprAttrSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 3, HUSPR_ATTR_BG);
         HuSprPosSet(boardresult2_statRowSprGrpTbl[i]->unk_0A, 3, 77, 1);
     }
 
@@ -745,10 +745,10 @@ void boardresult2_StatSprCreate(void) {
         DataClose(data);
         HuSprGrpMemberSet(boardresult2_statArrowSprGrp->unk_0A, i, boardresult2_statArrowSprGrp->unk_0C[i], 0);
         HuSprPriSet(boardresult2_statArrowSprGrp->unk_0A, i, 90);
-        HuSprAttrSet(boardresult2_statArrowSprGrp->unk_0A, i, 0x4000);
+        HuSprAttrSet(boardresult2_statArrowSprGrp->unk_0A, i, HUSPR_ATTR_BG);
         HuSprPosSet(boardresult2_statArrowSprGrp->unk_0A, i, i * 154 + 133, 161);
     }
-    HuSprAttrSet(boardresult2_statArrowSprGrp->unk_0A, 0, 1);
+    HuSprAttrSet(boardresult2_statArrowSprGrp->unk_0A, 0, HUSPR_ATTR_FLIPX);
 
     boardresult2_statNameSprGrp = MBDSprGrpCreate(13, 0);
     for (i = 0; i < 13; i++) {
@@ -757,7 +757,7 @@ void boardresult2_StatSprCreate(void) {
         DataClose(data);
         HuSprGrpMemberSet(boardresult2_statNameSprGrp->unk_0A, i, boardresult2_statNameSprGrp->unk_0C[i], 0);
         HuSprPriSet(boardresult2_statNameSprGrp->unk_0A, i, 80);
-        HuSprAttrSet(boardresult2_statNameSprGrp->unk_0A, i, 0xC000);
+        HuSprAttrSet(boardresult2_statNameSprGrp->unk_0A, i, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_BG);
     }
 
     boardresult2_statNumSprGrp = MBDSprGrpCreate(64, 0);
@@ -770,7 +770,7 @@ void boardresult2_StatSprCreate(void) {
     for (i = 0; i < 64; i++) {
         HuSprGrpMemberSet(boardresult2_statNumSprGrp->unk_0A, i, boardresult2_statNumSprGrp->unk_0C[0], 0);
         HuSprPriSet(boardresult2_statNumSprGrp->unk_0A, i, 70);
-        HuSprAttrSet(boardresult2_statNumSprGrp->unk_0A, i, 0xC000);
+        HuSprAttrSet(boardresult2_statNumSprGrp->unk_0A, i, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_BG);
     }
 
     boardresult2_statCursorSprGrp = MBDSprGrpCreate(1, 0);
@@ -779,7 +779,7 @@ void boardresult2_StatSprCreate(void) {
     DataClose(data);
     HuSprGrpMemberSet(boardresult2_statCursorSprGrp->unk_0A, 0, boardresult2_statCursorSprGrp->unk_0C[0], 0);
     HuSprPriSet(boardresult2_statCursorSprGrp->unk_0A, 0, 60);
-    HuSprAttrSet(boardresult2_statCursorSprGrp->unk_0A, 0, 0x4000);
+    HuSprAttrSet(boardresult2_statCursorSprGrp->unk_0A, 0, HUSPR_ATTR_BG);
 
     boardresult2_hostGuide = MBDGuideCreate(0, 8);
     MBDGuidePosSet(boardresult2_hostGuide, 105, 8);
@@ -979,7 +979,7 @@ void boardresult2_MainProc(void) {
     for (i = 0; i < 6; i++) {
         HuSprGrpMemberSet(boardresult2_bgSprGrp->unk_0A, i, boardresult2_bgSprGrp->unk_0C[0], 0);
         HuSprPriSet(boardresult2_bgSprGrp->unk_0A, i, 200);
-        HuSprAttrSet(boardresult2_bgSprGrp->unk_0A, i, 0x4000);
+        HuSprAttrSet(boardresult2_bgSprGrp->unk_0A, i, HUSPR_ATTR_BG);
         HuSprPosSet(boardresult2_bgSprGrp->unk_0A, i, (i / 2) * 128 + 64, (i & 1) * 128 + 64);
     }
 

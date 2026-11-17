@@ -1202,7 +1202,7 @@ s32 MBDBackSprCreate(s32 arg0, Vec *arg1) {
         HuSprGrpMemberSet(obj->unk_02, 0, obj->unk_04, 0);
         HuSprAnimModeSet(obj->unk_02, 0, HUSPR_ANIM_MODE_BANK);
         HuSprPriSet(obj->unk_02, 0, 0x8000);
-        HuSprAttrSet(obj->unk_02, 0, 0x9000);
+        HuSprAttrSet(obj->unk_02, 0, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
         HuSprScissorSet(obj->unk_02, 0, 0x10, 0xC, 0x130, 0xE4);
     
         if (mbdBackSprNum == 0) {
@@ -1240,7 +1240,7 @@ s32 MBDBackSprCopyCreate(s32 arg0, Vec *arg1) {
                             mbdBackSprTbl[arg0].unk_04, 0);
         HuSprAnimModeSet(unkBoard7->unk_02, 0, HUSPR_ANIM_MODE_BANK);
         HuSprPriSet(unkBoard7->unk_02, 0, 0x8000);
-        HuSprAttrSet(unkBoard7->unk_02, 0, 0x9000);
+        HuSprAttrSet(unkBoard7->unk_02, 0, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
         HuSprScissorSet(unkBoard7->unk_02, 0, 0x10, 0xC, 0x130, 0xE4);
 
         mbdBackSprNum++;

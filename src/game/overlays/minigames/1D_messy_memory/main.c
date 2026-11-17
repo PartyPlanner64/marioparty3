@@ -480,7 +480,7 @@ void m229_CoverObjMain(omObjData *obj) {
     switch (m229_phase) {
         case 4:
             if (obj->work[0] == 0) {
-                espAttrReset(m229_coverWorkTbl[0].unk42, 0x4000);
+                espAttrReset(m229_coverWorkTbl[0].unk42, HUSPR_ATTR_BG);
             }
             break;
         case 5:
@@ -504,7 +504,7 @@ void m229_CoverObjMain(omObjData *obj) {
                 work->unk5C.x = work->unk5C.y = m229_zoomScale;
                 espScaleSet(work->unk42, work->unk5C.x, work->unk5C.y);
                 espDispOn(work->unk42);
-                espAttrSet(work->unk42, 0x4000);
+                espAttrSet(work->unk42, HUSPR_ATTR_BG);
                 if (work->unk5C.x >= 0.23f || work->unk5C.y >= 0.23f) {
                     m229_phaseDoneNo = 12;
                 }
@@ -521,7 +521,7 @@ void m229_CoverObjInit(omObjData *obj) {
         work->unk44.y = 120.0f;
         work->unk40 = HuSprAnimDataRead(0x3E0000);
         work->unk42 = espEntry(work->unk40, 0, 0);
-        espAttrSet(work->unk42, 0x4000);
+        espAttrSet(work->unk42, HUSPR_ATTR_BG);
         espPosSet(work->unk42, work->unk44.x, work->unk44.y);
         espPriSet(work->unk42, 0x5555);
     }
@@ -530,7 +530,7 @@ void m229_CoverObjInit(omObjData *obj) {
         work->unk44.y = 120.0f;
         work->unk40 = HuSprAnimDataRead(0x3E0001);
         work->unk42 = espEntry(work->unk40, 0, 0);
-        espAttrSet(work->unk42, 0x4000);
+        espAttrSet(work->unk42, HUSPR_ATTR_BG);
         espPosSet(work->unk42, work->unk44.x, work->unk44.y);
         espPriSet(work->unk42, 0xFFFF);
     }
@@ -1930,7 +1930,7 @@ void m229_ItemObjMain(omObjData *obj) {
             break;
         case 4:
             if (obj->work[1] == 4) {
-                espAttrReset(work->unk42, 0x4000);
+                espAttrReset(work->unk42, HUSPR_ATTR_BG);
             }
             if (obj->work[1] < 4) {
                 for (i = 0; i < 20; i++) {
@@ -2176,7 +2176,7 @@ void m229_ItemObjInit(omObjData *obj) {
     }
     work->unk5C.x = 1.0f;
     work->unk5C.y = 1.0f;
-    espAttrSet(work->unk42, 0x5008);
+    espAttrSet(work->unk42, HUSPR_ATTR_BG | HUSPR_ATTR_XLU | HUSPR_ATTR_FILTER_BILERP);
     espPosSet(work->unk42, work->unk44.x, work->unk44.y);
     espScaleSet(work->unk42, work->unk5C.x, work->unk5C.y);
     espPriSet(work->unk42, 0xDDDD);
@@ -2234,7 +2234,7 @@ void m229_ItemMarkObjMain(omObjData *obj) {
             break;
         case 4:
             if (obj->work[1] == 4) {
-                espAttrReset(work->unk42, 0x4000);
+                espAttrReset(work->unk42, HUSPR_ATTR_BG);
             }
             break;
         case 5:
@@ -2352,7 +2352,7 @@ void m229_ItemMarkObjInit(omObjData *obj) {
             }
         }
     }
-    espAttrSet(work->unk42, 0x5000);
+    espAttrSet(work->unk42, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
     espScaleSet(work->unk42, work->unk5C.x, work->unk5C.y);
     obj->func = m229_ItemMarkObjMain;
 }
@@ -2761,13 +2761,13 @@ void m229_ScoreObjInit(omObjData *obj) {
         case 1:
             work->unk40 = HuSprAnimDataRead(0x2E);
             work->unk42 = espEntry(work->unk40, 0, 0);
-            espAttrSet(work->unk42, 0x1000);
+            espAttrSet(work->unk42, HUSPR_ATTR_XLU);
             espPriSet(work->unk42, 0);
             break;
         case 2:
             work->unk40 = HuSprAnimDataRead(0x3E0019);
             work->unk42 = espEntry(work->unk40, 0, 0);
-            espAttrSet(work->unk42, 0x1000);
+            espAttrSet(work->unk42, HUSPR_ATTR_XLU);
             espPriSet(work->unk42, 0x500);
             break;
     }

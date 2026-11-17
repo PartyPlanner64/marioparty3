@@ -1165,7 +1165,7 @@ void staff_TextLineInit(s16 arg0, s16 arg1) {
         for (j = 0; j < memberCount; j++) {
             HuSprTPLvlSet(grpId, j, 0x100);
             HuSprAttrReset(grpId, j, 0xFFFF);
-            HuSprAttrSet(grpId, j, 0x9000);
+            HuSprAttrSet(grpId, j, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
             HuSprScaleSet(grpId, j, 1.0f, 1.0f);
             HuSprAnimModeSet(grpId, j, HUSPR_ANIM_MODE_STOP);
             HuSprPriSet(grpId, j, 400);

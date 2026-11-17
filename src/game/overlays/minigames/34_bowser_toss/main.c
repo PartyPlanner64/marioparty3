@@ -1813,7 +1813,7 @@ void m252_StageObjInit(omObjData *object) {
     HuSprPosSet(group, 0, 160, 120);
     HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_STOP);
     HuSprPatNoSet(group, 0, 0);
-    HuSprAttrSet(group, 0, 0x1000);
+    HuSprAttrSet(group, 0, HUSPR_ATTR_XLU);
     object->func = m252_StageObjMain;
 }
 
@@ -1906,7 +1906,7 @@ void m252_BackInit(void) {
             HuSprPosSet(group, j, m252_backScissorTbl[i].x, m252_backScissorTbl[i].y);
             HuSprAnimModeSet(group, j, HUSPR_ANIM_MODE_STOP);
             HuSprPatNoSet(group, j, 0);
-            HuSprAttrSet(group, j, 0x483C);
+            HuSprAttrSet(group, j, HUSPR_ATTR_BG | HUSPR_ATTR_AA | HUSPR_ATTR_DITHER_MAGICSQ | HUSPR_ATTR_FILTER_AVERAGE);
             HuSprScissorSet(group, j, m252_backScissorTbl[i].x, m252_backScissorTbl[i].y,
                             m252_backScissorTbl[i].width, m252_backScissorTbl[i].height);
         }
@@ -2050,7 +2050,7 @@ void m252_ScoreInit(void) {
             }
             HuSprAnimModeSet(bowser->spriteId, j, HUSPR_ANIM_MODE_STOP);
             HuSprPatNoSet(bowser->spriteId, j, 0);
-            HuSprAttrSet(bowser->spriteId, j, 0x903C);
+            HuSprAttrSet(bowser->spriteId, j, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU | HUSPR_ATTR_DITHER_MAGICSQ | HUSPR_ATTR_FILTER_AVERAGE);
         }
     }
     omAddObj(0x3F, 0, 0, -1, m252_ScoreObjMain);

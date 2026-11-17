@@ -1451,7 +1451,7 @@ void m218_KinopioObjInit(omObjData *object) {
     data->unk178[4].x = -0.8660254f;
     data->unk178[4].z = -0.5f;
     m218_kinopioMarkSprTbl[data->unk160] = espEntry(HuSprAnimDataRead(0x330005), 0, 1);
-    espAttrSet(m218_kinopioMarkSprTbl[data->unk160], 0x5000);
+    espAttrSet(m218_kinopioMarkSprTbl[data->unk160], HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
     espPosSet(m218_kinopioMarkSprTbl[data->unk160], 0, 0);
     espScaleSet(m218_kinopioMarkSprTbl[data->unk160], 0.5f, 0.5f);
     espTPLvlSet(m218_kinopioMarkSprTbl[data->unk160], 0xCC);
@@ -1964,13 +1964,13 @@ void m218_BoardObjInit(omObjData *object) {
     m218_boardSprGrp = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(m218_boardSprGrp, 0, spriteId1, 0);
     HuSprAttrReset(m218_boardSprGrp, 0, 0xFFFF);
-    HuSprAttrSet(m218_boardSprGrp, 0, 0x5000);
+    HuSprAttrSet(m218_boardSprGrp, 0, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
     HuSprPosSet(m218_boardSprGrp, 0, 160, 120);
     spriteId2 = HuSprAnimDataRead(0x330004);
     m218_gridSprGrp = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(m218_gridSprGrp, 0, spriteId2, 0);
     HuSprAttrReset(m218_gridSprGrp, 0, 0xFFFF);
-    HuSprAttrSet(m218_gridSprGrp, 0, 0x5000);
+    HuSprAttrSet(m218_gridSprGrp, 0, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
     HuSprPosSet(m218_gridSprGrp, 0, 160, 120);
     m218_fillCellList = HuMemAlloc(0xE100);
     m218_fillQueueTbl[0] = HuMemAlloc(0xFA0);

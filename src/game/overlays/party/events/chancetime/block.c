@@ -551,9 +551,9 @@ void chancetime_EventProc(void) {
 
     obj = omAddObj(0x14, 0x15, 0, -1, NULL);
     chancetime_eventObj = obj;
-    model = &Hu3DData[HuSprBGHookMdl];
+    model = &Hu3DData[HuSprFGHookMdl];
     model->unk00 = (model->unk00 & 0xF9) | 3;
-    Hu3DModelCameraSet(HuSprBGHookMdl, HU3D_CAM1);
+    Hu3DModelCameraSet(HuSprFGHookMdl, HU3D_CAM1);
     sprId = HuSprAnimDataRead(0x210026);
     for (i = 0; i < 20; i++) {
         chancetime_coinSprTbl[i] = espEntry(sprId, 0, 1);

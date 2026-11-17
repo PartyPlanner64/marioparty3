@@ -138,7 +138,7 @@ static void MBDPauseTurnNumSet(UnkBoard4 *arg0, s16 arg1, s16 arg2, s16 arg3, u1
         }
 
         HuSprPriSet(arg0->unk_0A, arg1, 7);
-        HuSprAttrSet(arg0->unk_0A, arg1, 0x01001000);
+        HuSprAttrSet(arg0->unk_0A, arg1, HUSPR_ATTR_NOPAUSE | HUSPR_ATTR_XLU);
         HuSprPosSet(arg0->unk_0A, arg1, arg3, arg4);
         HuSprColorSet(arg0->unk_0A, arg1, mbdPauseColorTbl[mbdPauseColorNo][0], mbdPauseColorTbl[mbdPauseColorNo][1], mbdPauseColorTbl[mbdPauseColorNo][2]);
         arg1 += 1;
@@ -165,7 +165,7 @@ static UnkBoard4 *MBDPauseTurnNumCreate(void) {
     temp_s1->unk_0C[0] = HuSprAnimRead(data);
     HuSprGrpMemberSet(temp_s1->unk_0A, 0, temp_s1->unk_0C[0], 0);
     HuSprPriSet(temp_s1->unk_0A, 0, 7);
-    HuSprAttrSet(temp_s1->unk_0A, 0, 0x1000);
+    HuSprAttrSet(temp_s1->unk_0A, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(temp_s1->unk_0A, 0, 0xA0, 0x73);
     HuSprColorSet(temp_s1->unk_0A, 0, mbdPauseColorTbl[mbdPauseColorNo][0], mbdPauseColorTbl[mbdPauseColorNo][1], mbdPauseColorTbl[mbdPauseColorNo][2]);
     DataClose(data);
@@ -178,7 +178,7 @@ static UnkBoard4 *MBDPauseTurnNumCreate(void) {
     temp_s1->unk_0C[1] = HuSprAnimRead(data);
     HuSprGrpMemberSet(temp_s1->unk_0A, 1, temp_s1->unk_0C[1], 0);
     HuSprPriSet(temp_s1->unk_0A, 1, 7);
-    HuSprAttrSet(temp_s1->unk_0A, 1, 0x1000);
+    HuSprAttrSet(temp_s1->unk_0A, 1, HUSPR_ATTR_XLU);
     HuSprPosSet(temp_s1->unk_0A, 1, 0xA0, 0x90);
     HuSprColorSet(temp_s1->unk_0A, 1, mbdPauseColorTbl[mbdPauseColorNo][0], mbdPauseColorTbl[mbdPauseColorNo][1], mbdPauseColorTbl[mbdPauseColorNo][2]);
     DataClose(data);
@@ -192,7 +192,7 @@ static UnkBoard4 *MBDPauseTurnNumCreate(void) {
     temp_s1->unk_0C[6] = HuSprAnimRead(data);
     HuSprGrpMemberSet(temp_s1->unk_0A, 6, temp_s1->unk_0C[6], 0);
     HuSprPriSet(temp_s1->unk_0A, 6, 7);
-    HuSprAttrSet(temp_s1->unk_0A, 6, 0x1000);
+    HuSprAttrSet(temp_s1->unk_0A, 6, HUSPR_ATTR_XLU);
     HuSprPosSet(temp_s1->unk_0A, 6, 0xA0, 0x3C);
     DataClose(data);
 
@@ -200,7 +200,7 @@ static UnkBoard4 *MBDPauseTurnNumCreate(void) {
     temp_s1->unk_0C[7] = HuSprAnimRead(data);
     HuSprGrpMemberSet(temp_s1->unk_0A, 7, temp_s1->unk_0C[7], 0);
     HuSprPriSet(temp_s1->unk_0A, 7, 6);
-    HuSprAttrSet(temp_s1->unk_0A, 7, 0x1000);
+    HuSprAttrSet(temp_s1->unk_0A, 7, HUSPR_ATTR_XLU);
     HuSprPosSet(temp_s1->unk_0A, 7, 0xA0, 0x22);
     DataClose(data);
     return temp_s1;
@@ -508,7 +508,7 @@ void MBDPauseOptionIconSet(UnkBoard4 *arg0, s32 arg1) {
     DataClose(data);
     HuSprGrpMemberSet(arg0->unk_0A, arg1, arg0->unk_0C[arg1], 0);
     HuSprPriSet(arg0->unk_0A, arg1, 8);
-    HuSprAttrSet(arg0->unk_0A, arg1, 0x1000);
+    HuSprAttrSet(arg0->unk_0A, arg1, HUSPR_ATTR_XLU);
     HuSprPosSet(arg0->unk_0A, arg1,
                 ((arg1 % 4) << 6) + 0x46,
                 ((arg1 / 4) * 0x3C) + 0x3C);
@@ -585,7 +585,7 @@ s32 MBDPauseOptionExec(s32 arg0) {
             DataClose(data);
             HuSprGrpMemberSet(icons->unk_0A, i, icons->unk_0C[i], 0);
             HuSprPriSet(icons->unk_0A, i, 8);
-            HuSprAttrSet(icons->unk_0A, i, 0x1000);
+            HuSprAttrSet(icons->unk_0A, i, HUSPR_ATTR_XLU);
             HuSprPosSet(icons->unk_0A, i,
                         ((i % 4) << 6) + 0x46,
                         ((i / 4) * 0x3C) + 0x3C);
@@ -611,7 +611,7 @@ s32 MBDPauseOptionExec(s32 arg0) {
         DataClose(data);
         HuSprGrpMemberSet(cursor->unk_0A, 0, cursor->unk_0C[0], 0);
         HuSprPriSet(cursor->unk_0A, 0, 7);
-        HuSprAttrSet(cursor->unk_0A, 0, 0x1000);
+        HuSprAttrSet(cursor->unk_0A, 0, HUSPR_ATTR_XLU);
         HuSprPosSet(cursor->unk_0A, 0,
                     ((mbdPauseOptionSel % 4) * 64) + 0x2A,
                     ((mbdPauseOptionSel / 4) * 60) + 0x20);
@@ -928,7 +928,7 @@ s32 MBDPausePadCfgExec(s32 arg0) {
     DataClose(data);
     HuSprGrpMemberSet(bg->unk_0A, 0, bg->unk_0C[0], 0);
     HuSprPriSet(bg->unk_0A, 0, 8);
-    HuSprAttrSet(bg->unk_0A, 0, 0x1000);
+    HuSprAttrSet(bg->unk_0A, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(bg->unk_0A, 0, 0xA0, (mbdPausePanelYTbl[0] + mbdPausePanelYTbl[1]) / 2);
 
     panel = MBDSprGrpCreate(4, 0);
@@ -940,7 +940,7 @@ s32 MBDPausePadCfgExec(s32 arg0) {
         }
         HuSprGrpMemberSet(panel->unk_0A, i + 2, panel->unk_0C[2], 0);
         HuSprPriSet(panel->unk_0A, i + 2, 8);
-        HuSprAttrSet(panel->unk_0A, i + 2, 0x1000);
+        HuSprAttrSet(panel->unk_0A, i + 2, HUSPR_ATTR_XLU);
         HuSprPosSet(panel->unk_0A, i + 2, mbdPausePanelXTbl[i], mbdPausePanelYTbl[i]);
     }
 
@@ -950,11 +950,11 @@ s32 MBDPausePadCfgExec(s32 arg0) {
         chr->unk_0C[i] = HuSprAnimRead(data);
         HuSprGrpMemberSet(chr->unk_0A, i, chr->unk_0C[i], 0);
         HuSprPriSet(chr->unk_0A, i, 7);
-        HuSprAttrSet(chr->unk_0A, i, 0x1000);
+        HuSprAttrSet(chr->unk_0A, i, HUSPR_ATTR_XLU);
         HuSprPosSet(chr->unk_0A, i, mbdPausePanelXTbl[i] - 20, mbdPausePanelYTbl[i] + 4);
         DataClose(data);
         if (i != 0) {
-            HuSprAttrSet(chr->unk_0A, i, 1);
+            HuSprAttrSet(chr->unk_0A, i, HUSPR_ATTR_FLIPX);
         }
     }
 
@@ -984,9 +984,9 @@ s32 MBDPausePadCfgExec(s32 arg0) {
             HuSprDispOff(icon->unk_0A, i + 2);
         }
         HuSprPriSet(icon->unk_0A, i, 7);
-        HuSprAttrSet(icon->unk_0A, i, 0x01001000);
+        HuSprAttrSet(icon->unk_0A, i, HUSPR_ATTR_NOPAUSE | HUSPR_ATTR_XLU);
         HuSprPriSet(icon->unk_0A, i + 2, 7);
-        HuSprAttrSet(icon->unk_0A, i + 2, 0x01001000);
+        HuSprAttrSet(icon->unk_0A, i + 2, HUSPR_ATTR_NOPAUSE | HUSPR_ATTR_XLU);
         HuSprPosSet(icon->unk_0A, i + 2,
                     mbdPausePanelXTbl[i] + 16,
                     mbdPausePanelYTbl[i] + 10);
@@ -996,23 +996,23 @@ s32 MBDPausePadCfgExec(s32 arg0) {
     data = DataRead(0x13009C);
     cursor->unk_0C[0] = HuSprAnimRead(data);
     HuSprGrpMemberSet(cursor->unk_0A, 0, cursor->unk_0C[0], 0);
-    HuSprAttrSet(cursor->unk_0A, 0, 0x1808);
+    HuSprAttrSet(cursor->unk_0A, 0, HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_BILERP);
     HuSprPriSet(cursor->unk_0A, 0, 8);
     DataClose(data);
 
     data = DataRead(0x1300A9);
     cursor->unk_0C[1] = HuSprAnimRead(data);
     HuSprGrpMemberSet(cursor->unk_0A, 1, cursor->unk_0C[1], 0);
-    HuSprAttrSet(cursor->unk_0A, 1, 0x9808);
+    HuSprAttrSet(cursor->unk_0A, 1, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_BILERP);
     HuSprPriSet(cursor->unk_0A, 1, 8);
     HuSprColorSet(cursor->unk_0A, 1, 0xFF, 0, 0);
-    HuSprAttrSet(cursor->unk_0A, 1, 1);
+    HuSprAttrSet(cursor->unk_0A, 1, HUSPR_ATTR_FLIPX);
     DataClose(data);
 
     data = DataRead(0x1300A9);
     cursor->unk_0C[2] = HuSprAnimRead(data);
     HuSprGrpMemberSet(cursor->unk_0A, 2, cursor->unk_0C[2], 0);
-    HuSprAttrSet(cursor->unk_0A, 2, 0x9808);
+    HuSprAttrSet(cursor->unk_0A, 2, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_BILERP);
     HuSprPriSet(cursor->unk_0A, 2, 8);
     HuSprColorSet(cursor->unk_0A, 2, 0xFF, 0, 0);
     DataClose(data);
@@ -1171,7 +1171,7 @@ static void MBDPauseMain(void) {
     temp_s1->unk_0C[0] = HuSprAnimRead(temp_v0_2);
     HuSprGrpMemberSet(temp_s1->unk_0A, 0, temp_s1->unk_0C[0], 0U);
     HuSprPriSet(temp_s1->unk_0A, 0, 9U);
-    HuSprAttrSet(temp_s1->unk_0A, 0, 0x1000);
+    HuSprAttrSet(temp_s1->unk_0A, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(temp_s1->unk_0A, 0, 0xA0, 0x78);
     HuSprScaleSet(temp_s1->unk_0A, 0, 40.0f, 30.0f);
     HuSprColorTPLvlSet(temp_s1->unk_0A, 0, 0, 0, 0, 0xC0);
@@ -1217,8 +1217,8 @@ void MBDPauseCreate(s32 arg0) {
         msmMusSetVolume(mbSubMusNo, 0x60);
     }
 
-    Hu3DModelModeSet(HuSprBGHookMdl, 2);
-    Hu3DModelCameraSet(HuSprBGHookMdl, HU3D_CAM0);
+    Hu3DModelModeSet(HuSprFGHookMdl, 2);
+    Hu3DModelCameraSet(HuSprFGHookMdl, HU3D_CAM0);
     mbdPauseGuide = NULL;
     mbdPauseStat = 0;
     mbdPauseQuitF = 0;
@@ -1228,7 +1228,7 @@ void MBDPauseCreate(s32 arg0) {
     omPrcSetStatBit(temp_v0, OM_STAT_NOALLPAUSE);
     HuPrcChildLink(temp_s1_2, temp_v0);
     HuPrcChildWatch();
-    Hu3DModelModeSet(HuSprBGHookMdl, 6);
+    Hu3DModelModeSet(HuSprFGHookMdl, 6);
     HuAudSeqVolSet(0x7F);
     if (mbSubMusNo != -1) {
         msmMusSetVolume(mbSubMusNo, 0x7F);

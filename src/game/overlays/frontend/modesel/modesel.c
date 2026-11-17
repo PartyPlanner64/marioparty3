@@ -345,7 +345,7 @@ void modesel_SprCreate(s32 arg0, s32 arg1) {
 
 void modesel_SprBGCreate(s32 arg0, s32 arg1) {
     modesel_SprCreate(arg0, arg1);
-    espAttrSet(modesel_sprTbl[arg0].unk_00, 0x4000);
+    espAttrSet(modesel_sprTbl[arg0].unk_00, HUSPR_ATTR_BG);
 }
 
 void modesel_SprKill(s32 arg0) {
@@ -566,7 +566,7 @@ void modesel_BGSprCreate(void) {
     // The original call omits the resource id.
     modesel_bgAnim = ((s16 (*)())HuSprAnimDataRead)();
     modesel_bgSpr = espEntry(modesel_bgAnim, 0, 0);
-    espAttrSet(modesel_bgSpr, 0x4000);
+    espAttrSet(modesel_bgSpr, HUSPR_ATTR_BG);
     espPosSet(modesel_bgSpr, 0xA0, 0x78);
 }
 
@@ -3680,7 +3680,7 @@ void modesel_HelpExec(void) {
     modesel_SprCreate(5, 0x150003);
     modesel_SprPosSet(5, 292, 120);
     modesel_SprDispOff(5);
-    espAttrSet(modesel_EspIdGet(5), 1);
+    espAttrSet(modesel_EspIdGet(5), HUSPR_ATTR_FLIPX);
     modesel_SprBGDispOff(1);
     modesel_WinDispOff(0);
     modesel_FileInfoDispOff();

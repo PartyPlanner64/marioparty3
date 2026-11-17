@@ -458,7 +458,7 @@ void msetup_ChrInfoProc(void) {
         }
         HuSprTPLvlSet(group, member, 256);
         HuSprAttrReset(group, member, 0xFFFF);
-        HuSprAttrSet(group, member, 0x9000);
+        HuSprAttrSet(group, member, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
         HuSprScaleSet(group, member, 1.0f, 1.0f);
         HuSprAnimModeSet(group, member, HUSPR_ANIM_MODE_BANK);
         HuSprGrpMemberSet(group, member, sprite, 0);
@@ -954,7 +954,7 @@ s16 msetup_ChrSelect(MsetupMenuState *state) {
             sprites[member] = characterSprite;
             HuSprTPLvlSet(group, member, 0x100);
             HuSprAttrReset(group, member, 0xFFFF);
-            HuSprAttrSet(group, member, 0x9000);
+            HuSprAttrSet(group, member, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
             HuSprScaleSet(group, member, 1.0f, 1.0f);
             HuSprAnimModeSet(group, member, HUSPR_ANIM_MODE_STOP);
             HuSprGrpMemberSet(group, member, characterSprite, 0);
@@ -1343,7 +1343,7 @@ void msetup_ComLevelSprProc(void) {
         sprites.sprites[i] = index;
         HuSprTPLvlSet(group, i, 0);
         HuSprAttrReset(group, i, 0xFFFF);
-        HuSprAttrSet(group, i, 0x9000);
+        HuSprAttrSet(group, i, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
         HuSprScaleSet(group, i, 1.0f, 1.0f);
         HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_STOP);
         HuSprGrpMemberSet(group, i, index, 0);
@@ -2000,7 +2000,7 @@ s16 msetup_BoardSelect(MsetupMenuState *arg0) {
             var_s6 = HuSprAnimRead(temp_v0_4);
             DataCloseTemp(temp_v0_4);
             backgroundEspriteSlot = espEntry(var_s6, 0, 1);
-            espAttrSet(backgroundEspriteSlot, 0x1000);
+            espAttrSet(backgroundEspriteSlot, HUSPR_ATTR_XLU);
             espPriSet(backgroundEspriteSlot, 1);
             espPosSet(backgroundEspriteSlot, 0xA0, var_fp);
             espScaleSet(backgroundEspriteSlot, tempFloat, tempFloat);
@@ -2114,7 +2114,7 @@ s16 msetup_StoryBoardShow(MsetupMenuState *state) {
     sprite = HuSprAnimRead(data);
     DataCloseTemp(data);
     slot = espEntry(sprite, 0, 1);
-    espAttrSet(slot, 0x1000);
+    espAttrSet(slot, HUSPR_ATTR_XLU);
     espPriSet(slot, 1);
     espPosSet(slot, 160, y);
     espScaleSet(slot, scale, scale);

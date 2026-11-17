@@ -326,29 +326,29 @@ void m217_StageObjInit(omObjData *object) {
                           1.5f, 1.5f, 1.5f);
     }
 
-    sprite = m217_SprCreate(0xFFF, 0x32, 0x15, 0, 0x1000);
+    sprite = m217_SprCreate(0xFFF, 0x32, 0x15, 0, HUSPR_ATTR_XLU);
     HuSprTPLvlSet(m217_sprTbl[sprite].unk_01, 0, 200);
     m217_SprDispOn(sprite, 76, 32);
-    sprite = m217_SprCreate(0xFFF, 0x32, 0x15, 0, 0x1000);
+    sprite = m217_SprCreate(0xFFF, 0x32, 0x15, 0, HUSPR_ATTR_XLU);
     HuSprTPLvlSet(m217_sprTbl[sprite].unk_01, 0, 200);
     m217_SprDispOn(sprite, 236, 32);
-    m217_SprDispOn(m217_SprCreate(0xFF, 0x21, 0x1A, 0, 0), 76, 32);
-    m217_SprDispOn(m217_SprCreate(0xFF, 0x21, 0x1A, 0, 0), 236, 32);
-    m217_SprDispOn(m217_SprCreate(0xFF, 0x21, 0x1B, 0, 0), 92, 32);
-    m217_SprDispOn(m217_SprCreate(0xFF, 0x21, 0x1B, 0, 0), 252, 32);
+    m217_SprDispOn(m217_SprCreate(0xFF, 0x21, 0x1A, 0, HUSPR_ATTR_NONE), 76, 32);
+    m217_SprDispOn(m217_SprCreate(0xFF, 0x21, 0x1A, 0, HUSPR_ATTR_NONE), 236, 32);
+    m217_SprDispOn(m217_SprCreate(0xFF, 0x21, 0x1B, 0, HUSPR_ATTR_NONE), 92, 32);
+    m217_SprDispOn(m217_SprCreate(0xFF, 0x21, 0x1B, 0, HUSPR_ATTR_NONE), 252, 32);
 
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 2; j++) {
             m217_SprDispOn(
                 m217_SprCreate(0xEF, 0x21,
-                                            iconFiles[GwPlayer[m217_teamTbl[i].players[j]].chr], 0, 0),
+                                            iconFiles[GwPlayer[m217_teamTbl[i].players[j]].chr], 0, HUSPR_ATTR_NONE),
                 i * 160 + 40 + j * 18, 32);
         }
     }
     for (i = 0; i < 2; i++) {
-        m217_teamTbl[i].tensSprite = sprModel = m217_SprCreate(0xEF, 0, 0x31, 0, 0);
+        m217_teamTbl[i].tensSprite = sprModel = m217_SprCreate(0xEF, 0, 0x31, 0, HUSPR_ATTR_NONE);
         m217_SprDispOn(sprModel, i * 160 + 104, 32);
-        m217_teamTbl[i].onesSprite = sprModel = m217_SprCreate(0xEF, 0, 0x31, 0, 0);
+        m217_teamTbl[i].onesSprite = sprModel = m217_SprCreate(0xEF, 0, 0x31, 0, HUSPR_ATTR_NONE);
         m217_SprDispOn(sprModel, i * 160 + 116, 32);
     }
 

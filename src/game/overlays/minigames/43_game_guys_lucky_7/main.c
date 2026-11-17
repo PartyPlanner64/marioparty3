@@ -1102,7 +1102,7 @@ void m267_BackSprInit(void) {
 
     for (i = 0; i < 3; i++) {
         m267_backSprTbl[i] = espEntry(HuSprAnimDataRead(defs[i].dataNum), 0, 0);
-        espAttrSet(m267_backSprTbl[i], 0x4000);
+        espAttrSet(m267_backSprTbl[i], HUSPR_ATTR_BG);
         espPriSet(m267_backSprTbl[i], (u16)defs[i].priority);
         espPosSet(m267_backSprTbl[i], defs[i].x, defs[i].y);
     }
@@ -1125,7 +1125,7 @@ void m267_StepSprInit(void) {
     for (i = 0; i < 7; i++) {
         m267_stepSprTbl[i] = espEntry(HuSprAnimDataRead(defs[i].dataNum), 0, 0);
         if (i != 0) {
-            espAttrSet(m267_stepSprTbl[i], 0x4000);
+            espAttrSet(m267_stepSprTbl[i], HUSPR_ATTR_BG);
         }
         espPriSet(m267_stepSprTbl[i], 700);
         espPosSet(m267_stepSprTbl[i], defs[i].x, defs[i].y);

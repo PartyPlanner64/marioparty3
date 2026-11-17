@@ -1178,7 +1178,7 @@ void m228_BackObjInit(omObjData *object) {
     work->spriteFileId = HuSprAnimDataRead(0x3D0002);
     for (i = 0; i < 2; i++) {
         work->espId[i] = espEntry(work->spriteFileId, 0, 1);
-        espAttrSet(work->espId[i], 0x4008);
+        espAttrSet(work->espId[i], HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
         espPosSet(work->espId[i], 160, work->posY[i]);
         espDispOn(work->espId[i]);
         espScaleSet(work->espId[i], 1.0f, 1.0f);
@@ -1244,7 +1244,7 @@ void m228_CloudProc(void) {
     for (i = 0; i < 5; i++) {
         m228_cloudActiveTbl[i] = 0;
         m228_cloudSprTbl[i] = espEntry(m228_cloudAnim, 0, 1);
-        espAttrSet(m228_cloudSprTbl[i], 0x4008);
+        espAttrSet(m228_cloudSprTbl[i], HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
         espDispOff(m228_cloudSprTbl[i]);
         espScaleSet(m228_cloudSprTbl[i], 1.0f, 1.0f);
         espPosSet(m228_cloudSprTbl[i], 160, 300);
@@ -1329,16 +1329,16 @@ void m228_SideObjInit(omObjData *object) {
         work->y[i] = posY[i % 3];
         x = work->x[i];
         y = work->y[i];
-        espAttrSet(work->espId[i], 0x4008);
+        espAttrSet(work->espId[i], HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
         if (i >= 3) {
-            espAttrSet(work->espId[i], 1);
+            espAttrSet(work->espId[i], HUSPR_ATTR_FLIPX);
         }
         espPosSet(work->espId[i], x, y);
         espDispOn(work->espId[i]);
         espScaleSet(work->espId[i], 1.0f, 1.0f);
         espPriSet(work->espId[i], 30);
     }
-    espAttrReset(work->espId[3], 0x4000);
+    espAttrReset(work->espId[3], HUSPR_ATTR_BG);
     m228_flyerStatFlag = 0;
     m228_sideScrollSpeed = 0.0f;
     omAddPrcObj(m228_SideScrollProc, 0x50, 0x2000, 0);
@@ -1367,7 +1367,7 @@ void m228_SideObjMain(omObjData *object) {
         }
     }
     if (OM_GET_DATA_PTR(m228_goalObj, ParasolPlummetGoalWork)->pos.z >= 0.0f) {
-        espAttrSet(work->espId[3], 0x4000);
+        espAttrSet(work->espId[3], HUSPR_ATTR_BG);
     }
 }
 
@@ -1836,7 +1836,7 @@ void m228_HudCreate(void) {
         for (j = 0; j < 3; j++) {
             m228_hudDigitTbl[i * 3 + j] = espEntry(m228_hudDigitAnim, 0, 1);
             espPriSet(m228_hudDigitTbl[i * 3 + j], 10);
-            espAttrSet(m228_hudDigitTbl[i * 3 + j], 0x1000);
+            espAttrSet(m228_hudDigitTbl[i * 3 + j], HUSPR_ATTR_XLU);
             espPosSet(m228_hudDigitTbl[i * 3 + j], x + 32 + j * 12, y);
         }
     }

@@ -820,7 +820,7 @@ s32 GameMesStart3Exec(GAMEMES *gMes, Gfx **gfx) {
                 HuSprScaleSet(gMes->strGId[0], i + 1, chr->scaleX, chr->scaleY);
                 HuSprTPLvlSet(gMes->strGId[0], i + 1, chr->alpha);
                 HuSprPosSet(gMes->strGId[0], i + 1, chr->x, chr->y);
-                HuSprAttrSet(gMes->strGId[0], i + 1, 2);
+                HuSprAttrSet(gMes->strGId[0], i + 1, HUSPR_ATTR_FLIPY);
             }
             gMes->subMode = 1;
             break;
@@ -828,7 +828,7 @@ s32 GameMesStart3Exec(GAMEMES *gMes, Gfx **gfx) {
             chr = &gMesCharData[0];
             if (gMes->time > 60) {
                 for (i = 0; i < len; i++) {
-                    HuSprAttrReset(gMes->strGId[0], i + 1, 2);
+                    HuSprAttrReset(gMes->strGId[0], i + 1, HUSPR_ATTR_FLIPY);
                     HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
                 }
                 gMes->subMode = 2;
@@ -846,18 +846,18 @@ s32 GameMesStart3Exec(GAMEMES *gMes, Gfx **gfx) {
                 if (scale < 0.0f) {
                     scale = -scale;
                     for (i = 0; i < len; i++) {
-                        HuSprAttrSet(gMes->strGId[0], i + 1, 2);
+                        HuSprAttrSet(gMes->strGId[0], i + 1, HUSPR_ATTR_FLIPY);
                         HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, scale);
                     }
                 } else {
                     for (i = 0; i < len; i++) {
-                        HuSprAttrReset(gMes->strGId[0], i + 1, 2);
+                        HuSprAttrReset(gMes->strGId[0], i + 1, HUSPR_ATTR_FLIPY);
                         HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, scale);
                     }
                 }
             } else {
                 for (i = 0; i < len; i++) {
-                    HuSprAttrSet(gMes->strGId[0], i + 1, 2);
+                    HuSprAttrSet(gMes->strGId[0], i + 1, HUSPR_ATTR_FLIPY);
                     HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
                 }
             }
@@ -870,7 +870,7 @@ s32 GameMesStart3Exec(GAMEMES *gMes, Gfx **gfx) {
                 gMes->work = 0;
             }
             for (i = 0; i < len; i++) {
-                HuSprAttrReset(gMes->strGId[0], i + 1, 2);
+                HuSprAttrReset(gMes->strGId[0], i + 1, HUSPR_ATTR_FLIPY);
                 HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
             }
             break;
@@ -1004,7 +1004,7 @@ s32 GameMesStart5Exec(GAMEMES *gMes, Gfx **gfx) {
                 chr->angle = chr->unk2C = 180.0f;
                 HuSprScaleSet(gMes->strGId[0], i + 1, chr->scaleX, chr->scaleY);
                 HuSprPosSet(gMes->strGId[0], i + 1, chr->x, chr->y);
-                HuSprAttrSet(gMes->strGId[0], i + 1, 2);
+                HuSprAttrSet(gMes->strGId[0], i + 1, HUSPR_ATTR_FLIPY);
             }
             gMes->subMode = 1;
             gMes->unk0E = 0;
@@ -1041,10 +1041,10 @@ s32 GameMesStart5Exec(GAMEMES *gMes, Gfx **gfx) {
                     }
                     if (scale < 0.0f) {
                         scale = -scale;
-                        HuSprAttrSet(gMes->strGId[0], i + 1, 2);
+                        HuSprAttrSet(gMes->strGId[0], i + 1, HUSPR_ATTR_FLIPY);
                         HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, scale);
                     } else {
-                        HuSprAttrReset(gMes->strGId[0], i + 1, 2);
+                        HuSprAttrReset(gMes->strGId[0], i + 1, HUSPR_ATTR_FLIPY);
                         HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, scale);
                     }
                 }
@@ -1052,7 +1052,7 @@ s32 GameMesStart5Exec(GAMEMES *gMes, Gfx **gfx) {
                 for (i = 0; i < len; i++) {
                     chr = &gMesCharData[i];
                     chr->time = 0;
-                    HuSprAttrSet(gMes->strGId[0], i + 1, 2);
+                    HuSprAttrSet(gMes->strGId[0], i + 1, HUSPR_ATTR_FLIPY);
                     HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, 1.0f);
                 }
             }
@@ -1532,7 +1532,7 @@ s16 GameMesStrCreateScale(GAMEMES *gMes, u8 *str, u8 flags, s16 x, s16 y, f32 sc
         HuSprTPLvlSet(grp, member, 255);
         HuSprPriSet(grp, member, 5);
         HuSprAttrReset(grp, member, 0xFFFF);
-        HuSprAttrSet(grp, member, 0x1008);
+        HuSprAttrSet(grp, member, HUSPR_ATTR_XLU | HUSPR_ATTR_FILTER_BILERP);
         if ((*str >= 'a' && *str <= 'z') || (*str >= 0xD0 && *str <= 0xEF)) {
             x += 10;
         } else if (*str == 0x5C) {
@@ -2274,10 +2274,10 @@ s32 GameMesFinish14Exec(GAMEMES *gMes, Gfx **gfx) {
                     scale = cosdf(chr->angle);
                     if (scale < 0.0f) {
                         scale = -scale;
-                        HuSprAttrSet(gMes->strGId[0], i + 1, 2);
+                        HuSprAttrSet(gMes->strGId[0], i + 1, HUSPR_ATTR_FLIPY);
                         HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, scale);
                     } else {
-                        HuSprAttrReset(gMes->strGId[0], i + 1, 2);
+                        HuSprAttrReset(gMes->strGId[0], i + 1, HUSPR_ATTR_FLIPY);
                         HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, scale);
                     }
                 }
@@ -2432,10 +2432,10 @@ s32 GameMesFinish16Exec(GAMEMES *gMes, Gfx **gfx) {
                     scale = cosdf(chr->angle);
                     if (scale < 0.0f) {
                         scale = -scale;
-                        HuSprAttrSet(gMes->strGId[0], i + 1, 2);
+                        HuSprAttrSet(gMes->strGId[0], i + 1, HUSPR_ATTR_FLIPY);
                         HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, scale);
                     } else {
-                        HuSprAttrReset(gMes->strGId[0], i + 1, 2);
+                        HuSprAttrReset(gMes->strGId[0], i + 1, HUSPR_ATTR_FLIPY);
                         HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, scale);
                     }
                 }
@@ -2732,10 +2732,10 @@ s32 GameMesFinish20Exec(GAMEMES *gMes, Gfx **gfx) {
                     scale = cosdf(chr->angle);
                     if (scale < 0.0f) {
                         scale = -scale;
-                        HuSprAttrSet(gMes->strGId[0], i + 1, 2);
+                        HuSprAttrSet(gMes->strGId[0], i + 1, HUSPR_ATTR_FLIPY);
                         HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, scale);
                     } else {
-                        HuSprAttrReset(gMes->strGId[0], i + 1, 2);
+                        HuSprAttrReset(gMes->strGId[0], i + 1, HUSPR_ATTR_FLIPY);
                         HuSprScaleSet(gMes->strGId[0], i + 1, 1.0f, scale);
                     }
                 }
@@ -2778,14 +2778,14 @@ void GameMesImageCreate(GAMEMES *gMes, s32 fileNo) {
     HuSprTPLvlSet(grp, 0, 255);
     HuSprPriSet(grp, 0, 5);
     HuSprAttrReset(grp, 0, 0xFFFF);
-    HuSprAttrSet(grp, 0, 0x1008);
+    HuSprAttrSet(grp, 0, HUSPR_ATTR_XLU | HUSPR_ATTR_FILTER_BILERP);
     HuSprPosSet(grp, 0, 160, gMes->pos.y);
     HuSprParentSet(grp, 0, -1);
     HuSprGrpMemberSet(grp, 1, sprId1, 0);
     HuSprTPLvlSet(grp, 1, 255);
     HuSprPriSet(grp, 1, 6);
     HuSprAttrReset(grp, 1, 0xFFFF);
-    HuSprAttrSet(grp, 1, 0x1008);
+    HuSprAttrSet(grp, 1, HUSPR_ATTR_XLU | HUSPR_ATTR_FILTER_BILERP);
     HuSprColorSet(grp, 1, 69, 2, 133);
     HuSprParentSet(grp, 1, 0);
 }

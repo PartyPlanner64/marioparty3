@@ -327,7 +327,7 @@ void MBItemMasuGiveExec(s32 arg0) {
         DataClose(temp_v0);
         HuSprGrpMemberSet(temp_s2->spriteGroup, 0, temp_s2->model[0], 0);
         HuSprAttrReset(temp_s2->spriteGroup, 0, 0xFFFF);
-        HuSprAttrSet(temp_s2->spriteGroup, 0, 0x1000);
+        HuSprAttrSet(temp_s2->spriteGroup, 0, HUSPR_ATTR_XLU);
         HuSprPriSet(temp_s2->spriteGroup, 0, 0x1000U);
         HuSprPosSet(temp_s2->spriteGroup, 0, sp20[0], sp20[1]);
 

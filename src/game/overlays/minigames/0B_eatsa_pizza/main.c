@@ -1029,7 +1029,7 @@ void m211_MainObjInit(omObjData *object) {
     // computed after the call, matching the original.
     *(groupP = &m211_sprGrpTbl[0]) = m211_SprGrpCreate(data, 1);
     HuSprPosSet(*groupP, 0, 160, 120);
-    HuSprAttrSet(*groupP, 0, 0x4000);
+    HuSprAttrSet(*groupP, 0, HUSPR_ATTR_BG);
     object->func = m211_MainObjMain;
 }
 
@@ -1044,7 +1044,7 @@ void m211_PizzaObjInit(omObjData *object) {
     for (i = 0; i < 2; i++) {
         m211_pizzaAnimTbl[i] = m211_AnimDataRead((i + 1) | 0x2C0000);
         m211_pizzaSprGrpTbl[i] = m211_SprGrpCreate(m211_pizzaAnimTbl[i], 1);
-        HuSprAttrSet(m211_pizzaSprGrpTbl[i], 0, 0x1008);
+        HuSprAttrSet(m211_pizzaSprGrpTbl[i], 0, HUSPR_ATTR_XLU | HUSPR_ATTR_FILTER_BILERP);
         image16 = m211_SprPatDataGet(m211_pizzaAnimTbl[i], 0);
         for (j = 0; j < 240; j++) {
             for (k = 0; k < 160; k++) {
@@ -1074,7 +1074,7 @@ void m211_PizzaObjInit(omObjData *object) {
     m211_pizzaSprGrpTbl[2] = HuSprGrpCreate(0x10, 0);
     group = m211_pizzaSprGrpTbl[2];
     for (i = 0; i < 0x10; i++) {
-        HuSprAttrSet(group, i, 0x9000);
+        HuSprAttrSet(group, i, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
         m211_crumbActiveTbl[i] = 0;
     }
     object->func = m211_PizzaObjMain;
@@ -1122,7 +1122,7 @@ void m211_MainObjMain(omObjData *object) {
             break;
         case 3:
             for (i = 0; i < 2; i++) {
-                HuSprAttrSet(m211_pizzaSprGrpTbl[i], 0, 0x4000);
+                HuSprAttrSet(m211_pizzaSprGrpTbl[i], 0, HUSPR_ATTR_BG);
             }
             if (m211_pizzaStartCntTbl[0] == (s16)m211_pizzaCntTbl[0] &&
                 m211_pizzaStartCntTbl[1] == (s16)m211_pizzaCntTbl[1]) {

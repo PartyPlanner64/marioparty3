@@ -410,7 +410,7 @@ void m230_PlayerObjInit(omObjData *object) {
             m230_pictureGrpTbl[m230_playerCreateNo] = HuSprGrpCreate(1, 0);
             HuSprGrpMemberSet(m230_pictureGrpTbl[m230_playerCreateNo], 0, m230_pictureAnim, 0);
             HuSprAttrReset(m230_pictureGrpTbl[m230_playerCreateNo], 0, 0xFFFF);
-            HuSprAttrSet(m230_pictureGrpTbl[m230_playerCreateNo], 0, 0x5000);
+            HuSprAttrSet(m230_pictureGrpTbl[m230_playerCreateNo], 0, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
             HuSprPosSet(m230_pictureGrpTbl[m230_playerCreateNo], 0,
                         m230_picturePosTbl[m230_playerCreateNo].x,
                         m230_picturePosTbl[m230_playerCreateNo].y);
@@ -420,35 +420,35 @@ void m230_PlayerObjInit(omObjData *object) {
                 espPosSet(m230_part0SprTbl[m230_playerCreateNo][i],
                           m230_picturePosTbl[m230_playerCreateNo].x,
                           m230_picturePosTbl[m230_playerCreateNo].y);
-                espAttrSet(m230_part0SprTbl[m230_playerCreateNo][i], 0x5000);
+                espAttrSet(m230_part0SprTbl[m230_playerCreateNo][i], HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
                 espPriSet(m230_part0SprTbl[m230_playerCreateNo][i], 0xFFF0);
                 espDispOff(m230_part0SprTbl[m230_playerCreateNo][i]);
                 m230_part1SprTbl[m230_playerCreateNo][i] = espEntry(m230_part1AnimTbl[i], 0, 1);
                 espPosSet(m230_part1SprTbl[m230_playerCreateNo][i],
                           m230_picturePosTbl[m230_playerCreateNo].x,
                           m230_picturePosTbl[m230_playerCreateNo].y);
-                espAttrSet(m230_part1SprTbl[m230_playerCreateNo][i], 0x5000);
+                espAttrSet(m230_part1SprTbl[m230_playerCreateNo][i], HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
                 espPriSet(m230_part1SprTbl[m230_playerCreateNo][i], 0xFFF0);
                 espDispOff(m230_part1SprTbl[m230_playerCreateNo][i]);
                 m230_part2SprTbl[m230_playerCreateNo][i] = espEntry(m230_part2AnimTbl[i], 0, 1);
                 espPosSet(m230_part2SprTbl[m230_playerCreateNo][i],
                           m230_picturePosTbl[m230_playerCreateNo].x,
                           m230_picturePosTbl[m230_playerCreateNo].y);
-                espAttrSet(m230_part2SprTbl[m230_playerCreateNo][i], 0x5000);
+                espAttrSet(m230_part2SprTbl[m230_playerCreateNo][i], HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
                 espPriSet(m230_part2SprTbl[m230_playerCreateNo][i], 0xFFF0);
                 espDispOff(m230_part2SprTbl[m230_playerCreateNo][i]);
                 m230_part3SprTbl[m230_playerCreateNo][i] = espEntry(m230_part3AnimTbl[i], 0, 1);
                 espPosSet(m230_part3SprTbl[m230_playerCreateNo][i],
                           m230_picturePosTbl[m230_playerCreateNo].x,
                           m230_picturePosTbl[m230_playerCreateNo].y);
-                espAttrSet(m230_part3SprTbl[m230_playerCreateNo][i], 0x5000);
+                espAttrSet(m230_part3SprTbl[m230_playerCreateNo][i], HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
                 espPriSet(m230_part3SprTbl[m230_playerCreateNo][i], 0xFFF0);
                 espDispOff(m230_part3SprTbl[m230_playerCreateNo][i]);
                 m230_part4SprTbl[m230_playerCreateNo][i] = espEntry(m230_part4AnimTbl[i], 0, 1);
                 espPosSet(m230_part4SprTbl[m230_playerCreateNo][i],
                           m230_picturePosTbl[m230_playerCreateNo].x,
                           m230_picturePosTbl[m230_playerCreateNo].y);
-                espAttrSet(m230_part4SprTbl[m230_playerCreateNo][i], 0x5000);
+                espAttrSet(m230_part4SprTbl[m230_playerCreateNo][i], HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
                 espPriSet(m230_part4SprTbl[m230_playerCreateNo][i], 0xFFF0);
                 espDispOff(m230_part4SprTbl[m230_playerCreateNo][i]);
             }
@@ -457,7 +457,7 @@ void m230_PlayerObjInit(omObjData *object) {
             m230_pictureGrpTbl[m230_playerCreateNo] = HuSprGrpCreate(1, 0);
             HuSprGrpMemberSet(m230_pictureGrpTbl[m230_playerCreateNo], 0, m230_pictureAnim, 0);
             HuSprAttrReset(m230_pictureGrpTbl[m230_playerCreateNo], 0, 0xFFFF);
-            HuSprAttrSet(m230_pictureGrpTbl[m230_playerCreateNo], 0, 0x5000);
+            HuSprAttrSet(m230_pictureGrpTbl[m230_playerCreateNo], 0, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
             HuSprPosSet(m230_pictureGrpTbl[m230_playerCreateNo], 0,
                         m230_picturePosTbl[m230_playerCreateNo].x,
                         m230_picturePosTbl[m230_playerCreateNo].y);
@@ -467,28 +467,28 @@ void m230_PlayerObjInit(omObjData *object) {
                 espPosSet(m230_part0SprTbl[m230_playerCreateNo][i],
                           m230_picturePosTbl[m230_playerCreateNo].x,
                           m230_picturePosTbl[m230_playerCreateNo].y);
-                espAttrSet(m230_part0SprTbl[m230_playerCreateNo][i], 0x5000);
+                espAttrSet(m230_part0SprTbl[m230_playerCreateNo][i], HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
                 espPriSet(m230_part0SprTbl[m230_playerCreateNo][i], 0xFFF0);
                 espDispOff(m230_part0SprTbl[m230_playerCreateNo][i]);
                 m230_part1SprTbl[m230_playerCreateNo][i] = espEntry(m230_part1AnimTbl[i], 0, 1);
                 espPosSet(m230_part1SprTbl[m230_playerCreateNo][i],
                           m230_picturePosTbl[m230_playerCreateNo].x,
                           m230_picturePosTbl[m230_playerCreateNo].y);
-                espAttrSet(m230_part1SprTbl[m230_playerCreateNo][i], 0x5000);
+                espAttrSet(m230_part1SprTbl[m230_playerCreateNo][i], HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
                 espPriSet(m230_part1SprTbl[m230_playerCreateNo][i], 0xFFF0);
                 espDispOff(m230_part1SprTbl[m230_playerCreateNo][i]);
                 m230_part2SprTbl[m230_playerCreateNo][i] = espEntry(m230_part2AnimTbl[i], 0, 1);
                 espPosSet(m230_part2SprTbl[m230_playerCreateNo][i],
                           m230_picturePosTbl[m230_playerCreateNo].x,
                           m230_picturePosTbl[m230_playerCreateNo].y);
-                espAttrSet(m230_part2SprTbl[m230_playerCreateNo][i], 0x5000);
+                espAttrSet(m230_part2SprTbl[m230_playerCreateNo][i], HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
                 espPriSet(m230_part2SprTbl[m230_playerCreateNo][i], 0xFFF0);
                 espDispOff(m230_part2SprTbl[m230_playerCreateNo][i]);
                 m230_part3SprTbl[m230_playerCreateNo][i] = espEntry(m230_part3AnimTbl[i], 0, 1);
                 espPosSet(m230_part3SprTbl[m230_playerCreateNo][i],
                           m230_picturePosTbl[m230_playerCreateNo].x,
                           m230_picturePosTbl[m230_playerCreateNo].y);
-                espAttrSet(m230_part3SprTbl[m230_playerCreateNo][i], 0x5000);
+                espAttrSet(m230_part3SprTbl[m230_playerCreateNo][i], HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
                 espPriSet(m230_part3SprTbl[m230_playerCreateNo][i], 0xFFF0);
                 espDispOff(m230_part3SprTbl[m230_playerCreateNo][i]);
             }
@@ -498,7 +498,7 @@ void m230_PlayerObjInit(omObjData *object) {
             m230_pictureGrpTbl[m230_playerCreateNo] = HuSprGrpCreate(1, 0);
             HuSprGrpMemberSet(m230_pictureGrpTbl[m230_playerCreateNo], 0, m230_pictureAnim, 0);
             HuSprAttrReset(m230_pictureGrpTbl[m230_playerCreateNo], 0, 0xFFFF);
-            HuSprAttrSet(m230_pictureGrpTbl[m230_playerCreateNo], 0, 0x5000);
+            HuSprAttrSet(m230_pictureGrpTbl[m230_playerCreateNo], 0, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
             HuSprPosSet(m230_pictureGrpTbl[m230_playerCreateNo], 0,
                         m230_picturePosTbl[m230_playerCreateNo].x,
                         m230_picturePosTbl[m230_playerCreateNo].y);
@@ -508,21 +508,21 @@ void m230_PlayerObjInit(omObjData *object) {
                 espPosSet(m230_part0SprTbl[m230_playerCreateNo][i],
                           m230_picturePosTbl[m230_playerCreateNo].x,
                           m230_picturePosTbl[m230_playerCreateNo].y);
-                espAttrSet(m230_part0SprTbl[m230_playerCreateNo][i], 0x5000);
+                espAttrSet(m230_part0SprTbl[m230_playerCreateNo][i], HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
                 espPriSet(m230_part0SprTbl[m230_playerCreateNo][i], 0xFFF0);
                 espDispOff(m230_part0SprTbl[m230_playerCreateNo][i]);
                 m230_part1SprTbl[m230_playerCreateNo][i] = espEntry(m230_part1AnimTbl[i], 0, 1);
                 espPosSet(m230_part1SprTbl[m230_playerCreateNo][i],
                           m230_picturePosTbl[m230_playerCreateNo].x,
                           m230_picturePosTbl[m230_playerCreateNo].y);
-                espAttrSet(m230_part1SprTbl[m230_playerCreateNo][i], 0x5000);
+                espAttrSet(m230_part1SprTbl[m230_playerCreateNo][i], HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
                 espPriSet(m230_part1SprTbl[m230_playerCreateNo][i], 0xFFF0);
                 espDispOff(m230_part1SprTbl[m230_playerCreateNo][i]);
                 m230_part2SprTbl[m230_playerCreateNo][i] = espEntry(m230_part2AnimTbl[i], 0, 1);
                 espPosSet(m230_part2SprTbl[m230_playerCreateNo][i],
                           m230_picturePosTbl[m230_playerCreateNo].x,
                           m230_picturePosTbl[m230_playerCreateNo].y);
-                espAttrSet(m230_part2SprTbl[m230_playerCreateNo][i], 0x5000);
+                espAttrSet(m230_part2SprTbl[m230_playerCreateNo][i], HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
                 espPriSet(m230_part2SprTbl[m230_playerCreateNo][i], 0xFFF0);
                 espDispOff(m230_part2SprTbl[m230_playerCreateNo][i]);
             }
@@ -532,49 +532,49 @@ void m230_PlayerObjInit(omObjData *object) {
     espPosSet(m230_popPlusTbl[m230_playerCreateNo],
               m230_picturePosTbl[m230_playerCreateNo].x,
               m230_picturePosTbl[m230_playerCreateNo].y);
-    espAttrSet(m230_popPlusTbl[m230_playerCreateNo], 0x1000);
+    espAttrSet(m230_popPlusTbl[m230_playerCreateNo], HUSPR_ATTR_XLU);
     espPriSet(m230_popPlusTbl[m230_playerCreateNo], 15);
     espDispOff(m230_popPlusTbl[m230_playerCreateNo]);
     m230_popTensTbl[m230_playerCreateNo] = espEntry(m230_popDigitAnim, 0, 1);
     espPosSet(m230_popTensTbl[m230_playerCreateNo],
               m230_picturePosTbl[m230_playerCreateNo].x,
               m230_picturePosTbl[m230_playerCreateNo].y);
-    espAttrSet(m230_popTensTbl[m230_playerCreateNo], 0x1000);
+    espAttrSet(m230_popTensTbl[m230_playerCreateNo], HUSPR_ATTR_XLU);
     espPriSet(m230_popTensTbl[m230_playerCreateNo], 15);
     espDispOff(m230_popTensTbl[m230_playerCreateNo]);
     m230_popOnesTbl[m230_playerCreateNo] = espEntry(m230_popDigitAnim, 0, 1);
     espPosSet(m230_popOnesTbl[m230_playerCreateNo],
               m230_picturePosTbl[m230_playerCreateNo].x,
               m230_picturePosTbl[m230_playerCreateNo].y);
-    espAttrSet(m230_popOnesTbl[m230_playerCreateNo], 0x1000);
+    espAttrSet(m230_popOnesTbl[m230_playerCreateNo], HUSPR_ATTR_XLU);
     espPriSet(m230_popOnesTbl[m230_playerCreateNo], 15);
     espDispOff(m230_popOnesTbl[m230_playerCreateNo]);
     m230_popPtTbl[m230_playerCreateNo] = espEntry(m230_popPtAnim, 0, 1);
     espPosSet(m230_popPtTbl[m230_playerCreateNo],
               m230_picturePosTbl[m230_playerCreateNo].x,
               m230_picturePosTbl[m230_playerCreateNo].y);
-    espAttrSet(m230_popPtTbl[m230_playerCreateNo], 0x1000);
+    espAttrSet(m230_popPtTbl[m230_playerCreateNo], HUSPR_ATTR_XLU);
     espPriSet(m230_popPtTbl[m230_playerCreateNo], 15);
     espDispOff(m230_popPtTbl[m230_playerCreateNo]);
     m230_scoreTensTbl[m230_playerCreateNo] = espEntry(m230_digitAnim, 0, 1);
     espPosSet(m230_scoreTensTbl[m230_playerCreateNo],
               m230_picturePosTbl[m230_playerCreateNo].x,
               m230_picturePosTbl[m230_playerCreateNo].y);
-    espAttrSet(m230_scoreTensTbl[m230_playerCreateNo], 0x1000);
+    espAttrSet(m230_scoreTensTbl[m230_playerCreateNo], HUSPR_ATTR_XLU);
     espPriSet(m230_scoreTensTbl[m230_playerCreateNo], 15);
     espDispOff(m230_scoreTensTbl[m230_playerCreateNo]);
     m230_scoreOnesTbl[m230_playerCreateNo] = espEntry(m230_digitAnim, 0, 1);
     espPosSet(m230_scoreOnesTbl[m230_playerCreateNo],
               m230_picturePosTbl[m230_playerCreateNo].x,
               m230_picturePosTbl[m230_playerCreateNo].y);
-    espAttrSet(m230_scoreOnesTbl[m230_playerCreateNo], 0x1000);
+    espAttrSet(m230_scoreOnesTbl[m230_playerCreateNo], HUSPR_ATTR_XLU);
     espPriSet(m230_scoreOnesTbl[m230_playerCreateNo], 15);
     espDispOff(m230_scoreOnesTbl[m230_playerCreateNo]);
     m230_scorePtTbl[m230_playerCreateNo] = espEntry(m230_ptAnim, 0, 1);
     espPosSet(m230_scorePtTbl[m230_playerCreateNo],
               m230_picturePosTbl[m230_playerCreateNo].x,
               m230_picturePosTbl[m230_playerCreateNo].y);
-    espAttrSet(m230_scorePtTbl[m230_playerCreateNo], 0x1000);
+    espAttrSet(m230_scorePtTbl[m230_playerCreateNo], HUSPR_ATTR_XLU);
     espPriSet(m230_scorePtTbl[m230_playerCreateNo], 15);
     espDispOff(m230_scorePtTbl[m230_playerCreateNo]);
     m230_playerCreateNo++;
@@ -1285,7 +1285,7 @@ void m230_MapObjInit(omObjData *object) {
         m230_frameGrp = HuSprGrpCreate(1, 0);
         HuSprGrpMemberSet(m230_frameGrp, 0, m230_sprAnim, 0);
         HuSprAttrReset(m230_frameGrp, 0, 0xFFFF);
-        HuSprAttrSet(m230_frameGrp, 0, 0x5000);
+        HuSprAttrSet(m230_frameGrp, 0, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
         HuSprPosSet(m230_frameGrp, 0, m230_scorePosTbl[i].x,
                     m230_scorePosTbl[i].y);
         HuSprPriSet(m230_frameGrp, 0, 0xFF);
@@ -1294,13 +1294,13 @@ void m230_MapObjInit(omObjData *object) {
     m230_screenGrp = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(m230_screenGrp, 0, m230_sprAnim, 0);
     HuSprAttrReset(m230_screenGrp, 0, 0xFFFF);
-    HuSprAttrSet(m230_screenGrp, 0, 0x1000);
+    HuSprAttrSet(m230_screenGrp, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(m230_screenGrp, 0, 160, 120);
     HuSprPriSet(m230_screenGrp, 0, 0xF0);
     m230_sprAnim = HuSprAnimDataRead(0x3F0001);
     m230_sampleFrameSpr = espEntry(m230_sprAnim, 0, 1);
     espPosSet(m230_sampleFrameSpr, 160, 120);
-    espAttrSet(m230_sampleFrameSpr, 0x1000);
+    espAttrSet(m230_sampleFrameSpr, HUSPR_ATTR_XLU);
     espPriSet(m230_sampleFrameSpr, 15);
     espDispOn(m230_sampleFrameSpr);
     x = 128;
@@ -1319,7 +1319,7 @@ void m230_MapObjInit(omObjData *object) {
     }
     m230_sampleSpr = espEntry(m230_sprAnim, 0, 1);
     espPosSet(m230_sampleSpr, x, y);
-    espAttrSet(m230_sampleSpr, 0x1000);
+    espAttrSet(m230_sampleSpr, HUSPR_ATTR_XLU);
     espPriSet(m230_sampleSpr, 15);
     espDispOn(m230_sampleSpr);
     switch (m230_pictureNo) {
@@ -1336,22 +1336,22 @@ void m230_MapObjInit(omObjData *object) {
     }
     m230_sampleCoverSpr = espEntry(m230_sprAnim, 0, 1);
     espPosSet(m230_sampleCoverSpr, x, y);
-    espAttrSet(m230_sampleCoverSpr, 0x1000);
+    espAttrSet(m230_sampleCoverSpr, HUSPR_ATTR_XLU);
     espPriSet(m230_sampleCoverSpr, 15);
     espDispOn(m230_sampleCoverSpr);
     m230_maxScoreTensSpr = espEntry(m230_digitAnim, 0, 1);
     espPosSet(m230_maxScoreTensSpr, 225, 100);
-    espAttrSet(m230_maxScoreTensSpr, 0x1000);
+    espAttrSet(m230_maxScoreTensSpr, HUSPR_ATTR_XLU);
     espPriSet(m230_maxScoreTensSpr, 15);
     espDispOff(m230_maxScoreTensSpr);
     m230_maxScoreOnesSpr = espEntry(m230_digitAnim, 0, 1);
     espPosSet(m230_maxScoreOnesSpr, 245, 100);
-    espAttrSet(m230_maxScoreOnesSpr, 0x1000);
+    espAttrSet(m230_maxScoreOnesSpr, HUSPR_ATTR_XLU);
     espPriSet(m230_maxScoreOnesSpr, 15);
     espDispOff(m230_maxScoreOnesSpr);
     m230_maxScorePtSpr = espEntry(m230_ptAnim, 0, 1);
     espPosSet(m230_maxScorePtSpr, 277, 104);
-    espAttrSet(m230_maxScorePtSpr, 0x1000);
+    espAttrSet(m230_maxScorePtSpr, HUSPR_ATTR_XLU);
     espPriSet(m230_maxScorePtSpr, 15);
     espDispOff(m230_maxScorePtSpr);
     data = object->data = HuMemAllocTag(sizeof(PictureImperfectGameData), TAG_OVERLAY);
@@ -1452,7 +1452,7 @@ void m230_MapObjMain(omObjData *object) {
             case 4:
             case 8:
             case 16:
-                HuSprAttrSet(m230_screenGrp, 0, 0x5000);
+                HuSprAttrSet(m230_screenGrp, 0, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
                 break;
             default:
                 espScaleSet(m230_sampleSpr, m230_sampleScale, m230_sampleScale);

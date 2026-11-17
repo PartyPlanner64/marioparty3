@@ -783,15 +783,15 @@ void m269_HudObjInit(omObjData *object) {
 }
 
 void m269_BackSprInit(void) {
-    m269_sprTbl[0] = m269_EspCreate(0x660000, 0x4000, 1000, 160, 120);
-    m269_sprTbl[1] = m269_EspCreate(0x660001, 0x4000, 1000, 160, 120);
-    m269_sprTbl[2] = m269_EspCreate(0x660002, 0x4000, 1000, 160, 120);
+    m269_sprTbl[0] = m269_EspCreate(0x660000, HUSPR_ATTR_BG, 1000, 160, 120);
+    m269_sprTbl[1] = m269_EspCreate(0x660001, HUSPR_ATTR_BG, 1000, 160, 120);
+    m269_sprTbl[2] = m269_EspCreate(0x660002, HUSPR_ATTR_BG, 1000, 160, 120);
     espDispOff(m269_sprTbl[1]);
     espDispOff(m269_sprTbl[2]);
 }
 
 void m269_PanelSprInit(void) {
-    m269_sprTbl[5] = m269_EspCreate(0x660003, 0, 900, 269, 44);
+    m269_sprTbl[5] = m269_EspCreate(0x660003, HUSPR_ATTR_NONE, 900, 269, 44);
 }
 
 void m269_PayoutSprInit(void) {
@@ -803,19 +803,19 @@ void m269_PayoutSprInit(void) {
     for (; i < 2; i++) {
         switch (m269_sidePayoutTbl[i]) {
             case 4:
-                m269_sprTbl[base + i] = m269_EspCreate(0x66000A, 0, 800, x, y + i * 22);
+                m269_sprTbl[base + i] = m269_EspCreate(0x66000A, HUSPR_ATTR_NONE, 800, x, y + i * 22);
                 break;
             case 8:
-                m269_sprTbl[base + i] = m269_EspCreate(0x660006, 0, 800, x, y + i * 22);
+                m269_sprTbl[base + i] = m269_EspCreate(0x660006, HUSPR_ATTR_NONE, 800, x, y + i * 22);
                 break;
             case 16:
-                m269_sprTbl[base + i] = m269_EspCreate(0x660007, 0, 800, x, y + i * 22);
+                m269_sprTbl[base + i] = m269_EspCreate(0x660007, HUSPR_ATTR_NONE, 800, x, y + i * 22);
                 break;
             case 32:
-                m269_sprTbl[base + i] = m269_EspCreate(0x660008, 0, 800, x, y + i * 22);
+                m269_sprTbl[base + i] = m269_EspCreate(0x660008, HUSPR_ATTR_NONE, 800, x, y + i * 22);
                 break;
             case 64:
-                m269_sprTbl[base + i] = m269_EspCreate(0x660009, 0, 800, x, y + i * 22);
+                m269_sprTbl[base + i] = m269_EspCreate(0x660009, HUSPR_ATTR_NONE, 800, x, y + i * 22);
                 break;
         }
     }
@@ -824,8 +824,8 @@ void m269_PayoutSprInit(void) {
 void m269_ChoiceSprInit(void) {
     s16 i = 15;
 
-    m269_sprTbl[i] = m269_EspCreate(0x660004, 0, 800, 257, 33);
-    m269_sprTbl[i + 1] = m269_EspCreate(0x660005, 0, 800, 257, 55);
+    m269_sprTbl[i] = m269_EspCreate(0x660004, HUSPR_ATTR_NONE, 800, 257, 33);
+    m269_sprTbl[i + 1] = m269_EspCreate(0x660005, HUSPR_ATTR_NONE, 800, 257, 55);
     espDispOff(m269_sprTbl[i]);
     espDispOff(m269_sprTbl[i + 1]);
     m269_portraitDispF = 0;
@@ -836,7 +836,7 @@ void m269_PortraitSprInit(void) {
     s32 files[8] = { 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17 };
     s16 i = 20;
 
-    m269_sprTbl[i] = m269_EspCreate(files[chr] | 0x210000, 0, 700, 0, 0);
+    m269_sprTbl[i] = m269_EspCreate(files[chr] | 0x210000, HUSPR_ATTR_NONE, 700, 0, 0);
     espDispOff(m269_sprTbl[i]);
     m269_choiceF = 0;
 }
@@ -857,12 +857,12 @@ void m269_CakeSprInit(void) {
         HuSprPriSet(m269_sprTbl[base + i], 0, 100);
         if (i == 0) {
             HuSprAttrReset(m269_sprTbl[base + i], 0, 0xFFFF);
-            HuSprAttrSet(m269_sprTbl[base + i], 0, 0);
+            HuSprAttrSet(m269_sprTbl[base + i], 0, HUSPR_ATTR_NONE);
             pos = m269_ScreenPosGet(-80.0f, 600.0f, -400.0f);
             HuSprPosSet(m269_sprTbl[base + i], 0, pos.x, pos.y);
         } else if (i == 1) {
             HuSprAttrReset(m269_sprTbl[base + i], 0, 0xFFFF);
-            HuSprAttrSet(m269_sprTbl[base + i], 0, 1);
+            HuSprAttrSet(m269_sprTbl[base + i], 0, HUSPR_ATTR_FLIPX);
             pos = m269_ScreenPosGet(80.0f, 600.0f, -400.0f);
             HuSprPosSet(m269_sprTbl[base + i], 0, pos.x, pos.y);
         }
@@ -873,11 +873,11 @@ void m269_CakeSprInit(void) {
 void m269_CoinSprInit(void) {
     s16 i = 30;
 
-    m269_sprTbl[i] = m269_EspCreate(0x21001A, 0, 600, 30, 22);
-    m269_sprTbl[i + 1] = m269_EspCreate(0x21001B, 0, 600, 42, 22);
-    m269_sprTbl[i + 2] = m269_EspCreate(0x31, 0, 600, 54, 22);
-    m269_sprTbl[i + 3] = m269_EspCreate(0x31, 0, 600, 66, 22);
-    m269_sprTbl[i + 4] = m269_EspCreate(0x31, 0, 600, 78, 22);
+    m269_sprTbl[i] = m269_EspCreate(0x21001A, HUSPR_ATTR_NONE, 600, 30, 22);
+    m269_sprTbl[i + 1] = m269_EspCreate(0x21001B, HUSPR_ATTR_NONE, 600, 42, 22);
+    m269_sprTbl[i + 2] = m269_EspCreate(0x31, HUSPR_ATTR_NONE, 600, 54, 22);
+    m269_sprTbl[i + 3] = m269_EspCreate(0x31, HUSPR_ATTR_NONE, 600, 66, 22);
+    m269_sprTbl[i + 4] = m269_EspCreate(0x31, HUSPR_ATTR_NONE, 600, 78, 22);
 }
 
 void m269_HudObjMain(omObjData *object) {
@@ -1686,7 +1686,7 @@ void m269_CrumbRObjMain(omObjData *object) {
 s16 m269_EspCreate(s32 dataNum, u16 attr, u16 priority, s16 x, s16 y) {
     s16 sprite = espEntry(HuSprAnimDataRead(dataNum), 0, 0);
 
-    espAttrSet(sprite, attr | 8);
+    espAttrSet(sprite, attr | HUSPR_ATTR_FILTER_BILERP);
     espPriSet(sprite, priority);
     espPosSet(sprite, x, y);
     return sprite;

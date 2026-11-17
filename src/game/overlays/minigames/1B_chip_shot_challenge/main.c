@@ -189,7 +189,7 @@ void m227_ObjectSetup(void) {
     sprite = espEntry(HuSprAnimDataRead(0x3C001E), 0, 1);
     espDispOn(sprite);
     espPosSet(sprite, 160, 120);
-    espAttrSet(sprite, 0x4000);
+    espAttrSet(sprite, HUSPR_ATTR_BG);
     WipeCreateIn(WIPE_TYPE_PREV, 0x10);
     MgFlowInit(&m227_mgFlow);
     mgFlowSeqNo = 45;

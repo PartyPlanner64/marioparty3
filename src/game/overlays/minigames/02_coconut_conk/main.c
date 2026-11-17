@@ -338,7 +338,7 @@ void m202_BackObjMain(omObjData *arg0) {
 void m202_BackObjInit(omObjData *arg0) {
     m202_backSprAnim = HuSprAnimDataRead(0x23000D);
     m202_backSpr = espEntry(m202_backSprAnim, 0, 0);
-    espAttrSet(m202_backSpr, 0x4000);
+    espAttrSet(m202_backSpr, HUSPR_ATTR_BG);
     m202_backSprX = 160.0f;
     m202_backSprY = 67.0f;
     espPosSet(m202_backSpr, 160, 67);
@@ -359,7 +359,7 @@ void m202_ForeObjMain(omObjData *arg0) {
 void m202_ForeObjInit(omObjData *arg0) {
     m202_foreSprAnim = HuSprAnimDataRead(0x23000F);
     m202_foreSpr = espEntry(m202_foreSprAnim, 0, 0);
-    espAttrSet(m202_foreSpr, 0);
+    espAttrSet(m202_foreSpr, HUSPR_ATTR_NONE);
     m202_foreSprX = 160.0f;
     m202_foreSprY = 219.0f;
     espPosSet(m202_foreSpr, 160, 219);

@@ -130,7 +130,7 @@ s16 MgStoryStatRankMarkDisp(MgStoryStatWork *work);
 void MgStoryStatSprSet(s16 group, s16 member, s16 graphic, s16 prio, s16 x, s16 y) {
     HuSprTPLvlSet(group, member, 256);
     HuSprAttrReset(group, member, 0xFFFF);
-    HuSprAttrSet(group, member, 0x9000);
+    HuSprAttrSet(group, member, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
     HuSprScaleSet(group, member, 1.0f, 1.0f);
     HuSprAnimModeSet(group, member, HUSPR_ANIM_MODE_STOP);
     HuSprGrpMemberSet(group, member, graphic, 0);
@@ -827,7 +827,7 @@ void MgStoryStatViewProc(void) {
         espTPLvlSet(sprites[i], 0);
         espDispOff(sprites[i]);
     }
-    espAttrSet(sprites[1], 1);
+    espAttrSet(sprites[1], HUSPR_ATTR_FLIPX);
 
     if (*result < 0) {
         story = GwStory.unk1;

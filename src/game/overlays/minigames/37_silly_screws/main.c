@@ -16,6 +16,7 @@
 #include "game/camsetup.h"
 #include "game/hmfspr.h"
 #include "game/printfunc.h"
+#include "game/sprite.h"
 
 #define ABS(x) ((x) > 0 ? (x) : -(x))
 
@@ -314,7 +315,7 @@ void m255_MainObjInit(omObjData *object) {
         omAddObj(10, 6, 0, -1, m255_NutObjInit);
         mgPlayerObjTbl[i] = omAddObj(300, 12, 38, -1, m255_PlayerObjInit);
     }
-    m255_SprDispOn(m255_SprCreate(0x58, 0xF, 0, 0), 160, 120);
+    m255_SprDispOn(m255_SprCreate(0x58, 0xF, 0, HUSPR_ATTR_NONE), 160, 120);
     m255_FuncSet(FGRP_MINIGAME, 1, -1, 0, m255_StartExec, TRUE, FALSE);
     WipeCreateIn(WIPE_TYPE_PREV, 0x10);
     object->func = m255_MainObjMain;

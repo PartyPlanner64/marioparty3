@@ -380,17 +380,17 @@ void m256_StageObjInit(omObjData *object) {
     m256_sprAnimTbl[0] = m256_AnimDataRead(0x590000);
     m256_sprGrpTbl[0] = m256_SprGrpCreate(m256_sprAnimTbl[0], 1);
     HuSprPosSet(m256_sprGrpTbl[0], 0, 160, 120);
-    HuSprAttrSet(m256_sprGrpTbl[0], 0, 0x4000);
+    HuSprAttrSet(m256_sprGrpTbl[0], 0, HUSPR_ATTR_BG);
     m256_sprAnimTbl[3] = m256_AnimDataRead(0x59000A);
     m256_sprGrpTbl[4] = m256_SprGrpCreate(m256_sprAnimTbl[3], 1);
     HuSprPosSet(m256_sprGrpTbl[4], 0, 160, 198);
-    HuSprAttrSet(m256_sprGrpTbl[4], 0, 0x100C);
+    HuSprAttrSet(m256_sprGrpTbl[4], 0, HUSPR_ATTR_XLU | HUSPR_ATTR_FILTER_AVERAGE);
     m256_sprAnimTbl[2] = m256_AnimDataRead(sp18[m256_stageNo] | 0x590000);
     m256_sprGrpTbl[2] = m256_SprGrpCreate(m256_sprAnimTbl[2], 3);
     order = (f32)m256_Rand16Get() * 1.52587890625e-05 * 6.0;
     for (i = 0; i < 3; i++) {
         HuSprPosSet(m256_sprGrpTbl[2], i, m256_choicePosTbl[i][0], m256_choicePosTbl[i][1]);
-        HuSprAttrSet(m256_sprGrpTbl[2], i, 0x1008);
+        HuSprAttrSet(m256_sprGrpTbl[2], i, HUSPR_ATTR_XLU | HUSPR_ATTR_FILTER_BILERP);
         HuSprPatNoSet(m256_sprGrpTbl[2], i, orders[order][i]);
     }
     m256_sprAnimTbl[1] = m256_AnimDataRead(sp10[m256_stageNo] | 0x590000);
@@ -398,12 +398,12 @@ void m256_StageObjInit(omObjData *object) {
     HuSprPosSet(m256_sprGrpTbl[1], 0, 160, 110);
     m256_answerNo = (f32)m256_Rand16Get() * 1.52587890625e-05 * 3.0;
     HuSprPatNoSet(m256_sprGrpTbl[1], 0, orders[order][m256_answerNo]);
-    HuSprAttrSet(m256_sprGrpTbl[1], 0, 0x405808);
+    HuSprAttrSet(m256_sprGrpTbl[1], 0, HUSPR_ATTR_ALPHACMP_NONE | HUSPR_ATTR_BG | HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_BILERP);
     m256_sprAnimTbl[4] = m256_AnimDataRead(0x59000B);
     m256_sprGrpTbl[5] = m256_SprGrpCreate(m256_sprAnimTbl[4], 1);
     HuSprPosSet(m256_sprGrpTbl[5], 0, 160, 110);
     HuSprScaleSet(m256_sprGrpTbl[5], 0, 1.2f, 1.2f);
-    HuSprAttrSet(m256_sprGrpTbl[5], 0, 0x940C);
+    HuSprAttrSet(m256_sprGrpTbl[5], 0, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU | HUSPR_ATTR_AA_REDUCED | HUSPR_ATTR_FILTER_AVERAGE);
     object->func = m256_StageObjMain;
 }
 

@@ -296,7 +296,7 @@ W10SprGroup *MB10Ev_CaptionCreate(s16 arg0, s16 x, s16 y) {
     group->sprites[0] = HuSprAnimRead(data);
     HuSprGrpMemberSet(group->spriteGroup, 0, group->sprites[0], 0);
     HuSprPriSet(group->spriteGroup, 0, 0xB);
-    HuSprAttrSet(group->spriteGroup, 0, 0x1000);
+    HuSprAttrSet(group->spriteGroup, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(group->spriteGroup, 0, x + 5, y);
     DataClose(data);
 
@@ -304,7 +304,7 @@ W10SprGroup *MB10Ev_CaptionCreate(s16 arg0, s16 x, s16 y) {
     group->sprites[1] = HuSprAnimRead(data);
     HuSprGrpMemberSet(group->spriteGroup, 1, group->sprites[1], 0);
     HuSprPriSet(group->spriteGroup, 1, 0xC);
-    HuSprAttrSet(group->spriteGroup, 1, 0x1000);
+    HuSprAttrSet(group->spriteGroup, 1, HUSPR_ATTR_XLU);
     HuSprPosSet(group->spriteGroup, 1, x + 5, y);
     HuSprTPLvlSet(group->spriteGroup, 1, 0xFF);
     HuSprColorSet(group->spriteGroup, 1, 0x1F, 0xB0, 0x3F);
@@ -314,7 +314,7 @@ W10SprGroup *MB10Ev_CaptionCreate(s16 arg0, s16 x, s16 y) {
     group->sprites[2] = HuSprAnimRead(data);
     HuSprGrpMemberSet(group->spriteGroup, 2, group->sprites[2], 0);
     HuSprPriSet(group->spriteGroup, 2, 0xA);
-    HuSprAttrSet(group->spriteGroup, 2, 0x1000);
+    HuSprAttrSet(group->spriteGroup, 2, HUSPR_ATTR_XLU);
     HuSprPosSet(group->spriteGroup, 2, x, y);
     DataClose(data);
 
@@ -337,7 +337,7 @@ void MB10Ev_IconCreate(s16 arg0, s16 x, s16 y) {
     mb10ev_iconSpr = HuSprAnimRead(data);
     HuSprGrpMemberSet(mb10ev_iconGrp, 0, mb10ev_iconSpr, 0);
     HuSprPriSet(mb10ev_iconGrp, 0, 0xB);
-    HuSprAttrSet(mb10ev_iconGrp, 0, 0x1000);
+    HuSprAttrSet(mb10ev_iconGrp, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(mb10ev_iconGrp, 0, x, y);
     DataClose(data);
 }
@@ -351,7 +351,7 @@ void MB10Ev_IconFrameCreate(s16 x, s16 y) {
     mb10ev_iconFrameSpr = HuSprAnimRead(data);
     HuSprGrpMemberSet(mb10ev_iconFrameGrp, 0, mb10ev_iconFrameSpr, 0);
     HuSprPriSet(mb10ev_iconFrameGrp, 0, 0xC);
-    HuSprAttrSet(mb10ev_iconFrameGrp, 0, 0x1000);
+    HuSprAttrSet(mb10ev_iconFrameGrp, 0, HUSPR_ATTR_XLU);
     HuSprColorSet(mb10ev_iconFrameGrp, 0, 0, 0xFF, 0);
     HuSprPosSet(mb10ev_iconFrameGrp, 0, x, y);
     HuSprScaleSet(mb10ev_iconFrameGrp, 0, 1.0f, 0.0f);
@@ -1048,7 +1048,7 @@ void MB10Ev_ActionTimeSpr(void) {
     group = HuSprGrpCreate(1, 5);
     HuSprGrpMemberSet(group, 0, titleAnim, 0);
     HuSprAttrReset(group, 0, 0xFFFF);
-    HuSprAttrSet(group, 0, 0x1008);
+    HuSprAttrSet(group, 0, HUSPR_ATTR_XLU | HUSPR_ATTR_FILTER_BILERP);
     HuSprPriSet(group, 0, 0x1000);
     HuSprPosSet(group, 0, 0xA0, 0x5A);
     angle = 0.0f;
@@ -1065,9 +1065,9 @@ void MB10Ev_ActionTimeSpr(void) {
             angle -= 360.0f;
         }
         if (angle >= 180.0f && angle <= 360.0f) {
-            HuSprAttrSet(group, 0, 2);
+            HuSprAttrSet(group, 0, HUSPR_ATTR_FLIPY);
         } else {
-            HuSprAttrReset(group, 0, 2);
+            HuSprAttrReset(group, 0, HUSPR_ATTR_FLIPY);
         }
         HuSprScaleSet(group, 0, 1.0f, sindf(angle >= 180.0f ? angle - 180.0f : angle));
         if (count >= 2) {
@@ -1075,7 +1075,7 @@ void MB10Ev_ActionTimeSpr(void) {
         }
         HuPrcVSleep();
     }
-    HuSprAttrReset(group, 0, 2);
+    HuSprAttrReset(group, 0, HUSPR_ATTR_FLIPY);
     HuSprScaleSet(group, 0, 1.0f, 1.0f);
     help = MBHelpWinCreate(0x14, 0xA0, 1);
 
@@ -1085,7 +1085,7 @@ void MB10Ev_ActionTimeSpr(void) {
         HuSprAnimModeSet(box, 0, HUSPR_ANIM_MODE_STOP);
         HuSprAttrReset(box, 0, 0xFFFF);
         if (mb10ev_cartJumpStateTbl[i] != 0) {
-            HuSprAttrSet(box, 0, 8);
+            HuSprAttrSet(box, 0, HUSPR_ATTR_FILTER_BILERP);
         } else {
             HuSprDispOff(box, 0);
         }
@@ -1095,7 +1095,7 @@ void MB10Ev_ActionTimeSpr(void) {
         HuSprAnimModeSet(box, 1, HUSPR_ANIM_MODE_STOP);
         HuSprAttrReset(box, 1, 0xFFFF);
         if (mb10ev_cartJumpStateTbl[i] != 0) {
-            HuSprAttrSet(box, 1, 8);
+            HuSprAttrSet(box, 1, HUSPR_ATTR_FILTER_BILERP);
         } else {
             HuSprDispOff(box, 1);
         }
@@ -1107,7 +1107,7 @@ void MB10Ev_ActionTimeSpr(void) {
             HuSprAnimModeSet(box, j + 2, HUSPR_ANIM_MODE_BANK);
             HuSprAttrReset(box, j + 2, 0xFFFF);
             if (mb10ev_cartJumpStateTbl[i] == j + 1) {
-                HuSprAttrSet(box, j + 2, 8);
+                HuSprAttrSet(box, j + 2, HUSPR_ATTR_FILTER_BILERP);
             } else {
                 HuSprDispOff(box, j + 2);
             }
@@ -1922,7 +1922,7 @@ s16 MB10_PauseQuitCheck(s32 player) {
     dimmer->model[0] = HuSprAnimRead(data);
     HuSprGrpMemberSet(dimmer->spriteGroup, 0, dimmer->model[0], 0);
     HuSprPriSet(dimmer->spriteGroup, 0, 9);
-    HuSprAttrSet(dimmer->spriteGroup, 0, 0x1000);
+    HuSprAttrSet(dimmer->spriteGroup, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(dimmer->spriteGroup, 0, 0xA0, 0x78);
     HuSprScaleSet(dimmer->spriteGroup, 0, 40.0f, 30.0f);
     HuSprColorTPLvlSet(dimmer->spriteGroup, 0, 0, 0, 0, 0xC0);
@@ -1934,7 +1934,7 @@ s16 MB10_PauseQuitCheck(s32 player) {
     DataClose(data);
     HuSprGrpMemberSet(icon->spriteGroup, 0, icon->model[0], 0);
     HuSprPriSet(icon->spriteGroup, 0, 8);
-    HuSprAttrSet(icon->spriteGroup, 0, 0x1000);
+    HuSprAttrSet(icon->spriteGroup, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(icon->spriteGroup, 0, 0x9E, 0x78);
     HuSprColorSet(icon->spriteGroup, 0, 0x89, 0xCA, 0xB2);
 

@@ -650,9 +650,9 @@ static void MBItemSel(void) {
     HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
 
     if (GwSystem.current_player_index & 1) {
-        HuSprAttrSet(mbItemCursorGrpId, 0, 0x1001);
+        HuSprAttrSet(mbItemCursorGrpId, 0, HUSPR_ATTR_XLU | HUSPR_ATTR_FLIPX);
     } else {
-        HuSprAttrSet(mbItemCursorGrpId, 0, 0x1000);
+        HuSprAttrSet(mbItemCursorGrpId, 0, HUSPR_ATTR_XLU);
     }
 
     var_s5 = 20;
@@ -1339,7 +1339,7 @@ static void MBTelopLast5Create(void) {
         HuSprGrpMemberSet(mbTelopLast5Grp[0], 0,
                             mbTelopLast5Anim[0], 0);
         HuSprPriSet(mbTelopLast5Grp[0], 0, 0x10);
-        HuSprAttrSet(mbTelopLast5Grp[0], 0, 0x1000);
+        HuSprAttrSet(mbTelopLast5Grp[0], 0, HUSPR_ATTR_XLU);
         HuSprPosSet(mbTelopLast5Grp[0], 0, 0xA0, 0x32);
         mbTelopLast5Anim[1] = -1;
         mbTelopLast5Grp[1] = -1;
@@ -1355,7 +1355,7 @@ static void MBTelopLast5Create(void) {
                         mbTelopLast5Anim[0],
                         sp18.unk_00[mbTelopLast5Turn]);
     HuSprPriSet(mbTelopLast5Grp[0], 0, 0x10);
-    HuSprAttrSet(mbTelopLast5Grp[0], 0, 0x1000);
+    HuSprAttrSet(mbTelopLast5Grp[0], 0, HUSPR_ATTR_XLU);
     HuSprPosSet(mbTelopLast5Grp[0], 0, 0xA0, 0x32);
 
     mbTelopLast5Grp[1] = HuSprGrpCreate(1, 0);
@@ -1365,7 +1365,7 @@ static void MBTelopLast5Create(void) {
     HuSprGrpMemberSet(mbTelopLast5Grp[1], 0,
                         mbTelopLast5Anim[1], 0);
     HuSprPriSet(mbTelopLast5Grp[1], 0, 0x11);
-    HuSprAttrSet(mbTelopLast5Grp[1], 0, 0x1000);
+    HuSprAttrSet(mbTelopLast5Grp[1], 0, HUSPR_ATTR_XLU);
     HuSprPosSet(mbTelopLast5Grp[1], 0, 0xA0, 0x32);
     obj->work[0] = 0;
 }
@@ -1381,7 +1381,7 @@ static void MBTelopPlayerCreate(s32 arg0) {
     DataClose(temp_v0);
     HuSprGrpMemberSet(mbTelopPlayerGrp, 0, mbTelopPlayerAnim[0], 0);
     HuSprPriSet(mbTelopPlayerGrp, 0, 0x10);
-    HuSprAttrSet(mbTelopPlayerGrp, 0, 0x1000);
+    HuSprAttrSet(mbTelopPlayerGrp, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(mbTelopPlayerGrp, 0, 0xA0, 0x78);
     temp_v0_2 = omAddObj(-0x8000, 0U, 0U, -1, MBTelopPlayerMain);
     mbTelopPlayerObj = temp_v0_2;

@@ -3633,7 +3633,7 @@ void m265_TimeInit(void) {
             HuSprPosSet(sprGrp, j, m265_timeDigitXTbl[j], m265_timeYTbl[i]);
             HuSprGrpMemberSet(sprGrp, j, m265_sprTbl[i + 3], 0);
             HuSprPatNoSet(sprGrp, j, 0);
-            HuSprAttrSet(sprGrp, j, 0x1000);
+            HuSprAttrSet(sprGrp, j, HUSPR_ATTR_XLU);
             HuSprAnimModeSet(sprGrp, j, HUSPR_ANIM_MODE_STOP);
         }
         HuSprDispOff(sprGrp, 0);
@@ -4002,7 +4002,7 @@ void m265_RayInit(s16 arg0) {
     HuSprPosSet(sprGrp, 0, 160, 120);
     HuSprScaleSet(sprGrp, 0, 4.0f, 4.0f);
     HuSprColorTPLvlSet(sprGrp, 0, 255, 255, 255, 0);
-    HuSprAttrSet(sprGrp, 0, 0x20009800);
+    HuSprAttrSet(sprGrp, 0, HUSPR_ATTR_VTX | HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU | HUSPR_ATTR_AA);
     HuSprPriSet(sprGrp, 0, 0xFFFF);
 }
 

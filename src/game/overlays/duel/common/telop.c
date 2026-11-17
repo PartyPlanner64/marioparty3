@@ -252,7 +252,7 @@ void MBDTelopLast5Create(void) {
         DataClose(data);
         HuSprGrpMemberSet(mbdTelopLast5Grp[0], 0, mbdTelopLast5Anim[0], 0);
         HuSprPriSet(mbdTelopLast5Grp[0], 0, 0x10);
-        HuSprAttrSet(mbdTelopLast5Grp[0], 0, 0x1000);
+        HuSprAttrSet(mbdTelopLast5Grp[0], 0, HUSPR_ATTR_XLU);
         HuSprPosSet(mbdTelopLast5Grp[0], 0, 0xA0, 0x32);
         mbdTelopLast5Anim[1] = -1;
         mbdTelopLast5Grp[1] = -1;
@@ -266,7 +266,7 @@ void MBDTelopLast5Create(void) {
     DataClose(data);
     HuSprGrpMemberSet(mbdTelopLast5Grp[0], 0, mbdTelopLast5Anim[0], sp18.unk_00[mbdTelopLast5Turn]);
     HuSprPriSet(mbdTelopLast5Grp[0], 0, 0x10);
-    HuSprAttrSet(mbdTelopLast5Grp[0], 0, 0x1000);
+    HuSprAttrSet(mbdTelopLast5Grp[0], 0, HUSPR_ATTR_XLU);
     HuSprPosSet(mbdTelopLast5Grp[0], 0, 0xA0, 0x32);
 
     mbdTelopLast5Grp[1] = HuSprGrpCreate(1, 0);
@@ -275,7 +275,7 @@ void MBDTelopLast5Create(void) {
     DataClose(data);
     HuSprGrpMemberSet(mbdTelopLast5Grp[1], 0, mbdTelopLast5Anim[1], 0);
     HuSprPriSet(mbdTelopLast5Grp[1], 0, 0x11);
-    HuSprAttrSet(mbdTelopLast5Grp[1], 0, 0x1000);
+    HuSprAttrSet(mbdTelopLast5Grp[1], 0, HUSPR_ATTR_XLU);
     HuSprPosSet(mbdTelopLast5Grp[1], 0, 0xA0, 0x32);
     obj->work[0] = 0;
 }
@@ -291,7 +291,7 @@ void MBDTelopPlayerCreate(s32 arg0) {
     DataClose(data);
     HuSprGrpMemberSet(mbdTelopPlayerGrp, 0, mbdTelopPlayerAnim[0], 0);
     HuSprPriSet(mbdTelopPlayerGrp, 0, 0x10);
-    HuSprAttrSet(mbdTelopPlayerGrp, 0, 0x1000);
+    HuSprAttrSet(mbdTelopPlayerGrp, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(mbdTelopPlayerGrp, 0, 0xA0, 0x78);
     obj = omAddObj(-0x8000, 0, 0, -1, MBDTelopPlayerMain);
     mbdTelopPlayerObj = obj;
@@ -456,7 +456,7 @@ void MBDTelopTitleProc(void) {
     for (i = 0; i < 7; i++) {
         HuSprGrpMemberSet(mbdTelopTitleSpr->unk_0A, i, mbdTelopTitleSpr->unk_0C[0], members.unk_00[i]);
         HuSprPriSet(mbdTelopTitleSpr->unk_0A, i, 1);
-        HuSprAttrSet(mbdTelopTitleSpr->unk_0A, i, 0x1000);
+        HuSprAttrSet(mbdTelopTitleSpr->unk_0A, i, HUSPR_ATTR_XLU);
         HuSprPosSet(mbdTelopTitleSpr->unk_0A, i, mbdTelopTitleXTbl[i], 92);
         HuSprDispOff(mbdTelopTitleSpr->unk_0A, i);
     }
@@ -468,7 +468,7 @@ void MBDTelopTitleProc(void) {
     for (i = 0; i < 7; i++) {
         HuSprGrpMemberSet(mbdTelopTitleShadowSpr->unk_0A, i, mbdTelopTitleShadowSpr->unk_0C[0], members.unk_00[i]);
         HuSprPriSet(mbdTelopTitleShadowSpr->unk_0A, i, 2);
-        HuSprAttrSet(mbdTelopTitleShadowSpr->unk_0A, i, 0x1000);
+        HuSprAttrSet(mbdTelopTitleShadowSpr->unk_0A, i, HUSPR_ATTR_XLU);
         HuSprPosSet(mbdTelopTitleShadowSpr->unk_0A, i, mbdTelopTitleXTbl[i], 92);
         HuSprColorSet(mbdTelopTitleShadowSpr->unk_0A, i, 0, 21, 233);
         HuSprDispOff(mbdTelopTitleShadowSpr->unk_0A, i);
@@ -489,7 +489,7 @@ void MBDTelopTitleProc(void) {
     sprite->unk_0C[0] = HuSprAnimRead(data);
     HuSprGrpMemberSet(sprite->unk_0A, 0, sprite->unk_0C[0], 0);
     HuSprPriSet(sprite->unk_0A, 0, 1);
-    HuSprAttrSet(sprite->unk_0A, 0, 0x1000);
+    HuSprAttrSet(sprite->unk_0A, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(sprite->unk_0A, 0, 160, 92);
     HuSprScaleSet(sprite->unk_0A, 0, 0.0f, 0.0f);
     HuSprColorSet(sprite->unk_0A, 0, 255, 255, 0);
@@ -575,7 +575,7 @@ void MBDTelopAttackProc(void) {
         sprite->unk_0C[i] = HuSprAnimRead(data);
         HuSprGrpMemberSet(sprite->unk_0A, i, sprite->unk_0C[i], 0);
         HuSprPriSet(sprite->unk_0A, i, 1);
-        HuSprAttrSet(sprite->unk_0A, i, 0);
+        HuSprAttrSet(sprite->unk_0A, i, HUSPR_ATTR_NONE);
         if (mode == 3) {
             HuSprPosSet(sprite->unk_0A, i, offsX[dirIdx][i], offsY[dirIdx][i]);
         } else {
@@ -586,10 +586,10 @@ void MBDTelopAttackProc(void) {
 
     HuSprZRotSet(sprite->unk_0A, 0, (dirIdx - 1) * 90);
     if (dirIdx == 2 || dirIdx == 3) {
-        HuSprAttrSet(sprite->unk_0A, 1, 1);
+        HuSprAttrSet(sprite->unk_0A, 1, HUSPR_ATTR_FLIPX);
     }
     if (dirIdx == 3) {
-        HuSprAttrSet(sprite->unk_0A, 0, 2);
+        HuSprAttrSet(sprite->unk_0A, 0, HUSPR_ATTR_FLIPY);
     }
 
     if (!(mode & 1)) {
@@ -681,7 +681,7 @@ void MBDTelopBannerProc(void) {
     sprite->unk_0C[0] = HuSprAnimRead(data);
     HuSprGrpMemberSet(sprite->unk_0A, 0, sprite->unk_0C[0], 0);
     HuSprPriSet(sprite->unk_0A, 0, 0x2010);
-    HuSprAttrSet(sprite->unk_0A, 0, 0);
+    HuSprAttrSet(sprite->unk_0A, 0, HUSPR_ATTR_NONE);
     DataClose(data);
 
     speed = 0;

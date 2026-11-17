@@ -52,7 +52,7 @@ static Vp HuSprViewport = {
 };
 static s32 HuSprOrderDirtyF = 0; // redraw?
 static Mtx HuSprOrthoMtx;
-static Gfx *HuSprBGList;
+static Gfx *HuSprFGList;
 static HuSprite *HuSprOrderTop; // head of sorted draw list
 static f32 HuSpr3DScale;
 extern Gfx *HuSprTileBuf;
@@ -92,7 +92,7 @@ void HuSprInit(void) {
     guOrtho(&HuSprOrthoMtx, -160.0f, 160.0f, -120.0f, 120.0f, 0.0f, 8000.0f, 2.0f);
     HuSprLayerHookMdl = Hu3DHookFuncCreate(0, HuSprLayerHook, 0);
     Hu3DModelCameraSet(HuSprLayerHookMdl, HU3D_CAM0);
-    HuSprBGHookMdl = Hu3DHookFuncCreate(0, HuSprBGHook, 6);
+    HuSprFGHookMdl = Hu3DHookFuncCreate(0, HuSprFGHook, 6);
     HuSprAnimInit();
     HuSprPalAnimInit();
     HuSprOrderDirtyF = 1;
@@ -822,9 +822,10 @@ void HuSprGfxBufAlloc(void) {
     HuSprVtxPos = HuSprGfxBuf[Hu3DBufNo];
 }
 
-// Model draw callback that builds the display list for all sprites. Sprites
-// without attribute 0x4000 are linked into a separate list (HuSprBGList)
-// and branched over here, so that HuSprBGHook can draw them later.
+// Model draw callback that builds the display list for all sprites. It is
+// drawn before 3D models, so HUSPR_ATTR_BG sprites are drawn here. Sprites
+// without HUSPR_ATTR_BG are linked into a separate list (HuSprFGList) and
+// branched over here, so that HuSprFGHook can draw them over everything later.
 void HuSprLayerHook(Gfx **gdl, s32 arg1, s32 arg2) {
     HuCamMtxs *mtxs;
     HuCamera *cam;
@@ -853,9 +854,9 @@ void HuSprLayerHook(Gfx **gdl, s32 arg1, s32 arg2) {
     gSPSetGeometryMode((*gdl)++, G_ZBUFFER | G_TEXTURE_GEN_LINEAR);
     gDPSetBlendColor((*gdl)++, 0, 0, 0, 1);
     gDPSetAlphaCompare((*gdl)++, G_AC_THRESHOLD);
-    HuSprBGList = NULL;
+    HuSprFGList = NULL;
     for (; sprite != NULL; sprite = sprite->unk_118) {
-        if (sprite->dispAttr & 0x4000) {
+        if (sprite->dispAttr & HUSPR_ATTR_BG) {
             if (inSeparate) {
                 if (separateBranch != NULL) {
                     gSPBranchList(separateBranch, *gdl + 1);
@@ -869,8 +870,8 @@ void HuSprLayerHook(Gfx **gdl, s32 arg1, s32 arg2) {
                     gSPBranchList(mainBranch, *gdl + 1);
                 }
                 separateBranch = (*gdl)++;
-                if (HuSprBGList == NULL) {
-                    HuSprBGList = *gdl;
+                if (HuSprFGList == NULL) {
+                    HuSprFGList = *gdl;
                 }
             }
             inSeparate = TRUE;
@@ -882,7 +883,7 @@ void HuSprLayerHook(Gfx **gdl, s32 arg1, s32 arg2) {
         if (separateBranch != NULL) {
             gSPBranchList(separateBranch, *gdl);
         }
-    } else if (HuSprBGList != NULL) {
+    } else if (HuSprFGList != NULL) {
         gSPEndDisplayList(mainBranch);
     }
     gDPSetTextureLUT((*gdl)++, G_TT_NONE);
@@ -896,11 +897,11 @@ void HuSprLayerHook(Gfx **gdl, s32 arg1, s32 arg2) {
 }
 
 // Model draw callback that renders the sprite display list for a camera.
-void HuSprBGHook(Gfx **gdl, s32 arg1, s32 arg2) {
+void HuSprFGHook(Gfx **gdl, s32 arg1, s32 arg2) {
     HuCamMtxs *mtxs = (HuCamMtxs *)arg1;
     HuCamera *cam = (HuCamera *)arg2;
 
-    if (HuSprBGList == NULL) {
+    if (HuSprFGList == NULL) {
         return;
     }
     gSPViewport((*gdl)++, &HuSprViewport);
@@ -914,7 +915,7 @@ void HuSprBGHook(Gfx **gdl, s32 arg1, s32 arg2) {
     gSPSetGeometryMode((*gdl)++, G_ZBUFFER | G_TEXTURE_GEN_LINEAR);
     gDPSetBlendColor((*gdl)++, 0, 0, 0, 1);
     gDPSetAlphaCompare((*gdl)++, G_AC_THRESHOLD);
-    gSPDisplayList((*gdl)++, HuSprBGList);
+    gSPDisplayList((*gdl)++, HuSprFGList);
     gDPSetTextureLUT((*gdl)++, G_TT_NONE);
     gSPMatrix((*gdl)++, &mtxs->perspMtx, G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
     gSPMatrix((*gdl)++, &mtxs->lookAtMtx, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
@@ -1095,7 +1096,7 @@ void HuSprAttrReset(s16 group, s16 member, s32 attr) {
     if ((sprite_ptr->attr & HUSPR_ATTR_DISPOFF) && (attr & HUSPR_ATTR_DISPOFF)) {
         HuSprOrderDirtyF = 1;
     }
-    if ((sprite_ptr->attr & 0x4000) && (attr & 0x4000)) {
+    if ((sprite_ptr->attr & HUSPR_ATTR_BG) && (attr & HUSPR_ATTR_BG)) {
         HuSprOrderDirtyF = 1;
     }
     sprite_ptr->attr &= ~attr;
@@ -1108,7 +1109,7 @@ void HuSprAttrSet(s16 group, s16 member, s32 attr) {
     if (!(sprite_ptr->attr & HUSPR_ATTR_DISPOFF) && (attr & HUSPR_ATTR_DISPOFF)) {
         HuSprOrderDirtyF = 1;
     }
-    if (!(sprite_ptr->attr & 0x4000) && (attr & 0x4000)) {
+    if (!(sprite_ptr->attr & HUSPR_ATTR_BG) && (attr & HUSPR_ATTR_BG)) {
         HuSprOrderDirtyF = 1;
     }
     sprite_ptr->attr |= attr;
@@ -1656,8 +1657,8 @@ void HuSprTexLoad(HuSprite *sprite) {
     if (sprite->data == NULL || (sprite->dispAttr & HUSPR_ATTR_DISPOFF)) {
         return;
     }
-    if (fabs(fmod(sprite->unk_20, 360.0)) > 0.1f || (sprite->dispAttr & 0x3C0C00) ||
-        (sprite->dispAttr & 0x30000) == 0x30000 || (sprite->dispAttr & 0x20000000)) {
+    if (fabs(fmod(sprite->unk_20, 360.0)) > 0.1f || (sprite->dispAttr & (HUSPR_ATTR_WRAPS_MASK | HUSPR_ATTR_WRAPT_MASK | HUSPR_ATTR_AA_MASK)) ||
+        (sprite->dispAttr & (HUSPR_ATTR_RECT | HUSPR_ATTR_RECT_TILE)) == (HUSPR_ATTR_RECT | HUSPR_ATTR_RECT_TILE) || (sprite->dispAttr & HUSPR_ATTR_VTX)) {
         image = &sprite->data->pat[sprite->patNo];
         switch (sprite->data->pixelBits & 0x7FFF) {
             case 4:
@@ -1705,15 +1706,15 @@ void HuSprTexLoad(HuSprite *sprite) {
                 break;
         }
         tiles = image->sizeY / lines;
-        sprite->dispAttr |= 0x40000000;
-        if (!(sprite->dispAttr & 0x8000000)) {
-            HuSprGfxBufSize += !(sprite->dispAttr & 0x2000) ? (tiles + 2) << 5 : (tiles + 2) << 6;
+        sprite->dispAttr |= HUSPR_ATTR_VTXDRAW;
+        if (!(sprite->dispAttr & HUSPR_ATTR_DLCACHE)) {
+            HuSprGfxBufSize += !(sprite->dispAttr & HUSPR_ATTR_MULTITEX) ? (tiles + 2) << 5 : (tiles + 2) << 6;
         } else {
             changed = sprite->dispAttr ^ sprite->prevAttr;
-            if (sprite->unk_124 == NULL || (changed & 0x40000000)) {
-                sprite->dispAttr |= 0x10000000;
+            if (sprite->unk_124 == NULL || (changed & HUSPR_ATTR_VTXDRAW)) {
+                sprite->dispAttr |= HUSPR_ATTR_DLDIRTY;
             }
-            if (sprite->dispAttr & 0x10000000) {
+            if (sprite->dispAttr & HUSPR_ATTR_DLDIRTY) {
                 if (sprite->unk_128[sprite->unk_120] != NULL) {
                     HuMemFree(sprite->unk_128[sprite->unk_120]);
                     HuMemFree(sprite->unk_134[sprite->unk_120]);
@@ -1721,17 +1722,17 @@ void HuSprTexLoad(HuSprite *sprite) {
                     sprite->unk_134[sprite->unk_120] = NULL;
                 }
                 sprite->unk_134[sprite->unk_120] =
-                    HuMemAlloc(!(sprite->dispAttr & 0x2000) ? (tiles + 2) << 5 : (tiles + 2) << 6);
+                    HuMemAlloc(!(sprite->dispAttr & HUSPR_ATTR_MULTITEX) ? (tiles + 2) << 5 : (tiles + 2) << 6);
             }
         }
     } else {
-        sprite->dispAttr &= ~0x40000000;
-        if (sprite->dispAttr & 0x8000000) {
+        sprite->dispAttr &= ~HUSPR_ATTR_VTXDRAW;
+        if (sprite->dispAttr & HUSPR_ATTR_DLCACHE) {
             changed = sprite->dispAttr ^ sprite->prevAttr;
-            if (sprite->unk_124 == NULL || (changed & 0x40000000)) {
-                sprite->dispAttr |= 0x10000000;
+            if (sprite->unk_124 == NULL || (changed & HUSPR_ATTR_VTXDRAW)) {
+                sprite->dispAttr |= HUSPR_ATTR_DLDIRTY;
             }
-            if (sprite->dispAttr & 0x10000000) {
+            if (sprite->dispAttr & HUSPR_ATTR_DLDIRTY) {
                 if (sprite->unk_128[sprite->unk_120] != NULL) {
                     HuMemFree(sprite->unk_128[sprite->unk_120]);
                     HuMemFree(sprite->unk_134[sprite->unk_120]);

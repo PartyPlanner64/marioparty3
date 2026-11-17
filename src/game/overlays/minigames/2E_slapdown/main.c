@@ -384,7 +384,7 @@ void m246_BackObjMain(omObjData *obj) {
 void m246_BackObjInit(omObjData *obj) {
     m246_backSprAnim = HuSprAnimDataRead(0x4F0000);
     m246_backSprNo = espEntry(m246_backSprAnim, 0, 0);
-    espAttrSet(m246_backSprNo, 0x4000);
+    espAttrSet(m246_backSprNo, HUSPR_ATTR_BG);
     m246_backSprX = 160.0f;
     m246_backSprY = 120.0f;
     espPosSet(m246_backSprNo, 160, 120);
@@ -1249,7 +1249,7 @@ void m246_RankObjInit(omObjData *obj) {
             espZRotSet(entry->unk_40[1], 180.0f);
         }
     }
-    espAttrSet(entry->unk_40[1], 0);
+    espAttrSet(entry->unk_40[1], HUSPR_ATTR_NONE);
     espPosSet(entry->unk_40[1], m246_rankFramePosTbl[obj->work[0]].x, m246_rankFramePosTbl[obj->work[0]].y);
     espDispOff(entry->unk_40[1]);
     espPriSet(entry->unk_40[1], 0xEEEE);
@@ -1258,28 +1258,28 @@ void m246_RankObjInit(omObjData *obj) {
         switch (i) {
             case 0:
                 entry->unk_06 = espEntry(entry->unk_40[0], 0, 0);
-                espAttrSet(entry->unk_06, 0);
+                espAttrSet(entry->unk_06, HUSPR_ATTR_NONE);
                 espPosSet(entry->unk_06, m246_rankDigitPosTbl[obj->work[0]].x, m246_rankDigitPosTbl[obj->work[0]].y);
                 espDispOff(entry->unk_06);
                 espPriSet(entry->unk_06, 0xAAAA);
                 break;
             case 1:
                 entry->unk_08 = espEntry(entry->unk_40[0], 0, 0);
-                espAttrSet(entry->unk_08, 0);
+                espAttrSet(entry->unk_08, HUSPR_ATTR_NONE);
                 espPosSet(entry->unk_08, m246_rankDigitPosTbl[obj->work[0]].x, m246_rankDigitPosTbl[obj->work[0]].y);
                 espDispOff(entry->unk_08);
                 espPriSet(entry->unk_08, 0xAAAA);
                 break;
             case 2:
                 entry->unk_0A = espEntry(entry->unk_40[0], 0, 0);
-                espAttrSet(entry->unk_0A, 0);
+                espAttrSet(entry->unk_0A, HUSPR_ATTR_NONE);
                 espPosSet(entry->unk_0A, m246_rankDigitPosTbl[obj->work[0]].x, m246_rankDigitPosTbl[obj->work[0]].y);
                 espDispOff(entry->unk_0A);
                 espPriSet(entry->unk_0A, 0xAAAA);
                 break;
             case 3:
                 entry->unk_0C = espEntry(entry->unk_40[0], 0, 0);
-                espAttrSet(entry->unk_0C, 0);
+                espAttrSet(entry->unk_0C, HUSPR_ATTR_NONE);
                 espPosSet(entry->unk_0C, m246_rankDigitPosTbl[obj->work[0]].x, m246_rankDigitPosTbl[obj->work[0]].y);
                 espDispOff(entry->unk_0C);
                 espPriSet(entry->unk_0C, 0xAAAA);

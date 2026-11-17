@@ -137,7 +137,7 @@ void option_SprCreate(s32 arg0, s32 resourceId) {
 
 void option_SprBGCreate(s32 arg0, s32 resourceId) {
     option_SprCreate(arg0, resourceId);
-    espAttrSet(option_sprTbl[arg0].espriteSlot, 0x4000);
+    espAttrSet(option_sprTbl[arg0].espriteSlot, HUSPR_ATTR_BG);
 }
 
 void option_SprKill(s32 arg0) {
@@ -357,7 +357,7 @@ void option_BGSprCreate(void) {
     // The original call omits the resource id.
     option_bgAnim = ((s16 (*)())HuSprAnimDataRead)();
     option_bgSpr = espEntry(option_bgAnim, 0, 0);
-    espAttrSet(option_bgSpr, 0x4000);
+    espAttrSet(option_bgSpr, HUSPR_ATTR_BG);
     espPosSet(option_bgSpr, 0xA0, 0x78);
 }
 

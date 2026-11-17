@@ -146,14 +146,14 @@ void last5_TitleExec(void) {
     DataClose(data);
     HuSprGrpMemberSet(last5_titleSprGrp->spriteGroup, 0, last5_titleSprGrp->model[0], 0);
     HuSprPriSet(last5_titleSprGrp->spriteGroup, 0, 0x11);
-    HuSprAttrSet(last5_titleSprGrp->spriteGroup, 0, 0x1000);
+    HuSprAttrSet(last5_titleSprGrp->spriteGroup, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(last5_titleSprGrp->spriteGroup, 0, 0xA0, 0x64);
     data = DataRead(0x1301DF);
     last5_titleSprGrp->model[1] = HuSprAnimRead(data);
     DataClose(data);
     HuSprGrpMemberSet(last5_titleSprGrp->spriteGroup, 1, last5_titleSprGrp->model[1], 3);
     HuSprPriSet(last5_titleSprGrp->spriteGroup, 1, 0x10);
-    HuSprAttrSet(last5_titleSprGrp->spriteGroup, 1, 0x1000);
+    HuSprAttrSet(last5_titleSprGrp->spriteGroup, 1, HUSPR_ATTR_XLU);
     HuSprPosSet(last5_titleSprGrp->spriteGroup, 1, 0xA0, 0x64);
     obj = omAddObj(0x1000, 0, 0, -1, last5_TitleObjMain);
     HuPrcSleep(0x1E);

@@ -583,7 +583,7 @@ void mgresultboard_TitleCreate(void) {
 
     temp_s0 = espEntry(HuSprAnimDataRead(0x18000A), 0, 0);
     espPosSet(temp_s0, 0xA0, 0x20);
-    espAttrSet(temp_s0, 0x1000);
+    espAttrSet(temp_s0, HUSPR_ATTR_XLU);
     espTPLvlSet(temp_s0, 0xFF);
     espColorSet(temp_s0, 0xFF, 0xFF, 0xFF);
     espPosSet(espEntry(HuSprAnimDataRead(0x180009), 0, 0), 0xA0, 0x20);

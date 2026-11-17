@@ -463,9 +463,9 @@ void m251_StageObjInit(omObjData *obj) {
         espDispOff(data->esprites[i + 4]);
         espDispOff(data->esprites[i + 6]);
         espDispOff(data->esprites[i + 8]);
-        espAttrSet(data->esprites[i], 0x4000);
-        espAttrSet(data->esprites[i + 6], 0x4008);
-        espAttrSet(data->esprites[i + 8], 0x4008);
+        espAttrSet(data->esprites[i], HUSPR_ATTR_BG);
+        espAttrSet(data->esprites[i + 6], HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
+        espAttrSet(data->esprites[i + 8], HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
         espPriSet(data->esprites[i + 2], 0x80C8);
         espPriSet(data->esprites[i + 4], 0x8190);
     }

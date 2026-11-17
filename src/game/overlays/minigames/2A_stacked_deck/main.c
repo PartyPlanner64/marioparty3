@@ -401,7 +401,7 @@ void m242_BackObjInit(omObjData *object) {
 
     card->unk_40[0] = HuSprAnimDataRead(0x4B0000);
     card->unk_40[1] = espEntry(card->unk_40[0], 0, 0);
-    espAttrSet(card->unk_40[1], 0x4000);
+    espAttrSet(card->unk_40[1], HUSPR_ATTR_BG);
     card->unk_44.x = 160.0f;
     card->unk_44.y = 120.0f;
     espPosSet(card->unk_40[1], 160, 120);

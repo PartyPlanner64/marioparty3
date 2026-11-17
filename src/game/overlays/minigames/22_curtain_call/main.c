@@ -340,7 +340,7 @@ void m234_StageObjInit(omObjData *obj) {
     m234_backSprZ = 45.0f;
     m234_backSprAnim = HuSprAnimDataRead(0x430000);
     m234_backSpr = espEntry(m234_backSprAnim, 0, 0);
-    espAttrSet(m234_backSpr, 0x5000);
+    espAttrSet(m234_backSpr, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
     espPosSet(m234_backSpr, m234_backSprX, m234_backSprY);
     obj->model[0] = Hu3DModelRead(0x430001, 0x299);
     obj->model[1] = Hu3DModelRead(0x430002, 0x299);

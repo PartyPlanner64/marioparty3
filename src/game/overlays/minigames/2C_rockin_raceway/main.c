@@ -2129,7 +2129,7 @@ void m244_StageObjInit(omObjData *object) {
     m244_sprTbl[0] = m244_SprAnimRead(0x4D000E);
     group = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(group, 0, m244_sprTbl[0], 0);
-    HuSprAttrSet(group, 0, 0x4000);
+    HuSprAttrSet(group, 0, HUSPR_ATTR_BG);
     HuSprScaleSet(group, 0, 1.0f, 1.0f);
     HuSprPosSet(group, 0, 160, 120);
     HuSprPriSet(group, 0, 0xFFFF);
@@ -2350,7 +2350,7 @@ void m244_GaugeCreate(s16 track, s16 character) {
         }
         HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_STOP);
         HuSprPatNoSet(group, i, 0);
-        HuSprAttrSet(group, i, 0x1000);
+        HuSprAttrSet(group, i, HUSPR_ATTR_XLU);
         if (i != 6) {
             HuSprPriSet(group, i, -16 - i);
         } else {
@@ -2410,9 +2410,9 @@ void m244_GaugeUpdate(s16 track, s16 progress, u16 state) {
             HuSprScaleSet(group, i + 1, scale, scale);
             HuSprPosSet(group, i + 1, x, m244_gaugeTbl[track].y);
             if (state == 2) {
-                HuSprAttrSet(group, i + 1, 0x838);
+                HuSprAttrSet(group, i + 1, HUSPR_ATTR_AA | HUSPR_ATTR_DITHER_MAGICSQ | HUSPR_ATTR_FILTER_BILERP);
             } else {
-                HuSprAttrReset(group, i + 1, 0x838);
+                HuSprAttrReset(group, i + 1, HUSPR_ATTR_AA | HUSPR_ATTR_DITHER_MAGICSQ | HUSPR_ATTR_FILTER_BILERP);
             }
         }
         m244_gaugeTbl[track].unk04 = m244_gaugeTbl[track].unk02;
@@ -2481,7 +2481,7 @@ void m244_TimeInit(void) {
             HuSprPosSet(group, j, m244_timeDigitXTbl[j], i * 12 + 28);
             HuSprGrpMemberSet(group, j, m244_sprTbl[6 + i], 0);
             HuSprPatNoSet(group, j, 0);
-            HuSprAttrSet(group, j, 0x1000);
+            HuSprAttrSet(group, j, HUSPR_ATTR_XLU);
             HuSprAnimModeSet(group, j, HUSPR_ANIM_MODE_STOP);
         }
         HuSprPatNoSet(group, 2, 10);

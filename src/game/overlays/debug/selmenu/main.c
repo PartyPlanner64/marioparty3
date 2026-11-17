@@ -466,7 +466,7 @@ void selmenu_ObjectSetup(void) {
         sprite = espEntry(selmenu_bgAnim, i % 6, 1);
         espDispOn(sprite);
         espPriSet(sprite, 0xFFFF);
-        espAttrSet(sprite, 0x4000);
+        espAttrSet(sprite, HUSPR_ATTR_BG);
         espTPLvlSet(sprite, 0xFF);
         espPosSet(sprite, (i % 7) * 48, (i / 7) * 48);
     }
@@ -1019,7 +1019,7 @@ void selmenu_MgNameRiseObjMain(omObjData *obj) {
     if (y - selmenu_mgNameRiseOfs > 48) {
         if (--selmenu_sparkTimer == 0) {
             selmenu_sparkSprTbl[selmenu_sparkNum] = espEntry(selmenu_sparkAnim, 0, 1);
-            espAttrSet(selmenu_sparkSprTbl[selmenu_sparkNum], 0x4000);
+            espAttrSet(selmenu_sparkSprTbl[selmenu_sparkNum], HUSPR_ATTR_BG);
             espPriSet(selmenu_sparkSprTbl[selmenu_sparkNum], 0x8000);
             espScaleSet(selmenu_sparkSprTbl[selmenu_sparkNum], 0.75f, 0.75f);
             espSpeedSet(selmenu_sparkSprTbl[selmenu_sparkNum], 8.0f);
@@ -1027,7 +1027,7 @@ void selmenu_MgNameRiseObjMain(omObjData *obj) {
             espColorSet(selmenu_sparkSprTbl[selmenu_sparkNum], 0xFF, 0xFF, 0xBE);
             selmenu_sparkNum++;
             selmenu_sparkSprTbl[selmenu_sparkNum] = espEntry(selmenu_sparkAnim, 0, 1);
-            espAttrSet(selmenu_sparkSprTbl[selmenu_sparkNum], 0x4000);
+            espAttrSet(selmenu_sparkSprTbl[selmenu_sparkNum], HUSPR_ATTR_BG);
             espPriSet(selmenu_sparkSprTbl[selmenu_sparkNum], 0x8000);
             espScaleSet(selmenu_sparkSprTbl[selmenu_sparkNum], 0.75f, 0.75f);
             espSpeedSet(selmenu_sparkSprTbl[selmenu_sparkNum], 8.0f);

@@ -1053,7 +1053,7 @@ void staff_EndProc(void) {
     stat = HuPrcCurrentGet()->user_data;
     Hu3DGLightDirSet(1, -21.0f, 235.0f, 181.0f);
     esp = espEntry(HuSprAnimDataRead(0x160024), 0, 0);
-    espAttrSet(esp, 0x4000);
+    espAttrSet(esp, HUSPR_ATTR_BG);
     espPosSet(esp, 160, 120);
     espPriSet(esp, 0xFFF0);
     staff_cameraLookF = 1;
@@ -1085,7 +1085,7 @@ void staff_EndProc(void) {
     for (x = 268, i = 0; i < 3; i++, x += 12) {
         HuSprTPLvlSet(grp, i, 0);
         HuSprAttrReset(grp, i, 0xFFFF);
-        HuSprAttrSet(grp, i, 0x9000);
+        HuSprAttrSet(grp, i, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
         HuSprScaleSet(grp, i, 1.0f, 1.0f);
         {
             // A local pointer to work is needed for the address to be hoisted out of the loop.

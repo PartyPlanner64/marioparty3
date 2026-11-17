@@ -29,7 +29,7 @@ void slerror_MainProc(void) {
         slerror_sprTbl[0] = sprite = espEntry(slerror_animTbl[0] = HuSprAnimDataRead(0x200000), 0, 1);
         espPosSet(sprite, 160, 120);
         espAttrReset(sprite, 0xFFFF);
-        espAttrSet(sprite, 0x1000);
+        espAttrSet(sprite, HUSPR_ATTR_XLU);
         espColorSet(sprite, 255, 255, 255);
         espDispOff(sprite);
     } else {
@@ -39,7 +39,7 @@ void slerror_MainProc(void) {
             slerror_sprTbl[0] = sprite = espEntry(anim, 0, 1);
             espPosSet(sprite, 160, 120);
             espAttrReset(sprite, 0xFFFF);
-            espAttrSet(sprite, 0x1000);
+            espAttrSet(sprite, HUSPR_ATTR_XLU);
             espColorSet(sprite, 255, 255, 255);
             espDispOff(sprite);
             count = 1;
@@ -49,7 +49,7 @@ void slerror_MainProc(void) {
             slerror_sprTbl[count] = sprite = espEntry(anim, 0, 1);
             espPosSet(sprite, 160, 120);
             espAttrReset(sprite, 0xFFFF);
-            espAttrSet(sprite, 0x1000);
+            espAttrSet(sprite, HUSPR_ATTR_XLU);
             espColorSet(sprite, 255, 255, 255);
             espDispOff(sprite);
             count++;
@@ -59,7 +59,7 @@ void slerror_MainProc(void) {
             slerror_sprTbl[count] = sprite = espEntry(anim, 0, 1);
             espPosSet(sprite, 160, 120);
             espAttrReset(sprite, 0xFFFF);
-            espAttrSet(sprite, 0x1000);
+            espAttrSet(sprite, HUSPR_ATTR_XLU);
             espColorSet(sprite, 255, 255, 255);
             espDispOff(sprite);
             count++;
@@ -69,7 +69,7 @@ void slerror_MainProc(void) {
             slerror_sprTbl[count] = sprite = espEntry(anim, 0, 1);
             espPosSet(sprite, 160, 120);
             espAttrReset(sprite, 0xFFFF);
-            espAttrSet(sprite, 0x1000);
+            espAttrSet(sprite, HUSPR_ATTR_XLU);
             espColorSet(sprite, 255, 255, 255);
             espDispOff(sprite);
             count++;

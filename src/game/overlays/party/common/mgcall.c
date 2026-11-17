@@ -367,7 +367,7 @@ static void MBMgCallListBgSprCreate(void) {
         DataClose(data);
         HuSprGrpMemberSet(mbMgCallBgGrp, 0, mbMgCallBgAnim, 0);
         HuSprPriSet(mbMgCallBgGrp, 0, 0x4770);
-        HuSprAttrSet(mbMgCallBgGrp, 0, 0x1000);
+        HuSprAttrSet(mbMgCallBgGrp, 0, HUSPR_ATTR_XLU);
         HuSprPosSet(mbMgCallBgGrp, 0, 0xA0, mbMgCallBgYTbl[mbMgCallType] + mbMgCallSlotBaseY);
     }
 }
@@ -382,7 +382,7 @@ static void MBMgCallCursorSprCreate(void) {
         DataClose(data);
         HuSprGrpMemberSet(mbMgCallCursorGrp, 0, mbMgCallCursorAnim, 0);
         HuSprPriSet(mbMgCallCursorGrp, 0, 0x100);
-        HuSprAttrSet(mbMgCallCursorGrp, 0, 0);
+        HuSprAttrSet(mbMgCallCursorGrp, 0, HUSPR_ATTR_NONE);
         HuSprPosSet(mbMgCallCursorGrp, 0, 0x32, mbMgCallCursorYTbl[mbMgCallType]);
     }
 }

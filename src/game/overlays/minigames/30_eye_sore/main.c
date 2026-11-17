@@ -318,13 +318,13 @@ void m248_StageObjInit(omObjData *obj) {
     m248_backSprY = 120.0f;
     m248_backSprAnim = HuSprAnimDataRead(0x510004);
     m248_backSprNo = espEntry(m248_backSprAnim, 0, 0);
-    espAttrSet(m248_backSprNo, 0x1000);
+    espAttrSet(m248_backSprNo, HUSPR_ATTR_XLU);
     espPosSet(m248_backSprNo, m248_backSprX, m248_backSprY);
     m248_backSprX = 160.0f;
     m248_backSprY = 120.0f;
     m248_backSprAnim = HuSprAnimDataRead(0x510005);
     m248_backSprNo = espEntry(m248_backSprAnim, 0, 0);
-    espAttrSet(m248_backSprNo, 0x1000);
+    espAttrSet(m248_backSprNo, HUSPR_ATTR_XLU);
     espPosSet(m248_backSprNo, m248_backSprX, m248_backSprY);
     obj->func = m248_StageObjMain;
 }

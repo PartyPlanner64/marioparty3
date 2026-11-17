@@ -387,7 +387,7 @@ void m240_HudObjInit(omObjData *object) {
     m240_hudY = 33.0f;
     m240_hudSprGrp = HuSprAnimDataRead(0x490002);
     m240_hudSpr = espEntry(m240_hudSprGrp, 0, 0);
-    espAttrSet(m240_hudSpr, 0x5000);
+    espAttrSet(m240_hudSpr, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
     espPosSet(m240_hudSpr, m240_hudX, m240_hudY);
     object->func = m240_HudObjMain;
 }

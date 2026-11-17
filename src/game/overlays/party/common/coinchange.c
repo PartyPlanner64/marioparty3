@@ -156,7 +156,7 @@ static void MBCoinChangeCreateEx(s32 arg0, s32 arg1) {
         DataClose(temp_v0_3);
         HuSprGrpMemberSet(temp_v0_2, 1, mbCoinChangeAnimTbl[arg0][0], 0);
         HuSprPriSet(temp_v0_2, 1, 0x2010U);
-        HuSprAttrSet(temp_v0_2, 1, 0x1000);
+        HuSprAttrSet(temp_v0_2, 1, HUSPR_ATTR_XLU);
 
         var_s2 = 2;
         HuSprGrpMemberSet(temp_v0_2, 2, mbCoinChangeAnimTbl[arg0][1], 0);
@@ -169,7 +169,7 @@ static void MBCoinChangeCreateEx(s32 arg0, s32 arg1) {
         }
 
         HuSprPriSet(temp_v0_2, var_s2, 0x2010);
-        HuSprAttrSet(temp_v0_2, var_s2, 0x1000);
+        HuSprAttrSet(temp_v0_2, var_s2, HUSPR_ATTR_XLU);
 
         var_s2++;
         var_s3 = (var_s3 < 0) ? -var_s3 : var_s3;
@@ -179,7 +179,7 @@ static void MBCoinChangeCreateEx(s32 arg0, s32 arg1) {
             HuSprAnimModeSet(temp_v0_2, var_s2, HUSPR_ANIM_MODE_BANK);
             HuSprBankSet(temp_v0_2, var_s2, (var_s3 / 100), 0);
             HuSprPriSet(temp_v0_2, var_s2, 0x2010);
-            HuSprAttrSet(temp_v0_2, var_s2, 0x1000);
+            HuSprAttrSet(temp_v0_2, var_s2, HUSPR_ATTR_XLU);
             var_s2++;
         }
 
@@ -188,7 +188,7 @@ static void MBCoinChangeCreateEx(s32 arg0, s32 arg1) {
             HuSprAnimModeSet(temp_v0_2, var_s2, HUSPR_ANIM_MODE_BANK);
             HuSprBankSet(temp_v0_2, var_s2, ((var_s3 / 10) % 10), 0);
             HuSprPriSet(temp_v0_2, var_s2, 0x2010U);
-            HuSprAttrSet(temp_v0_2, var_s2, 0x1000);
+            HuSprAttrSet(temp_v0_2, var_s2, HUSPR_ATTR_XLU);
             var_s2 += 1;
         }
 
@@ -198,7 +198,7 @@ static void MBCoinChangeCreateEx(s32 arg0, s32 arg1) {
         HuSprAnimModeSet(temp_v0_2, var_s2, HUSPR_ANIM_MODE_BANK);
         HuSprBankSet(temp_v0_2, var_s2, var_s3, 0);
         HuSprPriSet(temp_v0_2, var_s2, 0x2010U);
-        HuSprAttrSet(temp_v0_2, var_s2, 0x1000);
+        HuSprAttrSet(temp_v0_2, var_s2, HUSPR_ATTR_XLU);
         var_s2++;
 
         if (mbCoinChangeFollowF != 0) {

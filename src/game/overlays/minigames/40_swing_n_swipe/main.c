@@ -219,7 +219,7 @@ void m264_ObjectSetup(void) {
 
 void m264_MainObjInit(omObjData *object) {
     m264_ComInit();
-    m264_EspCreate(0x610000, 0x4000, 10, 160, 120);
+    m264_EspCreate(0x610000, HUSPR_ATTR_BG, 10, 160, 120);
     m264_playerObj = omAddObj(10, 20, 20, -1, m264_PlayerObjInit);
     omAddObj(20, 20, 20, -1, m264_CarrierObjInit);
     omAddObj(30, 20, 20, -1, m264_BoxObjInit);

@@ -8,8 +8,75 @@
 
 #define HUSPR_NONE -1
 
-#define HUSPR_ATTR_DISPOFF 0x8000
-#define HUSPR_ATTR_NOPAUSE 0x1000000
+// Sprite attributes (HuSprite.attr). Bits 0-1 are XORed with the animation
+// frame's flip bits to produce HuSprite.dispAttr.
+#define HUSPR_ATTR_NONE 0
+#define HUSPR_ATTR_FLIPX (1 << 0)
+#define HUSPR_ATTR_FLIPY (1 << 1)
+
+// Texture filter field (G_MDSFT_TEXTFILT)
+#define HUSPR_ATTR_FILTER_SHIFT 2
+#define HUSPR_ATTR_FILTER_MASK (3 << HUSPR_ATTR_FILTER_SHIFT)
+#define HUSPR_ATTR_FILTER_POINT (0 << HUSPR_ATTR_FILTER_SHIFT)
+#define HUSPR_ATTR_FILTER_BILERP (2 << HUSPR_ATTR_FILTER_SHIFT)
+#define HUSPR_ATTR_FILTER_AVERAGE (3 << HUSPR_ATTR_FILTER_SHIFT)
+
+// RGB dither field (G_MDSFT_RGBDITHER), stored inverted so 0 is G_CD_DISABLE
+#define HUSPR_ATTR_DITHER_SHIFT 4
+#define HUSPR_ATTR_DITHER_MASK (3 << HUSPR_ATTR_DITHER_SHIFT)
+#define HUSPR_ATTR_DITHER_NOISE (1 << HUSPR_ATTR_DITHER_SHIFT)
+#define HUSPR_ATTR_DITHER_BAYER (2 << HUSPR_ATTR_DITHER_SHIFT)
+#define HUSPR_ATTR_DITHER_MAGICSQ (3 << HUSPR_ATTR_DITHER_SHIFT)
+
+// Cycle type field (G_MDSFT_CYCLETYPE). COPY and FILL use the copy mode path.
+#define HUSPR_ATTR_CYCLE_SHIFT 6
+#define HUSPR_ATTR_CYCLE_MASK (3 << HUSPR_ATTR_CYCLE_SHIFT)
+#define HUSPR_ATTR_CYCLE_1CYCLE (0 << HUSPR_ATTR_CYCLE_SHIFT)
+#define HUSPR_ATTR_CYCLE_2CYCLE (1 << HUSPR_ATTR_CYCLE_SHIFT)
+#define HUSPR_ATTR_CYCLE_COPY (2 << HUSPR_ATTR_CYCLE_SHIFT)
+#define HUSPR_ATTR_CYCLE_FILL (3 << HUSPR_ATTR_CYCLE_SHIFT)
+
+// Antialiasing field, selects the render mode
+#define HUSPR_ATTR_AA_SHIFT 10
+#define HUSPR_ATTR_AA_MASK (3 << HUSPR_ATTR_AA_SHIFT)
+#define HUSPR_ATTR_AA_NONE (0 << HUSPR_ATTR_AA_SHIFT)
+#define HUSPR_ATTR_AA_REDUCED (1 << HUSPR_ATTR_AA_SHIFT) // G_RM_RA_OPA_SURF when opaque
+#define HUSPR_ATTR_AA (2 << HUSPR_ATTR_AA_SHIFT)
+
+#define HUSPR_ATTR_XLU (1 << 12)       // translucent (XLU_SURF / TEX_EDGE instead of OPA_SURF)
+#define HUSPR_ATTR_MULTITEX (1 << 13)  // two-cycle blend of two texture tiles, weighted by tpLvl
+#define HUSPR_ATTR_BG (1 << 14)        // drawn behind 3D models, in camera 0's pre-pass
+#define HUSPR_ATTR_DISPOFF (1 << 15)
+#define HUSPR_ATTR_RECT (1 << 16)      // drawn into the HuSprRectSet rectangle instead of pos/center/scale
+#define HUSPR_ATTR_RECT_TILE (1 << 17) // with RECT, texture scale is derived from the rectangle
+
+// Texture S/T clamp mode fields. The value is the G_TX_* mode plus one; zero
+// disables masking. The mask comes from HuSprTexMaskSet.
+#define HUSPR_ATTR_WRAPS_SHIFT 18
+#define HUSPR_ATTR_WRAPS_MASK (3 << HUSPR_ATTR_WRAPS_SHIFT)
+#define HUSPR_ATTR_WRAPS_WRAP (1 << HUSPR_ATTR_WRAPS_SHIFT)
+#define HUSPR_ATTR_WRAPS_MIRROR (2 << HUSPR_ATTR_WRAPS_SHIFT)
+#define HUSPR_ATTR_WRAPS_CLAMP (3 << HUSPR_ATTR_WRAPS_SHIFT)
+#define HUSPR_ATTR_WRAPT_SHIFT 20
+#define HUSPR_ATTR_WRAPT_MASK (3 << HUSPR_ATTR_WRAPT_SHIFT)
+#define HUSPR_ATTR_WRAPT_WRAP (1 << HUSPR_ATTR_WRAPT_SHIFT)
+#define HUSPR_ATTR_WRAPT_MIRROR (2 << HUSPR_ATTR_WRAPT_SHIFT)
+#define HUSPR_ATTR_WRAPT_CLAMP (3 << HUSPR_ATTR_WRAPT_SHIFT)
+
+// Alpha compare field (G_MDSFT_ALPHACOMPARE)
+#define HUSPR_ATTR_ALPHACMP_SHIFT 22
+#define HUSPR_ATTR_ALPHACMP_MASK (3 << HUSPR_ATTR_ALPHACMP_SHIFT)
+#define HUSPR_ATTR_ALPHACMP_THRESHOLD (0 << HUSPR_ATTR_ALPHACMP_SHIFT)
+#define HUSPR_ATTR_ALPHACMP_NONE (1 << HUSPR_ATTR_ALPHACMP_SHIFT)
+#define HUSPR_ATTR_ALPHACMP_DITHER (2 << HUSPR_ATTR_ALPHACMP_SHIFT)
+
+#define HUSPR_ATTR_NOPAUSE (1 << 24)
+#define HUSPR_ATTR_ADDCOL (1 << 25)  // combiner brightens the texture toward the prim color
+#define HUSPR_ATTR_ZBUF (1 << 26)    // Z compare/update against the HuSprPrimDepthSet depth
+#define HUSPR_ATTR_DLCACHE (1 << 27) // the tile display list is built once and reused
+#define HUSPR_ATTR_DLDIRTY (1 << 28) // internal: the cached display list must be rebuilt
+#define HUSPR_ATTR_VTX (1 << 29)     // force drawing with vertices instead of texture rectangles
+#define HUSPR_ATTR_VTXDRAW (1 << 30) // internal: drawing with vertices this frame
 
 // Playback modes (HuSprite.animMode)
 #define HUSPR_ANIM_MODE_STOP 0          // no animation
@@ -203,7 +270,7 @@ typedef struct HuSprGrp {
 #ifndef NO_EXTERN_VARIABLES
 extern HuSprGrp *HuSprGrpData[HUSPR_GRP_MAX];
 
-extern s16 HuSprBGHookMdl;
+extern s16 HuSprFGHookMdl;
 #endif
 
 void HuSprInit(void);
@@ -244,7 +311,7 @@ void HuSprMtxCat(f32 a0[][2], f32 a1[][2], f32 a2[][2]);
 void HuSprExec(void);
 void HuSprGfxBufAlloc(void);
 void HuSprLayerHook(Gfx **gdl, s32 arg1, s32 arg2);
-void HuSprBGHook(Gfx **gdl, s32 arg1, s32 arg2);
+void HuSprFGHook(Gfx **gdl, s32 arg1, s32 arg2);
 void HuSprPrimDepthSet(s16 group, s16 member, s16 arg2);
 void HuSprMtxXformVec4(Mtx *m, f32 x, f32 y, f32 z, f32 w, f32 *ox, f32 *oy, f32 *oz, f32 *ow);
 f32 HuSpr3Dto2D(s16 group, s16 member, s16 camera, f32 x, f32 y, f32 z);

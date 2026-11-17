@@ -1161,12 +1161,12 @@ void mstory4_Scene1VignetteCreate(void) {
         for (j = 0; j < 2; j++) {
             mstory4_scene1VignetteSprTbl[i][j] = espEntry(mstory4_scene1VignetteAnim, 0, 0);
             espPosSet(mstory4_scene1VignetteSprTbl[i][j], j * 160 + 80, i * 120 + 60);
-            espAttrSet(mstory4_scene1VignetteSprTbl[i][j], 0x4000);
+            espAttrSet(mstory4_scene1VignetteSprTbl[i][j], HUSPR_ATTR_BG);
         }
     }
-    espAttrSet(mstory4_scene1VignetteSprTbl[0][1], 1);
-    espAttrSet(mstory4_scene1VignetteSprTbl[1][0], 2);
-    espAttrSet(mstory4_scene1VignetteSprTbl[1][1], 3);
+    espAttrSet(mstory4_scene1VignetteSprTbl[0][1], HUSPR_ATTR_FLIPX);
+    espAttrSet(mstory4_scene1VignetteSprTbl[1][0], HUSPR_ATTR_FLIPY);
+    espAttrSet(mstory4_scene1VignetteSprTbl[1][1], HUSPR_ATTR_FLIPY | HUSPR_ATTR_FLIPX);
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 2; j++) {
             espDispOn(mstory4_scene1VignetteSprTbl[i][j]);
@@ -1194,7 +1194,7 @@ void mstory4_Scene1PicCreate(void) {
         mstory4_scene1PicAnimTbl[i] = HuSprAnimDataRead(mstory4_scene1PicFileTbl[i]);
         mstory4_scene1PicSprTbl[i] = espEntry(mstory4_scene1PicAnimTbl[i], 0, 0);
         espPosSet(mstory4_scene1PicSprTbl[i], 160, 120);
-        espAttrSet(mstory4_scene1PicSprTbl[i], 0x4000);
+        espAttrSet(mstory4_scene1PicSprTbl[i], HUSPR_ATTR_BG);
         espDispOff(mstory4_scene1PicSprTbl[i]);
     }
 }
@@ -1407,9 +1407,9 @@ void mstory4_Scene1ConstellationExec(void) {
             mstory4_scene1SparkAnim = HuSprAnimRead(data);
             mstory4_scene1SparkSprTbl[n] = espEntry(mstory4_scene1SparkAnim, 0, 1);
             espPosSet(mstory4_scene1SparkSprTbl[n], mstory4_scene1SparkGroupTbl[i].pos[j][0], mstory4_scene1SparkGroupTbl[i].pos[j][1]);
-            espAttrSet(mstory4_scene1SparkSprTbl[n], 0x1000);
+            espAttrSet(mstory4_scene1SparkSprTbl[n], HUSPR_ATTR_XLU);
             espColorSet(mstory4_scene1SparkSprTbl[n], 0xFF, 0xFF, 0xDC);
-            espAttrSet(mstory4_scene1SparkSprTbl[n], 8);
+            espAttrSet(mstory4_scene1SparkSprTbl[n], HUSPR_ATTR_FILTER_BILERP);
             espTPLvlSet(mstory4_scene1SparkSprTbl[n], 0xFF);
             espDispOff(mstory4_scene1SparkSprTbl[n]);
             n++;

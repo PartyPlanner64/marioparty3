@@ -166,14 +166,14 @@ void MBMapFullLineCreate(void) {
         temp_v0 = DataRead(0x1301CE);
         temp_s0->model[0] = HuSprAnimRead(temp_v0);
         HuSprGrpMemberSet(temp_s0->spriteGroup, 0, temp_s0->model[0], 0);
-        HuSprAttrSet(temp_s0->spriteGroup, 0, 0x01001808);
+        HuSprAttrSet(temp_s0->spriteGroup, 0, HUSPR_ATTR_NOPAUSE | HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_BILERP);
         HuSprPriSet(temp_s0->spriteGroup, 0, 2);
         HuSprColorTPLvlSet(temp_s0->spriteGroup, 0, 0, 0, 0xFF, 0x80);
         DataClose(temp_v0);
         temp_v0_2 = DataRead(0x1301CD);
         temp_s0->model[1] = HuSprAnimRead(temp_v0_2);
         HuSprGrpMemberSet(temp_s0->spriteGroup, 1, temp_s0->model[1], 0);
-        HuSprAttrSet(temp_s0->spriteGroup, 1, 0x01001808);
+        HuSprAttrSet(temp_s0->spriteGroup, 1, HUSPR_ATTR_NOPAUSE | HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_BILERP);
         HuSprPriSet(temp_s0->spriteGroup, 1, 2);
         HuSprColorTPLvlSet(temp_s0->spriteGroup, 1, 0, 0, 0xFF, 0x80);
         DataClose(temp_v0_2);
@@ -306,7 +306,7 @@ static void MBMapFullMain(void) {
             data = DataRead(mbMapFullIconSprTbl[entry->unk_00]);
             iconGrp->model[i] = HuSprAnimRead(data);
             HuSprGrpMemberSet(iconGrp->spriteGroup, i, iconGrp->model[i], 0);
-            HuSprAttrSet(iconGrp->spriteGroup, i, 0x01001000);
+            HuSprAttrSet(iconGrp->spriteGroup, i, HUSPR_ATTR_NOPAUSE | HUSPR_ATTR_XLU);
             if (entry->unk4 != NULL) {
                 MBCamera3Dto2D(&entry->unk4->coords, sp18);
             } else {
@@ -323,7 +323,7 @@ static void MBMapFullMain(void) {
                 data = DataRead(0x1301D3);
                 iconGrp->model[i] = HuSprAnimRead(data);
                 HuSprGrpMemberSet(iconGrp->spriteGroup, i, iconGrp->model[i], 0);
-                HuSprAttrSet(iconGrp->spriteGroup, i, 0x01001808);
+                HuSprAttrSet(iconGrp->spriteGroup, i, HUSPR_ATTR_NOPAUSE | HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_BILERP);
                 HuSprPosSet(iconGrp->spriteGroup, i, mid, y - 1);
                 HuSprPriSet(iconGrp->spriteGroup, i, 0xFFFF);
                 DataClose(data);
@@ -342,7 +342,7 @@ static void MBMapFullMain(void) {
         charGrp->model[i] = HuSprAnimRead(data);
         HuSprGrpMemberSet(charGrp->spriteGroup, i, charGrp->model[i], 0);
         HuSprPriSet(charGrp->spriteGroup, i, 1);
-        HuSprAttrSet(charGrp->spriteGroup, i, 0x01001000);
+        HuSprAttrSet(charGrp->spriteGroup, i, HUSPR_ATTR_NOPAUSE | HUSPR_ATTR_XLU);
         HuSprPosSet(charGrp->spriteGroup, i,
                             mbMapFullPlayerXTbl[i] - 0x1E,
                             mbMapFullPlayerYTbl[i]);
@@ -352,7 +352,7 @@ static void MBMapFullMain(void) {
         charGrp->model[i+4] = HuSprAnimRead(data);
         HuSprGrpMemberSet(charGrp->spriteGroup, i + 4, charGrp->model[i + 4], 0);
         HuSprPriSet(charGrp->spriteGroup, i + 4, 1);
-        HuSprAttrSet(charGrp->spriteGroup, i + 4, 0x01001000);
+        HuSprAttrSet(charGrp->spriteGroup, i + 4, HUSPR_ATTR_NOPAUSE | HUSPR_ATTR_XLU);
         HuSprPosSet(charGrp->spriteGroup, i + 4,
                             mbMapFullPlayerXTbl[i] + 8,
                             mbMapFullPlayerYTbl[i]);

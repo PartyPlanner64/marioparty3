@@ -1090,28 +1090,28 @@ void m220_StageObjInit(omObjData *object) {
     HuSprPosSet(group, 0, 0, 0);
     HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_STOP);
     HuSprPatNoSet(group, 0, 0);
-    HuSprAttrSet(group, 0, 0x580C);
+    HuSprAttrSet(group, 0, HUSPR_ATTR_BG | HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_AVERAGE);
     HuSprPriSet(group, 0, m220_stageSprPriTbl[0]);
     m220_sprTbl[8] = m220_SprAnimRead(0x350008);
     HuSprGrpMemberSet(group, 1, m220_sprTbl[8], 0);
     HuSprPosSet(group, 1, 0, 84);
     HuSprAnimModeSet(group, 1, HUSPR_ANIM_MODE_STOP);
     HuSprPatNoSet(group, 1, 0);
-    HuSprAttrSet(group, 1, 0x580C);
+    HuSprAttrSet(group, 1, HUSPR_ATTR_BG | HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_AVERAGE);
     HuSprPriSet(group, 1, m220_stageSprPriTbl[1]);
     m220_sprTbl[9] = m220_SprAnimRead(0x350009);
     HuSprGrpMemberSet(group, 2, m220_sprTbl[9], 0);
     HuSprPosSet(group, 2, 160, 0);
     HuSprAnimModeSet(group, 2, HUSPR_ANIM_MODE_STOP);
     HuSprPatNoSet(group, 2, 0);
-    HuSprAttrSet(group, 2, 0x580C);
+    HuSprAttrSet(group, 2, HUSPR_ATTR_BG | HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_AVERAGE);
     HuSprPriSet(group, 2, m220_stageSprPriTbl[2]);
     m220_sprTbl[0] = m220_SprAnimRead(0x35000A);
     HuSprGrpMemberSet(group, 3, m220_sprTbl[0], 0);
     HuSprPosSet(group, 3, 0, 138);
     HuSprAnimModeSet(group, 3, HUSPR_ANIM_MODE_STOP);
     HuSprPatNoSet(group, 3, 0);
-    HuSprAttrSet(group, 3, 0x580C);
+    HuSprAttrSet(group, 3, HUSPR_ATTR_BG | HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_AVERAGE);
     HuSprPriSet(group, 3, m220_stageSprPriTbl[3]);
     object->func = m220_StageObjMain;
 }
@@ -1170,7 +1170,7 @@ void m220_LampSprInit(void) {
         m220_SprPosSet(group, sprite->unk_00, sprite->unk_24, sprite->unk_28);
         HuSprAnimModeSet(group, sprite->unk_00, HUSPR_ANIM_MODE_STOP);
         HuSprPatNoSet(group, sprite->unk_00, 0);
-        HuSprAttrSet(group, sprite->unk_00, 0x4000580C);
+        HuSprAttrSet(group, sprite->unk_00, HUSPR_ATTR_VTXDRAW | HUSPR_ATTR_BG | HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_AVERAGE);
         HuSprPriSet(group, sprite->unk_00, sprite->unk_02);
     }
     m220_lampSys.unk_00->func = m220_LampObjMain;
@@ -1988,7 +1988,7 @@ void m220_ScoreChrSet(s16 team, s16 chr0, s16 chr1, s16 arg3) {
         }
         HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_STOP);
         HuSprPatNoSet(group, i, 0);
-        HuSprAttrSet(group, i, 0x1000);
+        HuSprAttrSet(group, i, HUSPR_ATTR_XLU);
         HuSprPriSet(group, i, i - 16);
     }
 }
@@ -2017,8 +2017,8 @@ void m220_ScoreObjMain(omObjData *object) {
             } else {
                 light->unk_0A--;
             }
-            HuSprAttrSet(light->unk_00, 0, 0x838);
-            HuSprAttrSet(light->unk_00, 1, 0x838);
+            HuSprAttrSet(light->unk_00, 0, HUSPR_ATTR_AA | HUSPR_ATTR_DITHER_MAGICSQ | HUSPR_ATTR_FILTER_BILERP);
+            HuSprAttrSet(light->unk_00, 1, HUSPR_ATTR_AA | HUSPR_ATTR_DITHER_MAGICSQ | HUSPR_ATTR_FILTER_BILERP);
             if (light->unk_0A >= 10) {
                 HuSprAttrReset(light->unk_00, 0, HUSPR_ATTR_DISPOFF);
             } else {
@@ -2031,8 +2031,8 @@ void m220_ScoreObjMain(omObjData *object) {
         HuSprScaleSet(light->unk_00, 0, scale, scale);
         HuSprScaleSet(light->unk_00, 1, scale, scale);
         if (light->unk_0E != 0 && --light->unk_0E == 0) {
-            HuSprAttrReset(light->unk_00, 0, 0x838);
-            HuSprAttrReset(light->unk_00, 1, 0x838);
+            HuSprAttrReset(light->unk_00, 0, HUSPR_ATTR_AA | HUSPR_ATTR_DITHER_MAGICSQ | HUSPR_ATTR_FILTER_BILERP);
+            HuSprAttrReset(light->unk_00, 1, HUSPR_ATTR_AA | HUSPR_ATTR_DITHER_MAGICSQ | HUSPR_ATTR_FILTER_BILERP);
         }
     }
 }

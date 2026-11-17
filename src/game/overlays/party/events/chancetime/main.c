@@ -281,11 +281,11 @@ void chancetime_BgSprCreate(void) {
 
     sprite = espEntry(HuSprAnimDataRead(0x1C0001), 0, 0);
     espPosSet(sprite, 160, 180);
-    espAttrSet(sprite, 0x4000);
+    espAttrSet(sprite, HUSPR_ATTR_BG);
 
     sprite = espEntry(HuSprAnimDataRead(0x1C0005), 0, 0);
     espPosSet(sprite, 160, 60);
-    espAttrSet(sprite, 0x4000);
+    espAttrSet(sprite, HUSPR_ATTR_BG);
 }
 
 void chancetime_Close(void) {

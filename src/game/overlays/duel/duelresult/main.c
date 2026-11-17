@@ -286,7 +286,7 @@ void duelresult_IntroExec(void) {
         groups[0]->unk_0C[i] = HuSprAnimRead(data);
         HuSprGrpMemberSet(groups[0]->unk_0A, i, groups[0]->unk_0C[i], 0);
         HuSprPriSet(groups[0]->unk_0A, i, 1);
-        HuSprAttrSet(groups[0]->unk_0A, i, 0);
+        HuSprAttrSet(groups[0]->unk_0A, i, HUSPR_ATTR_NONE);
         HuSprPosSet(groups[0]->unk_0A, i, leftPos.pos[i][0], leftPos.pos[i][1]);
         DataClose(data);
     }
@@ -297,7 +297,7 @@ void duelresult_IntroExec(void) {
         groups[1]->unk_0C[i] = HuSprAnimRead(data);
         HuSprGrpMemberSet(groups[1]->unk_0A, i, groups[0]->unk_0C[i], 0);
         HuSprPriSet(groups[1]->unk_0A, i, 1);
-        HuSprAttrSet(groups[1]->unk_0A, i, 1);
+        HuSprAttrSet(groups[1]->unk_0A, i, HUSPR_ATTR_FLIPX);
         HuSprPosSet(groups[1]->unk_0A, i, rightPos.pos[i][0], rightPos.pos[i][1]);
         DataClose(data);
     }
@@ -638,7 +638,7 @@ void duelresult_CoinNumCreate(void) {
             HuSprAnimModeSet(duelresult_numSprGrpTbl[i], j, HUSPR_ANIM_MODE_BANK);
             HuSprBankSet(duelresult_numSprGrpTbl[i], j, digits[j], 0);
             HuSprPriSet(duelresult_numSprGrpTbl[i], j, 0x4790);
-            HuSprAttrSet(duelresult_numSprGrpTbl[i], j, 0x1000);
+            HuSprAttrSet(duelresult_numSprGrpTbl[i], j, HUSPR_ATTR_XLU);
             HuSprColorSet(duelresult_numSprGrpTbl[i], j, 0xFF, 0xFF, 0);
             if (j == 0) {
                 pos3d.x = GwPlayer[i].player_obj->coords.x;
@@ -1036,7 +1036,7 @@ void duelresult_ResultExec(void) {
             DataClose(data);
             HuSprGrpMemberSet(group->unk_0A, 0, group->unk_0C[0], 0);
             HuSprPriSet(group->unk_0A, 0, 1);
-            HuSprAttrSet(group->unk_0A, 0, 0);
+            HuSprAttrSet(group->unk_0A, 0, HUSPR_ATTR_NONE);
             HuSprPosSet(group->unk_0A, 0, 160, 60);
 
             for (i = 0; i < 2; i++) {
@@ -1372,7 +1372,7 @@ void duelresult_ResultExec(void) {
     DataClose(data);
     HuSprGrpMemberSet(group->unk_0A, 0, group->unk_0C[0], 0);
     HuSprPriSet(group->unk_0A, 0, 1);
-    HuSprAttrSet(group->unk_0A, 0, 0);
+    HuSprAttrSet(group->unk_0A, 0, HUSPR_ATTR_NONE);
     HuSprPosSet(group->unk_0A, 0, 160, 184);
     HuPrcSleep(30);
 

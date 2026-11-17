@@ -542,7 +542,7 @@ void MBDMgCallListBgSprCreate(void) {
         DataClose(data);
         HuSprGrpMemberSet(mbdMgCallBgGrp, 0, mbdMgCallBgAnim, 0);
         HuSprPriSet(mbdMgCallBgGrp, 0, 0x4770);
-        HuSprAttrSet(mbdMgCallBgGrp, 0, 0x1000);
+        HuSprAttrSet(mbdMgCallBgGrp, 0, HUSPR_ATTR_XLU);
         HuSprPosSet(mbdMgCallBgGrp, 0, 0xA0, mbdMgCallBgYTbl[mbdMgCallType] + mbdMgCallSlotTbl[0].y);
         if (mbdMgCallType != 1) {
             HuSprColorSet(mbdMgCallBgGrp, 0, 0xD7, 0x3D, 0xBE);
@@ -563,7 +563,7 @@ void MBDMgCallCursorSprCreate(void) {
         DataClose(data);
         HuSprGrpMemberSet(mbdMgCallCursorGrp, 0, mbdMgCallCursorAnim, 0);
         HuSprPriSet(mbdMgCallCursorGrp, 0, 0x100);
-        HuSprAttrSet(mbdMgCallCursorGrp, 0, 0);
+        HuSprAttrSet(mbdMgCallCursorGrp, 0, HUSPR_ATTR_NONE);
         HuSprPosSet(mbdMgCallCursorGrp, 0, mbdMgCallCursorXTbl[mbdMgCallType], 0x9A);
     }
 }
@@ -1188,7 +1188,7 @@ void MBDCoinChangeCreateEx(s32 arg0, s32 coins, s32 arg2, s32 arg3) {
         DataClose(data);
         HuSprGrpMemberSet(grp, 1, mbdCoinChangeAnimTbl[arg0][0], 0);
         HuSprPriSet(grp, 1, 0x2010);
-        HuSprAttrSet(grp, 1, 0x1000);
+        HuSprAttrSet(grp, 1, HUSPR_ATTR_XLU);
 
         count = 2;
         HuSprGrpMemberSet(grp, 2, mbdCoinChangeAnimTbl[arg0][1], 0);
@@ -1201,7 +1201,7 @@ void MBDCoinChangeCreateEx(s32 arg0, s32 coins, s32 arg2, s32 arg3) {
         }
 
         HuSprPriSet(grp, count, 0x2010);
-        HuSprAttrSet(grp, count, 0x1000);
+        HuSprAttrSet(grp, count, HUSPR_ATTR_XLU);
 
         count++;
         coins = (coins < 0) ? -coins : coins;
@@ -1211,7 +1211,7 @@ void MBDCoinChangeCreateEx(s32 arg0, s32 coins, s32 arg2, s32 arg3) {
             HuSprAnimModeSet(grp, count, HUSPR_ANIM_MODE_BANK);
             HuSprBankSet(grp, count, coins / 100, 0);
             HuSprPriSet(grp, count, 0x2010);
-            HuSprAttrSet(grp, count, 0x1000);
+            HuSprAttrSet(grp, count, HUSPR_ATTR_XLU);
             count++;
         }
 
@@ -1220,7 +1220,7 @@ void MBDCoinChangeCreateEx(s32 arg0, s32 coins, s32 arg2, s32 arg3) {
             HuSprAnimModeSet(grp, count, HUSPR_ANIM_MODE_BANK);
             HuSprBankSet(grp, count, (coins / 10) % 10, 0);
             HuSprPriSet(grp, count, 0x2010);
-            HuSprAttrSet(grp, count, 0x1000);
+            HuSprAttrSet(grp, count, HUSPR_ATTR_XLU);
             count++;
         }
 
@@ -1230,7 +1230,7 @@ void MBDCoinChangeCreateEx(s32 arg0, s32 coins, s32 arg2, s32 arg3) {
         HuSprAnimModeSet(grp, count, HUSPR_ANIM_MODE_BANK);
         HuSprBankSet(grp, count, coins, 0);
         HuSprPriSet(grp, count, 0x2010);
-        HuSprAttrSet(grp, count, 0x1000);
+        HuSprAttrSet(grp, count, HUSPR_ATTR_XLU);
         count++;
 
         if (arg2 == -1 && arg3 == -1) {

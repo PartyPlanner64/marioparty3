@@ -270,7 +270,7 @@ u8 faceCntPadB[0x8] BSS; // unreferenced
 HuSprAnmDesc *HuSprPalAnimData[0x100] BSS; // sprman.c
 u8 eepBoxBuf[672] BSS; // eeprom.c, saveload.c
 u8 Hu3DObjExtMode BSS; // hmfdraw.c
-s16 HuSprBGHookMdl BSS; // sprman.c
+s16 HuSprFGHookMdl BSS; // sprman.c
 HuCamera *Hu3DCurCamera BSS; // camera.c, hmfcoll.c, hmfdraw.c, ...
 s16 ContRepCnt[4] BSS; // input.c
 u16 omMgActiveF BSS; // gamemes.c, objmain.c

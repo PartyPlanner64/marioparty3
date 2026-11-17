@@ -107,7 +107,7 @@ void ExecPause(void) {
     pauseSprGrp = HuSprGrpCreate(1, 5);
     DataClose(temp_v0_3);
     HuSprGrpMemberSet(pauseSprGrp, 0, pauseSprAnim, 0);
-    HuSprAttrSet(pauseSprGrp, 0, 0x01001000);
+    HuSprAttrSet(pauseSprGrp, 0, HUSPR_ATTR_NOPAUSE | HUSPR_ATTR_XLU);
     HuSprPosSet(pauseSprGrp, 0, 0xA0, var_s1 - 20);
     HuSprPriSet(pauseSprGrp, 0, 1);
     for (var_s2 = 0; var_s2 < ARRAY_COUNT(pauseWinId) - 1; var_s2++) {

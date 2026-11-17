@@ -453,7 +453,7 @@ void m231_GameInit(void) {
             break;
     }
     sprite = espEntry(HuSprAnimDataRead(0x400000), 0, 1);
-    espAttrSet(sprite, 0x4000);
+    espAttrSet(sprite, HUSPR_ATTR_BG);
     espPosSet(sprite, 160, 120);
     espPriSet(sprite, 0xFFFF);
     data = DataRead(0x210028);
@@ -955,7 +955,7 @@ void m231_ChainDispProc(void) {
     HuSprAnimModeSet(group, 1, HUSPR_ANIM_MODE_STOP);
     HuSprPosSet(group, 1, 0, 0);
     HuSprAttrReset(group, 1, 0xFFFF);
-    HuSprAttrSet(group, 1, 0x1008);
+    HuSprAttrSet(group, 1, HUSPR_ATTR_XLU | HUSPR_ATTR_FILTER_BILERP);
     HuSprPriSet(group, 1, 0x100);
     HuSprColorSet(group, 1, 255, 255, 255);
     HuSprTPLvlSet(group, 1, 255);
@@ -965,7 +965,7 @@ void m231_ChainDispProc(void) {
         HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_STOP);
         HuSprPosSet(group, i, 0, 0);
         HuSprAttrReset(group, i, 0xFFFF);
-        HuSprAttrSet(group, i, 0x1008);
+        HuSprAttrSet(group, i, HUSPR_ATTR_XLU | HUSPR_ATTR_FILTER_BILERP);
         HuSprPriSet(group, i, 0x100);
         HuSprColorSet(group, i, 255, 255, 255);
         HuSprTPLvlSet(group, i, 255);
@@ -975,7 +975,7 @@ void m231_ChainDispProc(void) {
     HuSprAnimModeSet(group, 5, HUSPR_ANIM_MODE_STOP);
     HuSprPosSet(group, 5, 0, 0);
     HuSprAttrReset(group, 5, 0xFFFF);
-    HuSprAttrSet(group, 5, 0x1008);
+    HuSprAttrSet(group, 5, HUSPR_ATTR_XLU | HUSPR_ATTR_FILTER_BILERP);
     HuSprPriSet(group, 5, 0x100);
     HuSprColorSet(group, 5, 255, 255, 255);
     HuSprTPLvlSet(group, 5, 255);
@@ -1454,14 +1454,14 @@ void m231_ScoreDispProc(void) {
             HuSprPosSet(group, i, -(i * 8) + 24, 12);
         }
         HuSprAttrReset(group, i, 0xFFFF);
-        HuSprAttrSet(group, i, 0x4000);
+        HuSprAttrSet(group, i, HUSPR_ATTR_BG);
         HuSprPriSet(group, i, 0x1FE);
         HuSprParentSet(group, i, 0);
     }
     HuSprGrpMemberSet(group, 8, m231_scoreUnitAnimLo, 0);
     HuSprPosSet(group, 8, 0, 12);
     HuSprAttrReset(group, 8, 0xFFFF);
-    HuSprAttrSet(group, 8, 0x4000);
+    HuSprAttrSet(group, 8, HUSPR_ATTR_BG);
     HuSprPriSet(group, 8, 0x1FF);
     HuSprParentSet(group, 8, 0);
     while (TRUE) {
@@ -1534,7 +1534,7 @@ void m231_NextPairProc(void) {
         HuSprGrpMemberSet(cursor->blockSprites[0], 0, m231_bigBlockAnimLo, 0);
         HuSprPosSet(cursor->blockSprites[0], 0, cursor->x, m231_fieldOfsYTbl[board] + cursor->y);
         HuSprAttrReset(cursor->blockSprites[0], 0, 0xFFFF);
-        HuSprAttrSet(cursor->blockSprites[0], 0, 8);
+        HuSprAttrSet(cursor->blockSprites[0], 0, HUSPR_ATTR_FILTER_BILERP);
     }
     falling = TRUE;
     do {
@@ -1581,17 +1581,17 @@ void m231_ScoreFlyProc(void) {
     HuSprGrpMemberSet(group0, 0, m231_scoreFlyAnimLo, 0);
     HuSprAttrReset(group0, 0, 0xFFFF);
     HuSprPriSet(group0, 0, 0x200);
-    HuSprAttrSet(group0, 0, 0x4000);
+    HuSprAttrSet(group0, 0, HUSPR_ATTR_BG);
     group1 = HuSprGrpCreate(1, 5);
     HuSprGrpMemberSet(group1, 0, m231_scoreDigitAnimLo, 0);
     HuSprAttrReset(group1, 0, 0xFFFF);
     HuSprPriSet(group1, 0, 0x1FE);
-    HuSprAttrSet(group1, 0, 0x4000);
+    HuSprAttrSet(group1, 0, HUSPR_ATTR_BG);
     group2 = HuSprGrpCreate(1, 5);
     HuSprGrpMemberSet(group2, 0, m231_scoreUnitAnimLo, 0);
     HuSprAttrReset(group2, 0, 0xFFFF);
     HuSprPriSet(group2, 0, 0x1FF);
-    HuSprAttrSet(group2, 0, 0x4000);
+    HuSprAttrSet(group2, 0, HUSPR_ATTR_BG);
     z = -5000.0f;
     angle = 0.0f;
     for (i = 0; i < 45; i++) {
@@ -1663,7 +1663,7 @@ void m231_LoseProc(void) {
     HuSprPosSet(group, 0, m231_fieldPosTbl[board][0] + 42,
                 m231_fieldPosTbl[board][1] - 161 + m231_fieldOfsYTbl[board]);
     HuSprAttrReset(group, 0, 0xFFFF);
-    HuSprAttrSet(group, 0, 0x4008);
+    HuSprAttrSet(group, 0, HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
     HuSprPriSet(group, 0, 0x300);
     omAddPrcObj(m231_FieldDropProc, 0x4001, 0x800, 0)->user_data = (void *)board;
     HuPrcSleep(10);
@@ -1792,13 +1792,13 @@ void m231_PlayerProc(void) {
     HuSprPosSet(display.sprGroup, 0, m231_fieldPosTbl[board][0] + 42,
                 m231_fieldPosTbl[board][1] - 182 + m231_fieldOfsYTbl[board]);
     HuSprAttrReset(display.sprGroup, 0, 0xFFFF);
-    HuSprAttrSet(display.sprGroup, 0, 0x4000);
+    HuSprAttrSet(display.sprGroup, 0, HUSPR_ATTR_BG);
     HuSprPriSet(display.sprGroup, 0, 0x200);
     HuSprGrpMemberSet(display.sprGroup, 9, m231_headPartAnim, 0);
     HuSprAnimModeSet(display.sprGroup, 9, HUSPR_ANIM_MODE_STOP);
     HuSprPosSet(display.sprGroup, 9, 0, 0);
     HuSprAttrReset(display.sprGroup, 9, 0xFFFF);
-    HuSprAttrSet(display.sprGroup, 9, 0xC000);
+    HuSprAttrSet(display.sprGroup, 9, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_BG);
     HuSprPriSet(display.sprGroup, 9, 0x200);
     HuSprParentSet(display.sprGroup, 9, 0);
     process = omAddPrcObj(m231_ScoreDispProc, 0x4001, 0x800, 0);
@@ -1811,7 +1811,7 @@ void m231_PlayerProc(void) {
     HuSprPosSet(group, 0, m231_fieldPosTbl[board][0] + 42,
                 m231_fieldPosTbl[board][1] - 161 + m231_fieldOfsYTbl[board]);
     HuSprAttrReset(group, 0, 0xFFFF);
-    HuSprAttrSet(group, 0, 0x4008);
+    HuSprAttrSet(group, 0, HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
     HuSprPriSet(group, 0, 0x300);
 
     m231_fieldBackGrpTbl[board] = sprite0 = HuSprGrpCreate(1, 5);
@@ -1820,7 +1820,7 @@ void m231_PlayerProc(void) {
     HuSprPosSet(group, 0, m231_fieldPosTbl[board][0] + 42,
                 m231_fieldPosTbl[board][1] - 78 + m231_fieldOfsYTbl[board]);
     HuSprAttrReset(group, 0, 0xFFFF);
-    HuSprAttrSet(group, 0, 0x4008);
+    HuSprAttrSet(group, 0, HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
     HuSprPriSet(group, 0, 0x600);
 
     m231_fieldFrameGrpTbl[board] = sprite0 = HuSprGrpCreate(1, 5);
@@ -1829,7 +1829,7 @@ void m231_PlayerProc(void) {
     HuSprPosSet(group, 0, m231_fieldPosTbl[board][0] + 42,
                 m231_fieldPosTbl[board][1] - 78 + m231_fieldOfsYTbl[board]);
     HuSprAttrReset(group, 0, 0xFFFF);
-    HuSprAttrSet(group, 0, 0x5008);
+    HuSprAttrSet(group, 0, HUSPR_ATTR_BG | HUSPR_ATTR_XLU | HUSPR_ATTR_FILTER_BILERP);
     HuSprPriSet(group, 0, 0x600);
     HuSprTPLvlSet(group, 0, 0x80);
 
@@ -1839,7 +1839,7 @@ void m231_PlayerProc(void) {
     HuSprPosSet(group, 0, m231_fieldPosTbl[board][0] + 42,
                 m231_fieldPosTbl[board][1] - 105 + m231_fieldOfsYTbl[board]);
     HuSprAttrReset(group, 0, 0xFFFF);
-    HuSprAttrSet(group, 0, 0x5008);
+    HuSprAttrSet(group, 0, HUSPR_ATTR_BG | HUSPR_ATTR_XLU | HUSPR_ATTR_FILTER_BILERP);
     HuSprPriSet(group, 0, 0x500);
     HuSprTPLvlSet(group, 0, 0x9A);
 
@@ -2538,7 +2538,7 @@ void m231_SparkleProc(void) {
     sparkle->sprGroup = HuSprGrpCreate(1, 5);
     HuSprGrpMemberSet(sparkle->sprGroup, 0, m231_sparkleAnimLo, 0);
     HuSprAttrReset(sparkle->sprGroup, 0, 0xFFFF);
-    HuSprAttrSet(sparkle->sprGroup, 0, 0xC008);
+    HuSprAttrSet(sparkle->sprGroup, 0, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
     HuSprPriSet(sparkle->sprGroup, 0, 0x1000);
     baseX = sparkle->x;
     baseY = sparkle->y;
@@ -2751,7 +2751,7 @@ void m231_RecordProc(void) {
         HuSprGrpMemberSet(group, i, m231_recordDigitAnimLo, (record / j) % 10);
         HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_BANK);
         HuSprAttrReset(group, i, 0xFFFF);
-        HuSprAttrSet(group, i, 8);
+        HuSprAttrSet(group, i, HUSPR_ATTR_FILTER_BILERP);
         if (!started) {
             if ((record / j) % 10 == 0 && i != 4) {
                 HuSprAttrSet(group, i, HUSPR_ATTR_DISPOFF);
@@ -2779,7 +2779,7 @@ void m231_RecordProc(void) {
     HuSprGrpMemberSet(group, 5, m231_recordLabelAnimLo, 0);
     HuSprAnimModeSet(group, 5, HUSPR_ANIM_MODE_STOP);
     HuSprAttrReset(group, 5, 0xFFFF);
-    HuSprAttrSet(group, 5, 8);
+    HuSprAttrSet(group, 5, HUSPR_ATTR_FILTER_BILERP);
     HuSprPriSet(group, 5, 0x100);
     HuSprParentSet(group, 5, 0);
     while (m231_mgFlow.state != MG_STATE_RESULT) {
@@ -2792,7 +2792,7 @@ void m231_RecordProc(void) {
             HuSprGrpMemberSet(group, i, m231_recordDigitAnimLo, (record / j) % 10);
             HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_BANK);
             HuSprAttrReset(group, i, 0xFFFF);
-            HuSprAttrSet(group, i, 8);
+            HuSprAttrSet(group, i, HUSPR_ATTR_FILTER_BILERP);
             if (!started) {
                 if ((record / j) % 10 == 0 && i != 4) {
                     HuSprAttrSet(group, i, HUSPR_ATTR_DISPOFF);
@@ -2872,7 +2872,7 @@ void m231_TimerProc(void) {
         HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_BANK);
         HuSprGrpMemberSet(group, i, m231_timerDigitAnimLo, 0);
         HuSprAttrReset(group, i, 0xFFFF);
-        HuSprAttrSet(group, i, 8);
+        HuSprAttrSet(group, i, HUSPR_ATTR_FILTER_BILERP);
         HuSprPriSet(group, i, 0x100);
         HuSprParentSet(group, i, 0);
         HuSprPosSet(group, i, x, 0);
@@ -2910,7 +2910,7 @@ void m231_BigBlockFallProc(void) {
 
     HuSprGrpMemberSet(group, 0, m231_bigBlockAnimLo, 0);
     HuSprAttrReset(group, 0, 0xFFFF);
-    HuSprAttrSet(group, 0, 8);
+    HuSprAttrSet(group, 0, HUSPR_ATTR_FILTER_BILERP);
     HuSprScaleSet(group, 0, 0.8f, 0.8f);
     x = startX;
     while (TRUE) {

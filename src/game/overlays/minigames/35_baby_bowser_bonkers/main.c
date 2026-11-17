@@ -1611,7 +1611,7 @@ void m253_ScoreCreate(s32 index, s32 chr) {
         }
         HuSprAnimModeSet(group, i, HUSPR_ANIM_MODE_STOP);
         HuSprPatNoSet(group, i, 0);
-        HuSprAttrSet(group, i, 0x1000);
+        HuSprAttrSet(group, i, HUSPR_ATTR_XLU);
         HuSprPriSet(group, i, i - 16);
     }
 }

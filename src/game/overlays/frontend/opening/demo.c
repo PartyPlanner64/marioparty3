@@ -208,7 +208,7 @@ void op_SprCreate(s32 slot, s32 resourceId) {
 
 void op_SprBGCreate(s32 slot, s32 resourceId) {
     op_SprCreate(slot, resourceId);
-    espAttrSet(op_sprTbl[slot].espriteSlot, 0x4000);
+    espAttrSet(op_sprTbl[slot].espriteSlot, HUSPR_ATTR_BG);
 }
 
 void op_SprKill(s32 slot) {
@@ -427,7 +427,7 @@ void op_BGSprCreate(void) {
     // The original call omits the resource id.
     op_bgAnim = ((s16 (*)())HuSprAnimDataRead)();
     op_bgSpr = espEntry(op_bgAnim, 0, 0);
-    espAttrSet(op_bgSpr, 0x4000);
+    espAttrSet(op_bgSpr, HUSPR_ATTR_BG);
     espPosSet(op_bgSpr, 0xA0, 0x78);
 }
 
@@ -879,7 +879,7 @@ void op_DemoEvent(void) {
                 } else {
                     op_EspCreate(i, 1);
                 }
-                op_SprAttrSet(i, 0x4000U);
+                op_SprAttrSet(i, HUSPR_ATTR_BG);
                 op_SprBankSet(i, 0U, op_RandMod(6U) & 0xFFFF);
             }
             op_SprPosSet(i, starLayout.stars[i].x, starLayout.stars[i].y);
@@ -3482,24 +3482,24 @@ void op_TitleSetup(void) {
     op_SprBGDispOn(1);
     op_SprBGCreate(2, 0x100002);
     op_SprPosSet(2, 160, 71);
-    op_SprAttrSet(2, 8);
+    op_SprAttrSet(2, HUSPR_ATTR_FILTER_BILERP);
     op_SprAlphaSet(2, 255);
     espPriSet((u16)op_EspIdGet(2), 8);
     op_SprBGCreate(3, 0x100005);
     op_SprPosSet(3, 160, 71);
-    op_SprAttrSet(3, 8);
+    op_SprAttrSet(3, HUSPR_ATTR_FILTER_BILERP);
     op_SprAlphaSet(3, 255);
     sprite = op_EspIdGet(3);
     espColorSet(sprite, 255, 255, 255);
     espPriSet(sprite, 9);
     op_SprBGCreate(4, 0x100003);
     op_SprPosSet(4, 158, 197);
-    op_SprAttrSet(4, 8);
+    op_SprAttrSet(4, HUSPR_ATTR_FILTER_BILERP);
     op_SprAlphaSet(4, 255);
     espPriSet((u16)op_EspIdGet(4), 8);
     op_SprBGCreate(5, 0x100004);
     op_SprPosSet(5, 158, 197);
-    op_SprAttrSet(5, 0x1008);
+    op_SprAttrSet(5, HUSPR_ATTR_XLU | HUSPR_ATTR_FILTER_BILERP);
     op_SprAlphaSet(5, 255);
     sprite = op_EspIdGet(5);
     espColorSet(sprite, 0, 6, 115);

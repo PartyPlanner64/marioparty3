@@ -281,7 +281,7 @@ s16 HuWinCreate(s16 x, s16 y, s16 width, s16 height, s32 arg4, s16 flags) {
     window->group = group;
     HuSprTPLvlSet(group, 0, 0x100);
     HuSprAttrReset(group, 0, 0xFFFF);
-    HuSprAttrSet(group, 0, 0x1009000);
+    HuSprAttrSet(group, 0, HUSPR_ATTR_NOPAUSE | HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
     HuSprGrpMemberSet(group, 0, window->unk66, 0);
     HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_STOP);
     HuSprParentSet(group, 0, -1);
@@ -314,7 +314,7 @@ s16 HuWinCreate(s16 x, s16 y, s16 width, s16 height, s32 arg4, s16 flags) {
     }
     HuSprTPLvlSet(group, 1, 0x100);
     HuSprAttrReset(group, 1, 0xFFFF);
-    HuSprAttrSet(group, 1, 0x1009000);
+    HuSprAttrSet(group, 1, HUSPR_ATTR_NOPAUSE | HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
     HuSprGrpMemberSet(group, 1, window->unk68, 0);
     HuSprAnimModeSet(group, 1, HUSPR_ANIM_MODE_STOP);
     HuSprPosSet(group, 1, 0, 0);
@@ -982,7 +982,7 @@ s32 HuWinSpcFontEntry(s16 winId, s16 icon) {
         return 0;
     }
     window->sprite_id[sprite] = graphic;
-    HuSprAttrSet(window->group, sprite, 0x1000);
+    HuSprAttrSet(window->group, sprite, HUSPR_ATTR_XLU);
     HuSprGrpMemberSet(window->group, sprite, graphic, winSpcFontTbl[icon].bank);
     HuSprPosSet(window->group, sprite, window->mess_x - window->unk48, window->mess_y - window->unk4A);
     HuSprParentSet(window->group, sprite, 0);
@@ -1287,7 +1287,7 @@ s32 HuWinChoiceGet(s16 winId, s16 arg1, s32 arg2) {
         HuSprGrpMemberSet(window->group, 2, window->cursor_sprite, 0);
         HuSprTPLvlSet(window->group, 2, 0x100);
         HuSprAttrReset(window->group, 2, 0xFFFF);
-        HuSprAttrSet(window->group, 2, 0x1009000);
+        HuSprAttrSet(window->group, 2, HUSPR_ATTR_NOPAUSE | HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
         HuSprPriSet(window->group, 2, window->prio - 1);
     }
     if (arg2 != 0) {
@@ -2291,7 +2291,7 @@ s32 HuWinExCreateStyled(s32 x, s32 y, s32 frameIndex) {
         HuSprPosSet(window->group, member, 0, 0);
         HuSprScaleSet(window->group, member, 0, 0);
         HuSprColorSet(window->group, member, 27, 27, 255);
-        HuSprAttrSet(window->group, member, frame->attributes | 0x1000);
+        HuSprAttrSet(window->group, member, frame->attributes | HUSPR_ATTR_XLU);
         sprite = HuSprGet(window->group, member);
         sprite->data->pat->centerX = frame->spriteWidth;
         sprite->data->pat->centerY = frame->spriteHeight;
@@ -2389,7 +2389,7 @@ void HuWinExClose(s32 winId, s32 playSound) {
 void HuWinExTPLvlSet(s32 winId, s32 alpha) {
     TextWindow *window = &winData[winId];
 
-    HuSprAttrSet(window->group, window->unk274, 0x1000);
+    HuSprAttrSet(window->group, window->unk274, HUSPR_ATTR_XLU);
     alpha &= 0xFF;
     HuSprTPLvlSet(window->group, window->unk274, alpha);
     if (window->unk276 != 0) {

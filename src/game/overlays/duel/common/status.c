@@ -317,10 +317,10 @@ void MBDStatusCharSprCreate(s32 playerIndex) {
     HuSprGrpMemberSet(group, 1, mbdStatusAnim.unk_02[playerIndex], 0);
     HuSprAnimModeSet(group, 1, HUSPR_ANIM_MODE_STOP);
     HuSprPriSet(group, 1, playerIndex * 5 + 0x4790);
-    HuSprAttrSet(group, 1, 0);
+    HuSprAttrSet(group, 1, HUSPR_ATTR_NONE);
     HuSprPosSet(group, 1, mbdStatusSprOfsPtrTbl[playerIndex][1][0], mbdStatusSprOfsPtrTbl[playerIndex][1][1]);
     if (playerIndex != 0 && GwPlayer[playerIndex].chr != CHAR_LUIGI && GwPlayer[playerIndex].chr != CHAR_WALUIGI) {
-        HuSprAttrSet(group, 1, 1);
+        HuSprAttrSet(group, 1, HUSPR_ATTR_FLIPX);
     }
 }
 
@@ -329,7 +329,7 @@ void MBDStatusIconSprCreate(s32 playerIndex) {
 
     HuSprGrpMemberSet(group, 2, mbdStatusAnim.unk_06, 0);
     HuSprPriSet(group, 2, playerIndex * 5 + 0x4790);
-    HuSprAttrSet(group, 2, 0);
+    HuSprAttrSet(group, 2, HUSPR_ATTR_NONE);
     HuSprZRotSet(group, 2, 0.0f);
     HuSprPosSet(group, 2, mbdStatusSprOfsPtrTbl[playerIndex][2][0], mbdStatusSprOfsPtrTbl[playerIndex][2][1]);
     HuSprSpeedSet(group, 2, 0.0f);
@@ -352,7 +352,7 @@ void MBDStatusNumSprCreate(s32 playerIndex) {
         HuSprAnimModeSet(group, i + 3, HUSPR_ANIM_MODE_BANK);
         HuSprBankSet(group, i + 3, 0xA, 0);
         HuSprPriSet(group, i + 3, playerIndex * 5 + 0x4790);
-        HuSprAttrSet(group, i + 3, 0);
+        HuSprAttrSet(group, i + 3, HUSPR_ATTR_NONE);
         HuSprPosSet(group, i + 3, mbdStatusSprOfsPtrTbl[playerIndex][i + 3][0], mbdStatusSprOfsPtrTbl[playerIndex][i + 3][1]);
     }
     DataClose(data);
@@ -365,7 +365,7 @@ void MBDStatusBackSprCreate(s32 playerIndex) {
     group = player->spriteGroup = HuSprGrpCreate(0x1D, 2);
     HuSprGrpMemberSet(group, 0, mbdStatusAnim.unk_00, 0);
     HuSprPriSet(group, 0, playerIndex * 5 + 0x4790);
-    HuSprAttrSet(group, 0, 0);
+    HuSprAttrSet(group, 0, HUSPR_ATTR_NONE);
     HuSprPosSet(group, 0, 0, 0);
 }
 
@@ -375,7 +375,7 @@ void MBDStatusComSprCreate(s32 playerIndex) {
     HuSprGrpMemberSet(group, 6, mbdStatusAnim.unk_0A, 0);
     HuSprAnimModeSet(group, 6, HUSPR_ANIM_MODE_STOP);
     HuSprPriSet(group, 6, playerIndex * 5 + 0x478E);
-    HuSprAttrSet(group, 6, 0);
+    HuSprAttrSet(group, 6, HUSPR_ATTR_NONE);
     HuSprPosSet(group, 6, mbdStatusSprOfsPtrTbl[playerIndex][6][0], mbdStatusSprOfsPtrTbl[playerIndex][6][1]);
     if (!(GwPlayer[playerIndex].stat & 1)) {
         HuSprDispOff(group, 6);
@@ -416,9 +416,9 @@ void MBDStatusPartnerSprCreate(s32 playerIndex, s32 partnerID, s16 *anims, s32 b
     for (i = 0; i < 11; i++) {
         if (i == 1) {
             if (playerIndex != 0) {
-                HuSprAttrSet(group, baseMember + 1, 1);
+                HuSprAttrSet(group, baseMember + 1, HUSPR_ATTR_FLIPX);
             } else {
-                HuSprAttrReset(group, baseMember + i, 1);
+                HuSprAttrReset(group, baseMember + i, HUSPR_ATTR_FLIPX);
             }
             data = DataRead(mbdStatusPartnerSprTbl[partnerID]);
             if (anims[i] != -1) {
@@ -444,12 +444,12 @@ void MBDStatusPartnerSprCreate(s32 playerIndex, s32 partnerID, s16 *anims, s32 b
                     mbdStatusSprOfsPtrTbl[playerIndex][baseMember + i][1]);
 
         if (i == 0) {
-            HuSprAttrSet(group, baseMember, 0x1000);
+            HuSprAttrSet(group, baseMember, HUSPR_ATTR_XLU);
             HuSprTPLvlSet(group, baseMember, 0xA4);
         } else if (i == 10) {
-            HuSprAttrSet(group, baseMember + 10, 0x1000);
+            HuSprAttrSet(group, baseMember + 10, HUSPR_ATTR_XLU);
         } else {
-            HuSprAttrSet(group, baseMember + i, 0);
+            HuSprAttrSet(group, baseMember + i, HUSPR_ATTR_NONE);
         }
 
         if (i == 10) {
@@ -834,7 +834,7 @@ void MBDVsSprCreate(void) {
         DataClose(data);
         HuSprGrpMemberSet(mbdVsSprGrp, 0, mbdVsSprAnim, 0);
         HuSprPriSet(mbdVsSprGrp, 0, 0x4780);
-        HuSprAttrSet(mbdVsSprGrp, 0, 0x1000);
+        HuSprAttrSet(mbdVsSprGrp, 0, HUSPR_ATTR_XLU);
         HuSprPosSet(mbdVsSprGrp, 0, 0xA0, mbdVsSprPos.y);
         HuSprScaleSet(mbdVsSprGrp, 0, 0.0f, 0.0f);
         mbdVsSprScale = 10.0f;
@@ -855,7 +855,7 @@ void MBDVsSprCreateY(f32 x, f32 y) {
         DataClose(data);
         HuSprGrpMemberSet(mbdVsSprGrp, 0, mbdVsSprAnim, 0);
         HuSprPriSet(mbdVsSprGrp, 0, 0x4780);
-        HuSprAttrSet(mbdVsSprGrp, 0, 0x1000);
+        HuSprAttrSet(mbdVsSprGrp, 0, HUSPR_ATTR_XLU);
         HuSprPosSet(mbdVsSprGrp, 0, 0xA0, mbdVsSprPos.y);
         HuSprScaleSet(mbdVsSprGrp, 0, 0.0f, 0.0f);
         mbdVsSprScale = 0.0f;

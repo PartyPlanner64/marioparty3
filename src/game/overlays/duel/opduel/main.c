@@ -370,7 +370,7 @@ void opduel_BoardTitleExec(void) {
     DataClose(data);
     HuSprGrpMemberSet(opduel_titleGrp->unk_0A, 0, opduel_titleGrp->unk_0C[0], 0);
     HuSprPriSet(opduel_titleGrp->unk_0A, 0, 10);
-    HuSprAttrSet(opduel_titleGrp->unk_0A, 0, 0);
+    HuSprAttrSet(opduel_titleGrp->unk_0A, 0, HUSPR_ATTR_NONE);
     HuSprPosSet(opduel_titleGrp->unk_0A, 0, 160, 100);
     HuSprScaleSet(opduel_titleGrp->unk_0A, 0, 0.0f, 0.0f);
     for (amplitude = 0.5f, angle = 0.0f; angle <= 720.0f; angle += 45.0f) {
@@ -390,7 +390,7 @@ void opduel_BoardTitleExec(void) {
     DataClose(data);
     HuSprGrpMemberSet(opduel_subtitleGrp->unk_0A, 0, opduel_subtitleGrp->unk_0C[0], 0);
     HuSprPriSet(opduel_subtitleGrp->unk_0A, 0, 9);
-    HuSprAttrSet(opduel_subtitleGrp->unk_0A, 0, 0);
+    HuSprAttrSet(opduel_subtitleGrp->unk_0A, 0, HUSPR_ATTR_NONE);
     HuSprPosSet(opduel_subtitleGrp->unk_0A, 0, 160, 130);
     HuPrcSleep(75);
     MBDSprGrpKill(opduel_subtitleGrp);

@@ -494,7 +494,7 @@ s32 mgmode_GambleResultExec(void) {
     mgmode_GambleBoardCreate(0);
     mgmode_gambleMgPicSpr = mgmode_MgPicCreate();
     espPriSet(mgmode_gambleMgPicSpr, 15);
-    espAttrSet(mgmode_gambleMgPicSpr, 0x5008);
+    espAttrSet(mgmode_gambleMgPicSpr, HUSPR_ATTR_BG | HUSPR_ATTR_XLU | HUSPR_ATTR_FILTER_BILERP);
     espPosSet(mgmode_gambleMgPicSpr, 184, 132);
     mgmode_MgPicLoad(mgDataTbl[mgModeMgNo].flags & 0x7FF);
     mgmode_GambleTitleSet(mgModeMgNo + 0x4700, 184, 62);
@@ -820,7 +820,7 @@ s16 mgmode_GambleMgRouletteExec(void) {
     if (mgmode_gambleMgPicSpr == -1) {
         mgmode_gambleMgPicSpr = mgmode_MgPicCreate();
         espPriSet(mgmode_gambleMgPicSpr, 15);
-        espAttrSet(mgmode_gambleMgPicSpr, 0x5008);
+        espAttrSet(mgmode_gambleMgPicSpr, HUSPR_ATTR_BG | HUSPR_ATTR_XLU | HUSPR_ATTR_FILTER_BILERP);
         espPosSet(mgmode_gambleMgPicSpr, 184, 132);
         for (i = 0; i < 10; i++) {
             espTPLvlSet(mgmode_gambleMgPicSpr, i / 10.0f * 255.0f);
@@ -1193,7 +1193,7 @@ void mgmode_SpotInit(void) {
     mgmode_spotGrp = HuSprGrpCreate(5, 0);
     HuSprGrpMemberSet(mgmode_spotGrp, 0, mgmode_spotAnim, 0);
     HuSprAttrReset(mgmode_spotGrp, 0, 0xFFFF);
-    HuSprAttrSet(mgmode_spotGrp, 0, 0x9008);
+    HuSprAttrSet(mgmode_spotGrp, 0, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU | HUSPR_ATTR_FILTER_BILERP);
     HuSprPosSet(mgmode_spotGrp, 0, 160, 120);
     HuSprPriSet(mgmode_spotGrp, 0, 15);
     HuSprScaleSet(mgmode_spotGrp, 0, 1.0f, 2.0f);

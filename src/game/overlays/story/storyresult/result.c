@@ -210,12 +210,12 @@ void storyresult_StageResultProc(void) {
     MBDCameraNearFarSet(1000.0f, 10000.0f);
     if (GwStory.unk0 == 12) {
         sprite = espEntry(HuSprAnimDataRead(0x1D0012), 0, 0);
-        espAttrSet(sprite, 0x4000);
+        espAttrSet(sprite, HUSPR_ATTR_BG);
         espPriSet(sprite, 0xF001);
         espPosSet(sprite, 160, 120);
     }
     sprite = espEntry(HuSprAnimDataRead(0x140064), 0, 1);
-    espAttrSet(sprite, 0x4000);
+    espAttrSet(sprite, HUSPR_ATTR_BG);
     espPriSet(sprite, 0xF000);
     espScaleSet(sprite, 10.0f, 8.0f);
     espPosSet(sprite, x, y);
@@ -393,7 +393,7 @@ void storyresult_FinalStatProc(void) {
         espTPLvlSet(sprites[i], 0);
         espDispOff(sprites[i]);
     }
-    espAttrSet(sprites[1], 1);
+    espAttrSet(sprites[1], HUSPR_ATTR_FLIPX);
 
     prc = storyresult_StatCreate(1, -1);
     if (prc == NULL) {
@@ -621,7 +621,7 @@ void storyresult_DebugStatProc(void) {
     Hu3DScreenClearF = 0;
     storyresult_CameraPresetSet(&storyresult_cameraPreset);
     sprite = espEntry(HuSprAnimDataRead(0x140067), 0, 0);
-    espAttrSet(sprite, 0x4000);
+    espAttrSet(sprite, HUSPR_ATTR_BG);
     espPosSet(sprite, 160, 120);
     WipeCreateIn(storyresult_wipeType, 16);
     while (WipeStatGet() != 0) {
@@ -681,7 +681,7 @@ void storyresult_DebugStatProc(void) {
 void storyresult_StatSprSet(s16 group, s16 member, s16 graphic, s16 prio, s16 x, s16 y) {
     HuSprTPLvlSet(group, member, 256);
     HuSprAttrReset(group, member, 0xFFFF);
-    HuSprAttrSet(group, member, 0x9000);
+    HuSprAttrSet(group, member, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
     HuSprScaleSet(group, member, 1.0f, 1.0f);
     HuSprAnimModeSet(group, member, HUSPR_ANIM_MODE_STOP);
     HuSprGrpMemberSet(group, member, graphic, 0);

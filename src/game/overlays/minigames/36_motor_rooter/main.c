@@ -1316,9 +1316,9 @@ void m254_HudObjInit(omObjData *object) {
 
     object->work[0] = m254_gameWork->runtime.counters.initialization.viewCounters[2];
     object->work[1] = m254_playerNoTbl[object->work[0]];
-    m254_SprDispOn(m254_SprCreate(0xFFFF, 0x57, 7, 0, 0), 160, 120);
+    m254_SprDispOn(m254_SprCreate(0xFFFF, 0x57, 7, 0, HUSPR_ATTR_NONE), 160, 120);
     for (i = 0; i < 5; i++) {
-        sprite = m254_SprCreate(0xFFFF, 0x21, 0x18, 0, 0);
+        sprite = m254_SprCreate(0xFFFF, 0x21, 0x18, 0, HUSPR_ATTR_NONE);
         if (object->work[0] == 0) {
             m254_SprDispOn(sprite, (s16)(35 + i * 10), 25);
         } else {
@@ -1326,7 +1326,7 @@ void m254_HudObjInit(omObjData *object) {
         }
     }
     for (i = 0; i < 5; i++) {
-        sprite = m254_playerTbl[object->work[0]].meterSprites[i] = m254_SprCreate(0xFFF, 0x21, 0x19, 0, 0x1000);
+        sprite = m254_playerTbl[object->work[0]].meterSprites[i] = m254_SprCreate(0xFFF, 0x21, 0x19, 0, HUSPR_ATTR_XLU);
         if (object->work[0] == 0) {
             m254_SprDispOn(sprite, (s16)(35 + i * 10), 25);
         } else {
@@ -1340,11 +1340,11 @@ void m254_HudObjInit(omObjData *object) {
         HuSprTPLvlSet(m254_sprTbl[sprite].groupId, 0, (u8)m254_sprTbl[sprite].unk06);
         m254_playerTbl[object->work[0]].unk28[i] = 0;
     }
-    m254_playerTbl[object->work[0]].progressSprite = sprite = m254_SprCreate(0xFFF, 0x21, characters.fileIds[GwPlayer[m254_playerNoTbl[object->work[0]]].chr], 0, 0);
+    m254_playerTbl[object->work[0]].progressSprite = sprite = m254_SprCreate(0xFFF, 0x21, characters.fileIds[GwPlayer[m254_playerNoTbl[object->work[0]]].chr], 0, HUSPR_ATTR_NONE);
     m254_SprDispOn(sprite, (s16)(152 + object->work[0] * 16), 220);
     for (i = 0; i < m254_obstacleNum; i++) {
         y = 220 - (s16)(m254_pathTbl[m254_gameWork->views[object->work[0]].obstaclePoints[i]].cumDist / m254_gameWork->finishDistance * 180.0f);
-        sprite = m254_SprCreate(0xEFFF, 0x57, 0x11, 0, 0);
+        sprite = m254_SprCreate(0xEFFF, 0x57, 0x11, 0, HUSPR_ATTR_NONE);
         m254_SprDispOn(sprite, (s16)(152 + object->work[0] * 16), (s16)y);
     }
     m254_gameWork->runtime.counters.initialization.viewCounters[2]++;

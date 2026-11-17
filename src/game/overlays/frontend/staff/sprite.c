@@ -52,7 +52,7 @@ UnkStaff_7 *staff_BackStarCreate(void) {
         for (j = 0; j < count; j++, pos++, vel++, speed++) {
             HuSprTPLvlSet(grpId, j, 0x100);
             HuSprAttrReset(grpId, j, 0xFFFF);
-            HuSprAttrSet(grpId, j, 0x5000);
+            HuSprAttrSet(grpId, j, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
             HuSprScaleSet(grpId, j, 1.0f, 1.0f);
             HuSprAnimModeSet(grpId, j, HUSPR_ANIM_MODE_STOP);
             HuSprGrpMemberSet(grpId, j, animId, 0);
@@ -217,14 +217,14 @@ void staff_BackProc(void) {
         starAnimIds[i] = HuSprAnimDataRead(staff_shootStarSprTbl[i]);
         starSprIds[i] = espEntry(starAnimIds[i], 0, 0);
         espColorSet(starSprIds[i], 255, 255, 255);
-        espAttrSet(starSprIds[i], 0x4000);
+        espAttrSet(starSprIds[i], HUSPR_ATTR_BG);
         espDispOff(starSprIds[i]);
         starTimers[i] = (rand8() & 0x7F) + 120;
     }
     espColorSet(starSprIds[1], 255, 200, 200);
     titleAnim = HuSprAnimDataRead(0x16001A);
     titleSpr = espEntry(titleAnim, 0, 0);
-    espAttrSet(titleSpr, 0x4000);
+    espAttrSet(titleSpr, HUSPR_ATTR_BG);
     espPosSet(titleSpr, 160, 120);
     espPriSet(titleSpr, 0xFFF0);
     titleActive = TRUE;
@@ -266,7 +266,7 @@ void staff_BackProc(void) {
                     break;
                 case 2:
                     for (i = 0; i < 3; i++) {
-                        espAttrSet(sprIds[i], 0x4000);
+                        espAttrSet(sprIds[i], HUSPR_ATTR_BG);
                     }
                     break;
             }

@@ -552,7 +552,7 @@ void m260_DecoObjInit(omObjData *object) {
     s16 i;
     s16 model;
 
-    m260_EspCreate(0x5D0000, 0x4000, 1000, 160, 120);
+    m260_EspCreate(0x5D0000, HUSPR_ATTR_BG, 1000, 160, 120);
     for (i = 0; i < 2; i++) {
         model = m260_decoMdlTbl[i] = Hu3DModelRead(0x5D0003, 0x2A9);
         Hu3DModelPosSet(model, m260_decoPosTbl[i].x, m260_decoPosTbl[i].y,

@@ -358,7 +358,7 @@ static void MBStatusMain(omObjData *obj) {
                                 HuSprGrpMemberSet(temp_s2->playerIndex, j, mbStatusAnimTbl[GwPlayer[i].itemNo[j - 11] + 10], 0);
                                 HuSprAnimModeSet(temp_s2->playerIndex, j, HUSPR_ANIM_MODE_STOP);
                                 HuSprPriSet(temp_s2->playerIndex, j, (i * 5) + 0x478E);
-                                HuSprAttrSet(temp_s2->playerIndex, j, 0);
+                                HuSprAttrSet(temp_s2->playerIndex, j, HUSPR_ATTR_NONE);
                                 var_v1 = j;
                                 if (i >= 2) {
                                     var_v1 = j + 3;
@@ -450,7 +450,7 @@ static void MBStatusCharSprCreate(s32 playerIndex) {
     HuSprGrpMemberSet(temp_s1, 1, mbStatusAnimTbl[playerIndex + 1], 0);
     HuSprAnimModeSet(temp_s1, 1, HUSPR_ANIM_MODE_STOP);
     HuSprPriSet(temp_s1, 1, ((playerIndex * 5) + 0x4790));
-    HuSprAttrSet(temp_s1, 1, 0);
+    HuSprAttrSet(temp_s1, 1, HUSPR_ATTR_NONE);
     HuSprPosSet(temp_s1, 1, mbStatusSprOfsTbl[1][0], mbStatusSprOfsTbl[1][1]);
 }
 
@@ -462,7 +462,7 @@ static void MBStatusIconSprCreate(s32 arg0) {
         HuSprGrpMemberSet(temp_s2, i + 2, mbStatusAnimTbl[i + 5], 0);
         HuSprPriSet(temp_s2, i + 2, ((arg0 * 5) + 0x4790));
         HuSprAttrReset(temp_s2, i + 2, 0xFFFF);
-        HuSprAttrSet(temp_s2, i + 2, 0x1000);
+        HuSprAttrSet(temp_s2, i + 2, HUSPR_ATTR_XLU);
         HuSprZRotSet(temp_s2, i + 2, 0.0f);
         HuSprPosSet(temp_s2, i + 2, mbStatusSprOfsTbl[i + 2][0], mbStatusSprOfsTbl[i + 2][1]);
         HuSprSpeedSet(temp_s2, i + 2, 0.0f);
@@ -487,7 +487,7 @@ static void MBStatusNumSprCreate(s32 arg0) {
         HuSprBankSet(temp_s2, i + 4, 0xA, 0);
         HuSprPriSet(temp_s2, i + 4, ((arg0 * 5) + 0x4790));
         HuSprAttrReset(temp_s2, i + 4, 0xFFFF);
-        HuSprAttrSet(temp_s2, i + 4, 0);
+        HuSprAttrSet(temp_s2, i + 4, HUSPR_ATTR_NONE);
         HuSprPosSet(temp_s2, i + 4, mbStatusSprOfsTbl[i + 4][0], mbStatusSprOfsTbl[i + 4][1]);
         HuSprColorSet(temp_s2, i + 4, 0xFF, 0xFF, 0xFF);
         HuSprTPLvlSet(temp_s2, i + 4, 0x100);
@@ -503,7 +503,7 @@ static void MBStatusBackSprCreate(s32 playerNo) {
     temp_s0->playerIndex = temp_v0;
     HuSprGrpMemberSet(temp_v0, 0, mbStatusAnimTbl[0], 0);
     HuSprPriSet(temp_v0, 0, ((playerNo * 5) + 0x4790));
-    HuSprAttrSet(temp_v0, 0, 0x1000);
+    HuSprAttrSet(temp_v0, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(temp_v0, 0, 0, 0);
 }
 
@@ -517,7 +517,7 @@ static void MBStatusRankSprCreate(s32 playerNo) {
     HuSprAnimModeSet(temp_s0, 0xA, HUSPR_ANIM_MODE_BANK);
     HuSprBankSet(temp_s0, 0xA, 0, 0);
     HuSprPriSet(temp_s0, 0xA, ((playerNo * 5) + 0x478F));
-    HuSprAttrSet(temp_s0, 0xA, 0);
+    HuSprAttrSet(temp_s0, 0xA, HUSPR_ATTR_NONE);
     HuSprPosSet(temp_s0, 0xA, mbStatusSprOfsTbl[10][0], mbStatusSprOfsTbl[10][1]);
 }
 
@@ -528,7 +528,7 @@ static void MBStatusComSprCreate(s32 playerNo) {
     HuSprGrpMemberSet(temp_s2, 9, mbStatusAnimTbl[9], 0);
     HuSprAnimModeSet(temp_s2, 9, HUSPR_ANIM_MODE_STOP);
     HuSprPriSet(temp_s2, 9, ((playerNo * 5) + 0x478E));
-    HuSprAttrSet(temp_s2, 9, 0);
+    HuSprAttrSet(temp_s2, 9, HUSPR_ATTR_NONE);
     HuSprPosSet(temp_s2, 9, mbStatusSprOfsTbl[9][0], mbStatusSprOfsTbl[9][1]);
     if (!(GwPlayer[playerNo].stat & 1)) {
         HuSprDispOff(temp_s2, 9);
@@ -547,7 +547,7 @@ static void MBStatusItemIconSprCreate(s32 playerNo) {
         HuSprGrpMemberSet(temp_s3, i + 0xB, mbStatusAnimTbl[curItem + 10], 0);
         HuSprAnimModeSet(temp_s3, i + 0xB, HUSPR_ANIM_MODE_STOP);
         HuSprPriSet(temp_s3, i + 0xB, ((playerNo * 5) + 0x478E));
-        HuSprAttrSet(temp_s3, i + 0xB, 0);
+        HuSprAttrSet(temp_s3, i + 0xB, HUSPR_ATTR_NONE);
         var_s1 = i + 0xB;
         if (playerNo >= 2) {
             var_s1 = i + 0xE;
@@ -1036,7 +1036,7 @@ void MBVsSprCreate(void) {
         DataClose(temp_s0);
         HuSprGrpMemberSet(mbVsSprGrp, 0, mbVsSprAnim, 0);
         HuSprPriSet(mbVsSprGrp, 0, 0x4780);
-        HuSprAttrSet(mbVsSprGrp, 0, 0x1000);
+        HuSprAttrSet(mbVsSprGrp, 0, HUSPR_ATTR_XLU);
         HuSprPosSet(mbVsSprGrp, 0, 0xA0, mbVsSprPos.y);
         HuSprScaleSet(mbVsSprGrp, 0, 0.0f, 0.0f);
         mbVsSprScale = 0.0f;
@@ -1058,7 +1058,7 @@ void MBVsSprCreateY(f32 arg0, f32 arg1) {
         DataClose(temp_s0);
         HuSprGrpMemberSet(mbVsSprGrp, 0, mbVsSprAnim, 0);
         HuSprPriSet(mbVsSprGrp, 0, 0x4780);
-        HuSprAttrSet(mbVsSprGrp, 0, 0x1000);
+        HuSprAttrSet(mbVsSprGrp, 0, HUSPR_ATTR_XLU);
         HuSprPosSet(mbVsSprGrp, 0, 0xA0, mbVsSprPos.y);
         HuSprScaleSet(mbVsSprGrp, 0, 0.0f, 0.0f);
         mbVsSprScale = 0.0f;
@@ -1308,7 +1308,7 @@ static void MBStatusItemSprCreate(s32 playerNo, s32 arg1) {
             } else {
                 HuSprPriSet(temp_s5, i + 2, ((playerNo * 5) + 0x478F) & 0xFFFF);
             }
-            HuSprAttrSet(temp_s5, i + 2, 0x180C);
+            HuSprAttrSet(temp_s5, i + 2, HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_AVERAGE);
             HuSprDispOn(temp_s5, i + 2);
             HuSprZRotSet(temp_s5, i + 2, 0.0f);
             if (GwPlayer[playerNo].itemNo[0] != ITEM_NONE) {

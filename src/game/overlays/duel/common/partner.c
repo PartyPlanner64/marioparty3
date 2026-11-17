@@ -1215,7 +1215,7 @@ void MBDCoinScatterProc(void) {
             }
 
             HuSprPriSet(sprite->unk_0A, i, 0x2010 - i);
-            HuSprAttrSet(sprite->unk_0A, i, 0);
+            HuSprAttrSet(sprite->unk_0A, i, HUSPR_ATTR_NONE);
 
             if (i == 0) {
                 HuSprPosSet(sprite->unk_0A, 0, screenPos.x, screenPos.y);
@@ -1438,7 +1438,7 @@ void MBDPartnerDescProc(void) {
         DataClose(temp_v0_2);
         HuSprGrpMemberSet(temp_s4->unk_0A, i, temp_s4->unk_0C[i], 0);
         HuSprPriSet(temp_s4->unk_0A, i, 1U);
-        HuSprAttrSet(temp_s4->unk_0A, i, 0U);
+        HuSprAttrSet(temp_s4->unk_0A, i, HUSPR_ATTR_NONE);
         if (i == 0) {
             HuSprPosSet(temp_s4->unk_0A, 0, 0xA0, 0x7E);
         } else {

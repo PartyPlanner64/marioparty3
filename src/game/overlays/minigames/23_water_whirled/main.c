@@ -1030,7 +1030,7 @@ void m235_HudObjInit(omObjData *object) {
     sprite = espEntry(HuSprAnimDataRead(0x440011), 0, 1);
     espDispOn(sprite);
     espPosSet(sprite, 160, 120);
-    espAttrSet(sprite, 0x4000);
+    espAttrSet(sprite, HUSPR_ATTR_BG);
     espScaleSet(sprite, 2.0f, 2.0f);
     // do-while(0) needed to match register allocation.
     do {

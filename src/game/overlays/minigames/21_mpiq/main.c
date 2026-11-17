@@ -493,35 +493,35 @@ void m233_StageCreate(void) {
     work->header.unk04 = 0;
 
     sprite = espEntry(HuSprAnimDataRead(0x420000), 0, 1);
-    espAttrSet(sprite, 0x4008);
+    espAttrSet(sprite, HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
     espPosSet(sprite, 160, 120);
     espDispOn(sprite);
     espScaleSet(sprite, 1.0f, 1.0f);
     espPriSet(sprite, 255);
 
     m233_judgeSprTbl[0] = espEntry(HuSprAnimDataRead(0x42000C), 0, 1);
-    espAttrSet(m233_judgeSprTbl[0], 0x4008);
+    espAttrSet(m233_judgeSprTbl[0], HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
     espPosSet(m233_judgeSprTbl[0], 158, 86);
     espDispOff(m233_judgeSprTbl[0]);
     espScaleSet(m233_judgeSprTbl[0], 1.0f, 1.0f);
     espPriSet(m233_judgeSprTbl[0], 3);
 
     m233_judgeSprTbl[1] = espEntry(HuSprAnimDataRead(0x42000D), 0, 1);
-    espAttrSet(m233_judgeSprTbl[1], 0x4008);
+    espAttrSet(m233_judgeSprTbl[1], HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
     espPosSet(m233_judgeSprTbl[1], 158, 86);
     espDispOff(m233_judgeSprTbl[1]);
     espScaleSet(m233_judgeSprTbl[1], 1.0f, 1.0f);
     espPriSet(m233_judgeSprTbl[1], 3);
 
     m233_logoSpr = espEntry(HuSprAnimDataRead(0x420001), 0, 1);
-    espAttrSet(m233_logoSpr, 0x4008);
+    espAttrSet(m233_logoSpr, HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
     espPosSet(m233_logoSpr, 160, -90);
     espDispOn(m233_logoSpr);
     espScaleSet(m233_logoSpr, 1.0f, 1.0f);
     espPriSet(m233_logoSpr, 254);
 
     m233_logoBackSpr = espEntry(HuSprAnimDataRead(0x420002), 0, 1);
-    espAttrSet(m233_logoBackSpr, 0x4008);
+    espAttrSet(m233_logoBackSpr, HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
     espPosSet(m233_logoBackSpr, 160, -90);
     espDispOn(m233_logoBackSpr);
     espScaleSet(m233_logoBackSpr, 1.0f, 1.0f);
@@ -1082,7 +1082,7 @@ void m233_ChoiceCreate(void) {
     for (i = 0; i < 3; i++) {
         m233_choiceSprAnimTbl[i] = HuSprAnimDataRead(images[i] | 0x420000);
         m233_choiceSprTbl[i] = espEntry(m233_choiceSprAnimTbl[i], 0, 1);
-        espAttrSet(m233_choiceSprTbl[i], 8);
+        espAttrSet(m233_choiceSprTbl[i], HUSPR_ATTR_FILTER_BILERP);
         espPosSet(m233_choiceSprTbl[i], 160, 120);
         espDispOn(m233_choiceSprTbl[i]);
         espScaleSet(m233_choiceSprTbl[i], 1.0f, 1.0f);

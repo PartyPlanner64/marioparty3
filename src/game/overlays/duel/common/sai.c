@@ -278,7 +278,7 @@ void MBDSaiNumSprCreate(s32 arg0) {
     for (i = 0; i < 2; i++) {
         HuSprGrpMemberSet(entry->sprites[entry->rollValueIdx], i, entry->unk_14, 0);
         HuSprPriSet(entry->sprites[entry->rollValueIdx], i, 0x4000);
-        HuSprAttrSet(entry->sprites[entry->rollValueIdx], i, 0x9000);
+        HuSprAttrSet(entry->sprites[entry->rollValueIdx], i, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
         HuSprSpeedSet(entry->sprites[entry->rollValueIdx], i, 0.0f);
         HuSprScaleSet(entry->sprites[entry->rollValueIdx], i, 0.0f, 0.0f);
         HuSprBankSet(entry->sprites[entry->rollValueIdx], i, 0, 0);

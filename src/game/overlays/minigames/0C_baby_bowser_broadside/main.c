@@ -414,13 +414,13 @@ void m212_StageObjInit(omObjData *object) {
     m212_SprDispOn(sprite, 250, 32);
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 2; j++) {
-            m212_SprDispOn(m212_SprCreate(239, 33, portraits.files[GwPlayer[m212_teamTbl[i].players[j]].chr], 0, 0), i * 180 + (s16)(j * 18 + 40), hudY);
+            m212_SprDispOn(m212_SprCreate(239, 33, portraits.files[GwPlayer[m212_teamTbl[i].players[j]].chr], 0, HUSPR_ATTR_NONE), i * 180 + (s16)(j * 18 + 40), hudY);
         }
     }
     for (i = 0; i < 2; i++) {
-        m212_teamTbl[i].unk_12 = model = m212_SprCreate(239, 0, 45, 0, 0);
+        m212_teamTbl[i].unk_12 = model = m212_SprCreate(239, 0, 45, 0, HUSPR_ATTR_NONE);
         m212_SprDispOn(model, (s16)(i * 180 + 84), hudY);
-        m212_teamTbl[i].unk_14 = model = m212_SprCreate(239, 0, 45, 0, 0);
+        m212_teamTbl[i].unk_14 = model = m212_SprCreate(239, 0, 45, 0, HUSPR_ATTR_NONE);
         m212_SprDispOn(model, (s16)(i * 180 + 100), hudY);
     }
     index = m212_FuncSet((s8)object->work[1], 0xFFFF, 0, m212_ColliderInit, (s8)object->work[1]);

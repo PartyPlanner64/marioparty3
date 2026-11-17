@@ -326,30 +326,30 @@ void m266_HudObjInit(omObjData *object) {
     s16 sprite;
     u8 i;
 
-    m266_EspSlotCreate(&m266_backSpr.slot, 0x630000, 0x4008);
+    m266_EspSlotCreate(&m266_backSpr.slot, 0x630000, HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
     m266_SprParamSet(&m266_backSpr, 1000, 0, 0, 320, 240, 1.0f, 1.0f);
     m266_SprDispSet(&m266_backSpr, 1);
-    m266_EspSlotCreate(&m266_bannerSprA.slot, 0x630001, 0x4008);
+    m266_EspSlotCreate(&m266_bannerSprA.slot, 0x630001, HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
     m266_SprParamSet(&m266_bannerSprA, 900, 0, 0, 320, 128, 1.0f, 1.0f);
     m266_SprDispSet(&m266_bannerSprA, 0);
-    m266_EspSlotCreate(&m266_bannerSprB.slot, 0x630002, 0x4008);
+    m266_EspSlotCreate(&m266_bannerSprB.slot, 0x630002, HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
     m266_SprParamSet(&m266_bannerSprB, 900, 0, 0, 320, 128, 1.0f, 1.0f);
     m266_SprDispSet(&m266_bannerSprB, 0);
-    m266_EspSlotCreate(&m266_prizePanelSpr.slot, 0x630003, 8);
+    m266_EspSlotCreate(&m266_prizePanelSpr.slot, 0x630003, HUSPR_ATTR_FILTER_BILERP);
     m266_SprParamSet(&m266_prizePanelSpr, 800, 242, 16, 54, 144, 1.0f, 1.0f);
     m266_SprDispSet(&m266_prizePanelSpr, 1);
     for (i = 0; i < 6; i++) {
-        m266_EspSlotCreate(&m266_prizeSprTbl[i].slot, prizeFiles.ids[i] | 0x630000, 8);
+        m266_EspSlotCreate(&m266_prizeSprTbl[i].slot, prizeFiles.ids[i] | 0x630000, HUSPR_ATTR_FILTER_BILERP);
         m266_SprParamSet(&m266_prizeSprTbl[i], 700, 246, i * 22 + 22, 22, 22, 1.0f, 1.0f);
         m266_SprDispSet(&m266_prizeSprTbl[i], 0);
     }
-    m266_EspSlotCreate(&m266_portraitSpr.slot, charFiles.ids[chr] | 0x210000, 8);
+    m266_EspSlotCreate(&m266_portraitSpr.slot, charFiles.ids[chr] | 0x210000, HUSPR_ATTR_FILTER_BILERP);
     m266_SprParamSet(&m266_portraitSpr, 600, 206, 1, 46, 46, 1.0f, 1.0f);
     m266_SprDispSet(&m266_portraitSpr, 0);
-    m266_EspSlotCreate(&m266_coinIconSpr.slot, 0x21001A, 8);
+    m266_EspSlotCreate(&m266_coinIconSpr.slot, 0x21001A, HUSPR_ATTR_FILTER_BILERP);
     m266_SprParamSet(&m266_coinIconSpr, 500, 24, 16, 12, 12, 1.0f, 1.0f);
     m266_SprDispSet(&m266_coinIconSpr, 1);
-    m266_EspSlotCreate(&m266_coinCrossSpr.slot, 0x21001B, 8);
+    m266_EspSlotCreate(&m266_coinCrossSpr.slot, 0x21001B, HUSPR_ATTR_FILTER_BILERP);
     m266_SprParamSet(&m266_coinCrossSpr, 500, 36, 16, 12, 12, 1.0f, 1.0f);
     m266_SprDispSet(&m266_coinCrossSpr, 1);
     sprite = HuSprAnimDataRead(0x31);

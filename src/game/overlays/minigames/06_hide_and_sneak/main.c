@@ -499,13 +499,13 @@ void m206_StageObjInit(omObjData *object) {
     work->unk_44.y = 120.0f;
     work->unk_40 = HuSprAnimDataRead(0x270000);
     work->unk_42 = espEntry(work->unk_40, 0, 0);
-    espAttrSet(work->unk_42, 0x5000);
+    espAttrSet(work->unk_42, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
     espPosSet(work->unk_42, work->unk_44.x, work->unk_44.y);
     work->unk_44.x = 160.0f;
     work->unk_44.y = 231.0f;
     work->unk_40 = HuSprAnimDataRead(0x270001);
     work->unk_42 = espEntry(work->unk_40, 0, 0);
-    espAttrSet(work->unk_42, 0x1000);
+    espAttrSet(work->unk_42, HUSPR_ATTR_XLU);
     espPosSet(work->unk_42, work->unk_44.x, work->unk_44.y);
     object->model[0] = Hu3DModelRead(0x270003, 0x299);
     object->model[1] = Hu3DModelRead(0x270002, 0x299);

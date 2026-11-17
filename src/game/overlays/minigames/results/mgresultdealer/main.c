@@ -248,7 +248,7 @@ void mgresultdealer_BackCreate(void) {
 
     espriteSlot = espEntry(HuSprAnimDataRead(0x190000), 0, 0);
     espPosSet(espriteSlot, 0xA0, 0x78);
-    espAttrSet(espriteSlot, 0x4000);
+    espAttrSet(espriteSlot, HUSPR_ATTR_BG);
 }
 
 void mgresultdealer_CameraModelSet(s16 model) {

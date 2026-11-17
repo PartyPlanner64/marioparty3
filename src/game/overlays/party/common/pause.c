@@ -623,7 +623,7 @@ static void MBPauseTurnNumSet(UnkBoard8* arg0, s16 arg1, s16 arg2, s16 arg3, u16
         }
         
         HuSprPriSet(arg0->spriteGroup, arg1, 7);
-        HuSprAttrSet(arg0->spriteGroup, arg1, 0x01001000);
+        HuSprAttrSet(arg0->spriteGroup, arg1, HUSPR_ATTR_NOPAUSE | HUSPR_ATTR_XLU);
         HuSprPosSet(arg0->spriteGroup, arg1, arg3, arg4);
         HuSprColorSet(arg0->spriteGroup, arg1, mbPauseColorTbl[mbPauseColorNo][0], mbPauseColorTbl[mbPauseColorNo][1], mbPauseColorTbl[mbPauseColorNo][2]);
         arg1 += 1;
@@ -649,7 +649,7 @@ static UnkBoard8* MBPauseTurnNumCreate(void) {
     temp_s2->model[0] = HuSprAnimRead(var_s0);
     HuSprGrpMemberSet(temp_s2->spriteGroup, 0, temp_s2->model[0], 0);
     HuSprPriSet(temp_s2->spriteGroup, 0, 7);
-    HuSprAttrSet(temp_s2->spriteGroup, 0, 0x1000);
+    HuSprAttrSet(temp_s2->spriteGroup, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(temp_s2->spriteGroup, 0, 0xA0, 0x73);
     HuSprColorSet(temp_s2->spriteGroup, 0, mbPauseColorTbl[mbPauseColorNo][0], mbPauseColorTbl[mbPauseColorNo][1], mbPauseColorTbl[mbPauseColorNo][2]);
     DataClose(var_s0);
@@ -657,7 +657,7 @@ static UnkBoard8* MBPauseTurnNumCreate(void) {
     temp_s2->model[1] = HuSprAnimRead(temp_v0_2);
     HuSprGrpMemberSet(temp_s2->spriteGroup, 1, temp_s2->model[1], 0);
     HuSprPriSet(temp_s2->spriteGroup, 1, 7);
-    HuSprAttrSet(temp_s2->spriteGroup, 1, 0x1000);
+    HuSprAttrSet(temp_s2->spriteGroup, 1, HUSPR_ATTR_XLU);
     HuSprPosSet(temp_s2->spriteGroup, 1, 0xA0, 0x90);
     HuSprColorSet(temp_s2->spriteGroup, 1, mbPauseColorTbl[mbPauseColorNo][0], mbPauseColorTbl[mbPauseColorNo][1], mbPauseColorTbl[mbPauseColorNo][2]);
     DataClose(temp_v0_2);
@@ -667,7 +667,7 @@ static UnkBoard8* MBPauseTurnNumCreate(void) {
     temp_s2->model[6] = HuSprAnimRead(temp_v0_4);
     HuSprGrpMemberSet(temp_s2->spriteGroup, 6, temp_s2->model[6], 0);
     HuSprPriSet(temp_s2->spriteGroup, 6, 7);
-    HuSprAttrSet(temp_s2->spriteGroup, 6, 0x1000);
+    HuSprAttrSet(temp_s2->spriteGroup, 6, HUSPR_ATTR_XLU);
     HuSprPosSet(temp_s2->spriteGroup, 6, 0xA0, 0x3C);
     DataClose(temp_v0_4);
     return temp_s2;
@@ -979,7 +979,7 @@ static void MBPauseOptionIconSet(UnkBoard8 *arg0, s32 arg1) {
     DataClose(data);
     HuSprGrpMemberSet(arg0->spriteGroup, arg1, arg0->model[arg1], 0);
     HuSprPriSet(arg0->spriteGroup, arg1, 8);
-    HuSprAttrSet(arg0->spriteGroup, arg1, 0x1000);
+    HuSprAttrSet(arg0->spriteGroup, arg1, HUSPR_ATTR_XLU);
     HuSprPosSet(arg0->spriteGroup, arg1,
                         ((arg1 % 4) << 6) + 0x46,
                         ((arg1 / 4) * 0x3C) + 0x3C);
@@ -1057,7 +1057,7 @@ static s32 MBPauseOptionExec(s32 arg0) {
             DataClose(data);
             HuSprGrpMemberSet(icons->spriteGroup, i, icons->model[i], 0);
             HuSprPriSet(icons->spriteGroup, i, 8);
-            HuSprAttrSet(icons->spriteGroup, i, 0x1000);
+            HuSprAttrSet(icons->spriteGroup, i, HUSPR_ATTR_XLU);
             HuSprPosSet(icons->spriteGroup, i,
                                 ((i % 4) << 6) + 0x46,
                                 ((i / 4) * 0x3C) + 0x3C);
@@ -1082,7 +1082,7 @@ static s32 MBPauseOptionExec(s32 arg0) {
         DataClose(data);
         HuSprGrpMemberSet(cursor->spriteGroup, 0, cursor->model[0], 0);
         HuSprPriSet(cursor->spriteGroup, 0, 7);
-        HuSprAttrSet(cursor->spriteGroup, 0, 0x1000);
+        HuSprAttrSet(cursor->spriteGroup, 0, HUSPR_ATTR_XLU);
         HuSprPosSet(cursor->spriteGroup, 0,
                             ((mbPauseOptionSel % 4) * 64) + 0x2A,
                             ((mbPauseOptionSel / 4) * 60) + 0x20);
@@ -1406,7 +1406,7 @@ static s32 MBPausePadCfgExec(s32 arg0) {
     DataClose(data);
     HuSprGrpMemberSet(bg->spriteGroup, 0, bg->model[0], 0);
     HuSprPriSet(bg->spriteGroup, 0, 8);
-    HuSprAttrSet(bg->spriteGroup, 0, 0x1000);
+    HuSprAttrSet(bg->spriteGroup, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(bg->spriteGroup, 0, 0xAA, 0x58);
 
     panel = MBSprGrpCreate(4, 0);
@@ -1418,7 +1418,7 @@ static s32 MBPausePadCfgExec(s32 arg0) {
         }
         HuSprGrpMemberSet(panel->spriteGroup, i, panel->model[0], 0);
         HuSprPriSet(panel->spriteGroup, i, 8);
-        HuSprAttrSet(panel->spriteGroup, i, 0x1000);
+        HuSprAttrSet(panel->spriteGroup, i, HUSPR_ATTR_XLU);
         HuSprPosSet(panel->spriteGroup, i,
                             mbPausePanelXTbl[i],
                             mbPausePanelYTbl[i]);
@@ -1431,7 +1431,7 @@ static s32 MBPausePadCfgExec(s32 arg0) {
         chr->model[i] = HuSprAnimRead(data);
         HuSprGrpMemberSet(chr->spriteGroup, i, chr->model[i], 0);
         HuSprPriSet(chr->spriteGroup, i, 7);
-        HuSprAttrSet(chr->spriteGroup, i, 0x1000);
+        HuSprAttrSet(chr->spriteGroup, i, HUSPR_ATTR_XLU);
         HuSprPosSet(chr->spriteGroup, i,
                             mbPausePanelXTbl[i],
                             mbPausePanelYTbl[i]);
@@ -1464,9 +1464,9 @@ static s32 MBPausePadCfgExec(s32 arg0) {
             HuSprDispOff(icon->spriteGroup, i + 4);
         }
         HuSprPriSet(icon->spriteGroup, i, 7);
-        HuSprAttrSet(icon->spriteGroup, i, 0x01001000);
+        HuSprAttrSet(icon->spriteGroup, i, HUSPR_ATTR_NOPAUSE | HUSPR_ATTR_XLU);
         HuSprPriSet(icon->spriteGroup, i + 4, 7);
-        HuSprAttrSet(icon->spriteGroup, i + 4, 0x01001000);
+        HuSprAttrSet(icon->spriteGroup, i + 4, HUSPR_ATTR_NOPAUSE | HUSPR_ATTR_XLU);
         HuSprPosSet(icon->spriteGroup, i + 4,
             mbPausePanelXTbl[i] + 0x12,
             mbPausePanelYTbl[i] + 6);
@@ -1476,23 +1476,23 @@ static s32 MBPausePadCfgExec(s32 arg0) {
     data = DataRead(0x13009C);
     cursor->model[0] = HuSprAnimRead(data);
     HuSprGrpMemberSet(cursor->spriteGroup, 0, cursor->model[0], 0);
-    HuSprAttrSet(cursor->spriteGroup, 0, 0x1808);
+    HuSprAttrSet(cursor->spriteGroup, 0, HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_BILERP);
     HuSprPriSet(cursor->spriteGroup, 0, 6);
     DataClose(data);
 
     data = DataRead(0x1300A9);
     cursor->model[1] = HuSprAnimRead(data);
     HuSprGrpMemberSet(cursor->spriteGroup, 1, cursor->model[1], 0);
-    HuSprAttrSet(cursor->spriteGroup, 1, 0x9808);
+    HuSprAttrSet(cursor->spriteGroup, 1, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_BILERP);
     HuSprPriSet(cursor->spriteGroup, 1, 6);
     HuSprColorSet(cursor->spriteGroup, 1, 0xFF, 0, 0);
-    HuSprAttrSet(cursor->spriteGroup, 1, 1);
+    HuSprAttrSet(cursor->spriteGroup, 1, HUSPR_ATTR_FLIPX);
     DataClose(data);
 
     data = DataRead(0x1300A9);
     cursor->model[2] = HuSprAnimRead(data);
     HuSprGrpMemberSet(cursor->spriteGroup, 2, cursor->model[2], 0);
-    HuSprAttrSet(cursor->spriteGroup, 2, 0x9808);
+    HuSprAttrSet(cursor->spriteGroup, 2, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_BILERP);
     HuSprPriSet(cursor->spriteGroup, 2, 6);
     HuSprColorSet(cursor->spriteGroup, 2, 0xFF, 0, 0);
     DataClose(data);
@@ -1647,7 +1647,7 @@ static void MBPauseMain(void) {
     temp_s1->model[0] = HuSprAnimRead(temp_v0_2);
     HuSprGrpMemberSet(temp_s1->spriteGroup, 0, temp_s1->model[0], 0U);
     HuSprPriSet(temp_s1->spriteGroup, 0, 9U);
-    HuSprAttrSet(temp_s1->spriteGroup, 0, 0x1000);
+    HuSprAttrSet(temp_s1->spriteGroup, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(temp_s1->spriteGroup, 0, 0xA0, 0x78);
     HuSprScaleSet(temp_s1->spriteGroup, 0, 40.0f, 30.0f);
     HuSprColorTPLvlSet(temp_s1->spriteGroup, 0, 0, 0, 0, 0xC0);
@@ -1697,8 +1697,8 @@ void MBPauseCreate(s32 arg0) {
         HuAudSeqVolSet(0x60);
     }
     
-    Hu3DModelModeSet(HuSprBGHookMdl, 2);
-    Hu3DModelCameraSet(HuSprBGHookMdl, HU3D_CAM0);
+    Hu3DModelModeSet(HuSprFGHookMdl, 2);
+    Hu3DModelCameraSet(HuSprFGHookMdl, HU3D_CAM0);
     mbPauseGuide = 0;
     mbPauseStat = 0;
     mbPauseQuitF = 0;
@@ -1708,7 +1708,7 @@ void MBPauseCreate(s32 arg0) {
     omPrcSetStatBit(temp_v0, OM_STAT_NOALLPAUSE);
     HuPrcChildLink(temp_s1_2, temp_v0);
     HuPrcChildWatch();
-    Hu3DModelModeSet(HuSprBGHookMdl, 6);
+    Hu3DModelModeSet(HuSprFGHookMdl, 6);
     if (mbSubMusNo != -1) {
         msmMusSetVolume(mbSubMusNo, 0x7F);
     } else {

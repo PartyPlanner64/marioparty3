@@ -138,7 +138,7 @@ void duelresult2_RankSprCreate(void) {
             DataClose(data);
             HuSprGrpMemberSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, duelresult2_rankRowSprGrpTbl[i]->unk_0C[j + 1], 0);
             HuSprPriSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 98 - j);
-            HuSprAttrSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 0x4000);
+            HuSprAttrSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, HUSPR_ATTR_BG);
             HuSprPosSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, memberX.x[j], 0);
         }
 
@@ -147,7 +147,7 @@ void duelresult2_RankSprCreate(void) {
         DataClose(data);
         HuSprGrpMemberSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, 4, duelresult2_rankRowSprGrpTbl[i]->unk_0C[4], 0);
         HuSprPriSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, 4, 95);
-        HuSprAttrSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, 4, 0x4000);
+        HuSprAttrSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, 4, HUSPR_ATTR_BG);
         HuSprPosSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, 4, memberX.x[3], 1);
 
         j = 4;
@@ -162,7 +162,7 @@ void duelresult2_RankSprCreate(void) {
         HuSprGrpMemberSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, duelresult2_rankRowSprGrpTbl[i]->unk_0C[j + 1],
                           GwPlayer[i].star / 10);
         HuSprPriSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 98 - j);
-        HuSprAttrSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 0x4000);
+        HuSprAttrSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, HUSPR_ATTR_BG);
         HuSprPosSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 68, 4);
 
         data = DataRead(0xC0086);
@@ -171,7 +171,7 @@ void duelresult2_RankSprCreate(void) {
         HuSprGrpMemberSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, 6, duelresult2_rankRowSprGrpTbl[i]->unk_0C[6],
                           GwPlayer[i].star % 10);
         HuSprPriSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, 6, 93);
-        HuSprAttrSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, 6, 0x4000);
+        HuSprAttrSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, 6, HUSPR_ATTR_BG);
         HuSprPosSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, 6, 84, 4);
 
         j = 6;
@@ -186,7 +186,7 @@ void duelresult2_RankSprCreate(void) {
         HuSprGrpMemberSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, duelresult2_rankRowSprGrpTbl[i]->unk_0C[j + 1],
                           GwPlayer[i].coin / 100);
         HuSprPriSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 98 - j);
-        HuSprAttrSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 0x4000);
+        HuSprAttrSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, HUSPR_ATTR_BG);
         HuSprPosSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 142, 4);
 
         j = 7;
@@ -201,7 +201,7 @@ void duelresult2_RankSprCreate(void) {
                               GwPlayer[i].coin);
         }
         HuSprPriSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 98 - j);
-        HuSprAttrSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 0x4000);
+        HuSprAttrSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, HUSPR_ATTR_BG);
         HuSprPosSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 158, 4);
 
         if (GwPlayer[i].coin >= 10) {
@@ -211,7 +211,7 @@ void duelresult2_RankSprCreate(void) {
             HuSprGrpMemberSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, 9, duelresult2_rankRowSprGrpTbl[i]->unk_0C[9],
                               GwPlayer[i].coin % 10);
             HuSprPriSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, 9, 90);
-            HuSprAttrSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, 9, 0x4000);
+            HuSprAttrSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, 9, HUSPR_ATTR_BG);
             HuSprPosSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, 9, 174, 4);
         }
 
@@ -227,7 +227,7 @@ void duelresult2_RankSprCreate(void) {
         DataClose(data);
         HuSprGrpMemberSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, duelresult2_rankRowSprGrpTbl[i]->unk_0C[j + 1], 0);
         HuSprPriSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 98 - j);
-        HuSprAttrSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, 0x4000);
+        HuSprAttrSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, HUSPR_ATTR_BG);
         HuSprPosSet(duelresult2_rankRowSprGrpTbl[i]->unk_0A, j + 1, -56, 0);
     }
 
@@ -241,7 +241,7 @@ void duelresult2_RankSprCreate(void) {
     DataClose(data);
     HuSprGrpMemberSet(duelresult2_rankTitleSprGrp->unk_0A, 0, duelresult2_rankTitleSprGrp->unk_0C[0], 0);
     HuSprPriSet(duelresult2_rankTitleSprGrp->unk_0A, 0, 90);
-    HuSprAttrSet(duelresult2_rankTitleSprGrp->unk_0A, 0, 0x4000);
+    HuSprAttrSet(duelresult2_rankTitleSprGrp->unk_0A, 0, HUSPR_ATTR_BG);
     HuSprPosSet(duelresult2_rankTitleSprGrp->unk_0A, 0, 160, 33);
 
     if (kakusiMasuItemHis[2] != -1) {
@@ -251,7 +251,7 @@ void duelresult2_RankSprCreate(void) {
         DataClose(data);
         HuSprGrpMemberSet(duelresult2_rankSubtitleSprGrp->unk_0A, 0, duelresult2_rankSubtitleSprGrp->unk_0C[0], 0);
         HuSprPriSet(duelresult2_rankSubtitleSprGrp->unk_0A, 0, 89);
-        HuSprAttrSet(duelresult2_rankSubtitleSprGrp->unk_0A, 0, 0x4000);
+        HuSprAttrSet(duelresult2_rankSubtitleSprGrp->unk_0A, 0, HUSPR_ATTR_BG);
         if (kakusiMasuItemHis[0] == 0) {
             HuSprPosSet(duelresult2_rankSubtitleSprGrp->unk_0A, 0, 55, 64);
         } else {
@@ -588,7 +588,7 @@ void duelresult2_StatSprCreate(void) {
     DataClose(data);
     HuSprGrpMemberSet(duelresult2_boardNameSprGrp->unk_0A, 0, duelresult2_boardNameSprGrp->unk_0C[0], 0);
     HuSprPriSet(duelresult2_boardNameSprGrp->unk_0A, 0, 110);
-    HuSprAttrSet(duelresult2_boardNameSprGrp->unk_0A, 0, 0x4000);
+    HuSprAttrSet(duelresult2_boardNameSprGrp->unk_0A, 0, HUSPR_ATTR_BG);
     HuSprPosSet(duelresult2_boardNameSprGrp->unk_0A, 0, 74, 39);
 
     duelresult2_gameLengthSprGrp = MBDSprGrpCreate(2, 0);
@@ -597,7 +597,7 @@ void duelresult2_StatSprCreate(void) {
     DataClose(data);
     HuSprGrpMemberSet(duelresult2_gameLengthSprGrp->unk_0A, 0, duelresult2_gameLengthSprGrp->unk_0C[0], 0);
     HuSprPriSet(duelresult2_gameLengthSprGrp->unk_0A, 0, 100);
-    HuSprAttrSet(duelresult2_gameLengthSprGrp->unk_0A, 0, 0x4000);
+    HuSprAttrSet(duelresult2_gameLengthSprGrp->unk_0A, 0, HUSPR_ATTR_BG);
     HuSprPosSet(duelresult2_gameLengthSprGrp->unk_0A, 0, 210, 36);
 
     if (GwSystem.playMode & 4) {
@@ -611,7 +611,7 @@ void duelresult2_StatSprCreate(void) {
     DataClose(data);
     HuSprGrpMemberSet(duelresult2_gameLengthSprGrp->unk_0A, 1, duelresult2_gameLengthSprGrp->unk_0C[1], 0);
     HuSprPriSet(duelresult2_gameLengthSprGrp->unk_0A, 1, 99);
-    HuSprAttrSet(duelresult2_gameLengthSprGrp->unk_0A, 1, 0x4000);
+    HuSprAttrSet(duelresult2_gameLengthSprGrp->unk_0A, 1, HUSPR_ATTR_BG);
     HuSprPosSet(duelresult2_gameLengthSprGrp->unk_0A, 1, 210, 36);
 
     duelresult2_statLabelSprGrp = MBDSprGrpCreate(1, 0);
@@ -620,7 +620,7 @@ void duelresult2_StatSprCreate(void) {
     DataClose(data);
     HuSprGrpMemberSet(duelresult2_statLabelSprGrp->unk_0A, 0, duelresult2_statLabelSprGrp->unk_0C[0], 0);
     HuSprPriSet(duelresult2_statLabelSprGrp->unk_0A, 0, 99);
-    HuSprAttrSet(duelresult2_statLabelSprGrp->unk_0A, 0, 0x4000);
+    HuSprAttrSet(duelresult2_statLabelSprGrp->unk_0A, 0, HUSPR_ATTR_BG);
     HuSprPosSet(duelresult2_statLabelSprGrp->unk_0A, 0, 218, 73);
 
     for (i = 0; i < 2; i++) {
@@ -630,7 +630,7 @@ void duelresult2_StatSprCreate(void) {
         DataClose(data);
         HuSprGrpMemberSet(duelresult2_statRowSprGrpTbl[i]->unk_0A, 1, duelresult2_statRowSprGrpTbl[i]->unk_0C[1], 0);
         HuSprPriSet(duelresult2_statRowSprGrpTbl[i]->unk_0A, 1, 98);
-        HuSprAttrSet(duelresult2_statRowSprGrpTbl[i]->unk_0A, 1, 0x4000);
+        HuSprAttrSet(duelresult2_statRowSprGrpTbl[i]->unk_0A, 1, HUSPR_ATTR_BG);
         HuSprPosSet(duelresult2_statRowSprGrpTbl[i]->unk_0A, 1, 172, 0);
 
         data = DataRead(nameFiles.files[GwPlayer[i].chr]);
@@ -638,7 +638,7 @@ void duelresult2_StatSprCreate(void) {
         DataClose(data);
         HuSprGrpMemberSet(duelresult2_statRowSprGrpTbl[i]->unk_0A, 2, duelresult2_statRowSprGrpTbl[i]->unk_0C[2], 0);
         HuSprPriSet(duelresult2_statRowSprGrpTbl[i]->unk_0A, 2, 97);
-        HuSprAttrSet(duelresult2_statRowSprGrpTbl[i]->unk_0A, 2, 0x4000);
+        HuSprAttrSet(duelresult2_statRowSprGrpTbl[i]->unk_0A, 2, HUSPR_ATTR_BG);
         HuSprPosSet(duelresult2_statRowSprGrpTbl[i]->unk_0A, 2, 36, 1);
 
         data = DataRead(faceFiles.files[GwPlayer[i].chr]);
@@ -646,7 +646,7 @@ void duelresult2_StatSprCreate(void) {
         DataClose(data);
         HuSprGrpMemberSet(duelresult2_statRowSprGrpTbl[i]->unk_0A, 3, duelresult2_statRowSprGrpTbl[i]->unk_0C[3], 0);
         HuSprPriSet(duelresult2_statRowSprGrpTbl[i]->unk_0A, 3, 96);
-        HuSprAttrSet(duelresult2_statRowSprGrpTbl[i]->unk_0A, 3, 0x4000);
+        HuSprAttrSet(duelresult2_statRowSprGrpTbl[i]->unk_0A, 3, HUSPR_ATTR_BG);
         HuSprPosSet(duelresult2_statRowSprGrpTbl[i]->unk_0A, 3, 77, 1);
     }
 
@@ -661,10 +661,10 @@ void duelresult2_StatSprCreate(void) {
         DataClose(data);
         HuSprGrpMemberSet(duelresult2_statArrowSprGrp->unk_0A, i, duelresult2_statArrowSprGrp->unk_0C[i], 0);
         HuSprPriSet(duelresult2_statArrowSprGrp->unk_0A, i, 90);
-        HuSprAttrSet(duelresult2_statArrowSprGrp->unk_0A, i, 0x4000);
+        HuSprAttrSet(duelresult2_statArrowSprGrp->unk_0A, i, HUSPR_ATTR_BG);
         HuSprPosSet(duelresult2_statArrowSprGrp->unk_0A, i, i * 154 + 133, 161);
     }
-    HuSprAttrSet(duelresult2_statArrowSprGrp->unk_0A, 0, 1);
+    HuSprAttrSet(duelresult2_statArrowSprGrp->unk_0A, 0, HUSPR_ATTR_FLIPX);
 
     duelresult2_statNameSprGrp = MBDSprGrpCreate(10, 0);
     for (i = 0; i < 10; i++) {
@@ -677,7 +677,7 @@ void duelresult2_StatSprCreate(void) {
         DataClose(data);
         HuSprGrpMemberSet(duelresult2_statNameSprGrp->unk_0A, i, duelresult2_statNameSprGrp->unk_0C[i], 0);
         HuSprPriSet(duelresult2_statNameSprGrp->unk_0A, i, 80);
-        HuSprAttrSet(duelresult2_statNameSprGrp->unk_0A, i, 0xC000);
+        HuSprAttrSet(duelresult2_statNameSprGrp->unk_0A, i, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_BG);
     }
 
     duelresult2_statNumSprGrp = MBDSprGrpCreate(64, 0);
@@ -690,7 +690,7 @@ void duelresult2_StatSprCreate(void) {
     for (i = 0; i < 64; i++) {
         HuSprGrpMemberSet(duelresult2_statNumSprGrp->unk_0A, i, duelresult2_statNumSprGrp->unk_0C[0], 0);
         HuSprPriSet(duelresult2_statNumSprGrp->unk_0A, i, 70);
-        HuSprAttrSet(duelresult2_statNumSprGrp->unk_0A, i, 0xC000);
+        HuSprAttrSet(duelresult2_statNumSprGrp->unk_0A, i, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_BG);
     }
 
     duelresult2_statCursorSprGrp = MBDSprGrpCreate(1, 0);
@@ -699,7 +699,7 @@ void duelresult2_StatSprCreate(void) {
     DataClose(data);
     HuSprGrpMemberSet(duelresult2_statCursorSprGrp->unk_0A, 0, duelresult2_statCursorSprGrp->unk_0C[0], 0);
     HuSprPriSet(duelresult2_statCursorSprGrp->unk_0A, 0, 60);
-    HuSprAttrSet(duelresult2_statCursorSprGrp->unk_0A, 0, 0x4000);
+    HuSprAttrSet(duelresult2_statCursorSprGrp->unk_0A, 0, HUSPR_ATTR_BG);
 
     duelresult2_hostGuide = MBDGuideCreate(0, 8);
     MBDGuidePosSet(duelresult2_hostGuide, 105, 8);
@@ -843,7 +843,7 @@ void duelresult2_MainProc(void) {
     for (i = 0; i < 6; i++) {
         HuSprGrpMemberSet(duelresult2_bgSprGrp->unk_0A, i, duelresult2_bgSprGrp->unk_0C[0], 0);
         HuSprPriSet(duelresult2_bgSprGrp->unk_0A, i, 200);
-        HuSprAttrSet(duelresult2_bgSprGrp->unk_0A, i, 0x4000);
+        HuSprAttrSet(duelresult2_bgSprGrp->unk_0A, i, HUSPR_ATTR_BG);
         HuSprPosSet(duelresult2_bgSprGrp->unk_0A, i, (i / 2) * 128 + 64, (i & 1) * 128 + 64);
     }
 

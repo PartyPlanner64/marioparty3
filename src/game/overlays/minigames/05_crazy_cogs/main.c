@@ -399,7 +399,7 @@ void m205_MapObjInit(omObjData *arg0) {
     m205_backSprY = 120.0f;
     m205_backSprAnim = HuSprAnimDataRead(0x260000);
     m205_backSpr = espEntry(m205_backSprAnim, 0, 0);
-    espAttrSet(m205_backSpr, 0x5000);
+    espAttrSet(m205_backSpr, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
     espPosSet(m205_backSpr, m205_backSprX, m205_backSprY);
     mgMapObjTbl[mgMapObjNum++] = arg0;
     work = HuMemAllocTag(sizeof(CrazyCogsSetupWork), TAG_OVERLAY);

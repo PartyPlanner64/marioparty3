@@ -1266,13 +1266,13 @@ void m241_MapObjInit(omObjData *object) {
     group1 = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(group1, 0, sprite1, 0);
     HuSprAttrReset(group1, 0, 0xFFFF);
-    HuSprAttrSet(group1, 0, 0x5000);
+    HuSprAttrSet(group1, 0, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
     HuSprPosSet(group1, 0, 160, 120);
     sprite2 = HuSprAnimDataRead(0x4A0002);
     group2 = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(group2, 0, sprite2, 0);
     HuSprAttrReset(group2, 0, 0xFFFF);
-    HuSprAttrSet(group2, 0, 0x1000);
+    HuSprAttrSet(group2, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(group2, 0, 160, 180);
     object->trans.x = object->trans.y = object->trans.z = 0.0f;
     object->model[0] = Hu3DModelRead2(0x4A0000, 0x29D);

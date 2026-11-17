@@ -1083,7 +1083,7 @@ void mgmode_BookSelect(s16 arg0) {
     win = HuWinExCreate(-1, 24, 16, 272, 80, 0);
     HuWinActivePlayerSet(win, 1 << mgmode_padNo);
     icon = mgmode_MgPicCreate();
-    espAttrSet(icon, 8);
+    espAttrSet(icon, HUSPR_ATTR_FILTER_BILERP);
     espPosSet(icon, 76, 56);
     espScaleSet(icon, 0.75f, 0.75f);
     spriteGrp = HuSprAnimDataRead(0x120013);

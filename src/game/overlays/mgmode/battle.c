@@ -397,7 +397,7 @@ void mgmode_BattleSetupExec(void) {
     mgmode_SprListPosSet(mgmode_battleMenuSprTbl, 0, 180, 110);
     for (i = 0; i < 9; i++) {
         mgmode_SprListDispOff(mgmode_battleMenuSprTbl, i);
-        mgmode_SprListAttrSet(mgmode_battleMenuSprTbl, i, 0x4000);
+        mgmode_SprListAttrSet(mgmode_battleMenuSprTbl, i, HUSPR_ATTR_BG);
     }
     HuAudFXPlay(0x243);
     HuPrcSleep(5);
@@ -940,7 +940,7 @@ s16 mgmode_BattleMgRouletteExec(s16 category) {
 
     if (mgmode_battleMgPicSpr == -1) {
         mgmode_battleMgPicSpr = mgmode_MgPicCreate();
-        espAttrSet(mgmode_battleMgPicSpr, 0x4008);
+        espAttrSet(mgmode_battleMgPicSpr, HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
         espPosSet(mgmode_battleMgPicSpr, 180, 134);
         for (i = 0; i < 10; i++) {
             espTPLvlSet(mgmode_battleMgPicSpr, i / 10.0f * 255.0f);
@@ -995,18 +995,18 @@ s32 mgmode_BattleResultExec(void) {
         if (i != 0) {
             mgmode_SprListDispOff(mgmode_battleMenuSprTbl, i);
         }
-        mgmode_SprListAttrSet(mgmode_battleMenuSprTbl, i, 0x4000);
+        mgmode_SprListAttrSet(mgmode_battleMenuSprTbl, i, HUSPR_ATTR_BG);
     }
     mgmode_SprListDispOn(mgmode_battleMenuSprTbl, mgModeSelNo + 1);
     mgmode_SprListPosSet(mgmode_battleMenuSprTbl, mgModeSelNo + 1, 180, 42);
     mgmode_SprListScaleSet(mgmode_battleMenuSprTbl, mgModeSelNo + 1, 0.7f, 0.7f);
-    mgmode_SprListAttrSet(mgmode_battleMenuSprTbl, mgModeSelNo + 1, 8);
+    mgmode_SprListAttrSet(mgmode_battleMenuSprTbl, mgModeSelNo + 1, HUSPR_ATTR_FILTER_BILERP);
     mgmode_SprListDispOn(mgmode_battleMenuSprTbl, mgModeType + 4);
     mgmode_SprListPosSet(mgmode_battleMenuSprTbl, mgModeType + 4, 180, 59);
     mgmode_SprListScaleSet(mgmode_battleMenuSprTbl, mgModeType + 4, 0.7f, 0.7f);
-    mgmode_SprListAttrSet(mgmode_battleMenuSprTbl, mgModeType + 4, 8);
+    mgmode_SprListAttrSet(mgmode_battleMenuSprTbl, mgModeType + 4, HUSPR_ATTR_FILTER_BILERP);
     mgmode_battleMgPicSpr = mgmode_MgPicCreate();
-    espAttrSet(mgmode_battleMgPicSpr, 0x4008);
+    espAttrSet(mgmode_battleMgPicSpr, HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
     espPosSet(mgmode_battleMgPicSpr, 180, 134);
     mgmode_MgPicLoad(mgDataTbl[mgModeMgNo].flags & 0x7FF);
     WipeCreateIn(WIPE_FADE, 0xA);
@@ -1235,7 +1235,7 @@ void mgmode_BattleBoardCreate(void) {
     for (i = 0; i < 28; i++) {
         sprite = mgmode_battleStarSprTbl[i] = espEntry(mgmode_battleStarAnim, 0, 1);
         espDispOff(sprite);
-        espAttrSet(sprite, 0x4008);
+        espAttrSet(sprite, HUSPR_ATTR_BG | HUSPR_ATTR_FILTER_BILERP);
         espPriSet(sprite, 8);
     }
     mgmode_battleStarSprNum = 0;

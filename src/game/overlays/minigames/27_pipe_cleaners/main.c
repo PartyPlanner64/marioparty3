@@ -235,7 +235,7 @@ void m239_BackObjInit(omObjData *obj) {
     work->pos.y = 120.0f;
     work->spriteFileId = HuSprAnimDataRead(0x48000C);
     work->espId = espEntry(work->spriteFileId, 0, 0);
-    espAttrSet(work->espId, 0x5000);
+    espAttrSet(work->espId, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
     espPosSet(work->espId, work->pos.x, work->pos.y);
 
     work = &m239_objWorkTbl[0];
@@ -243,7 +243,7 @@ void m239_BackObjInit(omObjData *obj) {
     work->pos.y = 120.0f;
     work->spriteFileId = HuSprAnimDataRead(0x48000A);
     work->espId = espEntry(work->spriteFileId, 0, 0);
-    espAttrSet(work->espId, 0x1000);
+    espAttrSet(work->espId, HUSPR_ATTR_XLU);
     espPosSet(work->espId, work->pos.x, work->pos.y);
     obj->func = m239_BackObjMain;
 }
@@ -1294,28 +1294,28 @@ void m239_ScoreObjInit(omObjData *obj) {
     for (i = 0; i < 4; i++) {
         sign = &m239_scoreSprTbl[i * 4 + 0];
         sign->espId = espEntry(frameFile, 0, 0);
-        espAttrSet(sign->espId, 0x1000);
+        espAttrSet(sign->espId, HUSPR_ATTR_XLU);
         espScaleSet(sign->espId, 1.0f, 1.0f);
         espPosSet(sign->espId, m239_scorePosTbl[i][0] - 30, m239_scorePosTbl[i][1]);
         espDispOff(sign->espId);
 
         sign = &m239_scoreSprTbl[i * 4 + 1];
         sign->espId = espEntry(crossFile, 0, 0);
-        espAttrSet(sign->espId, 0x1000);
+        espAttrSet(sign->espId, HUSPR_ATTR_XLU);
         espScaleSet(sign->espId, 2.0f, 2.0f);
         espPosSet(sign->espId, m239_scorePosTbl[i][0], m239_scorePosTbl[i][1]);
         espDispOff(sign->espId);
 
         sign = &m239_scoreSprTbl[i * 4 + 2];
         sign->espId = espEntry(digitFile, 0, 0);
-        espAttrSet(sign->espId, 0x1000);
+        espAttrSet(sign->espId, HUSPR_ATTR_XLU);
         espScaleSet(sign->espId, 1.0f, 1.0f);
         espPosSet(sign->espId, m239_scorePosTbl[i][0] + 20, m239_scorePosTbl[i][1]);
         espDispOff(sign->espId);
 
         sign = &m239_scoreSprTbl[i * 4 + 3];
         sign->espId = espEntry(digitFile, 0, 0);
-        espAttrSet(sign->espId, 0x1000);
+        espAttrSet(sign->espId, HUSPR_ATTR_XLU);
         espScaleSet(sign->espId, 1.0f, 1.0f);
         espPosSet(sign->espId, m239_scorePosTbl[i][0] + 40, m239_scorePosTbl[i][1]);
         espDispOff(sign->espId);

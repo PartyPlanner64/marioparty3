@@ -205,10 +205,10 @@ void *MBDMapScrollMiniMapCreate(void) {
         HuSprGrpMemberSet(temp_s2->unk_0A, i, temp_s2->unk_0C[i], 0);
         HuSprPriSet(temp_s2->unk_0A, i, 0);
         if (i == 0) {
-            HuSprAttrSet(temp_s2->unk_0A, 0, 0x1000);
+            HuSprAttrSet(temp_s2->unk_0A, 0, HUSPR_ATTR_XLU);
             HuSprTPLvlSet(temp_s2->unk_0A, 0, 0x80U);
         } else {
-            HuSprAttrSet(temp_s2->unk_0A, i, 0);
+            HuSprAttrSet(temp_s2->unk_0A, i, HUSPR_ATTR_NONE);
         }
         HuSprPosSet(temp_s2->unk_0A, i, mbdMapScrollMiniMapPosTbl[i][0], mbdMapScrollMiniMapPosTbl[i][1]);
         DataClose(temp_v0);

@@ -408,7 +408,7 @@ void majinlamp_LampBoardExec(void) {
     HuSprGrpMemberSet(majinlamp_screenSprGrp, 0, majinlamp_screenSpr, 0);
     HuSprPriSet(majinlamp_screenSprGrp, 0, 0xA);
     HuSprAnimModeSet(majinlamp_screenSprGrp, 0, HUSPR_ANIM_MODE_BANK);
-    HuSprAttrSet(majinlamp_screenSprGrp, 0, 0x5000);
+    HuSprAttrSet(majinlamp_screenSprGrp, 0, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
     HuSprPosSet(majinlamp_screenSprGrp, 0, 0xA0, 0x78);
     HuSprScaleSet(majinlamp_screenSprGrp, 0, 50.0f, 50.0f);
     majinlamp_gwPlayer = MBPlayerGet(majinlamp_playerNo);

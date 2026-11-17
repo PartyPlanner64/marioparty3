@@ -819,7 +819,7 @@ void MBD2_MissMarkProc(void) {
     DataClose(data);
     HuSprGrpMemberSet(sprite->unk_0A, 0, sprite->unk_0C[0], 0);
     HuSprPriSet(sprite->unk_0A, 0, 0x2010);
-    HuSprAttrSet(sprite->unk_0A, 0, 0);
+    HuSprAttrSet(sprite->unk_0A, 0, HUSPR_ATTR_NONE);
     HuSprPosSet(sprite->unk_0A, 0, screenPos.x, screenPos.y);
     HuAudFXPlay(0x202);
     amplitude = 20.0f;
@@ -3573,7 +3573,7 @@ void MBD2Ev_PartnerRouletteProc(void) {
         spr->unk_0C[i] = HuSprAnimRead(data);
         HuSprGrpMemberSet(spr->unk_0A, i, spr->unk_0C[i], 0);
         HuSprPriSet(spr->unk_0A, i, i + 1);
-        HuSprAttrSet(spr->unk_0A, i, 0);
+        HuSprAttrSet(spr->unk_0A, i, HUSPR_ATTR_NONE);
         HuSprPosSet(spr->unk_0A, i, pos[i][0], pos[i][1]);
         DataClose(data);
         if (i == 2) {
@@ -4803,7 +4803,7 @@ void MBD2Ev_Hatena(void) {
     DataClose(data);
     HuSprGrpMemberSet(sprite->unk_0A, 0, sprite->unk_0C[0], 0);
     HuSprPriSet(sprite->unk_0A, 0, 1);
-    HuSprAttrSet(sprite->unk_0A, 0, 0x1000);
+    HuSprAttrSet(sprite->unk_0A, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(sprite->unk_0A, 0, 160, -32);
     HuSprScissorSet(sprite->unk_0A, 0, 16, 12, 304, 228);
     data = DataRead(0x130104);
@@ -4811,7 +4811,7 @@ void MBD2Ev_Hatena(void) {
     DataClose(data);
     HuSprGrpMemberSet(sprite->unk_0A, 1, sprite->unk_0C[1], 0);
     HuSprPriSet(sprite->unk_0A, 1, 2);
-    HuSprAttrSet(sprite->unk_0A, 1, 0x1000);
+    HuSprAttrSet(sprite->unk_0A, 1, HUSPR_ATTR_XLU);
     HuSprPosSet(sprite->unk_0A, 1, 0, 0);
     HuSprScissorSet(sprite->unk_0A, 0, 16, 12, 304, 228);
     HuSprColorSet(sprite->unk_0A, 1, 251, 203, 0);

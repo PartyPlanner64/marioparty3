@@ -3687,7 +3687,7 @@ void MB1Ev_WinPlayerKeyExec(s16 arg0, s32 arg1, s16 arg2, s32 arg3) {
 
 void MB1Ev_ItemSelAttrProc(void) {
     while (TRUE) {
-        MBStatusItemAttrSet(GwSystem.current_player_index, MBItemSelNoGet(), 0x8000);
+        MBStatusItemAttrSet(GwSystem.current_player_index, MBItemSelNoGet(), HUSPR_ATTR_DISPOFF);
         HuPrcVSleep();
     }
 }
@@ -4344,7 +4344,7 @@ itemSelect:
             HuSprGrpMemberSet(grp, 0, spriteId, 0);
             HuSprPriSet(grp, 0, 0xA);
             HuSprAnimModeSet(grp, 0, HUSPR_ANIM_MODE_STOP);
-            HuSprAttrSet(grp, 0, 0x180C);
+            HuSprAttrSet(grp, 0, HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_AVERAGE);
             HuSprPosSet(grp, 0, 0xA0, 0x5A);
             HuSprTPLvlSet(grp, 0, 0);
             MBVecForwardSet(&sp48);
@@ -4409,7 +4409,7 @@ itemSelect:
                     HuSprGrpMemberSet(grp2, 0, spriteId2, 0);
                     HuSprPriSet(grp2, 0, 0xB);
                     HuSprAnimModeSet(grp2, 0, HUSPR_ANIM_MODE_STOP);
-                    HuSprAttrSet(grp2, 0, 0x1000);
+                    HuSprAttrSet(grp2, 0, HUSPR_ATTR_XLU);
                     HuSprPosSet(grp2, 0, 0xA0, 0x5A);
                     HuSprTPLvlSet(grp2, 0, 0);
                     MBVecForwardSet(&sp48);
@@ -4556,7 +4556,7 @@ s32 MB1Ev_TeresaStarSteal(s32 arg0) {
     HuSprGrpMemberSet(grpId, 0, sprId, 0);
     HuSprPriSet(grpId, 0, 0xA);
     HuSprAnimModeSet(grpId, 0, HUSPR_ANIM_MODE_STOP);
-    HuSprAttrSet(grpId, 0, 0x1000);
+    HuSprAttrSet(grpId, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(grpId, 0,
                         mb1ev_teresaSprPosTbl[arg0][0],
                         mb1ev_teresaSprPosTbl[arg0][1]);
@@ -4649,7 +4649,7 @@ s32 MB1Ev_TeresaSteal(s32 arg0) {
     HuSprGrpMemberSet(booGrp, 0, booSpr, 0);
     HuSprPriSet(booGrp, 0, 0xA);
     HuSprAnimModeSet(booGrp, 0, HUSPR_ANIM_MODE_STOP);
-    HuSprAttrSet(booGrp, 0, 0x1000);
+    HuSprAttrSet(booGrp, 0, HUSPR_ATTR_XLU);
     HuSprPosSet(booGrp, 0,
                         mb1ev_teresaSprPosTbl[arg0][0],
                         mb1ev_teresaSprPosTbl[arg0][1]);
@@ -4665,9 +4665,9 @@ s32 MB1Ev_TeresaSteal(s32 arg0) {
     HuSprAnimModeSet(chrGrp, 0, HUSPR_ANIM_MODE_BANK);
 
     if (arg0 & 1) {
-        HuSprAttrSet(chrGrp, 0, 0x1001);
+        HuSprAttrSet(chrGrp, 0, HUSPR_ATTR_XLU | HUSPR_ATTR_FLIPX);
     } else {
-        HuSprAttrSet(chrGrp, 0, 0x1000);
+        HuSprAttrSet(chrGrp, 0, HUSPR_ATTR_XLU);
     }
     
 
@@ -5926,7 +5926,7 @@ void MB1Ev_ItemPhoneWaveProc(void) {
     temp_v0 = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(temp_v0, 0, mb1ev_itemPhoneWaveSpr, 0);
     HuSprPriSet(temp_v0, 0, 0x4780);
-    HuSprAttrSet(temp_v0, 0, 0x1000);
+    HuSprAttrSet(temp_v0, 0, HUSPR_ATTR_XLU);
     MBStatusItemSprPosGet(GwSystem.current_player_index, MBItemSelNoGet(), &sp18[0], &sp18[1]);
     sp18[0] += 20.0f;
     sp18[1] -= 20.0f;
@@ -6362,7 +6362,7 @@ void MB1Ev_ItemKeyManUse(void) {
     DataClose(file);
     HuSprGrpMemberSet(grpId, 0, sprId, 0);
     HuSprPriSet(grpId, 0, 0x4780);
-    HuSprAttrSet(grpId, 0, 0x9000);
+    HuSprAttrSet(grpId, 0, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
 
     HuSprBankSet(mbItemCursorGrpId, 0, 1, 0);
     HuSprAnimModeSet(mbItemCursorGrpId, 0, HUSPR_ANIM_MODE_BANK);
@@ -6453,7 +6453,7 @@ void MB1Ev_TereYokeSparkProc(void) {
     grpId = HuSprGrpCreate(1, 0);
     HuSprGrpMemberSet(grpId, 0, mb1ev_tereYokeSparkSpr, 0);
     HuSprPriSet(grpId, 0, 9);
-    HuSprAttrSet(grpId, 0, 0x1000);
+    HuSprAttrSet(grpId, 0, HUSPR_ATTR_XLU);
 
     MBStatusItemPosGet(mb1ev_tereYokePlayer, 0, &x, &y);
     x = (mb1ev_teresaSprDirTbl[mb1ev_tereYokePlayer][0] * 16.0f) +
@@ -6509,11 +6509,11 @@ void MB1Ev_TereYokeSprayProc(void) {
     HuSprAnimModeSet(grpId, 0, HUSPR_ANIM_MODE_BANK);
     HuSprGrpMemberSet(grpId, 0, booSpr, 0xC);
     HuSprPriSet(grpId, 0, 9);
-    HuSprAttrSet(grpId, 0, 0x1000);
+    HuSprAttrSet(grpId, 0, HUSPR_ATTR_XLU);
     HuSprParentSet(grpId, 0, -1);
     HuSprGrpMemberSet(grpId, 1, charmSpr, 0);
     HuSprPriSet(grpId, 1, 9);
-    HuSprAttrSet(grpId, 1, 0x9000);
+    HuSprAttrSet(grpId, 1, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
     HuSprColorSet(grpId, 1, 0xFF, 0xFF, 0xFF);
     HuSprTPLvlSet(grpId, 1, 0xFF);
     HuSprScaleSet(grpId, 1, 2.0f, 2.0f);
@@ -6521,8 +6521,8 @@ void MB1Ev_TereYokeSprayProc(void) {
 
     if (playerNo & 1) {
         x = 0xC8;
-        HuSprAttrSet(grpId, 0, 1);
-        HuSprAttrSet(grpId, 1, 1);
+        HuSprAttrSet(grpId, 0, HUSPR_ATTR_FLIPX);
+        HuSprAttrSet(grpId, 1, HUSPR_ATTR_FLIPX);
         HuSprPosSet(grpId, 1, 0x14, -5);
     } else {
         x = 0x78;
@@ -7656,7 +7656,7 @@ void MB1Ev_ItemAfter5(void) {
     DataClose(temp_v0);
     HuSprGrpMemberSet(temp_s4, 0, temp_s7, 0);
     HuSprPriSet(temp_s4, 0, 0x4776U);
-    HuSprAttrSet(temp_s4, 0, 0x1000U);
+    HuSprAttrSet(temp_s4, 0, HUSPR_ATTR_XLU);
     for (i = 0; i < 4; i++) {
         mb1ev_after5GrpId[i] = HuSprGrpCreate(1, 0);
         temp_v0 = DataRead((i + 0x1BB) | 0x130000);
@@ -7664,7 +7664,7 @@ void MB1Ev_ItemAfter5(void) {
         DataClose(temp_v0);
         HuSprGrpMemberSet(mb1ev_after5GrpId[i], 0, sp18[i], 0);
         HuSprPriSet(mb1ev_after5GrpId[i], 0, 0x4780U);
-        HuSprAttrSet(mb1ev_after5GrpId[i], 0, 0x980CU);
+        HuSprAttrSet(mb1ev_after5GrpId[i], 0, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_AVERAGE);
         HuSprTPLvlSet(mb1ev_after5GrpId[i], 0, 0U);
         HuSprColorSet(mb1ev_after5GrpId[i], 0, 0xFF, 0xFF, 0);
     }
@@ -9209,7 +9209,7 @@ void MB1Ev_ActionTimeSpr(void) {
     titleGrp = HuSprGrpCreate(1, 5);
     HuSprGrpMemberSet(titleGrp, 0, titleAnim, 0);
     HuSprAttrReset(titleGrp, 0, 0xFFFF);
-    HuSprAttrSet(titleGrp, 0, 0x1008);
+    HuSprAttrSet(titleGrp, 0, HUSPR_ATTR_XLU | HUSPR_ATTR_FILTER_BILERP);
     HuSprPriSet(titleGrp, 0, 0x1000);
     HuSprPosSet(titleGrp, 0, 160, 90);
     for (angle = 0.0f, step = 30.0f, count = 0, flag = 0;; angle += step) {
@@ -9222,9 +9222,9 @@ void MB1Ev_ActionTimeSpr(void) {
             angle -= 360.0f;
         }
         if (angle >= 180.0f && angle <= 360.0f) {
-            HuSprAttrSet(titleGrp, 0, 2);
+            HuSprAttrSet(titleGrp, 0, HUSPR_ATTR_FLIPY);
         } else {
-            HuSprAttrReset(titleGrp, 0, 2);
+            HuSprAttrReset(titleGrp, 0, HUSPR_ATTR_FLIPY);
         }
         HuSprScaleSet(titleGrp, 0, 1.0f, sindf((angle >= 180.0f) ? angle - 180.0f : angle));
         if (count >= 2) {
@@ -9232,7 +9232,7 @@ void MB1Ev_ActionTimeSpr(void) {
         }
         HuPrcVSleep();
     }
-    HuSprAttrReset(titleGrp, 0, 2);
+    HuSprAttrReset(titleGrp, 0, HUSPR_ATTR_FLIPY);
     HuSprScaleSet(titleGrp, 0, 1.0f, 1.0f);
     helpWin = MBHelpWinCreate(0x14, 0xA0, 1);
     for (i = 0; i < 4; i++) {
@@ -9241,7 +9241,7 @@ void MB1Ev_ActionTimeSpr(void) {
         HuSprAnimModeSet(grp, 0, HUSPR_ANIM_MODE_STOP);
         HuSprAttrReset(grp, 0, 0xFFFF);
         if (mb1ev_snowmanHitTbl[i] != 0) {
-            HuSprAttrSet(grp, 0, 8);
+            HuSprAttrSet(grp, 0, HUSPR_ATTR_FILTER_BILERP);
         } else {
             HuSprDispOff(grp, 0);
         }
@@ -9251,7 +9251,7 @@ void MB1Ev_ActionTimeSpr(void) {
         HuSprAnimModeSet(grp, 1, HUSPR_ANIM_MODE_STOP);
         HuSprAttrReset(grp, 1, 0xFFFF);
         if (mb1ev_snowmanHitTbl[i] != 0) {
-            HuSprAttrSet(grp, 1, 8);
+            HuSprAttrSet(grp, 1, HUSPR_ATTR_FILTER_BILERP);
         } else {
             HuSprDispOff(grp, 1);
         }
@@ -9263,7 +9263,7 @@ void MB1Ev_ActionTimeSpr(void) {
             HuSprAnimModeSet(grp, j + 2, HUSPR_ANIM_MODE_BANK);
             HuSprAttrReset(grp, j + 2, 0xFFFF);
             if (mb1ev_snowmanHitTbl[i] == j + 1) {
-                HuSprAttrSet(grp, j + 2, 8);
+                HuSprAttrSet(grp, j + 2, HUSPR_ATTR_FILTER_BILERP);
             } else {
                 HuSprDispOff(grp, j + 2);
             }

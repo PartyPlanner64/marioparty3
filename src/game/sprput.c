@@ -70,7 +70,7 @@ s32 HuSprCullCheck(HuSprite *sprite) {
     cel = &sprite->data->pat[sprite->patNo];
     sin = sindf(sprite->unk_20);
     cos = cosdf(sprite->unk_20);
-    if (!(sprite->dispAttr & 0x10000)) {
+    if (!(sprite->dispAttr & HUSPR_ATTR_RECT)) {
         left = -(u16)cel->centerX * sprite->unk_18;
         top = -(u16)cel->centerY * sprite->unk_1C;
         right = (cel->sizeX - (u16)cel->centerX) * sprite->unk_18;
@@ -306,23 +306,23 @@ void HuSprDisp(Gfx **gfx, HuSprite *sprite, s32 arg2) {
     }
     gDPPipeSync(gdl++);
     gSPSetOtherMode(gdl++, G_SETOTHERMODE_H, sprOtherModeShiftTbl[0], 2,
-                    (((u32)sprite->dispAttr >> 2) & 3) << sprOtherModeShiftTbl[0]);
+                    (((u32)sprite->dispAttr >> HUSPR_ATTR_FILTER_SHIFT) & 3) << sprOtherModeShiftTbl[0]);
     gSPSetOtherMode(gdl++, G_SETOTHERMODE_H, sprOtherModeShiftTbl[1], 2,
-                    ((((u32)sprite->dispAttr >> 4) ^ 3) & 3) << sprOtherModeShiftTbl[1]);
+                    ((((u32)sprite->dispAttr >> HUSPR_ATTR_DITHER_SHIFT) ^ 3) & 3) << sprOtherModeShiftTbl[1]);
     gSPSetOtherMode(gdl++, G_SETOTHERMODE_H, sprOtherModeShiftTbl[2], 2,
-                    (((u32)sprite->dispAttr >> 6) & 3) << sprOtherModeShiftTbl[2]);
+                    (((u32)sprite->dispAttr >> HUSPR_ATTR_CYCLE_SHIFT) & 3) << sprOtherModeShiftTbl[2]);
     gSPSetOtherMode(gdl++, G_SETOTHERMODE_L, sprOtherModeShiftTbl[3], 2,
-                    sprAlphaCmpTbl[((u32)sprite->dispAttr >> 22) & 3]);
-    if (((u32)sprite->dispAttr >> 6) & 2) {
+                    sprAlphaCmpTbl[((u32)sprite->dispAttr >> HUSPR_ATTR_ALPHACMP_SHIFT) & 3]);
+    if (((u32)sprite->dispAttr >> HUSPR_ATTR_CYCLE_SHIFT) & 2) {
         gDPSetRenderMode(gdl++, G_RM_NOOP, G_RM_NOOP2);
         gDPSetCombineMode(gdl++, G_CC_DECALRGBA, G_CC_DECALRGBA);
         sprTexScale = 4;
     } else {
         intensity = sprite->data->pixelBits >> 15;
-        renderMode = (sprite->dispAttr & 0x4000000) ? Z_CMP | Z_UPD : 0;
-        switch (((u32)sprite->dispAttr >> 10) & 3) {
+        renderMode = (sprite->dispAttr & HUSPR_ATTR_ZBUF) ? Z_CMP | Z_UPD : 0;
+        switch (((u32)sprite->dispAttr >> HUSPR_ATTR_AA_SHIFT) & 3) {
             case 0:
-                if (sprite->dispAttr & 0x1000) {
+                if (sprite->dispAttr & HUSPR_ATTR_XLU) {
                     if ((sprite->tpLvl == 256) & (intensity == 0)) {
                         renderMode |= G_RM_TEX_EDGE;
                     } else {
@@ -333,7 +333,7 @@ void HuSprDisp(Gfx **gfx, HuSprite *sprite, s32 arg2) {
                 }
                 break;
             case 1:
-                if (sprite->dispAttr & 0x1000) {
+                if (sprite->dispAttr & HUSPR_ATTR_XLU) {
                     if ((sprite->tpLvl == 256) & (intensity == 0)) {
                         renderMode |= G_RM_AA_TEX_EDGE;
                     } else {
@@ -344,7 +344,7 @@ void HuSprDisp(Gfx **gfx, HuSprite *sprite, s32 arg2) {
                 }
                 break;
             case 2:
-                if (sprite->dispAttr & 0x1000) {
+                if (sprite->dispAttr & HUSPR_ATTR_XLU) {
                     if ((sprite->tpLvl == 256) & (intensity == 0)) {
                         renderMode |= G_RM_AA_TEX_EDGE;
                     } else {
@@ -364,13 +364,13 @@ void HuSprDisp(Gfx **gfx, HuSprite *sprite, s32 arg2) {
             }
         } else {
             if (sprite->tpLvl == 256) {
-                if (sprite->dispAttr & 0x2000000) {
+                if (sprite->dispAttr & HUSPR_ATTR_ADDCOL) {
                     gDPSetCombineMode(gdl++, SPRPUT_CC_BLEND_DECALA, SPRPUT_CC_BLEND_DECALA);
                 } else {
                     gDPSetCombineMode(gdl++, G_CC_DECALRGBA, G_CC_DECALRGBA);
                 }
             } else {
-                if (sprite->dispAttr & 0x2000000) {
+                if (sprite->dispAttr & HUSPR_ATTR_ADDCOL) {
                     gDPSetCombineMode(gdl++, SPRPUT_CC_BLEND_MODULATEA, SPRPUT_CC_BLEND_MODULATEA);
                 } else {
                     gDPSetCombineMode(gdl++, SPRPUT_CC_TEX_MODULATEA, SPRPUT_CC_TEX_MODULATEA);
@@ -383,7 +383,7 @@ void HuSprDisp(Gfx **gfx, HuSprite *sprite, s32 arg2) {
     sprBilerpF = ((u32)sprite->dispAttr >> 30) & 1;
     gSPSegment(gdl++, 2, osVirtualToPhysical(cel->data));
     if (sprBilerpF) {
-        if (sprite->dispAttr & 0x10000) {
+        if (sprite->dispAttr & HUSPR_ATTR_RECT) {
             originX = ((s16)sprite->unk_3C - (s16)sprite->unk_40) * (u16)cel->centerX / cel->sizeX;
             originY = ((s16)sprite->unk_42 - (s16)sprite->unk_3E) * (u16)cel->centerY / cel->sizeY;
             sprite->unk_04 = (s16)sprite->unk_3C + ((s16)sprite->unk_40 - (s16)sprite->unk_3C) * (u16)cel->centerX / cel->sizeX;
@@ -401,8 +401,8 @@ void HuSprDisp(Gfx **gfx, HuSprite *sprite, s32 arg2) {
         HuMtxF2L(transform, &sprite->unk_140[Hu3DBufNo]);
         gSPMatrix(gdl++, osVirtualToPhysical(&sprite->unk_140[Hu3DBufNo]), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
     }
-    if (sprite->dispAttr & 0x8000000) {
-        if (sprite->dispAttr & 0x10000000) {
+    if (sprite->dispAttr & HUSPR_ATTR_DLCACHE) {
+        if (sprite->dispAttr & HUSPR_ATTR_DLDIRTY) {
             if (sprBilerpF) {
                 cached = HuSprDispTile(HuSprTileBuf, sprite, sprite->unk_134[sprite->unk_120],
                                             &sprite->unk_140[Hu3DBufNo], arg2);
@@ -418,14 +418,14 @@ void HuSprDisp(Gfx **gfx, HuSprite *sprite, s32 arg2) {
             if (sprite->unk_120 >= 3) {
                 sprite->unk_120 = 0;
             }
-            sprite->dispAttr &= ~0x10000000;
+            sprite->dispAttr &= ~HUSPR_ATTR_DLDIRTY;
         }
         gSPDisplayList(gdl++, sprite->unk_124);
     } else {
         if (sprBilerpF) {
             vertices = HuSprVtxPos;
             gdl = HuSprDispTile(gdl, sprite, vertices, &sprite->unk_140[Hu3DBufNo], arg2);
-            if (!(sprite->dispAttr & 0x2000)) {
+            if (!(sprite->dispAttr & HUSPR_ATTR_MULTITEX)) {
                 HuSprVtxPos = vertices + (sprStripNum + 2) * 2;
             } else {
                 HuSprVtxPos = vertices + (sprStripNum + 2) * 4;
@@ -468,7 +468,7 @@ Gfx *HuSprDispTile(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, s32 a
     drawY = 0.0f;
     drawStep = drawY;
     vertexBase = NULL;
-    if (sprite->dispAttr & 0x2000) {
+    if (sprite->dispAttr & HUSPR_ATTR_MULTITEX) {
         gDPSetCycleType(gfx++, G_CYC_2CYCLE);
         gDPPipeSync(gfx++);
         gDPSetCombineLERP(gfx++, TEXEL1, TEXEL0, PRIMITIVE_ALPHA, TEXEL0, TEXEL1, TEXEL0, PRIMITIVE, TEXEL0,
@@ -478,11 +478,11 @@ Gfx *HuSprDispTile(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, s32 a
         sprStripNum <<= 1;
         sprStripHeight >>= 1;
     }
-    if ((sprite->dispAttr & 0x30000) == 0x30000) {
+    if ((sprite->dispAttr & (HUSPR_ATTR_RECT | HUSPR_ATTR_RECT_TILE)) == (HUSPR_ATTR_RECT | HUSPR_ATTR_RECT_TILE)) {
         sprite->unk_30.f = ((s16)sprite->unk_40 - (s16)sprite->unk_3C) / (cel->sizeX * scaleX);
         sprite->unk_34.f = ((s16)sprite->unk_42 - (s16)sprite->unk_3E) / (cel->sizeY * scaleY);
     }
-    if (sprite->dispAttr & 0x4000000) {
+    if (sprite->dispAttr & HUSPR_ATTR_ZBUF) {
         gDPSetDepthSource(gfx++, G_ZS_PRIM);
         gDPSetPrimDepth(gfx++, (u16)sprite->unk_44, 0);
     }
@@ -494,7 +494,7 @@ Gfx *HuSprDispTile(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, s32 a
     if (sprBilerpF) {
         vertexBase = vertices;
         flipX = 0;
-        if (sprite->dispAttr & 1) {
+        if (sprite->dispAttr & HUSPR_ATTR_FLIPX) {
             left = cel->sizeX * 63.999;
             right = 0.0f;
         } else {
@@ -502,8 +502,8 @@ Gfx *HuSprDispTile(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, s32 a
             right = cel->sizeX * 63.999;
             flipX = 1;
         }
-        if (sprite->dispAttr & 2) {
-            if (sprite->dispAttr & 0x10000) {
+        if (sprite->dispAttr & HUSPR_ATTR_FLIPY) {
+            if (sprite->dispAttr & HUSPR_ATTR_RECT) {
                 top = ((s16)sprite->unk_3E - (s16)sprite->unk_42) / sprite->unk_34.f;
             } else {
                 top = -cel->sizeY;
@@ -522,7 +522,7 @@ Gfx *HuSprDispTile(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, s32 a
                 height = sprStripHeight;
             }
             remaining -= sprStripHeight;
-            if (sprite->dispAttr & 0x10000) {
+            if (sprite->dispAttr & HUSPR_ATTR_RECT) {
                 vertices[0].v.ob[0] = 0;
                 vertices[1].v.ob[0] = ((s16)sprite->unk_40 - (s16)sprite->unk_3C) / sprite->unk_30.f;
             } else {
@@ -540,18 +540,18 @@ Gfx *HuSprDispTile(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, s32 a
                 vertices[i].v.cn[2] = 0;
                 vertices[i].v.cn[3] = 255;
             }
-            if ((sprite->dispAttr & 0xC0000) && sprite->unk_38) {
+            if ((sprite->dispAttr & HUSPR_ATTR_WRAPS_MASK) && sprite->unk_38) {
                 vertices[1].v.ob[0] *= sprite->unk_30.f;
                 vertices[0].v.tc[0] *= sprite->unk_30.f;
                 vertices[1].v.tc[0] *= sprite->unk_30.f;
             }
-            if ((sprite->dispAttr & 0x300000) && sprite->unk_3A) {
+            if ((sprite->dispAttr & HUSPR_ATTR_WRAPT_MASK) && sprite->unk_3A) {
                 vertices[0].v.ob[1] *= sprite->unk_34.f;
                 vertices[1].v.ob[1] *= sprite->unk_34.f;
                 vertices[0].v.tc[1] *= sprite->unk_34.f;
                 vertices[1].v.tc[1] *= sprite->unk_34.f;
             }
-            if (sprite->dispAttr & 0x10000) {
+            if (sprite->dispAttr & HUSPR_ATTR_RECT) {
                 if (flipY < 0) {
                     top += (f32)(((s16)sprite->unk_42 - (s16)sprite->unk_3E) * height / sprStripHeight) / sprite->unk_34.f;
                 } else {
@@ -564,7 +564,7 @@ Gfx *HuSprDispTile(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, s32 a
             texT += height;
         }
     } else {
-        if (sprite->dispAttr & 0x10000) {
+        if (sprite->dispAttr & HUSPR_ATTR_RECT) {
             left = (s16)sprite->unk_3C;
             right = (s16)sprite->unk_40;
             top = (s16)sprite->unk_3E;
@@ -577,14 +577,14 @@ Gfx *HuSprDispTile(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, s32 a
             top = sprite->unk_08 - (u16)cel->centerY * scaleY;
             stripHeight = sprStripHeight * scaleY;
         }
-        if (sprite->dispAttr & 1) {
+        if (sprite->dispAttr & HUSPR_ATTR_FLIPX) {
             texS = cel->sizeX - 1;
             flipX = -1;
         } else {
             texS = 0;
             flipX = 1;
         }
-        if (sprite->dispAttr & 2) {
+        if (sprite->dispAttr & HUSPR_ATTR_FLIPY) {
             flipY = -1;
             drawY = top + stripHeight * (sprStripNum - 1);
             drawY += sprStripRest * scaleY;
@@ -598,17 +598,17 @@ Gfx *HuSprDispTile(Gfx *gfx, HuSprite *sprite, Vtx *vertices, Mtx *matrix, s32 a
         }
         texStep = stripHeight / scaleY;
     }
-    if (sprite->dispAttr & 0xC0000) {
+    if (sprite->dispAttr & HUSPR_ATTR_WRAPS_MASK) {
         masks = sprite->unk_38;
-        cms = (u32)sprite->dispAttr >> 18;
+        cms = (u32)sprite->dispAttr >> HUSPR_ATTR_WRAPS_SHIFT;
         cms--;
     } else {
         masks = 0;
         cms = 0;
     }
-    if (sprite->dispAttr & 0x300000) {
+    if (sprite->dispAttr & HUSPR_ATTR_WRAPT_MASK) {
         maskt = sprite->unk_3A;
-        cmt = (u32)sprite->dispAttr >> 20;
+        cmt = (u32)sprite->dispAttr >> HUSPR_ATTR_WRAPT_SHIFT;
         cmt--;
     } else {
         maskt = 0;
@@ -671,7 +671,7 @@ void HuSprTileLoad(Gfx **gfx, HuSprite *sprite, u16 height, u16 uls, u16 ult,
                                cel->sizeX, height, uls, ult, lrs, lrt, 0, cms, cmt, masks, maskt, 0, 0);
             break;
     }
-    if (sprite->dispAttr & 0x2000) {
+    if (sprite->dispAttr & HUSPR_ATTR_MULTITEX) {
         HuSprTileLoad_4b(&gdl, sprite, height, uls, ult, lrs, lrt, cms, cmt, masks, maskt);
     }
     *gfx = gdl;

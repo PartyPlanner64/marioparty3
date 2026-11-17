@@ -372,7 +372,7 @@ void inst_BackCreate(void) {
 
     espriteSlot = espEntry(HuSprAnimDataRead(inst_backFileTbl[inst_mgType]), 0, 0);
     espPosSet(espriteSlot, 0xA0, 0x78);
-    espAttrSet(espriteSlot, 0x4000);
+    espAttrSet(espriteSlot, HUSPR_ATTR_BG);
 }
 
 void inst_MesClose(void) {

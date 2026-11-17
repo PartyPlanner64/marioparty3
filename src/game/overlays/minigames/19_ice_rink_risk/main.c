@@ -149,7 +149,7 @@ void m225_ObjectSetup(void) {
     sprite = espEntry(HuSprAnimDataRead(0x3A0003), 0, 1);
     espDispOn(sprite);
     espPosSet(sprite, 160, 120);
-    espAttrSet(sprite, 0x4000);
+    espAttrSet(sprite, HUSPR_ATTR_BG);
     omCameraViewCreate(100, sprite, NULL, 41.539f, &m225_cameraViewPos, &m225_cameraViewTarget);
     CZoom *= 1.25f;
     WipeCreateIn(WIPE_TYPE_PREV, 0x10);

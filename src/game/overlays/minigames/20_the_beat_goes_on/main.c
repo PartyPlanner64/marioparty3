@@ -1620,7 +1620,7 @@ void m232_SheetObjInit(omObjData *obj) {
     sprAnim = HuSprAnimDataRead(0x41000C);
     HuSprGrpMemberSet(m232_signGrp = HuSprGrpCreate(1, 0), 0, sprAnim, 0);
     HuSprAttrReset(m232_signGrp, 0, 0xFFFF);
-    HuSprAttrSet(m232_signGrp, 0, 0x5000);
+    HuSprAttrSet(m232_signGrp, 0, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
     m232_signY = 120;
     HuSprPosSet(m232_signGrp, 0, 160, m232_signY);
     obj->data = HuMemAllocTag(sizeof(BeatGoesOnNotes), TAG_OVERLAY);

@@ -343,7 +343,7 @@ void m245_BackObjInit(omObjData *obj) {
     m245_backSprY = 107.0f;
     m245_backSprAnim = HuSprAnimDataRead(0x4E0000);
     m245_backSprNo = espEntry(m245_backSprAnim, 0, 0);
-    espAttrSet(m245_backSprNo, 0x5000);
+    espAttrSet(m245_backSprNo, HUSPR_ATTR_BG | HUSPR_ATTR_XLU);
     espPosSet(m245_backSprNo, m245_backSprX,
               m245_backSprY);
     m245_lowerBackSpr = HuSprAnimDataGet(HuSprAnimDataRead(0x4E0001));

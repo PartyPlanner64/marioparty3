@@ -1737,14 +1737,14 @@ void m219_StageObjInit(omObjData *object) {
     HuSprPosSet(group, 0, 160, 120);
     HuSprAnimModeSet(group, 0, HUSPR_ANIM_MODE_STOP);
     HuSprPatNoSet(group, 0, 0);
-    HuSprAttrSet(group, 0, 0x4000580C);
+    HuSprAttrSet(group, 0, HUSPR_ATTR_VTXDRAW | HUSPR_ATTR_BG | HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_AVERAGE);
     HuSprPriSet(group, 0, 0xFF00);
     m219_sprTbl[4] = m219_SprAnimRead(0x340010);
     HuSprGrpMemberSet(group, 1, m219_sprTbl[4], 0);
     HuSprPosSet(group, 1, 0, 40);
     HuSprAnimModeSet(group, 1, HUSPR_ANIM_MODE_STOP);
     HuSprPatNoSet(group, 1, 0);
-    HuSprAttrSet(group, 1, 0x4000580C);
+    HuSprAttrSet(group, 1, HUSPR_ATTR_VTXDRAW | HUSPR_ATTR_BG | HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_AVERAGE);
     HuSprPriSet(group, 1, 0xFF01);
     HuSprTPLvlSet(group, 1, 200);
     m219_sprTbl[1] = m219_SprAnimRead(0x34000D);
@@ -1752,7 +1752,7 @@ void m219_StageObjInit(omObjData *object) {
     HuSprPosSet(group, 2, 0, 0);
     HuSprAnimModeSet(group, 2, HUSPR_ANIM_MODE_STOP);
     HuSprPatNoSet(group, 2, 0);
-    HuSprAttrSet(group, 2, 0x403C);
+    HuSprAttrSet(group, 2, HUSPR_ATTR_BG | HUSPR_ATTR_DITHER_MAGICSQ | HUSPR_ATTR_FILTER_AVERAGE);
     HuSprPriSet(group, 2, 0xFFFF);
 
     m219_sprTbl[2] = m219_SprAnimRead(0x34000E);
@@ -1778,7 +1778,7 @@ void m219_StageObjInit(omObjData *object) {
             }
             HuSprAnimModeSet(cloud->group, j, HUSPR_ANIM_MODE_STOP);
             HuSprPatNoSet(cloud->group, j, 0);
-            HuSprAttrSet(cloud->group, j, 0x2000583C);
+            HuSprAttrSet(cloud->group, j, HUSPR_ATTR_VTX | HUSPR_ATTR_BG | HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_DITHER_MAGICSQ | HUSPR_ATTR_FILTER_AVERAGE);
             HuSprPosSet(cloud->group, j, cloud->pos.x, cloud->pos.y);
             HuSprScaleSet(cloud->group, j, cloud->scale.x, cloud->scale.y);
             HuSprPriSet(cloud->group, j, j + i * 2 - 241);
@@ -1845,7 +1845,7 @@ void m219_ScoreInit(void) {
             HuSprAnimModeSet(sprites->unk_02, j, HUSPR_ANIM_MODE_STOP);
             HuSprPatNoSet(sprites->unk_02, j, 0);
             HuSprTPLvlSet(sprites->unk_02, j, 0x100);
-            HuSprAttrSet(sprites->unk_02, j, 0x9000);
+            HuSprAttrSet(sprites->unk_02, j, HUSPR_ATTR_DISPOFF | HUSPR_ATTR_XLU);
             HuSprPosSet(sprites->unk_02, j, x, 28);
             if (i == 0) {
                 x += 16;

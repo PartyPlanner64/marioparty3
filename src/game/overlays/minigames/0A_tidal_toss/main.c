@@ -316,7 +316,7 @@ void m210_MainObjInit(omObjData *object) {
     setupSpriteGroup = &m210_backSpr;
     *setupSpriteGroup = setupSpriteId;
     HuSprPosSet(*setupSpriteGroup, 0, 160, 120);
-    HuSprAttrSet(*setupSpriteGroup, 0, 0x4000);
+    HuSprAttrSet(*setupSpriteGroup, 0, HUSPR_ATTR_BG);
 
     model = Hu3DModelRead(0x2B0003, 0x4002CD);
     object->model[0] = model;
@@ -353,7 +353,7 @@ void m210_MainObjInit(omObjData *object) {
         spriteWork->unk1C = (f32)((f64)(f32)m210_Rand16Get() * 1.52587890625e-05 * 2.0 + 2.0);
         spriteWork->unk20 = (f32)((f64)(f32)m210_Rand16Get() * 1.52587890625e-05 * 1.5 + 1.0);
         spriteGroup = &m210_cloudSpr;
-        HuSprAttrSet(*spriteGroup, (s16)i, 0x20005808);
+        HuSprAttrSet(*spriteGroup, (s16)i, HUSPR_ATTR_VTX | HUSPR_ATTR_BG | HUSPR_ATTR_XLU | HUSPR_ATTR_AA | HUSPR_ATTR_FILTER_BILERP);
         HuSprPosSet(*spriteGroup, (s16)i, spriteWork->unk00, spriteWork->unk02);
         spriteWork++;
     }

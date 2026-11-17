@@ -73,7 +73,7 @@ void inst_WinMain(void) {
     inst_winObj = object;
     inst_mgData = &mgDataTbl[inst_mgNo];
     inst_titleSprTbl[0] = espEntry(HuSprAnimDataRead(0x170008), 0, 1);
-    espAttrSet(inst_titleSprTbl[0], 0x1000);
+    espAttrSet(inst_titleSprTbl[0], HUSPR_ATTR_XLU);
     espTPLvlSet(inst_titleSprTbl[0], 255);
     espPosSet(inst_titleSprTbl[0], 160, -100);
     inst_TitleCreate((const char *)(inst_mgNo + 0x4700), 160, -100);
@@ -81,7 +81,7 @@ void inst_WinMain(void) {
     inst_PracticeLabelDispOff();
     if (inst_mgType == 3) {
         inst_titleSprTbl[1] = espEntry(HuSprAnimDataRead(0x17000E), 0, 1);
-        espAttrSet(inst_titleSprTbl[1], 0x1000);
+        espAttrSet(inst_titleSprTbl[1], HUSPR_ATTR_XLU);
         espTPLvlSet(inst_titleSprTbl[1], 255);
         espPosSet(inst_titleSprTbl[1], 160, -78);
         score = mgBattleCoinPot;

@@ -1502,7 +1502,7 @@ void m246_MainObjMain(omObjData *obj) {
         case 1:
             if (m246_phaseDoneNo == 1) {
                 m246_PhaseSet(2);
-                GMesCreate(7);
+                GMesCreate(GMES_MES_7);
                 m246_timer = 0;
             }
             break;
@@ -1565,7 +1565,7 @@ void m246_MainObjMain(omObjData *obj) {
             if (m246_spinSeState == 3) {
                 if (m246_timer < 0) {
                     m246_PhaseSet(7);
-                    GMesCreate(0x12);
+                    GMesCreate(GMES_MES_18);
                     HuAudSeqFadeOut(120);
                     m246_RankCalc();
                     m246_ResultSet();

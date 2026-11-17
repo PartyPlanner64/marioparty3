@@ -31,7 +31,7 @@ void mgresultboard_CoinIconProc(void) {
         Hu3DModelPosSet(obj->model[i + 1], mgresultboard_coinIconPosTbl[i].x, mgresultboard_coinIconPosTbl[i].y,
                         mgresultboard_coinIconPosTbl[i].z);
         Hu3DMotionTimeSet(obj->model[i + 1], 0.0f);
-        Hu3DModelCameraSet(obj->model[i + 1], 2);
+        Hu3DModelCameraSet(obj->model[i + 1], HU3D_CAM1);
         Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_NONE);
     }
     obj->trans.x = 0.0f;

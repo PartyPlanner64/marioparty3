@@ -39,7 +39,7 @@ void mgresultboard_RankProc(void) {
         obj->model[i + 1] = Hu3DModelCreate(modelData, 0x2A0);
         Hu3DMotionAttrSet(obj->model[i + 1], 2, 0);
         Hu3DMotionAttrSet(obj->model[i + 1], 1, 0);
-        Hu3DModelCameraSet(obj->model[i + 1], 2);
+        Hu3DModelCameraSet(obj->model[i + 1], HU3D_CAM1);
         Hu3DModelPosSet(obj->model[i + 1], mgresultboard_rankPosTbl[i & 3].x, mgresultboard_rankPosTbl[i & 3].y,
                         mgresultboard_rankPosTbl[i & 3].z);
         if (i == 0) {

@@ -2562,7 +2562,7 @@ s32 MB2_ComTeresaPlayerChoice(u8 *arg0) {
 void MB2_BoardInit(void) {
     GwSystem.current_board_index = 1;
     omInitObjMan(0xA, 0);
-    omOvlGotoEx(0x47, 0, 0x192);
+    omOvlGotoEx(boardcall, 0, 0x192);
 }
 
 void MB2_SaveInit(void) {
@@ -8670,7 +8670,7 @@ void MB2Ev_VacuumEffCreate(void) {
     model = mb2ev_vacuumEffMdl = Hu3DModelRead(0xB0033, 0xAA9);
     Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
     Hu3DModelObjAttrSet(model, 0x20000, 0x20000);
-    Hu3DModelCameraSet(model, 1);
+    Hu3DModelCameraSet(model, HU3D_CAM0);
     Hu3DModelRemakeStatic(model);
     Hu3DModelVtxBufMake(model);
     Hu3DModelDynamicFree(model);

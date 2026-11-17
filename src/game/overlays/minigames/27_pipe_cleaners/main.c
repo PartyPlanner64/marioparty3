@@ -1406,23 +1406,23 @@ void m239_ResultSet(void) {
     }
     switch (count) {
         case 0:
-            GMesCreate(0x20);
+            GMesCreate(GMES_MES_MG_DRAW);
             HuAudSeqPlay(0x6C);
             break;
         case 1:
-            GMesCreate(0x16, winners[0]);
+            GMesCreate(GMES_MES_MG_WINNER, winners[0]);
             HuAudSeqPlay(0x65);
             break;
         case 2:
-            GMesCreate(0x1E, winners[0], winners[1]);
+            GMesCreate(GMES_MES_MG_WINNERS_2, winners[0], winners[1]);
             HuAudSeqPlay(0x66);
             break;
         case 3:
-            GMesCreate(0x22, winners[0], winners[1], winners[2]);
+            GMesCreate(GMES_MES_MG_WINNERS_3, winners[0], winners[1], winners[2]);
             HuAudSeqPlay(0x66);
             break;
         case 4:
-            GMesCreate(0x23, winners[0], winners[1], winners[2], winners[3]);
+            GMesCreate(GMES_MES_MG_WINNERS_4, winners[0], winners[1], winners[2], winners[3]);
             HuAudSeqPlay(0x66);
             break;
     }
@@ -1478,7 +1478,7 @@ void m239_ExitCheckObjMain(omObjData *obj) {
 void m239_MainObjMain(omObjData *obj) {
     switch (m239_phase) {
         case 0:
-            GMesCreate(3);
+            GMesCreate(GMES_MES_3);
             m239_phase = 1;
             break;
         case 1:
@@ -1487,7 +1487,7 @@ void m239_MainObjMain(omObjData *obj) {
             }
             if (GMesStatGet() == 0 || (GMesStatGet() & GMES_STAT_TIMEEND)) {
                 m239_phase = 2;
-                GMesCreate(0x1A, 30, 160, 28);
+                GMesCreate(GMES_MES_TIMER, 30, 160, 28);
                 m239_timer = 901;
             }
             break;
@@ -1504,7 +1504,7 @@ void m239_MainObjMain(omObjData *obj) {
             break;
         case 3:
             if (--m239_timer == 0) {
-                GMesCreate(0xE);
+                GMesCreate(GMES_MES_14);
                 HuAudSeqFadeOut(120);
                 m239_phase = 4;
             }

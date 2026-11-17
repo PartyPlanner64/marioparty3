@@ -405,11 +405,11 @@ void m232_MainObjMain(omObjData *object) {
                 if (MgFlowStatTimeGet() == 1) {
                     switch (m232_mgFlow.resultType) {
                         case 0:
-                            GMesCreate(0x16, GwPlayer[m232_mgFlow.winners[0]].chr);
+                            GMesCreate(GMES_MES_MG_WINNER, GwPlayer[m232_mgFlow.winners[0]].chr);
                             HuAudSeqPlay(0x65);
                             break;
                         case 4:
-                            GMesCreate(0x20);
+                            GMesCreate(GMES_MES_MG_DRAW);
                             HuAudSeqPlay(0x6C);
                             break;
                     }

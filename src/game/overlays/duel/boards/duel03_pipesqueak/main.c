@@ -585,7 +585,7 @@ void MBD3_BranchHelpEnd(void) {
 void MBD3_BoardInit(void) {
     GwSystem.current_board_index = 2;
     omInitObjMan(0xA, 0);
-    omOvlGotoEx(0x5A, 0, 0x4190);
+    omOvlGotoEx(duelcall, 0, 0x4190);
 }
 
 void MBD3_SaveInit(void) {
@@ -2179,7 +2179,7 @@ void MBD3_KoopaFireObjMain(omObjData *object) {
                 Hu3DSprModelReset(data->sprId[i]);
                 Hu3DModelPosSet(data->modelId[i], data->pos[i].x, data->pos[i].y, data->pos[i].z);
                 Hu3DModelScaleSet(data->modelId[i], data->scale[i], data->scale[i], data->scale[i]);
-                Hu3DModelCameraSet(data->modelId[i], 1);
+                Hu3DModelCameraSet(data->modelId[i], HU3D_CAM0);
             }
         } else {
             data->spawnTimer--;

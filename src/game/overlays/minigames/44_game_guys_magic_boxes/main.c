@@ -714,8 +714,8 @@ void m268_BoxDropUpdate(void) {
             }
             break;
         case 6:
-            Hu3DModelCameraSet(m268_koopaJrObj->model[0], 0);
-            Hu3DModelCameraSet(m268_kinopioObj->model[0], 0);
+            Hu3DModelCameraSet(m268_koopaJrObj->model[0], HU3D_CAM_NONE);
+            Hu3DModelCameraSet(m268_kinopioObj->model[0], HU3D_CAM_NONE);
             m268_boxDropTimer = 0;
             m268_boxDropState = 4;
             m268_boxDropVel = 0.0f;
@@ -1000,7 +1000,7 @@ void m268_FinishMesUpdate(void) {
                       m268_boxScaleR, m268_boxScaleR);
     if (m268_finishMesState == 0) {
         HuAudSeqVolFadeOut(120);
-        GMesCreate(20);
+        GMesCreate(GMES_MES_20);
         m268_finishMesState = 1;
     } else if (m268_finishMesState == 1) {
         if (GMesStatGet() == GMES_STAT_NONE) {
@@ -1067,8 +1067,8 @@ void m268_BoxOpenUpdate(void) {
             break;
         case 1:
             HuAudFXPlay(0x52F);
-            Hu3DModelCameraSet(m268_koopaJrObj->model[0], 1);
-            Hu3DModelCameraSet(m268_kinopioObj->model[0], 1);
+            Hu3DModelCameraSet(m268_koopaJrObj->model[0], HU3D_CAM0);
+            Hu3DModelCameraSet(m268_kinopioObj->model[0], HU3D_CAM0);
             Hu3DMotionSpeedSet(m268_boxObj->model[0], 1.0f);
             Hu3DMotionSpeedSet(m268_box2Obj->model[0], 1.0f);
             m268_kinopioMotNo = 2;
@@ -1228,13 +1228,13 @@ void m268_ResultUpdate(void) {
     } else if (m268_resultState == 0) {
         if (m268_winF == 1) {
             HuAudSeqPlay(0x73);
-            m268_resultMesId = GMesCreate(0x16, m268_playerInfoPad[1]);
+            m268_resultMesId = GMesCreate(GMES_MES_MG_WINNER, m268_playerInfoPad[1]);
             GMesTimeMaxSet(m268_resultMesId, 0x78);
         } else {
             HuAudSeqPlay(0x71);
             sprintf(m268_mesBuf, "%s\x81\x40\x82\x6B\x82\x6E\x82\x72\x82\x73\x81\x49",
                     m268_chrNameTbl[m268_playerInfoPad[1]]);
-            m268_resultMesId = GMesCreate(0x19, m268_mesBuf, 0xA0, 0x78, 1.0, 1.0, 1);
+            m268_resultMesId = GMesCreate(GMES_MES_25, m268_mesBuf, 0xA0, 0x78, 1.0, 1.0, 1);
             GMesTimeMaxSet(m268_resultMesId, 0x78);
         }
         m268_resultState = 1;

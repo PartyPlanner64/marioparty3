@@ -332,7 +332,7 @@ void m253_MainObjMain(omObjData *object) {
             break;
         case 1:
             if (GMesStatGet() == 0) {
-                GMesCreate(0x1A, (m253_timer + 29) / 30, 156, 32);
+                GMesCreate(GMES_MES_TIMER, (m253_timer + 29) / 30, 156, 32);
                 MgFlowStatSet(MG_STATE_PLAY);
                 if (m253_patternCur == NULL) {
                     m253_phaseTimer = 3;
@@ -374,7 +374,7 @@ void m253_MainObjMain(omObjData *object) {
             }
             if (m253_timer <= 0) {
                 GMesTimerEnd();
-                GMesCreate(0x11);
+                GMesCreate(GMES_MES_MG_FINISH);
                 MgFlowStatSet(MG_STATE_FINISH);
                 m253_PlayerMdlSwap(mgPlayerObjTbl[0], 0, 13);
                 m253_PlayerMdlSwap(mgPlayerObjTbl[1], 0, 13);
@@ -400,7 +400,7 @@ void m253_MainObjMain(omObjData *object) {
                 player1 = m253_WorkPtrGet(mgPlayerObjTbl[0]);
                 player2 = m253_WorkPtrGet(mgPlayerObjTbl[1]);
                 if (player1->unk_02 > player2->unk_02) {
-                    GMesCreate(0x16, player1->unk_2C);
+                    GMesCreate(GMES_MES_MG_WINNER, player1->unk_2C);
                     GwPlayer[player1->unk_28].bonusCoin += 10;
                     m253_winnerChr = player1->unk_2C;
                     m253_resultWait = 140;
@@ -411,7 +411,7 @@ void m253_MainObjMain(omObjData *object) {
                                                       mgPlayerObjTbl[0]->trans.z, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP,
                                                       600.0f, 30);
                 } else if (player1->unk_02 < player2->unk_02) {
-                    GMesCreate(0x16, player2->unk_2C);
+                    GMesCreate(GMES_MES_MG_WINNER, player2->unk_2C);
                     GwPlayer[player2->unk_28].bonusCoin += 10;
                     m253_winnerChr = player2->unk_2C;
                     m253_resultWait = 140;
@@ -422,7 +422,7 @@ void m253_MainObjMain(omObjData *object) {
                                                       mgPlayerObjTbl[1]->trans.z, CAMERA_KEEP, CAMERA_KEEP, CAMERA_KEEP,
                                                       600.0f, 30);
                 } else {
-                    GMesCreate(0x20);
+                    GMesCreate(GMES_MES_MG_DRAW);
                     m253_resultWait = 144;
                     HuAudSeqPlay(0x6C);
                     player2->unk_04 = 1;

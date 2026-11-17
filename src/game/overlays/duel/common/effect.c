@@ -226,7 +226,7 @@ s32 MBDEffExplodeCreate(s32 dataNum, char *objName) {
     Hu3DModelRemakeStatic(model);
     Hu3DModelVtxBufMake(model);
     Hu3DModelDynamicFree(model);
-    Hu3DModelCameraSet(model, 1);
+    Hu3DModelCameraSet(model, HU3D_CAM0);
     Hu3DMotionSpeedSet(model, 0.5f);
     Hu3DModelScaleSet(model, 0.1f, 0.1f, 0.1f);
     Hu3DParticleCreate(model, -1, objName, MBDEffExplodeHook);
@@ -259,7 +259,7 @@ void MBDEffSwirlCreate(Vec *pos) {
     model = mbdEffSwirlMdl = Hu3DModelRead(0xB0032, 0xAA9);
     Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
     Hu3DModelObjAttrSet(model, 0x20000, 0x20000);
-    Hu3DModelCameraSet(model, 1);
+    Hu3DModelCameraSet(model, HU3D_CAM0);
     Hu3DModelRemakeStatic(model);
     Hu3DModelVtxBufMake(model);
     Hu3DModelDynamicFree(model);

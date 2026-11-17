@@ -89,7 +89,7 @@ void mgresultboard_FaceProc(void) {
         Hu3DMotionAttrSet(obj->model[i + 1], 2, 0);
         Hu3DModelPosSet(obj->model[i + 1], mgresultboard_facePosTbl[i & 3].x, mgresultboard_facePosTbl[i & 3].y,
                         mgresultboard_facePosTbl[i & 3].z);
-        Hu3DModelCameraSet(obj->model[i + 1], 2);
+        Hu3DModelCameraSet(obj->model[i + 1], HU3D_CAM1);
         if (i == 0) {
             animData = DataRead(0x180008);
             anim = (s16)Hu3DAnimCreate(Hu3DData[obj->model[1]].hmf, animData, 0, "ys04_04_DEF");
@@ -255,14 +255,14 @@ void mgresultboard_ScoreProc(void) {
     Hu3DModelDynamicFree(obj->model[1]);
     Hu3DAnimAttrSet(mgresultboard_scoreAnimTbl[0], 1, 1);
     Hu3DAnimBankSet(mgresultboard_scoreAnimTbl[0], 0);
-    Hu3DModelCameraSet(obj->model[1], 2);
+    Hu3DModelCameraSet(obj->model[1], HU3D_CAM1);
     data = DataRead(0x180006);
     mgresultboard_scoreAnimDataTbl[1] = (s16)Hu3DAnimDataCreate(data);
     HuMemMemoryFreePerm(data);
     data = DataRead(0x180000);
     for (i = 1; i < 40; i++) {
         obj->model[i + 1] = Hu3DModelCreate(data, 0x2A0);
-        Hu3DModelCameraSet(obj->model[i + 1], 2);
+        Hu3DModelCameraSet(obj->model[i + 1], HU3D_CAM1);
         mgresultboard_scoreAnimTbl[i] =
             Hu3DAnimLink(Hu3DData[obj->model[i + 1]].hmf, mgresultboard_scoreAnimTbl[0], 0, "zero_DEF");
         Hu3DModelRemakeStatic(obj->model[i + 1]);

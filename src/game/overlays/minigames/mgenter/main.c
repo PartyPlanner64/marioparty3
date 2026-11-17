@@ -112,7 +112,7 @@ void mgenter_SkipObjectSetup(void) {
     Hu3DSprModelInit(0x19);
     omInitObjMan(0x33, 0x19);
     omOvlHisChg(0, 0x68, 0, 4);
-    omOvlCallEx(0x70, 0, 2);
+    omOvlCallEx(inst, 0, 2);
     _SetFlag(0xD);
     mgModeCoinBase++;
 }

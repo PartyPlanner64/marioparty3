@@ -405,7 +405,7 @@ void m210_MainObjMain(omObjData *object) {
         case 0:
             Hu3DBGColorSet(0, 0, 0);
             WipeCreateIn(WIPE_TYPE_PREV, 16);
-            GMesCreate(4);
+            GMesCreate(GMES_MES_4);
             HuAudFXPlay(0x42E);
             m210_phaseTimer = 45;
             m210_timer = 900;
@@ -422,7 +422,7 @@ void m210_MainObjMain(omObjData *object) {
             if (GMesStatGet() == 0) {
                 MgFlowStatSet(MG_STATE_PLAY);
                 m210_phase++;
-                GMesCreate(0x1A, (m210_timer + 29) / 30, 160, 32);
+                GMesCreate(GMES_MES_TIMER, (m210_timer + 29) / 30, 160, 32);
                 HuAudFXPlay(0xE);
             }
             break;
@@ -454,7 +454,7 @@ void m210_MainObjMain(omObjData *object) {
                 }
             }
             GMesTimerEnd();
-            GMesCreate(0xF);
+            GMesCreate(GMES_MES_15);
             HuAudSeqFadeOut(120);
             m210_phase++;
             m210_phaseTimer = 15;
@@ -463,7 +463,7 @@ void m210_MainObjMain(omObjData *object) {
             if (GMesStatGet() == 0) {
                 if (--m210_phaseTimer == 0) {
                     if (m210_winner == m210_soloNo) {
-                        GMesCreate(0x16, TIDAL_TOSS_WORK(mgPlayerObjTbl[m210_winner])->unk2C);
+                        GMesCreate(GMES_MES_MG_WINNER, TIDAL_TOSS_WORK(mgPlayerObjTbl[m210_winner])->unk2C);
                         HuAudSeqPlay(0x65);
                     } else {
                         for (i = 0, count = 0; i < 4; i++) {
@@ -472,7 +472,7 @@ void m210_MainObjMain(omObjData *object) {
                                 count++;
                             }
                         }
-                        GMesCreate(0x22, chars[0], chars[1], chars[2]);
+                        GMesCreate(GMES_MES_MG_WINNERS_3, chars[0], chars[1], chars[2]);
                         HuAudSeqPlay(0x66);
                     }
                     m210_phaseTimer = 15;

@@ -468,7 +468,7 @@ s16 storyresult_StageClearCheck(void) {
         storyresult_exitOvlNo = 0x75;
         storyresult_exitEvtNo = 0;
         storySceneNo = 15;
-        omOvlGotoEx(0x75, 0, 0x14);
+        omOvlGotoEx(storycall, 0, 0x14);
     }
     return result;
 }

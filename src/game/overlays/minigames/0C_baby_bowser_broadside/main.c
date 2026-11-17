@@ -579,7 +579,7 @@ void m212_TimerUpdate(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideFunc *ha
         m212_gameWork->unk_00 = 4;
         m212_gameWork->unk_38 = 0.0f;
         HuAudSeqFadeOut(120);
-        GMesCreate(16);
+        GMesCreate(GMES_MES_16);
         m212_FuncSet((s8)slot->unk_00->work[1], 0xF, 0, m212_FinishSeFade, 0);
         GMesTimerEnd();
         if (m212_teamTbl[0].unk_10 == m212_teamTbl[1].unk_10) {
@@ -615,7 +615,7 @@ void m212_StartExec(BabyBowserBroadsideSlot *slot, BabyBowserBroadsideFunc *hand
     }
     switch (++handler->unk_1C) {
         case 20:
-            GMesCreate(5);
+            GMesCreate(GMES_MES_5);
             HuAudFXPlay(14);
             break;
         case 40:

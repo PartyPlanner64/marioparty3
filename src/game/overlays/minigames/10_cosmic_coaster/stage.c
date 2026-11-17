@@ -259,9 +259,9 @@ void m216_RockObjMain(omObjData *object) {
         slot = object->work[0];
         object->model[0] = m216_stageObj->model[slot] = Hu3DModelLink(m216_stageMdlTbl[2]);
         if (object->work[2] == 0) {
-            Hu3DModelCameraSet(object->model[0], 1);
+            Hu3DModelCameraSet(object->model[0], HU3D_CAM0);
         } else {
-            Hu3DModelCameraSet(object->model[0], 2);
+            Hu3DModelCameraSet(object->model[0], HU3D_CAM1);
         }
         object->work[1] = 2;
         object->func = m216_RockBreakObjMain;
@@ -304,9 +304,9 @@ void m216_BigRockObjMain(omObjData *object) {
         object->model[0] = m216_stageObj->model[slot] =
             Hu3DModelLink(object->trans.x > 0.0f ? m216_stageMdlTbl[3] : m216_stageMdlTbl[10]);
         if (object->work[2] == 0) {
-            Hu3DModelCameraSet(object->model[0], 1);
+            Hu3DModelCameraSet(object->model[0], HU3D_CAM0);
         } else {
-            Hu3DModelCameraSet(object->model[0], 2);
+            Hu3DModelCameraSet(object->model[0], HU3D_CAM1);
         }
         object->work[1] = 2;
         object->func = m216_BigRockBreakObjMain;

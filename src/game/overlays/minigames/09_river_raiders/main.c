@@ -2198,7 +2198,7 @@ void m209_MainObjMain(omObjData *obj) {
             break;
         case 1:
             if (m209_timer == 0) {
-                GMesCreate(4);
+                GMesCreate(GMES_MES_4);
                 m209_timer++;
             } else if (m209_timer > 32) {
                 HuAudSeqPlay(0x2E);
@@ -2207,7 +2207,7 @@ void m209_MainObjMain(omObjData *obj) {
             }
             if (GMesStatGet() == 0) {
                 m209_PhaseSet(2);
-                GMesCreate(0x1A, 30, 160, 28);
+                GMesCreate(GMES_MES_TIMER, 30, 160, 28);
                 m209_timer = 901;
             }
             break;
@@ -2218,7 +2218,7 @@ void m209_MainObjMain(omObjData *obj) {
             } else {
                 GMesTimerEnd();
                 m209_PhaseSet(3);
-                GMesCreate(0xF);
+                GMesCreate(GMES_MES_15);
                 HuAudSeqFadeOut(120);
             }
             m209_SkierPushCalc();

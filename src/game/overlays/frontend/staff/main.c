@@ -84,7 +84,7 @@ void staff_ExitObjMain(omObjData *object) {
             default:
                 if (staff_storyF != 0) {
                     omovlhisidx = -1;
-                    omOvlCallEx(0x58, 0, 0x84);
+                    omOvlCallEx(ovl_boot, 0, 0x84);
                 } else {
                     omOvlReturnEx(1);
                 }

@@ -173,12 +173,12 @@ void mgmode_BattleRoomProc(void) {
     mgmode_MdlListCreate(mgmode_battleMdlDefTbl);
     node = Hu3DModelObjPtrGet(mgmode_mdlTbl[0], "door");
     mtxCopy(mgmode_battleDoorMtx, node->unk58);
-    Hu3DModelCameraSet(mgmode_mdlTbl[4], 2);
+    Hu3DModelCameraSet(mgmode_mdlTbl[4], HU3D_CAM1);
     Hu3DModelScaleSet(mgmode_mdlTbl[4], 0.7f, 0.7f, 0.7f);
     Hu3DModelScaleSet(mgmode_mdlTbl[31], 0.7f, 0.7f, 0.7f);
     for (i = 0; i < 4; i++) {
         model = mgmode_mdlTbl[i + 7];
-        Hu3DModelCameraSet(model, 2);
+        Hu3DModelCameraSet(model, HU3D_CAM1);
         Hu3DModelAttrSet(model, HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DModelScaleSet(model, 0.7f, 0.7f, 0.7f);
         Hu3DModelScaleSet(model, 0.7f, 0.7f, 0.7f);
@@ -1081,18 +1081,18 @@ s32 mgmode_BattleResultExec(void) {
         mesId = -1;
         switch (mgmode_starPlayerNum) {
             case 1:
-                mesId = GMesCreate(0x16, GwPlayer[mgmode_starPlayerTbl[0]].chr);
+                mesId = GMesCreate(GMES_MES_MG_WINNER, GwPlayer[mgmode_starPlayerTbl[0]].chr);
                 GMesPosSet(mesId, 160.0f, 120.0f);
                 break;
             case 2:
-                mesId = GMesCreate(0x1E, GwPlayer[mgmode_starPlayerTbl[0]].chr, GwPlayer[mgmode_starPlayerTbl[1]].chr);
+                mesId = GMesCreate(GMES_MES_MG_WINNERS_2, GwPlayer[mgmode_starPlayerTbl[0]].chr, GwPlayer[mgmode_starPlayerTbl[1]].chr);
                 break;
             case 3:
-                mesId = GMesCreate(0x22, GwPlayer[mgmode_starPlayerTbl[0]].chr, GwPlayer[mgmode_starPlayerTbl[1]].chr,
+                mesId = GMesCreate(GMES_MES_MG_WINNERS_3, GwPlayer[mgmode_starPlayerTbl[0]].chr, GwPlayer[mgmode_starPlayerTbl[1]].chr,
                                    GwPlayer[mgmode_starPlayerTbl[2]].chr);
                 break;
             case 4:
-                GMesCreate(0x20);
+                GMesCreate(GMES_MES_MG_DRAW);
                 mesId = -1;
                 break;
         }

@@ -401,7 +401,7 @@ void m266_MarkerObjInit(omObjData *object) {
     omSetTra(object, 0.0f, 0.0f, 0.0f);
     omSetRot(object, 15.0f, 0.0f, 0.0f);
     omSetSca(object, 1.0f, 1.0f, 1.0f);
-    Hu3DModelCameraSet(object->model[0], 0);
+    Hu3DModelCameraSet(object->model[0], HU3D_CAM_NONE);
     object->func = NULL;
 }
 
@@ -443,7 +443,7 @@ void m266_MainObjMain(omObjData *object) {
                 m266_ruleDoneF = 0;
                 omDelPrcObj(m266_ruleProc);
                 omSysPauseDisableF = 0;
-                m266_timerMesId = GMesCreate(0x1A, 10, 156, 56);
+                m266_timerMesId = GMesCreate(GMES_MES_TIMER, 10, 156, 56);
             }
             break;
         case 5:
@@ -622,7 +622,7 @@ void m266_PrizeSelectUpdate(void) {
 
     for (i = 0; i < 6; i++) {
         m266_SprDispSet(&m266_prizeSprTbl[i], 0);
-        Hu3DModelCameraSet(m266_wheelObj->model[i + 1], 1);
+        Hu3DModelCameraSet(m266_wheelObj->model[i + 1], HU3D_CAM0);
     }
     m266_prizeSprTbl[m266_prizeNo].scaleX =
         m266_prizeSprTbl[m266_prizeNo].scaleY = m266_prizeScale;
@@ -632,7 +632,7 @@ void m266_PrizeSelectUpdate(void) {
     }
     m266_portraitSpr.scaleX = m266_portraitSpr.scaleY = m266_portraitScale;
     m266_SprDispSet(&m266_portraitSpr, 1);
-    Hu3DModelCameraSet(m266_wheelObj->model[m266_prizeNo + 1], 0);
+    Hu3DModelCameraSet(m266_wheelObj->model[m266_prizeNo + 1], HU3D_CAM_NONE);
     m266_prizeScale += m266_prizeScaleStep;
     if (m266_prizeScale >= 1.5f || m266_prizeScale <= 1.1f) {
         m266_prizeScaleStep = -m266_prizeScaleStep;
@@ -646,14 +646,14 @@ void m266_PrizeSelectUpdate(void) {
         m266_prizeSprTbl[m266_prizeNo].scaleX =
             m266_prizeSprTbl[m266_prizeNo].scaleY = 1.5f;
         m266_SprDispSet(&m266_prizeSprTbl[m266_prizeNo], 1);
-        Hu3DModelCameraSet(m266_wheelObj->model[m266_prizeNo + 1], 1);
+        Hu3DModelCameraSet(m266_wheelObj->model[m266_prizeNo + 1], HU3D_CAM0);
         x = cosdf(m266_prizeAngleTbl[m266_prizeNo]) * 40.0f;
         y = 102.5f;
         z = sindf(m266_prizeAngleTbl[m266_prizeNo]) * 40.0f;
         rotY = y * cosdf(15.0f) - z * sindf(15.0f);
         rotZ = y * sindf(15.0f) + z * cosdf(15.0f);
         omSetTra(m266_markerObj, x, rotY + 100.0f, rotZ);
-        Hu3DModelCameraSet(m266_markerObj->model[0], 1);
+        Hu3DModelCameraSet(m266_markerObj->model[0], HU3D_CAM0);
         if (m266_prizeNo == m266_winPrizeNo) {
             m266_winF = 1;
         } else {
@@ -679,7 +679,7 @@ void m266_PrizeMesProc(void) {
 
 void m266_StartMesUpdate(void) {
     if (++m266_startMesTimer == 1) {
-        GMesCreate(9);
+        GMesCreate(GMES_MES_9);
     } else if (GMesStatGet() == GMES_STAT_NONE) {
         HuAudSeqFadeOut(0x1E);
         m266_mainPhase = 9;
@@ -776,33 +776,33 @@ void m266_SpinUpdate(void) {
     }
 
     for (i = 1; i < 7; i++) {
-        Hu3DModelCameraSet(m266_wheelObj->model[i], 1);
+        Hu3DModelCameraSet(m266_wheelObj->model[i], HU3D_CAM0);
     }
     if (m266_sectionAngleTbl[0] <= m266_ballAngle &&
         m266_ballAngle < m266_sectionAngleTbl[1]) {
-        Hu3DModelCameraSet(m266_wheelObj->model[6], 0);
+        Hu3DModelCameraSet(m266_wheelObj->model[6], HU3D_CAM_NONE);
         m266_ballSectionNo = 1;
     } else if (m266_sectionAngleTbl[1] <= m266_ballAngle &&
                m266_ballAngle < m266_sectionAngleTbl[2]) {
-        Hu3DModelCameraSet(m266_wheelObj->model[3], 0);
+        Hu3DModelCameraSet(m266_wheelObj->model[3], HU3D_CAM_NONE);
         m266_ballSectionNo = 2;
     } else if ((m266_sectionAngleTbl[2] <= m266_ballAngle &&
                 m266_ballAngle < 360.0f) ||
                (0.0f <= m266_ballAngle &&
                 m266_ballAngle < m266_sectionAngleTbl[3])) {
-        Hu3DModelCameraSet(m266_wheelObj->model[5], 0);
+        Hu3DModelCameraSet(m266_wheelObj->model[5], HU3D_CAM_NONE);
         m266_ballSectionNo = 3;
     } else if (m266_sectionAngleTbl[3] <= m266_ballAngle &&
                m266_ballAngle < m266_sectionAngleTbl[4]) {
-        Hu3DModelCameraSet(m266_wheelObj->model[1], 0);
+        Hu3DModelCameraSet(m266_wheelObj->model[1], HU3D_CAM_NONE);
         m266_ballSectionNo = 4;
     } else if (m266_sectionAngleTbl[4] <= m266_ballAngle &&
                m266_ballAngle < m266_sectionAngleTbl[5]) {
-        Hu3DModelCameraSet(m266_wheelObj->model[4], 0);
+        Hu3DModelCameraSet(m266_wheelObj->model[4], HU3D_CAM_NONE);
         m266_ballSectionNo = 5;
     } else if (m266_sectionAngleTbl[5] <= m266_ballAngle &&
                m266_ballAngle < m266_sectionAngleTbl[0]) {
-        Hu3DModelCameraSet(m266_wheelObj->model[2], 0);
+        Hu3DModelCameraSet(m266_wheelObj->model[2], HU3D_CAM_NONE);
         m266_ballSectionNo = 6;
     }
     if (m266_ballSectionPrev != m266_ballSectionNo) {
@@ -813,7 +813,7 @@ void m266_SpinUpdate(void) {
 
 void m266_FinishMesUpdate(void) {
     if (++m266_finishMesTimer == 1) {
-        GMesCreate(0x14);
+        GMesCreate(GMES_MES_20);
         HuAudSeqFadeOut(0x78);
     } else if (GMesStatGet() == GMES_STAT_NONE) {
         m266_mainPhase = 0xB;
@@ -840,13 +840,13 @@ void m266_ResultUpdate(void) {
         HuAudFXAllFadeOut(30);
         if (m266_winF == 1) {
             HuAudSeqPlay(0x73);
-            m266_resultMesId = GMesCreate(0x16, m266_playerInfo.chr);
+            m266_resultMesId = GMesCreate(GMES_MES_MG_WINNER, m266_playerInfo.chr);
             GMesTimeMaxSet(m266_resultMesId, 0x78);
         } else {
             HuAudSeqPlay(0x71);
             sprintf(m266_mesBuf, "%s\x81\x40\x82\x6B\x82\x6E\x82\x72\x82\x73\x81\x49",
                     m266_chrNameTbl[m266_playerInfo.chr]);
-            m266_resultMesId = GMesCreate(0x19, m266_mesBuf, 0xA0, 0x78, 1.0, 1.0, 1);
+            m266_resultMesId = GMesCreate(GMES_MES_25, m266_mesBuf, 0xA0, 0x78, 1.0, 1.0, 1);
             GMesTimeMaxSet(m266_resultMesId, 0x78);
         }
         m266_resultState = 1;

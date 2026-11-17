@@ -1821,7 +1821,7 @@ void boardresult_ExitObjMain(omObjData *obj) {
         } else {
             SLCommonSet(1);
         }
-        omOvlGotoEx(0x55, 0, 0x4190);
+        omOvlGotoEx(boardresult2, 0, 0x4190);
     }
 }
 

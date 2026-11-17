@@ -1961,7 +1961,7 @@ void m205_MainObjMain(omObjData *arg0) {
     switch (m205_phase) {
         case 0:
             if (m205_introDoneF == 1) {
-                GMesCreate(4);
+                GMesCreate(GMES_MES_4);
                 m205_phase = 1;
                 m205_mainTimer = 0;
             }
@@ -1969,7 +1969,7 @@ void m205_MainObjMain(omObjData *arg0) {
         case 1:
             if (GMesStatGet() == 0) {
                 m205_phase = 2;
-                GMesCreate(0x1A, 30, 160, 28);
+                GMesCreate(GMES_MES_TIMER, 30, 160, 28);
                 m205_timer = 901;
             }
             m205_mainTimer++;
@@ -1993,7 +1993,7 @@ void m205_MainObjMain(omObjData *arg0) {
                 }
             }
             m205_crankDir = 0;
-            GMesCreate(0xF);
+            GMesCreate(GMES_MES_15);
             HuAudSeqFadeOut(120);
             break;
         case 3:
@@ -2011,7 +2011,7 @@ void m205_MainObjMain(omObjData *arg0) {
             if (m205_timer >= 15) {
                 m205_resultMot = -1;
                 HuAudSeqPlay(0x65);
-                GMesCreate(0x16, (s8)m205_crankChr);
+                GMesCreate(GMES_MES_MG_WINNER, (s8)m205_crankChr);
                 GwPlayer[(s8)m205_crankPlayerNo].bonusCoin = 10;
                 m205_timer = 15;
                 m205_phase = 6;
@@ -2022,7 +2022,7 @@ void m205_MainObjMain(omObjData *arg0) {
             if (m205_timer >= 15) {
                 m205_resultMot = 1;
                 HuAudSeqPlay(0x66);
-                GMesCreate(0x22, m205_teamChrTbl[0], m205_teamChrTbl[1], m205_teamChrTbl[2]);
+                GMesCreate(GMES_MES_MG_WINNERS_3, m205_teamChrTbl[0], m205_teamChrTbl[1], m205_teamChrTbl[2]);
                 GwPlayer[m205_teamPlayerNoTbl[0]].bonusCoin = 10;
                 GwPlayer[m205_teamPlayerNoTbl[1]].bonusCoin = 10;
                 GwPlayer[m205_teamPlayerNoTbl[2]].bonusCoin = 10;

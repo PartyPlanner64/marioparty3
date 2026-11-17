@@ -769,25 +769,25 @@ void m230_PlayerObjMain(omObjData *object) {
                 }
                 if (playerData->unk59 == 3) {
                     if (m230_winnerNum == 1) {
-                        GMesCreate(0x16, GwPlayer[m230_mgFlowWinnerTbl[0]].chr);
+                        GMesCreate(GMES_MES_MG_WINNER, GwPlayer[m230_mgFlowWinnerTbl[0]].chr);
                         HuAudSeqPlay(0x65);
                     } else if (m230_winnerNum == 2) {
-                        GMesCreate(0x1E, GwPlayer[m230_mgFlowWinnerTbl[0]].chr,
+                        GMesCreate(GMES_MES_MG_WINNERS_2, GwPlayer[m230_mgFlowWinnerTbl[0]].chr,
                                    GwPlayer[m230_mgFlowWinnerTbl[1]].chr);
                         HuAudSeqPlay(0x66);
                     } else if (m230_winnerNum == 3) {
-                        GMesCreate(0x22, GwPlayer[m230_mgFlowWinnerTbl[0]].chr,
+                        GMesCreate(GMES_MES_MG_WINNERS_3, GwPlayer[m230_mgFlowWinnerTbl[0]].chr,
                                    GwPlayer[m230_mgFlowWinnerTbl[1]].chr,
                                    GwPlayer[m230_mgFlowWinnerTbl[2]].chr);
                         HuAudSeqPlay(0x66);
                     } else if (work->unk04 != 0) {
-                        GMesCreate(0x23, GwPlayer[m230_mgFlowWinnerTbl[0]].chr,
+                        GMesCreate(GMES_MES_MG_WINNERS_4, GwPlayer[m230_mgFlowWinnerTbl[0]].chr,
                                    GwPlayer[m230_mgFlowWinnerTbl[1]].chr,
                                    GwPlayer[m230_mgFlowWinnerTbl[2]].chr,
                                    GwPlayer[m230_mgFlowWinnerTbl[3]].chr);
                         HuAudSeqPlay(0x66);
                     } else {
-                        GMesCreate(0x20);
+                        GMesCreate(GMES_MES_MG_DRAW);
                         HuAudSeqPlay(0x6C);
                     }
                     m230_mgFlow.resultType = MG_RESULT_NONE;

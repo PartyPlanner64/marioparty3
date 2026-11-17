@@ -185,7 +185,7 @@ void mgmode_MdlListCreate(MgmodeModelEntry *entries) {
     for (i = 0; entry->unk_00 != -1; i++, entry++) {
         mgmode_mdlTbl[i] = Hu3DModelRead(entry->unk_00, entry->unk_04 | 0x288);
         model = mgmode_mdlTbl[i];
-        Hu3DModelCameraSet(model, 1);
+        Hu3DModelCameraSet(model, HU3D_CAM0);
         mgmode_MdlListPosSet(entries, i, model);
         mgmode_motTbl[i] = Hu3DData[model].motId;
         if (mgmode_motTbl[i] != -1) {

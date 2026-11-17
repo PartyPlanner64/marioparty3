@@ -952,7 +952,7 @@ void m227_PlayerObjMain(omObjData *object) {
                     data->unk50 = 2;
                     m227_aimF = 1;
                     object->trans.x = -90.0f;
-                    GMesCreate(0x1A, 10, 0xA0, 0x18);
+                    GMesCreate(GMES_MES_TIMER, 10, 0xA0, 0x18);
                     m227_aimTimer = 300;
                 }
                 MgShadowSlopeSet(m227_ballObj->model[1], &pos);

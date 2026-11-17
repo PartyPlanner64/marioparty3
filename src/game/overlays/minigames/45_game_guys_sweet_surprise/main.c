@@ -333,7 +333,7 @@ void m269_MainObjMain(omObjData *object) {
             break;
         case 2:
             if (++m269_mainTimer == 1) {
-                GMesCreate(9);
+                GMesCreate(GMES_MES_9);
             } else if (m269_mainTimer == 70) {
                 m269_gambleMotNo = 3;
             } else if (m269_mainTimer == 80) {
@@ -352,7 +352,7 @@ void m269_MainObjMain(omObjData *object) {
         case 4:
             if (++m269_mainTimer == 1) {
                 m269_wanwanRActNo = m269_wanwanLActNo = 3;
-                GMesCreate(0x14);
+                GMesCreate(GMES_MES_20);
                 HuAudSeqFadeOut(120);
             } else if (GMesStatGet() == 0) {
                 m269_mainPhase++;
@@ -369,7 +369,7 @@ void m269_MainObjMain(omObjData *object) {
                     case 1:
                         HuAudFXPlay(0x517);
                         HuAudSeqPlay(0x73);
-                        m269_resultMesId = GMesCreate(0x16, (u16)m269_playerInfo[2]);
+                        m269_resultMesId = GMesCreate(GMES_MES_MG_WINNER, (u16)m269_playerInfo[2]);
                         GMesTimeMaxSet(m269_resultMesId, 0x78);
                         break;
                     case 0:
@@ -377,7 +377,7 @@ void m269_MainObjMain(omObjData *object) {
                         HuAudSeqPlay(0x71);
                         sprintf(m269_mesBuf, "%s\x81\x40\x82\x6B\x82\x6E\x82\x72\x82\x73\x81\x49",
                                 m269_chrNameTbl[(u16)m269_playerInfo[2]]);
-                        m269_resultMesId = GMesCreate(0x19, m269_mesBuf, 0xA0, 0x78, 1.0, 1.0, 1);
+                        m269_resultMesId = GMesCreate(GMES_MES_25, m269_mesBuf, 0xA0, 0x78, 1.0, 1.0, 1);
                         GMesTimeMaxSet(m269_resultMesId, 0x78);
                         break;
                 }
@@ -525,7 +525,7 @@ void m269_ChoiceObjMain(omObjData *object) {
 
     switch (m269_choicePhase) {
         case 0:
-            GMesCreate(0x1A, 10, 0x9C, 0x38);
+            GMesCreate(GMES_MES_TIMER, 10, 0x9C, 0x38);
             m269_countNum = 10;
             m269_countTimer = 0;
             omSysPauseDisableF = 0;
@@ -1114,7 +1114,7 @@ void m269_MarkerObjInit(omObjData *object) {
     omSetTra(object, 0.0f, 0.0f, 0.0f);
     omSetRot(object, 90.0f, 0.0f, 0.0f);
     omSetSca(object, 2.0f, 2.0f, 2.0f);
-    Hu3DModelCameraSet(object->model[0], 0);
+    Hu3DModelCameraSet(object->model[0], HU3D_CAM_NONE);
     m269_markerDropF = 0;
     object->func = m269_MarkerObjMain;
 }
@@ -1123,7 +1123,7 @@ void m269_MarkerObjMain(omObjData *object) {
     if (m269_markerDropF == 1) {
         switch (m269_markerState) {
             case 0:
-                Hu3DModelCameraSet(object->model[0], 1);
+                Hu3DModelCameraSet(object->model[0], HU3D_CAM0);
                 object->trans.x = m269_markerPosTbl[m269_choiceNo].x;
                 object->trans.y = 600.0f;
                 object->trans.z = m269_markerPosTbl[m269_choiceNo].z;
@@ -1181,7 +1181,7 @@ void m269_GambleObjInit(omObjData *object) {
         omObjMotionRead(object, i, motions[i]);
     }
     m269_gambleMotNo = 0;
-    Hu3DModelCameraSet(object->model[1], 0);
+    Hu3DModelCameraSet(object->model[1], HU3D_CAM_NONE);
     Hu3DModelObjCopy(object->model[1], "c203n30-r_hand", object->model[0], "c203_000_new-r_hand");
     m269_gambleActF = 0;
     object->func = m269_GambleObjMain;
@@ -1560,8 +1560,8 @@ void m269_BellObjInit(omObjData *object) {
     Hu3DModelRotSet(object->model[1], 0.0f, 0.0f, 0.0f);
     Hu3DModelScaleSet(object->model[1], 1.0f, 1.0f, 1.0f);
     omAddObj(0x64, 0xA, 0xA, -1, m269_SmokeObjInit);
-    Hu3DModelCameraSet(object->model[0], 0);
-    Hu3DModelCameraSet(object->model[1], 0);
+    Hu3DModelCameraSet(object->model[0], HU3D_CAM_NONE);
+    Hu3DModelCameraSet(object->model[1], HU3D_CAM_NONE);
     m269_bellRingReq = 0;
     object->func = m269_BellObjMain;
 }
@@ -1590,8 +1590,8 @@ void m269_BellObjMain(omObjData *object) {
             case 0:
                 HuAudFXPlay(0x53D);
                 object->scale.x = object->scale.y = object->scale.z = 0.0f;
-                Hu3DModelCameraSet(object->model[0], 1);
-                Hu3DModelCameraSet(object->model[1], 1);
+                Hu3DModelCameraSet(object->model[0], HU3D_CAM0);
+                Hu3DModelCameraSet(object->model[1], HU3D_CAM0);
                 m269_bellState++;
                 break;
             case 1:

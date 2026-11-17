@@ -151,8 +151,8 @@ void mgmode_GambleRoomProc(void) {
     mgmode_gambleMdlDefTbl[13].unk_00 = CharMotionDataNumGet(mgmode_gamblePlayerChr, 0x37);
     mgmode_gambleMdlDefTbl[14].unk_00 = CharMotionDataNumGet(mgmode_gamblePlayerChr, 0x9B);
     mgmode_MdlListCreate(mgmode_gambleMdlDefTbl);
-    Hu3DModelCameraSet(mgmode_mdlTbl[4], 2);
-    Hu3DModelCameraSet(mgmode_mdlTbl[8], 2);
+    Hu3DModelCameraSet(mgmode_mdlTbl[4], HU3D_CAM1);
+    Hu3DModelCameraSet(mgmode_mdlTbl[8], HU3D_CAM1);
     mgmode_gamblePlayerAnim = CharAnimCreate(mgmode_mdlTbl[8], 1, mgmode_gamblePlayerChr,
                                            CharMotionDataNumGetTbl(mgmode_gamblePlayerChr, 1, 0));
     Hu3DModelDynamicFree(mgmode_mdlTbl[8]);
@@ -160,7 +160,7 @@ void mgmode_GambleRoomProc(void) {
     Hu3DModelRemakeStatic(mgmode_mdlTbl[18]);
     Hu3DModelDynamicFree(mgmode_mdlTbl[18]);
     Hu3DModelPosSet(mgmode_mdlTbl[18], -208.0f, 0.0f, -332.0f);
-    Hu3DModelCameraSet(mgmode_mdlTbl[15], 2);
+    Hu3DModelCameraSet(mgmode_mdlTbl[15], HU3D_CAM1);
     mgmode_gambleConfettiNo = mgmode_ConfettiCreate(2.0f, 400.0f, -332.0f, 50.0f);
     node = Hu3DModelObjPtrGet(mgmode_mdlTbl[0], "door");
     mtxCopy(mgmode_gambleDoorMtx, node->unk58);
@@ -926,7 +926,7 @@ void mgmode_GambleRewardExec(void) {
     s16 i;
 
     camera = EffectCreate(0xB0004, 0x2A9);
-    Hu3DModelCameraSet(camera, 2);
+    Hu3DModelCameraSet(camera, HU3D_CAM1);
     EffectRangeSet(camera, 50.0f);
     EffectParamSet(camera, 2.0f, 20.0f, 0.0f);
     Hu3DMotionShiftSet(mgmode_mdlTbl8[0], mgmode_motTbl8, 0, 8, 0);

@@ -247,7 +247,7 @@ void MBDAuraSpinExec(s32 arg0) {
     switch (arg0) {
         case 0:
             mbdAuraEffNo = EffectCreate(0xB0004, 0xAA9);
-            Hu3DModelCameraSet(mbdAuraEffNo, 1);
+            Hu3DModelCameraSet(mbdAuraEffNo, HU3D_CAM0);
             EffectParamSet(mbdAuraEffNo, 1.0f, 30.0f, 1.0f);
             EffectRangeSet(mbdAuraEffNo, 10.0f);
             HuVecCopy3F(&pos, &mbdAuraObj->coords);
@@ -263,7 +263,7 @@ void MBDAuraSpinExec(s32 arg0) {
             break;
         case 1:
             mbdAuraEffNo = EffectCreate(0xB0004, 0xAA9);
-            Hu3DModelCameraSet(mbdAuraEffNo, 1);
+            Hu3DModelCameraSet(mbdAuraEffNo, HU3D_CAM0);
             EffectParamSet(mbdAuraEffNo, 1.0f, 30.0f, 1.0f);
             EffectRangeSet(mbdAuraEffNo, 10.0f);
             angle = MBDVecAngleGet(&mbdAuraObj->rot);
@@ -285,7 +285,7 @@ void MBDAuraSpinExec(s32 arg0) {
             break;
         case 3:
             mbdAuraEffNo = EffectCreate(0xB000C, 0xAA9);
-            Hu3DModelCameraSet(mbdAuraEffNo, 1);
+            Hu3DModelCameraSet(mbdAuraEffNo, HU3D_CAM0);
             EffectParamSet(mbdAuraEffNo, 0.3f, 30.0f, 1.0f);
             EffectRangeSet(mbdAuraEffNo, 10.0f);
             angle = MBDVecAngleGet(&mbdAuraObj->rot);
@@ -299,7 +299,7 @@ void MBDAuraSpinExec(s32 arg0) {
             break;
         case 4:
             mbdAuraEffNo = EffectCreate(0xB0005, 0xAA9);
-            Hu3DModelCameraSet(mbdAuraEffNo, 1);
+            Hu3DModelCameraSet(mbdAuraEffNo, HU3D_CAM0);
             EffectParamSet(mbdAuraEffNo, 1.0f, 30.0f, 1.0f);
             EffectRangeSet(mbdAuraEffNo, 10.0f);
             angle = MBDVecAngleGet(&mbdAuraObj->rot);

@@ -536,14 +536,14 @@ void m243_BackObjMain(omObjData *obj) {
 
 void m243_BackObjInit(omObjData *obj) {
     m243_upperBackSpr = HuSprAnimDataGet(HuSprAnimDataRead(0x4C0004));
-    Hu3DModelCameraSet(Hu3DHookFuncCreate(0, m243_UpperBackDraw, 2), 2);
+    Hu3DModelCameraSet(Hu3DHookFuncCreate(0, m243_UpperBackDraw, 2), HU3D_CAM1);
     m243_lowerBackSpr = HuSprAnimDataGet(HuSprAnimDataRead(0x4C0003));
-    Hu3DModelCameraSet(Hu3DHookFuncCreate(0, m243_LowerBackDraw, 2), 1);
+    Hu3DModelCameraSet(Hu3DHookFuncCreate(0, m243_LowerBackDraw, 2), HU3D_CAM0);
     m243_sideSprTbl[0] = HuSprAnimDataGet(HuSprAnimDataRead(0x4C0005));
     m243_sideSprTbl[1] = HuSprAnimDataGet(HuSprAnimDataRead(0x4C0006));
-    Hu3DModelCameraSet(Hu3DHookFuncCreate(0, m243_SideDraw, 2), 2);
+    Hu3DModelCameraSet(Hu3DHookFuncCreate(0, m243_SideDraw, 2), HU3D_CAM1);
     obj->model[0] = Hu3DModelRead(0x4C000F, 0x289);
-    Hu3DModelCameraSet(obj->model[0], 2);
+    Hu3DModelCameraSet(obj->model[0], HU3D_CAM1);
     obj->func = m243_BackObjMain;
 }
 
@@ -571,7 +571,7 @@ void m243_WaterObjInit(omObjData *obj) {
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;
     obj->trans.z = 0.0f;
-    Hu3DModelCameraSet(obj->model[0], 1);
+    Hu3DModelCameraSet(obj->model[0], HU3D_CAM0);
     obj->func = m243_WaterObjMain;
 }
 
@@ -1123,8 +1123,8 @@ void m243_ChrObjInit(omObjData *obj) {
     Hu3DMotionAttrSet(obj->model[0], 2, 2);
     Hu3DMotionTimeSet(obj->model[0], 0.0f);
     entry->unk_08 = -1;
-    Hu3DModelCameraSet(obj->model[0], 2);
-    Hu3DModelCameraSet(obj->model[1], 2);
+    Hu3DModelCameraSet(obj->model[0], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[1], HU3D_CAM1);
     obj->func = m243_ChrObjMain;
 }
 
@@ -1243,7 +1243,7 @@ void m243_SignObjInit(omObjData *obj) {
     obj->scale.x = m243_signScale = 0.1f;
     obj->scale.y = m243_objWorkTbl[8].unk_18;
     obj->scale.z = 1.0f;
-    Hu3DModelCameraSet(obj->model[0], 2);
+    Hu3DModelCameraSet(obj->model[0], HU3D_CAM1);
     obj->func = m243_SignObjMain;
 }
 
@@ -1312,7 +1312,7 @@ void m243_DoorObjInit(omObjData *obj) {
     obj->scale.y = 1.0f;
     obj->scale.z = 1.0f;
     Hu3DModelScaleSet(obj->model[0], obj->scale.x, obj->scale.y, obj->scale.z);
-    Hu3DModelCameraSet(obj->model[0], 2);
+    Hu3DModelCameraSet(obj->model[0], HU3D_CAM1);
     entry->unk_04 = 1;
     obj->func = m243_DoorObjMain;
 }
@@ -1809,11 +1809,11 @@ void m243_PlayerObjInit(omObjData *obj) {
             Hu3DModelAttrSet(obj->model[2 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         }
     }
-    Hu3DModelCameraSet(obj->model[0], 4);
-    Hu3DModelCameraSet(obj->model[1], 4);
-    Hu3DModelCameraSet(obj->model[2], 4);
-    Hu3DModelCameraSet(obj->model[3], 4);
-    Hu3DModelCameraSet(obj->model[4], 4);
+    Hu3DModelCameraSet(obj->model[0], HU3D_CAM2);
+    Hu3DModelCameraSet(obj->model[1], HU3D_CAM2);
+    Hu3DModelCameraSet(obj->model[2], HU3D_CAM2);
+    Hu3DModelCameraSet(obj->model[3], HU3D_CAM2);
+    Hu3DModelCameraSet(obj->model[4], HU3D_CAM2);
     entry->unk_14 = 1;
     obj->func = m243_PlayerObjMain;
 }
@@ -2121,7 +2121,7 @@ void m243_MainObjMain(omObjData *obj) {
             break;
         case 2:
             if (m243_timer == 0) {
-                GMesCreate(7);
+                GMesCreate(GMES_MES_7);
                 m243_timer++;
             } else if (m243_timer >= 63) {
                 HuAudSeqPlay(0x31);
@@ -2152,7 +2152,7 @@ void m243_MainObjMain(omObjData *obj) {
             if (m243_phaseDoneNo == 5) {
                 m243_PhaseSet(6);
                 m243_timer = 151;
-                GMesCreate(0x1A, 5, 160, 28);
+                GMesCreate(GMES_MES_TIMER, 5, 160, 28);
             }
             break;
         case 6:
@@ -2185,7 +2185,7 @@ void m243_MainObjMain(omObjData *obj) {
             break;
         case 10:
             if (m243_revealState == 2) {
-                GMesCreate(0x12);
+                GMesCreate(GMES_MES_18);
                 HuAudSeqFadeOut(120);
                 m243_revealState = 3;
             }
@@ -2204,7 +2204,7 @@ void m243_MainObjMain(omObjData *obj) {
             break;
         case 11:
             if (m243_revealState == 2) {
-                GMesCreate(0x12);
+                GMesCreate(GMES_MES_18);
                 HuAudSeqFadeOut(120);
                 m243_revealState = 3;
             }

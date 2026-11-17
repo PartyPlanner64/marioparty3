@@ -1015,7 +1015,7 @@ void selmenu2_ChrSelObjMain(omObjData *obj) {
             if (selMenuLastOvl >= 71) {
                 omOvlCallEx(selMenuLastOvl, 0, 0x84);
             } else if (mgDataTbl[GwSystem.minigame_index - 1].minigameType != 6) {
-                omOvlCallEx(0x70, 0, 0x82);
+                omOvlCallEx(inst, 0, 0x82);
             } else {
                 omOvlCallEx(mgDataTbl[GwSystem.minigame_index - 1].overlay, 0, 0x94);
             }

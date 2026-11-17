@@ -348,9 +348,9 @@ void m234_StageObjInit(omObjData *obj) {
     Hu3DMotionSpeedSet(obj->model[0], 0.0f);
     Hu3DMotionTimeSet(obj->model[0], 60.0f);
     Hu3DMotionAttrSet(obj->model[2], 2, 2);
-    Hu3DModelCameraSet(obj->model[0], 1);
-    Hu3DModelCameraSet(obj->model[1], 1);
-    Hu3DModelCameraSet(obj->model[2], 1);
+    Hu3DModelCameraSet(obj->model[0], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[1], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[2], HU3D_CAM0);
     obj->func = m234_StageObjMain;
 }
 
@@ -1070,10 +1070,10 @@ void m234_PlayerObjInit(omObjData *obj) {
     m234_choiceTbl[player] = 0;
     m234_firstOutTbl[0] = -1;
     m234_firstOutTbl[1] = -1;
-    Hu3DModelCameraSet(obj->model[0], 1);
-    Hu3DModelCameraSet(obj->model[1], 1);
-    Hu3DModelCameraSet(obj->model[2], 1);
-    Hu3DModelCameraSet(obj->model[3], 1);
+    Hu3DModelCameraSet(obj->model[0], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[1], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[2], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[3], HU3D_CAM0);
     obj->work[1] = GwPlayer[player].stat & 1;
     m234_comLevelTbl[player] = GwPlayer[player].cpu_difficulty;
     obj->work[3] = GwPlayer[player].pad;
@@ -1277,8 +1277,8 @@ void m234_ActorObjInit(omObjData *obj) {
         Hu3DModelScaleSet(obj->model[0], obj->scale.x, obj->scale.y, obj->scale.z);
     }
     entry->unk_5C.x = entry->unk_5C.z = 1.0f;
-    Hu3DModelCameraSet(obj->model[0], 1);
-    Hu3DModelCameraSet(obj->model[1], 1);
+    Hu3DModelCameraSet(obj->model[0], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[1], HU3D_CAM0);
     obj->func = m234_ActorObjMain;
 }
 
@@ -1320,8 +1320,8 @@ void m234_HostObjInit(omObjData *obj) {
     Hu3DModelScaleSet(obj->model[1], obj->scale.x, obj->scale.y, obj->scale.z);
     Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    Hu3DModelCameraSet(obj->model[0], 1);
-    Hu3DModelCameraSet(obj->model[1], 1);
+    Hu3DModelCameraSet(obj->model[0], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[1], HU3D_CAM0);
     obj->func = m234_HostObjMain;
 }
 
@@ -1375,7 +1375,7 @@ void m234_SpotlightObjInit(omObjData *obj) {
     Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
     m234_objWorkTbl[13].unk_04 = 0xFF;
     Hu3DModelAttrSet(obj->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    Hu3DModelCameraSet(obj->model[0], 1);
+    Hu3DModelCameraSet(obj->model[0], HU3D_CAM0);
     obj->func = m234_SpotlightObjMain;
 }
 
@@ -1652,7 +1652,7 @@ void m234_RoundUpdate(void) {
             } else {
                 host->trans.x = 0.0f;
                 HuAudFXPlay(0x298);
-                GMesCreate(0x1A, 10, 160, 28);
+                GMesCreate(GMES_MES_TIMER, 10, 160, 28);
                 m234_timer = 301;
                 m234_QuestionStart();
                 HuAudFXPlay(0x414);
@@ -1830,7 +1830,7 @@ void m234_ExitCheckObjMain(omObjData *obj) {
 void m234_MainObjMain(omObjData *obj) {
     switch (m234_phase) {
         case 0:
-            GMesCreate(3);
+            GMesCreate(GMES_MES_3);
             m234_phase = 1;
             m234_startTimer = 0;
             break;
@@ -1846,7 +1846,7 @@ void m234_MainObjMain(omObjData *obj) {
         case 2:
             m234_RoundUpdate();
             if (m234_roundNo == 3) {
-                GMesCreate(0xE);
+                GMesCreate(GMES_MES_14);
                 HuAudSeqFadeOut(120);
                 m234_phase = 3;
             }
@@ -1871,7 +1871,7 @@ void m234_MainObjMain(omObjData *obj) {
         case 6:
             switch (m234_outNum) {
                 case 0:
-                    GMesCreate(0x23, m234_survivorChrTbl[0], m234_survivorChrTbl[1], m234_survivorChrTbl[2],
+                    GMesCreate(GMES_MES_MG_WINNERS_4, m234_survivorChrTbl[0], m234_survivorChrTbl[1], m234_survivorChrTbl[2],
                                m234_survivorChrTbl[3]);
                     GwPlayer[m234_survivorTbl[0]].bonusCoin = 10;
                     GwPlayer[m234_survivorTbl[1]].bonusCoin = 10;
@@ -1880,20 +1880,20 @@ void m234_MainObjMain(omObjData *obj) {
                     HuAudSeqPlay(0x66);
                     break;
                 case 1:
-                    GMesCreate(0x22, m234_survivorChrTbl[0], m234_survivorChrTbl[1], m234_survivorChrTbl[2]);
+                    GMesCreate(GMES_MES_MG_WINNERS_3, m234_survivorChrTbl[0], m234_survivorChrTbl[1], m234_survivorChrTbl[2]);
                     GwPlayer[m234_survivorTbl[0]].bonusCoin = 10;
                     GwPlayer[m234_survivorTbl[1]].bonusCoin = 10;
                     GwPlayer[m234_survivorTbl[2]].bonusCoin = 10;
                     HuAudSeqPlay(0x66);
                     break;
                 case 2:
-                    GMesCreate(0x1E, m234_survivorChrTbl[0], m234_survivorChrTbl[1]);
+                    GMesCreate(GMES_MES_MG_WINNERS_2, m234_survivorChrTbl[0], m234_survivorChrTbl[1]);
                     GwPlayer[m234_survivorTbl[0]].bonusCoin = 10;
                     GwPlayer[m234_survivorTbl[1]].bonusCoin = 10;
                     HuAudSeqPlay(0x66);
                     break;
                 case 3:
-                    GMesCreate(0x16, m234_survivorChrTbl[0]);
+                    GMesCreate(GMES_MES_MG_WINNER, m234_survivorChrTbl[0]);
                     GwPlayer[m234_survivorTbl[0]].bonusCoin = 10;
                     HuAudSeqPlay(0x65);
                     break;
@@ -1902,7 +1902,7 @@ void m234_MainObjMain(omObjData *obj) {
             m234_phase = 7;
             break;
         case 5:
-            GMesCreate(0x20);
+            GMesCreate(GMES_MES_MG_DRAW);
             HuAudSeqPlay(0x6C);
             m234_timer = 15;
             m234_phase = 7;

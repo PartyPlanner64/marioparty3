@@ -749,7 +749,7 @@ void m265_MainObjMain(omObjData *object) {
             break;
         case 6:
             if (m265_cameraMoveF == 0) {
-                GMesCreate(9);
+                GMesCreate(GMES_MES_9);
                 HuAudFXPlay(0xE);
                 m265_PlayerCameraFollowStart();
                 m265_phase++;
@@ -769,14 +769,14 @@ void m265_MainObjMain(omObjData *object) {
                 m265_TimeSlideStart(0);
                 m265_TimeSlideStart(1);
             } else if (m265_timer == 4499) {
-                GMesCreate(0x1A, 31, 156, 32);
+                GMesCreate(GMES_MES_TIMER, 31, 156, 32);
             } else if (m265_timer >= 4500) {
                 secs = 5400 - m265_timer + 29;
                 GMesTimerValueSet(secs / 30);
             }
             if (m265_timer >= 5400 || m265_playerHitF != 0 || actor->unk_06 <= 0) {
                 GMesTimerEnd();
-                GMesCreate(0x14);
+                GMesCreate(GMES_MES_20);
                 MgFlowStatSet(MG_STATE_FINISH);
                 m265_StarStop();
                 m265_DustKillAll();
@@ -901,7 +901,7 @@ void m265_ResultRecordWinUpdate(void) {
                 m265_TimeSet(0, m265_timer);
                 m265_TimeSet(1, m265_recordTime);
                 m265_TimePulseStart(1);
-                GMesCreate(0x1B);
+                GMesCreate(GMES_MES_MG_RECORD);
                 m265_resultWait = 99;
                 m265_resultPhase++;
             }
@@ -934,7 +934,7 @@ void m265_ResultRecordWinUpdate(void) {
             if (m265_phaseTimer >= 15) {
                 HuAudSeqPlay(0x6A);
                 m265_playerWork->unk_04 = 13;
-                GMesCreate(0x16, m265_playerWork->character);
+                GMesCreate(GMES_MES_MG_WINNER, m265_playerWork->character);
                 m265_phaseTimer = 0;
                 m265_resultPhase++;
             }
@@ -948,7 +948,7 @@ void m265_ResultRecordWinUpdate(void) {
         case 16:
             if (m265_phaseTimer > 60.0f) {
                 m265_playerWork->unk_04 = 13;
-                GMesCreate(0x16, m265_playerWork->character);
+                GMesCreate(GMES_MES_MG_WINNER, m265_playerWork->character);
                 HuAudSeqPlay(0x65);
                 m265_resultWait = 98;
                 m265_resultPhase++;
@@ -983,7 +983,7 @@ void m265_ResultRecordLoseUpdate(void) {
             break;
         case 1:
             if (m265_phaseTimer >= 15.0f) {
-                GMesCreate(0x1D);
+                GMesCreate(GMES_MES_29);
                 HuAudSeqPlay(0x6B);
                 m265_resultWait = 132;
                 m265_phaseTimer = 0;

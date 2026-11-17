@@ -406,32 +406,32 @@ void m207_StageObjInit(omObjData *object) {
     }
     object->model[0] = Hu3DModelRead(0xA00E7, 0x4B9);
     omSetSca(object, 0.3125f, 0.3125f, 0.3125f);
-    Hu3DModelCameraSet(object->model[0], 2);
+    Hu3DModelCameraSet(object->model[0], HU3D_CAM1);
     object->model[2] = Hu3DModelRead(0x28000E, 0x39);
     Hu3DModelPosSet(object->model[2], 3787.5f, -26.25f, 0.0f);
     Hu3DModelScaleSet(object->model[2], 0.125f, 0.125f, 0.125f);
-    Hu3DModelCameraSet(object->model[2], 1);
+    Hu3DModelCameraSet(object->model[2], HU3D_CAM0);
     object->model[3] = Hu3DModelRead(0x28000F, 0x4B9);
     Hu3DModelPosSet(object->model[3], 3787.5f, -31.25f, 0.0f);
     Hu3DModelScaleSet(object->model[3], 0.125f, 0.125f, 0.125f);
-    Hu3DModelCameraSet(object->model[3], 2);
+    Hu3DModelCameraSet(object->model[3], HU3D_CAM1);
     object->model[1] = Hu3DModelRead(0x280010, 0x4B9);
     Hu3DModelScaleSet(object->model[1], 0.125f, 0.125f, 0.125f);
-    Hu3DModelCameraSet(object->model[1], 2);
+    Hu3DModelCameraSet(object->model[1], HU3D_CAM1);
     for (i = 0; i < 5; i++) {
         object->model[12 + i] = m207_SprMdlCreate(0x280011, &m207_sprMdlTbl[i], 0x639);
-        Hu3DModelCameraSet(object->model[12 + i], 1);
+        Hu3DModelCameraSet(object->model[12 + i], HU3D_CAM0);
         Hu3DModelScaleSet(object->model[12 + i], 0.7565625f, 0.7565625f, 0.7565625f);
     }
     for (i = 0; i < 2; i++) {
         object->model[10 + i] = m207_SprMdlCreate(0x280012, &m207_sprMdlTbl[5], 0x639);
-        Hu3DModelCameraSet(object->model[10 + i], 1);
+        Hu3DModelCameraSet(object->model[10 + i], HU3D_CAM0);
         Hu3DModelScaleSet(object->model[10 + i], 0.7565625f, 0.7565625f, 0.7565625f);
     }
     object->model[4] = m207_SprMdlCreate(0xB, &m207_sprMdlTbl[7], 0x639);
     Hu3DModelAttrSet(object->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelScaleSet(object->model[4], 1.6549804f, 0.9457031f, 0.9457031f);
-    Hu3DModelCameraSet(object->model[4], 1);
+    Hu3DModelCameraSet(object->model[4], HU3D_CAM0);
     for (i = 0; i < 18; i++) {
         if (i == 0) {
             object->model[17] = Hu3DModelRead(0x280006, 0x4B9);
@@ -441,30 +441,30 @@ void m207_StageObjInit(omObjData *object) {
         Hu3DModelAttrSet(object->model[17 + i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DModelObjAttrSet(object->model[17 + i], 0x70000000, 0x70000000);
         Hu3DModelScaleSet(object->model[17 + i], 0.15625f, 0.15625f, 0.15625f);
-        Hu3DModelCameraSet(object->model[17 + i], 2);
+        Hu3DModelCameraSet(object->model[17 + i], HU3D_CAM1);
     }
     object->model[6] = Hu3DModelRead(0x28000C, 0x4B9);
     Hu3DModelAttrSet(object->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DMotionAttrSet(object->model[6], 2, 2);
     Hu3DModelScaleSet(object->model[6], 0.15625f, 0.15625f, 0.15625f);
-    Hu3DModelCameraSet(object->model[6], 2);
+    Hu3DModelCameraSet(object->model[6], HU3D_CAM1);
     object->model[7] = Hu3DModelRead(0x28000D, 0x4B9);
     Hu3DModelAttrSet(object->model[7], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelScaleSet(object->model[7], 0.15625f, 0.15625f, 0.15625f);
-    Hu3DModelCameraSet(object->model[7], 2);
+    Hu3DModelCameraSet(object->model[7], HU3D_CAM1);
     object->model[8] = Hu3DModelLink(object->model[7]);
     Hu3DModelAttrSet(object->model[8], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelScaleSet(object->model[8], 0.15625f, 0.15625f, 0.15625f);
-    Hu3DModelCameraSet(object->model[8], 2);
+    Hu3DModelCameraSet(object->model[8], HU3D_CAM1);
     Hu3DMotionAttrSet(object->model[8], 2, 2);
     object->model[9] = Hu3DModelRead(0x28000D, 0x839);
     Hu3DModelAttrSet(object->model[9], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelScaleSet(object->model[9], 0.15625f, 0.15625f, 0.15625f);
-    Hu3DModelCameraSet(object->model[9], 2);
+    Hu3DModelCameraSet(object->model[9], HU3D_CAM1);
     Hu3DMotionAttrSet(object->model[9], 2, 2);
     object->model[5] = Hu3DModelRead(0x370003, 0x82D);
     Hu3DModelTPLvlInit(object->model[5]);
-    Hu3DModelCameraSet(object->model[5], 1);
+    Hu3DModelCameraSet(object->model[5], HU3D_CAM0);
     Hu3DModelScaleSet(object->model[5], 0.125f, 0.125f, 0.125f);
     object->func = m207_StageObjMain;
 }

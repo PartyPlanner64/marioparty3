@@ -846,7 +846,7 @@ void m238_StartExec(FuncContext *ctx) {
                     m238_FuncSet(0, 0, -1, 0, NULL, m238_CameraStartMove, FALSE, FALSE);
                     break;
                 case 110:
-                    GMesCreate(3);
+                    GMesCreate(GMES_MES_3);
                     HuAudFXPlay(0xE);
                     m238_startPhase = 1;
                     break;
@@ -931,7 +931,7 @@ void m238_GoalCheckUpdate(FuncContext *ctx) {
             }
             m238_FuncReset(1, ctx);
             HuAudSeqFadeOut(120);
-            GMesCreate(0xE);
+            GMesCreate(GMES_MES_14);
             m238_FuncSet(1, 0, -1, 0, NULL, m238_FinishSeFade, FALSE, TRUE);
             m238_gameWork->unk_18 = 0.4f;
             break;
@@ -969,7 +969,7 @@ void m238_WinExec(FuncContext *ctx) {
                 }
             } else {
                 if ((u16)ctx->work.s16[0]++ == 0) {
-                    GMesCreate(0x16, GwPlayer[m238_gameWork->unk_2C].chr);
+                    GMesCreate(GMES_MES_MG_WINNER, GwPlayer[m238_gameWork->unk_2C].chr);
                     HuAudSeqPlay(0x65);
                     GwPlayer[m238_gameWork->unk_2C].bonusCoin += 10;
                 }
@@ -1002,12 +1002,12 @@ void m238_DrawExec(FuncContext *ctx) {
             switch (ctx->work.s16[0]++) {
                 case 0:
                     HuAudSeqFadeOut(120);
-                    GMesCreate(0xE);
+                    GMesCreate(GMES_MES_14);
                     m238_FuncSet(1, 0, -1, 0, NULL, m238_FinishSeFade, FALSE, TRUE);
                     ctx->state = 3;
                     break;
                 case 15:
-                    GMesCreate(0x20);
+                    GMesCreate(GMES_MES_MG_DRAW);
                     HuAudSeqPlay(0x6C);
                     m238_drawPhase = 1;
                     break;

@@ -2607,7 +2607,7 @@ s32 MB4_ComTeresaPlayerChoice(u8 *arg0) {
 void MB4_BoardInit(void) {
     GwSystem.current_board_index = 3;
     omInitObjMan(0xA, 0);
-    omOvlGotoEx(0x47, 0, 0x192);
+    omOvlGotoEx(boardcall, 0, 0x192);
 }
 
 void MB4_SaveInit(void) {

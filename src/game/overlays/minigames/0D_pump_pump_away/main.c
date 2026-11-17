@@ -3631,7 +3631,7 @@ void m213_SeqStartWaitObjMain(omObjData *obj) {
 }
 
 void m213_SeqStartObjMain(omObjData *obj) {
-    GMesCreate(5);
+    GMesCreate(GMES_MES_5);
     obj->func = m213_SeqStartWaitObjMain;
     m213_phaseStep = 1;
 }

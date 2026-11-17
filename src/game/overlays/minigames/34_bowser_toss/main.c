@@ -441,7 +441,7 @@ void m252_MainObjMain(omObjData *object) {
             break;
         case 2:
             if (GMesStatGet() == 0) {
-                GMesCreate(0x1A, (m252_timer + 29) / 30, 156, 32);
+                GMesCreate(GMES_MES_TIMER, (m252_timer + 29) / 30, 156, 32);
                 MgFlowStatSet(MG_STATE_PLAY);
                 m252_phase++;
             }
@@ -460,7 +460,7 @@ void m252_MainObjMain(omObjData *object) {
             break;
         case 4:
             if (m252_KoopaAllLandCheck() && m252_PlayerAllThrownCheck()) {
-                GMesCreate(0x11);
+                GMesCreate(GMES_MES_MG_FINISH);
                 MgFlowStatSet(MG_STATE_FINISH);
                 HuAudSeqFadeOut(120);
                 m252_PlayerMdlSwap(mgPlayerObjTbl[0], 0, 10);
@@ -528,7 +528,7 @@ void m252_MainObjMain(omObjData *object) {
         case 8:
             if (m252_PlayerAllEndCheck() && m252_ScoreAllEndCheck()) {
                 if (m252_winnerNo == -1) {
-                    GMesCreate(0x20);
+                    GMesCreate(GMES_MES_MG_DRAW);
                     HuAudSeqPlay(0x6C);
                     m252_resultWait = 144;
                     MgFlowStatSet(MG_STATE_RESULT);
@@ -541,7 +541,7 @@ void m252_MainObjMain(omObjData *object) {
                         m252_recordDist = m252_winDist;
                         m252_ScoreSet(2, m252_winDist);
                         GWMgRecordSet(4, (u16)m252_recordDist);
-                        GMesCreate(0x1B);
+                        GMesCreate(GMES_MES_MG_RECORD);
                         m252_newRecordF = 1;
                         m252_resultWait = 99;
                         m252_phase = 9;
@@ -577,7 +577,7 @@ void m252_MainObjMain(omObjData *object) {
             }
             break;
         case 10:
-            GMesCreate(0x16, m252_WorkPtrGet(mgPlayerObjTbl[m252_winnerNo])->unk_1C);
+            GMesCreate(GMES_MES_MG_WINNER, m252_WorkPtrGet(mgPlayerObjTbl[m252_winnerNo])->unk_1C);
             if (m252_newRecordF != 0) {
                 HuAudSeqPlay(0x6A);
             }

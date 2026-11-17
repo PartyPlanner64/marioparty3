@@ -271,7 +271,7 @@ void m264_MainObjMain(omObjData *object) {
             break;
         case 2:
             if (++m264_phaseTimer == 1) {
-                GMesCreate(8);
+                GMesCreate(GMES_MES_8);
             } else if (GMesStatGet() == 0) {
                 m264_phaseTimer = 0;
                 m264_phase++;
@@ -283,7 +283,7 @@ void m264_MainObjMain(omObjData *object) {
             break;
         case 4:
             if (++m264_phaseTimer == 1) {
-                GMesCreate(0x13);
+                GMesCreate(GMES_MES_19);
                 HuAudSeqFadeOut(120);
             } else if (GMesStatGet() == 0) {
                 m264_phaseTimer = 0;
@@ -299,12 +299,12 @@ void m264_MainObjMain(omObjData *object) {
                 switch (m264_missF) {
                     case 0:
                         HuAudSeqPlay(0x68);
-                        GMesTimeMaxSet(GMesCreate(0x24), 120);
+                        GMesTimeMaxSet(GMesCreate(GMES_MES_36), 120);
                         GwPlayer[m264_playerNo].bonusCoin = mgInstColumnTbl[m264_hitCarrierNo];
                         break;
                     case 1:
                         HuAudSeqPlay(0x6B);
-                        GMesTimeMaxSet(GMesCreate(0x1D), 120);
+                        GMesTimeMaxSet(GMesCreate(GMES_MES_29), 120);
                         GwPlayer[m264_playerNo].bonusCoin = -1;
                         break;
                 }
@@ -369,7 +369,7 @@ void m264_PlayObjMain(omObjData *object) {
 
     if (--m264_timer == 300) {
         m264_carrierPhase = 2;
-        GMesCreate(0x1A, 10, 160, 56);
+        GMesCreate(GMES_MES_TIMER, 10, 160, 56);
     } else if (m264_timer >= 0) {
         GMesTimerValueSet((m264_timer + 29) / 30);
         m264_PlayerInputUpdate();
@@ -801,9 +801,9 @@ void m264_CarrierObjInit(omObjData *object) {
         m264_carrierMdlTbl[i][1] = Hu3DModelLink(m264_carrierMdlTbl[0][1]);
     }
     for (i = 0; i < 5; i++) {
-        Hu3DModelCameraSet(m264_carrierMdlTbl[i][0], 0);
+        Hu3DModelCameraSet(m264_carrierMdlTbl[i][0], HU3D_CAM_NONE);
         Hu3DModelScaleSet(m264_carrierMdlTbl[i][1], 1.5f, 1.0f, 1.5f);
-        Hu3DModelCameraSet(m264_carrierMdlTbl[i][1], 0);
+        Hu3DModelCameraSet(m264_carrierMdlTbl[i][1], HU3D_CAM_NONE);
     }
     m264_carrierMotTbl[0] = m264_MotMdlRead(0xA0102);
     m264_carrierMotTbl[1] = m264_MotMdlRead(0xA0103);
@@ -884,8 +884,8 @@ void m264_CarrierEnterUpdate(void) {
                 Hu3DModelPosSet(model, startPos[i].x, 0.0f, startPos[i].z);
                 Hu3DModelPosSet(shadow, Hu3DData[model].pos.x, 0.0f, Hu3DData[model].pos.z);
                 m264_carrierMotNoTbl[i] = 1;
-                Hu3DModelCameraSet(model, 1);
-                Hu3DModelCameraSet(shadow, 1);
+                Hu3DModelCameraSet(model, HU3D_CAM0);
+                Hu3DModelCameraSet(shadow, HU3D_CAM0);
                 m264_carrierEnterPhaseTbl[i]++;
                 break;
             case 1:
@@ -1108,8 +1108,8 @@ void m264_CarrierFleeUpdate(void) {
                     }
                     break;
                 case 2:
-                    Hu3DModelCameraSet(model, 0);
-                    Hu3DModelCameraSet(shadow, 0);
+                    Hu3DModelCameraSet(model, HU3D_CAM_NONE);
+                    Hu3DModelCameraSet(shadow, HU3D_CAM_NONE);
                     m264_carrierFleePhaseTbl[i]++;
                     break;
             }
@@ -1154,8 +1154,8 @@ void m264_CarrierFleeUpdate(void) {
                     }
                     break;
                 case 2:
-                    Hu3DModelCameraSet(model, 0);
-                    Hu3DModelCameraSet(shadow, 0);
+                    Hu3DModelCameraSet(model, HU3D_CAM_NONE);
+                    Hu3DModelCameraSet(shadow, HU3D_CAM_NONE);
                     m264_carrierFleePhaseTbl[i]++;
                     break;
             }
@@ -1282,7 +1282,7 @@ void m264_BoxObjInit(omObjData *object) {
         Hu3DModelPosSet(m264_boxMdlTbl[i][1], Hu3DData[m264_boxMdlTbl[i][0]].pos.x, 1000.0f,
                         Hu3DData[m264_boxMdlTbl[i][0]].pos.z);
         Hu3DModelScaleSet(m264_boxMdlTbl[i][1], 3.0f, 3.0f, 3.0f);
-        Hu3DModelCameraSet(m264_boxMdlTbl[i][1], 0);
+        Hu3DModelCameraSet(m264_boxMdlTbl[i][1], HU3D_CAM_NONE);
         Hu3DModelPosSet(m264_boxMdlTbl[i][2], Hu3DData[m264_boxMdlTbl[i][0]].pos.x, 0.0f,
                         Hu3DData[m264_boxMdlTbl[i][0]].pos.z);
         Hu3DModelScaleSet(m264_boxMdlTbl[i][2], 1.5f, 1.0f, 1.5f);
@@ -1291,7 +1291,7 @@ void m264_BoxObjInit(omObjData *object) {
     Hu3DParticleAttrSet(m264_prizeEffTbl[0], 1, 0);
     m264_prizeEffTbl[1] = Hu3DModelRead(9, 0x2B9);
     Hu3DModelScaleSet(m264_prizeEffTbl[1], 1.0f, 1.0f, 1.0f);
-    Hu3DModelCameraSet(m264_prizeEffTbl[1], 0);
+    Hu3DModelCameraSet(m264_prizeEffTbl[1], HU3D_CAM_NONE);
     m264_boxState = 0;
     object->func = m264_BoxObjMain;
 }
@@ -1304,7 +1304,7 @@ void m264_BoxShowUpdate(void) {
             case 0:
                 for (i = 0; i < 5; i++) {
                     Hu3DMotionSpeedSet(m264_boxMdlTbl[i][0], 1.0f);
-                    Hu3DModelCameraSet(m264_boxMdlTbl[i][1], 1);
+                    Hu3DModelCameraSet(m264_boxMdlTbl[i][1], HU3D_CAM0);
                 }
                 HuAudFXPlay(0x4F1);
                 m264_boxShowPhase++;
@@ -1332,7 +1332,7 @@ void m264_BoxShowUpdate(void) {
                     for (i = 0; i < 5; i++) {
                         Hu3DMotionSpeedSet(m264_boxMdlTbl[i][0], 0.0f);
                         Hu3DMotionTimeSet(m264_boxMdlTbl[i][0], 0.0f);
-                        Hu3DModelCameraSet(m264_boxMdlTbl[i][1], 0);
+                        Hu3DModelCameraSet(m264_boxMdlTbl[i][1], HU3D_CAM_NONE);
                     }
                     m264_boxShowPhase++;
                 }
@@ -1384,7 +1384,7 @@ void m264_PrizeUpdate(void) {
             case 0:
                 Hu3DModelPosSet(m264_boxMdlTbl[index][1], Hu3DData[m264_boxMdlTbl[index][0]].pos.x,
                                 40.0f, Hu3DData[m264_boxMdlTbl[index][0]].pos.z);
-                Hu3DModelCameraSet(m264_boxMdlTbl[index][1], 1);
+                Hu3DModelCameraSet(m264_boxMdlTbl[index][1], HU3D_CAM0);
                 Hu3DMotionSpeedSet(m264_boxMdlTbl[index][0], 1.0f);
                 HuAudFXPlay(0x4F7);
                 m264_prizePhase++;
@@ -1399,7 +1399,7 @@ void m264_PrizeUpdate(void) {
                     EffectPosSet(m264_prizeEffTbl[0], Hu3DData[m264_boxMdlTbl[index][1]].pos.x,
                                        Hu3DData[m264_boxMdlTbl[index][1]].pos.y,
                                        Hu3DData[m264_boxMdlTbl[index][1]].pos.z);
-                    Hu3DModelCameraSet(m264_prizeEffTbl[1], 1);
+                    Hu3DModelCameraSet(m264_prizeEffTbl[1], HU3D_CAM0);
                     Hu3DModelPosSet(m264_prizeEffTbl[1], Hu3DData[m264_boxMdlTbl[index][1]].pos.x,
                                     0.0f, Hu3DData[m264_boxMdlTbl[index][1]].pos.z);
                     m264_prizeSmokeState = 1;
@@ -1466,15 +1466,15 @@ void m264_EffObjInit(omObjData *object) {
     for (i = 0; i < 5; i++) {
         m264_smokeMdlTbl[i] = Hu3DModelRead(0x610005, 0x2B9);
         Hu3DModelScaleSet(m264_smokeMdlTbl[i], 1.5f, 1.5f, 1.0f);
-        Hu3DModelCameraSet(m264_smokeMdlTbl[i], 0);
+        Hu3DModelCameraSet(m264_smokeMdlTbl[i], HU3D_CAM_NONE);
     }
     m264_effMotTbl[0] = m264_MotMdlRead(0x610005);
     m264_effMdlTbl[0] = Hu3DModelRead(0xB0006, 0x2B9);
     m264_effMotTbl[1] = m264_MotMdlRead(0xB0006);
-    Hu3DModelCameraSet(m264_effMdlTbl[0], 0);
+    Hu3DModelCameraSet(m264_effMdlTbl[0], HU3D_CAM_NONE);
     m264_effMdlTbl[1] = Hu3DModelRead(0x610004, 0x2B9);
     m264_effMotTbl[2] = m264_MotMdlRead(0x610004);
-    Hu3DModelCameraSet(m264_effMdlTbl[1], 0);
+    Hu3DModelCameraSet(m264_effMdlTbl[1], HU3D_CAM_NONE);
     object->func = m264_EffObjMain;
 }
 
@@ -1495,11 +1495,11 @@ void m264_EffObjMain(omObjData *object) {
                 y = Hu3DData[m264_carrierMdlTbl[i][0]].pos.y + 125.0f;
                 z = Hu3DData[m264_carrierMdlTbl[i][0]].pos.z + 50.0f;
                 Hu3DModelPosSet(m264_smokeMdlTbl[i], x, y, z);
-                Hu3DModelCameraSet(m264_smokeMdlTbl[i], 1);
+                Hu3DModelCameraSet(m264_smokeMdlTbl[i], HU3D_CAM0);
                 Hu3DMotionModelSet(m264_smokeMdlTbl[i], m264_effMotTbl[0]);
-                Hu3DModelCameraSet(m264_boxMdlTbl[i][0], 0);
-                Hu3DModelCameraSet(m264_boxMdlTbl[i][1], 0);
-                Hu3DModelCameraSet(m264_boxMdlTbl[i][2], 0);
+                Hu3DModelCameraSet(m264_boxMdlTbl[i][0], HU3D_CAM_NONE);
+                Hu3DModelCameraSet(m264_boxMdlTbl[i][1], HU3D_CAM_NONE);
+                Hu3DModelCameraSet(m264_boxMdlTbl[i][2], HU3D_CAM_NONE);
             }
         }
         HuAudFXPlay(0x4F2);
@@ -1511,7 +1511,7 @@ void m264_EffObjMain(omObjData *object) {
         do {
             for (i = 0; i < 5; i++) {
                 if (i != m264_hitCarrierNo) {
-                    Hu3DModelCameraSet(m264_smokeMdlTbl[i], 0);
+                    Hu3DModelCameraSet(m264_smokeMdlTbl[i], HU3D_CAM_NONE);
                 }
             }
         } while (0); // TODO: required to match (loop depth affects i register allocation)
@@ -1520,45 +1520,45 @@ void m264_EffObjMain(omObjData *object) {
         index = m264_hitCarrierNo;
         z = Hu3DData[m264_boxMdlTbl[index][0]].pos.z + 50.0f;
         Hu3DModelPosSet(m264_smokeMdlTbl[index], Hu3DData[m264_boxMdlTbl[index][0]].pos.x, 10.0f, z);
-        Hu3DModelCameraSet(m264_smokeMdlTbl[index], 1);
+        Hu3DModelCameraSet(m264_smokeMdlTbl[index], HU3D_CAM0);
         Hu3DMotionModelSet(m264_smokeMdlTbl[index], m264_effMotTbl[0]);
-        Hu3DModelCameraSet(m264_boxMdlTbl[index][0], 0);
-        Hu3DModelCameraSet(m264_boxMdlTbl[index][2], 0);
+        Hu3DModelCameraSet(m264_boxMdlTbl[index][0], HU3D_CAM_NONE);
+        Hu3DModelCameraSet(m264_boxMdlTbl[index][2], HU3D_CAM_NONE);
         m264_playerActNo = 3;
         m264_playerEffState = 1;
         m264_prizeSmokeState = 2;
     } else if (m264_prizeSmokeState == 2) {
         model = m264_smokeMdlTbl[m264_hitCarrierNo];
         if (Hu3DMotion[Hu3DData[model].motId].unk02 == Hu3DData[model].motTime) {
-            Hu3DModelCameraSet(model, 0);
+            Hu3DModelCameraSet(model, HU3D_CAM_NONE);
         }
     }
     if (m264_playerEffState == 1) {
         Hu3DModelPosSet(m264_effMdlTbl[0], m264_playerObj->trans.x, 100.0f,
                         m264_playerObj->trans.z + 150.0f);
-        Hu3DModelCameraSet(m264_effMdlTbl[0], 1);
+        Hu3DModelCameraSet(m264_effMdlTbl[0], HU3D_CAM0);
         Hu3DMotionModelSet(m264_effMdlTbl[0], m264_effMotTbl[1]);
-        Hu3DModelCameraSet(m264_batMdl, 0);
+        Hu3DModelCameraSet(m264_batMdl, HU3D_CAM_NONE);
         m264_playerEffState = 2;
     }
     if (m264_playerEffState == 2) {
         model = m264_effMdlTbl[0];
         if (Hu3DMotion[Hu3DData[model].motId].unk02 == Hu3DData[model].motTime) {
-            Hu3DModelCameraSet(model, 0);
+            Hu3DModelCameraSet(model, HU3D_CAM_NONE);
         }
     }
     if (m264_hitEffState == 1) {
         x = m264_playerObj->trans.x + cosdf(m264_playerObj->rot.y - 90.0f) * 100.0f;
         Hu3DModelPosSet(m264_effMdlTbl[1], x, 50.0f,
                         m264_playerObj->trans.z + sindf(m264_playerObj->rot.y - 90.0f) * 100.0f);
-        Hu3DModelCameraSet(m264_effMdlTbl[1], 1);
+        Hu3DModelCameraSet(m264_effMdlTbl[1], HU3D_CAM0);
         Hu3DMotionModelSet(m264_effMdlTbl[1], m264_effMotTbl[2]);
         m264_hitEffState = 2;
     }
     if (m264_hitEffState == 2) {
         model = m264_effMdlTbl[1];
         if (Hu3DMotion[Hu3DData[model].motId].unk02 == Hu3DData[model].motTime) {
-            Hu3DModelCameraSet(model, 0);
+            Hu3DModelCameraSet(model, HU3D_CAM_NONE);
         }
     }
 }

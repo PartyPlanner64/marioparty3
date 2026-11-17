@@ -383,7 +383,7 @@ void m219_MainObjMain(omObjData *object) {
             break;
         case 0:
             if (WipeStatGet() == 0) {
-                GMesCreate(5);
+                GMesCreate(GMES_MES_5);
                 HuAudFXPlay(0xE);
                 m219_phase++;
                 m219_phaseTimer = 0;
@@ -394,7 +394,7 @@ void m219_MainObjMain(omObjData *object) {
                 HuAudSeqPlay(0x2E);
             }
             if (GMesStatGet() == 0) {
-                GMesCreate(0x1A, (m219_timer + 29) / 30, 156, 32);
+                GMesCreate(GMES_MES_TIMER, (m219_timer + 29) / 30, 156, 32);
                 MgFlowStatSet(MG_STATE_PLAY);
                 m219_phase++;
             }
@@ -404,7 +404,7 @@ void m219_MainObjMain(omObjData *object) {
             GMesTimerValueSet((m219_timer + 29) / 30);
             if (m219_timer <= 0) {
                 GMesTimerEnd();
-                GMesCreate(0x10);
+                GMesCreate(GMES_MES_16);
                 MgFlowStatSet(MG_STATE_FINISH);
                 HuAudSeqFadeOut(120);
                 m219_timer = 0;
@@ -427,7 +427,7 @@ void m219_MainObjMain(omObjData *object) {
                 team0 = (LogJamTeam *)m219_WorkPtrGet(m219_teamObjTbl[0]);
                 team1 = (LogJamTeam *)m219_WorkPtrGet(m219_teamObjTbl[1]);
                 if (team0->unk_12 > team1->unk_12) {
-                    GMesCreate(0x1E, team0->unk_08->unk_1C, team0->unk_0C->unk_1C);
+                    GMesCreate(GMES_MES_MG_WINNERS_2, team0->unk_08->unk_1C, team0->unk_0C->unk_1C);
                     GwPlayer[team0->unk_08->unk_18].bonusCoin += 10;
                     GwPlayer[team0->unk_0C->unk_18].bonusCoin += 10;
                     team0->unk_08->unk_06 = team0->unk_0C->unk_06 = 0;
@@ -435,7 +435,7 @@ void m219_MainObjMain(omObjData *object) {
                     HuAudSeqPlay(0x66);
                     m219_resultWait = 140;
                 } else if (team0->unk_12 < team1->unk_12) {
-                    GMesCreate(0x1E, team1->unk_08->unk_1C, team1->unk_0C->unk_1C);
+                    GMesCreate(GMES_MES_MG_WINNERS_2, team1->unk_08->unk_1C, team1->unk_0C->unk_1C);
                     GwPlayer[team1->unk_08->unk_18].bonusCoin += 10;
                     GwPlayer[team1->unk_0C->unk_18].bonusCoin += 10;
                     team0->unk_08->unk_06 = team0->unk_0C->unk_06 = 1;
@@ -443,7 +443,7 @@ void m219_MainObjMain(omObjData *object) {
                     HuAudSeqPlay(0x66);
                     m219_resultWait = 140;
                 } else {
-                    GMesCreate(0x20);
+                    GMesCreate(GMES_MES_MG_DRAW);
                     team0->unk_08->unk_06 = team0->unk_0C->unk_06 = 1;
                     team1->unk_08->unk_06 = team1->unk_0C->unk_06 = 1;
                     HuAudSeqPlay(0x6C);

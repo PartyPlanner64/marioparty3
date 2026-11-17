@@ -1087,7 +1087,7 @@ void m211_MainObjMain(omObjData *object) {
 
     switch (m211_phase) {
         case 0:
-            GMesCreate(5);
+            GMesCreate(GMES_MES_5);
             m211_timer = 900;
             m211_phase++;
             /* fallthrough */
@@ -1102,7 +1102,7 @@ void m211_MainObjMain(omObjData *object) {
                 break;
             }
             m211_phase++;
-            GMesCreate(0x1A, (m211_timer + 0x1D) / 30, 0xA0, 0x20);
+            GMesCreate(GMES_MES_TIMER, (m211_timer + 0x1D) / 30, 0xA0, 0x20);
             HuAudFXPlay(0xE);
             for (i = 0; i < 2; i++) {
                 m211_pizzaStartCntTbl[i] = (s16)m211_pizzaCntTbl[i];
@@ -1139,7 +1139,7 @@ void m211_MainObjMain(omObjData *object) {
                 }
             }
             GMesTimerEnd();
-            GMesCreate(0x10);
+            GMesCreate(GMES_MES_16);
             HuAudSeqFadeOut(0x78);
             m211_phaseTimer = 0xF;
             m211_phase++;
@@ -1153,11 +1153,11 @@ void m211_MainObjMain(omObjData *object) {
                 break;
             }
             if (m211_winner == -1) {
-                GMesCreate(0x20);
+                GMesCreate(GMES_MES_MG_DRAW);
                 seq = 0x6C;
             } else {
                 GMesCreate(
-                    0x1E,
+                    GMES_MES_MG_WINNERS_2,
                     GwPlayer[m211_groupWorkTbl[m211_winner][0]->unk30].chr,
                     GwPlayer[m211_groupWorkTbl[m211_winner][1]->unk30].chr);
                 seq = 0x66;

@@ -196,7 +196,7 @@ void MBDWarpEffProc(void) {
     s16 effect = EffectCreate(0x110012, 0x2A9);
     s32 i;
 
-    Hu3DModelCameraSet(effect, 1);
+    Hu3DModelCameraSet(effect, HU3D_CAM0);
     EffectParamSet(effect, 1.0f, 30.0f, 1.0f);
     EffectRangeSet(effect, 10.0f);
     for (i = 0; i < 30; i++) {

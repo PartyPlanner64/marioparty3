@@ -535,7 +535,7 @@ void m258_StageObjInit(omObjData *object) {
     HuSprPosSet(m258_sprGrpTbl[1], 0, 160, 120);
     HuSprAttrSet(m258_sprGrpTbl[1], 0, 0x1000);
     object->model[0] = Hu3DModelRead(0x5B0005, 0x2D9);
-    Hu3DModelCameraSet(object->model[0], 3);
+    Hu3DModelCameraSet(object->model[0], HU3D_CAM0 | HU3D_CAM1);
     object->func = m258_StageObjMain;
 }
 
@@ -546,7 +546,7 @@ void m258_StageObjMain(omObjData *object) {
 
     switch (m258_phase) {
         case 0:
-            Hu3DModelCameraSet(Hu3DHookFuncCreate(0xC0, m258_BillboardDraw, 2), 3);
+            Hu3DModelCameraSet(Hu3DHookFuncCreate(0xC0, m258_BillboardDraw, 2), HU3D_CAM0 | HU3D_CAM1);
             GMesCreate(GMES_MES_MG_START);
             m258_bgSeNo = HuAudFXPlay(0x4BF);
             m258_timer = 1800;
@@ -558,7 +558,7 @@ void m258_StageObjMain(omObjData *object) {
             if (GMesStatGet() == 0) {
                 MgFlowStatSet(MG_STATE_PLAY);
                 m258_phase++;
-                GMesCreate(0x1A, (m258_timer + 29) / 30, 0xA0, 0x20);
+                GMesCreate(GMES_MES_TIMER, (m258_timer + 29) / 30, 0xA0, 0x20);
                 HuAudFXPlay(0xE);
             }
             break;
@@ -577,7 +577,7 @@ void m258_StageObjMain(omObjData *object) {
             break;
         case 3:
             GMesTimerEnd();
-            GMesCreate(0x11);
+            GMesCreate(GMES_MES_MG_FINISH);
             HuAudSeqFadeOut(0x78);
             m258_phase = 6;
             m258_phaseTimer = 15;
@@ -599,10 +599,10 @@ void m258_StageObjMain(omObjData *object) {
                 }
             }
             if (m258_winner != -1) {
-                GMesCreate(0x16, PLAYER_WORK(mgPlayerObjTbl[m258_winner])->character);
+                GMesCreate(GMES_MES_MG_WINNER, PLAYER_WORK(mgPlayerObjTbl[m258_winner])->character);
                 HuAudSeqPlay(0x67);
             } else {
-                GMesCreate(0x20);
+                GMesCreate(GMES_MES_MG_DRAW);
                 HuAudSeqPlay(0x6C);
             }
             m258_phaseTimer = 15;
@@ -892,8 +892,8 @@ void m258_PlayerObjInit(omObjData *object) {
     MgPlayerMapAttrSet(object, 0, 2);
     data->unk50 |= 0x8200;
     object->func = m258_PlayerObjMain;
-    Hu3DModelCameraSet(object->model[0], 3);
-    Hu3DModelCameraSet(object->model[1], 3);
+    Hu3DModelCameraSet(object->model[0], HU3D_CAM0 | HU3D_CAM1);
+    Hu3DModelCameraSet(object->model[1], HU3D_CAM0 | HU3D_CAM1);
     MgPlayerMotLoad(object, 0, CharMotionDataNumGet(character, 0), 1, 0);
     MgPlayerMotLoad(object, 1, CharMotionDataNumGet(character, 1), 1, 0);
     MgPlayerMotLoad(object, 2, CharMotionDataNumGet(character, 2), 1, 0);

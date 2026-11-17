@@ -553,7 +553,7 @@ void m237_MdlObjInit(omObjData *object) {
         object->model[i] = Hu3DModelRead(files[i] | 0x460000, 0x4BD);
     }
     object->model[20] = Hu3DModelRead(0x460005, 0x4BD);
-    Hu3DModelCameraSet(object->model[20], 0);
+    Hu3DModelCameraSet(object->model[20], HU3D_CAM_NONE);
     Hu3DModelScaleSet(object->model[20], 0.666666f, 0.666666f, 0.666666f);
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 3; j++) {
@@ -576,7 +576,7 @@ void m237_MdlObjInit(omObjData *object) {
         } else {
             object->model[i + 4] = Hu3DModelLink(object->model[4]);
         }
-        Hu3DModelCameraSet(object->model[i + 4], 15);
+        Hu3DModelCameraSet(object->model[i + 4], HU3D_CAM0 | HU3D_CAM1 | HU3D_CAM2 | HU3D_CAM3);
         Hu3DMotionAttrSet(object->model[i + 4], 1, 1);
         Hu3DModelPosSet(object->model[i + 4], 0.0f, i * 1120.0 - 9.0, -300.0f);
         Hu3DModelScaleSet(object->model[i + 4], 0.75f, 0.75f, 0.75f);
@@ -934,7 +934,7 @@ void m237_PlayerObjMain(omObjData *object) {
         }
         if (group == 0) {
             Hu3DModelAttrSet(m237_mdlObj->model[20], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-            Hu3DModelCameraSet(m237_mdlObj->model[20], 0);
+            Hu3DModelCameraSet(m237_mdlObj->model[20], HU3D_CAM_NONE);
         }
     }
     {

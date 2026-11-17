@@ -403,7 +403,7 @@ u8 MgFlowMain(void) {
 
         case MG_STATE_PLAY:
             if (mgFlowPlayTime == 0 && mgFlow->timeDisp == MG_TIME_DISP_COUNTDOWN) {
-                GMesCreate(0x1A, 30, 160, 24);
+                GMesCreate(GMES_MES_TIMER, 30, 160, 24);
             }
             switch (mgFlow->timeDisp) {
                 case MG_TIME_DISP_NONE:
@@ -420,7 +420,7 @@ u8 MgFlowMain(void) {
             }
             if (mgFlow->timeLimit != -1) {
                 if (mgFlow->timeLimit - 900 == mgFlowPlayTime) {
-                    GMesCreate(0x1A, 30, 160, 24);
+                    GMesCreate(GMES_MES_TIMER, 30, 160, 24);
                     mgFlowTimerMesF = 1;
                 } else if (mgFlow->timeLimit - 900 < mgFlowPlayTime) {
                     GMesTimerValueSet((mgFlow->timeLimit - mgFlowPlayTime) / 30 + 1);
@@ -501,12 +501,12 @@ u8 MgFlowMain(void) {
             mgFlowResultF = 0;
             if (mgFlowResultTime == 0 && mgFlow->newRecord == TRUE) {
                 mgFlowResultWait = 75;
-                GMesCreate(0x1B);
+                GMesCreate(GMES_MES_MG_RECORD);
             }
             if (mgFlowResultTime == mgFlowResultWait) {
                 switch (mgFlow->resultType) {
                     case MG_RESULT_WIN_1:
-                        GMesCreate(0x16, GwPlayer[mgFlow->winners[0]].chr);
+                        GMesCreate(GMES_MES_MG_WINNER, GwPlayer[mgFlow->winners[0]].chr);
                         if (mgFlow->newRecord == TRUE) {
                             HuAudSeqPlay(0x6A);
                         } else if (mgFlow->type == MINIGAME_BATTLE) {
@@ -516,7 +516,7 @@ u8 MgFlowMain(void) {
                         }
                         break;
                     case MG_RESULT_WIN_2:
-                        GMesCreate(0x1E, GwPlayer[mgFlow->winners[0]].chr,
+                        GMesCreate(GMES_MES_MG_WINNERS_2, GwPlayer[mgFlow->winners[0]].chr,
                                    GwPlayer[mgFlow->winners[1]].chr);
                         if (mgFlow->newRecord == TRUE) {
                             HuAudSeqPlay(0x6A);
@@ -525,36 +525,36 @@ u8 MgFlowMain(void) {
                         }
                         break;
                     case MG_RESULT_WIN_3:
-                        GMesCreate(0x22, GwPlayer[mgFlow->winners[0]].chr,
+                        GMesCreate(GMES_MES_MG_WINNERS_3, GwPlayer[mgFlow->winners[0]].chr,
                                    GwPlayer[mgFlow->winners[1]].chr,
                                    GwPlayer[mgFlow->winners[2]].chr);
                         HuAudSeqPlay(0x66);
                         break;
                     case MG_RESULT_WIN_4:
-                        GMesCreate(0x23, GwPlayer[mgFlow->winners[0]].chr,
+                        GMesCreate(GMES_MES_MG_WINNERS_4, GwPlayer[mgFlow->winners[0]].chr,
                                    GwPlayer[mgFlow->winners[1]].chr,
                                    GwPlayer[mgFlow->winners[2]].chr,
                                    GwPlayer[mgFlow->winners[3]].chr);
                         HuAudSeqPlay(0x66);
                         break;
                     case MG_RESULT_DRAW:
-                        GMesCreate(0x20);
+                        GMesCreate(GMES_MES_MG_DRAW);
                         HuAudSeqPlay(0x6C);
                         break;
                     case MG_RESULT_GOT_ITEM:
-                        GMesCreate(0x24);
+                        GMesCreate(GMES_MES_36);
                         HuAudSeqPlay(0x68);
                         break;
                     case MG_RESULT_GOT_ITEM_ALT:
-                        GMesCreate(0x25);
+                        GMesCreate(GMES_MES_37);
                         HuAudSeqPlay(0x69);
                         break;
                     case MG_RESULT_GAME_OVER:
-                        GMesCreate(0x1D);
+                        GMesCreate(GMES_MES_29);
                         HuAudSeqPlay(0x6B);
                         break;
                     case MG_RESULT_LOSER:
-                        GMesCreate(0x17);
+                        GMesCreate(GMES_MES_MG_LOSER);
                         break;
                     case MG_RESULT_NONE:
                         break;

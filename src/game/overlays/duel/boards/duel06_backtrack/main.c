@@ -402,7 +402,7 @@ void MBD6_BranchHelpEnd(void) {
 void MBD6_BoardInit(void) {
     GwSystem.current_board_index = 5;
     omInitObjMan(0xA, 0);
-    omOvlGotoEx(0x5A, 0, 0x4190);
+    omOvlGotoEx(duelcall, 0, 0x4190);
 }
 
 void MBD6_SaveInit(void) {
@@ -1997,7 +1997,7 @@ void MBD6_KoopaFireObjMain(omObjData *object) {
                 Hu3DSprModelReset(data->sprId[i]);
                 Hu3DModelPosSet(data->modelId[i], data->pos[i].x, data->pos[i].y, data->pos[i].z);
                 Hu3DModelScaleSet(data->modelId[i], data->scale[i], data->scale[i], data->scale[i]);
-                Hu3DModelCameraSet(data->modelId[i], 1);
+                Hu3DModelCameraSet(data->modelId[i], HU3D_CAM0);
             }
         } else {
             data->spawnTimer--;
@@ -2999,7 +2999,7 @@ void MBD6_SwitchCreate(s16 index) {
             Hu3DModelVtxBufMake(model);
             Hu3DMotionModelSetEx(model, mbd6_switchMot[0]);
             Hu3DMotionAttrSet(model, 2, 1);
-            Hu3DModelCameraSet(model, 1);
+            Hu3DModelCameraSet(model, HU3D_CAM0);
             Hu3DModelDynamicFree(model);
         } else {
             model = mbd6_switchMdlTbl[index] = Hu3DModelLink(mbd6_switchMdlTbl[0]);

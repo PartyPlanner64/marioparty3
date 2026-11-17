@@ -348,7 +348,7 @@ void m267_MainObjMain(omObjData *object) {
             break;
         case 2:
             if (m267_mainTimer++ == 0) {
-                GMesCreate(9);
+                GMesCreate(GMES_MES_9);
                 m267_mainTimer = 1;
             } else if (GMesStatGet() == 0) {
                 m267_mainTimer = 0;
@@ -361,7 +361,7 @@ void m267_MainObjMain(omObjData *object) {
             break;
         case 4:
             if (m267_mainTimer++ == 0) {
-                GMesCreate(0x14);
+                GMesCreate(GMES_MES_20);
                 HuAudSeqFadeOut(120);
             } else if (m267_mainTimer == 15) {
                 if (m267_playerStep >= 8) {
@@ -381,7 +381,7 @@ void m267_MainObjMain(omObjData *object) {
                 switch (m267_winF) {
                     case 1:
                         HuAudSeqPlay(0x73);
-                        m267_resultMesId = GMesCreate(0x16, m267_playerInfo[2]);
+                        m267_resultMesId = GMesCreate(GMES_MES_MG_WINNER, m267_playerInfo[2]);
                         GMesTimeMaxSet(m267_resultMesId, 0x78);
                         break;
                     case 0:
@@ -390,7 +390,7 @@ void m267_MainObjMain(omObjData *object) {
                                 "%s\x81\x40\x82\x6B\x82\x6E\x82\x72\x82\x73\x81\x49",
                                 m267_chrNameTbl[m267_playerInfo[2]]);
                         m267_resultMesId =
-                            GMesCreate(0x19, m267_mesBuf, 0xA0, 0x78, 1.0, 1.0, 1);
+                            GMesCreate(GMES_MES_25, m267_mesBuf, 0xA0, 0x78, 1.0, 1.0, 1);
                         GMesTimeMaxSet(m267_resultMesId, 0x78);
                         break;
                 }
@@ -584,7 +584,7 @@ void m267_RollObjMain(omObjData *object) {
         case 0:
             m267_saiState = 1;
             if (m267_turnNo == 1) {
-                GMesCreate(0x1A, 10, 0x9C, 0x38);
+                GMesCreate(GMES_MES_TIMER, 10, 0x9C, 0x38);
             }
             m267_rollPhase++;
             break;
@@ -1658,14 +1658,14 @@ void m267_BustEffObjInit(omObjData *object) {
     omSetSca(object, 1.0f, 1.0f, 1.0f);
     omObjMotionRead(object, 0, 0xB002F);
     Hu3DMotionModelSet(object->model[0], object->motion[0]);
-    Hu3DModelCameraSet(object->model[0], 0);
+    Hu3DModelCameraSet(object->model[0], HU3D_CAM_NONE);
     m267_bustEffReq = 0;
     object->func = m267_BustEffObjMain;
 }
 
 void m267_BustEffObjMain(omObjData *object) {
     if (m267_bustEffReq == 1) {
-        Hu3DModelCameraSet(object->model[0], 1);
+        Hu3DModelCameraSet(object->model[0], HU3D_CAM0);
         Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[0]].motId, 0, 10, 2);
         m267_bustEffReq = 0;
         if (m267_playerStep >= 8) {
@@ -1787,7 +1787,7 @@ void m267_SaiNumObjInit(omObjData *object) {
         Hu3DModelScaleSet(object->model[i], 1.0f, 1.0f, 1.0f);
     }
     for (i = 0; i < 6; i++) {
-        Hu3DModelCameraSet(object->model[i], 0);
+        Hu3DModelCameraSet(object->model[i], HU3D_CAM_NONE);
     }
     m267_saiNumState = 0;
     m267_saiNo = 0;
@@ -1801,7 +1801,7 @@ void m267_SaiNumObjMain(omObjData *object) {
                 m267_saiNumY = m267_saiPosY;
                 m267_saiNumScale = 0.0f;
                 m267_saiNumTimer = 0;
-                Hu3DModelCameraSet(object->model[m267_saiNo], 1);
+                Hu3DModelCameraSet(object->model[m267_saiNo], HU3D_CAM0);
                 m267_saiNumPhase++;
                 break;
             case 1:
@@ -1831,7 +1831,7 @@ void m267_SaiNumObjMain(omObjData *object) {
             m267_saiNumScale -= 0.1f;
         } else {
             m267_saiNumScale = 0.0f;
-            Hu3DModelCameraSet(object->model[m267_saiNo], 0);
+            Hu3DModelCameraSet(object->model[m267_saiNo], HU3D_CAM_NONE);
         }
     }
     if (m267_saiNo == 0) {

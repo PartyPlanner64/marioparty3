@@ -2314,7 +2314,7 @@ void m233_CountdownProc(void) {
         }
         HuPrcVSleep();
     }
-    GMesPosSet(GMesCreate(0x1A, m233_countdown, 160, 28), 154.0f, 28.0f);
+    GMesPosSet(GMesCreate(GMES_MES_TIMER, m233_countdown, 160, 28), 154.0f, 28.0f);
     while (m233_countdown > 0) {
         if (--timer == 0) {
             timer = 30;

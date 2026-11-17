@@ -2243,14 +2243,14 @@ void m203_ExitCheckObjMain(omObjData *obj) {
 void m203_MainObjMain(omObjData *obj) {
     switch (m203_phase) {
         case 0:
-            GMesCreate(4);
+            GMesCreate(GMES_MES_4);
             m203_phase = 1;
             m203_mainTimer = 0;
             break;
         case 1:
             if (GMesStatGet() == 0) {
                 m203_phase = 2;
-                GMesCreate(0x1A, 30, 160, 28);
+                GMesCreate(GMES_MES_TIMER, 30, 160, 28);
                 m203_timer = 901;
             }
             if (++m203_mainTimer == 33) {
@@ -2270,7 +2270,7 @@ void m203_MainObjMain(omObjData *obj) {
                 m203_phase = 3;
             }
             GMesTimerEnd();
-            GMesCreate(0xF);
+            GMesCreate(GMES_MES_15);
             HuAudSeqFadeOut(120);
             break;
         case 3:
@@ -2289,7 +2289,7 @@ void m203_MainObjMain(omObjData *obj) {
             }
             break;
         case 6:
-            GMesCreate(0x22, m203_teamChrTbl[0], m203_teamChrTbl[1], m203_teamChrTbl[2]);
+            GMesCreate(GMES_MES_MG_WINNERS_3, m203_teamChrTbl[0], m203_teamChrTbl[1], m203_teamChrTbl[2]);
             GwPlayer[m203_teamBss.unk00[0]].bonusCoin = 10;
             GwPlayer[m203_teamBss.unk00[1]].bonusCoin = 10;
             GwPlayer[m203_teamBss.unk00[2]].bonusCoin = 10;
@@ -2298,7 +2298,7 @@ void m203_MainObjMain(omObjData *obj) {
             m203_phase = 7;
             break;
         case 5:
-            GMesCreate(0x16, m203_swimmerChr);
+            GMesCreate(GMES_MES_MG_WINNER, m203_swimmerChr);
             GwPlayer[m203_swimmerPlayerNo].bonusCoin = 10;
             HuAudSeqPlay(0x65);
             m203_timer = 35;

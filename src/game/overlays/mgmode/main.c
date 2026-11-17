@@ -253,7 +253,7 @@ void mgmode_ObjectSetup(void) {
     storySceneNo = 0;
     model = &Hu3DData[HuSprLayerHookMdl];
     model->unk00 = (model->unk00 & 0xF9) | 3;
-    Hu3DModelCameraSet(HuSprLayerHookMdl, 1);
+    Hu3DModelCameraSet(HuSprLayerHookMdl, HU3D_CAM0);
     mgmode_gambleOpenF = 0;
     mgmode_battleOpenF = 0;
     for (i = 0; i < 6; i++) {
@@ -266,7 +266,7 @@ void mgmode_ObjectSetup(void) {
         mgmode_gambleOpenF = 1;
     }
     mgmode_zClearF = 0;
-    Hu3DModelCameraSet(Hu3DHookFuncCreate(0, mgmode_ZClearHook, 0), 2);
+    Hu3DModelCameraSet(Hu3DHookFuncCreate(0, mgmode_ZClearHook, 0), HU3D_CAM1);
     for (i = 0; i < 4; i++) {
         mgPlayerTeam[i] = 0;
     }

@@ -665,13 +665,13 @@ void option_RoomProc(void) {
     switch (active) {
         case 0:
             omOvlHisChg(0, 0x7B, 3, 0x91);
-            omOvlCallEx(0x7B, 6, 0x91);
+            omOvlCallEx(option, 6, 0x91);
             break;
         case 1:
-            omOvlGotoEx(0x7B, 4, 0x91);
+            omOvlGotoEx(option, 4, 0x91);
             break;
         case 2:
-            omOvlGotoEx(0x7B, 5, 0x91);
+            omOvlGotoEx(option, 5, 0x91);
             break;
         case 3:
             omOvlReturnEx(1);
@@ -1191,10 +1191,10 @@ void option_SoundRoomProc(void) {
     omOvlKill();
     switch (result) {
         case 4:
-            omOvlGotoEx(0x7B, 1, 0x91);
+            omOvlGotoEx(option, 1, 0x91);
             break;
         case 5:
-            omOvlGotoEx(0x7B, 2, 0x91);
+            omOvlGotoEx(option, 2, 0x91);
             break;
         case 0:
         case 1:

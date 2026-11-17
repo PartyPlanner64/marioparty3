@@ -316,7 +316,7 @@ void mgresultduel_CoinProc(void) {
         mgresultduel_coinTbl[i].unk04 = 0;
         obj->model[i + 1] = Hu3DSprModelData[mgresultduel_coinTbl[i].unk02].modelId;
         Hu3DModelPosSet(obj->model[i + 1], 0.0f, 400.0f, 0.0f);
-        Hu3DModelCameraSet(obj->model[i + 1], 1);
+        Hu3DModelCameraSet(obj->model[i + 1], HU3D_CAM0);
         Hu3DMotionSpeedSet(obj->model[i + 1], 2.0f);
         Hu3DModelScaleSet(Hu3DSprModelData[i + 1].modelId, 1.5f, 1.5f, 1.5f);
     }
@@ -332,7 +332,7 @@ void mgresultduel_CoinProc(void) {
         mgresultduel_coinEffTbl[i].unk04 = 0;
         obj->model[i + 21] = Hu3DSprModelData[mgresultduel_coinEffTbl[i].unk02].modelId;
         Hu3DModelPosSet(obj->model[i + 21], 0.0f, 400.0f, 0.0f);
-        Hu3DModelCameraSet(obj->model[i + 21], 1);
+        Hu3DModelCameraSet(obj->model[i + 21], HU3D_CAM0);
         Hu3DMotionSpeedSet(obj->model[i + 21], 1.0f);
         Hu3DModelScaleSet(Hu3DSprModelData[i + 21].modelId, 3.0f, 3.0f, 3.0f);
     }

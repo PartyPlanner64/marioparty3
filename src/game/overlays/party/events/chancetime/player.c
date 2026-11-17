@@ -33,20 +33,20 @@ void chancetime_PlayerProc(void) {
     Hu3DModelPosSet(obj->model[1], 360.0f, 0.0f, -50.0f);
     Hu3DModelRotSet(obj->model[1], 0.0f, -90.0f, 0.0f);
     Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    Hu3DModelCameraSet(obj->model[1], 2);
+    Hu3DModelCameraSet(obj->model[1], HU3D_CAM1);
 
     obj->model[2] = Hu3DModelRead(9, 0x2B9);
     Hu3DModelPosSet(obj->model[2], 360.0f, -10.0f, -50.0f);
     Hu3DModelScaleSet(obj->model[2], 1.0f, 1.0f, 1.0f);
     Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    Hu3DModelCameraSet(obj->model[2], 2);
+    Hu3DModelCameraSet(obj->model[2], HU3D_CAM1);
 
     obj->model[3] = Hu3DModelRead(0x1C000B, 0x2B9);
     Hu3DModelPosSet(obj->model[3], 180.0f, 220.0f, 0.0f);
     Hu3DMotionAttrSet(obj->model[3], 2, 0);
     Hu3DModelScaleSet(obj->model[3], 0.7f, 0.7f, 0.7f);
     Hu3DModelAttrSet(obj->model[3], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
-    Hu3DModelCameraSet(obj->model[3], 2);
+    Hu3DModelCameraSet(obj->model[3], HU3D_CAM1);
 
     obj->model[4] = Hu3DModelRead(0x5D0008, 0x2B9);
     Hu3DModelPosSet(obj->model[4], 180.0f, 220.0f, 0.0f);

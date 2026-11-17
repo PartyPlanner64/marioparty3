@@ -1694,11 +1694,11 @@ void m202_MainObjMain(omObjData *arg0) {
             break;
         case 1:
             if (--m202_timer == 0) {
-                GMesCreate(4);
+                GMesCreate(GMES_MES_4);
             }
             if (GMesStatGet() == 0) {
                 m202_PhaseSet(2);
-                GMesCreate(0x1A, 30, 160, 28);
+                GMesCreate(GMES_MES_TIMER, 30, 160, 28);
                 m202_timer = 901;
             }
             break;
@@ -1709,7 +1709,7 @@ void m202_MainObjMain(omObjData *arg0) {
             } else if (m202_soloHitF == 0) {
                 GMesTimerEnd();
                 m202_PhaseSet(3);
-                GMesCreate(0xF);
+                GMesCreate(GMES_MES_15);
                 m202_soloHitF = 0;
                 m202_timer = -15;
                 HuAudSeqFadeOut(120);
@@ -1718,7 +1718,7 @@ void m202_MainObjMain(omObjData *arg0) {
             if (m202_soloHitF == 1) {
                 GMesTimerEnd();
                 m202_PhaseSet(3);
-                GMesCreate(0xF);
+                GMesCreate(GMES_MES_15);
                 m202_soloHitF = 1;
                 m202_timer = -15;
                 HuAudSeqFadeOut(120);
@@ -1748,7 +1748,7 @@ void m202_MainObjMain(omObjData *arg0) {
                             chars[0] = GwPlayer[i].chr;
                         }
                     }
-                    GMesCreate(0x16, chars[0]);
+                    GMesCreate(GMES_MES_MG_WINNER, chars[0]);
                     HuAudSeqPlay(0x65);
                     GwPlayer[obj->work[0]].bonusCoin = 10;
                 } else {
@@ -1758,7 +1758,7 @@ void m202_MainObjMain(omObjData *arg0) {
                             j++;
                         }
                     }
-                    GMesCreate(0x22, chars[0], chars[1], chars[2]);
+                    GMesCreate(GMES_MES_MG_WINNERS_3, chars[0], chars[1], chars[2]);
                     HuAudSeqPlay(0x66);
                     for (i = 0; i < 3; i++) {
                         GwPlayer[objs[i]->work[0]].bonusCoin = 10;

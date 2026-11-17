@@ -444,7 +444,7 @@ s16 mgmode_ConfettiCreate(f32 arg0, f32 arg1, f32 arg2, f32 arg3) {
         model = Hu3DModelRead(mgmode_confettiMdlFileTbl[i], 0x2A9);
         mgmode_confettiMdlTbl[mgmode_confettiNum][i] = model;
         anim = Hu3DAnimRead(Hu3DData[model].hmf, 0xB0048, "e268p01_I8");
-        Hu3DModelCameraSet(model, 2);
+        Hu3DModelCameraSet(model, HU3D_CAM1);
         Hu3DAnmNoSet(anim, i * 2);
         Hu3DModelPosSet(model, 0.0f, 0.0f, 0.0f);
         Hu3DModelObjAttrSet(model, 0x20000, 0x20000);

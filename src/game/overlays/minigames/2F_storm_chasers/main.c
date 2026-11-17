@@ -1785,7 +1785,7 @@ void m247_SeqReturnWaitObjMain(omObjData *object) {
 }
 
 void m247_SeqFinishObjMain(omObjData *object) {
-    GMesCreate(0x12);
+    GMesCreate(GMES_MES_18);
     HuAudSeqFadeOut(0x78);
     m247_phaseTimer = 0x4B;
     object->func = m247_SeqReturnWaitObjMain;
@@ -1803,7 +1803,7 @@ void m247_SeqTimerObjMain(omObjData *object) {
 }
 
 void m247_SeqTimerStartObjMain(omObjData *object) {
-    GMesCreate(0x1A, 0x1E, 0xA0, 0x1C);
+    GMesCreate(GMES_MES_TIMER, 0x1E, 0xA0, 0x1C);
     m247_phaseTimer = 0x385;
     object->func = m247_SeqTimerObjMain;
 }
@@ -1819,7 +1819,7 @@ void m247_SeqStartWaitObjMain(omObjData *object) {
 }
 
 void m247_SeqStartObjMain(omObjData *arg0) {
-    GMesCreate(7);
+    GMesCreate(GMES_MES_7);
     arg0->func = m247_SeqStartWaitObjMain;
     m247_phaseStep = 1;
 }

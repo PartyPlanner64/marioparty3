@@ -3043,7 +3043,7 @@ void m242_MainObjMain(omObjData *object) {
             break;
         case 5:
             if (m242_timer == 0) {
-                GMesCreate(7);
+                GMesCreate(GMES_MES_7);
                 m242_timer++;
             } else if (m242_timer >= 43) {
                 HuAudSeqPlay(0x35);
@@ -3052,14 +3052,14 @@ void m242_MainObjMain(omObjData *object) {
             }
             if (GMesStatGet() == 0) {
                 m242_PhaseSet(6);
-                GMesCreate(0x1A, 10, 0xA0, 0x1C);
+                GMesCreate(GMES_MES_TIMER, 10, 0xA0, 0x1C);
                 m242_timer = 301;
             }
             break;
         case 13:
             if (m242_phaseDoneNo == 13) {
                 m242_PhaseSet(6);
-                GMesCreate(0x1A, 10, 0xA0, 0x1C);
+                GMesCreate(GMES_MES_TIMER, 10, 0xA0, 0x1C);
                 m242_timer = 301;
             }
             break;
@@ -3126,7 +3126,7 @@ void m242_MainObjMain(omObjData *object) {
             break;
         case 14:
             if (m242_finalHitF == 1) {
-                GMesCreate(0x12);
+                GMesCreate(GMES_MES_18);
                 HuAudSeqFadeOut(120);
                 m242_PhaseSet(15);
                 m242_timer = -15;

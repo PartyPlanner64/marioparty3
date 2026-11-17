@@ -294,7 +294,7 @@ void m260_MainObjMain(omObjData *object) {
             break;
         case 2:
             if (++m260_phaseTimer == 1) {
-                GMesCreate(8);
+                GMesCreate(GMES_MES_8);
             } else if (GMesStatGet() == 0) {
                 m260_phaseTimer = 0;
                 m260_phase++;
@@ -309,7 +309,7 @@ void m260_MainObjMain(omObjData *object) {
                 CharAnimSet(m260_playerObj->model[0], 1,
                                    GwPlayer[m260_playerNo].chr, m260_playerAnimTbl[1]);
                 m260_playerActNo = 1;
-                GMesCreate(0x13);
+                GMesCreate(GMES_MES_19);
                 HuAudSeqFadeOut(120);
             } else if (GMesStatGet() == 0) {
                 m260_phaseTimer = 0;
@@ -325,13 +325,13 @@ void m260_MainObjMain(omObjData *object) {
                 switch (m260_missF) {
                     case 0:
                         HuAudSeqPlay(0x68);
-                        m260_resultMesId = GMesCreate(0x24);
+                        m260_resultMesId = GMesCreate(GMES_MES_36);
                         GwPlayer[m260_playerNo].bonusCoin =
                             mgInstColumnTbl[m260_prizeNo];
                         break;
                     case 1:
                         HuAudSeqPlay(0x6B);
-                        m260_resultMesId = GMesCreate(0x1D);
+                        m260_resultMesId = GMesCreate(GMES_MES_29);
                         GwPlayer[m260_playerNo].bonusCoin = -1;
                         break;
                 }
@@ -444,7 +444,7 @@ void m260_PlayObjMain(omObjData *object) {
             break;
         case 2:
             HuAudFXPlay(8);
-            m260_timerMesId = GMesCreate(0x1A, 3, 150, 160);
+            m260_timerMesId = GMesCreate(GMES_MES_TIMER, 3, 150, 160);
             GMesPosSet(m260_timerMesId, 150.0f, 160.0f);
             m260_playPhase++;
             break;
@@ -673,7 +673,7 @@ void m260_PlayerObjMain(omObjData *object) {
                 } else {
                     m260_playerMotNo = 0;
                 }
-                Hu3DModelCameraSet(object->model[1], 0);
+                Hu3DModelCameraSet(object->model[1], HU3D_CAM_NONE);
                 m260_playerActPhase++;
                 break;
             case 1:
@@ -741,13 +741,13 @@ void m260_KoopaObjInit(omObjData *object) {
     omObjMotionRead(object, 5, 0xA00FA);
     Hu3DModelAttrSet(object->model[1], 0x4000, 0x4000);
     Hu3DModelHookSet(object->model[1], object->model[0], "c162_000-te2");
-    Hu3DModelCameraSet(object->model[1], 1);
+    Hu3DModelCameraSet(object->model[1], HU3D_CAM0);
     omSetTra(object, 0.0f, 5.5f, -1000.0f);
     Hu3DModelPosSet(object->model[2], 0.0f, 4.0f, -1000.0f);
     Hu3DMotionShiftSet(object->model[0], Hu3DData[object->motion[0]].motId, 0, 2, 2);
     m260_koopaMotNo = 0;
-    Hu3DModelCameraSet(object->model[3], 0);
-    Hu3DModelCameraSet(object->model[4], 0);
+    Hu3DModelCameraSet(object->model[3], HU3D_CAM_NONE);
+    Hu3DModelCameraSet(object->model[4], HU3D_CAM_NONE);
     object->func = m260_KoopaObjMain;
 }
 
@@ -778,7 +778,7 @@ void m260_KoopaObjMain(omObjData *object) {
     }
     if (m260_pitchF == 1 && Hu3DData[object->model[0]].motTime >= 26.0f) {
         HuAudFXPlay(0x4D1);
-        Hu3DModelCameraSet(object->model[1], 0);
+        Hu3DModelCameraSet(object->model[1], HU3D_CAM_NONE);
         m260_ballState = 1;
         m260_pitchF = 0;
         m260_ballDuration = 30.0f;
@@ -788,8 +788,8 @@ void m260_KoopaObjMain(omObjData *object) {
         switch (m260_ballPhase) {
             case 0:
                 Hu3DModelPosSet(object->model[3], -30.0f, 70.0f, -1015.0f);
-                Hu3DModelCameraSet(object->model[3], 1);
-                Hu3DModelCameraSet(object->model[4], 1);
+                Hu3DModelCameraSet(object->model[3], HU3D_CAM0);
+                Hu3DModelCameraSet(object->model[4], HU3D_CAM0);
                 m260_ballTime = 1.0f;
                 m260_ballHitTimer = 0;
                 m260_swingF = 0;
@@ -841,7 +841,7 @@ void m260_KoopaObjMain(omObjData *object) {
                     break;
                 }
                 if (Hu3DData[object->model[3]].pos.z >= 500.0f) {
-                    Hu3DModelCameraSet(object->model[3], 0);
+                    Hu3DModelCameraSet(object->model[3], HU3D_CAM_NONE);
                     m260_ballPhase++;
                 }
                 m260_ballTime += 1.0f;
@@ -922,19 +922,19 @@ void m260_KoopaObjMain(omObjData *object) {
                 }
                 if (m260_ballFlyTimer == 80) {
                     HuAudFXPlay(0x4D4);
-                    Hu3DModelCameraSet(object->model[1], 1);
-                    Hu3DModelCameraSet(object->model[4], 0);
-                    Hu3DModelCameraSet(object->model[3], 0);
+                    Hu3DModelCameraSet(object->model[1], HU3D_CAM0);
+                    Hu3DModelCameraSet(object->model[4], HU3D_CAM_NONE);
+                    Hu3DModelCameraSet(object->model[3], HU3D_CAM_NONE);
                 }
                 if (m260_ballFlyTimer++ >= 85) {
                     m260_ballPhase = 5;
-                    Hu3DModelCameraSet(object->model[1], 1);
+                    Hu3DModelCameraSet(object->model[1], HU3D_CAM0);
                 }
                 break;
             case 5:
                 if (m260_ballTargetNo >= 1 && m260_ballTargetNo <= 5) {
-                    Hu3DModelCameraSet(object->model[3], 0);
-                    Hu3DModelCameraSet(object->model[4], 0);
+                    Hu3DModelCameraSet(object->model[3], HU3D_CAM_NONE);
+                    Hu3DModelCameraSet(object->model[4], HU3D_CAM_NONE);
                     m260_resultNo = 1;
                     m260_prizeNo = m260_ballTargetNo - 1;
                     m260_prizeState = 1;
@@ -975,7 +975,7 @@ void m260_BaseObjInit(omObjData *object) {
         Hu3DModelScaleSet(model, 6.0f, 6.0f, 6.0f);
     }
     object->model[2] = Hu3DModelRead(9, 0x6A9);
-    Hu3DModelCameraSet(object->model[2], 0);
+    Hu3DModelCameraSet(object->model[2], HU3D_CAM_NONE);
     object->model[3] = EffectCreate(0xB0004, 0x6A9);
     Hu3DParticleAttrSet(object->model[3], 1, 0);
     m260_prizeState = 0;
@@ -992,9 +992,9 @@ void m260_BaseObjMain(omObjData *object) {
         m260_effReqTbl[0] = 1;
         for (; i < 5; i++) {
             if (i != m260_prizeBaseNo) {
-                Hu3DModelCameraSet(m260_baseTbl[i].base, 0);
+                Hu3DModelCameraSet(m260_baseTbl[i].base, HU3D_CAM_NONE);
             }
-            Hu3DModelCameraSet(m260_baseItemMdlTbl[i], 0);
+            Hu3DModelCameraSet(m260_baseItemMdlTbl[i], HU3D_CAM_NONE);
         }
         m260_prizeSprMdl =
             SprModelRead(m260_itemSprFileTbl[mgInstColumnTbl[m260_prizeBaseNo]], 0xA0, 0x10);
@@ -1003,7 +1003,7 @@ void m260_BaseObjMain(omObjData *object) {
                         Hu3DData[m260_prizeBaseMdl].pos.y,
                         Hu3DData[m260_prizeBaseMdl].pos.z + 1.0f);
         Hu3DModelScaleSet(object->model[1], 6.0f, 6.0f, 6.0f);
-        Hu3DModelCameraSet(object->model[2], 1);
+        Hu3DModelCameraSet(object->model[2], HU3D_CAM0);
         Hu3DModelPosSet(object->model[2], Hu3DData[object->model[1]].pos.x, 10.0f, Hu3DData[object->model[1]].pos.z);
         Hu3DParticleAttrSet(object->model[3], 1, 1);
         EffectParamSet(object->model[3], 5.0f, 20.0f, 10.0f);
@@ -1070,13 +1070,13 @@ void m260_EffObjInit(omObjData *object) {
     s16 i;
 
     object->model[0] = Hu3DModelRead(0xB0006, 0x6A9);
-    Hu3DModelCameraSet(object->model[0], 0);
+    Hu3DModelCameraSet(object->model[0], HU3D_CAM_NONE);
     for (i = 1; i < 6; i++) {
         object->model[i] = Hu3DModelRead(0x5D0008, 0x6A9);
-        Hu3DModelCameraSet(object->model[i], 0);
+        Hu3DModelCameraSet(object->model[i], HU3D_CAM_NONE);
     }
     object->model[6] = Hu3DModelRead(0xB0006, 0x6A9);
-    Hu3DModelCameraSet(object->model[6], 0);
+    Hu3DModelCameraSet(object->model[6], HU3D_CAM_NONE);
     m260_effMotTbl[0] = m260_MotMdlRead(0xB0006);
     m260_effMotTbl[1] = m260_MotMdlRead(0x5D0008);
     m260_effReqTbl[0] = 0;
@@ -1095,13 +1095,13 @@ void m260_EffObjMain(omObjData *object) {
                          m260_prizePosTbl[i].z);
                 omSetSca(object, 3.0f, 3.0f, 3.0f);
                 Hu3DMotionModelSet(object->model[0], m260_effMotTbl[0]);
-                Hu3DModelCameraSet(object->model[0], 1);
+                Hu3DModelCameraSet(object->model[0], HU3D_CAM0);
             } else {
                 Hu3DModelPosSet(object->model[i + 1], m260_prizePosTbl[i].x,
                                 m260_prizePosTbl[i].y, m260_prizePosTbl[i].z);
                 Hu3DModelScaleSet(object->model[i + 1], 3.0f, 3.0f, 3.0f);
                 Hu3DMotionModelSet(object->model[i + 1], m260_effMotTbl[1]);
-                Hu3DModelCameraSet(object->model[i + 1], 1);
+                Hu3DModelCameraSet(object->model[i + 1], HU3D_CAM0);
             }
         }
         m260_effShowF = 1;
@@ -1109,14 +1109,14 @@ void m260_EffObjMain(omObjData *object) {
     }
     for (i = 0; i < 7; i++) {
         if (Hu3DMotion[Hu3DData[object->model[i]].motId].unk02 == Hu3DData[object->model[i]].motTime) {
-            Hu3DModelCameraSet(object->model[i], 0);
+            Hu3DModelCameraSet(object->model[i], HU3D_CAM_NONE);
         }
     }
     if (m260_effReqTbl[1] == 1) {
         Hu3DModelPosSet(object->model[6], -170.0f, 100.0f, 0.0f);
         Hu3DModelScaleSet(object->model[6], 1.0f, 1.0f, 1.0f);
         Hu3DMotionModelSet(object->model[6], m260_effMotTbl[0]);
-        Hu3DModelCameraSet(object->model[6], 1);
+        Hu3DModelCameraSet(object->model[6], HU3D_CAM0);
         m260_effReqTbl[1] = 0;
     }
 }

@@ -998,22 +998,22 @@ void m248_PlayerObjInit(omObjData *obj) {
     switch (player) {
         case 0:
             for (i = 0; i < 6; i++) {
-                Hu3DModelCameraSet(obj->model[i], 1);
+                Hu3DModelCameraSet(obj->model[i], HU3D_CAM0);
             }
             break;
         case 1:
             for (i = 0; i < 6; i++) {
-                Hu3DModelCameraSet(obj->model[i], 2);
+                Hu3DModelCameraSet(obj->model[i], HU3D_CAM1);
             }
             break;
         case 2:
             for (i = 0; i < 6; i++) {
-                Hu3DModelCameraSet(obj->model[i], 4);
+                Hu3DModelCameraSet(obj->model[i], HU3D_CAM2);
             }
             break;
         case 3:
             for (i = 0; i < 6; i++) {
-                Hu3DModelCameraSet(obj->model[i], 8);
+                Hu3DModelCameraSet(obj->model[i], HU3D_CAM3);
             }
             break;
     }
@@ -1274,22 +1274,22 @@ void m248_EyeObjInit(omObjData *obj) {
     switch (player) {
         case 0:
             for (i = 0; i < 4; i++) {
-                Hu3DModelCameraSet(obj->model[i], 1);
+                Hu3DModelCameraSet(obj->model[i], HU3D_CAM0);
             }
             break;
         case 1:
             for (i = 0; i < 4; i++) {
-                Hu3DModelCameraSet(obj->model[i], 2);
+                Hu3DModelCameraSet(obj->model[i], HU3D_CAM1);
             }
             break;
         case 2:
             for (i = 0; i < 4; i++) {
-                Hu3DModelCameraSet(obj->model[i], 4);
+                Hu3DModelCameraSet(obj->model[i], HU3D_CAM2);
             }
             break;
         case 3:
             for (i = 0; i < 4; i++) {
-                Hu3DModelCameraSet(obj->model[i], 8);
+                Hu3DModelCameraSet(obj->model[i], HU3D_CAM3);
             }
             break;
     }
@@ -1488,28 +1488,28 @@ void m248_FireObjInit(omObjData *obj) {
         case 0:
         case 1:
             for (i = 0; i < 2; i++) {
-                Hu3DModelCameraSet(obj->model[i], 1);
+                Hu3DModelCameraSet(obj->model[i], HU3D_CAM0);
             }
             obj->work[1] = 0;
             break;
         case 2:
         case 3:
             for (i = 0; i < 2; i++) {
-                Hu3DModelCameraSet(obj->model[i], 2);
+                Hu3DModelCameraSet(obj->model[i], HU3D_CAM1);
             }
             obj->work[1] = 1;
             break;
         case 4:
         case 5:
             for (i = 0; i < 2; i++) {
-                Hu3DModelCameraSet(obj->model[i], 4);
+                Hu3DModelCameraSet(obj->model[i], HU3D_CAM2);
             }
             obj->work[1] = 2;
             break;
         case 6:
         case 7:
             for (i = 0; i < 2; i++) {
-                Hu3DModelCameraSet(obj->model[i], 8);
+                Hu3DModelCameraSet(obj->model[i], HU3D_CAM3);
             }
             obj->work[1] = 3;
             break;
@@ -1586,14 +1586,14 @@ void m248_ExitCheckObjMain(omObjData *obj) {
 void m248_MainObjMain(omObjData *obj) {
     switch (m248_phase) {
         case 0:
-            GMesCreate(7);
+            GMesCreate(GMES_MES_7);
             m248_phase = 1;
             m248_musicTimer = 0;
             break;
         case 1:
             if (GMesStatGet() == 0) {
                 m248_phase = 2;
-                GMesCreate(0x1A, 60, 0xA0, 0x1C);
+                GMesCreate(GMES_MES_TIMER, 60, 0xA0, 0x1C);
             }
             if (++m248_musicTimer == 43) {
                 HuAudSeqPlay(0x35);
@@ -1610,7 +1610,7 @@ void m248_MainObjMain(omObjData *obj) {
             }
             if (m248_timer == 0 || m248_finishCnt >= 3) {
                 GMesTimerEnd();
-                GMesCreate(0x12);
+                GMesCreate(GMES_MES_18);
                 HuAudSeqFadeOut(120);
                 m248_timer = 0;
                 m248_phase = 3;

@@ -126,7 +126,7 @@ void chancetime_BlockProc(void) {
     Hu3DModelRemakeStatic(obj->model[1]);
     Hu3DModelDynamicFree(obj->model[1]);
     Hu3DMotionAttrSet(obj->model[1], 2, 0);
-    Hu3DModelCameraSet(obj->model[1], 1);
+    Hu3DModelCameraSet(obj->model[1], HU3D_CAM0);
 
     obj->model[2] = Hu3DModelRead(0x1C0009, 0x229);
     for (i = 0; i < 3; i++) {
@@ -138,7 +138,7 @@ void chancetime_BlockProc(void) {
     Hu3DModelRemakeStatic(obj->model[2]);
     Hu3DModelDynamicFree(obj->model[2]);
     Hu3DMotionAttrSet(obj->model[2], 2, 0);
-    Hu3DModelCameraSet(obj->model[2], 1);
+    Hu3DModelCameraSet(obj->model[2], HU3D_CAM0);
 
     obj->model[3] = Hu3DModelRead(0x1C0009, 0x229);
     data = DataRead(0x1C0003);
@@ -155,7 +155,7 @@ void chancetime_BlockProc(void) {
     Hu3DModelRemakeStatic(obj->model[3]);
     Hu3DModelDynamicFree(obj->model[3]);
     Hu3DMotionAttrSet(obj->model[3], 2, 0);
-    Hu3DModelCameraSet(obj->model[3], 1);
+    Hu3DModelCameraSet(obj->model[3], HU3D_CAM0);
 
     spriteId = HuSprAnimDataRead(0x1C0000);
     chancetime_panelSprAnim = spriteId;
@@ -168,7 +168,7 @@ void chancetime_BlockProc(void) {
     chancetime_panelSize[0] = spr->data->sizeX;
     chancetime_panelSize[1] = spr->data->sizeY;
     chancetime_panelHookMdl = Hu3DHookFuncCreate(0, chancetime_PanelDraw, 2);
-    Hu3DModelCameraSet(chancetime_panelHookMdl, 1);
+    Hu3DModelCameraSet(chancetime_panelHookMdl, HU3D_CAM0);
 
     data = DataRead(0x1C0007);
     for (i = 0; i < 3; i++) {
@@ -553,7 +553,7 @@ void chancetime_EventProc(void) {
     chancetime_eventObj = obj;
     model = &Hu3DData[HuSprBGHookMdl];
     model->unk00 = (model->unk00 & 0xF9) | 3;
-    Hu3DModelCameraSet(HuSprBGHookMdl, 2);
+    Hu3DModelCameraSet(HuSprBGHookMdl, HU3D_CAM1);
     sprId = HuSprAnimDataRead(0x210026);
     for (i = 0; i < 20; i++) {
         chancetime_coinSprTbl[i] = espEntry(sprId, 0, 1);
@@ -566,12 +566,12 @@ void chancetime_EventProc(void) {
     obj->model[1] = Hu3DModelRead3(0x1301CC, 0x2B9);
     Hu3DModelScaleSet(obj->model[1], 0.5f, 0.5f, 0.5f);
     Hu3DMotionAttrSet(obj->model[1], 2, 2);
-    Hu3DModelCameraSet(obj->model[1], 4);
+    Hu3DModelCameraSet(obj->model[1], HU3D_CAM2);
     Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     for (i = 1; i < 10; i++) {
         obj->model[i + 1] = Hu3DModelLink(obj->model[1]);
         Hu3DModelScaleSet(obj->model[i + 1], 0.5f, 0.5f, 0.5f);
-        Hu3DModelCameraSet(obj->model[i + 1], 4);
+        Hu3DModelCameraSet(obj->model[i + 1], HU3D_CAM2);
         Hu3DModelAttrSet(obj->model[i + 1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         Hu3DMotionAttrSet(obj->model[i + 1], 2, 2);
     }
@@ -579,7 +579,7 @@ void chancetime_EventProc(void) {
         chancetime_starEffTbl[i] = EffectCreate(0xB0004, 0x6A9);
         EffectParamSet(chancetime_starEffTbl[i], 4.0f, 20.0f, 4.0f);
         EffectRangeSet(chancetime_starEffTbl[i], 60.0f);
-        Hu3DModelCameraSet(chancetime_starEffTbl[i], 4);
+        Hu3DModelCameraSet(chancetime_starEffTbl[i], HU3D_CAM2);
         Hu3DParticleAttrSet(chancetime_starEffTbl[i], 1, 0);
         Hu3DModelAttrSet(chancetime_starEffTbl[i], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     }

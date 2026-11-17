@@ -514,7 +514,7 @@ void m250_StageObjMain(omObjData *object) {
             }
             if (GMesStatGet() == 0) {
                 m250_phase++;
-                GMesCreate(0x1A, (m250_timer + 29) / 30, 0xA0, 0x20);
+                GMesCreate(GMES_MES_TIMER, (m250_timer + 29) / 30, 0xA0, 0x20);
                 HuAudFXPlay(0xE);
             }
             break;
@@ -524,7 +524,7 @@ void m250_StageObjMain(omObjData *object) {
             if (m250_timer == 0) {
                 m250_phase = 3;
                 GMesTimerEnd();
-                GMesCreate(0x11);
+                GMesCreate(GMES_MES_MG_FINISH);
                 HuAudSeqFadeOut(0x78);
             }
             break;
@@ -559,10 +559,10 @@ void m250_StageObjMain(omObjData *object) {
             }
             if (--m250_waitTimer == 0) {
                 if (m250_winner == -1) {
-                    GMesCreate(0x20);
+                    GMesCreate(GMES_MES_MG_DRAW);
                     HuAudSeqPlay(0x6C);
                 } else {
-                    GMesCreate(0x16, PLAYER_WORK(mgPlayerObjTbl[m250_winner])->unk29);
+                    GMesCreate(GMES_MES_MG_WINNER, PLAYER_WORK(mgPlayerObjTbl[m250_winner])->unk29);
                     HuAudSeqPlay(0x67);
                 }
                 m250_waitTimer = 15;

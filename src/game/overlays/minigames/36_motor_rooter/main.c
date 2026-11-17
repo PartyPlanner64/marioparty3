@@ -1640,7 +1640,7 @@ void m254_GoalCheckUpdate(FuncContext *ctx) {
         loser = !i;
         m254_playerTbl[loser].unk08 |= 0x41;
         HuAudSeqFadeOut(120);
-        GMesCreate(0x11);
+        GMesCreate(GMES_MES_MG_FINISH);
         GMesTimerEnd();
         m254_gameWork->runtime.unk20 = 99.0f;
         winnerPlayer = &m254_playerTbl[i];
@@ -1659,7 +1659,7 @@ void m254_TimerUpdate(FuncContext *ctx) {
         case 0:
             m254_gameWork->timer = 1800.0f;
             fps = 30.0f;
-            GMesCreate(0x1A, 60.0, 160, 28);
+            GMesCreate(GMES_MES_TIMER, 60.0, 160, 28);
             GMesTimerValueSet((m254_gameWork->timer + 29.0f) / fps);
             ctx->state = 1;
             break;
@@ -1746,7 +1746,7 @@ void m254_WinExec(FuncContext *ctx) {
         timer = ctx->work.s16[0]++;
         if (timer == 0) {
             HuAudSeqPlay(0x67);
-            GMesCreate(0x16, GwPlayer[m254_playerNoTbl[object->work[0]]].chr);
+            GMesCreate(GMES_MES_MG_WINNER, GwPlayer[m254_playerNoTbl[object->work[0]]].chr);
             GwPlayer[m254_playerNoTbl[object->work[0]]].bonusCoin += 10;
         }
         if (GMesStatGet() != 0) {
@@ -1772,7 +1772,7 @@ void m254_DrawExec(FuncContext *ctx) {
     } else if (m254_drawPhase == 1) {
         timer = ctx->work.s16[0]++;
         if (timer == 15) {
-            GMesCreate(0x20);
+            GMesCreate(GMES_MES_MG_DRAW);
             HuAudSeqPlay(0x6C);
         }
         if (GMesStatGet() != 0) {
@@ -1783,7 +1783,7 @@ void m254_DrawExec(FuncContext *ctx) {
         timer = ctx->work.s16[0]++;
         if (timer == 0) {
             HuAudSeqFadeOut(120);
-            GMesCreate(0x11);
+            GMesCreate(GMES_MES_MG_FINISH);
         } else if (GMesStatGet() == 0) {
             ctx->work.s16[0] = 0;
             m254_drawPhase = 1;

@@ -576,7 +576,7 @@ void m217_TimerUpdate(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
     if (m217_gameWork->timer < 0.0f) {
         m217_gameWork->unk_00 = 4;
         HuAudSeqFadeOut(120);
-        GMesCreate(16);
+        GMesCreate(GMES_MES_16);
         GMesTimerEnd();
         m217_FuncSet((s8)slot->unk_00->work[1], 0, 0, m217_WinExec, 0);
         m217_FuncReset((s8)slot->unk_00->work[1], handler);
@@ -591,7 +591,7 @@ void m217_StartExec(PuddlePaddleSlot *slot, PuddlePaddleFunc *handler) {
             HuAudFXPlay(0x374);
             break;
         case 30:
-            GMesCreate(5);
+            GMesCreate(GMES_MES_5);
             HuAudFXPlay(14);
             break;
         case 50:

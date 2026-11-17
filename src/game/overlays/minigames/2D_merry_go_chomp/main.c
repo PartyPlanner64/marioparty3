@@ -347,7 +347,7 @@ void m245_BackObjInit(omObjData *obj) {
     espPosSet(m245_backSprNo, m245_backSprX,
               m245_backSprY);
     m245_lowerBackSpr = HuSprAnimDataGet(HuSprAnimDataRead(0x4E0001));
-    Hu3DModelCameraSet(Hu3DHookFuncCreate(0, m245_BackDraw, 2), 1);
+    Hu3DModelCameraSet(Hu3DHookFuncCreate(0, m245_BackDraw, 2), HU3D_CAM0);
     obj->model[0] = -1;
     obj->func = m245_BackObjMain;
 }
@@ -375,9 +375,9 @@ void m245_StageObjInit(omObjData *obj) {
     Hu3DModelPosSet(obj->model[0], obj->trans.x, obj->trans.y, obj->trans.z);
     Hu3DModelPosSet(obj->model[1], obj->trans.x, m245_gateY, m245_gateZ);
     Hu3DModelPosSet(obj->model[2], zero, zero, zero);
-    Hu3DModelCameraSet(obj->model[0], 2);
-    Hu3DModelCameraSet(obj->model[1], 2);
-    Hu3DModelCameraSet(obj->model[2], 2);
+    Hu3DModelCameraSet(obj->model[0], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[1], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[2], HU3D_CAM1);
     obj->func = m245_StageObjMain;
 }
 
@@ -472,10 +472,10 @@ void m245_CarouselObjInit(omObjData *obj) {
     m245_seatFreeTbl[2] = 1;
     m245_seatFreeTbl[3] = 1;
     m245_seatFreeTbl[4] = 1;
-    Hu3DModelCameraSet(obj->model[0], 1);
-    Hu3DModelCameraSet(obj->model[1], 1);
-    Hu3DModelCameraSet(obj->model[2], 1);
-    Hu3DModelCameraSet(obj->model[3], 1);
+    Hu3DModelCameraSet(obj->model[0], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[1], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[2], HU3D_CAM0);
+    Hu3DModelCameraSet(obj->model[3], HU3D_CAM0);
     obj->func = m245_CarouselObjMain;
 }
 
@@ -1177,8 +1177,8 @@ void m245_PlayerObjInit(omObjData *obj) {
     entry->unk_24 = 1.0f;
     m245_MotSet(obj, 0, 2);
     entry->unk_06 = 0;
-    Hu3DModelCameraSet(obj->model[0], 2);
-    Hu3DModelCameraSet(obj->model[1], 2);
+    Hu3DModelCameraSet(obj->model[0], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[1], HU3D_CAM1);
     m245_playerWorkTbl[player].unk_00.x = 0.0f;
     m245_playerWorkTbl[player].unk_00.y = 0.0f;
     m245_playerWorkTbl[player].unk_00.z = 0.0f;
@@ -1635,7 +1635,7 @@ void m245_WanwanObjInit(omObjData *obj) {
     omSetRot(obj, 0.0f, 60.0f, 0.0f);
     Hu3DModelPosSet(obj->model[6], obj->trans.x, obj->trans.y, obj->trans.z);
     for (i = 0; i < 7; i++) {
-        Hu3DModelCameraSet(obj->model[i], 2);
+        Hu3DModelCameraSet(obj->model[i], HU3D_CAM1);
     }
     for (i = 1; i < 6; i++) {
         m245_chainPosTbl[i].x = (5 - i) * 45 + m245_chainAnchor.x + 20.0f;
@@ -1664,7 +1664,7 @@ void m245_BiteEffObjInit(omObjData *obj) {
     Hu3DMotionSpeedSet(obj->model[0], 0.0f);
     obj->scale.x = obj->scale.y = obj->scale.z = 2.5f;
     obj->rot.y = 270.0f;
-    Hu3DModelCameraSet(obj->model[0], 2);
+    Hu3DModelCameraSet(obj->model[0], HU3D_CAM1);
     obj->func = m245_BiteEffObjMain;
 }
 
@@ -1678,7 +1678,7 @@ void m245_RoundUpdate(void) {
 
     switch (m245_phase) {
         case 0:
-            GMesCreate(0x1A, 10, 0xA0, 0x1C);
+            GMesCreate(GMES_MES_TIMER, 10, 0xA0, 0x1C);
             m245_timer = 151;
             if (m245_carouselSeRound == m245_roundNo) {
                 m245_carouselSeNo = HuAudFXPlay(0x471);
@@ -1944,7 +1944,7 @@ void m245_ExitCheckObjMain(omObjData *obj) {
 void m245_MainObjMain(omObjData *obj) {
     switch (m245_seqNo) {
         case 0:
-            GMesCreate(7);
+            GMesCreate(GMES_MES_7);
             m245_seqNo = 1;
             m245_musicTimer = 0;
             break;
@@ -1963,7 +1963,7 @@ void m245_MainObjMain(omObjData *obj) {
             }
             m245_RoundUpdate();
             if (m245_phase == 10) {
-                GMesCreate(0x12);
+                GMesCreate(GMES_MES_18);
                 m245_ResultSet();
                 HuAudSeqFadeOut(120);
                 m245_timer = 0;

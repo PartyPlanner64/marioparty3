@@ -77,7 +77,7 @@ void mgresultdealer_CoinProc(void) {
         mgresultdealer_coinTbl[i].unk_04 = 0;
         obj->model[i + 1] = Hu3DSprModelData[mgresultdealer_coinTbl[i].unk_02].modelId;
         Hu3DModelPosSet(obj->model[i + 1], 0.0f, 400.0f, 0.0f);
-        Hu3DModelCameraSet(obj->model[i + 1], 1);
+        Hu3DModelCameraSet(obj->model[i + 1], HU3D_CAM0);
         Hu3DMotionSpeedSet(obj->model[i + 1], 2.0f);
         Hu3DModelScaleSet(Hu3DSprModelData[i + 1].modelId, 1.5f, 1.5f, 1.5f);
     }
@@ -93,7 +93,7 @@ void mgresultdealer_CoinProc(void) {
         mgresultdealer_coinEffTbl[i].unk_04 = 0;
         obj->model[i + 41] = Hu3DSprModelData[mgresultdealer_coinEffTbl[i].unk_02].modelId;
         Hu3DModelPosSet(obj->model[i + 41], 0.0f, 400.0f, 0.0f);
-        Hu3DModelCameraSet(obj->model[i + 41], 1);
+        Hu3DModelCameraSet(obj->model[i + 41], HU3D_CAM0);
         Hu3DMotionSpeedSet(obj->model[i + 41], 1.0f);
         Hu3DModelScaleSet(Hu3DSprModelData[i + 41].modelId, 3.0f, 3.0f, 3.0f);
     }
@@ -260,7 +260,7 @@ void mgresultdealer_FadeProc(void) {
     mgresultdealer_fadeSpr = HuSprGet(group, 0);
     mgresultdealer_fadeTex = mgresultdealer_fadeSpr->data->pat->data;
     mgresultdealer_fadeHookMdl = Hu3DHookFuncCreate(0, mgresultdealer_FadeDraw, 2);
-    Hu3DModelCameraSet(mgresultdealer_fadeHookMdl, 1);
+    Hu3DModelCameraSet(mgresultdealer_fadeHookMdl, HU3D_CAM0);
     mgresultdealer_fadeF = 0;
     obj->trans.x = 0.0f;
     obj->trans.y = 0.0f;

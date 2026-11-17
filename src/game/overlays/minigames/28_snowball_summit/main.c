@@ -1842,7 +1842,7 @@ void m240_WinnerSet(s32 arg0) {
     SnowballSummitPlayer *mover = &m240_playerWorkTbl[arg0];
 
     GwPlayer[mover->unk_78->work[0]].bonusCoin = 10;
-    GMesCreate(0x16, GwPlayer[mover->unk_78->work[0]].chr);
+    GMesCreate(GMES_MES_MG_WINNER, GwPlayer[mover->unk_78->work[0]].chr);
     HuAudSeqPlay(0x65);
 }
 
@@ -1854,7 +1854,7 @@ void m240_SeqResultObjMain(omObjData *object) {
     } else {
         index = m240_WinnerGet();
         if (index == -1) {
-            GMesCreate(0x20);
+            GMesCreate(GMES_MES_MG_DRAW);
             HuAudSeqPlay(0x6C);
             m240_phaseTimer = 0x90;
         } else {
@@ -1904,7 +1904,7 @@ void m240_SeqFinishWaitObjMain(omObjData *arg0) {
 }
 
 void m240_SeqFinishObjMain(omObjData *arg0) {
-    GMesCreate(0xE);
+    GMesCreate(GMES_MES_14);
     HuAudSeqFadeOut(0x78);
     m240_phaseTimer = 0x4B;
     arg0->func = m240_SeqFinishWaitObjMain;
@@ -1958,7 +1958,7 @@ void m240_SeqTimerObjMain(omObjData *object) {
 }
 
 void m240_SeqTimerStartObjMain(omObjData *arg0) {
-    GMesCreate(0x1A, 0x3C, 0xA0, 0x1C);
+    GMesCreate(GMES_MES_TIMER, 0x3C, 0xA0, 0x1C);
     m240_phaseTimer = 0x709;
     arg0->func = m240_SeqTimerObjMain;
 }
@@ -1972,7 +1972,7 @@ void m240_SeqStartWaitObjMain(omObjData *arg0) {
 }
 
 void m240_SeqStartObjMain(omObjData *arg0) {
-    GMesCreate(3);
+    GMesCreate(GMES_MES_3);
     arg0->func = m240_SeqStartWaitObjMain;
     m240_phaseStep = 1;
 }

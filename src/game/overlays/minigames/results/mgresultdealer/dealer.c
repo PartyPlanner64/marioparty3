@@ -36,31 +36,31 @@ void mgresultdealer_PlayerProc(void) {
 
     obj->model[0] = Hu3DModelRead(omCharModelNoTbl[chr][0] | omCharModelNoTbl[chr][2], 0x2A9);
     Hu3DMotionAttrSet(obj->model[0], 2, 2);
-    Hu3DModelCameraSet(obj->model[0], 1);
+    Hu3DModelCameraSet(obj->model[0], HU3D_CAM0);
 
     obj->model[1] = Hu3DModelRead(0x83, 0x2B9);
     Hu3DMotionAttrSet(obj->model[1], 2, 0);
     Hu3DModelAttrSet(obj->model[1], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelPosSet(obj->model[1], 0.0f, 140.0f, 0.0f);
-    Hu3DModelCameraSet(obj->model[1], 2);
+    Hu3DModelCameraSet(obj->model[1], HU3D_CAM1);
 
     obj->model[2] = Hu3DModelRead(0x190003, 0x2B9);
     Hu3DMotionAttrSet(obj->model[2], 2, 0);
     Hu3DModelAttrSet(obj->model[2], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelPosSet(obj->model[2], 0.0f, 400.0f, -35.0f);
-    Hu3DModelCameraSet(obj->model[2], 2);
+    Hu3DModelCameraSet(obj->model[2], HU3D_CAM1);
 
     obj->model[3] = Hu3DModelRead(9, 0x2B9);
     Hu3DModelPosSet(obj->model[3], 0.0f, -5.0f, -35.0f);
     Hu3DModelScaleSet(obj->model[3], 1.0f, 1.0f, 1.0f);
-    Hu3DModelCameraSet(obj->model[3], 1);
+    Hu3DModelCameraSet(obj->model[3], HU3D_CAM0);
 
     obj->model[4] = Hu3DModelRead(0x190006, 0x2B9);
     obj->model[5] = Hu3DModelRead(0x190007, 0x2B9);
     obj->model[6] = Hu3DModelRead(0x190008, 0x2B9);
-    Hu3DModelCameraSet(obj->model[4], 2);
-    Hu3DModelCameraSet(obj->model[5], 2);
-    Hu3DModelCameraSet(obj->model[6], 2);
+    Hu3DModelCameraSet(obj->model[4], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[5], HU3D_CAM1);
+    Hu3DModelCameraSet(obj->model[6], HU3D_CAM1);
     Hu3DModelAttrSet(obj->model[4], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelAttrSet(obj->model[5], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
     Hu3DModelAttrSet(obj->model[6], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
@@ -197,7 +197,7 @@ void mgresultdealer_ConfettiCreate(void) {
         Hu3DModelVtxBufMake(model);
         Hu3DModelDynamicFree(model);
         Hu3DParticleCreate(model, -1, 0, mgresultdealer_ConfettiHook);
-        Hu3DModelCameraSet(model, 2);
+        Hu3DModelCameraSet(model, HU3D_CAM1);
     }
     omAddObj(10, 10, 10, -1, mgresultdealer_ConfettiObjMain);
 }

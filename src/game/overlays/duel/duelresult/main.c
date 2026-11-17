@@ -1434,7 +1434,7 @@ void duelresult_ExitObjMain(omObjData *obj) {
         } else {
             SLCommonSet(1);
         }
-        omOvlGotoEx(0x63, 0, 0x4190);
+        omOvlGotoEx(duelresult2, 0, 0x4190);
     }
 }
 

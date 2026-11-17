@@ -345,7 +345,7 @@ void m226_MainObjMain(omObjData *object) {
 
     switch (m226_phase) {
         case 0:
-            GMesCreate(7);
+            GMesCreate(GMES_MES_7);
             m226_timer = 300;
             m226_phase++;
             m226_musicDelay = 20;
@@ -356,7 +356,7 @@ void m226_MainObjMain(omObjData *object) {
             if (GMesStatGet() == 0) {
                 MgFlowStatSet(MG_STATE_PLAY);
                 m226_phase++;
-                GMesCreate(0x1A, (m226_timer + 29) / 30, 0xA0, 0x20);
+                GMesCreate(GMES_MES_TIMER, (m226_timer + 29) / 30, 0xA0, 0x20);
                 HuAudFXPlay(0xE);
                 HuAudSeqPlay(0x35);
             }
@@ -403,7 +403,7 @@ void m226_MainObjMain(omObjData *object) {
                 m226_firstRoundF = 0;
             } else {
                 GMesTimerEnd();
-                GMesCreate(0x12);
+                GMesCreate(GMES_MES_18);
                 HuAudSeqFadeOut(0x78);
                 m226_phase = 6;
             }

@@ -348,11 +348,11 @@ void m263_MainObjMain(omObjData *object) {
                 m263_ambSeNo = HuAudFXPlay(0x4ED);
             }
             if (++m263_phaseTimer == 120) {
-                m263_startMesId = GMesCreate(8);
+                m263_startMesId = GMesCreate(GMES_MES_8);
                 m263_CameraMoveStart(334.0f, 0.0f, 0.0f, 54.0f, 435.0f, -148.0f, 4340.0f, 30);
             }
             if (m263_phaseTimer > 120 && GMesStatGet() == 0) {
-                GMesCreate(0x1A, 10, 160, 120);
+                GMesCreate(GMES_MES_TIMER, 10, 160, 120);
                 m263_timer = 329;
                 m263_phaseTimer = 0;
                 m263_phase = 1;
@@ -370,7 +370,7 @@ void m263_MainObjMain(omObjData *object) {
             break;
         case 3:
             if (m263_phaseTimer == 0) {
-                GMesCreate(0x13);
+                GMesCreate(GMES_MES_19);
                 HuAudSeqFadeOut(120);
                 m263_phaseTimer++;
                 m263_seFadeTimer = 0;
@@ -382,13 +382,13 @@ void m263_MainObjMain(omObjData *object) {
                 m263_phaseTimer++;
                 if (m263_hitFloatNo == -1) {
                     if (m263_phaseTimer >= 16) {
-                        GMesCreate(0x1D);
+                        GMesCreate(GMES_MES_29);
                         m263_phaseTimer = 0;
                         m263_phase = 4;
                         HuAudSeqPlay(0x6B);
                     }
                 } else if (m263_phaseTimer >= 16) {
-                    GMesCreate(0x24);
+                    GMesCreate(GMES_MES_36);
                     m263_phaseTimer = 0;
                     m263_phase = 4;
                     HuAudSeqPlay(0x68);

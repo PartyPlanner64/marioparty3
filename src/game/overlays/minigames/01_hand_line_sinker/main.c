@@ -1699,7 +1699,9 @@ f32 m201_LineCurveSolve(f32 x) {
  * Tried without success: if/else, ternary, inverted condition, `+ -1.0f`, compound assignment,
  * split temporaries, u = logf() / -1.0f joins, `p = t * s` hoisting, repeated condition tests,
  * goto/break/while/do-while(0) wrappers, early-return tails, and static inline helpers for the
- * whole block or for logf. */
+ * whole block or for logf. A later retry also tested one-iteration for/do loops, switch joins,
+ * duplicated tails, and explicit log-result joins. Raw compiler output has no post-call blank
+ * line here, so disabling strip_nop cannot recover this internal nop; file alignment is unrelated. */
 f32 m201_LineCurveLenDiff(f32 a) {
     f32 b;
     f32 t;

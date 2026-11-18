@@ -6090,39 +6090,56 @@ s32 MBD4_ComBlowhardBranchFrom19Lv3Check(void) {
     return 0;
 }
 
-#ifdef NON_MATCHING
-// Instructions are all correct; only two branch targets differ. With the
-// second switch in ret/break form and case 1's `return 1` going to the return
-// label (case 2's `ret = 1` goes to the break label), the case 1 tail stays
-// separate from case 2's. But in jump2 the first switch's case 7/case 3
-// `cidx == D[walk]` return-1 blocks get cross-jumped into case 1's
-// `return 1` block, the most recent match in the return label's jump
-// chain. The target merges them into case 0's return-1 block (80115F60)
-// instead. Tried 858 of 1024 return-vs-ret combinations across the case 1/2
-// statements; none do better.
-// Later findings: rewriting the first switch's case 0 as
-// `if (cidx == D) { if (curIndex == 0) return 1; } else if (walk < 7 &&
-// (walk < 3 || cidx <= D)) goto rev; return pf != 0; rev: ...` keeps its
-// return-1 block from being cross-jumped (its `bnez s1` no longer jumps
-// around it), so case 7/3 do end up there. Combined with case 1 as
-// `else if (curIndex == 0) return 1; else ret = other;` this fixes the two
-// branch targets, but case 1's tail becomes `beql s1,zero,ret; li v0,1;
-// j other` (one fewer instruction) because jump2 inverts its jump around
-// the merged blocks. With case 1's `else if (curIndex != 0)` order instead,
-// case 0's block gets merged into case 1's again. A 2048-variant search of
-// ret/return and if-order for every case 1/2 statement, on top of the case 0
-// rewrite, did no better.
-// jump.c detail: find_cross_jump skips labels on the candidate side and then
-// stops at a BARRIER without the jump-around --minimum, so a `return 1` whose
-// `li 1` follows a branch over its own block (case 7's first, case 3's) only
-// merges into a candidate whose `li 1` follows a conditional branch, never
-// one after a label/barrier. With the second switch written as
-// `else if (curIndex == 0) { ret = 1; } else { ret = other; }` in both case 1
-// and case 2 (no `return 1` there), the whole first switch matches, but case
-// 1's ret-1 block then merges into case 2's and is inverted
-// (`beqzl s1,end; li 1; j other`), and the score is worse (525). Any pair of
-// ret/return/if-order/ternary forms for those two tails (64 tried) merges or
-// inverts one of them; the target keeps both separate and non-inverted.
+static inline s32 MBD4_ComBlowhardBranchFrom19Sel2Remaining(s32 curIndex, GW_PLAYER *player, GW_PLAYER *otherPlayer, s32 walk) {
+    s32 ret;
+
+    switch (otherPlayer->clink) {
+        case 5:
+            if (walk < 3 && otherPlayer->cidx == mbd4_comLink5RevIdxTbl[walk]) {
+                ret = 0;
+            } else if (walk >= 3 || otherPlayer->cidx > mbd4_comLink5RevIdxTbl[walk]) {
+                if (otherPlayer->rev & 1) {
+                    ret = player->stats.partners.frontPower == 0;
+                } else {
+                    ret = 0;
+                }
+            } else {
+                ret = curIndex == 0;
+            }
+            break;
+        case 1:
+            if (walk >= 3 && walk < 8 && otherPlayer->cidx == mbd4_comLink1RevIdxTbl[walk - 2]) {
+                ret = 0;
+            } else if (walk >= 8 || (walk >= 3 && otherPlayer->cidx > mbd4_comLink1RevIdxTbl[walk - 2])) {
+                ret = player->stats.partners.frontPower == 0;
+            } else if (curIndex != 0) {
+                ret = otherPlayer->stats.partners.frontPower != 0;
+            } else {
+                return 1;
+            }
+            break;
+        case 2:
+            if (walk >= 3 && walk < 7 && otherPlayer->cidx == mbd4_comLink2IdxTbl[walk - 2]) {
+                if (curIndex == 0) {
+                    ret = player->stats.partners.frontPower == 0;
+                } else {
+                    ret = 0;
+                }
+            } else if (walk >= 7 || (walk >= 3 && otherPlayer->cidx > mbd4_comLink2IdxTbl[walk - 2])) {
+                ret = player->stats.partners.frontPower == 0;
+            } else if (curIndex == 0) {
+                ret = 1;
+            } else {
+                ret = otherPlayer->stats.partners.frontPower != 0;
+            }
+            break;
+        default:
+            ret = curIndex == 0;
+            break;
+    }
+    return ret;
+}
+
 s32 MBD4_ComBlowhardBranchFrom19Sel2Lv3Check(void) {
     s32 curIndex = MBDPlayerTurnGet();
     s32 otherIndex = (s16)(MBDPlayerTurnGet() ^ 1);
@@ -6192,55 +6209,8 @@ s32 MBD4_ComBlowhardBranchFrom19Sel2Lv3Check(void) {
             return 0;
     }
 
-    switch (otherPlayer->clink) {
-        case 5:
-            if (walk < 3 && otherPlayer->cidx == mbd4_comLink5RevIdxTbl[walk]) {
-                ret = 0;
-            } else if (walk >= 3 || otherPlayer->cidx > mbd4_comLink5RevIdxTbl[walk]) {
-                if (otherPlayer->rev & 1) {
-                    ret = player->stats.partners.frontPower == 0;
-                } else {
-                    ret = 0;
-                }
-            } else {
-                ret = curIndex == 0;
-            }
-            break;
-        case 1:
-            if (walk >= 3 && walk < 8 && otherPlayer->cidx == mbd4_comLink1RevIdxTbl[walk - 2]) {
-                ret = 0;
-            } else if (walk >= 8 || (walk >= 3 && otherPlayer->cidx > mbd4_comLink1RevIdxTbl[walk - 2])) {
-                ret = player->stats.partners.frontPower == 0;
-            } else if (curIndex != 0) {
-                ret = otherPlayer->stats.partners.frontPower != 0;
-            } else {
-                return 1;
-            }
-            break;
-        case 2:
-            if (walk >= 3 && walk < 7 && otherPlayer->cidx == mbd4_comLink2IdxTbl[walk - 2]) {
-                if (curIndex == 0) {
-                    ret = player->stats.partners.frontPower == 0;
-                } else {
-                    ret = 0;
-                }
-            } else if (walk >= 7 || (walk >= 3 && otherPlayer->cidx > mbd4_comLink2IdxTbl[walk - 2])) {
-                ret = player->stats.partners.frontPower == 0;
-            } else if (curIndex == 0) {
-                ret = 1;
-            } else {
-                ret = otherPlayer->stats.partners.frontPower != 0;
-            }
-            break;
-        default:
-            ret = curIndex == 0;
-            break;
-    }
-    return ret;
+    return MBD4_ComBlowhardBranchFrom19Sel2Remaining(curIndex, player, otherPlayer, walk);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/overlays/duel/boards/duel04_blowhard/main", MBD4_ComBlowhardBranchFrom19Sel2Lv3Check);
-#endif
 
 s32 MBD4_ComBlowhardBranchFrom13Lv3Check(void) {
     s32 curIndex = MBDPlayerTurnGet();
@@ -6335,8 +6305,7 @@ s32 MBD4_ComBlowhardBranchFrom13Lv3Check(void) {
 // round). `ret = curIndex == 0` keeps the blocks apart but is not folded to 1,
 // so it emits `sltiu v0,s1,1`. Using `return 1` instead (in case 2 and/or case
 // 3) avoids that merge, but then the first switch's case 1 `return 1` block
-// is cross-jumped into the second switch's. MBD4_ComBlowhardBranchFrom19Sel2Lv3Check has a similar
-// blocker.
+// is cross-jumped into the second switch's. The From19Sel2 check matched by moving its second switch into an inline helper.
 // RTL dumps (-dJ) show the target's separate `j end; li v0,1` tails are
 // reorg delay-slot copies of one `li 1` block. Here case 2's tail after jump2
 // is `bnez s1,<case 3 fp>; j <default sltiu>`, and reorg copies the sltiu. To
@@ -6348,7 +6317,7 @@ s32 MBD4_ComBlowhardBranchFrom13Lv3Check(void) {
 // `return ret` tails did not produce that. `ret = curIndex == 0` is also
 // always 1 there, so it should not be kept if this is matched another way.
 // The second switch's case 2/case 3 tails have the same shape as
-// MBD4_ComBlowhardBranchFrom19Sel2Lv3Check's case 1/case 2 tails (see the jump.c notes there).
+// MBD4_ComBlowhardBranchFrom19Sel2Lv3Check's case 1/case 2 tails.
 // Later findings: all-`return X` arms (no ret) give the same result as the
 // ret/break form. Case 2 `return curIndex == 0 ? 1 : <other fp> != 0;` with
 // case 3 `if (curIndex == 0) { ret = 1; } else { return <other fp> != 0; }`

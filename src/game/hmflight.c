@@ -3,12 +3,7 @@
 #include "game/hu3d.h"
 #include "game/mallocblock.h"
 
-// EXTERN
-
 extern HuCamMtxs *Hu3DCurCamMtx;
-
-
-// LOCAL
 
 extern Light *Hu3DLightP;
 extern s16 Hu3DHiliteLightNo;

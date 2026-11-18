@@ -25,13 +25,12 @@ extern omObjData *HuAudFadeObj;
 u16 HuAudMusEnableF = 1;
 u16 HuAudSeEnableF = 1;
 s16 HuAudMusId = -1; // active musId
-u16 HuAudStat = 1;  // stat/attr
+u16 HuAudStat = 1;   // stat/attr
 s16 HuAudFxTypeNext = 0;
 s16 HuAudFxType = 0;
 s16 HuAudFxParamNext = 1;
 s16 HuAudFxParam = 1;
 s16 HuAudSeChMax = 0x40;
-
 
 s16 HuAudSeqPlay(s16 musId) {
     if (HuAudMusEnableF == 0) {

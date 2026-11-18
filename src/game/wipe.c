@@ -344,7 +344,7 @@ void WipeScreenCopy(Gfx **gfx, u16 *image) {
     for (y = 0; y < SCREEN_HEIGHTI; y += 16) {
         for (x = 0; x < SCREEN_WIDTHI; x += 64) {
             HuLoadTextureTile(gfx, &((u16 *)0x02000000)[x + y * SCREEN_WIDTHI], G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                               SCREEN_WIDTHI, SCREEN_HEIGHTI, 0, 0, 64, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
+                              SCREEN_WIDTHI, SCREEN_HEIGHTI, 0, 0, 64, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
             gSPTextureRectangle((*gfx)++, x * 4, y * 4, (x + 64) * 4, (y + 16) * 4,
                                 G_TX_RENDERTILE, 0, 0, 1024, 1024);
         }
@@ -364,7 +364,7 @@ void WipeScreenDraw(Gfx **gfx, u16 *image) {
     for (y = 0; y < SCREEN_HEIGHTI; y += 16) {
         for (x = 0; x < SCREEN_WIDTHI; x += 64) {
             HuLoadTextureTile(gfx, &image[x + y * SCREEN_WIDTHI], G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                               SCREEN_WIDTHI, SCREEN_HEIGHTI, 0, 0, 64, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
+                              SCREEN_WIDTHI, SCREEN_HEIGHTI, 0, 0, 64, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
             gSPTextureRectangle((*gfx)++, x * 4, y * 4, (x + 64) * 4, (y + 16) * 4,
                                 G_TX_RENDERTILE, 0, 0, 1024, 1024);
         }
@@ -397,7 +397,7 @@ s32 WipeFrameStillExec(Gfx **gfx) {
     for (y = 0; y < SCREEN_HEIGHTI; y += 16) {
         for (x = 0; x < SCREEN_WIDTHI; x += 64) {
             HuLoadTextureTile(gfx, &image[x + y * SCREEN_WIDTHI], G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                               SCREEN_WIDTHI, SCREEN_HEIGHTI, 0, 0, 64, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
+                              SCREEN_WIDTHI, SCREEN_HEIGHTI, 0, 0, 64, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
             gSPTextureRectangle((*gfx)++, x * scale * 4, y * scale * 4,
                                 (x * scale + scale * 64) * 4, (y * scale + scale * 16) * 4,
                                 G_TX_RENDERTILE, 0, 0, inverseScale * 1024, inverseScale * 1024);
@@ -408,7 +408,7 @@ s32 WipeFrameStillExec(Gfx **gfx) {
     for (y = 0; y < scale * SCREEN_HEIGHTI + 15; y += 16) {
         for (x = 0; x < scale * SCREEN_WIDTHI + 31; x += 32) {
             HuLoadTextureTile(gfx, &image[x + y * SCREEN_WIDTHI], G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                               SCREEN_WIDTHI, SCREEN_HEIGHTI, 0, 0, 32, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
+                              SCREEN_WIDTHI, SCREEN_HEIGHTI, 0, 0, 32, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
             gSPTextureRectangle((*gfx)++, x * inverseScale * 4, y * inverseScale * 4,
                                 (x + 32) * inverseScale * 4, (y + 16) * inverseScale * 4,
                                 G_TX_RENDERTILE, 0, 0, scale * 1024, scale * 1024);

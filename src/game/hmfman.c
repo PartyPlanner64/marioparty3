@@ -26,38 +26,8 @@
 extern s32 HuDbgStatus;
 extern s32 Hu3DCurAttr;
 
-// graphics.c
-
-// hmfload.c
-
-// hmfparticle.c
-
-// hmfspr.c
-
-// hmflight.c
-
-// hmfcoll.c
-
-// hmfdraw.c
-
-// hmfshape.c
-
 // hmfanim.c
 extern HmfData_Unk84_Entry2 *Hu3DTexData;
-
-// 8AC70.c
-
-// hmfspr.c
-
-// libhmath/gurotaterpy.c
-
-// camera.c
-
-// wipe.c
-
-// printfunc.c
-
-// unknown
 
 extern Gfx *gMainGfxPos;
 

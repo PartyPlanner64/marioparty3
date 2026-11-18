@@ -5,8 +5,6 @@
 #include "include_asm.h"
 #include "game/malloc.h"
 
-// malloc
-
 extern u16 espMax;
 extern u16 espNum;
 extern s16 espFreeIdx;

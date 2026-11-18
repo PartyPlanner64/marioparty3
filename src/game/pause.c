@@ -15,11 +15,6 @@
 #include "game/mgdata.h"
 #include "game/hmfdraw.h"
 
-// hmfdraw
-
-
-// LOCAL
-
 typedef struct {
     /* 0x00 */ s16 unk00;
     /* 0x02 */ s16 unk02;
@@ -28,7 +23,6 @@ typedef struct {
     /* 0x06 */ u8 unk06;
     /* 0x07 */ u8 unk07;
 } CharVoiceReq; // Size 8
-
 
 static u8 charVoiceTypeTbl[] = { 0x2F, 0x30, 0x35, 0x6F, 0x36, 0x38, 0x4E, 0x31, 0x9A };
 static s16 charVoiceSeBaseTbl[] = { 655, 655, 628, 628, 619, 619, 655, 655, 655 };
@@ -41,8 +35,14 @@ static u8 charVoiceDelay5[] = { 0x1E, 0x18, 0x2A, 0x09, 0, 0, 0, 0, 0 };
 static u8 charVoiceDelay6[] = { 0x24, 0x1E, 0x33, 0x0C, 0, 0, 0, 0, 0 };
 static u8 charVoiceDelay7[] = { 0x1E, 0x18, 0x33, 0x12, 0, 0, 0, 0, 0 };
 static u8 *charVoiceDelayTbl[] = {
-    charVoiceDelay0, charVoiceDelay1, charVoiceDelay2, charVoiceDelay3,
-    charVoiceDelay4, charVoiceDelay5, charVoiceDelay6, charVoiceDelay7,
+    charVoiceDelay0,
+    charVoiceDelay1,
+    charVoiceDelay2,
+    charVoiceDelay3,
+    charVoiceDelay4,
+    charVoiceDelay5,
+    charVoiceDelay6,
+    charVoiceDelay7,
 };
 static u8 charVoiceDirTbl[] = { 2, 3, 7, 4, 5, 6, 8, 9 };
 static s16 pauseWinId[3];

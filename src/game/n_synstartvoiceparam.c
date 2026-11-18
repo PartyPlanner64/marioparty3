@@ -4,7 +4,6 @@
 #include "game/msm.h"
 #include "PR/n_synthInternals.h"
 
-
 // MP3's version of n_alSynStartVoiceParams, which can force centered panning.
 void n_alSynStartVoiceParams(N_ALVoice *v, ALWaveTable *w, f32 pitch, s16 vol, ALPan pan, u8 fxmix, ALMicroTime t) {
     ALStartParamAlt *update;

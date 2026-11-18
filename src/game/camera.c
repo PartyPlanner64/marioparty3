@@ -30,8 +30,6 @@ RectF defaultScissor[] = {
     { 160.0f, 120.0f, SCREEN_WIDTH, SCREEN_HEIGHT },
 };
 
-// EXTERN
-
 extern s16 Hu3DCameraNum;
 extern HuCamMtxs *Hu3DCurCamMtx;
 extern HuCamera *Hu3DCurCamera;

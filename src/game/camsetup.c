@@ -26,13 +26,6 @@ RectF camSetupScissor[] = {
     { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT },
     { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT },
 };
-extern s32 CFan; // TODO: type correctly
-
-typedef struct UnkC1F0 {
-    char unk_00[0x18];
-} UnkC1F0;
-
-extern UnkC1F0 CFanM[];
 
 void CamSetupInit(u8 arg0) {
     camSetupNum = arg0;

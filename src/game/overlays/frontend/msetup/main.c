@@ -5,6 +5,7 @@
 #include "game/mallocblock.h"
 #include "gcc/string.h"
 #include "game/hmfmath.h"
+#include "game/hmfcoll.h"
 
 typedef MsetupLinkedModel Array2D[2];
 
@@ -376,12 +377,12 @@ void msetup_CameraProc(void) {
             up.y = 1.0f;
             up.z = 0.0f;
         }
-        CFanParam[0] = pos.x;
-        CFanParam[1] = pos.z;
-        CFanParam[-1] = CRot.y;
-        CFanParam[2] = gCameraList->fov;
-        CFanParam[3] = CFanLen;
-        CFanParam[4] = CFanOfs;
+        CFan.x = pos.x;
+        CFan.z = pos.z;
+        CFan.angle = CRot.y;
+        CFan.shape.spread = gCameraList->fov;
+        CFan.shape.length = CFanLen;
+        CFan.shape.offset = CFanOfs;
         Hu3DCameraPosSetV(0, &pos, &at, &up);
         Hu3DCamUpdateMtx(0);
         HuPrcVSleep();

@@ -6199,7 +6199,6 @@ gMesDataPad = 0x800CD6A0; //segment:main
 Hu3DCameraNoPad = 0x800CD6A7; //segment:main
 Hu3DCameraNoPadB = 0x800CD6A8; //segment:main
 faceBufPad = 0x800CDA70; //segment:main
-CFanParam = 0x800CE17C; //segment:main
 CZoomPad = 0x800CE1CC; //segment:main
 Hu3DLightDataPad = 0x800CE1D8; //segment:main
 omovlLo = 0x800CE202; //segment:main

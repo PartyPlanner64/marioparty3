@@ -4,6 +4,7 @@
 #include "game/camera.h"
 #include "game/mallocblock.h"
 #include "game/msm.h"
+#include "game/hmfcoll.h"
 
 typedef struct CameraViewData {
     s16 spriteGroup;
@@ -159,7 +160,6 @@ extern Vec CUpM[4];
 extern Vec CUp;
 extern f32 CFanOfs;
 extern f32 CFanLenM[];
-extern f32 CFanM[][6];
 extern f32 CFanOfsM[];
 extern f32 CFanLen;
 extern s32 omSysTimerMax;
@@ -181,12 +181,12 @@ void omOutView(omObjData *object) {
     up.x = sindf(rot_y) * sindf(rot_x);
     up.y = cosdf(rot_x);
     up.z = cosdf(rot_y) * sindf(rot_x);
-    CFanParam[0] = pos.x;
-    CFanParam[1] = pos.z;
-    CFanParam[-1] = CRot.y; // actually CFan?
-    CFanParam[2] = gCameraList->fov;
-    CFanParam[3] = CFanLen;
-    CFanParam[4] = CFanOfs;
+    CFan.x = pos.x;
+    CFan.z = pos.z;
+    CFan.angle = CRot.y;
+    CFan.shape.spread = gCameraList->fov;
+    CFan.shape.length = CFanLen;
+    CFan.shape.offset = CFanOfs;
     Hu3DCameraPosSetV(0, &pos, &at, &up);
     Hu3DCamUpdateMtx(0);
 }
@@ -208,12 +208,12 @@ void omOutViewMulti(omObjData *object) {
         up.x = sindf(rot_y) * sindf(rot_x);
         up.y = cosdf(rot_x);
         up.z = cosdf(rot_y) * sindf(rot_x);
-        CFanM[i][1] = pos.x;
-        CFanM[i][2] = pos.z;
-        CFanM[i][0] = CRotM[i].y;
-        CFanM[i][3] = gCameraList[i].fov;
-        CFanM[i][4] = CFanLenM[i];
-        CFanM[i][5] = CFanOfsM[i];
+        CFanM[i].x = pos.x;
+        CFanM[i].z = pos.z;
+        CFanM[i].angle = CRotM[i].y;
+        CFanM[i].shape.spread = gCameraList[i].fov;
+        CFanM[i].shape.length = CFanLenM[i];
+        CFanM[i].shape.offset = CFanOfsM[i];
         Hu3DCameraPosSetV(i, &pos, &at, &up);
         Hu3DCamUpdateMtx(i);
     }
@@ -380,12 +380,12 @@ void omCameraViewExec(omObjData *object) {
     up.x = sindf(rot_y) * sindf(rot_x);
     up.y = cosdf(rot_x);
     up.z = cosdf(rot_y) * sindf(rot_x);
-    CFanParam[0] = pos.x;
-    CFanParam[1] = pos.z;
-    CFanParam[-1] = CRot.y; // actually CFan?
-    CFanParam[2] = gCameraList->fov;
-    CFanParam[3] = CFanLen;
-    CFanParam[4] = CFanOfs;
+    CFan.x = pos.x;
+    CFan.z = pos.z;
+    CFan.angle = CRot.y;
+    CFan.shape.spread = gCameraList->fov;
+    CFan.shape.length = CFanLen;
+    CFan.shape.offset = CFanOfs;
     Hu3DCameraPosSetV(0, &pos, &at, &up);
     Hu3DCamUpdateMtx(0);
 
@@ -427,12 +427,12 @@ void omCameraViewMultiExec(omObjData *object) {
         up.x = sindf(rot_y) * sindf(rot_x);
         up.y = cosdf(rot_x);
         up.z = cosdf(rot_y) * sindf(rot_x);
-        CFanM[i][1] = pos.x;
-        CFanM[i][2] = pos.z;
-        CFanM[i][0] = CRotM[i].y; // actually CFan?
-        CFanM[i][3] = gCameraList[i].fov;
-        CFanM[i][4] = CFanLenM[i];
-        CFanM[i][5] = CFanOfsM[i];
+        CFanM[i].x = pos.x;
+        CFanM[i].z = pos.z;
+        CFanM[i].angle = CRotM[i].y;
+        CFanM[i].shape.spread = gCameraList[i].fov;
+        CFanM[i].shape.length = CFanLenM[i];
+        CFanM[i].shape.offset = CFanOfsM[i];
         Hu3DCameraPosSetV(i, &pos, &at, &up);
         Hu3DCamUpdateMtx(i);
 

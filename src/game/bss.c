@@ -182,8 +182,7 @@ s16 Hu3DModelTag BSS; // hmfdraw.c, hmfload.c, hmfman.c, ...
 HuSprGrp *HuSprGrpData[HUSPR_GRP_MAX] ALIGNED(8) BSS; // sprman.c
 s16 ambColBakG BSS; // hmfdraw.c
 u32 __osRdb_IP6_Size BSS; // 2.0L/os/initrdb.c, 2.0L/os/rdbsend.c
-s32 CFan BSS; // camsetup.c, objsysobj.c
-f32 CFanParam[5] BSS; // objsysobj.c
+CollisionFan CFan BSS; // camsetup.c, objsysobj.c, ...
 s16 omExecStep BSS; // objmain.c
 omObjData *omSysTimerObj BSS; // objsysobj.c
 s16 mbBoardMusId BSS; // overlays only
@@ -247,7 +246,7 @@ s16 HuSprLayerHookMdl BSS; // sprman.c
 OSPifRam __osEepPifRam ALIGNED(8) BSS; // 2.0L/io/conteepread.c, 2.0L/io/conteepwrite.c
 u16 saveCommonSize BSS; // saveEncode.c, saveload.c
 s16 *motionBakeNodeMap BSS; // hmfspr.c
-f32 CFanM[6][6] BSS; // camsetup.c, objsysobj.c
+CollisionFan CFanM[6] BSS; // camsetup.c, objsysobj.c
 u64 *gThreadOutStack BSS; // graphics.c, profiler.c
 omObjData *omCurObj BSS; // objmain.c
 OSMesgQueue __osPiAccessQueue BSS; // 2.0L/io/piacs.c, 2.0L/io/pimgr.c

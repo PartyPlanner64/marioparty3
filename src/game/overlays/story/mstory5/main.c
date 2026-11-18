@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game/hmfmath.h"
+#include "game/hmfcoll.h"
 
 extern f32 CFanOfs;
 extern f32 CFanLen;
@@ -167,12 +168,12 @@ void mstory5_BackDispOn(void) {
 }
 
 void mstory5_CameraObjMain(omObjData *obj) {
-    CFanParam[0] = mstory5_cameraPos.x;
-    CFanParam[1] = mstory5_cameraPos.z;
-    CFanParam[-1] = 0.0f;
-    CFanParam[2] = 35.0f;
-    CFanParam[3] = CFanLen;
-    CFanParam[4] = CFanOfs;
+    CFan.x = mstory5_cameraPos.x;
+    CFan.z = mstory5_cameraPos.z;
+    CFan.angle = 0.0f;
+    CFan.shape.spread = 35.0f;
+    CFan.shape.length = CFanLen;
+    CFan.shape.offset = CFanOfs;
     Hu3DCameraPosSetV(0, &mstory5_cameraPos, &mstory5_cameraTarget, &mstory5_cameraUp);
     Hu3DCamUpdateMtx(0);
 }

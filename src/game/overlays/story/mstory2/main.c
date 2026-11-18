@@ -1,6 +1,7 @@
 #include "common.h"
 #include "game/hmfmath.h"
 #include "game/overlays/minigame.h"
+#include "game/hmfcoll.h"
 
 extern f32 CFanOfs;
 extern f32 CFanLen;
@@ -59,12 +60,12 @@ void mstory2_LightInit(void) {
 }
 
 void mstory2_CameraObjMain(omObjData *obj) {
-    CFanParam[0] = mstory2_cameraPos.x;
-    CFanParam[1] = mstory2_cameraPos.z;
-    CFanParam[-1] = 0.0f;
-    CFanParam[2] = 35.0f;
-    CFanParam[3] = CFanLen;
-    CFanParam[4] = CFanOfs;
+    CFan.x = mstory2_cameraPos.x;
+    CFan.z = mstory2_cameraPos.z;
+    CFan.angle = 0.0f;
+    CFan.shape.spread = 35.0f;
+    CFan.shape.length = CFanLen;
+    CFan.shape.offset = CFanOfs;
     Hu3DCameraPosSetV(0, &mstory2_cameraPos, &mstory2_cameraTarget, &mstory2_cameraUp);
     Hu3DCamUpdateMtx(0);
 }

@@ -42,6 +42,11 @@ typedef struct Hu3DSphere {
     /* 0x0C */ f32 radius;
 } Hu3DSphere; // sizeof 0x10
 
+#ifndef NO_EXTERN_VARIABLES
+extern CollisionFan CFan; // culling fan for the single camera view
+extern CollisionFan CFanM[]; // culling fans for each camera in multi-camera views
+#endif
+
 void MapCollInit(s16 count);
 s32 MapCollSquareCheck(s16 index);
 s16 MapCollCreate(s16 model);

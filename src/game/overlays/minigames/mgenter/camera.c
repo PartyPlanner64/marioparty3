@@ -1,20 +1,11 @@
 #include "common.h"
 #include "game/camera.h"
+#include "game/hmfcoll.h"
 #include "game/hvq.h"
 #include "game/malloc.h"
 #include "game/mallocblock.h"
 
-typedef struct CameraViewState {
-    f32 rotY;
-    f32 posX;
-    f32 posZ;
-    f32 fov;
-    f32 far;
-    f32 near;
-} CameraViewState;
-
 extern f32 CFanOfs;
-extern CameraViewState CFan;
 extern f32 CFanLen;
 
 f32 mgenter_cameraFov = 58.0f;
@@ -167,12 +158,12 @@ void mgenter_CameraProc(void) {
             up.y = 1.0f;
             up.z = 0.0f;
         }
-        CFan.posX = pos.x;
-        CFan.posZ = pos.z;
-        CFan.rotY = CRot.y;
-        CFan.fov = gCameraList->fov;
-        CFan.far = CFanLen;
-        CFan.near = CFanOfs;
+        CFan.x = pos.x;
+        CFan.z = pos.z;
+        CFan.angle = CRot.y;
+        CFan.shape.spread = gCameraList->fov;
+        CFan.shape.length = CFanLen;
+        CFan.shape.offset = CFanOfs;
         Hu3DCameraPosSetV(0, &pos, &at, &up);
         Hu3DCamUpdateMtx(0);
         HuPrcVSleep();

@@ -1,5 +1,6 @@
 #include "common.h"
 #include "inst.h"
+#include "game/hmfcoll.h"
 
 extern InstModelHooks *inst_hookTbl[][2];
 extern const s32 inst_boxFileTbl[][2];
@@ -402,12 +403,12 @@ s32 inst_CameraMove(Vec *startPosition, Vec *endPosition, Vec *startTarget, Vec 
 }
 
 void inst_CameraObjMain(omObjData *object) {
-    CFanParam[0] = inst_cameraPos.x;
-    CFanParam[1] = inst_cameraPos.z;
-    CFanParam[-1] = 0.0f;
-    CFanParam[2] = gCameraList->fov;
-    CFanParam[3] = CFanLen;
-    CFanParam[4] = CFanOfs;
+    CFan.x = inst_cameraPos.x;
+    CFan.z = inst_cameraPos.z;
+    CFan.angle = 0.0f;
+    CFan.shape.spread = gCameraList->fov;
+    CFan.shape.length = CFanLen;
+    CFan.shape.offset = CFanOfs;
     Hu3DCameraPosSetV(0, &inst_cameraPos, &inst_cameraTarget, &inst_cameraUp);
     Hu3DCamUpdateMtx(0);
 }

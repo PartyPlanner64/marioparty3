@@ -2,6 +2,7 @@
 #include "gcc/memory.h"
 #include "game/hmfmath.h"
 #include "game/overlays/minigame.h"
+#include "game/hmfcoll.h"
 
 typedef struct ToadstoolTitanPlayer {
     /* 0x00 */ s8 chr;
@@ -1414,12 +1415,12 @@ void m222_CameraObjMain(omObjData *object) {
     up.x = 0.0f;
     up.y = 1.0f;
     up.z = 0.0f;
-    CFanParam[0] = m222_cameraPos.x;
-    CFanParam[1] = m222_cameraPos.z;
-    CFanParam[-1] = 0.0f;
-    CFanParam[2] = gCameraList->fov;
-    CFanParam[3] = CFanLen;
-    CFanParam[4] = CFanOfs;
+    CFan.x = m222_cameraPos.x;
+    CFan.z = m222_cameraPos.z;
+    CFan.angle = 0.0f;
+    CFan.shape.spread = gCameraList->fov;
+    CFan.shape.length = CFanLen;
+    CFan.shape.offset = CFanOfs;
     Hu3DCameraPerspectiveSet(0, m222_cameraFov, 800.0f, 2750.0f);
     Hu3DCameraPosSetV(0, &m222_cameraPos, &m222_cameraTarget, &up);
     Hu3DCamUpdateMtx(0);

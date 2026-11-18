@@ -273,19 +273,19 @@ Gfx hiliteGfx[] = {
 u8 *hiliteTexTbl[] = { hiliteTex0, hiliteTex1, hiliteTex2, NULL };
 s16 Hu3DMotionLoopF = 0;
 
-void Hu3DDrawInit(HuAllocFunc alloc, HuFreeFunc free, u16 vertexCount, u16 matrixCount, u16 gfxCount, u8 bufferCount) {
+void Hu3DDrawInit(HuAllocFunc alloc, HuFreeFunc free, u16 vertexCount, u16 gfxCount, u16 matrixCount, u8 bufferCount) {
     s16 i;
 
     Hu3DBufNum = bufferCount;
     Hu3DBufNo = 0;
     HuMemInit(alloc, free);
     Hu3DVtxMax = vertexCount;
-    Hu3DMtxMax = gfxCount;
-    Hu3DGfxMax = matrixCount;
+    Hu3DMtxMax = matrixCount;
+    Hu3DGfxMax = gfxCount;
     for (i = 0; i < bufferCount; i++) {
         Hu3DVtxBuf[i] = HuMemAlloc(vertexCount * sizeof(Vtx));
-        Hu3DMtxBuf[i] = HuMemAlloc(gfxCount * sizeof(Mtx));
-        Hu3DGfxBuf[i] = HuMemAlloc(matrixCount * sizeof(Gfx));
+        Hu3DMtxBuf[i] = HuMemAlloc(matrixCount * sizeof(Mtx));
+        Hu3DGfxBuf[i] = HuMemAlloc(gfxCount * sizeof(Gfx));
     }
     for (i = 0; i < ARRAY_COUNT(Hu3DDrawList); i++) {
         Hu3DDrawList[i] = HuMemAlloc(drawListMaxTbl[i] * sizeof(HmfDrawEntry));

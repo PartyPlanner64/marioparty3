@@ -142,10 +142,10 @@ f32 Hu3DVtxWaveAngle = 0.0f;
 const char hexFmtStr[] = "%x\n";
 const char modelEntryOverStr[] = "Model Entry Over!\n";
 
-void Hu3DInit(void *arg0, void *arg1, u16 arg2, u16 arg3, u16 arg4, u8 arg5) {
+void Hu3DInit(void *arg0, void *arg1, u16 vertexCount, u16 gfxCount, u16 matrixCount, u8 bufferCount) {
     s16 modelId;
 
-    Hu3DDrawInit(arg0, arg1, arg2, arg3, arg4, arg5);
+    Hu3DDrawInit(arg0, arg1, vertexCount, gfxCount, matrixCount, bufferCount);
     Hu3DMotionInit();
     Hu3DData = HuMemAlloc(HU3D_MODEL_MAX * sizeof(HmfModel));
     for (modelId = 0; modelId < HU3D_MODEL_MAX; modelId++) {

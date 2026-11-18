@@ -23,7 +23,7 @@ typedef struct {
     HmfData_Unk84_Entry *texture;
 } HmfDrawFace;
 
-void Hu3DDrawInit(HuAllocFunc alloc, HuFreeFunc free, u16 vertexCount, u16 matrixCount, u16 gfxCount, u8 bufferCount);
+void Hu3DDrawInit(HuAllocFunc alloc, HuFreeFunc free, u16 vertexCount, u16 gfxCount, u16 matrixCount, u8 bufferCount);
 void Hu3DPreProc(void);
 void Hu3DDrawListInit(void);
 void MakeDisplayList(HmfData *arg0);

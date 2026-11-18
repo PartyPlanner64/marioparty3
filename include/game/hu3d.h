@@ -578,7 +578,7 @@ extern u8 Hu3DScreenClearF;
 extern HmfModelData_Unk64_Unk8C_Struct *Hu3DMotion;
 #endif
 
-void Hu3DInit(void *arg0, void *arg1, u16 arg2, u16 arg3, u16 arg4, u8 arg5);
+void Hu3DInit(void *arg0, void *arg1, u16 vertexCount, u16 gfxCount, u16 matrixCount, u8 bufferCount);
 s32 Hu3DModelCreate(u8 *, u32);
 s32 Hu3DModelLink(s16 linkMdlId);
 s32 Hu3DModelDLCreate(u32 flags, void *dl, s32 mode);

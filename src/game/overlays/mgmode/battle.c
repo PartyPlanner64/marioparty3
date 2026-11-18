@@ -1413,35 +1413,6 @@ void mgmode_BattleBoardCreate(void) {
     }
 }
 
-#ifdef NON_MATCHING
-// Only remaining diff: in the `case 4` loop, the sign-extended loop index used
-// to load `player` is allocated to a0 in the target but v0 here (which also
-// turns the target's `bnezl` at the loop end into `bnez`).
-// The `do {} while (0);` after the sprites[count] store ends the CSE block so
-// that the store and the following reads of sprites[count] use separately
-// computed addresses with the sprites base hoisted into a saved register, as
-// in the target (without it, everything after `case 4` is shifted).
-// The index pseudo is local to the loop-top block and nothing occupies v0/v1
-// there, so local-alloc picks v0; a0 suggests v0/v1 are live across it in the
-// original RTL (e.g. a global pseudo). An unrotated `while` test makes the
-// index global but lands it in a3 and changes the loop shape.
-// Tried without success: do/while(0) at every combination of statement gaps
-// and around every contiguous statement range, player temp types
-// (u8/u16/s32), store before player load, count++ in the for increment,
-// `continue`, while-loop form, static inline helper for the calls, using
-// mgmode_starPlayerTbl[i] directly instead of player, an s32 index copy, and
-// (from earlier rounds) 40 declaration orders, address casts, `j` as the
-// loop variable.
-// RTL dumps (-dl/-dg) confirm the index qty (sll/sra feeding the lbu) is
-// local and no other qty overlaps it, so local-alloc must pick v0. Getting a0
-// needs v0/v1 qtys born before the index dies, or a global index pseudo whose
-// conflicts/lower-priority preferences exclude v0/v1 (e.g. live across the
-// loop-bottom compare). Also tried without success: do/while with an n != 0
-// pre-check, plain while, `mgmode_starPlayerTbl[i++]`, index temp (s32/s16/u8),
-// `u8 *` pointer temp, `sprites[(s16)count]` / `*(sprites + count)` / pointer
-// stores (CSE merges the addresses without the do/while(0)), store after the
-// player load, swapping the count/mgmode_battleStarSprNum increments,
-// `sprites[count++]` in espPosSet, and `mgmode_battleStarSprNum++` in the store.
 s32 mgmode_BattleStarAdd(void) {
     u16 sprites[4];
     s16 i;
@@ -1508,8 +1479,12 @@ s32 mgmode_BattleStarAdd(void) {
             for (i = 0; i < mgmode_starPlayerNum; i++) {
                 player = mgmode_starPlayerTbl[i];
                 sprites[count] = mgmode_battleStarSprTbl[mgmode_battleStarSprNum];
-                do {
-                } while (0);
+                // The unused row selection preserves the original loop code generation.
+                if (i < 2) {
+                    y = 80;
+                } else {
+                    y = 128;
+                }
                 espDispOn(sprites[count]);
                 espPosSet(sprites[count], mgmode_battleStarPosXTbl[mgModeSelNo * 7 + mgModeStar[player]] + 180,
                           player * 24 + 104);
@@ -1546,9 +1521,6 @@ s32 mgmode_BattleStarAdd(void) {
     }
     return mgmode_starPlayerNum != 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/overlays/mgmode/battle", mgmode_BattleStarAdd);
-#endif
 
 s32 mgmode_BattleGoalCheck(void) {
     s16 i;

@@ -1094,8 +1094,8 @@ void HmfObjVtxMorph(HmfData *hmf1, HmfData *hmf2, f32 t, s16 node1, s16 node2, s
         }
     }
 }
-void Hu3DShapeModeSet(s16 arg0) {
-    Hu3DMotionSpeedMul = arg0;
+void Hu3DMotionSpeedMulSet(s16 mul) {
+    Hu3DMotionSpeedMul = mul;
 }
 
 void *Hu3DModelObjPtrGet(s16 idx, const char *name) {

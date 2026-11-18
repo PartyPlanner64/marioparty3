@@ -628,7 +628,7 @@ void Hu3DModelVtxMorph(s16 idx1, s16 idx2, f32 t);
 void Hu3DModelObjVtxMorph(s16 idx1, s16 idx2, f32 arg2, char *name, s32 arg4);
 void Hu3DModelObjVtxMorph2(s16 idx1, s16 idx2, f32 arg2, char *name1, char *name2, s32 arg5);
 void HmfObjVtxMorph(HmfData *hmf1, HmfData *hmf2, f32 t, s16 node1, s16 node2, s32 full);
-void Hu3DShapeModeSet(s16 arg0);
+void Hu3DMotionSpeedMulSet(s16 mul);
 void *Hu3DModelObjPtrGet(s16 idx, const char *name);
 void Hu3DModelVtxWave(s16 idx, f32 arg1, f32 arg2, s32 mode);
 void Hu3DModelObjVtxWave(s16 idx, f32 arg1, f32 arg2, char *name, s16 mode);

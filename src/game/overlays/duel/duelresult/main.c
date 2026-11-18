@@ -40,7 +40,7 @@ typedef struct DuelResultCharHeights {
 extern const DuelResultCharMotions duelresult_chrAnimTbl;
 extern const DuelResultCharMotions duelresult_chrWinAnimTbl;
 extern const DuelResultCharActors duelresult_cheerMdlNoTbl;
-extern s16 kakusiMasuItemHis[10];
+extern s16 kakusiMasuItemHis[10]; // Reused after board play to hold player indices by final rank
 extern s32 mbKSuitObj[];
 
 void duelresult_IntroExec(void);

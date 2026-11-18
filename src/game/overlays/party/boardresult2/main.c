@@ -26,7 +26,7 @@ typedef struct BoardResult2StatFiles {
     s32 files[13];
 } BoardResult2StatFiles;
 
-extern s16 kakusiMasuItemHis[10];
+extern s16 kakusiMasuItemHis[10]; // Reused after board play to hold player indices by final rank
 
 s32 boardresult2_statScroll = 0;
 s32 boardresult2_statCursor = 0;

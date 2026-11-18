@@ -25,7 +25,7 @@ typedef struct DuelResult2StatFiles {
 extern const DuelResult2Portraits duelresult2_chrNameSprFileTbl;
 extern const DuelResult2Portraits duelresult2_chrFaceSprFileTbl;
 extern const DuelResult2StatFiles duelresult2_statNameSprFileTbl;
-extern s16 kakusiMasuItemHis[10];
+extern s16 kakusiMasuItemHis[10]; // Reused after board play to hold player indices by final rank
 
 void duelresult2_ModelAnimSet(s16 model, s16 animIdx);
 void duelresult2_StatNumUpdate(void);

@@ -66,7 +66,7 @@ void MBDMotionEndShiftSet(Object *, s32, s32);
 void MBDPlayerKeyWaitAll(void);
 extern s32 mbSaiSeF;
 extern s32 mbKSuitObj[];
-extern s16 kakusiMasuItemHis[10];
+extern s16 kakusiMasuItemHis[10]; // Reused after board play to hold player indices by final rank
 
 s32 boardresult_winClosedF = 0;
 

@@ -16,7 +16,7 @@ void storyresult_CameraProc(void);
 void storyresult_PlayerConfigInit(void);
 extern f32 CFanLen;
 extern f32 CFanOfs;
-extern s16 kakusiMasuItemHis[10];
+extern s16 kakusiMasuItemHis[10]; // Reused after board play to hold player indices by final rank
 
 u16 storyresult_exitCnt = 0;
 s16 storyresult_backF = 0;

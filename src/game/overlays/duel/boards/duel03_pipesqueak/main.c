@@ -5482,17 +5482,6 @@ s32 MBD3_ComBranch3Lv3Check(void) {
     return coins >= 2;
 }
 
-#ifdef NON_MATCHING
-// The walkNum == 5 block is the only mismatch. This nested form, with a
-// do-while(0) CSE boundary so backPower is reloaded, gets every instruction
-// right, but jump.c hoists the return-1 `v0 = 1` above the first beqz, so the
-// first slt/backPower land in v1 instead of v0 (score 40). The early-return
-// form (as in the matched sibling MBD3_ComBranch4Lv3Check) gets the registers
-// right, but reorg fills the first beqz delay slot with the fallthrough
-// `li v1, 4` (score 515); the target's reorg treats v1 as live at the shared
-// return-1 block and steals the hoisted `li v0, 1` instead.
-// The frame is 0x28 bytes bigger than in the sibling callbacks; the 40-byte
-// local that causes this is never referenced.
 s32 MBD3_ComBranch4Lv3PlayerCheck(void) {
     s32 curIndex = MBDPlayerTurnGet();
     s32 otherIndex = (s16)(MBDPlayerTurnGet() ^ 1);
@@ -5508,7 +5497,13 @@ s32 MBD3_ComBranch4Lv3PlayerCheck(void) {
         }
         return 1;
     }
-    if (other->cidx >= 0 && other->cidx < 6) {
+
+    // Keep the front-attack checks together for GCC 2.7.2's branch scheduling.
+    do {
+        if (other->cidx < 0 || other->cidx >= 6) {
+            goto takeBranch;
+        }
+
         if (walkNum < 6 && other->cidx == mbd3_comLinkIdxTbl[0][walkNum]) {
             if (other->stats.partners.backID == PARTNER_BOO &&
                 !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
@@ -5527,9 +5522,9 @@ s32 MBD3_ComBranch4Lv3PlayerCheck(void) {
             return 1;
         }
         if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
-                ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
-                : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
-            return 1;
+                ? MBD3_ComDefenderHpGet(other->stats.partners.frontHp, other) <= player->stats.partners.frontPower
+                : MBD3_ComDefenderHpGet(other->stats.partners.backHp, other) <= player->stats.partners.frontPower) {
+            goto takeBranch;
         }
         if (other->stats.partners.backID == PARTNER_BOO) {
             if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
@@ -5539,45 +5534,45 @@ s32 MBD3_ComBranch4Lv3PlayerCheck(void) {
                 stars -= player->stats.partners.frontPower - player->stats.partners.frontHp;
             }
         }
-        if (walkNum == 5) {
-            if (player->stats.partners.backPower < other->stats.partners.frontHp + other->star) {
-                if (other->stats.partners.frontID == PARTNER_BOO) {
-                    do {
-                    } while (0); // CSE boundary: reload backPower.
-                    if (!(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
-                        return 0;
-                    }
-                }
-            }
+    } while (0);
+
+    if (walkNum == 5) {
+        if (player->stats.partners.backPower >= other->stats.partners.frontHp + other->star) {
             return 1;
         }
-        if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
-            if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
-                return 0;
-            }
-            if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
-                return 0;
-            }
-            if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
-                return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
-            }
-            if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
-                return 0;
-            }
-        }
-        if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
-            return 1;
-        }
-        if (player->stats.partners.frontPower == 0 && other->stats.partners.frontPower != 0) {
+        if (other->stats.partners.frontID == PARTNER_BOO && player->stats.partners.backPower >= stars + player->stats.partners.backHp) {
             return 0;
         }
         return 1;
     }
+    if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+        if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+            return 0;
+        }
+        if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+            return 0;
+        }
+        if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+            return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
+        }
+        if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+            return 0;
+        }
+    }
+    if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
+        return 1;
+    }
+    if (player->stats.partners.frontPower == 0 && other->stats.partners.frontPower != 0) {
+        return 0;
+    }
     return 1;
+
+    // The shared return's loop boundary controls the branch delay slots.
+    do {
+    takeBranch:
+        return 1;
+    } while (0);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/overlays/duel/boards/duel03_pipesqueak/main", MBD3_ComBranch4Lv3PlayerCheck);
-#endif
 
 s32 MBD3_ComBranch4Lv3Check(void) {
     s32 curIndex = MBDPlayerTurnGet();

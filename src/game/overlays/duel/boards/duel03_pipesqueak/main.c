@@ -4922,49 +4922,13 @@ s32 MBD3_ComBranch1Lv3Check(void) {
     return coins >= 2;
 }
 
-#ifdef NON_MATCHING
-// The walkNum == 3 block is the only mismatch. This nested form, with a
-// do-while(0) CSE boundary so backPower is reloaded, gets every instruction
-// right, but jump.c hoists the return-1 `v0 = 1` above the first beqz, so the
-// first slt/backPower land in v1 instead of v0 (score 40). The target is more
-// likely the early-return form (`if (!(c1)) return 1; if (BOO && !c2) return
-// 0; return 1;`, as in duel02): there the hoisted `v0 = 1` sits before the
-// frontID bne and the registers match, but reorg fills the first beqz delay
-// slot with the fallthrough `li v1, 4` (score 550). In the target, reorg
-// rejects that because it treats v1 as live at the shared return-1 block
-// (40d060), and it steals the hoisted `li v0, 1` instead, leaving a nop after
-// the bne. Our return-1 label is a flow basic-block head, so v1 is dead
-// there. Tried: tail forms (scc/else/nested), else-if and early-return
-// cidx range checks, ternary/||/else-if forms of this block, and do-while
-// placements. None change that fill.
-// Also tried, without effect on the fill: inverting the cidx 15..20 check
-// into an early `return 1` (breaks the cidx CSE, 1690), dropping the inner
-// trailing `return 1` / merging the tail into one condition / else-return
-// (breaks the scc tail, 955-1405), letting walkNum == 3 fall to the shared
-// final `return 1` via an else (1155-1975), and `?:`/`||`/single-condition
-// forms of this block (380-1920). Every matched sibling (duel01/02/03/05)
-// fills that slot with `li v1, 4`, so the target's v1-live condition is
-// specific to this function's return-1 layout.
-// Verified via -dj/-dJ/-dd dumps: for the early-return form, fill_eager tries
-// the fallthrough first (EQ branch => mostly_true_jump returns 0). The target
-// result follows if, at reorg time, the RTL is
-// `beqz A; v0 = 1; lb frontID; li 4; bne` (v0 = 1 *before* the frontID load).
-// reorg then takes `v0 = 1` for the beqz slot, the bne slot gets nothing (nop),
-// and the beqz is redirected past the redundant `li v0, 1`. Our jump.c
-// "x = b; if (...) x = a" move (jump.c ~line 725) puts `v0 = 1` right before
-// the first jump of the chain (the bne), i.e. after `lb`/`li 4`. A redundant
-// leading `walkNum == 3 &&` in the BOO test proves it: that block then matches,
-// apart from the leftover compare (score 410). Other ways to get the same slot:
-// a live label right after the beqz (own_fallthrough = 0), or a beqz target
-// label that is not a flow basic-block head (find_basic_block returns -1, so
-// all registers count as live there).
-// Also tried without success: `?:` forms with a constant arm (the temp gets
-// v1/a0 plus a move), a local `ret` variable, static inline helpers (whole
-// body or BOO part; results land in a pseudo), `do {} while (0)` in each
-// position, flat or repeated `walkNum == 3` tests, and restructured tails
-// (else-return, no final return, falling out of the block).
-// The frame is 0x28 bytes bigger than in the sibling callbacks; the 40-byte
-// local that causes this is never referenced.
+static inline s32 MBD3_ComDefenderHpGet(s32 partnerHp, GW_PLAYER *defender) {
+    // The loop scope preserves the register allocation for the HP sum.
+    do {
+        return partnerHp + defender->star;
+    } while (0);
+}
+
 s32 MBD3_ComBranch2Lv3PlayerCheck(void) {
     s32 curIndex = MBDPlayerTurnGet();
     s32 otherIndex = (s16)(MBDPlayerTurnGet() ^ 1);
@@ -4980,7 +4944,13 @@ s32 MBD3_ComBranch2Lv3PlayerCheck(void) {
         }
         return 1;
     }
-    if (other->cidx >= 15 && other->cidx <= 20) {
+
+    // Keep the front-attack checks together for GCC 2.7.2's branch scheduling.
+    do {
+        if (other->cidx < 15 || other->cidx > 20) {
+            goto takeBranch;
+        }
+
         if (walkNum < 6 && other->cidx == mbd3_comLinkIdxTbl[2][walkNum]) {
             if (other->stats.partners.backID == PARTNER_BOO &&
                 !(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
@@ -4999,9 +4969,9 @@ s32 MBD3_ComBranch2Lv3PlayerCheck(void) {
             return 1;
         }
         if ((player->stats.partners.frontID == PARTNER_MR_BLIZZARD)
-                ? !(other->stats.partners.frontHp + other->star > player->stats.partners.frontPower)
-                : !(other->stats.partners.backHp + other->star > player->stats.partners.frontPower)) {
-            return 1;
+                ? MBD3_ComDefenderHpGet(other->stats.partners.frontHp, other) <= player->stats.partners.frontPower
+                : MBD3_ComDefenderHpGet(other->stats.partners.backHp, other) <= player->stats.partners.frontPower) {
+            goto takeBranch;
         }
         if (other->stats.partners.backID == PARTNER_BOO) {
             if (!(player->stats.partners.frontPower < player->star + player->stats.partners.frontHp)) {
@@ -5011,45 +4981,45 @@ s32 MBD3_ComBranch2Lv3PlayerCheck(void) {
                 stars -= player->stats.partners.frontPower - player->stats.partners.frontHp;
             }
         }
-        if (walkNum == 3) {
-            if (player->stats.partners.backPower < other->stats.partners.frontHp + other->star) {
-                if (other->stats.partners.frontID == PARTNER_BOO) {
-                    do {
-                    } while (0); // CSE boundary: reload backPower.
-                    if (!(player->stats.partners.backPower < stars + player->stats.partners.backHp)) {
-                        return 0;
-                    }
-                }
-            }
+    } while (0);
+
+    if (walkNum == 3) {
+        if (player->stats.partners.backPower >= other->stats.partners.frontHp + other->star) {
             return 1;
         }
-        if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
-            if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
-                return 0;
-            }
-            if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
-                return 0;
-            }
-            if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
-                return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
-            }
-            if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
-                return 0;
-            }
-        }
-        if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
-            return 1;
-        }
-        if (player->stats.partners.frontPower == 0 && other->stats.partners.frontPower != 0) {
+        if (other->stats.partners.frontID == PARTNER_BOO && player->stats.partners.backPower >= stars + player->stats.partners.backHp) {
             return 0;
         }
         return 1;
     }
+    if (GwSystem.current_turn != GwSystem.total_turns || curIndex == 0) {
+        if (other->stats.partners.frontID == PARTNER_CHOMP && player->star < 2) {
+            return 0;
+        }
+        if (other->stats.partners.frontID == PARTNER_BOB_OMB && !(player->star > other->stats.partners.frontPoweredUp)) {
+            return 0;
+        }
+        if (other->stats.partners.frontID == PARTNER_MR_BLIZZARD) {
+            return player->stats.partners.frontHp + player->star > other->stats.partners.frontPower;
+        }
+        if (other->stats.partners.frontPower > player->stats.partners.backHp + player->star) {
+            return 0;
+        }
+    }
+    if (player->stats.partners.frontPower != 0 || player->stats.partners.backID == PARTNER_BOO) {
+        return 1;
+    }
+    if (player->stats.partners.frontPower == 0 && other->stats.partners.frontPower != 0) {
+        return 0;
+    }
     return 1;
+
+    // The shared return's loop boundary controls the branch delay slots.
+    do {
+    takeBranch:
+        return 1;
+    } while (0);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/overlays/duel/boards/duel03_pipesqueak/main", MBD3_ComBranch2Lv3PlayerCheck);
-#endif
 
 s32 MBD3_ComBranch2Lv3Check(void) {
     s32 curIndex = MBDPlayerTurnGet();
@@ -5520,8 +5490,7 @@ s32 MBD3_ComBranch3Lv3Check(void) {
 // form (as in the matched sibling MBD3_ComBranch4Lv3Check) gets the registers
 // right, but reorg fills the first beqz delay slot with the fallthrough
 // `li v1, 4` (score 515); the target's reorg treats v1 as live at the shared
-// return-1 block and steals the hoisted `li v0, 1` instead. See
-// MBD3_ComBranch2Lv3PlayerCheck for the same issue.
+// return-1 block and steals the hoisted `li v0, 1` instead.
 // The frame is 0x28 bytes bigger than in the sibling callbacks; the 40-byte
 // local that causes this is never referenced.
 s32 MBD3_ComBranch4Lv3PlayerCheck(void) {

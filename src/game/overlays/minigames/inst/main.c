@@ -143,7 +143,7 @@ void inst_ObjectSetup(void) {
     omInitObjMan(0x1E, 0x1E);
     HuWinInit();
     CamSetupInit(1);
-    ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(0, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 15.0f, 500.0f, 8000.0f);
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, inst_CameraObjMain), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);

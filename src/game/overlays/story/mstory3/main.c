@@ -67,7 +67,7 @@ void mstory3_CameraInit(void) {
     omObjData *obj;
 
     CamSetupInit(1);
-    ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(0, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 35.0f, 80.0f, 8000.0f);
     obj = omAddObj(0x7FDA, 0, 0, -1, mstory3_CameraObjMain);

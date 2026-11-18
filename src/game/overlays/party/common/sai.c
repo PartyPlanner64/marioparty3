@@ -196,8 +196,8 @@ static void MBSaiNumObjMain(omObjData *arg0) {
 
     HuSprPosSet(entry->sprites[arg0->work[1]], 0, pos2d[0], pos2d[1] - 8.0f);
 
-    if ((pos2d[0] >= 0.0f) && (pos2d[0] <= 320.0f) &&
-        (pos2d[1] >= 0.0f) && (pos2d[1] <= 240.0f)) {
+    if ((pos2d[0] >= 0.0f) && (pos2d[0] <= SCREEN_WIDTH) &&
+        (pos2d[1] >= 0.0f) && (pos2d[1] <= SCREEN_HEIGHT)) {
         MBSaiNumPosSet(arg0->work[3], arg0->work[1], 160,
                                          120 - (s32)(MBCameraZoomGet() * 24.0f));
     }
@@ -354,8 +354,8 @@ void MBSaiNumShow(s32 arg0) {
                 HuSprPosSet(entry->sprites[entry->rollValueIdx], 0, pos2d[0], pos2d[1]);
             }
 
-            if ((pos2d[0] >= 0.0f) && (pos2d[0] <= 320.0f) &&
-                (pos2d[1] >= 0.0f) && (pos2d[1] <= 240.0f)) {
+            if ((pos2d[0] >= 0.0f) && (pos2d[0] <= SCREEN_WIDTH) &&
+                (pos2d[1] >= 0.0f) && (pos2d[1] <= SCREEN_HEIGHT)) {
                 HuSprPosSet(entry->sprites[entry->rollValueIdx], 0, 160,
                                     120 - (s32)(MBCameraZoomGet() * 24.0f));
             }

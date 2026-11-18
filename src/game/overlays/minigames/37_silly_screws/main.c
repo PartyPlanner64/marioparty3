@@ -17,6 +17,7 @@
 #include "game/hmfspr.h"
 #include "game/printfunc.h"
 #include "game/sprite.h"
+#include "macros.h"
 
 #define ABS(x) ((x) > 0 ? (x) : -(x))
 
@@ -217,10 +218,10 @@ void m255_ObjectSetup(void) {
     Hu3DGLightDirSet(1, -56.0f, 50.0f, 56.0f);
     CamSetupInit(2);
     CamSetupMapCullAddMulti(2);
-    ScissorSet(0, 0.0f, 0.0f, 159.0f, 240.0f);
+    ScissorSet(0, 0.0f, 0.0f, 159.0f, SCREEN_HEIGHT);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 320.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 60.0f, 80.0f, 4000.0f);
-    ScissorSet(1, 161.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(1, 161.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 960.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(1, 60.0f, 80.0f, 4000.0f);
     mgItemObjNum = 0;

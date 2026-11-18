@@ -78,7 +78,7 @@ MinigameFlow m242_mgFlow = {
 };
 s32 m242_cameraSetF = 0;
 StackedDeckCamera m242_cameraViewTbl[1] = {
-    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 33.0f }
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 33.0f }
 };
 
 extern const s16 m242_fontMesTbl[];

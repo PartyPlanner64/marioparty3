@@ -280,7 +280,7 @@ u16 m213_cameraSetF = 0;
 s32 m213_musicTimer = 0;
 
 PumpPumpAwayCamera m213_cameraViewTbl[1] = {
-    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 20.0f },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 20.0f },
 };
 
 f32 m213_skyScrollRate BSS;

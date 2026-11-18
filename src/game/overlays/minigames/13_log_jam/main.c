@@ -335,7 +335,7 @@ void m219_ObjectSetup(void) {
     Hu3DGLightDirSet(1, -56.0f, 50.0f, 56.0f);
     CamSetupInit(1);
     camIndex = CamSetupMapCullAdd();
-    ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(camIndex, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 30.0f, 80.0f, 4000.0f);
     mgPlayerObjNum = 0;

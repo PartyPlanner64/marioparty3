@@ -2,6 +2,7 @@
 #include "types.h"
 #include "humath.h"
 #include "game/printfunc.h"
+#include "macros.h"
 
 #define MAX_STRINGS 512
 
@@ -335,7 +336,7 @@ Gfx *pfDrawFonts(Gfx *gfx) {
                     gSPTextureRectangle(gfx++, x << 2, y << 2, (x + 7) << 2, (y + 7) << 2, G_TX_RENDERTILE,
                                         ((c % 8) * 8) << 5, ((c / 8) * 8) << 5, 4 << 10, 1 << 10);
                     x += 8;
-                    if (x >= 320) {
+                    if (x >= SCREEN_WIDTHI) {
                         x = 0;
                         y += 8;
                     }

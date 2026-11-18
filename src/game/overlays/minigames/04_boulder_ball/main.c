@@ -88,7 +88,7 @@ void m204_ObjectSetup(void) {
     MgFieldStatClear();
     CamSetupInit(1);
     camIndex = CamSetupMapCullAdd();
-    ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(camIndex, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 32.0f, 80.0f, 5000.0f);
     Hu3DGLightDirSet(1, -94.0f, 65.0f, 34.0f);

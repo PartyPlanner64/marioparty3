@@ -65,7 +65,7 @@ UnkStaff_7 *staff_BackStarCreate(void) {
             blue = random | 0xC0;
             HuSprColorSet(grpId, j, red, green, blue);
             random = staff_Rand() & 0x7FFFFFFF;
-            x = random % 320;
+            x = random % SCREEN_WIDTHI;
             random >>= 6;
             y = random % 304 - 64;
             pos->x = x;
@@ -131,7 +131,7 @@ void staff_BackStarMove(UnkStaff_7 *arg0) {
         count = ptr->count;
         for (j = 0; j < count; j++, pos++, vel++) {
             pos->y += *vel;
-            if (pos->y >= 240.0f) {
+            if (pos->y >= SCREEN_HEIGHT) {
                 random = staff_Rand() & 0x7FFFFFFF;
                 if (i == 0) {
                     x = random % 160;
@@ -139,7 +139,7 @@ void staff_BackStarMove(UnkStaff_7 *arg0) {
                     x += random % 160;
                     pos->x = x;
                 } else {
-                    pos->x = random % 320;
+                    pos->x = random % SCREEN_WIDTHI;
                 }
                 random >>= 6;
                 pos->y = -(s32)(random & 0x1F);
@@ -297,7 +297,7 @@ void staff_BackProc(void) {
                 } else if (starTimers[i] < 0) {
                     starPos[i].y += 8;
                     espPosSet(starSprIds[i], starPos[i].x, starPos[i].y);
-                    if (starPos[i].y > 240) {
+                    if (starPos[i].y > SCREEN_HEIGHTI) {
                         espDispOff(starSprIds[i]);
                         starTimers[i] = (rand8() & 0x7F) + 1;
                     }

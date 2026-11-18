@@ -195,8 +195,8 @@ s16 m252_decoSwapTbl[2][5] = {
 };
 u8 m252_decoAnimColor[4] = { 0xFF, 0xFF, 0xFF, 0xFF }; // RGBA
 BowserTossScissor m252_backScissorTbl[2] = {
-    { 0, 0, 320, 120 },
-    { 0, 120, 320, 240 }
+    { 0, 0, SCREEN_WIDTHI, 120 },
+    { 0, 120, SCREEN_WIDTHI, SCREEN_HEIGHTI }
 };
 f32 m252_backScrollScale = 10.0f;
 BowserTossScrollFrame m252_backFrameTbl[10] = {
@@ -361,8 +361,8 @@ void m252_ObjectSetup(void) {
     Hu3DGLightDirSet(1, -56.0f, 50.0f, 56.0f);
     CamSetupInit(2);
     CamSetupMapCullAddMulti(2);
-    ScissorSet(0, 0.0f, 0.0f, 320.0f, 120.0f);
-    ScissorSet(1, 0.0f, 121.0f, 320.0f, 240.0f);
+    ScissorSet(0, 0.0f, 0.0f, SCREEN_WIDTH, 120.0f);
+    ScissorSet(1, 0.0f, 121.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 240.0f, 511.0f);
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 640.0f, 720.0f, 511.0f);
     for (i = 0; i < 2; i++) {

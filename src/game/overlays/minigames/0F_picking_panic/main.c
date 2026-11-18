@@ -41,7 +41,7 @@ Gfx m215_backGfx[] = {
     gsDPSetAlphaCompare(G_AC_NONE),
     gsDPSetTexturePersp(G_TP_NONE),
     gsDPSetTextureFilter(G_TF_BILERP),
-    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, 320, 240),
+    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, SCREEN_HEIGHTI),
     gsSPEndDisplayList(),
 };
 u8 m215_hudSkipF = 0;
@@ -139,8 +139,8 @@ void m215_ObjectSetup(void) {
     Hu3DScreenClearF = 1;
     CamSetupInit(2);
     CamSetupMapCullAddMulti(2);
-    ScissorSet(0, 0.0f, 0.0f, 320.0f, 120.0f);
-    ScissorSet(1, 0.0f, 120.0f, 320.0f, 240.0f);
+    ScissorSet(0, 0.0f, 0.0f, SCREEN_WIDTH, 120.0f);
+    ScissorSet(1, 0.0f, 120.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 240.0f, 511.0f);
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 640.0f, 720.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 22.619865f, 4000.0f, 10000.0f);
@@ -556,13 +556,13 @@ void m215_StageObjMain(omObjData *object) {
 
     m215_dispenserShakeTbl[0] = m215_dispenserShakeTbl[1] = 0.0f;
     m215_BackDraw();
-    ScissorSet(0, 0.0f, 0.0f, 320.0f,
-               (m215_viewSplitY * 240.0f - 1.0f < 0.0f) ? 0.0f : m215_viewSplitY * 240.0f - 1.0f);
+    ScissorSet(0, 0.0f, 0.0f, SCREEN_WIDTH,
+               (m215_viewSplitY * SCREEN_HEIGHT - 1.0f < 0.0f) ? 0.0f : m215_viewSplitY * SCREEN_HEIGHT - 1.0f);
     ScissorSet(1, 0.0f,
-               (m215_viewSplitY * 240.0f + 1.0f > 240.0f) ? 240.0f : m215_viewSplitY * 240.0f + 1.0f,
-               320.0f, 240.0f);
-    ViewportSet(0, scaleX[0] * 640.0f, scaleY[0] * 480.0f, 511.0f, 640.0f, offsetY[0] * 4.0f * 240.0f, 511.0f);
-    ViewportSet(1, scaleX[1] * 640.0f, scaleY[1] * 480.0f, 511.0f, 640.0f, offsetY[1] * 4.0f * 240.0f, 511.0f);
+               (m215_viewSplitY * SCREEN_HEIGHT + 1.0f > SCREEN_HEIGHT) ? SCREEN_HEIGHT : m215_viewSplitY * SCREEN_HEIGHT + 1.0f,
+               SCREEN_WIDTH, SCREEN_HEIGHT);
+    ViewportSet(0, scaleX[0] * 640.0f, scaleY[0] * 480.0f, 511.0f, 640.0f, offsetY[0] * 4.0f * SCREEN_HEIGHT, 511.0f);
+    ViewportSet(1, scaleX[1] * 640.0f, scaleY[1] * 480.0f, 511.0f, 640.0f, offsetY[1] * 4.0f * SCREEN_HEIGHT, 511.0f);
 }
 
 void m215_BackDraw(void) {
@@ -583,9 +583,9 @@ void m215_BackDraw(void) {
     s32 offset;
 
     scissorBottom =
-        (m215_viewSplitY * 240.0f - 1.0f < 0.0f) ? 0.0f : m215_viewSplitY * 240.0f - 1.0f;
+        (m215_viewSplitY * SCREEN_HEIGHT - 1.0f < 0.0f) ? 0.0f : m215_viewSplitY * SCREEN_HEIGHT - 1.0f;
     scissorTop =
-        (m215_viewSplitY * 240.0f + 1.0f > 240.0f) ? 240.0f : m215_viewSplitY * 240.0f + 1.0f;
+        (m215_viewSplitY * SCREEN_HEIGHT + 1.0f > SCREEN_HEIGHT) ? SCREEN_HEIGHT : m215_viewSplitY * SCREEN_HEIGHT + 1.0f;
 
     gSPDisplayList(gMainGfxPos++, m215_backGfx);
     gDPSetTextureLUT(gMainGfxPos++, G_TT_RGBA16);
@@ -602,9 +602,9 @@ void m215_BackDraw(void) {
                                    G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                 for (view = 0; view < 2; view++) {
                     if (view == 0) {
-                        gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, 320, scissorBottom);
+                        gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, scissorBottom);
                     } else {
-                        gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, scissorTop, 320, 240);
+                        gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, scissorTop, SCREEN_WIDTHI, SCREEN_HEIGHTI);
                     }
                     gSPScisTextureRectangle(gMainGfxPos++,
                                             (s32)(((j * 40 + i * 160) * 4) * m215_viewScaleXTbl[view] +
@@ -679,9 +679,9 @@ void m215_BackDraw(void) {
             do {
                 if (progress[view] != 0.0f) {
                     if (view == 0) {
-                        gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, 320, scissorBottom);
+                        gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, scissorBottom);
                     } else {
-                        gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, scissorTop, 320, 240);
+                        gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, scissorTop, SCREEN_WIDTHI, SCREEN_HEIGHTI);
                     }
                     gSPScisTextureRectangle(
                         gMainGfxPos++,
@@ -727,9 +727,9 @@ void m215_BackDraw(void) {
                     offset = m215_dispenserShakeTbl[view] * 4.0;
                 }
                 if (view == 0) {
-                    gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, 320, scissorBottom);
+                    gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, scissorBottom);
                 } else {
-                    gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, scissorTop, 320, 240);
+                    gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, scissorTop, SCREEN_WIDTHI, SCREEN_HEIGHTI);
                 }
                 gSPScisTextureRectangle(gMainGfxPos++,
                                         (s32)(((j * 38 + i * 212) * 4 + offset) * m215_viewScaleXTbl[view] +
@@ -768,10 +768,10 @@ void m215_HudDraw(Gfx **arg0, s32 arg1, s32 arg2) {
     s32 size;
 
     scissorBottom =
-        (m215_viewSplitY * 240.0f - 1.0f < 0.0f) ? 0.0f : m215_viewSplitY * 240.0f - 1.0f;
+        (m215_viewSplitY * SCREEN_HEIGHT - 1.0f < 0.0f) ? 0.0f : m215_viewSplitY * SCREEN_HEIGHT - 1.0f;
     scissorTop =
-        (m215_viewSplitY * 240.0f + 1.0f > 240.0f) ? 240.0f : m215_viewSplitY * 240.0f + 1.0f;
-    divider = m215_viewSplitY * 240.0f;
+        (m215_viewSplitY * SCREEN_HEIGHT + 1.0f > SCREEN_HEIGHT) ? SCREEN_HEIGHT : m215_viewSplitY * SCREEN_HEIGHT + 1.0f;
+    divider = m215_viewSplitY * SCREEN_HEIGHT;
 
     m215_hudSkipF = !m215_hudSkipF;
     if (m215_hudSkipF) {
@@ -786,7 +786,7 @@ void m215_HudDraw(Gfx **arg0, s32 arg1, s32 arg2) {
                                            : t;
         for (view = 0; view < 6; view++) {
             rects[cur][view] -= cur * t * 101.0f;
-            rects[other][view] = rects[other][view] * (1.0f - t) + other * t * 240.0f;
+            rects[other][view] = rects[other][view] * (1.0f - t) + other * t * SCREEN_HEIGHT;
         }
         rects[other][6] = (1.0f - t <= 0.0625) ? 0x3FFF : (s32)(1024.0f / (1.0f - t));
         alpha = (1.0f - t) * 255.0f;
@@ -801,9 +801,9 @@ void m215_HudDraw(Gfx **arg0, s32 arg1, s32 arg2) {
     frame = &sprite->data->pat[sprite->patNo];
     for (view = 0; view < 2; view++) {
         if (view == 0) {
-            gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, 320, scissorBottom);
+            gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, scissorBottom);
         } else {
-            gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, scissorTop, 320, 240);
+            gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, scissorTop, SCREEN_WIDTHI, SCREEN_HEIGHTI);
         }
         gDPLoadTextureTile(gMainGfxPos++, frame->data, G_IM_FMT_I, G_IM_SIZ_8b, 60, 0, 0, 0, 60, 22, 0,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
@@ -838,9 +838,9 @@ void m215_HudDraw(Gfx **arg0, s32 arg1, s32 arg2) {
         }
         for (view = 0; view < 2; view++) {
             if (view == 0) {
-                gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, 320, scissorBottom);
+                gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, scissorBottom);
             } else {
-                gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, scissorTop, 320, 240);
+                gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, scissorTop, SCREEN_WIDTHI, SCREEN_HEIGHTI);
             }
             if (i == 3 && m215_scoreTbl[view] < 10) {
                 continue;
@@ -885,7 +885,7 @@ void m215_HudDraw(Gfx **arg0, s32 arg1, s32 arg2) {
     gDPSetCombineMode(gMainGfxPos++, G_CC_DECALRGBA, G_CC_DECALRGBA);
     sprite = HuSprGet(esprite[m215_espTbl[8]].unk04, 0);
     frame = &sprite->data->pat[sprite->patNo];
-    gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
+    gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, SCREEN_HEIGHTI);
     gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
     gDPPipeSync(gMainGfxPos++);
     gDPLoadTextureTile_4b(gMainGfxPos++, frame->data, G_IM_FMT_CI, 320, 0, 0, 0, 320, 6, 0,

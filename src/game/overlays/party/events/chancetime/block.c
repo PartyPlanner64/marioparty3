@@ -271,15 +271,15 @@ void chancetime_PanelDraw(Gfx **gfxPos, s32 arg1, s32 arg2) {
     height = chancetime_panelSize[1];
     x = chancetime_panelPos[0];
     y = chancetime_panelPos[1];
-    if ((x + width < 0) | (x >= 320)) {
+    if ((x + width < 0) | (x >= SCREEN_WIDTHI)) {
         return;
     }
-    if ((y + height < 0) | (y >= 240)) {
+    if ((y + height < 0) | (y >= SCREEN_HEIGHTI)) {
         return;
     }
 
     texX[0] = (x < 0) ? -x : 0;
-    texX[1] = (x + width > 320) ? 320 - x : width;
+    texX[1] = (x + width > SCREEN_WIDTHI) ? SCREEN_WIDTHI - x : width;
     if (x < 0) {
         screenX = 0;
     } else if (x >= 319) {
@@ -289,7 +289,7 @@ void chancetime_PanelDraw(Gfx **gfxPos, s32 arg1, s32 arg2) {
     }
     texWidth = texX[1] - texX[0];
     texY[0] = (y < 0) ? -y : 0;
-    texY[1] = (y + height > 240) ? 240 - y : height;
+    texY[1] = (y + height > SCREEN_HEIGHTI) ? SCREEN_HEIGHTI - y : height;
     if (y < 0) {
         screenY = 0;
     } else if (y >= 319) {
@@ -300,7 +300,7 @@ void chancetime_PanelDraw(Gfx **gfxPos, s32 arg1, s32 arg2) {
 
     gfx = *gfxPos;
     gDPPipeSync(gfx++);
-    gDPSetScissor(gfx++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
+    gDPSetScissor(gfx++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, SCREEN_HEIGHTI);
     gDPSetCycleType(gfx++, G_CYC_1CYCLE);
     gSPClearGeometryMode(gfx++, G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH);
     gSPSetGeometryMode(gfx++, G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH);

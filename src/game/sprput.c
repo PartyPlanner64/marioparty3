@@ -6,6 +6,7 @@
 #include "game/hmfspr.h"
 #include "game/hmfmath.h"
 #include "game/mallocblock.h"
+#include "macros.h"
 
 #define SPRPUT_CC_PRIM_DECALA 0, 0, 0, PRIMITIVE, 0, 0, 0, TEXEL0
 #define SPRPUT_CC_PRIM_MODULATEA 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0
@@ -104,8 +105,8 @@ s32 HuSprQuadClip(f32 vertices[][2]) {
     f32 y;
 
     for (i = 0; i < 4; i++) {
-        if (vertices[i][0] >= 0.0f && vertices[i][0] < 320.0f &&
-            vertices[i][1] >= 0.0f && vertices[i][1] < 240.0f) {
+        if (vertices[i][0] >= 0.0f && vertices[i][0] < SCREEN_WIDTH &&
+            vertices[i][1] >= 0.0f && vertices[i][1] < SCREEN_HEIGHT) {
             return 1;
         }
     }
@@ -121,14 +122,14 @@ s32 HuSprQuadClip(f32 vertices[][2]) {
             t = (0.0f - vertices[i][1]) / dy;
             if ((t >= 0.0f) & (t < 1.0f)) {
                 intersection = vertices[i][0] + t * dx;
-                if ((intersection >= 0.0f) & (intersection < 320.0f)) {
+                if ((intersection >= 0.0f) & (intersection < SCREEN_WIDTH)) {
                     return 1;
                 }
             }
-            t = (240.0f - vertices[i][1]) / dy;
+            t = (SCREEN_HEIGHT - vertices[i][1]) / dy;
             if ((t >= 0.0f) & (t < 1.0f)) {
                 intersection = vertices[i][0] + t * dx;
-                if ((intersection >= 0.0f) & (intersection < 320.0f)) {
+                if ((intersection >= 0.0f) & (intersection < SCREEN_WIDTH)) {
                     return 1;
                 }
             }
@@ -137,14 +138,14 @@ s32 HuSprQuadClip(f32 vertices[][2]) {
             t = (0.0f - vertices[i][0]) / dx;
             if ((t >= 0.0f) & (t < 1.0f)) {
                 intersection = vertices[i][1] + t * dy;
-                if ((intersection >= 0.0f) & (intersection < 240.0f)) {
+                if ((intersection >= 0.0f) & (intersection < SCREEN_HEIGHT)) {
                     return 1;
                 }
             }
-            t = (320.0f - vertices[i][0]) / dx;
+            t = (SCREEN_WIDTH - vertices[i][0]) / dx;
             if ((t >= 0.0f) & (t < 1.0f)) {
                 intersection = vertices[i][1] + t * dy;
-                if ((intersection >= 0.0f) & (intersection < 240.0f)) {
+                if ((intersection >= 0.0f) & (intersection < SCREEN_HEIGHT)) {
                     return 1;
                 }
             }

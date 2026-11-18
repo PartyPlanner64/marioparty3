@@ -161,7 +161,7 @@ Gfx mgmode_zClearGfx[] = {
     gsDPFillRectangle(0, 0, 319, 239),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
-    gsDPSetColorImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, 0x02000000),
+    gsDPSetColorImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTHI, 0x02000000),
     gsSPEndDisplayList(),
 };
 
@@ -176,9 +176,9 @@ void mgmode_ObjectSetup(void) {
     Hu3DBGColorSet(0, 0, 0);
     Hu3DScreenClearF = 1;
     omSysPauseDisableF = 1;
-    ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(0, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
-    ScissorSet(1, 0.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(1, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     CRot.x = 0.0f;
     CRot.y = 0.0f;
@@ -288,11 +288,11 @@ void mgmode_RoomProc(void) {
     WipeCreateIn(WIPE_FADE, 16);
     omAddPrcObj(mgmode_FloatMdlProc, 0x3FF6, 0x1000, 0);
     HuWinMesMaxSizeBetGet(size, 0x5700, 0x570A);
-    mgmode_winId = HuWinExCreate(-1, (320 - size[0]) / 2, 224 - size[1], size[0], size[1], 0);
+    mgmode_winId = HuWinExCreate(-1, (SCREEN_WIDTHI - size[0]) / 2, 224 - size[1], size[0], size[1], 0);
     HuWinActivePlayerSet(mgmode_winId, 1 << mgmode_padNo);
     HuWinInsertMesSizeGet((u32) "00", 0);
     HuWinMesMaxSizeBetGet(size, 0x570B, 0x5728);
-    mgmode_menuWinId = HuWinExCreate(-1, (320 - size[0]) / 2, 224 - size[1], size[0], size[1], 0);
+    mgmode_menuWinId = HuWinExCreate(-1, (SCREEN_WIDTHI - size[0]) / 2, 224 - size[1], size[0], size[1], 0);
     HuWinActivePlayerSet(mgmode_menuWinId, 1 << mgmode_padNo);
     if (omovlevtno == 0 || omovlevtno == 6 || omovlevtno == 7) {
         mgmode_roomSpotNo = 0;
@@ -618,7 +618,7 @@ s16 mgmode_MgUnlockExec(void) {
     HuWinInsertMesSizeGet((u32) "00", 0);
     HuWinInsertMesSizeGet((u32) "00", 1);
     HuWinMesMaxSizeBetGet(size, 0x570D, 0x5710);
-    win = HuWinExCreate(-1, (320 - size[0]) / 2, 224 - size[1], size[0], size[1], 0);
+    win = HuWinExCreate(-1, (SCREEN_WIDTHI - size[0]) / 2, 224 - size[1], size[0], size[1], 0);
     HuWinActivePlayerSet(win, 1 << mgmode_padNo);
     HuWinMesSet(win, 0x570D, -1, -1);
     HuWinExAnimIn(win);
@@ -1490,7 +1490,7 @@ void mgmode_MgListBuild(s32 arg0) {
 void mgmode_ZClearHook(Gfx **arg0, s32 arg1, s32 arg2) {
     if (mgmode_zClearF != 0) {
         gDPSetDepthImage((*arg0)++, 0x3D0800);
-        gDPSetColorImage((*arg0)++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, 0x3D0800);
+        gDPSetColorImage((*arg0)++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTHI, 0x3D0800);
         gSPDisplayList((*arg0)++, mgmode_zClearGfx);
     }
 }

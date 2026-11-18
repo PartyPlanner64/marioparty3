@@ -21,7 +21,7 @@ void modesel_ObjectInit(void) {
     position = modesel_cameraPos;
     target = modesel_cameraAt;
     up = modesel_cameraUp;
-    ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(0, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 41.0f, 80.0f, 8000.0f);
     Hu3DCameraPosSetV(0, &position, &target, &up);

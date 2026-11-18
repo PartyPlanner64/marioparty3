@@ -101,7 +101,7 @@ s32 m251_flareMdlFileTbl[5] = { 0x0054000B, 0x0054000C, 0x0054000D, 0x0054000E, 
 s32 m251_flareMdlAttrTbl[5] = { 0x6DD, 0xADD, 0xADD, 0xADD, 0xADD };
 // Per-camera scissor (x, y, width, height) and viewport (scale x/y, translate
 // x/y) settings.
-s16 m251_scissorTbl[2][4] = { { 0, 0, 159, 240 }, { 161, 0, 320, 240 } };
+s16 m251_scissorTbl[2][4] = { { 0, 0, 159, SCREEN_HEIGHTI }, { 161, 0, SCREEN_WIDTHI, SCREEN_HEIGHTI } };
 s16 m251_viewportTbl[2][4] = { { 640, 480, 320, 480 }, { 640, 480, 960, 480 } };
 // Per-player sound effect IDs.
 s32 m251_playerSeTbl[2][6] = {
@@ -1821,8 +1821,8 @@ void m251_CameraGoalObjMain(omObjData *obj) {
         scissor = m251_scissorTbl[idx];
         if (idx == 0) {
             m251_splitX += 4.0f;
-            if (m251_splitX >= 320.0f) {
-                m251_splitX = 320.0f;
+            if (m251_splitX >= SCREEN_WIDTH) {
+                m251_splitX = SCREEN_WIDTH;
                 obj->work[2] = 1;
             }
             espPosSet(data->esprites[idx + 6], m251_splitX - 160.0f, 0x78);

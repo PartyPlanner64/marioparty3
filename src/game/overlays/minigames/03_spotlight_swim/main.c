@@ -183,7 +183,7 @@ u8 m203_lightShapeTbl[32][32] = {
 };
 s32 m203_haloXTbl[3] = { 28, 128, 228 };
 SpotlightSwimCamera m203_cameraViewTbl[1] = {
-    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 30.0f },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 30.0f },
 };
 
 extern const s16 m203_fontMesTbl[];

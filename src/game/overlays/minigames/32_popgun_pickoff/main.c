@@ -244,7 +244,7 @@ void m250_ObjectSetup(void) {
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     CamSetupInit(1);
     camIndex = CamSetupMapCullAdd();
-    ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(camIndex, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 45.0f, 80.0f, 8000.0f);
     MgFieldStatClear();
@@ -352,7 +352,7 @@ void m250_WorldPosCalc(f32 x, f32 y, f32 z, f32 *dst) {
 
     x -= 160.0;
     y -= 120.0;
-    guTranslateF(mtx, (x + x) * scale * 1.3333333333333333 / 320.0, -((y + y) * scale / 240.0f), depth);
+    guTranslateF(mtx, (x + x) * scale * 1.3333333333333333 / 320.0, -((y + y) * scale / SCREEN_HEIGHT), depth);
     guMtxCatF(mtx, m250_viewInvMtx, mtx);
     dst[0] = mtx[3][0];
     dst[1] = mtx[3][1];

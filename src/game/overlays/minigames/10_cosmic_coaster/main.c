@@ -132,9 +132,9 @@ void m216_ObjectSetup(void) {
         CenterM[i].z = 0.0f;
         Hu3DCameraPerspectiveSet(i, 60.0f, 80.0f, 20000.0f);
     }
-    ScissorSet(0, 0.0f, 0.0f, 144.0f, 240.0f);
+    ScissorSet(0, 0.0f, 0.0f, 144.0f, SCREEN_HEIGHT);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 320.0f, 480.0f, 511.0f);
-    ScissorSet(1, 176.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(1, 176.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 960.0f, 480.0f, 511.0f);
     object = omAddObj(0x7FDA, 0, 0, -1, omOutViewMulti);
     object->work[0] = 2;

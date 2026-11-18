@@ -193,7 +193,7 @@ void m264_ObjectSetup(void) {
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     CamSetupInit(1);
     camIndex = CamSetupMapCullAdd();
-    ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(camIndex, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(camIndex, 30.0f, 80.0f, 8000.0f);
     CZoom = 1800.0f;

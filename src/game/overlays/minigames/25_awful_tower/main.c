@@ -46,7 +46,7 @@ Gfx m237_gfxBackInit[] = {
     gsDPSetAlphaCompare(G_AC_NONE),
     gsDPSetTexturePersp(G_TP_NONE),
     gsDPSetTextureFilter(G_TF_BILERP),
-    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, 320, 240),
+    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, SCREEN_HEIGHTI),
     gsSPEndDisplayList(),
 };
 
@@ -151,9 +151,9 @@ void m237_ObjectSetup(void) {
     CamSetupMapCullAddMulti(4);
     for (i = 0; i < 4; i++) {
         s32 lefts[4] = { 0, 93, 161, 229 };
-        s32 rights[4] = { 92, 160, 228, 320 };
+        s32 rights[4] = { 92, 160, 228, SCREEN_WIDTHI };
 
-        ScissorSet(i, lefts[i], 0.0f, rights[i], 240.0f);
+        ScissorSet(i, lefts[i], 0.0f, rights[i], SCREEN_HEIGHT);
         ViewportSet(i, 640.0f, 480.0f, 511.0f, i * 272 + 236, 480.0f, 511.0f);
         Hu3DCameraPerspectiveSet(i, 7.152669f, 8000.0f, 16000.0f);
         CenterM[i].x = 0.0f;
@@ -604,14 +604,14 @@ void m237_MdlObjMain(omObjData *object) {
 void m237_BackDraw(void) {
     s32 groups[4] = { 3, 2, 1, 0 };
     s32 lefts[4] = { 0, 93, 161, 229 };
-    s32 rights[4] = { 92, 160, 228, 320 };
+    s32 rights[4] = { 92, 160, 228, SCREEN_WIDTHI };
     s32 texLefts[4] = { 0, 25, 25, 25 };
     s32 zoomLefts[4] = { 0, 0, 0, 0 };
-    s32 zoomRights[4] = { 320, 320, 320, 320 };
+    s32 zoomRights[4] = { SCREEN_WIDTHI, SCREEN_WIDTHI, SCREEN_WIDTHI, SCREEN_WIDTHI };
     s32 zoomTexLefts[4] = { 0, 0, 0, 0 };
     u8 order[4] = { 0, 1, 2, 3 };
     s32 curLefts[4] = { 0, 93, 161, 229 };
-    s32 curRights[4] = { 92, 160, 228, 320 };
+    s32 curRights[4] = { 92, 160, 228, SCREEN_WIDTHI };
     HuSprite *sprite;
     HuSprAnimPat *frame;
     f32 t = 0.0f;
@@ -653,13 +653,13 @@ void m237_BackDraw(void) {
     if (t > 0.0f) {
         a = 1.0f - t;
         b = 1.0f - a;
-        scale = ((a * 160.0f + b * 320.0f) - (a * 93.0f + b * 0.0f)) / (a * 67.0f + b * 113.0f);
+        scale = ((a * 160.0f + b * SCREEN_WIDTH) - (a * 93.0f + b * 0.0f)) / (a * 67.0f + b * 113.0f);
         left = curLefts[m237_winner] =
             lefts[m237_winner] * a + zoomLefts[m237_winner] * b;
         right = curRights[m237_winner] =
             rights[m237_winner] * a + zoomRights[m237_winner] * b;
-        ScissorSet(m237_winner, left, 0.0f, right, 240.0f);
-        ViewportSet(m237_winner, scale * 320.0f * 2.0f, scale * 240.0f * 2.0f, 511.0f,
+        ScissorSet(m237_winner, left, 0.0f, right, SCREEN_HEIGHT);
+        ViewportSet(m237_winner, scale * SCREEN_WIDTH * 2.0f, scale * SCREEN_HEIGHT * 2.0f, 511.0f,
                     ((m237_winner * 68 + 59) * a + b * 160.0f) * 4.0f, 480.0f, 511.0f);
         CenterM[m237_winner].y = a * m237_cameraYTbl[m237_winner] + b * 4605.0f;
         for (i = 0; i < 4; i++) {
@@ -700,7 +700,7 @@ void m237_BackDraw(void) {
                         continue;
                     }
                     gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, curLefts[player], 0,
-                                  curRights[player] - ((player == m237_winner) ? 1 : 0), 240);
+                                  curRights[player] - ((player == m237_winner) ? 1 : 0), SCREEN_HEIGHTI);
                 }
                 if (player == m237_winner) {
                     a = 1.0f - t;
@@ -727,7 +727,7 @@ void m237_BackDraw(void) {
         }
     }
     for (i = 0; i < 4; i++) {
-        ScissorSet(i, curLefts[i], 0.0f, curRights[i], 240.0f);
+        ScissorSet(i, curLefts[i], 0.0f, curRights[i], SCREEN_HEIGHT);
     }
 }
 

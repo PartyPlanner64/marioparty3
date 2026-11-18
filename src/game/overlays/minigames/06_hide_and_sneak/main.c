@@ -2222,8 +2222,8 @@ HideAndSneakSpritePos m206_iconPosTbl[4] = {
 s16 m206_signAnimTbl[4] = { 14, 15, 16, 17 };
 s32 m206_cameraInitF = 0;
 HideAndSneakCamera m206_cameraViewTbl[2] = {
-    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 23.0f },
-    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 23.0f },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 23.0f },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 23.0f },
 };
 
 void m206_SignObjInit(omObjData *object) {

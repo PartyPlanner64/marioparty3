@@ -111,8 +111,8 @@ u16 m205_crankComDelayTbl[5] = { 10, 20, 25, 30, 40 };
 s16 m205_crankMotTbl[8][2] = { { 0, 55 }, { 0, 55 }, { 0, 55 }, { 0, 55 }, { 0, 55 }, { 0, 56 }, { 0, 54 }, { 0, 54 } };
 f32 m205_teamDummyRotTbl[3] = { 90.0f, 225.0f, 315.0f };
 CrazyCogsCamera m205_cameraViewTbl[2] = {
-    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 45.0f },
-    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 45.0f },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 45.0f },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 45.0f },
 };
 
 CrazyCogsTeamChrBss m205_teamChrBss BSS;

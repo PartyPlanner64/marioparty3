@@ -488,7 +488,7 @@ u8 m234_speedPattern6Tbl[6][4] = {
 };
 
 CurtainCallCamera m234_cameraViewTbl[1] = {
-    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 21.0f },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 21.0f },
 };
 
 const char m234_emptyStr[] = ""; /* Unreferenced. */

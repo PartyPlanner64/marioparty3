@@ -219,8 +219,8 @@ s16 HuWinCreate(s16 x, s16 y, s16 width, s16 height, s32 arg4, s16 flags) {
     window->w = width;
     window->h = height;
     if (flags & 2) {
-        window->pos_x = (320 - width) / 2;
-        window->pos_y = (240 - height) / 2;
+        window->pos_x = (SCREEN_WIDTHI - width) / 2;
+        window->pos_y = (SCREEN_HEIGHTI - height) / 2;
     } else if (!(flags & 4)) {
         if (x + width > 296) {
             window->pos_x = 296 - width;

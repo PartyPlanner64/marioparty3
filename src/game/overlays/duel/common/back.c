@@ -219,16 +219,16 @@ static u16 MBDBackPosClamp(Vec2f* arg0, f32 arg1) {
         arg0->x = ((-mbdBackHalfW + 160.0f) / arg1) + 160.0f;
         var_v1 = 1;
     }
-    if (((mbdBackHalfW - 160.0f) / arg1) + 160.0f + ((320.0f / arg1) - (320.0f / (arg1 * mbdBackZoom))) <= arg0->x) {
-        arg0->x = ((mbdBackHalfW - 160.0f) / arg1) + 160.0f + ((320.0f / arg1) - (320.0f / (arg1 * mbdBackZoom)));
+    if (((mbdBackHalfW - 160.0f) / arg1) + 160.0f + ((SCREEN_WIDTH / arg1) - (SCREEN_WIDTH / (arg1 * mbdBackZoom))) <= arg0->x) {
+        arg0->x = ((mbdBackHalfW - 160.0f) / arg1) + 160.0f + ((SCREEN_WIDTH / arg1) - (SCREEN_WIDTH / (arg1 * mbdBackZoom)));
         var_v1 |= 2;
     }
     if (arg0->y <= ((-mbdBackHalfH + 120.0f) / arg1) + 120.0f) {
         arg0->y = ((-mbdBackHalfH + 120.0f) / arg1) + 120.0f;
         var_v1 |= 4;
     }
-    if (((mbdBackHalfH - 120.0f) / arg1) + 120.0f + ((240.0f / arg1) - (240.0f / (arg1 * mbdBackZoom))) <= arg0->y) {
-        arg0->y = ((mbdBackHalfH - 120.0f) / arg1) + 120.0f + ((240.0f / arg1) - (240.0f / (arg1 * mbdBackZoom)));
+    if (((mbdBackHalfH - 120.0f) / arg1) + 120.0f + ((SCREEN_HEIGHT / arg1) - (SCREEN_HEIGHT / (arg1 * mbdBackZoom))) <= arg0->y) {
+        arg0->y = ((mbdBackHalfH - 120.0f) / arg1) + 120.0f + ((SCREEN_HEIGHT / arg1) - (SCREEN_HEIGHT / (arg1 * mbdBackZoom)));
         var_v1 |= 8;
     }
     return var_v1;
@@ -531,11 +531,11 @@ static void MBDBackTileMapUpdate(void) {
     s32 y;
 
     tileY = (s32)(((f32)((mbdBackHalfH + mbdBackOfsY) - 0x78) -
-                   ((240.0f - (240.0f / mbdBackZoom)) / 2.0f)) / 48.0f);
+                   ((SCREEN_HEIGHT - (SCREEN_HEIGHT / mbdBackZoom)) / 2.0f)) / 48.0f);
 
     for (y = 0; y < 6; y++, tileY++) {
         tileX = (s32)(((f32)((mbdBackHalfW + mbdBackOfsX) - 0xA0) -
-                       ((320.0f - (320.0f / mbdBackZoom)) / 2.0f)) / 64.0f);
+                       ((SCREEN_WIDTH - (SCREEN_WIDTH / mbdBackZoom)) / 2.0f)) / 64.0f);
 
         for (x = 0; x < 6; x++, tileX++) {
             if ((tileX < 0) || (tileY < 0) ||
@@ -609,7 +609,7 @@ void MBDBackTileDraw(Gfx** arg0, u16* arg1, s16 arg2, s16 arg3) {
         gSPScisTextureRectangle_MP((*arg0)++,
             /*xl*/((256.0f - temp_f20) * mbdBackZoom * 4.0f),
             /*yl*/((temp_f22 * mbdBackZoom * 4.0f)),
-            /*xh*/((320.0f - temp_f20) * mbdBackZoom * 4.0f),
+            /*xh*/((SCREEN_WIDTH - temp_f20) * mbdBackZoom * 4.0f),
             /*yh*/((temp_f22 + 32.0f) * mbdBackZoom * 4.0f),
             /*tile*/0,
             /*s*/0x7e0,
@@ -656,7 +656,7 @@ void MBDBackTileDraw(Gfx** arg0, u16* arg1, s16 arg2, s16 arg3) {
         gSPScisTextureRectangle_MP((*arg0)++,
             /*xl*/((256.0f - temp_f20) * mbdBackZoom * 4.0f),
             /*yl*/((temp_f22 + 32.0f) * mbdBackZoom * 4.0f),
-            /*xh*/((320.0f - temp_f20) * mbdBackZoom * 4.0f),
+            /*xh*/((SCREEN_WIDTH - temp_f20) * mbdBackZoom * 4.0f),
             /*yh*/((temp_f22 + 48.0f) * mbdBackZoom * 4.0f),
             /*tile*/0,
             /*s*/0x7e0,
@@ -694,8 +694,8 @@ void MBDBackDraw(Gfx** arg0, s32 arg1, u8 arg2) {
     sp26 = ((mbdBackHalfH + mbdBackOfsY) - 120) % 48;
     sp1E = ((mbdBackHalfW + mbdBackOfsX) - 160) % 64;
 
-    spY = (s32)(((f32)(((mbdBackHalfH + mbdBackOfsY)) - 120) - ((240.0f - (240.0f / mbdBackZoom)) / 2.0f)) / 48.0f) - ((((mbdBackHalfH + mbdBackOfsY)) - 120) / 48);
-    spX = (s32)(((f32)(((mbdBackHalfW + mbdBackOfsX)) - 160) - ((320.0f - (320.0f / mbdBackZoom)) / 2.0f)) / 64.0f) - ((((mbdBackHalfW + mbdBackOfsX)) - 160) / 64);
+    spY = (s32)(((f32)(((mbdBackHalfH + mbdBackOfsY)) - 120) - ((SCREEN_HEIGHT - (SCREEN_HEIGHT / mbdBackZoom)) / 2.0f)) / 48.0f) - ((((mbdBackHalfH + mbdBackOfsY)) - 120) / 48);
+    spX = (s32)(((f32)(((mbdBackHalfW + mbdBackOfsX)) - 160) - ((SCREEN_WIDTH - (SCREEN_WIDTH / mbdBackZoom)) / 2.0f)) / 64.0f) - ((((mbdBackHalfW + mbdBackOfsX)) - 160) / 64);
 
     gSPDisplayList((*arg0)++, mbdBackGfxInit);
     gDPSetEnvColor((*arg0)++, 0xFF, 0xFF, 0xFF, mbdBackTPLvl);
@@ -839,9 +839,9 @@ static void MBDCameraInit(void) {
     f32 temp_f2;
     f32 temp_f4;
 
-    temp_f2 = (f32) (mbdBackHdr->unk4 * mbdBackHdr->unkC) / 240.0f;
+    temp_f2 = (f32) (mbdBackHdr->unk4 * mbdBackHdr->unkC) / SCREEN_HEIGHT;
     mbdBackScale = temp_f2;
-    temp_f4 = (f32) (mbdBackHdr->unk0 * mbdBackHdr->unk8) / 320.0f;
+    temp_f4 = (f32) (mbdBackHdr->unk0 * mbdBackHdr->unk8) / SCREEN_WIDTH;
     if (temp_f2 < temp_f4) {
         mbdBackScale = temp_f4;
     }
@@ -973,10 +973,10 @@ u16 MBDCameraPos3DSet(Vec *arg0) {
 
     temp = &mbdCameraScrTarget;
 
-    halfW = 320.0f / (2.0f * mbdBackScale);
+    halfW = SCREEN_WIDTH / (2.0f * mbdBackScale);
     temp->x += halfW - (halfW / mbdBackZoom);
 
-    halfH = 240.0f / (2.0f * mbdBackScale);
+    halfH = SCREEN_HEIGHT / (2.0f * mbdBackScale);
     mbdCameraScrTarget.y += halfH - (halfH / mbdBackZoom);
 
     return MBDBackPosClamp(&mbdCameraScrTarget, mbdBackScale);
@@ -1012,9 +1012,9 @@ void MBDCamera3Dto2D(Vec *arg0, Vec2f *arg1) {
 
     Hu3D3Dto2D(0, arg0, &sp10.vec);
     temp_f6 = 2.0f * mbdBackScale;
-    temp_f2 = 320.0f / temp_f6;
+    temp_f2 = SCREEN_WIDTH / temp_f6;
     sp10.vec.x = (temp_f2 - (temp_f2 / mbdBackZoom)) + sp10.vec.x;
-    temp_f0 = 240.0f / temp_f6;
+    temp_f0 = SCREEN_HEIGHT / temp_f6;
     sp10.vec.y = (temp_f0 - (temp_f0 / mbdBackZoom)) + sp10.vec.y;
     sp10.vec.x = ((sp10.vec.x - 160.0f) * mbdBackScale) + 160.0f;
     sp10.vec.y = ((sp10.vec.y - 120.0f) * mbdBackScale) + 120.0f;

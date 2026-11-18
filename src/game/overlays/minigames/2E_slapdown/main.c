@@ -77,7 +77,7 @@ Vec2f m246_rankDigitPosTbl[4] = { { 49.0f, 92.0f }, { 272.0f, 92.0f }, { 238.0f,
 s32 m246_rankSprFileTbl[4] = { 0x4F000D, 0x4F000E, 0x4F000F, 0x4F0010 };
 s32 m246_cameraSetF = 0;
 SlapdownCamera m246_cameraViewTbl[1] = {
-    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 33.0f }
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 33.0f }
 };
 
 extern const s16 m246_fontMesTbl[];

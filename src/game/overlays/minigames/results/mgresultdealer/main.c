@@ -62,7 +62,7 @@ void mgresultdealer_ObjectSetup(void) {
     omInitObjMan(0x1E, 0x28);
     CamSetupInitMulti(2);
     for (i = 0; i < 2; i++) {
-        ScissorSet(i, 0.0f, 0.0f, 320.0f, 240.0f);
+        ScissorSet(i, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
         ViewportSet(i, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
         Hu3DCameraPerspectiveSet(i, 30.0f, 80.0f, 8000.0f);
     }

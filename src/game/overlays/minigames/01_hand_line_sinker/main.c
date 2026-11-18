@@ -154,7 +154,7 @@ void m201_ObjectSetup(void) {
     m201_CameraInit();
     m201_EffInit();
     HuAudCharVoiceInit();
-    ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(0, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DGLightMaxSet(3);
     Hu3DGLightColorSet(0, 0x40, 0x40, 0x60);

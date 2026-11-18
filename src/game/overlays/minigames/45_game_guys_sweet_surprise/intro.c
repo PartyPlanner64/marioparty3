@@ -231,8 +231,8 @@ s32 m269_SpotBeamUpdate(s32 x) {
     } else if (m269_spotBeamTimer >= 40) {
         if (m269_spotBeamTimer < 90) {
             for (i = 0; i < 5; i++) {
-                m269_SpotLineDraw(x, -100, x + (m269_spotBeamTimer - 40) + i, 240);
-                m269_SpotLineDraw(x, -100, x - (m269_spotBeamTimer - 40) - i, 240);
+                m269_SpotLineDraw(x, -100, x + (m269_spotBeamTimer - 40) + i, SCREEN_HEIGHTI);
+                m269_SpotLineDraw(x, -100, x - (m269_spotBeamTimer - 40) - i, SCREEN_HEIGHTI);
             }
             m269_spotBeamTimer += 4;
         } else {
@@ -327,7 +327,7 @@ void m269_SpotErase(s16 active, s16 x, s16 y, s16 radius) {
         pixels += 159 - radius;
         mask += 159 - radius;
         for (px = x - radius; px < x + (radius + 1); px += 2) {
-            if (px >= 0 && px < 320 && py >= 0 && py < 240) {
+            if (px >= 0 && px < SCREEN_WIDTHI && py >= 0 && py < SCREEN_HEIGHTI) {
                 *pixels = 0;
                 *mask = 0;
             }
@@ -360,7 +360,7 @@ void m269_SpotDrawEx(s16 active, s16 x, s16 y, s16 radius, s16 color) {
         distYSq = (py - y) * (py - y);
         for (px = x - radius; px < x + radius; px++) {
             distXSq = (px - x) * (px - x);
-            if (px >= 0 && px < 320 && py >= 0 && py < 240) {
+            if (px >= 0 && px < SCREEN_WIDTHI && py >= 0 && py < SCREEN_HEIGHTI) {
                 if (distXSq + distYSq < radiusSq) {
                     if (px & 1) {
                         *pixels |= color;
@@ -395,7 +395,7 @@ void m269_SpotLineDraw(s16 x0, s16 y0, s16 x1, s16 y1) {
                 err += dy;
                 x0++;
             }
-            if (x0 >= 0 && x0 < 320 && y0 >= 0 && y0 < 240) {
+            if (x0 >= 0 && x0 < SCREEN_WIDTHI && y0 >= 0 && y0 < SCREEN_HEIGHTI) {
                 pixels = (u8 *)m269_spotColorLayer.unk_04[m269_spotBufNo] + x0 / 2 + y0 * 160;
                 if (x0 & 1) {
                     *pixels |= 7;
@@ -411,7 +411,7 @@ void m269_SpotLineDraw(s16 x0, s16 y0, s16 x1, s16 y1) {
                 err += dy;
                 x0--;
             }
-            if (x0 >= 0 && x0 < 320 && y0 >= 0 && y0 < 240) {
+            if (x0 >= 0 && x0 < SCREEN_WIDTHI && y0 >= 0 && y0 < SCREEN_HEIGHTI) {
                 pixels = (u8 *)m269_spotColorLayer.unk_04[m269_spotBufNo] + x0 / 2 + y0 * 160;
                 if (x0 & 1) {
                     *pixels |= 7;

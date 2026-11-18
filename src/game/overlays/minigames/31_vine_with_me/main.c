@@ -16,6 +16,7 @@
 #include "game/camsetup.h"
 #include "game/hmfspr.h"
 #include "game/gamework.h"
+#include "macros.h"
 
 // EXTERN
 
@@ -143,7 +144,7 @@ Gfx m249_gfxXluInit[] = {
     gsDPSetAlphaCompare(G_AC_NONE),
     gsDPSetTexturePersp(G_TP_NONE),
     gsDPSetTextureFilter(G_TF_BILERP),
-    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, 320, 240),
+    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, SCREEN_HEIGHTI),
     gsSPEndDisplayList()
 };
 
@@ -155,7 +156,7 @@ Gfx m249_gfxOpaInit[] = {
     gsDPSetAlphaCompare(G_AC_NONE),
     gsDPSetTexturePersp(G_TP_NONE),
     gsDPSetTextureFilter(G_TF_BILERP),
-    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, 320, 240),
+    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, SCREEN_HEIGHTI),
     gsSPEndDisplayList()
 };
 */
@@ -213,8 +214,8 @@ void m249_ObjectSetup(void) {
     Hu3DScreenClearF = 1;
     CamSetupInit(2);
     CamSetupMapCullAddMulti(2);
-    ScissorSet(0, 0.0f, 0.0f, 320.0f, 120.0f);
-    ScissorSet(1, 0.0f, 120.0f, 320.0f, 240.0f);
+    ScissorSet(0, 0.0f, 0.0f, SCREEN_WIDTH, 120.0f);
+    ScissorSet(1, 0.0f, 120.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 240.0f, 511.0f);
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 640.0f, 720.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 22.619865f, 1000.0f, 22000.0f);
@@ -580,8 +581,8 @@ void m249_StageObjMain(omObjData *arg0) {
         m249_viewScale = (1.0f - m249_seqTimer / 30.0f) * 1.0 + (m249_seqTimer / 30.0f) * 2.375;
         m249_viewCenterX = (1.0f - m249_seqTimer / 30.0f) * 0.5 + (m249_seqTimer / 30.0f) * 0.77200000000000002;
         m249_viewCenterY = (1.0f - m249_seqTimer / 30.0f) * 0.5 + (m249_seqTimer / 30.0f) * (m249_winner != 0 ? 0.780000000000000027 : 0.220000000000000001);
-        temp_f26 = m249_viewScale * 320.0f * 2.0f;
-        temp_f24 = m249_viewScale * 240.0f * 2.0f;
+        temp_f26 = m249_viewScale * SCREEN_WIDTH * 2.0f;
+        temp_f24 = m249_viewScale * SCREEN_HEIGHT * 2.0f;
         var_f16 = -m249_viewCenterX * m249_viewScale + 0.5;
         var_f10 = -m249_viewCenterY * m249_viewScale + 0.5;
         var_f14 = var_f16 + m249_viewScale * 1.0;
@@ -596,10 +597,10 @@ void m249_StageObjMain(omObjData *arg0) {
                                                            : var_f14;
         temp_f12 = (temp_f12 < 0.0) ? 0.0f : (temp_f12 > 1.0) ? 1.0f
                                                               : temp_f12;
-        var_f16 *= 320.0f;
-        var_f10 *= 240.0f;
-        var_f14 *= 320.0f;
-        temp_f12 *= 240.0f;
+        var_f16 *= SCREEN_WIDTH;
+        var_f10 *= SCREEN_HEIGHT;
+        var_f14 *= SCREEN_WIDTH;
+        temp_f12 *= SCREEN_HEIGHT;
         temp_fs1 *= 1280.0f;
         temp_f20 *= 960.0f;
         ScissorSet(0, var_f16, var_f10, var_f14, temp_f12);
@@ -619,10 +620,10 @@ void m249_StageObjMain(omObjData *arg0) {
                                                            : var_f14;
         temp_f12 = (temp_f12 < 0.0) ? 0.0f : (temp_f12 > 1.0) ? 1.0f
                                                               : temp_f12;
-        var_f16 *= 320.0f;
-        var_f10 *= 240.0f;
-        var_f14 *= 320.0f;
-        temp_f12 *= 240.0f;
+        var_f16 *= SCREEN_WIDTH;
+        var_f10 *= SCREEN_HEIGHT;
+        var_f14 *= SCREEN_WIDTH;
+        temp_f12 *= SCREEN_HEIGHT;
         temp_fs1 *= 1280.0f;
         temp_f20 *= 960.0f;
         ScissorSet(1, var_f16, var_f10, var_f14, temp_f12);
@@ -1043,7 +1044,7 @@ void m249_HudDraw(Gfx **arg0, s32 arg1, s32 arg2) {
                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         x = k * 59;
         x2 = x + 60;
-        x2 = MIN(320, x2);
+        x2 = MIN(SCREEN_WIDTHI, x2);
         if ((s32)(x * 4 * m249_viewScale + m249_viewOfsX) >= 0xA00) {
             continue;
         }

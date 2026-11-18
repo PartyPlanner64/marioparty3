@@ -25,7 +25,7 @@ Gfx m208_backGfx[] = {
     gsDPSetAlphaCompare(G_AC_NONE),
     gsDPSetTexturePersp(G_TP_NONE),
     gsDPSetTextureFilter(G_TF_BILERP),
-    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, 320, 240),
+    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, SCREEN_HEIGHTI),
     gsSPEndDisplayList(),
 };
 
@@ -38,7 +38,7 @@ Gfx m208_backGfxB[] = {
     gsDPSetAlphaCompare(G_AC_NONE),
     gsDPSetTexturePersp(G_TP_NONE),
     gsDPSetTextureFilter(G_TF_BILERP),
-    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, 320, 240),
+    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, SCREEN_HEIGHTI),
     gsSPEndDisplayList(),
 };
 
@@ -131,8 +131,8 @@ void m208_ObjectSetup(void) {
     Hu3DScreenClearF = 1;
     CamSetupInit(2);
     CamSetupMapCullAddMulti(2);
-    ScissorSet(0, 0.0f, 0.0f, 140.0f, 240.0f);
-    ScissorSet(1, 180.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(0, 0.0f, 0.0f, 140.0f, SCREEN_HEIGHT);
+    ScissorSet(1, 180.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 320.0f, 480.0f, 511.0f);
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 960.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 65.0f, 500.0f, 3000.0f);
@@ -443,8 +443,8 @@ void m208_StageObjInit(omObjData *object) {
 void m208_StageObjMain(omObjData *object) {
     s16 left[2] = { 0, 160 };
     s16 top[2] = { 0, 0 };
-    s16 right[2] = { 160, 320 };
-    s16 bottom[2] = { 240, 240 };
+    s16 right[2] = { 160, SCREEN_WIDTHI };
+    s16 bottom[2] = { SCREEN_HEIGHTI, SCREEN_HEIGHTI };
     s32 other;
     s32 i;
 
@@ -463,7 +463,7 @@ void m208_StageObjMain(omObjData *object) {
         f32 progress = m208_winZoomRate;
         f32 remain = 1.0f - progress;
         f32 scissorLeft[2] = { 0.0f, 180.0f };
-        f32 scissorRight[2] = { 140.0f, 320.0f };
+        f32 scissorRight[2] = { 140.0f, SCREEN_WIDTH };
         f32 viewScale[2] = { 1.0f, 1.0f };
         f32 viewX[2] = { 320.0f, 960.0f };
         f32 viewY[2] = { 480.0f, 480.0f };
@@ -474,18 +474,18 @@ void m208_StageObjMain(omObjData *object) {
         CZoomM[m208_winner] = remain * 1260.0f + (m208_winner * 150 + 1600) * progress;
         viewScale[m208_winner] = progress + 1.0f;
         scissorLeft[m208_winner] = remain * scissorLeft[m208_winner] + progress * 0.0f;
-        scissorRight[m208_winner] = remain * scissorRight[m208_winner] + progress * 320.0f;
+        scissorRight[m208_winner] = remain * scissorRight[m208_winner] + progress * SCREEN_WIDTH;
         viewX[m208_winner] = remain * viewX[m208_winner] + progress * 640.0f;
         viewY[m208_winner] = remain * viewY[m208_winner] + progress * ((m208_winner != 0) ? 780.0 : 720.0);
         left[m208_winner] = left[m208_winner] * remain + progress * 0.0f;
-        right[m208_winner] = right[m208_winner] * remain + progress * 320.0f;
+        right[m208_winner] = right[m208_winner] * remain + progress * SCREEN_WIDTH;
         top[m208_winner] =
             top[m208_winner] * remain + progress * ((m208_winner != 0) ? -30.0f : -60.0f);
         bottom[m208_winner] =
             bottom[m208_winner] * remain + progress * ((m208_winner != 0) ? 450.0f : 420.0f);
         if (m208_winner == 0) {
             scissorLeft[1] = remain * scissorLeft[1] + progress * 318.0f;
-            scissorRight[1] = remain * scissorRight[1] + progress * 320.0f;
+            scissorRight[1] = remain * scissorRight[1] + progress * SCREEN_WIDTH;
             viewX[1] = progress * 712.0f + viewX[1];
             offset = progress * 178.0f;
             left[1] += offset;
@@ -498,8 +498,8 @@ void m208_StageObjMain(omObjData *object) {
             left[0] -= offset;
             right[0] -= offset;
         }
-        ScissorSet(0, scissorLeft[0], 0.0f, scissorRight[0], 240.0f);
-        ScissorSet(1, scissorLeft[1], 0.0f, scissorRight[1], 240.0f);
+        ScissorSet(0, scissorLeft[0], 0.0f, scissorRight[0], SCREEN_HEIGHT);
+        ScissorSet(1, scissorLeft[1], 0.0f, scissorRight[1], SCREEN_HEIGHT);
         ViewportSet(0, viewScale[0] * 640.0f, viewScale[0] * 480.0f, 511.0f, viewX[0], viewY[0], 511.0f);
         ViewportSet(1, viewScale[1] * 640.0f, viewScale[1] * 480.0f, 511.0f, viewX[1], viewY[1], 511.0f);
         m208_BackDraw(left, top, right, bottom);
@@ -649,17 +649,17 @@ void m208_BackDraw(s16 *left, s16 *top, s16 *right, s16 *bottom) {
         offsetY[i] = top[i];
         dtdy[i] = (1.0 / scaleY[i]) * 1024.0;
         scissorLeft[i] = (i == 0) ? 0 : 180;
-        scissorRight[i] = (i != 0) ? 320 : 140;
+        scissorRight[i] = (i != 0) ? SCREEN_WIDTHI : 140;
     }
     if (m208_winZoomRate > 0.0f && m208_winner < 2) {
         progress = m208_winZoomRate;
         remain = 1.0f - progress;
         i = m208_winner;
         scissorLeft[i] = scissorLeft[i] * remain + progress * 0.0f;
-        scissorRight[i] = scissorRight[i] * remain + progress * 320.0f;
+        scissorRight[i] = scissorRight[i] * remain + progress * SCREEN_WIDTH;
         if (i == 0) {
             scissorLeft[1] = scissorLeft[1] * remain + progress * 318.0f;
-            scissorRight[1] = scissorRight[1] * remain + progress * 320.0f;
+            scissorRight[1] = scissorRight[1] * remain + progress * SCREEN_WIDTH;
         } else {
             scissorLeft[0] = scissorLeft[0] * remain + progress * 0.0f;
             scissorRight[0] = scissorRight[0] * remain + progress * 2.0f;
@@ -694,7 +694,7 @@ void m208_BackDraw(s16 *left, s16 *top, s16 *right, s16 *bottom) {
                 if (xh < 0 || yh < 0) {
                     continue;
                 }
-                gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, scissorLeft[i], 0, scissorRight[i], 240);
+                gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, scissorLeft[i], 0, scissorRight[i], SCREEN_HEIGHTI);
                 gSPScisTextureRectangle(gMainGfxPos++, xl, yl, xh, yh, G_TX_RENDERTILE, s0 * 32.0f, t0 * 32.0f, dsdx[i],
                                         dtdy[i]);
             }
@@ -743,7 +743,7 @@ void m208_HudDraw(Gfx **gfxPos, s32 arg1, s32 arg2) {
                               G_TX_NOLOD);
         y = j * 60;
         y2 = j * 60 + 61;
-        y2 = MIN(240.0f, y2);
+        y2 = MIN(SCREEN_HEIGHT, y2);
         gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
         gSPScisTextureRectangle(gMainGfxPos++, offset + 140 * 4, (s32)(y * 4.0f), offset + 180 * 4, (s32)(y2 * 4.0f),
                                 G_TX_RENDERTILE, 0, j * 60 * 32, 1024, 1024);

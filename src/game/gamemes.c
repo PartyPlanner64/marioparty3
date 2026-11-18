@@ -2903,8 +2903,8 @@ s32 GameMesMgLoserExec(GAMEMES *gMes, Gfx **gfx) {
     if (gMes->time == 0) {
         GameMesStrCreate(gMes, gMesCharNameTbl[gMes->subMode], 1, -1, -1);
         GameMesStrCreate(gMes, lostStr, 1, -1, -1);
-        HuSprPosSet(gMes->strGId[0], 0, (320.0f - (nameLen + lostLen + 1.0f) * 24.0f) / 2.0f + nameLen * 24.0f / 2.0f, gMes->pos.y + 40.0f);
-        HuSprPosSet(gMes->strGId[1], 0, 320.0f - (320.0f - (nameLen + lostLen + 1.0f) * 24.0f) / 2.0f - lostLen * 24.0f / 2.0f, gMes->pos.y + 40.0f);
+        HuSprPosSet(gMes->strGId[0], 0, (SCREEN_WIDTH - (nameLen + lostLen + 1.0f) * 24.0f) / 2.0f + nameLen * 24.0f / 2.0f, gMes->pos.y + 40.0f);
+        HuSprPosSet(gMes->strGId[1], 0, SCREEN_WIDTH - (SCREEN_WIDTH - (nameLen + lostLen + 1.0f) * 24.0f) / 2.0f - lostLen * 24.0f / 2.0f, gMes->pos.y + 40.0f);
         for (i = 0; i < nameLen; i++) {
             HuSprDispOff(gMes->strGId[0], i + 1);
         }

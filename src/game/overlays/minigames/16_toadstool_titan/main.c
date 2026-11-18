@@ -44,8 +44,8 @@ extern Gfx *gMainGfxPos;
 u8 m222_blockNum = 0;       // number of Brick Blocks created so far
 f32 m222_viewLeft = 0.0f;   // screen rect left
 f32 m222_viewTop = 0.0f;   // screen rect top
-f32 m222_viewRight = 320.0f; // screen rect right
-f32 m222_viewBottom = 240.0f; // screen rect bottom
+f32 m222_viewRight = SCREEN_WIDTH; // screen rect right
+f32 m222_viewBottom = SCREEN_HEIGHT; // screen rect bottom
 u8 m222_debrisTimerTbl[14] = { 0 };
 u8 m222_blockBreakTimerTbl[9] = { 0 };
 u8 m222_puffTimer = 0;
@@ -66,7 +66,7 @@ Gfx m222_gfxViewFrameInit[] = {
     gsDPSetAlphaCompare(G_AC_NONE),
     gsDPSetTexturePersp(G_TP_NONE),
     gsDPSetTextureFilter(G_TF_BILERP),
-    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, 320, 240),
+    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, SCREEN_HEIGHTI),
     gsSPEndDisplayList(),
 };
 
@@ -165,7 +165,7 @@ void m222_ObjectSetup(void) {
     Hu3DScreenClearF = 1;
     CamSetupInit(1);
     Hu3DCameraNo = CamSetupMapCullAdd();
-    ScissorSet(Hu3DCameraNo, 0.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(Hu3DCameraNo, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(Hu3DCameraNo, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     mgItemObjNum = 0;
     mgPlayerObjNum = 0;
@@ -599,9 +599,9 @@ void m222_StageObjMain(omObjData *object) {
         inv = 1.0f - blend;
         screenMin.x = blend * screenMin.x + inv * 0.0f;
         screenMin.y = blend * screenMin.y + inv * 0.0f;
-        screenMax.x = blend * screenMax.x + inv * 320.0f;
-        screenMax.y = blend * screenMax.y + inv * 240.0f;
-        scale = 320.0f / (screenMax.x - screenMin.x);
+        screenMax.x = blend * screenMax.x + inv * SCREEN_WIDTH;
+        screenMax.y = blend * screenMax.y + inv * SCREEN_HEIGHT;
+        scale = SCREEN_WIDTH / (screenMax.x - screenMin.x);
         if (screenMin.x < 0.0f) {
             screenMax.x -= screenMin.x;
             screenMin.x -= screenMin.x;
@@ -610,14 +610,14 @@ void m222_StageObjMain(omObjData *object) {
             screenMax.y -= screenMin.y;
             screenMin.y -= screenMin.y;
         }
-        if (screenMax.x > 320.0f) {
-            f32 over = screenMax.x - 320.0f;
+        if (screenMax.x > SCREEN_WIDTH) {
+            f32 over = screenMax.x - SCREEN_WIDTH;
 
             screenMin.x -= over;
             screenMax.x -= over;
         }
-        if (screenMax.y > 240.0f) {
-            f32 over = screenMax.y - 240.0f;
+        if (screenMax.y > SCREEN_HEIGHT) {
+            f32 over = screenMax.y - SCREEN_HEIGHT;
 
             screenMin.y -= over;
             screenMax.y -= over;
@@ -626,8 +626,8 @@ void m222_StageObjMain(omObjData *object) {
         center.y = (screenMin.y + screenMax.y) * 0.5;
         m222_viewLeft = (s32)((0.0f - center.x) / (screenMin.x - center.x) * (0.0f - center.x) + center.x);
         m222_viewTop = (s32)((0.0f - center.y) / (screenMin.y - center.y) * (0.0f - center.y) + center.y);
-        m222_viewRight = (s32)((320.0f - center.x) / (screenMax.x - center.x) * (320.0f - center.x) + center.x);
-        m222_viewBottom = (s32)((240.0f - center.y) / (screenMax.y - center.y) * (240.0f - center.y) + center.y);
+        m222_viewRight = (s32)((SCREEN_WIDTH - center.x) / (screenMax.x - center.x) * (SCREEN_WIDTH - center.x) + center.x);
+        m222_viewBottom = (s32)((SCREEN_HEIGHT - center.y) / (screenMax.y - center.y) * (SCREEN_HEIGHT - center.y) + center.y);
         left = 0.0f;
         if (screenMin.x != left) {
             left = left - (screenMin.x - left) * scale;
@@ -638,12 +638,12 @@ void m222_StageObjMain(omObjData *object) {
             top = top - (screenMin.y - top) * scale;
         }
         m222_viewTop = top;
-        right = 320.0f;
+        right = SCREEN_WIDTH;
         if (screenMax.x != right) {
             right = right - (screenMax.x - right) * scale;
         }
         m222_viewRight = right;
-        bottom = 240.0f;
+        bottom = SCREEN_HEIGHT;
         if (screenMax.y != bottom) {
             bottom = bottom - (screenMax.y - bottom) * scale;
         }
@@ -661,10 +661,10 @@ void m222_StageObjMain(omObjData *object) {
         }
         m222_viewLeft = (s16)(sindf(shakeAngle) * 0.5 *
                                            ((m222_shakeTimer % 2 == 0) ? m222_shakeTimer : -m222_shakeTimer));
-        m222_viewRight = m222_viewLeft + 320.0f;
+        m222_viewRight = m222_viewLeft + SCREEN_WIDTH;
         m222_viewTop = (s16)(cosdf(shakeAngle) * 0.5 *
                                            ((m222_shakeTimer % 2 == 0) ? m222_shakeTimer : -m222_shakeTimer));
-        m222_viewBottom = m222_viewTop + 240.0f;
+        m222_viewBottom = m222_viewTop + SCREEN_HEIGHT;
         m222_shakeTimer -= (omPauseChk() + omAllPauseF == 0) ? 1 : 0;
         ViewportSet(0, 640.0f, 480.0f, 511.0f, (s32)((m222_viewLeft + m222_viewRight) / 2.0 * 4.0),
                     (s32)((m222_viewTop + m222_viewBottom) / 2.0 * 4.0), 511.0f);

@@ -81,8 +81,8 @@ void chancetime_ObjectSetup(void) {
     Hu3DSprModelInit(80);
     CamSetupInitMulti(3);
     ScissorSet(0, 104.0f, 52.0f, 215.0f, 163.0f);
-    ScissorSet(1, 0.0f, 0.0f, 320.0f, 240.0f);
-    ScissorSet(2, 0.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(1, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
+    ScissorSet(2, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     for (i = 0; i < 3; i++) {
         ViewportSet(i, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
         Hu3DCameraPerspectiveSet(i, 30.0f, 80.0f, 8000.0f);

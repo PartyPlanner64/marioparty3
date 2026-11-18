@@ -23,11 +23,11 @@ Vec defaultViewportPos[] = {
 };
 
 RectF defaultScissor[] = {
-    { 0.0f, 0.0f, 320.0f, 240.0f },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT },
     { 0.0f, 0.0f, 160.0f, 120.0f },
-    { 160.0f, 0.0f, 320.0f, 120.0f },
-    { 0.0f, 120.0f, 160.0f, 240.0f },
-    { 160.0f, 120.0f, 320.0f, 240.0f },
+    { 160.0f, 0.0f, SCREEN_WIDTH, 120.0f },
+    { 0.0f, 120.0f, 160.0f, SCREEN_HEIGHT },
+    { 160.0f, 120.0f, SCREEN_WIDTH, SCREEN_HEIGHT },
 };
 
 // EXTERN

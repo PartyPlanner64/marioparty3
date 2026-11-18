@@ -1054,7 +1054,7 @@ s16 m233_ObjHitCheck(omObjData *objA, omObjData *objB) {
 void m233_CameraInit(f32 zoom, f32 rotX, f32 rotY, f32 rotZ, f32 centerX, f32 centerY, f32 centerZ) {
     CamSetupInit(1);
     m233_cameraNo = CamSetupMapCullAdd();
-    ScissorSet(m233_cameraNo, 0.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(m233_cameraNo, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(m233_cameraNo, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     CZoom = zoom;
     CRot.x = rotX;

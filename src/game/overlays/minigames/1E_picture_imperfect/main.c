@@ -289,11 +289,11 @@ void m230_CameraInit(void) {
     }
     ScissorSet(0, 0.0f, 0.0f, 160.0f, 120.0f);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 320.0f, 240.0f, 511.0f);
-    ScissorSet(1, 160.0f, 0.0f, 320.0f, 120.0f);
+    ScissorSet(1, 160.0f, 0.0f, SCREEN_WIDTH, 120.0f);
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 960.0f, 240.0f, 511.0f);
-    ScissorSet(2, 0.0f, 120.0f, 160.0f, 240.0f);
+    ScissorSet(2, 0.0f, 120.0f, 160.0f, SCREEN_HEIGHT);
     ViewportSet(2, 640.0f, 480.0f, 511.0f, 320.0f, 720.0f, 511.0f);
-    ScissorSet(3, 160.0f, 120.0f, 320.0f, 240.0f);
+    ScissorSet(3, 160.0f, 120.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(3, 640.0f, 480.0f, 511.0f, 960.0f, 720.0f, 511.0f);
 }
 

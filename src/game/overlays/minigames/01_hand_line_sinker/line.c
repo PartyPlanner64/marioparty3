@@ -150,7 +150,7 @@ void m201_LineDraw(FishingLine *line, Vec *points, u16 count) {
     m201_lineHmf = &Hu3DData[line->model].hmf;
     m201_lineGfx = gfx;
     Hu3DData[line->model].hmf->unk3C->unk00[0] = gfx;
-    gDPSetScissor(gfx++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
+    gDPSetScissor(gfx++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, SCREEN_HEIGHTI);
     gDPSetCombineMode(gfx++, G_CC_SHADE, G_CC_SHADE);
     gDPSetRenderMode(gfx++, G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2);
     gSPVertex(gfx++, osVirtualToPhysical(vtx), count + 1, 0);
@@ -179,7 +179,7 @@ void m201_LineDraw(FishingLine *line, Vec *points, u16 count) {
         vtx++;
         points++;
     }
-    gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
+    gDPSetScissor(gMainGfxPos++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, SCREEN_HEIGHTI);
     gSPEndDisplayList(gfx++);
 }
 

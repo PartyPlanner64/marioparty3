@@ -1304,7 +1304,7 @@ event_table_entry mb6_specialEventTbl[] = {
     { -1, NULL }
 };
 
-RectF mb6ev_opStarMapViewRect = { 0.0f, 0.0f, 320.0f, 240.0f };
+RectF mb6ev_opStarMapViewRect = { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 /* CPU item-use and player-target decisions. */
 DecisionTreeNonLeafNode mb6_itemSKinokoStar0ComTree[] = {

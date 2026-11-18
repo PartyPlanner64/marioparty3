@@ -1382,7 +1382,7 @@ event_table_entry mb1_specialEventTbl[] = {
     { -1, NULL }
 };
 
-RectF mb1ev_opStarMapViewRect = { 0.0f, 0.0f, 320.0f, 240.0f };
+RectF mb1ev_opStarMapViewRect = { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 DecisionTreeNonLeafNode mb1_itemSKinokoStar06SubComTree[] = {
     { 10, { .data = 0x000C0004 }, { .data = 0x0C96A846 } },

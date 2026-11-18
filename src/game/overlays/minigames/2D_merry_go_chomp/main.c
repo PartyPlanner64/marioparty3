@@ -86,8 +86,8 @@ s16 m245_wanwanTargetXTbl[8] = { -700, -500, -700, -500, -600, -500, -600, -600 
 s16 m245_wanwanTargetZTbl[8] = { -50, -50, 150, 150, 350, 350, 25, 225 };
 s32 m245_cameraSetF = 0;
 MerryGoChompCamera m245_cameraViewTbl[2] = {
-    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 34.5f },
-    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 34.5f },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 34.5f },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 34.5f },
 };
 
 s16 m245_spinSeNo BSS;

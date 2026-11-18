@@ -314,7 +314,7 @@ void m231_ObjectSetup(void) {
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     CamSetupInit(1);
     camIndex = CamSetupMapCullAdd() & 0xFF;
-    ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(camIndex, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 16.0f, 500.0f, 5000.0f);
     CZoom = 800.0f;

@@ -34,7 +34,7 @@ Gfx m207_backGfx[] = {
     gsDPSetAlphaCompare(G_AC_NONE),
     gsDPSetTexturePersp(G_TP_NONE),
     gsDPSetTextureFilter(G_TF_BILERP),
-    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, 320, 240),
+    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, SCREEN_HEIGHTI),
     gsSPEndDisplayList(),
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
@@ -43,7 +43,7 @@ Gfx m207_backGfx[] = {
     gsDPSetAlphaCompare(G_AC_NONE),
     gsDPSetTexturePersp(G_TP_NONE),
     gsDPSetTextureFilter(G_TF_BILERP),
-    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, 320, 240),
+    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, SCREEN_HEIGHTI),
     gsSPEndDisplayList(),
 };
 
@@ -152,8 +152,8 @@ void m207_ObjectSetup(void) {
     Hu3DScreenClearF = 1;
     CamSetupInit(2);
     CamSetupMapCullAddMulti(2);
-    ScissorSet(0, 0.0f, 0.0f, 320.0f, 120.0f);
-    ScissorSet(1, 0.0f, 120.0f, 320.0f, 240.0f);
+    ScissorSet(0, 0.0f, 0.0f, SCREEN_WIDTH, 120.0f);
+    ScissorSet(1, 0.0f, 120.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 240.0f, 511.0f);
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 640.0f, 720.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 22.619865f, 375.0f, 1250.0f);
@@ -779,7 +779,7 @@ void m207_HudDraw(Gfx **gfxPos, s32 arg1, s32 arg2) {
         }
         x = m207_promptXTbl[(i < 7) ? i : 6] + offsets[i] - (tileWidth / 2) * scales[i];
         x2 = m207_promptXTbl[(i < 7) ? i : 6] + offsets[i] + (tileWidth / 2) * scales[i];
-        if (x > 320.0f || x2 < 0.0f) {
+        if (x > SCREEN_WIDTH || x2 < 0.0f) {
             continue;
         }
         sprite = HuSprGet(esprite[m207_sprTbl[23 + i]].unk04, 0);
@@ -835,7 +835,7 @@ void m207_HudDraw(Gfx **gfxPos, s32 arg1, s32 arg2) {
                            G_TX_NOLOD);
         x = k * 59;
         x2 = k * 59 + 60;
-        x2 = MIN(320.0f, x2);
+        x2 = MIN(SCREEN_WIDTH, x2);
         gDPLoadTLUT_pal16(gMainGfxPos++, 0, sprite->data->pal);
         gSPScisTextureRectangle(gMainGfxPos++, (s32)(x * 4.0f), 106 * 4, (s32)(x2 * 4.0f), 134 * 4, G_TX_RENDERTILE,
                                 (s32)(x * 32.0f), 0, 1024, 1024);

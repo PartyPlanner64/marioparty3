@@ -9,6 +9,7 @@
 #include "game/mallocblock.h"
 #include "game/hu3d.h"
 #include "game/data.h"
+#include "macros.h"
 
 typedef struct {
     u8 unk00[2];
@@ -323,7 +324,7 @@ s32 WipeCrossFadeIn(Gfx **gfx) {
 s32 WipeCrossFadeOut(Gfx **gfx) {
     gSPDisplayList((*gfx)++, wipeInitGfx);
     if (wipeTime == 0.0f) {
-        wipeScreenBuf = HuMemMemoryAllocPerm(320 * 240 * sizeof(u16) + 64);
+        wipeScreenBuf = HuMemMemoryAllocPerm(SCREEN_WIDTHI * SCREEN_HEIGHTI * sizeof(u16) + 64);
         wipeScreenBufP = (u16 *)(((u32)wipeScreenBuf + 63) & ~63);
         WipeScreenCopy(gfx, wipeScreenBufP);
         return 1;
@@ -339,16 +340,16 @@ void WipeScreenCopy(Gfx **gfx, u16 *image) {
     s16 y;
     s16 x;
 
-    gDPSetColorImage((*gfx)++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, image);
-    for (y = 0; y < 240; y += 16) {
-        for (x = 0; x < 320; x += 64) {
-            HuLoadTextureTile(gfx, &((u16 *)0x02000000)[x + y * 320], G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                               320, 240, 0, 0, 64, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
+    gDPSetColorImage((*gfx)++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTHI, image);
+    for (y = 0; y < SCREEN_HEIGHTI; y += 16) {
+        for (x = 0; x < SCREEN_WIDTHI; x += 64) {
+            HuLoadTextureTile(gfx, &((u16 *)0x02000000)[x + y * SCREEN_WIDTHI], G_IM_FMT_RGBA, G_IM_SIZ_16b,
+                               SCREEN_WIDTHI, SCREEN_HEIGHTI, 0, 0, 64, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
             gSPTextureRectangle((*gfx)++, x * 4, y * 4, (x + 64) * 4, (y + 16) * 4,
                                 G_TX_RENDERTILE, 0, 0, 1024, 1024);
         }
     }
-    gDPSetColorImage((*gfx)++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, (u16 *)0x02000000);
+    gDPSetColorImage((*gfx)++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTHI, (u16 *)0x02000000);
 }
 
 void WipeFrameStill(Gfx **gfx) {
@@ -360,10 +361,10 @@ void WipeScreenDraw(Gfx **gfx, u16 *image) {
     s16 y;
     s16 x;
 
-    for (y = 0; y < 240; y += 16) {
-        for (x = 0; x < 320; x += 64) {
-            HuLoadTextureTile(gfx, &image[x + y * 320], G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                               320, 240, 0, 0, 64, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
+    for (y = 0; y < SCREEN_HEIGHTI; y += 16) {
+        for (x = 0; x < SCREEN_WIDTHI; x += 64) {
+            HuLoadTextureTile(gfx, &image[x + y * SCREEN_WIDTHI], G_IM_FMT_RGBA, G_IM_SIZ_16b,
+                               SCREEN_WIDTHI, SCREEN_HEIGHTI, 0, 0, 64, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
             gSPTextureRectangle((*gfx)++, x * 4, y * 4, (x + 64) * 4, (y + 16) * 4,
                                 G_TX_RENDERTILE, 0, 0, 1024, 1024);
         }
@@ -387,27 +388,27 @@ s32 WipeFrameStillExec(Gfx **gfx) {
     gDPSetAlphaCompare((*gfx)++, G_AC_THRESHOLD);
     gDPSetBlendColor((*gfx)++, 0, 0, 0, 0);
     gDPSetTextureFilter((*gfx)++, G_TF_BILERP);
-    gDPSetScissor((*gfx)++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
+    gDPSetScissor((*gfx)++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, SCREEN_HEIGHTI);
     image = currFrameBuffer;
-    gDPSetColorImage((*gfx)++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, (u16 *)0x003D0800);
+    gDPSetColorImage((*gfx)++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTHI, (u16 *)0x003D0800);
     gSPDisplayList((*gfx)++, wipeClearGfx);
     gDPSetCombineMode((*gfx)++, G_CC_DECALRGB, G_CC_DECALRGB);
     gDPSetRenderMode((*gfx)++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
-    for (y = 0; y < 240; y += 16) {
-        for (x = 0; x < 320; x += 64) {
-            HuLoadTextureTile(gfx, &image[x + y * 320], G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                               320, 240, 0, 0, 64, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
+    for (y = 0; y < SCREEN_HEIGHTI; y += 16) {
+        for (x = 0; x < SCREEN_WIDTHI; x += 64) {
+            HuLoadTextureTile(gfx, &image[x + y * SCREEN_WIDTHI], G_IM_FMT_RGBA, G_IM_SIZ_16b,
+                               SCREEN_WIDTHI, SCREEN_HEIGHTI, 0, 0, 64, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
             gSPTextureRectangle((*gfx)++, x * scale * 4, y * scale * 4,
                                 (x * scale + scale * 64) * 4, (y * scale + scale * 16) * 4,
                                 G_TX_RENDERTILE, 0, 0, inverseScale * 1024, inverseScale * 1024);
         }
     }
-    gDPSetColorImage((*gfx)++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, (u16 *)0x02000000);
+    gDPSetColorImage((*gfx)++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTHI, (u16 *)0x02000000);
     image = (u16 *)0x803D0800;
-    for (y = 0; y < scale * 240 + 15; y += 16) {
-        for (x = 0; x < scale * 320 + 31; x += 32) {
-            HuLoadTextureTile(gfx, &image[x + y * 320], G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                               320, 240, 0, 0, 32, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
+    for (y = 0; y < scale * SCREEN_HEIGHTI + 15; y += 16) {
+        for (x = 0; x < scale * SCREEN_WIDTHI + 31; x += 32) {
+            HuLoadTextureTile(gfx, &image[x + y * SCREEN_WIDTHI], G_IM_FMT_RGBA, G_IM_SIZ_16b,
+                               SCREEN_WIDTHI, SCREEN_HEIGHTI, 0, 0, 32, 16, 0, G_TX_CLAMP, G_TX_CLAMP, 0, 0, 0, 0);
             gSPTextureRectangle((*gfx)++, x * inverseScale * 4, y * inverseScale * 4,
                                 (x + 32) * inverseScale * 4, (y + 16) * inverseScale * 4,
                                 G_TX_RENDERTILE, 0, 0, scale * 1024, scale * 1024);
@@ -483,7 +484,7 @@ void WipeCircleDraw(Gfx **gfx, f32 scale, f32 alpha) {
     gSPDisplayList((*gfx)++, wipeInitGfx);
     gDPSetAlphaCompare((*gfx)++, G_AC_THRESHOLD);
     gDPSetBlendColor((*gfx)++, 0, 0, 0, 1);
-    gDPSetScissor((*gfx)++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
+    gDPSetScissor((*gfx)++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, SCREEN_HEIGHTI);
     gDPSetTextureFilter((*gfx)++, G_TF_BILERP);
     gDPSetRenderMode((*gfx)++, G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2);
     gDPSetCombineLERP((*gfx)++, 0, 0, 0, PRIMITIVE, PRIMITIVE, 0, TEXEL0, 0,
@@ -505,20 +506,20 @@ void WipeCircleDraw(Gfx **gfx, f32 scale, f32 alpha) {
     gDPSetCombineMode((*gfx)++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
     gDPSetPrimColor((*gfx)++, 0, 0, wipeColorR, wipeColorG, wipeColorB, alpha * 255.0f);
     if (top > 0) {
-        gDPScisFillRectangle((*gfx)++, 0, 0, 320, top);
+        gDPScisFillRectangle((*gfx)++, 0, 0, SCREEN_WIDTHI, top);
     } else {
         top = 0;
     }
-    if (bottom < 240) {
-        gDPScisFillRectangle((*gfx)++, 0, bottom, 320, 240);
+    if (bottom < SCREEN_HEIGHTI) {
+        gDPScisFillRectangle((*gfx)++, 0, bottom, SCREEN_WIDTHI, SCREEN_HEIGHTI);
     } else {
-        bottom = 240;
+        bottom = SCREEN_HEIGHTI;
     }
     if (left > 0) {
         gDPScisFillRectangle((*gfx)++, 0, top, left, bottom);
     }
-    if (right < 320) {
-        gDPScisFillRectangle((*gfx)++, right, top, 320, bottom);
+    if (right < SCREEN_WIDTHI) {
+        gDPScisFillRectangle((*gfx)++, right, top, SCREEN_WIDTHI, bottom);
     }
 }
 
@@ -679,7 +680,7 @@ void WipeBlindDraw(Gfx **gfx, f32 progress) {
         gDPSetPrimColor((*gfx)++, 0, 0, 0, 0, 0, alpha);
         gDPFillRectangle((*gfx)++, 0, center - halfHeight, 320, center + halfHeight);
         if (wipeTex.pixels != NULL) {
-            textureTop = (240 - wipeTex.height) / 2;
+            textureTop = (SCREEN_HEIGHTI - wipeTex.height) / 2;
             if (textureTop > i * stripeHeight || i * stripeHeight >= wipeTex.height + textureTop) {
                 continue;
             }
@@ -768,7 +769,7 @@ s32 WipeShape2Out(Gfx **gfx) {
 void WipeScreenCapture(void) {
     Gfx *gfx;
 
-    wipeCaptureBuf = HuMemAlloc(320 * 240 * sizeof(u16) + 64);
+    wipeCaptureBuf = HuMemAlloc(SCREEN_WIDTHI * SCREEN_HEIGHTI * sizeof(u16) + 64);
     wipeCaptureGfx = HuMemAlloc(0x1900);
     gfx = wipeCaptureGfx;
     wipeCaptureBufP = (u16 *)(((u32)wipeCaptureBuf + 63) & ~63);

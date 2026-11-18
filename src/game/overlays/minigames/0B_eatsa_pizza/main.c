@@ -112,7 +112,7 @@ void m211_ObjectSetup(void) {
     omSetStatBit(obj, OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     CamSetupInit(1);
     camIndex = CamSetupMapCullAdd();
-    ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(camIndex, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 5.0f, 80.0f, 4000.0f);
     MgFieldStatClear();
@@ -215,7 +215,7 @@ void m211_WorldPosCalc(f32 x, f32 y, f32 z, f32 *dst) {
     f32 scale = __builtin_fabsf(depth * m211_cameraFovTan);
     f32 mtx[4][4];
 
-    guTranslateF(mtx, ((x + x) * scale * 1.3333334f) / 320.0f, -((y + y) * scale / 240.0f), depth);
+    guTranslateF(mtx, ((x + x) * scale * 1.3333334f) / SCREEN_WIDTH, -((y + y) * scale / SCREEN_HEIGHT), depth);
     guMtxCatF(mtx, m211_cameraInvMtx, mtx);
     dst[0] = mtx[3][0];
     dst[1] = mtx[3][1];
@@ -812,16 +812,16 @@ void m211_PizzaWallHit(omObjData *object) {
         yMin = 0;
     }
     yMax = y + 16.0f;
-    if (yMax > 240) {
-        yMax = 240;
+    if (yMax > SCREEN_HEIGHTI) {
+        yMax = SCREEN_HEIGHTI;
     }
     xMin = x - 16.0f;
     if (xMin < 0) {
         xMin = 0;
     }
     xMax = x + 16.0f;
-    if (xMax > 320) {
-        xMax = 320;
+    if (xMax > SCREEN_WIDTHI) {
+        xMax = SCREEN_WIDTHI;
     }
     if (work->unk32 == 1) {
         x -= 160.0f;
@@ -925,7 +925,7 @@ s32 m211_PizzaEat(omObjData *object) {
     }
     yMax = centerY + 16;
     if (yMax >= 241) {
-        yMax = 240;
+        yMax = SCREEN_HEIGHTI;
     }
     xMin = centerX - 16;
     if (xMin < 0) {
@@ -933,7 +933,7 @@ s32 m211_PizzaEat(omObjData *object) {
     }
     xMax = centerX + 16;
     if (xMax >= 321) {
-        xMax = 320;
+        xMax = SCREEN_WIDTHI;
     }
     if (xMin & 1) {
         xMin++;

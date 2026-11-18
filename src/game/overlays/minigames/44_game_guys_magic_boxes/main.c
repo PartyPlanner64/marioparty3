@@ -1447,7 +1447,7 @@ void m268_CameraSetup(void) {
     omSetStatBit(omAddObj(0x7FDA, 0, 0, -1, omOutView), OM_STAT_NOPAUSE | OM_STAT_NOALLPAUSE);
     CamSetupInit(1);
     camIndex = CamSetupMapCullAdd();
-    ScissorSet(camIndex, 0.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(camIndex, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(camIndex, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
 }
 
@@ -1625,7 +1625,7 @@ void m268_BoxSpotDraw(s16 x, s16 y, s16 radius) {
         pixels = m268_boxSpotBufTbl[m268_boxSpotBufNo] + (x - radius) / 2 + py * 160;
         distYSq = (py - y) * (py - y);
         for (px = x - radius; px < x + radius; px++) {
-            if (px >= 0 && px < 320 && py >= 0 && py < 240) {
+            if (px >= 0 && px < SCREEN_WIDTHI && py >= 0 && py < SCREEN_HEIGHTI) {
                 if ((px - x) * (px - x) + distYSq < radiusSq) {
                     if (px & 1) {
                         *pixels |= 7;
@@ -1647,7 +1647,7 @@ void m268_BoxSpotErase(s16 x, s16 y, s16 radius) {
     for (py = y - radius; py < y + radius; py++) {
         pixels = m268_boxSpotBufTbl[m268_boxSpotBufNo] + (x - radius) / 2 + py * 160;
         for (px = x - radius; px < x + radius + 1; px += 2) {
-            if (px >= 0 && px < 320 && py >= 0 && py < 240) {
+            if (px >= 0 && px < SCREEN_WIDTHI && py >= 0 && py < SCREEN_HEIGHTI) {
                 *pixels = 0;
             }
             pixels++;

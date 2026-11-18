@@ -4,6 +4,7 @@
 #include "game/camsetup.h"
 #include "game/hmfcoll.h"
 #include "game/camera.h"
+#include "macros.h"
 
 u8 camSetupNum = 0;
 u8 camSetupHookNo = 0;
@@ -20,10 +21,10 @@ Vec camSetupViewportPos[] = {
     { 640.0f, 480.0f, 511.0f },
 };
 RectF camSetupScissor[] = {
-    { 0.0f, 0.0f, 320.0f, 240.0f },
-    { 0.0f, 0.0f, 320.0f, 240.0f },
-    { 0.0f, 0.0f, 320.0f, 240.0f },
-    { 0.0f, 0.0f, 320.0f, 240.0f },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT },
 };
 extern s32 CFan; // TODO: type correctly
 

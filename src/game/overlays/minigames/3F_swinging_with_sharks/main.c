@@ -264,7 +264,7 @@ void m263_ObjectSetup(void) {
     Hu3DSprModelInit(20);
     Hu3DBGColorSet(0, 0xFF, 0);
     Hu3DScreenClearF = 1;
-    ScissorSet(0, 0.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(0, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     CRot.x = 334.0f;
     CRot.y = m263_cameraRotInit.z = 0.0f;

@@ -271,10 +271,10 @@ void m258_ObjectSetup(void) {
     obj->work[0] = 2;
     CamSetupInit(2);
     CamSetupMapCullAddMulti(2);
-    ScissorSet(0, 0.0f, 0.0f, 160.0f, 240.0f);
+    ScissorSet(0, 0.0f, 0.0f, 160.0f, SCREEN_HEIGHT);
     ViewportSet(0, 640.0f, 480.0f, 511.0f, 320.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(0, 45.0f, 80.0f, 8000.0f);
-    ScissorSet(1, 160.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(1, 160.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(1, 640.0f, 480.0f, 511.0f, 960.0f, 480.0f, 511.0f);
     Hu3DCameraPerspectiveSet(1, 45.0f, 80.0f, 8000.0f);
     MgFieldStatClear();
@@ -491,7 +491,7 @@ void m258_WorldPosCalc(f32 x, f32 y, f32 z, f32 *dst) {
     f32 scale = fabsf(depth * m258_fovTan);
     f32 mtx[4][4];
 
-    guTranslateF(mtx, (x + x) * scale * 1.3333334f / 320.0f, -((y + y) * scale / 240.0f), depth);
+    guTranslateF(mtx, (x + x) * scale * 1.3333334f / SCREEN_WIDTH, -((y + y) * scale / SCREEN_HEIGHT), depth);
     guMtxCatF(mtx, m258_viewInvMtx, mtx);
     dst[0] = mtx[3][0];
     dst[1] = mtx[3][1];

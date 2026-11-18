@@ -140,7 +140,7 @@ void mgenter_StageMainProc(void) {
     mgenter_mgPicState = 0;
     HuPrcSleep(10);
     HuWinMesMaxSizeGet(3, size, 0x4600, 0x4601, 0x4603);
-    winId = HuWinExCreate(-1, (320 - size[0]) / 2, 180, size[0], size[1], 0);
+    winId = HuWinExCreate(-1, (SCREEN_WIDTHI - size[0]) / 2, 180, size[0], size[1], 0);
     HuWinMesSpeedSet(winId, 0);
     HuWinExAnimIn(winId);
     mgenter_optionNo = 0;
@@ -266,7 +266,7 @@ void mgenter_MainProc(void) {
         HuPrcVSleep();
     }
     HuWinMesMaxSizeGet(1, size, 0x4607);
-    winId = HuWinExCreate(-1, (320 - size[0]) / 2, 180, size[0], size[1], 0);
+    winId = HuWinExCreate(-1, (SCREEN_WIDTHI - size[0]) / 2, 180, size[0], size[1], 0);
     HuWinMesSpeedSet(winId, 0);
     HuWinExAnimIn(winId);
     HuWinMesSet(winId, 0x4607, -1, -1);
@@ -576,14 +576,14 @@ void mgenter_NumMainProc(void) {
         HuPrcVSleep();
     }
     HuWinMesMaxSizeGet(1, size, 0x4601);
-    winId = HuWinExCreate(-1, (320 - size[0]) / 2, 180, size[0], size[1], 0);
+    winId = HuWinExCreate(-1, (SCREEN_WIDTHI - size[0]) / 2, 180, size[0], size[1], 0);
     for (i = 0; i < 4; i++) {
         buf[i] = 0xA0;
     }
     buf[i] = '\0';
     HuWinInsertMesSizeGet((u32)buf, 0);
     HuWinMesMaxSizeGet(1, size, 0x4602);
-    valueWinId = HuWinExCreate(-1, (320 - size[0]) / 2, 155, size[0], size[1], 0);
+    valueWinId = HuWinExCreate(-1, (SCREEN_WIDTHI - size[0]) / 2, 155, size[0], size[1], 0);
     HuWinMesSpeedSet(winId, 0);
     HuWinExAnimIn(winId);
     HuWinMesSet(winId, 0x4601, -1, -1);

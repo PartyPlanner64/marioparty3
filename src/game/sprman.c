@@ -846,7 +846,7 @@ void HuSprLayerHook(Gfx **gdl, s32 arg1, s32 arg2) {
     gSPViewport((*gdl)++, &HuSprViewport);
     gSPPerspNormalize((*gdl)++, 0x8000);
     gSPMatrix((*gdl)++, osVirtualToPhysical(&HuSprOrthoMtx), G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
-    gDPSetScissor((*gdl)++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
+    gDPSetScissor((*gdl)++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, SCREEN_HEIGHTI);
     gDPPipeSync((*gdl)++);
     gDPSetTexturePersp((*gdl)++, G_TP_NONE);
     gSPTexture((*gdl)++, 0xFFFF, 0x8000, 0, G_TX_RENDERTILE, G_ON);
@@ -907,7 +907,7 @@ void HuSprFGHook(Gfx **gdl, s32 arg1, s32 arg2) {
     gSPViewport((*gdl)++, &HuSprViewport);
     gSPPerspNormalize((*gdl)++, 0x8000);
     gSPMatrix((*gdl)++, osVirtualToPhysical(&HuSprOrthoMtx), G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH);
-    gDPSetScissor((*gdl)++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
+    gDPSetScissor((*gdl)++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTHI, SCREEN_HEIGHTI);
     gDPPipeSync((*gdl)++);
     gDPSetTexturePersp((*gdl)++, G_TP_NONE);
     gSPTexture((*gdl)++, 0xFFFF, 0x8000, 0, G_TX_RENDERTILE, G_ON);

@@ -1176,7 +1176,7 @@ event_table_entry mb3_specialEventTbl[] = {
     { -1, NULL }
 };
 
-RectF mb3ev_opStarMapViewRect = { 0.0f, 0.0f, 320.0f, 240.0f };
+RectF mb3ev_opStarMapViewRect = { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 DecisionTreeNonLeafNode mb3_itemSKinokoStar0ComTree[] = {
     { 12, { .data = 0x00000014 }, { .data = 0x00000000 } },

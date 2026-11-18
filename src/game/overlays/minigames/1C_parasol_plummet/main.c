@@ -484,7 +484,7 @@ void m228_PlayerObjMain(omObjData *object) {
         m228_ParasolClose(object);
         m228_PlayerPlummetStart(object);
     }
-    if (screenY >= 240) {
+    if (screenY >= SCREEN_HEIGHTI) {
         work->coords.y -= -24.0f;
         if (work->flags & 0x40) {
             if (work->coords.y <= OM_GET_DATA_PTR(m228_goalObj, ParasolPlummetGoalWork)->pos.y) {
@@ -1739,7 +1739,7 @@ void m228_ItemObjMain(omObjData *object) {
     pos.y = item->y;
     pos.z = 0.0f;
     Hu3D3Dto2D(0, &pos, &screen);
-    if ((s32)screen.y >= 240) {
+    if ((s32)screen.y >= SCREEN_HEIGHTI) {
         Hu3DModelAttrSet(object->model[0], HU3D_ATTR_DISPOFF, HU3D_ATTR_DISPOFF);
         m228_itemActiveTbl[item->slot] = 0;
         item->flags &= ~1;
@@ -1891,7 +1891,7 @@ void m228_HudProc(void) {
 void m228_CameraInit(f32 zoom, f32 rotX, f32 rotY, f32 rotZ, f32 centerX, f32 centerY, f32 centerZ) {
     CamSetupInit(1);
     m228_cameraNo = CamSetupMapCullAdd();
-    ScissorSet(m228_cameraNo, 0.0f, 0.0f, 320.0f, 240.0f);
+    ScissorSet(m228_cameraNo, 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
     ViewportSet(m228_cameraNo, 640.0f, 480.0f, 511.0f, 640.0f, 480.0f, 511.0f);
     CZoom = zoom;
     CRot.x = rotX;

@@ -133,7 +133,7 @@ Vec2f m209_scorePosTbl[8] = {
     { 290.0f, 210.0f },
 };
 RiverRaidersCamera m209_cameraViewTbl[1] = {
-    { 0.0f, 0.0f, 320.0f, 240.0f, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 36.0f },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, { 640.0f, 480.0f, 511.0f }, { 640.0f, 480.0f, 511.0f }, 36.0f },
 };
 
 f32 m209_wakeRotTbl[5] BSS;

@@ -1021,7 +1021,7 @@ void selmenu_MgNameRiseObjMain(omObjData *obj) {
 
     rand8();
     sprintf(omDBGStrBuf, selmenu_menuTbl[selmenu_page * 10 + selmenu_selectPos].name);
-    x = (320 - strlen(omDBGStrBuf) * 8) / 2;
+    x = (SCREEN_WIDTHI - strlen(omDBGStrBuf) * 8) / 2;
     y = (selmenu_selectPos + 10) * 9;
     // The do-while(0) ends a CSE block, keeping GCC from folding textOfs into the sprite positions.
     do {
@@ -1066,7 +1066,7 @@ void selmenu_MgNameRiseObjMain(omObjData *obj) {
             selmenu_sparkSprTbl[i] = -1;
         }
     }
-    x = (320 - strlen(omDBGStrBuf) * 8) / 2;
+    x = (SCREEN_WIDTHI - strlen(omDBGStrBuf) * 8) / 2;
     fontcolor = 7;
     print8(x + 1, y + 1 - (u16)selmenu_mgNameRiseOfs, omDBGStrBuf);
     fontcolor = 15;

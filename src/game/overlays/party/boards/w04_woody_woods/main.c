@@ -1195,7 +1195,7 @@ event_table_entry mb4_specialEventTbl[] = {
     { -1, NULL }
 };
 
-RectF mb4ev_opStarMapViewRect = { 0.0f, 0.0f, 320.0f, 240.0f };
+RectF mb4ev_opStarMapViewRect = { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 DecisionTreeNonLeafNode mb4_itemSKinokoStar0FlagComTree[] = {
     { 12, { .data = 0x00000019 }, { .data = 0x01428A1E } },

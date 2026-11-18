@@ -135,7 +135,7 @@ void mgmode_GambleRoomProc(void) {
     s16 i;
 
     HuWinMesMaxSizeBetGet(size, 0x5800, 0x5813);
-    mgmode_winId = HuWinExCreate(-1, (320 - size[0]) / 2, 224 - size[1], size[0], size[1], 0);
+    mgmode_winId = HuWinExCreate(-1, (SCREEN_WIDTHI - size[0]) / 2, 224 - size[1], size[0], size[1], 0);
     HuWinActivePlayerSet(mgmode_winId, 1 << mgmode_padNo);
     HuWinPriSet(mgmode_winId, 10);
     mgmode_GambleTitleInit();
@@ -669,7 +669,7 @@ s32 mgmode_GambleQuitCheck(void) {
         } else {
             HuWinExAnimOut(mgmode_winId, 0);
             HuWinMesMaxSizeGet(1, size, 0x5814);
-            winId = HuWinExCreate(-1, (320 - size[0]) / 2, 224 - size[1], size[0], size[1], 0);
+            winId = HuWinExCreate(-1, (SCREEN_WIDTHI - size[0]) / 2, 224 - size[1], size[0], size[1], 0);
             HuWinActivePlayerSet(winId, 1 << mgmode_padNo);
             HuWinExAnimIn(winId);
             HuWinMesSet(winId, 0x5814, -1, -1);

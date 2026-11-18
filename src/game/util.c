@@ -12,6 +12,7 @@
 #include "game/rom.h"
 #include "game/pad.h"
 #include "game/mallocblock.h"
+#include "macros.h"
 
 #define HAS_TEXT_SECTION 1
 #define HAS_DATA_SECTION 2
@@ -36,11 +37,11 @@ Vec utilViewportPos[] = {
     { 0.0f, 0.0f, 0.0f },
 };
 RectF utilScissor[] = {
-    { 0.0f, 0.0f, 320.0f, 240.0f },
-    { 0.0f, 0.0f, 320.0f, 240.0f },
-    { 0.0f, 0.0f, 320.0f, 240.0f },
-    { 0.0f, 0.0f, 320.0f, 240.0f },
-    { 0.0f, 0.0f, 320.0f, 240.0f },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT },
+    { 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT },
     { 0.0f, 0.0f, 0.0f, 0.0f },
 };
 u32 rnd_seed = 0xD9ED;

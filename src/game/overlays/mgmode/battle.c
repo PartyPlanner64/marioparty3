@@ -156,7 +156,7 @@ void mgmode_BattleRoomProc(void) {
     mgmode_cameraPresetTbl = mgmode_battleCameraPresetTbl;
     mgmode_cameraFar = 2500.0f;
     HuWinMesMaxSizeBetGet(size, 0x5600, 0x560E);
-    mgmode_winId = HuWinExCreate(-1, (320 - size[0]) / 2, 224 - size[1], size[0], size[1], 0);
+    mgmode_winId = HuWinExCreate(-1, (SCREEN_WIDTHI - size[0]) / 2, 224 - size[1], size[0], size[1], 0);
     HuWinActivePlayerSet(mgmode_winId, 1 << mgmode_padNo);
     HuWinPriSet(mgmode_winId, 5);
     for (i = 0; i < 4; i++) {
